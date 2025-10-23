@@ -1,16 +1,21 @@
+import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import history from 'pages/history'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),

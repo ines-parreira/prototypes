@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import { useAsyncFn, useCallbackRef } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
 
@@ -12,7 +13,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import history from 'pages/history'
 import css from 'pages/settings/settings.less'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'

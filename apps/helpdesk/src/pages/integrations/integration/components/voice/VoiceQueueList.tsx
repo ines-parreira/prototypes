@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { history } from '@repo/routing'
 import { TableVirtuoso, VirtuosoHandle } from 'react-virtuoso'
 
 import {
@@ -15,7 +16,6 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
-import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 
 import { PHONE_INTEGRATION_BASE_URL, QUEUE_LIST_PAGE_SIZE } from './constants'

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, List, Map, Set } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -11,7 +12,6 @@ import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import history from 'pages/history'
 import { DEPRECATED_getIntegrations } from 'state/integrations/selectors'
 import {
     CUSTOM_WIDGET_TYPE,

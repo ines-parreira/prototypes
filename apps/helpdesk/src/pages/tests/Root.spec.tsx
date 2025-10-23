@@ -1,6 +1,6 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
@@ -12,7 +12,6 @@ import type { RootState } from 'state/types'
 import type { GorgiasInitialState } from 'types'
 import { getLDClient } from 'utils/launchDarkly'
 
-import history from '../history'
 import Root from '../Root'
 
 jest.mock('@tanstack/react-query', () => ({
@@ -72,7 +71,12 @@ jest.mock('utils/launchDarkly', () => ({
 }))
 const getLDClientMock = assumeMock(getLDClient)
 
-jest.mock('../history', () => ({ listen: jest.fn() }))
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        listen: jest.fn(),
+    },
+}))
 
 describe('Root', () => {
     let waitUntilGoalsReady: jest.Mock

@@ -24,7 +24,12 @@ import { RootState, StoreDispatch } from 'state/types'
 import { RuleRow } from '../RuleRow'
 
 jest.mock('models/rule/resources')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('state/entities/rules/actions')
 
 describe('<RuleRow />', () => {

@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import history from 'pages/history'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
@@ -32,7 +32,12 @@ jest.mock('../hooks/useGuidanceAiSuggestions', () => ({
 }))
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({

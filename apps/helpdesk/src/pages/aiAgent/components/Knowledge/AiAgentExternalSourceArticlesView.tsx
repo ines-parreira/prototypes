@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -32,7 +33,6 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

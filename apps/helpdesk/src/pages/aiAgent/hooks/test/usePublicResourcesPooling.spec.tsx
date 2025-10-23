@@ -19,7 +19,12 @@ const queryClient = mockQueryClient()
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('utils/errors', () => ({

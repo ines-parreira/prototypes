@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { connect, ConnectedProps } from 'react-redux'
 import { Progress, Table } from 'reactstrap'
 
@@ -7,7 +8,6 @@ import {
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
-import history from 'pages/history'
 import {
     getDateAndTimeFormatter,
     getTimezone,

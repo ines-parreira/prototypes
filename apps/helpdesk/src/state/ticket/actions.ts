@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { AxiosError } from 'axios'
 import { fromJS, List, Map } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
@@ -51,7 +52,6 @@ import {
     TicketMessageIntent,
 } from 'models/ticket/types'
 import { View } from 'models/view/types'
-import history from 'pages/history'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
 import {

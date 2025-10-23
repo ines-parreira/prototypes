@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -7,7 +8,6 @@ import {
 } from 'models/helpCenter/queries'
 import { getIngestedResourceFixture } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

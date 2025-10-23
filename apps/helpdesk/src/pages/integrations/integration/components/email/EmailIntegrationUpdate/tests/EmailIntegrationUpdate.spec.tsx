@@ -1,5 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
@@ -64,8 +65,11 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
 
 jest.mock('pages/common/forms/RichFieldWithVariables', () => {
@@ -89,7 +93,6 @@ jest.mock('pages/common/forms/RichFieldWithVariables', () => {
 })
 
 const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
-const mockHistoryPush = jest.mocked(require('pages/history').push)
 
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
@@ -729,7 +732,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             const cancelButton = getByRole('button', { name: /Cancel/i })
             fireEvent.click(cancelButton)
 
-            expect(mockHistoryPush).toHaveBeenCalledWith(
+            expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/channels/email',
             )
         })
@@ -829,7 +832,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             })
             fireEvent.click(discardButton)
 
-            expect(mockHistoryPush).toHaveBeenCalledWith(
+            expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/channels/email',
             )
         })

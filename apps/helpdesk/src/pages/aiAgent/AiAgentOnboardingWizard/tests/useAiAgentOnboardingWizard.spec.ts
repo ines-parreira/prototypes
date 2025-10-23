@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -18,7 +19,6 @@ import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfi
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -28,7 +28,13 @@ import { WIZARD_BUTTON_ACTIONS } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+        replace: jest.fn(),
+    },
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('react-router-dom', () => ({

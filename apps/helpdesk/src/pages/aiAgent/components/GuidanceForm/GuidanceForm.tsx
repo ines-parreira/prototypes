@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import { history } from '@repo/routing'
 
 import { LegacyButton as Button, ToggleField } from '@gorgias/axiom'
 
@@ -22,7 +23,6 @@ import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { onApiError } from 'state/utils'

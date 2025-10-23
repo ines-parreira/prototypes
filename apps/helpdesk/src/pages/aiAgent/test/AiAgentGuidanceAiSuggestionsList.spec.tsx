@@ -3,16 +3,21 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import history from 'pages/history'
 import { renderWithRouter } from 'utils/testing'
 
 import { GuidanceAiSuggestionsList } from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 const renderComponent = (
     params: React.ComponentProps<typeof GuidanceAiSuggestionsList>,

@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -23,7 +24,6 @@ import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavi
 import ColorField from 'pages/common/forms/ColorField'
 import InputField from 'pages/common/forms/input/InputField'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
-import history from 'pages/history'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'

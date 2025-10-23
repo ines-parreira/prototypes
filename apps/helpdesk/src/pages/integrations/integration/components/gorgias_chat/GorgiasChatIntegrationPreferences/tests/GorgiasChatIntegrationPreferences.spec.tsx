@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -26,7 +27,6 @@ import {
     ReturnActionType,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
-import history from 'pages/history'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'

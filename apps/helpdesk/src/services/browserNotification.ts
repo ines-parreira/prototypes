@@ -1,9 +1,9 @@
+import { history } from '@repo/routing'
 import _isString from 'lodash/isString'
 import _throttle from 'lodash/throttle'
 import notification, { PushNotification } from 'push.js'
 
 import { store } from 'common/store'
-import history from 'pages/history'
 import { notificationSounds } from 'services'
 import { defaultSound } from 'services/NotificationSounds'
 import { getNotificationSettings } from 'state/currentUser/selectors'

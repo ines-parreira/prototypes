@@ -1,12 +1,12 @@
 import React, { ComponentProps, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 
 import { ThemeProvider } from 'core/theme'
-import history from 'pages/history'
 
 import { KnowledgeEditorGuidanceEditView } from './KnowledgeEditorGuidanceEditView'
 

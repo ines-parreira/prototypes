@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import mockDate from 'mockdate'
@@ -7,7 +8,6 @@ import thunk from 'redux-thunk'
 
 import { UserSetting, UserSettingType } from 'config/types/user'
 import client from 'models/api/resources'
-import history from 'pages/history'
 import * as notificationActions from 'state/notifications/actions'
 import { StoreDispatch } from 'state/types'
 

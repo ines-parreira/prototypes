@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -8,7 +9,6 @@ import {
     mockUpdateBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import history from 'pages/history'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { BUSINESS_HOURS_BASE_URL } from '../constants'

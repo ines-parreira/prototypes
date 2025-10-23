@@ -1,5 +1,6 @@
 import React, { Component, FormEvent } from 'react'
 
+import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -18,7 +19,6 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import history from 'pages/history'
 import {
     isBaseEmailAddress,
     isSendgridEmailIntegration,

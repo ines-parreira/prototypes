@@ -2,6 +2,7 @@ import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -16,7 +17,6 @@ import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as billingFixtures from 'fixtures/billing'
 import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
-import history from 'pages/history'
 import EmailIntegrationOnboarding from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
 import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
 import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
@@ -30,8 +30,11 @@ import {
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
 
 jest.mock(

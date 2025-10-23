@@ -1,5 +1,6 @@
 import React, { MouseEvent, useCallback, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
@@ -26,7 +27,6 @@ import { CampaignListOptions } from 'pages/convert/campaigns/providers/CampaignL
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { ConvertRouteParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

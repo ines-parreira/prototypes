@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { history } from '@repo/routing'
 import parsePhoneNumber from 'libphonenumber-js'
 import { DropdownItem } from 'reactstrap'
 
@@ -8,7 +9,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { SmsIntegration } from 'models/integration/types'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
-import history from 'pages/history'
 import { fetchCustomer } from 'state/customers/actions'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 

@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
 import _pick from 'lodash/pick'
@@ -26,7 +27,6 @@ import {
 } from 'models/event/types'
 import { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
-import history from 'pages/history'
 import socketManager from 'services/socketManager/socketManager'
 import {
     SocketEventType,
@@ -101,7 +101,12 @@ jest.mock('state/notifications/actions', () => {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock

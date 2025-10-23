@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -34,7 +35,6 @@ import {
 } from '../../../../../models/integration/types'
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'
-import history from '../../../../history'
 import ForwardIcon from '../../../common/components/ForwardIcon'
 import { Tab } from '../../types'
 

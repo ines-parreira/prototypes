@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
@@ -24,8 +25,6 @@ import { RootState } from 'state/types'
 import { envVars, NodeEnv } from 'utils/environment'
 import { getLDClient, LDContext } from 'utils/launchDarkly'
 import { DndProvider } from 'utils/wrappers/DndProvider'
-
-import history from './history'
 
 type Props = { store: Store<RootState> }
 

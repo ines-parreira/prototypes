@@ -38,7 +38,12 @@ import { TicketListActions } from '../TicketListActions'
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('state/views/actions')
 jest.mock('state/tickets/actions')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('common/segment')
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

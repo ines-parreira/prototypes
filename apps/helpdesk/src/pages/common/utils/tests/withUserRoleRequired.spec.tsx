@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import RestrictedPage from 'pages/common/components/RestrictedPage'
-import history from 'pages/history'
 import { RootState, StoreDispatch } from 'state/types'
 
 import { rootWithUserRoleRequired } from '../withUserRoleRequired'

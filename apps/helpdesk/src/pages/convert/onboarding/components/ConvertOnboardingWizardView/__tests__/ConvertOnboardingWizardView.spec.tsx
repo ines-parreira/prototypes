@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, waitFor } from '@testing-library/react'
@@ -26,7 +27,6 @@ import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import history from 'pages/history'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'

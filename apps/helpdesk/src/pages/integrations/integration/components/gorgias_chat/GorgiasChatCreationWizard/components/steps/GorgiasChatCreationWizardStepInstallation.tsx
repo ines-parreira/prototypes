@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 
@@ -21,7 +22,6 @@ import {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'

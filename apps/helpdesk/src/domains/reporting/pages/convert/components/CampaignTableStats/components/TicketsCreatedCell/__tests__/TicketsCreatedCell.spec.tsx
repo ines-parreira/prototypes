@@ -1,14 +1,19 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, render } from '@testing-library/react'
 
 import { TicketsCreatedCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/TicketsCreatedCell/TicketsCreatedCell'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import history from 'pages/history'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 
 describe('<TicketsCreatedCell />', () => {

@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { useFlags } from 'launchdarkly-react-client-sdk'
 
@@ -16,7 +17,6 @@ import {
     IntegrationType,
     OutlookIntegration,
 } from 'models/integration/types'
-import history from 'pages/history'
 import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 import { makeGetRedirectUri } from 'state/integrations/selectors'

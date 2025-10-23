@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
@@ -6,7 +7,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

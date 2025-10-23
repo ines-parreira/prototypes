@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
 import { Location } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -12,7 +13,6 @@ import * as ticketFixtures from 'fixtures/ticket'
 import { view as fixtureView } from 'fixtures/views'
 import { EntityType, ViewField, ViewVisibility } from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import history from 'pages/history'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import * as viewsActions from 'state/views/actions'
 

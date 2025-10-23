@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { reverse, sortBy } from 'lodash'
 import { Container } from 'reactstrap'
 
@@ -19,7 +20,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import SettingsContent from 'pages/settings/SettingsContent'

@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import history from 'pages/history'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
@@ -18,9 +18,13 @@ import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 
-jest.mock('pages/history', () => ({
-    replace: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        replace: jest.fn(),
+    },
 }))
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     Button: jest.fn(({ onClick, children }) => (

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { connect, ConnectedProps } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { fetchRule } from 'models/rule/resources'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import { ruleFetched } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import { notify } from 'state/notifications/actions'

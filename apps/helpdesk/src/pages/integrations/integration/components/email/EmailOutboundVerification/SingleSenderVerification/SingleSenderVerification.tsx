@@ -1,4 +1,5 @@
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,7 +10,6 @@ import {
 } from 'models/integration/types'
 import { getVerification } from 'models/singleSenderVerification/resources'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'
 import { getSingleSenderVerification } from 'state/entities/singleSenderVerification/selectors'
 import { fetchIntegration, fetchIntegrations } from 'state/integrations/actions'

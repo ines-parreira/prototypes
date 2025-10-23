@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Emoji, EmojiData } from 'emoji-mart'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -29,7 +30,6 @@ import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import InputField from 'pages/common/forms/input/InputField'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { useDeleteTeam, useFetchTeam, useUpdateTeam } from 'teams/queries'
 

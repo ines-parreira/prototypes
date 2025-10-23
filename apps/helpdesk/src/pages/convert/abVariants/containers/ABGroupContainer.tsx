@@ -1,6 +1,7 @@
 import React, { ReactNode, useCallback, useMemo } from 'react'
 
 import { useDismissFlag } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
@@ -30,7 +31,6 @@ import {
     CONVERT_ROUTE_PARAM_NAME,
 } from 'pages/convert/common/constants'
 import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 
 import css from './ABGroupContainer.less'
 

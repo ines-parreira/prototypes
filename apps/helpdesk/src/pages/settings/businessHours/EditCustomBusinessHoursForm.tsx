@@ -1,3 +1,5 @@
+import { history } from '@repo/routing'
+
 import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
 import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
@@ -12,7 +14,6 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
-import history from 'pages/history'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'

@@ -1,4 +1,5 @@
-import history from '../pages/history'
+import { history } from '@repo/routing'
+
 import { KeyMap } from '../services/shortcutManager/shortcutManager'
 
 const shortcuts: Record<string, KeyMap> = {

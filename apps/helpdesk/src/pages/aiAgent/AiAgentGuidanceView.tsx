@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
+import { history } from '@repo/routing'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
@@ -11,7 +12,6 @@ import { LocaleCode } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

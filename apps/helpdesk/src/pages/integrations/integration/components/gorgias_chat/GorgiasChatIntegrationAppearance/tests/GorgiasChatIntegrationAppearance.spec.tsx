@@ -1,6 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -24,7 +25,6 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import history from 'pages/history'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

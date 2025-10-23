@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import cn from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -49,7 +50,6 @@ import { createCampaignPayload } from 'pages/convert/campaigns/utils/createCampa
 import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import { transformAttachmentsToProductRecommendations } from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import history from 'pages/history'
 import {
     deleteAttachment,
     setNewMessageForChatCampaign,

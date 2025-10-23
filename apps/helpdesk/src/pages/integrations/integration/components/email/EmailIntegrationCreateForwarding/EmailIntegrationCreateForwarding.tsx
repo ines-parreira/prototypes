@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 import { Map } from 'immutable'
@@ -28,7 +29,6 @@ import { getForwardingEmailAddress } from '../../../../../../state/integrations/
 import { notify } from '../../../../../../state/notifications/actions'
 import { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
-import history from '../../../../../history'
 
 import settingsCss from '../../../../../settings/settings.less'
 import css from './EmailIntegrationCreateForwarding.less'

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -53,7 +54,6 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import history from 'pages/history'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import {
     DEPRECATED_getIntegrationsByTypes,

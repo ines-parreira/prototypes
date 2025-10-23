@@ -2,6 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -23,7 +24,6 @@ import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCre
 import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import history from 'pages/history'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'

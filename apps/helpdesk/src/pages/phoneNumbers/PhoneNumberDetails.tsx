@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 import { Link } from 'react-router-dom'
@@ -29,7 +30,6 @@ import { NewPhoneNumber, PhoneCountry } from 'models/phoneNumber/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import { SelectableOption } from 'pages/common/forms/SelectField/types'
-import history from 'pages/history'
 import {
     countryCode,
     getAvailableStates,

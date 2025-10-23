@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
-import history from 'pages/history'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import { OutboundTranslationProvider } from 'providers/OutboundTranslationProvider'
 import { useSplitTicketView } from 'split-ticket-view-toggle'

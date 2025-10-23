@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 import { DeleteModal } from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'

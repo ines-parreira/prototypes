@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { user } from 'fixtures/users'
 import { createJob } from 'models/job/resources'
 import { RootState } from 'state/types'
 
-import history from '../../../history'
 import { MacrosCreateDropdown } from '../MacrosCreateDropdown'
 
 jest.mock('models/job/resources', () => ({

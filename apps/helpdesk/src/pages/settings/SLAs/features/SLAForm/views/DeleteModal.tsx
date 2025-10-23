@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -8,7 +9,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

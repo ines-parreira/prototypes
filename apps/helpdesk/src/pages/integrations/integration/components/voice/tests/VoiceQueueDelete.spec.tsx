@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
@@ -5,7 +6,6 @@ import { act } from 'react-dom/test-utils'
 import { deleteVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import history from 'pages/history'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
@@ -29,7 +29,12 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('VoiceQueueDelete', () => {
     const renderComponent = () => {

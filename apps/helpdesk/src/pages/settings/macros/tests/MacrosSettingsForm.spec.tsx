@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -24,7 +25,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import history from 'pages/history'
 import { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getDefaultMacro } from 'state/macro/utils'
 import { notify } from 'state/notifications/actions'
@@ -36,7 +36,12 @@ import MacrosSettingsForm from '../MacrosSettingsForm'
 const queryClient = mockQueryClient()
 const server = setupServer()
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock(
     'pages/common/components/button/ConfirmButton',
     () =>

@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
+
 import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,7 +17,6 @@ import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 import { createCampaignFromVariant } from 'pages/convert/campaigns/utils/createCampaignFromVariant'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import history from 'pages/history'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 

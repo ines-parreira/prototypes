@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -7,7 +8,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
-import history from 'pages/history'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 

@@ -1,6 +1,7 @@
 import { ComponentType, useMemo } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { Map } from 'immutable'
 import {
     compressToEncodedURIComponent,
@@ -13,7 +14,6 @@ import { useLocation } from 'react-router-dom'
 import { getConfigByName } from 'config/views'
 import { useSearch } from 'hooks/useSearch'
 import { EntityType } from 'models/view/types'
-import history from 'pages/history'
 import { RootState } from 'state/types'
 import { updateView } from 'state/views/actions'
 import { areFiltersValid, getActiveView } from 'state/views/selectors'

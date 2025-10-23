@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
@@ -9,11 +10,15 @@ import {
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 
 import SyncIngestionDomainBanner from '../SyncIngestionDomainBanner'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',

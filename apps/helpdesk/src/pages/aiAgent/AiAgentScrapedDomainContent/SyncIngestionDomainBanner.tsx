@@ -1,3 +1,5 @@
+import { history } from '@repo/routing'
+
 import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import {
@@ -6,7 +8,6 @@ import {
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 
 type Props = {
     syncStoreDomainStatus: string | null

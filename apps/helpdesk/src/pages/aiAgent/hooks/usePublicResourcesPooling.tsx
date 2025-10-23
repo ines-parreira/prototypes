@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -11,7 +12,6 @@ import {
 } from 'models/helpCenter/queries'
 import { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
-import history from 'pages/history'
 import { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

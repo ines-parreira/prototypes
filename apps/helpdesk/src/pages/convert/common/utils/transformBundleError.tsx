@@ -1,6 +1,6 @@
+import { history } from '@repo/routing'
 import { AxiosError } from 'axios'
 
-import history from 'pages/history'
 import {
     Notification,
     NotificationButton,

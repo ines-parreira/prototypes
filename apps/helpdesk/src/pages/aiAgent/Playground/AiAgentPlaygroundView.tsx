@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { isAxiosError } from 'axios'
 import { Redirect } from 'react-router-dom'
 
@@ -13,7 +14,6 @@ import {
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
 import { AccountConfigurationWithHttpIntegration } from 'models/aiAgent/types'
-import history from 'pages/history'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'

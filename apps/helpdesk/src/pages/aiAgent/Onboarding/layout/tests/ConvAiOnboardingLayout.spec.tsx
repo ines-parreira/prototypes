@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
@@ -9,10 +10,14 @@ import {
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
-import history from 'pages/history'
 import { renderWithRouter } from 'utils/testing'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('common/segment')
 const historyPushMock = assumeMock(history.push)
 const logEventMock = assumeMock(segment.logEvent)

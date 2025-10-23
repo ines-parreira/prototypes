@@ -1,4 +1,4 @@
-import history from 'pages/history'
+import { history } from '@repo/routing'
 
 import { PartialOptionsParams } from './context'
 

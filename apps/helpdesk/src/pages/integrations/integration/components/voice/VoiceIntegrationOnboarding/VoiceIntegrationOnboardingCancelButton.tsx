@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { history } from '@repo/routing'
 
-import history from 'pages/history'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 

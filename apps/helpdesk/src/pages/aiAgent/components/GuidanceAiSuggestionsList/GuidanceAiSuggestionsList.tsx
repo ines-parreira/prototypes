@@ -1,5 +1,6 @@
+import { history } from '@repo/routing'
+
 import { logEvent, SegmentEvent } from 'common/segment'
-import history from 'pages/history'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { AIGuidance } from '../../types'

@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import classNames from 'classnames'
 
 import { Badge, LegacyButton as Button } from '@gorgias/axiom'
@@ -7,7 +8,6 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { AIGuidance } from 'pages/aiAgent/types'
-import history from 'pages/history'
 
 import css from './AiGuidanceEmptyState.less'
 

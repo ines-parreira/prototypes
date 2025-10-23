@@ -1,10 +1,10 @@
 import { TicketInfobarTab } from '@repo/navigation'
+import { history } from '@repo/routing'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 import useGoToNextTicket from '../useGoToNextTicket'
@@ -32,7 +32,12 @@ const mockUsePrevNextTicketNavigation = usePrevNextTicketNavigation as jest.Mock
 
 const mockUsePrevNextTicketNavigationFn = jest.fn()
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('useGoToNextTicket', () => {
     beforeEach(() => {

@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
-import history from 'pages/history'
 
 import useStoresRequiringScriptTagMigration from '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import ScriptTagMigrationModal from '../ScriptTagMigrationModal'

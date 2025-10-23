@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import { fromJS, List, Map } from 'immutable'
 import { cloneDeep } from 'lodash'
@@ -15,7 +16,6 @@ import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
-import history from 'pages/history'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import { SocketManager } from 'services/socketManager/socketManager'
 import {

@@ -1,4 +1,4 @@
-import React, { ComponentProps, LegacyRef } from 'react'
+import { ComponentProps, LegacyRef } from 'react'
 
 import { render } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'

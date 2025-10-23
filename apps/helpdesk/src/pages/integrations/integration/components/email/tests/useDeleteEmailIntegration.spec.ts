@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -5,7 +6,6 @@ import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import history from 'pages/history'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -14,7 +14,12 @@ import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('state/notifications/actions')
 jest.mock('models/api/types')
 

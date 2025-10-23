@@ -1,7 +1,8 @@
+import { history } from '@repo/routing'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/self-service/SelfServiceStatsPage.less'
-import history from 'pages/history'
 
 type Props = {
     title: string

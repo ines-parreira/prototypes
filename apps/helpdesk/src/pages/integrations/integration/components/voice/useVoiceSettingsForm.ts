@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { merge } from 'lodash'
 import cloneDeep from 'lodash/cloneDeep'
 
@@ -18,7 +19,6 @@ import {
     DEFAULT_RECORDING_NOTIFICATION,
     VOICEMAIL_DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
-import history from 'pages/history'
 import { fetchIntegrations } from 'state/integrations/actions'
 import {
     DELETE_INTEGRATION_SUCCESS,

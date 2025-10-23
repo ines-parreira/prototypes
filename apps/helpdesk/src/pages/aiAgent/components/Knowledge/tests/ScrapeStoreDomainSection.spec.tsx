@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from 'pages/aiAgent/hooks/useIngestionLogMutation'
-import history from 'pages/history'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { ScrapeStoreDomainSection } from '../ScrapeStoreDomainSection'

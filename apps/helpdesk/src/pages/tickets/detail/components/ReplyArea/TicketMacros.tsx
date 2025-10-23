@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import {
     Dropdown,
@@ -26,7 +27,6 @@ import { useDeleteMacro } from 'hooks/macros'
 import useAppSelector from 'hooks/useAppSelector'
 import { Filters } from 'models/macro/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import MacroList from 'pages/tickets/common/macros/components/MacroList'
 import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'

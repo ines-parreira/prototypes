@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import axios, { AxiosError, CancelToken } from 'axios'
 import { ContentState, convertFromHTML } from 'draft-js'
@@ -50,7 +51,6 @@ import {
     AttachmentPosition,
     AttachmentType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import history from 'pages/history'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import { isNewChannel } from 'services/channels'
 import socketManager from 'services/socketManager/socketManager'

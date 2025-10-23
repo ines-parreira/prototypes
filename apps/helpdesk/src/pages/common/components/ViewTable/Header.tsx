@@ -1,5 +1,6 @@
 import { Component, createRef, KeyboardEvent, type ReactNode } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -16,7 +17,6 @@ import Search from 'pages/common/components/Search'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import css from 'pages/common/components/ViewTable/Header.less'
-import history from 'pages/history'
 import { RootState } from 'state/types'
 import {
     fetchViewItems,

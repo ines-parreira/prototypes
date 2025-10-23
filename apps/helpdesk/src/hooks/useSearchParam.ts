@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
-
-import history from 'pages/history'
 
 export const useSearchParam = (searchParamLabel: string) => {
     const { search } = useLocation()

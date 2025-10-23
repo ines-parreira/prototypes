@@ -11,11 +11,12 @@ import { TextDecoder, TextEncoder } from 'util'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
+import { history } from '@repo/routing'
+
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { envVars } from 'utils/environment'
 
-import history from '../pages/history'
 import { mockQueryClient } from './reactQueryTestingUtils'
 
 import './customMatchers'

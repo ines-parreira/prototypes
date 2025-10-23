@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { history } from '@repo/routing'
 import { fireEvent, render, RenderResult } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -16,7 +15,6 @@ import {
 } from 'constants/datetime'
 
 import { ZendeskIntegration } from '../../../../../models/integration/types'
-import history from '../../../../history'
 import { ImportZendeskDataList } from '../ImportZendeskDataList'
 import {
     failedImport,

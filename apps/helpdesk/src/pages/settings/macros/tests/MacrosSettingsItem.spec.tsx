@@ -19,7 +19,12 @@ jest.mock('@gorgias/axiom', () => {
         Tooltip: () => <div>Tooltip</div>,
     } as Record<string, unknown>
 })
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('reactstrap', () => {
     const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')

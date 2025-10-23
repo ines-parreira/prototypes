@@ -1,10 +1,10 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import history from 'pages/history'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
@@ -18,8 +18,11 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 const getVoiceQueueMock = assumeMock(getVoiceQueue)
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
 
 const mockNotify = {

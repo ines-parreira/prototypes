@@ -39,7 +39,12 @@ const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
 const store = mockStore({})
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('state/integrations/actions')
 jest.mock('state/notifications/actions')

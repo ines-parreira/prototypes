@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -8,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import history from 'pages/history'
 import { getHasAutomate } from 'state/billing/selectors'
 
 import { FormValues, UpdateValue } from '../../types'

@@ -1,5 +1,6 @@
 import React, { MouseEvent, useCallback } from 'react'
 
+import { history } from '@repo/routing'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
@@ -14,7 +15,6 @@ import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRo
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { Callbacks } from 'pages/common/hooks/useReorderDnD'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import history from 'pages/history'
 
 import useCreateCustomFieldCondition from '../hooks/useCreateCustomFieldCondition'
 import useUpdateCustomFieldCondition from '../hooks/useUpdateCustomFieldCondition'

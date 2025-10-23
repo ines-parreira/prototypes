@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,7 +15,6 @@ import { emptyRule, rules } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { ApiListResponseLegacyPagination } from 'models/api/types'
 import { fetchRules } from 'models/rule/resources'
-import history from 'pages/history'
 import {
     ruleCreated,
     ruleDeleted,

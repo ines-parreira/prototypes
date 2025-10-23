@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
@@ -7,7 +8,6 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'
-import history from 'pages/history'
 import { toJS } from 'utils'
 
 import { Campaign } from '../../../campaigns/types/Campaign'

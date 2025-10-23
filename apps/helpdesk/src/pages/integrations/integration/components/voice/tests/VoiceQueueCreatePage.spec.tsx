@@ -1,10 +1,10 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
 
-import history from 'pages/history'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
@@ -21,7 +21,12 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
     <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>

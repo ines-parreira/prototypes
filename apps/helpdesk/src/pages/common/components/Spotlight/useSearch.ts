@@ -14,6 +14,7 @@ import {
     usePrevious,
     useSelectedIndex,
 } from '@repo/hooks'
+import { history } from '@repo/routing'
 import axios, { CancelToken } from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 
@@ -48,7 +49,6 @@ import {
     FEDERATED_SEARCH_GROUP_SIZE,
     SEARCH_QUERY_EXPIRY_TIME,
 } from 'pages/common/components/Spotlight/constants'
-import history from 'pages/history'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

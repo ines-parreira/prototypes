@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { history } from '@repo/routing'
 import { AxiosError } from 'axios'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
@@ -15,7 +16,6 @@ import {
 } from 'config/types/user'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import client from 'models/api/resources'
-import history from 'pages/history'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import { fetchChats } from 'state/chats/actions'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'

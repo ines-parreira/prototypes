@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { produce } from 'immer'
 import { Map } from 'immutable'
 import { Route, Switch, useParams } from 'react-router-dom'
@@ -33,7 +34,6 @@ import {
     CONVERT_ROUTE_PARAM_NAME,
 } from 'pages/convert/common/constants'
 import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 import { toJS } from 'utils'
 
 import css from './ABGroupPage.less'

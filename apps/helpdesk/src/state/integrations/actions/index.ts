@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import axios, { AxiosError } from 'axios'
 import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
@@ -18,7 +19,6 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import history from 'pages/history'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 import type { AplicationAgentsResponse } from 'rest_api/gorgias_chat_protected_api/types'
 import GorgiasApi from 'services/gorgiasApi'

@@ -1,13 +1,17 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import history from 'pages/history'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
 import VoiceIntegrationOnboardingCancelButton from '../VoiceIntegrationOnboardingCancelButton'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('VoiceIntegrationOnboardingCancelButton', () => {
     const renderComponent = () =>

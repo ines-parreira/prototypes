@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
@@ -19,7 +20,6 @@ import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCre
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

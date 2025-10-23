@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -8,7 +9,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { createTag, fetchTags } from 'models/tag/resources'
 import { TagDraft } from 'models/tag/types'
-import history from 'pages/history'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { tagCreated } from 'state/entities/tags/actions'
 import { getTicketViews } from 'state/entities/views/selectors'

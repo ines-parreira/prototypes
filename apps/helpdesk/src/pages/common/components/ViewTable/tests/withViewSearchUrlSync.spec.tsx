@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
 import { Location } from 'history'
 import { Map } from 'immutable'
@@ -14,7 +13,6 @@ import {
     ViewSearchUrlSyncInjectedProps,
     withViewSearchUrlSyncContainer,
 } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
-import history from 'pages/history'
 import { getLDClient } from 'utils/launchDarkly'
 
 jest.spyOn(reactRouterDom, 'useLocation')
@@ -68,7 +66,12 @@ const defaultProps = {
 
 const ticketChannelEqualChatFilter = "eq('ticket.channel', 'chat')"
 
-jest.mock('../../../../history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('withViewSearchUrlSync', () => {
     beforeEach(() => {

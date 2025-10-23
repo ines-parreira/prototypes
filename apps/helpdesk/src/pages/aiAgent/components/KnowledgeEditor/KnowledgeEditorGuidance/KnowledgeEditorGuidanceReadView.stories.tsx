@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { ThemeProvider } from 'core/theme'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import history from 'pages/history'
 
 import { KnowledgeEditorGuidanceReadView } from './KnowledgeEditorGuidanceReadView'
 

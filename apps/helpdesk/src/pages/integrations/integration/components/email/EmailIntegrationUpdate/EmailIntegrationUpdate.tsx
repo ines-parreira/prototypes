@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
@@ -15,7 +16,6 @@ import {
     OutlookIntegration,
 } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import EmailGenericModal from 'pages/integrations/integration/components/email/components/EmailGenericModal'
 import EmailIntegrationAddressField from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
 import EmailIntegrationButtons from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationButtons'

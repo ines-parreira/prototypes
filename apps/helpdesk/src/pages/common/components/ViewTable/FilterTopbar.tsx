@@ -15,6 +15,7 @@ import {
     useUnmount,
     useUpdateEffect,
 } from '@repo/hooks'
+import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -56,7 +57,6 @@ import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingBu
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
-import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'

@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getActiveView } from 'state/views/selectors'
 

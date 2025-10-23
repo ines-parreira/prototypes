@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -23,7 +24,6 @@ import {
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
 import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import {
     getIntegrationById,

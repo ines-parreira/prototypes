@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
@@ -19,7 +20,6 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
-import history from 'pages/history'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

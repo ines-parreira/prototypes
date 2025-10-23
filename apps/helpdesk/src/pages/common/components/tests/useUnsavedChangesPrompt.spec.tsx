@@ -1,16 +1,20 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'
 
-import history from 'pages/history'
-
 import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

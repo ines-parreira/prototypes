@@ -1,5 +1,6 @@
 import React, { ComponentProps, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/Knowl
 import { KnowledgeEditorSidePanelHelpCenterArticle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelHelpCenterArticle'
 import { KnowledgeEditorSidePanelURLSnippet } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList/FlagLanguageItem'
-import history from 'pages/history'
 import { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 

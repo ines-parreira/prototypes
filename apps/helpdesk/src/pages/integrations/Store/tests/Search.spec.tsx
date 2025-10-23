@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import history from 'pages/history'
 import { renderWithRouter } from 'utils/testing'
 
 import { SEARCH_URL_PARAM } from '../constants'

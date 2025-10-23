@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { useId } from '@repo/hooks'
+import { history } from '@repo/routing'
 
 import {
     LegacyButton as Button,
@@ -25,7 +26,6 @@ import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
-import history from 'pages/history'
 
 import css from './ScrapeStoreDomainSection.less'
 

@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -14,7 +15,6 @@ import {
 } from 'fixtures/productPrices'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
-import history from 'pages/history'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
@@ -36,7 +36,12 @@ jest.mock(
 
 jest.mock('../helpers')
 jest.mock('../resources')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')

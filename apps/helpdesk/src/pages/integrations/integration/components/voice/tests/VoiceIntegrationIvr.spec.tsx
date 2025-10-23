@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -12,7 +13,6 @@ import {
     PhoneIntegration,
     VoiceMessageType,
 } from 'models/integration/types'
-import history from 'pages/history'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceIntegrationIvr from '../VoiceIntegrationIvr'

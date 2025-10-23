@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -8,7 +9,6 @@ import FormActions from 'core/forms/components/FormActions'
 import FormActionsGroup from 'core/forms/components/FormActionsGroup'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
-import history from 'pages/history'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { Location } from 'history'
 import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
@@ -10,7 +11,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import history from 'pages/history'
 
 import css from './ConfirmNavigationPrompt.less'
 

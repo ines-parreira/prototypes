@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -13,7 +14,6 @@ import {
     HelpCenter,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import history from 'pages/history'
 import {
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,
@@ -35,7 +35,13 @@ jest.mock(
         useEnableArticleRecommendation: () => jest.fn(),
     }),
 )
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+        replace: jest.fn(),
+    },
+}))
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () =>
     jest.fn().mockImplementation(() => jest.fn()),

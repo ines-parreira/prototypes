@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -5,7 +6,6 @@ import { act } from '@testing-library/react'
 import { useCreateCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import history from 'pages/history'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -31,7 +31,12 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 jest.mock('../useUpdateCustomFieldCondition')
 jest.mock('state/notifications/actions')
 jest.mock('pages/settings/SLAs/utils/handleApiError')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('utils')
 
 const useAppDispatchMock = assumeMock(useAppDispatch)

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock, userEvent } from '@repo/testing'
 import {
     cleanup,
@@ -16,7 +17,6 @@ import thunk from 'redux-thunk'
 import { phoneNumbers as phoneNumberFixtures } from 'fixtures/newPhoneNumber'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { IntegrationType } from 'models/integration/types'
-import history from 'pages/history'
 import { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { initialState } from 'state/twilio/voiceDevice'
 import { RootState, StoreDispatch } from 'state/types'

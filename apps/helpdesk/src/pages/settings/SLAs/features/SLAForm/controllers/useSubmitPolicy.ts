@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import history from 'pages/history'
 import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

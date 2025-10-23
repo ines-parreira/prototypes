@@ -1,10 +1,10 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import { ticketNumberFieldDefinition } from 'fixtures/customField'
-import history from 'pages/history'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import AddFieldForm from '../AddFieldForm'
@@ -12,9 +12,11 @@ import FieldForm from '../FieldForm'
 
 jest.mock('custom-fields/hooks/queries/useCreateCustomFieldDefinition')
 
-jest.mock('pages/history', () => ({
-    ...jest.requireActual<Record<string, unknown>>('pages/history'),
-    push: jest.fn(() => jest.fn()),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
 
 jest.mock('../FieldForm', () => jest.fn(() => <div>FieldForm</div>))

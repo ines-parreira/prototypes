@@ -1,8 +1,7 @@
+import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { Location } from 'history'
 import { useLocation } from 'react-router-dom'
-
-import history from 'pages/history'
 
 import { useSearchParam } from '../useSearchParam'
 
@@ -10,7 +9,13 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),
 }))
 const mockedUseLocation = assumeMock(useLocation)
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+        replace: jest.fn(),
+    },
+}))
 const mockedReplace = assumeMock(history.replace)
 
 describe('useSearchParams hook', () => {

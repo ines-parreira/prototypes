@@ -6,12 +6,12 @@ import React, {
     useState,
 } from 'react'
 
+import { history } from '@repo/routing'
 import { Location } from 'history'
 import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
-import history from 'pages/history'
 
 type PromptModalContextType = {
     redirectToOriginalLocation: () => void

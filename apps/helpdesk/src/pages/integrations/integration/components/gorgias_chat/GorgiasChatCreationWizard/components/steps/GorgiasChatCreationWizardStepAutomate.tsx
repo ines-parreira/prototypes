@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 
 import { LegacyButton as Button, Label, ToggleField } from '@gorgias/axiom'
@@ -22,7 +23,6 @@ import SelfServicePreviewContext from 'pages/automate/common/components/preview/
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

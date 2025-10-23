@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
@@ -15,7 +16,6 @@ import {
     Integration,
     IntegrationType,
 } from '../../../models/integration/types'
-import history from '../../../pages/history'
 import { StoreDispatch } from '../../types'
 import * as actions from '../actions'
 import * as gorgiasChatActions from '../actions/gorgias-chat.actions'
@@ -30,11 +30,16 @@ jest.mock('../../notifications/actions', () => {
         notify: jest.fn(() => (args: unknown) => args),
     }
 })
-jest.mock('../../../pages/history.ts')
+jest.mock('@repo/routing', () => ({
+    history: {
+        push: jest.fn(),
+        replace: jest.fn(),
+    },
+}))
 
 window.location = {
     pathname: '/integration/1',
-} as Location
+} as unknown as Location
 
 const neutralInstallationStatus: InstallationStatus = {
     applicationId: 1,

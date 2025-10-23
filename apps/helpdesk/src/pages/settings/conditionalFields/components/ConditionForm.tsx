@@ -1,3 +1,5 @@
+import { history } from '@repo/routing'
+
 import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import {
     CreateCustomFieldCondition,
@@ -7,7 +9,6 @@ import {
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 

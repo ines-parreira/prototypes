@@ -15,7 +15,12 @@ const useInfiniteListVoiceQueuesMock = assumeMock(useInfiniteListVoiceQueues)
 jest.mock('../VoiceQueueList')
 const VoiceQueueListMock = assumeMock(VoiceQueueList)
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('VoiceQueueListPage', () => {
     const renderComponent = () => {

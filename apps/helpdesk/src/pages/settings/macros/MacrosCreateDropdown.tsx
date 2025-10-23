@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
+import { history } from '@repo/routing'
 import {
     Button,
     DropdownItem,
@@ -18,7 +19,6 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import history from '../../history'
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'
 
 export function MacrosCreateDropdown(): JSX.Element {

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
@@ -13,7 +14,6 @@ import { createRule, deleteRule, updateRule } from 'models/rule/resources'
 import { ErrorsCollector } from 'pages/common/components/ast/Errors'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import {
     ruleCreated,

@@ -22,7 +22,12 @@ jest.mock('state/views/actions.ts', () => {
     }
 })
 jest.mock('react-router-dom')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('../ViewTableHeaderToggle', () => ({
     ViewTableHeaderToggle: () => null,

@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import { useFlags } from 'launchdarkly-react-client-sdk'
@@ -17,7 +18,6 @@ import HeaderCellProperty from '../../../../common/components/table/cells/Header
 import TableBody from '../../../../common/components/table/TableBody'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
-import history from '../../../../history'
 import NoIntegration from '../NoIntegration'
 import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
 

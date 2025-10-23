@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { useParams } from 'react-router'
 
 import { LocaleCode } from 'models/helpCenter/types'
-import history from 'pages/history'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'

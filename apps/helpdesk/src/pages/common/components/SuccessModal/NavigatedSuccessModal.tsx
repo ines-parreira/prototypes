@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
+import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
-
-import history from 'pages/history'
 
 import SuccessModal from './SuccessModal'
 

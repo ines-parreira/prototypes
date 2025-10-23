@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
 import {
@@ -11,7 +12,6 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import history from 'pages/history'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

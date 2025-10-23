@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { history } from '@repo/routing'
 import { Link, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -11,7 +12,6 @@ import {
 
 import { useNotify } from 'hooks/useNotify'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 

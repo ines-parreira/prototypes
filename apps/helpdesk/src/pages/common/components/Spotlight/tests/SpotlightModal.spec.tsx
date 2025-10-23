@@ -41,7 +41,7 @@ import SpotlightModal, {
     TICKETS_ADVANCED_SEARCH_PATH,
 } from 'pages/common/components/Spotlight/SpotlightModal'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import history from 'pages/history'
+import { history } from '@repo/routing'
 import * as billingSelectors from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -52,7 +52,15 @@ const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
 const CUSTOMER_SPOTLIGHT_ROW_TEST_ID = 'spotlight-customer-row'
 const CALL_SPOTLIGHT_ROW_TEST_ID = 'spotlight-call-row'
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        ...jest.requireActual('@repo/routing').history,
+        push: jest.fn(),
+        replace: jest.fn(),
+        listen: jest.fn(),
+    },
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('pages/common/components/SkeletonLoader', () => () => (

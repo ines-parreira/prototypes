@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
@@ -29,7 +30,6 @@ import {
 } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { ConvertRouteTemplateParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'

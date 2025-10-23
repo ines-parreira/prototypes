@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import history from 'pages/history'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 import TicketWrapper from '../TicketWrapper'
@@ -17,8 +17,11 @@ jest.mock('split-ticket-view-toggle', () => ({
     useSplitTicketView: jest.fn(),
 }))
 
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
 
 jest.mock('pages/tickets/detail/TicketDetailContainer', () =>

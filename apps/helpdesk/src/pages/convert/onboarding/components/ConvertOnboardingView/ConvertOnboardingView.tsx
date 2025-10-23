@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 import { useLocation, useParams } from 'react-router-dom'
@@ -28,7 +29,6 @@ import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { ConvertRouteParams } from 'pages/convert/common/types'
 import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
-import history from 'pages/history'
 import {
     getIntegrationById,
     getIntegrationsByType,

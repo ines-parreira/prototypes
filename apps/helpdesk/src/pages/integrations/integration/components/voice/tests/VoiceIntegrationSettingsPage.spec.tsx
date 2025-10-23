@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { integrationsState } from 'fixtures/integrations'
-import history from 'pages/history'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
@@ -33,7 +33,12 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('@gorgias/helpdesk-queries')
 const useGetIntegrationMock = assumeMock(useGetIntegration)

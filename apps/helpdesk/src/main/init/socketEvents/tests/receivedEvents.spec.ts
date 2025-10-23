@@ -26,7 +26,7 @@ import {
 } from 'models/customerEcommerceData/fixtures'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
-import history from 'pages/history'
+import { history } from '@repo/routing'
 import * as activityTracker from 'services/activityTracker'
 import { ActivityEvents } from 'services/activityTracker'
 import browserNotification from 'services/browserNotification'

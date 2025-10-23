@@ -12,7 +12,12 @@ import { fetchTicketsByRuleId } from 'models/ticket/resources'
 import { RuleTicketList } from '../RuleTicketList'
 
 jest.mock('models/ticket/resources')
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('common/segment')
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 

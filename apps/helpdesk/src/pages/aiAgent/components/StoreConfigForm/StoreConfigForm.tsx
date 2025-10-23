@@ -9,6 +9,7 @@ import {
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -66,7 +67,6 @@ import {
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
 import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import ListField from 'pages/common/forms/ListField'
-import history from 'pages/history'
 import { HandoverConfigurationDrawer } from 'pages/standalone/components/HandoverConfigurationDrawer'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'

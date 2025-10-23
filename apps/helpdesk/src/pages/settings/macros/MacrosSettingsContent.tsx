@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
@@ -19,7 +20,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Video from 'pages/common/components/Video/Video'
-import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

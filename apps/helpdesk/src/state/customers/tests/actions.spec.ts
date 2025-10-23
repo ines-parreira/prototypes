@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
@@ -5,7 +6,6 @@ import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
 import { Customer, CustomerDraft } from 'models/customer/types'
-import history from 'pages/history'
 import { StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
@@ -14,7 +14,12 @@ import { initialState } from '../reducers'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn((args: unknown) => () => ({ payload: args })),

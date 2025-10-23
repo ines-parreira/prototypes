@@ -1,7 +1,7 @@
+import { history } from '@repo/routing'
 import { List, Map } from 'immutable'
 
 import { IntegrationType } from 'models/integration/constants'
-import history from 'pages/history'
 
 import IntegrationList from '../IntegrationList'
 import AircallIntegrationListItem from './AircallIntegrationListItem'

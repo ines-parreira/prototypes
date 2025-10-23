@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import { history } from '@repo/routing'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,7 +20,6 @@ import {
 import { IntegrationType } from 'models/integration/constants'
 import { Integration } from 'models/integration/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import history from 'pages/history'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,

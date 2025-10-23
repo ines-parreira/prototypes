@@ -1,3 +1,4 @@
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -19,7 +20,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -28,7 +28,12 @@ import { MacrosSettingsContent } from '../MacrosSettingsContent'
 const mockProperty = MacroSortableProperties.CreatedDatetime
 const mockOrder = OrderDirection.Asc
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

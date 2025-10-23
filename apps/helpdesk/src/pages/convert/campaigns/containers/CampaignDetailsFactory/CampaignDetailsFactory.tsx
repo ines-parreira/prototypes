@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -20,7 +21,6 @@ import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightC
 import { useGetActiveCampaignsCount } from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
 import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import history from 'pages/history'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import {
     getIntegrationById,

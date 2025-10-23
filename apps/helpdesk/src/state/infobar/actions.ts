@@ -1,10 +1,10 @@
+import { history } from '@repo/routing'
 import axios, { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import _noop from 'lodash/noop'
 
 import client from 'models/api/resources'
 import { searchCustomers } from 'models/customer/resources'
 import { Customer } from 'models/customer/types'
-import history from 'pages/history'
 import { ActionExecutedEvent } from 'services/socketManager/types'
 import * as constants from 'state/infobar/constants'
 import * as utils from 'state/infobar/utils'

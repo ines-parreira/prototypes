@@ -1,7 +1,13 @@
-import goToTicket from 'common/utils/goToTicket'
-import history from 'pages/history'
+import { history } from '@repo/routing'
 
-jest.mock('pages/history')
+import goToTicket from 'common/utils/goToTicket'
+
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('goToTicket', () => {
     it('should push to /app/views/:viewId/:ticketId if viewId param is present', () => {

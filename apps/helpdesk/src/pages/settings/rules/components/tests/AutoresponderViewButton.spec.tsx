@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +10,6 @@ import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { view } from 'fixtures/views'
 import { RuleRecipe } from 'models/ruleRecipe/types'
 import { createTag, fetchTags } from 'models/tag/resources'
-import history from 'pages/history'
 import { RootState, StoreDispatch } from 'state/types'
 
 import AutoresponderViewButton from '../AutoresponderViewButton'
@@ -26,7 +26,12 @@ jest.mock('models/tag/resources', () => {
     } as Record<string, unknown>
 })
 
-jest.mock('pages/history')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 describe('<AutoresponderViewButton/>', () => {
     const minProps: ComponentProps<typeof AutoresponderViewButton> = {

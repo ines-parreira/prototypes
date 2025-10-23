@@ -2,6 +2,7 @@ import { Component, ComponentType, ContextType, ReactNode } from 'react'
 
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _isArray from 'lodash/isArray'
@@ -28,7 +29,6 @@ import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
 import withRouter from 'pages/common/utils/withRouter'
-import history from 'pages/history'
 import { tryLocalStorage } from 'services/common/utils'
 import { RootState } from 'state/types'
 import { activeViewIdSet } from 'state/ui/views/actions'

@@ -1,7 +1,7 @@
+import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
 import { dismissNotification } from 'reapop'
 
-import history from 'pages/history'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,

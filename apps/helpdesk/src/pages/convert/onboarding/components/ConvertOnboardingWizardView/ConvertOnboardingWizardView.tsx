@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 
+import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,7 +17,6 @@ import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBu
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { ConvertRouteParams } from 'pages/convert/common/types'
-import history from 'pages/history'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 

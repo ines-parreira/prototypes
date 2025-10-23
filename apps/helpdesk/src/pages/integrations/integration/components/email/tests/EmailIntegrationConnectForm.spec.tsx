@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -12,9 +13,14 @@ import {
     UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
-jest.mock('pages/history', () => ({
-    push: jest.fn(),
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
 }))
+
+const historyMock = history as jest.Mocked<typeof history>
 
 const TestWrapper = ({
     emailAddress = '',
@@ -29,7 +35,6 @@ const TestWrapper = ({
         if (emailAddress || displayName) {
             setShowModal(true)
         } else {
-            const historyMock = require('pages/history')
             historyMock.push('/app/settings/channels/email')
         }
     }
@@ -39,7 +44,6 @@ const TestWrapper = ({
     }
 
     const handleDiscardIntegration = () => {
-        const historyMock = require('pages/history')
         historyMock.push('/app/settings/channels/email')
     }
 
@@ -349,7 +353,6 @@ describe('<EmailIntegrationConnectForm />', () => {
     })
 
     it('should navigate to email settings when "Discard Email integration" button is clicked', () => {
-        const historyMock = require('pages/history')
         renderComponent({ emailAddress: 'test@example.com' })
 
         fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
@@ -365,7 +368,6 @@ describe('<EmailIntegrationConnectForm />', () => {
     })
 
     it('should navigate directly to email settings when canceling without data', () => {
-        const historyMock = require('pages/history')
         renderComponent({ emailAddress: '', displayName: '' })
 
         fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))

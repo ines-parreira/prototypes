@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 
+import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
@@ -12,7 +13,6 @@ import {
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import IconButton from 'pages/common/components/button/IconButton'
-import history from 'pages/history'
 
 import css from './ConvAiOnboardingLayout.less'
 

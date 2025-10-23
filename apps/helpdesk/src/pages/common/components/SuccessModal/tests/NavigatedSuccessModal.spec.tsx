@@ -1,10 +1,10 @@
 import React, { ComponentProps, ReactNode } from 'react'
 
+import { history } from '@repo/routing'
 import { fireEvent, render } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
-import history from 'pages/history'
 
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,

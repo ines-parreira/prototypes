@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
 import { useDebouncedEffect, useLocalStorage } from '@repo/hooks'
+import { history } from '@repo/routing'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { get, isEmpty, isString, noop } from 'lodash'
 
@@ -18,7 +19,6 @@ import {
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

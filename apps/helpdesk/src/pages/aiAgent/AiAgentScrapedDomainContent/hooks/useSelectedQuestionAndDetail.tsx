@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
+import { history } from '@repo/routing'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetHelpCenterArticle,
@@ -7,7 +9,6 @@ import {
 } from 'models/helpCenter/queries'
 import { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import history from 'pages/history'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { history } from '@repo/routing'
 import classnames from 'classnames'
 import debounce from 'lodash/debounce'
 
@@ -8,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import history from 'pages/history'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { SEARCH_URL_PARAM } from './constants'

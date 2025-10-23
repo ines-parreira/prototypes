@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { history } from '@repo/routing'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { useDeleteVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 
@@ -8,7 +10,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import history from 'pages/history'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 

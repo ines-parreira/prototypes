@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import { usePrevious } from '@repo/hooks'
+import { history } from '@repo/routing'
 import cn from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
@@ -23,7 +24,6 @@ import Row from 'pages/common/components/ViewTable/Table/Row'
 import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
-import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager'
 import { RootState } from 'state/types'
 import {

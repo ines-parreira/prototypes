@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -13,7 +14,6 @@ import { Form, toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import { isPhoneIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 

@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { history } from '@repo/routing'
+
 import { useSearch } from 'hooks/useSearch'
 import { opposite, OrderDirection } from 'models/api/types'
-import history from 'pages/history'
 
 import { Campaign } from '../types/Campaign'
 import { isActiveStatus } from '../types/enums/CampaignStatus.enum'
