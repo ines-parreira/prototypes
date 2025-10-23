@@ -1,0 +1,19 @@
+:local {
+    .category {
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+        border-radius: var(--layout-spacing-xxs);
+        background-color: var(--surface-additional-blue);
+        color: var(--content-additional-blue);
+        display: inline-block;
+        cursor: default;
+
+        &.customer {
+            color: var(--content-warning-primary);
+            background-color: var(--surface-warning-primary);
+        }
+        &.draftOrder {
+            color: var(--content-success-primary);
+            background-color: var(--surface-success-primary);
+        }
+    }
+}

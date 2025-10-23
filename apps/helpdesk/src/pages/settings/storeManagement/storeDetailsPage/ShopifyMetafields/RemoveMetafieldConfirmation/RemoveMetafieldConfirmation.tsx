@@ -2,12 +2,12 @@ import React from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from '../../../../../common/components/modal/Modal'
-import ModalActionsFooter from '../../../../../common/components/modal/ModalActionsFooter'
-import ModalBody from '../../../../../common/components/modal/ModalBody'
-import ModalHeader from '../../../../../common/components/modal/ModalHeader'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import styles from './DeleteMetafieldConfirmation.less'
+import styles from './RemoveMetafieldConfirmation.less'
 
 type Props = {
     isOpen: boolean
