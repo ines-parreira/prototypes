@@ -16,32 +16,6 @@
         float: right;
     }
 
-    .tooltip {
-        :global .tooltip-inner {
-            background-color: var(--neutral-grey-0); // legacy
-            border: 1px solid var(--neutral-grey-1); // legacy
-            color: var(--indigo);
-            font-size: 14px;
-            padding: var(--layout-spacing-s);
-            box-shadow: none;
-        }
-
-        :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
-            border-top-color: var(--neutral-grey-1) !important; // legacy
-        }
-
-        :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
-            content: '';
-            margin-top: 0;
-            border-width: 0.4rem 0.4rem 0;
-            position: absolute;
-            top: -1px;
-            border-color: var(--neutral-grey-0) transparent transparent
-                transparent; // legacy
-            border-style: solid;
-        }
-    }
-
     .noData {
         .body-regular();
         text-align: center;
@@ -54,23 +28,5 @@
 
     .noDataTitle {
         font-weight: @body-semibold-font-weight;
-    }
-}
-
-.axiom :local {
-    .tooltip {
-        :global .tooltip-inner {
-            background-color: var(--elevation-neutral-default);
-            border: 1px solid var(--border-neutral-default);
-        }
-
-        :global .bs-tooltip-auto[x-placement^='top'] .arrow::before {
-            border-top-color: var(--border-neutral-default) !important;
-        }
-
-        :global .bs-tooltip-auto[x-placement^='top'] .arrow::after {
-            border-color: var(--elevation-neutral-default) transparent
-                transparent transparent;
-        }
     }
 }
