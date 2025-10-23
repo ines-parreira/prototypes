@@ -1,12 +1,12 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
@@ -55,13 +55,13 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
     const dispatch = useAppDispatch()
 
-    const flags = useFlags()
+    const isShowOrHideOnSelectedUrlsEnabled = useFlag(
+        FeatureFlagKey.ChatShowOrHideOnSelectedUrls,
+    )
 
-    const isShowOrHideOnSelectedUrlsEnabled =
-        flags[FeatureFlagKey.ChatShowOrHideOnSelectedUrls]
-
-    const isInstallOnShopifyCallbackEnabled =
-        flags[FeatureFlagKey.ChatScopeInstallOnShopifyCallback]
+    const isInstallOnShopifyCallbackEnabled = useFlag(
+        FeatureFlagKey.ChatScopeInstallOnShopifyCallback,
+    )
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
 

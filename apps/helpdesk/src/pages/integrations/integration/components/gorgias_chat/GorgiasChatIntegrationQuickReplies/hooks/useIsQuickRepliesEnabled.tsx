@@ -1,12 +1,13 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountCreatedDatetime } from 'state/currentAccount/selectors'
 
 const useIsQuickRepliesEnabled = () => {
-    const quickRepliesSunsetTime =
-        useFlags()[FeatureFlagKey.ChatQuickRepliesSunset]
+    const quickRepliesSunsetTime = useFlag(
+        FeatureFlagKey.ChatQuickRepliesSunset,
+    )
 
     const quickRepliesSunsetDate = quickRepliesSunsetTime
         ? new Date(Number(quickRepliesSunsetTime))

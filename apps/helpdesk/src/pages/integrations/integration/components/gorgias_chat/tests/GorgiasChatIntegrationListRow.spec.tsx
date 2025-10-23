@@ -1,14 +1,13 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatCreationWizardStatus,
@@ -23,7 +22,10 @@ import GorgiasChatIntegrationListRow, {
     GorgiasChatIntegrationStatusFeedbackMapping,
 } from '../GorgiasChatIntegrationListRow'
 
+jest.mock('core/flags')
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockUseFlag = useFlag as jest.Mock
 
 const TestWrapper = ({ children }: { children: ReactNode }) => (
     <table>
@@ -78,7 +80,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render loading feedback if status is being fetched', () => {
@@ -194,9 +196,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     })
 
     it('should render "Update Permissions" link for chat with store integration requiring scope update', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ChatScopeUpdateChatList]: true,
-        }))
+        mockUseFlag.mockReturnValue(true)
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
             'useGorgiasChatIntegrationStatusData',

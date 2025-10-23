@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
 
 import {
@@ -17,7 +17,10 @@ import {
 } from '../../../../../../models/integration/types'
 import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
+jest.mock('core/flags')
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockUseFlag = useFlag as jest.Mock
 
 describe('<GorgiasChatIntegrationList />', () => {
     const props = {
@@ -77,7 +80,7 @@ describe('<GorgiasChatIntegrationList />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should display correcty the list of chat integrations', () => {

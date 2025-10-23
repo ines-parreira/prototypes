@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import InstallationStep from './components/InstallationStep'
@@ -17,8 +17,9 @@ const ManualInstallationGTMTab = ({
     appKey,
     alertMessage,
 }: Props) => {
-    const isChatSnippetV3DefaultManualEnabled =
-        useFlags()[FeatureFlagKey.ChatSnippetV3DefaultManual]
+    const isChatSnippetV3DefaultManualEnabled = useFlag(
+        FeatureFlagKey.ChatSnippetV3DefaultManual,
+    )
 
     const parameterToEnter = isChatSnippetV3DefaultManualEnabled
         ? appKey || 'Could not retrieve ID, please retry later'

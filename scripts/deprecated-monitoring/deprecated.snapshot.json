@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1489,
-    "reportGeneratedAt": "2025-10-23T06:52:25.341Z"
+    "totalUsages": 1483,
+    "reportGeneratedAt": "2025-10-23T10:21:53.237Z"
   },
   "entries": [
     {
@@ -520,7 +520,7 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 22,
+          "usageCount": 16,
           "name": "launchdarkly-react-client-sdk.useFlags",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
@@ -533,12 +533,6 @@
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
               "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
               "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationOneClickInstallationCard.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationListRow.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled.tsx",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/tests/useThemeAppExtensionInstallation.spec.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation.ts",
               "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration.tsx",

@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -37,8 +37,9 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId,
     )
-    const changeAutomateSettingButtomPosition =
-        useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
+    const changeAutomateSettingButtomPosition = useFlag(
+        FeatureFlagKey.ChangeAutomateSettingButtomPosition,
+    )
 
     const isStoreNotConnected =
         storeIntegrations.length > 0 &&
@@ -51,8 +52,9 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
             `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`,
         [integrationId],
     )
-    const isChatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const isChatMultiLanguagesEnabled = useFlag(
+        FeatureFlagKey.ChatMultiLanguages,
+    )
 
     return (
         <SecondaryNavbar>

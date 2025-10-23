@@ -9,6 +9,7 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
 import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
@@ -24,7 +25,7 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 
-jest.mock('launchdarkly-react-client-sdk')
+jest.mock('core/flags')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: () => [
@@ -36,7 +37,16 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ],
 }))
 
+jest.mock(
+    '../GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
+    () => ({
+        __esModule: true,
+        default: () => false,
+    }),
+)
+
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockUseFlag = useFlag as jest.Mock
 
 describe('<GorgiasChatIntegrationNavigation />', () => {
     const integration = {
@@ -61,6 +71,10 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 minimumSnippetVersion: null,
             },
         },
+    })
+
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render automation features tab', () => {

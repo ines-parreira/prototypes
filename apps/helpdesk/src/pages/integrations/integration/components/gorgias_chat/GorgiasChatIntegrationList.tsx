@@ -4,11 +4,11 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../models/integration/types'
@@ -62,8 +62,7 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
         IntegrationType.GorgiasChat,
     )!.title
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     return (
         <div className="w-100">

@@ -4,7 +4,6 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { Link, NavLink } from 'react-router-dom'
 
 import { Tooltip } from '@gorgias/axiom'
@@ -21,6 +20,7 @@ import {
     getSecondaryLanguagesAsTooltipContent,
 } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import { LanguageBullet } from 'pages/common/components/LanguageBulletList'
@@ -64,8 +64,9 @@ const GorgiasChatIntegrationListRow = ({
 
     const { chatStatus, isChatStatusLoading, isChatStatusError } =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
-    const showUpdatePermissions =
-        useFlags()[FeatureFlagKey.ChatScopeUpdateChatList]
+    const showUpdatePermissions = useFlag(
+        FeatureFlagKey.ChatScopeUpdateChatList,
+    )
     const integrationId: number = chat.get('id')
 
     const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
@@ -106,8 +107,7 @@ const GorgiasChatIntegrationListRow = ({
 
     const shopName = storeIntegration?.getIn(['meta', 'shop_name'])
 
-    const chatMultiLanguagesEnabled =
-        useFlags()[FeatureFlagKey.ChatMultiLanguages]
+    const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
 
     const language: string = chat.getIn(['meta', 'language'])
 
