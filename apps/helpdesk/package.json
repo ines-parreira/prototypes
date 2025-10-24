@@ -150,6 +150,7 @@
         "froala-editor": "^4.5.0",
         "fuse.js": "6.6.2",
         "history": "catalog:react-router",
+        "html-react-parser": "^5.2.7",
         "htmlparser2": "3.10.1",
         "httpstatus": "1.0.0",
         "immer": "^10.0.4",
