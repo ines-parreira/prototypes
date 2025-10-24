@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import {
+    RenderHookOptions as RenderHookOptionsPrimitive,
     renderHook as renderHookPrimitive,
     RenderOptions as RenderOptionsPrimitive,
     render as renderPrimitive,
@@ -23,6 +24,12 @@ export const testAppQueryClient = new QueryClient({
 })
 
 type RenderOptions = RenderOptionsPrimitive & {
+    dispatchNotification?: ReturnType<typeof vi.fn>
+    initialEntries?: string[]
+    path?: string
+}
+
+type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> & {
     dispatchNotification?: ReturnType<typeof vi.fn>
     initialEntries?: string[]
     path?: string
@@ -65,7 +72,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
 
 export const renderHook = <TProps, TResult>(
     hook: (props: TProps) => TResult,
-    options?: RenderOptions,
+    options?: RenderHookOptions<TProps>,
 ) => {
     const {
         initialEntries = ['/'],

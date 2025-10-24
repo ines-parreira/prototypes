@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 import {
     Button,
     CheckBoxField,
+    ColorValue,
     Dot,
     ListItem,
     MultiSelect,
@@ -171,7 +172,11 @@ export function InfobarTicketDetailsTags({
                             aria-label="Remove tag"
                             {...(tag.decoration?.color && {
                                 leadingSlot: (
-                                    <Dot color={tag.decoration?.color} />
+                                    <Dot
+                                        color={
+                                            tag.decoration?.color as ColorValue
+                                        }
+                                    />
                                 ),
                             })}
                         >
