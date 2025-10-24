@@ -33,8 +33,6 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     }),
 }))
 
-jest.mock('lodash/noop', () => jest.fn())
-
 const mockGuidanceArticles: GuidanceArticle[] = [
     {
         id: 1,
@@ -74,8 +72,10 @@ describe('TrainSection', () => {
     }
 
     const mockUpdateStep = jest.fn()
+    const mockOnEditGuidanceArticle = jest.fn()
+    const mockOnCreateGuidanceArticle = jest.fn()
 
-    const renderTrainSection = () => {
+    const renderTrainSection = (isEditorOpen = false) => {
         return render(
             <MemoryRouter initialEntries={['/test-shop/ai-agent']}>
                 <Switch>
@@ -84,6 +84,9 @@ describe('TrainSection', () => {
                             stepMetadata={mockStepMetadata}
                             step={mockStep}
                             updateStep={mockUpdateStep}
+                            onEditGuidance={mockOnEditGuidanceArticle}
+                            onCreateGuidance={mockOnCreateGuidanceArticle}
+                            isEditorOpen={isEditorOpen}
                         />
                     </Route>
                 </Switch>
@@ -93,6 +96,7 @@ describe('TrainSection', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        localStorage.clear()
     })
 
     it('renders the component with correct description', () => {
@@ -126,7 +130,7 @@ describe('TrainSection', () => {
         expect(screen.getByText('Delete guidance?')).toBeInTheDocument()
     })
 
-    it('calls updateStep when there are enough guidance articles', () => {
+    it('shows train complete modal and completes step when there are enough guidance articles and editor is closed', () => {
         jest.spyOn(
             require('pages/aiAgent/hooks/useGuidanceArticles'),
             'useGuidanceArticles',
@@ -146,11 +150,149 @@ describe('TrainSection', () => {
             isGuidanceArticleListLoading: false,
         })
 
-        renderTrainSection()
+        renderTrainSection(false)
 
         expect(mockUpdateStep).toHaveBeenCalledWith({
             ...mockStep,
             stepCompletedDatetime: expect.any(String),
         })
+
+        expect(screen.getByText('Guidance setup complete!')).toBeInTheDocument()
+    })
+
+    it('does not show modal or complete step when editor is open', () => {
+        jest.spyOn(
+            require('pages/aiAgent/hooks/useGuidanceArticles'),
+            'useGuidanceArticles',
+        ).mockReturnValue({
+            guidanceArticles: Array.from(
+                { length: MAX_VISIBLE_GUIDANCES_TRAIN_SECTION },
+                (_, i) => ({
+                    id: i + 1,
+                    title: `Guidance Article ${i + 1}`,
+                    content: `Content ${i + 1}`,
+                    visibility: 'PUBLIC' as const,
+                    locale: 'en-US',
+                    lastUpdated: `2023-01-0${i + 1}T00:00:00Z`,
+                    templateKey: '',
+                }),
+            ),
+            isGuidanceArticleListLoading: false,
+        })
+
+        renderTrainSection(true)
+
+        expect(mockUpdateStep).not.toHaveBeenCalled()
+        expect(
+            screen.queryByText('Guidance setup complete!'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not show first guidance modal when initial count was already 1', () => {
+        jest.spyOn(
+            require('pages/aiAgent/hooks/useGuidanceArticles'),
+            'useGuidanceArticles',
+        ).mockReturnValue({
+            guidanceArticles: [
+                {
+                    id: 1,
+                    title: 'First Guidance Article',
+                    content: 'Content 1',
+                    visibility: 'PUBLIC' as const,
+                    locale: 'en-US',
+                    createdDatetime: '2023-01-01T00:00:00Z',
+                    lastUpdated: '2023-01-01T00:00:00Z',
+                    templateKey: '',
+                },
+            ],
+            isGuidanceArticleListLoading: false,
+        })
+
+        renderTrainSection(false)
+
+        expect(
+            screen.queryByText("You've created your first Guidance!"),
+        ).not.toBeInTheDocument()
+    })
+
+    it('calls onEditGuidanceArticle when edit icon is clicked', async () => {
+        const user = userEvent.setup()
+        renderTrainSection()
+
+        const editIcons = screen.getAllByRole('img', { name: 'edit-pencil' })
+        const editButton = editIcons[0].closest('.actionButton')
+
+        if (editButton) {
+            await act(async () => {
+                await user.click(editButton)
+            })
+        }
+
+        expect(mockOnEditGuidanceArticle).toHaveBeenCalledWith(1)
+    })
+
+    it('calls onCreateGuidance when create guidance button is clicked', async () => {
+        jest.spyOn(
+            require('pages/aiAgent/hooks/useGuidanceArticles'),
+            'useGuidanceArticles',
+        ).mockReturnValue({
+            guidanceArticles: [],
+            isGuidanceArticleListLoading: false,
+        })
+
+        const user = userEvent.setup()
+        renderTrainSection()
+
+        const createButton = screen.getByText('Create Guidance')
+        await act(async () => {
+            await user.click(createButton)
+        })
+
+        const customOption = screen.getByText('Custom')
+        await act(async () => {
+            await user.click(customOption)
+        })
+
+        expect(mockOnCreateGuidanceArticle).toHaveBeenCalled()
+    })
+
+    it('calls deleteGuidanceArticle when delete is confirmed', async () => {
+        const mockDeleteGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+        jest.spyOn(
+            require('pages/aiAgent/hooks/useGuidanceArticleMutation'),
+            'useGuidanceArticleMutation',
+        ).mockReturnValue({
+            deleteGuidanceArticle: mockDeleteGuidanceArticle,
+            isGuidanceArticleDeleting: false,
+        })
+
+        jest.spyOn(
+            require('pages/aiAgent/hooks/useGuidanceArticles'),
+            'useGuidanceArticles',
+        ).mockReturnValue({
+            guidanceArticles: mockGuidanceArticles,
+            isGuidanceArticleListLoading: false,
+        })
+
+        const user = userEvent.setup()
+        renderTrainSection()
+
+        const trashIcons = screen.getAllByRole('img', { name: 'trash-empty' })
+        const trashButton = trashIcons[0].closest('.actionButton')
+
+        if (trashButton) {
+            await act(async () => {
+                await user.click(trashButton)
+            })
+        }
+
+        expect(screen.getByText('Delete guidance?')).toBeInTheDocument()
+
+        const deleteButton = screen.getByRole('button', { name: /delete/i })
+        await act(async () => {
+            await user.click(deleteButton)
+        })
+
+        expect(mockDeleteGuidanceArticle).toHaveBeenCalledWith(1)
     })
 })

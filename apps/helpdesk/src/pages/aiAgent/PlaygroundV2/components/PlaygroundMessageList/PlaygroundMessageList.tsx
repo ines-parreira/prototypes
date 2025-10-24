@@ -13,7 +13,11 @@ import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
 
 import css from '../../AiAgentPlayground.less'
 
-export const PlaygroundMessageList = () => {
+type Props = {
+    onGuidanceClick?: (guidanceArticleId: number) => void
+}
+
+export const PlaygroundMessageList = ({ onGuidanceClick }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
 
     const { storeConfiguration } = useConfigurationContext()
@@ -67,6 +71,7 @@ export const PlaygroundMessageList = () => {
                                                 storeConfiguration
                                             }
                                             outcome={outcome}
+                                            onGuidanceClick={onGuidanceClick}
                                         />
                                     )}
                             </PlaygroundMessageComponent>

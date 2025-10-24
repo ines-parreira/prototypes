@@ -49,6 +49,7 @@ describe('TrainButton', () => {
         isLoadingGuidanceArticles: false,
         guidanceArticlesLength: 0,
         setIsGuidanceTemplatesModalOpen: jest.fn(),
+        onCustomGuidanceClick: jest.fn(),
     }
 
     beforeEach(() => {
@@ -116,16 +117,14 @@ describe('TrainButton', () => {
         expect(setIsGuidanceTemplatesModalOpen).toHaveBeenCalledWith(true)
     })
 
-    it('does not call setIsGuidanceTemplatesModalOpen when "Custom" is clicked', async () => {
+    it('calls onCustomGuidanceClick when "Custom" is clicked', async () => {
         const user = userEvent.setup()
-        const setIsGuidanceTemplatesModalOpen = jest.fn()
+        const onCustomGuidanceClick = jest.fn()
 
         render(
             <TrainButton
                 {...defaultProps}
-                setIsGuidanceTemplatesModalOpen={
-                    setIsGuidanceTemplatesModalOpen
-                }
+                onCustomGuidanceClick={onCustomGuidanceClick}
             />,
         )
 
@@ -134,6 +133,6 @@ describe('TrainButton', () => {
             await user.click(customButton)
         })
 
-        expect(setIsGuidanceTemplatesModalOpen).not.toHaveBeenCalled()
+        expect(onCustomGuidanceClick).toHaveBeenCalled()
     })
 })

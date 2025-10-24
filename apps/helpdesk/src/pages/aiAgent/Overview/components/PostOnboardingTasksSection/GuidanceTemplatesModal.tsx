@@ -14,7 +14,7 @@ import css from './GuidanceTemplatesModal.less'
 type Props = {
     isOpen: boolean
     onClose: () => void
-    onTemplateClick: (template: GuidanceTemplate) => void
+    onTemplateClick: (template?: GuidanceTemplate) => void
 }
 
 export const GuidanceTemplatesModal: React.FC<Props> = ({
@@ -56,6 +56,7 @@ export const GuidanceTemplatesModal: React.FC<Props> = ({
                         <CustomCard
                             title="Create custom Guidance"
                             showOnlyTitle
+                            onClick={() => onTemplateClick()}
                         />
                     </li>
                 </ul>

@@ -48,6 +48,7 @@ type Props = {
     currentUserFirstName?: string
     arePlaygroundActionsAllowed?: boolean
     onNewConversationRef?: (fn: () => void) => void
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
 export const PlaygroundChat = ({
@@ -56,6 +57,7 @@ export const PlaygroundChat = ({
     currentUserFirstName,
     arePlaygroundActionsAllowed,
     onNewConversationRef,
+    onGuidanceClick,
 }: Props) => {
     const isStandalone = useFlag(FeatureFlagKey.StandaloneHandoverCapabilities)
 
@@ -300,6 +302,9 @@ export const PlaygroundChat = ({
                                                     feedbackPollingStopRef.current =
                                                         stopFn
                                                 }}
+                                                onGuidanceClick={
+                                                    onGuidanceClick
+                                                }
                                                 // we get the outcome from the ticket event message
                                                 outcome={(() => {
                                                     const ticketEventMessage =

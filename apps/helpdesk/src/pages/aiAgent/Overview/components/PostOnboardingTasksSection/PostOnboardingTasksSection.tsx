@@ -5,11 +5,13 @@ import { useLocation, useParams } from 'react-router-dom'
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
 import loadingStaticIcon from 'assets/img/icons/loading-static.svg'
+import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 
+import { usePostOnboardingKnowledgeEditor } from '../../hooks/usePostOnboardingKnowledgeEditor'
 import { usePostOnboardingTasksSection } from '../../hooks/usePostOnboardingTasksSection'
 import { DeploySection } from './DeploySection'
 import { TestSection } from './TestSection'
@@ -36,6 +38,16 @@ export const PostOnboardingTasksSection = () => {
         firstUncompletedStepName,
     } = usePostOnboardingTasksSection({ shopName, shopType })
 
+    const {
+        openEditorForCreate,
+        openEditorForEdit,
+        knowledgeEditorProps,
+        isEditorOpen,
+    } = usePostOnboardingKnowledgeEditor({
+        shopName,
+        shopType,
+    })
+
     const [expandedStep, setExpandedStep] = useState<string | null>(
         firstUncompletedStepName,
     )
@@ -58,7 +70,6 @@ export const PostOnboardingTasksSection = () => {
                     </Text>
                 </div>
             </div>
-
             <Accordion
                 className={css.stepsAccordion}
                 expandedItem={expandedStep}
@@ -90,12 +101,18 @@ export const PostOnboardingTasksSection = () => {
                                         stepMetadata={stepMetadata}
                                         step={step(stepMetadata.stepName)!}
                                         updateStep={updateStep}
+                                        onEditGuidance={openEditorForEdit}
+                                        onCreateGuidance={openEditorForCreate}
+                                        isEditorOpen={isEditorOpen}
                                     />
                                 ) : stepMetadata.stepName === 'TEST' ? (
                                     <TestSection
                                         stepMetadata={stepMetadata}
                                         step={step(stepMetadata.stepName)!}
                                         updateStep={updateStep}
+                                        onEditGuidanceArticle={
+                                            openEditorForEdit
+                                        }
                                     />
                                 ) : stepMetadata.stepName === 'DEPLOY' ? (
                                     <DeploySection
@@ -112,6 +129,7 @@ export const PostOnboardingTasksSection = () => {
                     ),
                 )}
             </Accordion>
+            <KnowledgeEditor {...knowledgeEditorProps} />
         </div>
     )
 }

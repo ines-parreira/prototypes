@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { usePublicResources } from '../../hooks/usePublicResources'
@@ -20,10 +22,12 @@ export const usePlaygroundForm = ({
     shopName,
     snippetHelpCenterId,
     helpCenterId,
+    guidanceHelpCenterId,
 }: {
     shopName: string
     snippetHelpCenterId: number
     helpCenterId: number | null
+    guidanceHelpCenterId: number | null
 }) => {
     const [formValues, setFormValues] =
         useState<PlaygroundFormValues>(INITIAL_FORM_VALUES)
@@ -37,13 +41,27 @@ export const usePlaygroundForm = ({
     })
     const { routes } = useAiAgentNavigation({ shopName })
 
+    const { guidanceArticles } = useGuidanceArticles(
+        guidanceHelpCenterId ?? 0,
+        {
+            enabled: !!guidanceHelpCenterId,
+        },
+    )
+
+    const guidanceUsed = useMemo(() => {
+        return guidanceArticles?.filter(
+            (article) => article.visibility === 'PUBLIC',
+        )
+    }, [guidanceArticles])
+
     const isPendingResources = sourceItems
         ? sourceItems.some((item) => item.status === 'loading')
         : false
     const isKnowledgeBaseEmpty =
         sourceItems !== undefined &&
         sourceItems.length === 0 &&
-        helpCenterId === null
+        helpCenterId === null &&
+        guidanceUsed.length === 0
 
     const validateFormValues = (formValues: PlaygroundFormValues) => {
         const formValuesValidity: Record<string, boolean> = {

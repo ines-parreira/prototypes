@@ -38,6 +38,27 @@ jest.mock('../../../hooks/usePostOnboardingTasksSection', () => ({
         updateStep: jest.fn(),
         createPostOnboardingStep: jest.fn(),
         updatePostStoreInstallation: jest.fn(),
+        markPostStoreInstallationAsCompleted: jest.fn(),
+    })),
+}))
+
+jest.mock('../../../hooks/usePostOnboardingKnowledgeEditor', () => ({
+    usePostOnboardingKnowledgeEditor: jest.fn(() => ({
+        openEditorForCreate: jest.fn(),
+        openEditorForEdit: jest.fn(),
+        closeEditor: jest.fn(),
+        knowledgeEditorProps: {
+            shopName: 'test-shop',
+            shopType: 'shopify',
+            guidanceArticleId: undefined,
+            guidanceTemplate: undefined,
+            guidanceMode: 'create',
+            isOpen: false,
+            onClose: jest.fn(),
+            onCreate: jest.fn(),
+            onUpdate: jest.fn(),
+            onDelete: jest.fn(),
+        },
     })),
 }))
 
@@ -56,6 +77,12 @@ jest.mock('../TestSection', () => ({
 jest.mock('../DeploySection', () => ({
     DeploySection: ({ stepMetadata }: { stepMetadata: any }) => (
         <div data-testid="deploy-section">{stepMetadata.stepTitle}</div>
+    ),
+}))
+
+jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
+    KnowledgeEditor: () => (
+        <div data-testid="knowledge-editor">KnowledgeEditor</div>
     ),
 }))
 

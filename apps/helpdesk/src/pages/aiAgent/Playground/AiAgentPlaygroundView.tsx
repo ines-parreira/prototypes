@@ -33,11 +33,13 @@ import css from './AiAgentPlaygroundView.less'
 type Props = {
     shopName: string
     arePlaygroundActionsAllowed?: boolean
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
 export const AiAgentPlaygroundView = ({
     shopName,
     arePlaygroundActionsAllowed,
+    onGuidanceClick,
 }: Props) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -220,6 +222,7 @@ export const AiAgentPlaygroundView = ({
                     onNewConversationRef={(fn) => {
                         resetConversationRef.current = fn
                     }}
+                    onGuidanceClick={onGuidanceClick}
                 />
             ) : null}
         </CheckPlaygroundPrerequisites>

@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
 
-import _noop from 'lodash/noop'
 import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
-import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import {
+    PostStoreInstallationStepStatus,
+    StepConfiguration,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { DeleteModal } from '../AiAgentTasks/DeleteModal'
+import { SuccessModal } from '../AiAgentTasks/SuccessModal'
 import { GuidanceList } from './GuidanceList'
 import { GuidanceTemplatesModal } from './GuidanceTemplatesModal'
 import { TrainButton } from './TrainButton'
@@ -23,22 +28,34 @@ type Props = {
     stepMetadata: PostOnboardingStepMetadata
     step: StepConfiguration
     updateStep: (step: StepConfiguration) => void
+    onEditGuidance: (guidanceId: number) => void
+    onCreateGuidance: (template?: GuidanceTemplate) => void
+    isEditorOpen: boolean
 }
 
-export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
-    const { shopName } = useParams<{
+export const TrainSection = ({
+    stepMetadata,
+    step,
+    updateStep,
+    onEditGuidance,
+    onCreateGuidance,
+    isEditorOpen,
+}: Props) => {
+    const { shopName, shopType } = useParams<{
         shopName: string
+        shopType: string
     }>()
 
     const [isGuidanceTemplatesModalOpen, setIsGuidanceTemplatesModalOpen] =
         useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    // oxlint-disable-next-line no-unused-vars
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [showFirstGuidanceModal, setShowFirstGuidanceModal] = useState(false)
+    const [showTrainCompleteModal, setShowTrainCompleteModal] = useState(false)
+    const [firstGuidanceCreated, setFirstGuidanceCreated] = useState(true)
+
     const [guidanceArticleId, setGuidanceArticleId] = useState<number | null>(
         null,
     )
-
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const {
         guidanceArticles,
@@ -53,26 +70,48 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
         })
 
     useEffect(() => {
-        if (isLoadingGuidanceArticles || Boolean(step.stepCompletedDatetime))
-            return
+        if (isLoadingGuidanceArticles || isEditorOpen) return
 
-        if (guidanceArticles.length >= MAX_VISIBLE_GUIDANCES_TRAIN_SECTION)
+        const guidanceCount = guidanceArticles.length
+
+        if (guidanceCount === 1 && !firstGuidanceCreated && !isEditorOpen) {
+            setShowFirstGuidanceModal(true)
+        }
+
+        if (
+            guidanceCount >= MAX_VISIBLE_GUIDANCES_TRAIN_SECTION &&
+            !Boolean(step.stepCompletedDatetime)
+        ) {
+            setShowTrainCompleteModal(true)
             updateStep({
                 ...step,
                 stepCompletedDatetime: new Date().toISOString(),
             })
-    }, [step, updateStep, isLoadingGuidanceArticles, guidanceArticles])
+
+            logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
+                step: stepMetadata.stepName,
+                status: PostStoreInstallationStepStatus.COMPLETED,
+                shop_name: shopName,
+                shop_type: shopType,
+            })
+        }
+    }, [
+        isLoadingGuidanceArticles,
+        guidanceArticles.length,
+        step,
+        updateStep,
+        shopName,
+        shopType,
+        stepMetadata.stepName,
+        isEditorOpen,
+        firstGuidanceCreated,
+    ])
 
     const onDelete = async () => {
         if (!guidanceArticleId) return
         await deleteGuidanceArticle(guidanceArticleId)
         setIsDeleteModalOpen(false)
         setGuidanceArticleId(null)
-    }
-
-    // oxlint-disable-next-line no-unused-vars
-    const onEdit = (guidanceArticleId: number) => {
-        //do nothing for now
     }
 
     const onCloseGuidanceTemplatesModal = () => {
@@ -84,9 +123,12 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
         setIsDeleteModalOpen(true)
     }
 
-    const handleOnEditIconClick = (guidanceArticleId: number) => {
-        setGuidanceArticleId(guidanceArticleId)
-        setIsEditModalOpen(true)
+    const onCreateGuidanceClick = (template?: GuidanceTemplate) => {
+        if (guidanceArticles.length === 0) {
+            setFirstGuidanceCreated(false)
+        }
+        setIsGuidanceTemplatesModalOpen(false)
+        onCreateGuidance(template)
     }
 
     return (
@@ -108,13 +150,14 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
                         setIsGuidanceTemplatesModalOpen={
                             setIsGuidanceTemplatesModalOpen
                         }
+                        onCustomGuidanceClick={onCreateGuidanceClick}
                     />
                     <GuidanceList
                         guidanceArticles={guidanceArticles}
                         isLoading={isLoadingGuidanceArticles}
                         shopName={shopName}
                         onDelete={handleOnDeleteIconClick}
-                        onEdit={handleOnEditIconClick}
+                        onEdit={(guidanceId) => onEditGuidance(guidanceId)}
                     />
                 </div>
 
@@ -130,7 +173,7 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
             <GuidanceTemplatesModal
                 isOpen={isGuidanceTemplatesModalOpen}
                 onClose={onCloseGuidanceTemplatesModal}
-                onTemplateClick={_noop}
+                onTemplateClick={onCreateGuidanceClick}
             />
 
             <DeleteModal
@@ -142,6 +185,34 @@ export const TrainSection = ({ stepMetadata, step, updateStep }: Props) => {
                 isModalOpen={isDeleteModalOpen}
                 onDelete={onDelete}
                 setModalOpen={setIsDeleteModalOpen}
+            />
+
+            <SuccessModal
+                isOpen={showFirstGuidanceModal}
+                title="You've created your first Guidance!"
+                description="You're one step closer to going live with your AI Agent. Just 4 more to go to make sure it's prepared to start responding to customer conversations."
+                actionLabel="Keep going"
+                handleOnClose={() => {
+                    setShowFirstGuidanceModal(false)
+                    setFirstGuidanceCreated(true)
+                }}
+            />
+
+            <SuccessModal
+                isOpen={showTrainCompleteModal}
+                title="Guidance setup complete!"
+                description={
+                    <>
+                        Your AI Agent now has enough training to start helping
+                        your customers. You can{' '}
+                        <span className={css.highlight}>
+                            create more Guidance anytime{' '}
+                        </span>
+                        to expand its knowledge and improve accuracy
+                    </>
+                }
+                actionLabel="Got it"
+                handleOnClose={() => setShowTrainCompleteModal(false)}
             />
         </>
     )

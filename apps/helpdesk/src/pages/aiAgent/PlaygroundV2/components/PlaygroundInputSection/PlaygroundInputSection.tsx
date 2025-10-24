@@ -9,6 +9,7 @@ import { Button, Tooltip } from '@gorgias/axiom'
 
 import { FROALA_KEY } from 'config'
 import { useFlag } from 'core/flags'
+import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
@@ -133,6 +134,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
         shopName,
         snippetHelpCenterId: snippetHelpCenterId || 0,
         helpCenterId: storeConfiguration?.helpCenterId ?? null,
+        guidanceHelpCenterId: storeConfiguration?.guidanceHelpCenterId ?? null,
     })
 
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
@@ -213,6 +215,10 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
 
         onFormValuesChange('message', '')
         setHasMessageBeenSent(true)
+
+        document.dispatchEvent(
+            new CustomEvent(MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT),
+        )
 
         onTestMessageSent({
             channel,

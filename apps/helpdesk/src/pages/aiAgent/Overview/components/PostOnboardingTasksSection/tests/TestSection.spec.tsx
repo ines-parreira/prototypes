@@ -18,12 +18,21 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(() => false),
 }))
 
+const mockAiAgentPlaygroundView = jest.fn()
+const mockAiAgentPlayground = jest.fn()
+
 jest.mock('pages/aiAgent/Playground/AiAgentPlaygroundView', () => ({
-    AiAgentPlaygroundView: () => <div>Playground</div>,
+    AiAgentPlaygroundView: (props: any) => {
+        mockAiAgentPlaygroundView(props)
+        return <div>Playground</div>
+    },
 }))
 
 jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlayground', () => ({
-    AiAgentPlayground: () => <div>Playground V2</div>,
+    AiAgentPlayground: (props: any) => {
+        mockAiAgentPlayground(props)
+        return <div>Playground V2</div>
+    },
 }))
 
 const { useFlag } = require('core/flags')
@@ -45,6 +54,7 @@ describe('TestSection', () => {
     }
 
     const mockUpdateStep = jest.fn()
+    const mockOnEditGuidanceArticle = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -57,6 +67,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -71,6 +82,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -85,6 +97,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -100,6 +113,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -125,6 +139,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={stepWithStartDate}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -144,6 +159,7 @@ describe('TestSection', () => {
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
                 updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
             />,
         )
 
@@ -163,6 +179,39 @@ describe('TestSection', () => {
         )
     })
 
+    it('closes playground, dispatches refresh, and calls onEditGuidanceArticle when onGuidanceClick is invoked', async () => {
+        const user = userEvent.setup()
+        const dispatchEventSpy = jest.spyOn(document, 'dispatchEvent')
+        mockUseFlag.mockReturnValue(true)
+
+        render(
+            <TestSection
+                stepMetadata={mockStepMetadata}
+                step={mockStep}
+                updateStep={mockUpdateStep}
+                onEditGuidanceArticle={mockOnEditGuidanceArticle}
+            />,
+        )
+
+        await act(async () => {
+            await user.click(screen.getByRole('button', { name: 'Test' }))
+        })
+
+        const onGuidanceClick =
+            mockAiAgentPlayground.mock.calls[0][0].onGuidanceClick
+
+        await act(async () => {
+            onGuidanceClick(123)
+        })
+
+        expect(dispatchEventSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'refresh-ai-agent-playground',
+            }),
+        )
+        expect(mockOnEditGuidanceArticle).toHaveBeenCalledWith(123)
+    })
+
     describe('when feature flag is enabled', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
@@ -176,6 +225,7 @@ describe('TestSection', () => {
                     stepMetadata={mockStepMetadata}
                     step={mockStep}
                     updateStep={mockUpdateStep}
+                    onEditGuidanceArticle={mockOnEditGuidanceArticle}
                 />,
             )
 
@@ -194,6 +244,7 @@ describe('TestSection', () => {
                     stepMetadata={mockStepMetadata}
                     step={mockStep}
                     updateStep={mockUpdateStep}
+                    onEditGuidanceArticle={mockOnEditGuidanceArticle}
                 />,
             )
 
@@ -220,6 +271,7 @@ describe('TestSection', () => {
                     stepMetadata={mockStepMetadata}
                     step={mockStep}
                     updateStep={mockUpdateStep}
+                    onEditGuidanceArticle={mockOnEditGuidanceArticle}
                 />,
             )
 
@@ -240,6 +292,7 @@ describe('TestSection', () => {
                     stepMetadata={mockStepMetadata}
                     step={mockStep}
                     updateStep={mockUpdateStep}
+                    onEditGuidanceArticle={mockOnEditGuidanceArticle}
                 />,
             )
 

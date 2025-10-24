@@ -42,6 +42,7 @@ const renderComponent = (props: {
     storeConfiguration: StoreConfiguration
     onFeedbackPollingStop?: (stopPolling: () => void) => void
     outcome?: TicketOutcome
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }) => {
     return render(
         <Provider store={mockStore(storeWithActiveSubscriptionWithConvert)}>
@@ -380,6 +381,247 @@ describe('KnowledgeSourcesWrapper', () => {
             'openInNewTabIcon',
             'material-icons',
         )
+    })
+
+    describe('onGuidanceClick handler', () => {
+        it('should call onGuidanceClick when clicking on a non-deleted guidance article', async () => {
+            const onGuidanceClick = jest.fn()
+            const mockEnrichedData = {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '123',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            resourceTitle: 'Test Guidance',
+                            resourceId: 'guidance-123',
+                        },
+                        metadata: {
+                            content: 'Test guidance content',
+                            url: 'https://example.com/guidance',
+                            title: 'Test Guidance',
+                            isDeleted: false,
+                        },
+                    },
+                ],
+            }
+
+            mockUseFeedbackPolling.mockReturnValue({
+                feedback: {
+                    accountId: 123,
+                    objectId: '123',
+                    objectType: 'TICKET',
+                    executions: [
+                        {
+                            executionId: 'test-execution-id',
+                            feedback: [],
+                            resources: [],
+                            storeConfiguration: mockStoreConfiguration as any,
+                        },
+                    ],
+                },
+                isPolling: false,
+                stopPolling: jest.fn(),
+                startPolling: jest.fn(),
+            })
+
+            mockUseEnrichFeedbackData.mockReturnValue({
+                enrichedData: mockEnrichedData,
+                isLoading: false,
+            } as any)
+
+            renderComponent({
+                executionId: 'test-execution-id',
+                storeConfiguration: mockStoreConfiguration,
+                onGuidanceClick,
+            })
+
+            const link = screen.getByText('Test Guidance').closest('a')
+            expect(link).toBeInTheDocument()
+
+            link?.click()
+
+            expect(onGuidanceClick).toHaveBeenCalledWith(123)
+        })
+
+        it('should not call onGuidanceClick when clicking on a deleted guidance article', async () => {
+            const onGuidanceClick = jest.fn()
+            const mockEnrichedData = {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '456',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            resourceTitle: 'Deleted Guidance',
+                            resourceId: 'guidance-456',
+                        },
+                        metadata: {
+                            content: 'Deleted guidance content',
+                            url: 'https://example.com/deleted-guidance',
+                            title: 'Deleted Guidance',
+                            isDeleted: true,
+                        },
+                    },
+                ],
+            }
+
+            mockUseFeedbackPolling.mockReturnValue({
+                feedback: {
+                    accountId: 123,
+                    objectId: '123',
+                    objectType: 'TICKET',
+                    executions: [
+                        {
+                            executionId: 'test-execution-id',
+                            feedback: [],
+                            resources: [],
+                            storeConfiguration: mockStoreConfiguration as any,
+                        },
+                    ],
+                },
+                isPolling: false,
+                stopPolling: jest.fn(),
+                startPolling: jest.fn(),
+            })
+
+            mockUseEnrichFeedbackData.mockReturnValue({
+                enrichedData: mockEnrichedData,
+                isLoading: false,
+            } as any)
+
+            renderComponent({
+                executionId: 'test-execution-id',
+                storeConfiguration: mockStoreConfiguration,
+                onGuidanceClick,
+            })
+
+            const link = screen.getByText('Deleted Guidance').closest('a')
+            expect(link).toBeInTheDocument()
+
+            link?.click()
+
+            expect(onGuidanceClick).not.toHaveBeenCalled()
+        })
+
+        it('should not call onGuidanceClick when clicking on non-guidance resource types', async () => {
+            const onGuidanceClick = jest.fn()
+            const mockEnrichedData = {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '789',
+                            resourceType: 'article',
+                            resourceTitle: 'Test Article',
+                            resourceId: 'article-789',
+                        },
+                        metadata: {
+                            content: 'Test article content',
+                            url: 'https://example.com/article',
+                            title: 'Test Article',
+                            isDeleted: false,
+                        },
+                    },
+                ],
+            }
+
+            mockUseFeedbackPolling.mockReturnValue({
+                feedback: {
+                    accountId: 123,
+                    objectId: '123',
+                    objectType: 'TICKET',
+                    executions: [
+                        {
+                            executionId: 'test-execution-id',
+                            feedback: [],
+                            resources: [],
+                            storeConfiguration: mockStoreConfiguration as any,
+                        },
+                    ],
+                },
+                isPolling: false,
+                stopPolling: jest.fn(),
+                startPolling: jest.fn(),
+            })
+
+            mockUseEnrichFeedbackData.mockReturnValue({
+                enrichedData: mockEnrichedData,
+                isLoading: false,
+            } as any)
+
+            renderComponent({
+                executionId: 'test-execution-id',
+                storeConfiguration: mockStoreConfiguration,
+                onGuidanceClick,
+            })
+
+            const link = screen.getByText('Test Article').closest('a')
+            expect(link).toBeInTheDocument()
+
+            link?.click()
+
+            expect(onGuidanceClick).not.toHaveBeenCalled()
+        })
+
+        it('should not call onGuidanceClick when the callback is not provided', async () => {
+            const mockEnrichedData = {
+                knowledgeResources: [
+                    {
+                        resource: {
+                            id: '999',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                            resourceTitle: 'Test Guidance No Callback',
+                            resourceId: 'guidance-999',
+                        },
+                        metadata: {
+                            content: 'Test guidance content',
+                            url: 'https://example.com/guidance-no-callback',
+                            title: 'Test Guidance No Callback',
+                            isDeleted: false,
+                        },
+                    },
+                ],
+            }
+
+            mockUseFeedbackPolling.mockReturnValue({
+                feedback: {
+                    accountId: 123,
+                    objectId: '123',
+                    objectType: 'TICKET',
+                    executions: [
+                        {
+                            executionId: 'test-execution-id',
+                            feedback: [],
+                            resources: [],
+                            storeConfiguration: mockStoreConfiguration as any,
+                        },
+                    ],
+                },
+                isPolling: false,
+                stopPolling: jest.fn(),
+                startPolling: jest.fn(),
+            })
+
+            mockUseEnrichFeedbackData.mockReturnValue({
+                enrichedData: mockEnrichedData,
+                isLoading: false,
+            } as any)
+
+            renderComponent({
+                executionId: 'test-execution-id',
+                storeConfiguration: mockStoreConfiguration,
+            })
+
+            const link = screen
+                .getByText('Test Guidance No Callback')
+                .closest('a')
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute(
+                'href',
+                'https://example.com/guidance-no-callback',
+            )
+        })
     })
 
     describe('polling behavior integration', () => {

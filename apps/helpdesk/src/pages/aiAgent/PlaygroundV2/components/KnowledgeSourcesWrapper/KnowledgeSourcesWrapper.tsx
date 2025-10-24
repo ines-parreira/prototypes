@@ -24,6 +24,7 @@ type KnowledgeSourcesWrapperProps = {
     executionId: string
     storeConfiguration: StoreConfiguration
     outcome?: TicketOutcome
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
 const OPEN_IN_NEW_TAB_ICON = 'open_in_new'
@@ -32,6 +33,7 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
     executionId,
     storeConfiguration,
     outcome,
+    onGuidanceClick,
 }) => {
     const { feedback, isPolling, startPolling, stopPolling } =
         useFeedbackPolling({
@@ -136,39 +138,65 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
                         renderCustomContent={({
                             icon,
                             title: renderedTitle,
-                        }) => (
-                            <a
-                                href={source.url}
-                                id={`knowledge-source-${source.id}`}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className={cn(css.sourceLink, {
-                                    [css.deleted]: source.isDeleted,
-                                    [css.hasLink]: !source.isDeleted,
-                                })}
-                            >
-                                {isLoading ? (
-                                    <div className={css.iconSkeleton}>
-                                        <Skeleton
-                                            width={20}
-                                            height={20}
-                                            circle
-                                        />
-                                    </div>
-                                ) : (
-                                    icon
-                                )}
-                                {renderedTitle}
-                                <i
-                                    className={cn(
-                                        css.openInNewTabIcon,
-                                        'material-icons',
-                                    )}
+                        }) => {
+                            const isGuidance =
+                                source.resourceType ===
+                                AiAgentKnowledgeResourceTypeEnum.GUIDANCE
+                            const shouldUseCustomHandler =
+                                isGuidance &&
+                                onGuidanceClick &&
+                                !source.isDeleted
+
+                            const handleClick = (
+                                e: React.MouseEvent<HTMLAnchorElement>,
+                            ) => {
+                                if (shouldUseCustomHandler) {
+                                    e.preventDefault()
+                                    const guidanceId = parseInt(
+                                        source.helpCenterId,
+                                        10,
+                                    )
+                                    if (!isNaN(guidanceId)) {
+                                        onGuidanceClick(guidanceId)
+                                    }
+                                }
+                            }
+
+                            return (
+                                <a
+                                    href={source.url}
+                                    id={`knowledge-source-${source.id}`}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                    className={cn(css.sourceLink, {
+                                        [css.deleted]: source.isDeleted,
+                                        [css.hasLink]: !source.isDeleted,
+                                    })}
+                                    onClick={handleClick}
                                 >
-                                    {OPEN_IN_NEW_TAB_ICON}
-                                </i>
-                            </a>
-                        )}
+                                    {isLoading ? (
+                                        <div className={css.iconSkeleton}>
+                                            <Skeleton
+                                                width={20}
+                                                height={20}
+                                                circle
+                                            />
+                                        </div>
+                                    ) : (
+                                        icon
+                                    )}
+                                    {renderedTitle}
+                                    <i
+                                        className={cn(
+                                            css.openInNewTabIcon,
+                                            'material-icons',
+                                        )}
+                                    >
+                                        {OPEN_IN_NEW_TAB_ICON}
+                                    </i>
+                                </a>
+                            )
+                        }}
                     />
                 ))}
             </div>

@@ -203,8 +203,6 @@ export const KnowledgeEditorGuidanceView = ({
                             lastUpdatedDatetime,
                             isUpdating: isGuidanceArticleUpdating,
                         }}
-                        impact={{}}
-                        relatedTickets={{}}
                     />
                 )}
             </div>

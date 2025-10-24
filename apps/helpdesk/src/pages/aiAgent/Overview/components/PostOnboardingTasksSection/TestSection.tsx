@@ -33,9 +33,15 @@ type Props = {
     stepMetadata: PostOnboardingStepMetadata
     step: StepConfiguration
     updateStep: (step: StepConfiguration) => void
+    onEditGuidanceArticle: (guidanceArticleId: number) => void
 }
 
-export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
+export const TestSection = ({
+    stepMetadata,
+    step,
+    updateStep,
+    onEditGuidanceArticle,
+}: Props) => {
     const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
     const [isStepCompleted, setIsStepCompleted] = useState(false)
     const { shopName, shopType } = useParams<{
@@ -57,9 +63,7 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
 
     const handleClosePlayground = () => {
         setIsPlaygroundOpen(false)
-        document.dispatchEvent(
-            new CustomEvent(REFRESH_AI_AGENT_PLAYGROUND_EVENT),
-        )
+        handleRefresh()
 
         if (isStepCompleted) {
             logEvent(SegmentEvent.PostOnboardingTaskActionDone, {
@@ -92,6 +96,11 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
             new CustomEvent(REFRESH_AI_AGENT_PLAYGROUND_EVENT),
         )
         setResetPlayground(true)
+    }
+
+    const onGuidanceClick = (guidanceArticleId: number) => {
+        handleClosePlayground()
+        onEditGuidanceArticle(guidanceArticleId)
     }
 
     useEffect(() => {
@@ -184,10 +193,14 @@ export const TestSection = ({ stepMetadata, step, updateStep }: Props) => {
                                 setResetPlayground(false)
                             }
                             shouldDisplayResetButton={false}
+                            onGuidanceClick={onGuidanceClick}
                         />
                     ) : (
                         shopName && (
-                            <AiAgentPlaygroundView shopName={shopName} />
+                            <AiAgentPlaygroundView
+                                shopName={shopName}
+                                onGuidanceClick={onGuidanceClick}
+                            />
                         )
                     )}
                 </Drawer.Content>

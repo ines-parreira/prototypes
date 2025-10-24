@@ -76,6 +76,7 @@ type Props = {
     shopName?: string
     resetPlaygroundCallback?: () => void
     shouldDisplayResetButton?: boolean
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
 export const AiAgentPlayground = ({
@@ -84,6 +85,7 @@ export const AiAgentPlayground = ({
     resetPlaygroundCallback,
     shopName: propsShopName,
     shouldDisplayResetButton = true,
+    onGuidanceClick,
 }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -150,7 +152,7 @@ export const AiAgentPlayground = ({
                     shopName={shopName}
                 />
                 <div className={css.container}>
-                    <PlaygroundMessageList />
+                    <PlaygroundMessageList onGuidanceClick={onGuidanceClick} />
                     <div className={css.inputContainer}>
                         <PlaygroundInputSection
                             shouldDisplayResetButton={shouldDisplayResetButton}

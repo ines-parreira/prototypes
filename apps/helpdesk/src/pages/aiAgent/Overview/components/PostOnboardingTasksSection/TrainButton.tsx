@@ -7,18 +7,20 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
-import css from './TrainButton.less'
+import css from './TrainSection.less'
 
 type Props = {
     isLoadingGuidanceArticles: boolean
     guidanceArticlesLength: number
     setIsGuidanceTemplatesModalOpen: (arg1: boolean) => void
+    onCustomGuidanceClick: () => void
 }
 
 export const TrainButton = ({
     isLoadingGuidanceArticles,
     guidanceArticlesLength,
     setIsGuidanceTemplatesModalOpen,
+    onCustomGuidanceClick,
 }: Props) => {
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
 
@@ -56,7 +58,7 @@ export const TrainButton = ({
                             label: 'Custom',
                             value: 'custom',
                         }}
-                        onClick={_noop}
+                        onClick={() => onCustomGuidanceClick()}
                         shouldCloseOnSelect
                     />
                 </DropdownBody>
