@@ -91,7 +91,7 @@ export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
     )
     .defineQuery(({ ctx }) => {
         const query = {
-            measures: ['scoredSurveysCount'] as const,
+            measures: ['scoredSurveysCount', 'averageSurveyScore'] as const,
             dimensions: ['channel'] as const,
             time_dimensions: [
                 {

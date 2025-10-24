@@ -355,6 +355,7 @@ export const useTicketAverageHandleTimeMetric = (
         ticketAverageHandleTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
+            sortDirection: sorting,
         }),
     )
 

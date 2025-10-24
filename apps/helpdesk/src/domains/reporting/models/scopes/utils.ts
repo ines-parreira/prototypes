@@ -1,6 +1,10 @@
-import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
+import {
+    OrderDirection,
+    ReportingStatsOperatorsEnum,
+} from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import { ScopeFilters, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
@@ -26,8 +30,6 @@ import {
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
-
-import { MetricName } from '../../hooks/metricNames'
 
 function createDateFilter(
     member: FilterName,
@@ -464,10 +466,18 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
 
         compareFilters(v1query.filters, v2query.filters, differences)
 
-        // old api return undefined if order is not set and new api return empty array
+        type LegacyOrder = { id: string; desc?: boolean; asc?: boolean }
+        type NewOrder = [string, string]
+
+        const v1Order: LegacyOrder[] = (v1query.order as any) || [
+            { id: '', desc: false, asc: false },
+        ]
+        const v2Order: NewOrder[] = (v2query.order as any) || [['', '']]
         if (
-            JSON.stringify(v1query.order || []) !==
-            JSON.stringify(v2query.order || [])
+            v1Order[0].id !== v2Order[0][0] ||
+            (v2Order[0][1] &&
+                v1Order[0] &&
+                v1Order[0][v2Order[0][1] as OrderDirection] !== true)
         ) {
             differences.push(
                 `order: ${JSON.stringify(v1query.order)} (V1) !== ${JSON.stringify(v2query.order)} (V2)`,

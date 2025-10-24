@@ -177,7 +177,7 @@ describe('averageCsatScope', () => {
             const actual = averageCsatScorePerChannelTimeseries.build(context)
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['scoredSurveysCount', 'averageSurveyScore'],
                 dimensions: ['channel'],
                 time_dimensions: [
                     {
@@ -213,7 +213,7 @@ describe('averageCsatScope', () => {
             })
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['scoredSurveysCount', 'averageSurveyScore'],
                 dimensions: ['channel'],
                 time_dimensions: [
                     {

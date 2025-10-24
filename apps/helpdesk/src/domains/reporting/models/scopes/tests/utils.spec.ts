@@ -1193,7 +1193,6 @@ describe('utils', () => {
 
             compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
-            // Should not log any errors for equivalent queries
             expect(consoleSpy).not.toHaveBeenCalled()
         })
 
@@ -1338,6 +1337,23 @@ describe('utils', () => {
             )
         })
 
+        it('should find no differences between orders', () => {
+            const v1Query = {
+                ...baseV1Query,
+                order: [{ id: 'tickets.count', desc: true }],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                order: [['tickets.count', 'desc']],
+            } as any
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+            expect(consoleSpy).not.toHaveBeenCalled()
+        })
+
         it('should handle order differences', () => {
             const v1Query = {
                 ...baseV1Query,
@@ -1345,7 +1361,7 @@ describe('utils', () => {
             } as any
             const v2Query = {
                 ...baseV2Query,
-                order: [{ id: 'tickets.count', desc: false }],
+                order: [['tickets.count', 'asc']],
             } as any
 
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
@@ -1355,7 +1371,29 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 [
-                    'order: [{"id":"tickets.count","desc":true}] (V1) !== [{"id":"tickets.count","desc":false}] (V2)',
+                    'order: [{\"id\":\"tickets.count\",\"desc\":true}] (V1) !== [[\"tickets.count\",\"asc\"]] (V2)',
+                ],
+            )
+        })
+
+        it('should handle order differences in id', () => {
+            const v1Query = {
+                ...baseV1Query,
+                order: [{ id: 'tickets.test', asc: false }],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                order: [['tickets.count', 'asc']],
+            } as any
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                'New Stats API and Legacy API queries are different for metric tickets',
+                [
+                    'order: [{\"id\":\"tickets.test\",\"asc\":false}] (V1) !== [[\"tickets.count\",\"asc\"]] (V2)',
                 ],
             )
         })
@@ -1380,32 +1418,6 @@ describe('utils', () => {
 
             // Should not log any errors because metricName, limit, and offset are not compared
             expect(consoleSpy).not.toHaveBeenCalled()
-        })
-
-        it('should handle JSON.stringify error with circular reference', () => {
-            // Create objects with circular references
-            const circularObj1: any = { measures: ['tickets.count'] }
-            circularObj1.self = circularObj1
-
-            const circularObj2: any = { measures: ['tickets.count'] }
-            circularObj2.self = circularObj2
-
-            const v1Query = {
-                ...baseV1Query,
-                order: circularObj1,
-            } as any
-
-            const v2Query = {
-                ...baseV2Query,
-                order: circularObj2,
-            } as any
-
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
-
-            compareAndReportQueries('tickets' as any, v1Query, v2Query)
-
-            // Should log error due to circular reference
-            expect(consoleSpy).toHaveBeenCalled()
         })
     })
 })
