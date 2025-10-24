@@ -3,9 +3,11 @@ import omit from 'lodash/omit'
 
 import {
     PhoneIntegration,
+    queryKeys,
     useUpdateAllPhoneSettings,
 } from '@gorgias/helpdesk-queries'
 
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
@@ -58,6 +60,9 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
             onSuccess: () => {
                 void notify.success(
                     'Changes to your Call Flow were successfully saved.',
+                )
+                void appQueryClient.refetchQueries(
+                    queryKeys.integrations.getIntegration(integration.id),
                 )
             },
             onError: () => {

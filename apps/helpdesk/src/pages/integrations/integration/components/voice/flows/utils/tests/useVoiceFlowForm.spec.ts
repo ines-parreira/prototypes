@@ -6,9 +6,10 @@ import {
     mockPhoneIntegration,
     mockUpdateAllPhoneSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
-import { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { PhoneIntegration, queryKeys } from '@gorgias/helpdesk-queries'
 import { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
@@ -148,7 +149,12 @@ describe('useVoiceFlowForm', () => {
             },
         }
 
-        it('should show success notification on successful save', async () => {
+        it('should show success notification on successful save and refresh', async () => {
+            const refetchQueriesSpy = jest.spyOn(
+                appQueryClient,
+                'refetchQueries',
+            )
+
             const { result } = renderHookWithQueryClientProvider(() =>
                 useVoiceFlowForm(mockIntegration),
             )
@@ -161,7 +167,12 @@ describe('useVoiceFlowForm', () => {
                 expect(mockNotifySuccess).toHaveBeenCalledWith(
                     'Changes to your Call Flow were successfully saved.',
                 )
+                expect(refetchQueriesSpy).toHaveBeenCalledWith(
+                    queryKeys.integrations.getIntegration(mockIntegration.id),
+                )
             })
+
+            refetchQueriesSpy.mockRestore()
         })
 
         it('should show error notification on save failure', async () => {
