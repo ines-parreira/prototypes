@@ -487,5 +487,36 @@ describe('useAiAgentNavigation', () => {
             expect(salesItem).toBeDefined()
             expect(salesItem?.title).toBe(SALES)
         })
+
+        it('should include sales navigation item when ShoppingAssistantEnforceDeactivation is enabled but AiShoppingAssistantAbTesting is also enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                if (
+                    key === FeatureFlagKey.ShoppingAssistantEnforceDeactivation
+                ) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiShoppingAssistantAbTesting) {
+                    return true
+                }
+                return false
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
+            )
+
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.dataCanduId === 'ai-agent-navbar-train',
+            )
+            const salesItem = trainItem?.items?.find(
+                (item) => item.title === SALES,
+            )
+
+            expect(salesItem).toBeDefined()
+            expect(salesItem?.title).toBe(SALES)
+        })
     })
 })

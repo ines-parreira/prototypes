@@ -367,6 +367,11 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
 
+    const isAbTestingEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantAbTesting,
+        false,
+    )
+
     const { routes } = useAiAgentNavigation({ shopName })
 
     if (shopType !== 'shopify') {
@@ -759,11 +764,12 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     </AiAgentErrorBoundary>
 
                     {/* Enforce redirection outside of `/sales` when Shopping Assistant feature flag is set to enforce deactivation */}
-                    {isShoppingAssitantDeactivationEnforced && (
-                        <Route path={`${path}/sales`}>
-                            <Redirect to={routes.main} />
-                        </Route>
-                    )}
+                    {isShoppingAssitantDeactivationEnforced &&
+                        !isAbTestingEnabled && (
+                            <Route path={`${path}/sales`}>
+                                <Redirect to={routes.main} />
+                            </Route>
+                        )}
 
                     <AiAgentErrorBoundary
                         section="ai-agent-sales"

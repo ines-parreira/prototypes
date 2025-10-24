@@ -152,11 +152,19 @@ const useNavigationItems = (
         FeatureFlagKey.AiShoppingAssistantProductRecommendations,
     )
 
-    const isShoppingAssitantDeactivationEnforced = useFlag(
+    const isShoppingAssistantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
 
+    const isAbTestingEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantAbTesting,
+        false,
+    )
+
     const isOpportunitiesEnabled = useFlag(FeatureFlagKey.SurfaceOpportunities)
+    const shouldRenderShoppingAssistantPages =
+        !isShoppingAssistantDeactivationEnforced ||
+        (isShoppingAssistantDeactivationEnforced && isAbTestingEnabled)
 
     // Actions platform is rendered outside the per-shop navigation in the
     // ActionDrivenNavigation component.
@@ -223,7 +231,7 @@ const useNavigationItems = (
                         title: PRODUCTS,
                         exact: true,
                     },
-                    !isShoppingAssitantDeactivationEnforced && {
+                    shouldRenderShoppingAssistantPages && {
                         route: routes.sales,
                         title: SALES,
                         items: isAiShoppingAssistantEnabled
@@ -295,7 +303,7 @@ const useNavigationItems = (
         isGorgiasUser,
         isAiShoppingAssistantEnabled,
         isAiShoppingAssistantProductRecommendationsEnabled,
-        isShoppingAssitantDeactivationEnforced,
+        shouldRenderShoppingAssistantPages,
         isOpportunitiesEnabled,
         routes,
     ])

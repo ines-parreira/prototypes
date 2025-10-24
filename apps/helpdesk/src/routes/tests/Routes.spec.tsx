@@ -755,6 +755,101 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
+        it('should redirect from /sales to main page when ShoppingAssistantEnforceDeactivation is enabled and AiShoppingAssistantAbTesting is disabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (
+                    key === FeatureFlagKey.ShoppingAssistantEnforceDeactivation
+                ) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiShoppingAssistantAbTesting) {
+                    return false
+                }
+                return false
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop',
+            )
+        })
+
+        it('should NOT redirect from /sales when ShoppingAssistantEnforceDeactivation is disabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (
+                    key === FeatureFlagKey.ShoppingAssistantEnforceDeactivation
+                ) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/sales',
+            )
+            expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
+        })
+
+        it('should NOT redirect from /sales when both ShoppingAssistantEnforceDeactivation and AiShoppingAssistantAbTesting are enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (
+                    key === FeatureFlagKey.ShoppingAssistantEnforceDeactivation
+                ) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiShoppingAssistantAbTesting) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() => mockHistory.push('/app/ai-agent/shopify/test-shop/sales'))
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/sales',
+            )
+            expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
+        })
+
         it('should redirect to /intents when accessing /optimize', () => {
             render(
                 <QueryClientProvider client={mockQueryClient()}>
