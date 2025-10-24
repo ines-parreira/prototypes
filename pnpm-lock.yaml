@@ -250,7 +250,7 @@ catalogs:
       specifier: 21.0.0
       version: 21.0.0
     msw:
-      specifier: ^2.1.0
+      specifier: ^2.1.15
       version: 2.9.0
     swc_mut_cjs_exports:
       specifier: ^10.7.0

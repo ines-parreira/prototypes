@@ -23,7 +23,7 @@ jobs:
       assets-dir: apps/helpdesk/src/assets
       build-dir: apps/helpdesk/build
       bucket-path: web-app
-      node-version: '22.17.1'
+      node-version: "22.17.1"
     steps:
       - name: Workspace vars
         run: echo "empty step"
@@ -116,8 +116,6 @@ jobs:
             echo "No packages with test target found"
           fi
 
-
-
   quality-check:
     name: Quality check
     needs:
@@ -141,6 +139,7 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -156,6 +155,7 @@ jobs:
       - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
       node-version: ${{ needs.workspace-vars.outputs.node-version }}
@@ -283,13 +283,13 @@ jobs:
     if: (github.actor != 'dependabot[bot]' )
     secrets: inherit
     with:
-        semgrep-fail-on-severity: CRITICAL
-        semgrep-fail-on-confidence: HIGH
-        exit-zero: false
-        pr-mode: ${{ github.ref_name != 'main' }}
-        files-to-ignore: "apps/helpdesk/src/assets/ /tests/ __snapshots__"
-        split-main-scan: true
-        split-pr-scan: true
+      semgrep-fail-on-severity: CRITICAL
+      semgrep-fail-on-confidence: HIGH
+      exit-zero: false
+      pr-mode: ${{ github.ref_name != 'main' }}
+      files-to-ignore: "apps/helpdesk/src/assets/ /tests/ __snapshots__"
+      split-main-scan: true
+      split-pr-scan: true
 
   security-dependencies:
     uses: gorgias/reusable-actions/.github/workflows/security-dependency-scans.yml@main
