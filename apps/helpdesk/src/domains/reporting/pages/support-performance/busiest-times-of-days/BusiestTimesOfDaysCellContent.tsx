@@ -12,7 +12,6 @@ import css from 'domains/reporting/pages/support-performance/busiest-times-of-da
 import {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
-    HOUR_COLUMN,
     isHourCell,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { hourFromHourIndex } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
@@ -40,7 +39,9 @@ export const BusiestTimesOfDaysCellContent = ({
     isHeatmapMode: boolean
     isWorkingHour: boolean
 }) => {
-    const justify = day === HOUR_COLUMN ? 'left' : 'center'
+    const isFirstCol = isHourCell(day)
+    const justify = isFirstCol ? 'left' : 'center'
+    const shouldRespectHeatmapMode = metricValue && !isFirstCol
 
     return (
         <BodyCell
@@ -48,13 +49,19 @@ export const BusiestTimesOfDaysCellContent = ({
             className={classnames(
                 className,
                 [heatmapCss.heatmap],
-                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
+                isHeatmapMode &&
+                    !isLoading &&
+                    shouldRespectHeatmapMode &&
+                    heatmapCss[`p${String(decile)}`],
                 isWorkingHour && css.redTransparentStripesPseudoElement,
+                css.cellContent,
             )}
             innerClassName={classnames(
                 [heatmapCss.heatmap],
-                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
-                css.cellContent,
+                isHeatmapMode &&
+                    !isLoading &&
+                    shouldRespectHeatmapMode &&
+                    heatmapCss[`p${String(decile)}`],
             )}
             justifyContent={justify}
             size={'small'}
