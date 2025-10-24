@@ -149,6 +149,7 @@ describe('useVoiceCallList', () => {
                 displayStatus: VoiceCallDisplayStatus.Answered,
                 queueId: 23,
                 queueName: 'Test Queue',
+                callSid: 'undefined',
             },
         ])
     })
@@ -206,6 +207,7 @@ describe('useVoiceCallList', () => {
                 displayStatus: VoiceCallDisplayStatus.Answered,
                 queueId: null,
                 queueName: null,
+                callSid: 'undefined',
             },
         ])
     })

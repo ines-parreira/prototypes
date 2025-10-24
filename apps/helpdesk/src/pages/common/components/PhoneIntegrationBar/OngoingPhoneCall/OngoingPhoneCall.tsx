@@ -13,7 +13,7 @@ import {
     gatherCallContext,
     getCallSid,
     sendTwilioSocketEvent,
-} from 'hooks/integrations/phone/utils'
+} from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {

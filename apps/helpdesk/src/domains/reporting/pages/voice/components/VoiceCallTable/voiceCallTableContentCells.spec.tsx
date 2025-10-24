@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
+import MonitorCell from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
 import VoiceCallRecording from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {
     VoiceCallTableColumn,
@@ -22,6 +23,7 @@ import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/Voi
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel',
 )
+jest.mock('domains/reporting/pages/voice/components/LiveVoice/MonitorCell')
 jest.mock('pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge')
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording',
@@ -32,6 +34,7 @@ jest.mock(
 jest.mock('pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel')
 
 const LiveVoiceCallStatusLabelMock = assumeMock(LiveVoiceCallStatusLabel)
+const MonitorCellMock = assumeMock(MonitorCell)
 const VoiceCallTimerBadgeMock = assumeMock(VoiceCallTimerBadge)
 const VoiceCallRecordingMock = assumeMock(VoiceCallRecording)
 const VoiceCallTransferActivityMock = assumeMock(VoiceCallTransferActivity)
@@ -297,6 +300,30 @@ describe('voiceCallTableContentCells', () => {
                 {},
             )
             expect(screen.getByText('TransferActivity')).toBeInTheDocument()
+        })
+
+        it('should return correct props for the Monitor cell', () => {
+            MonitorCellMock.mockReturnValue(<div>MonitorCell</div>)
+
+            const columns = [VoiceCallTableColumn.Monitor]
+            const mockVoiceCall = {
+                callSid: 'CA123456',
+            } as VoiceCallSummary
+
+            const result = getOrderedCells({
+                item: mockVoiceCall,
+                columns,
+                isTableScrolled: false,
+            })
+
+            render(result[0].props.children as any)
+            expect(MonitorCellMock).toHaveBeenCalledWith(
+                {
+                    voiceCall: mockVoiceCall,
+                },
+                {},
+            )
+            expect(screen.getByText('MonitorCell')).toBeInTheDocument()
         })
     })
 })

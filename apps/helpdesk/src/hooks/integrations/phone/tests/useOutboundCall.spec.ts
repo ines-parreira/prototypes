@@ -6,7 +6,7 @@ import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
-} from 'hooks/integrations/phone/utils'
+} from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import { connectCall } from '../api'
@@ -14,7 +14,7 @@ import { useOutboundCall } from '../useOutboundCall'
 import useVoiceDevice from '../useVoiceDevice'
 
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/integrations/phone/utils')
+jest.mock('hooks/integrations/phone/twilioCall.utils')
 jest.mock('../useVoiceDevice')
 jest.mock('../api')
 

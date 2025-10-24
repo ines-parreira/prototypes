@@ -15,17 +15,19 @@ import {
     requestNotificationPermission,
 } from 'common/notifications'
 import * as api from 'hooks/integrations/phone/api'
-import * as utils from 'hooks/integrations/phone/utils'
 import {
-    connectDevice,
-    disconnectDevice,
-    extractMonitoringCallParams,
     generateCallId,
     getCallSid,
     handleAcceptedCallEvent,
     handleCallEvents,
-    handleDeviceEvents,
     logCallEnd,
+} from 'hooks/integrations/phone/twilioCall.utils'
+import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
+import * as utils from 'hooks/integrations/phone/utils'
+import {
+    connectDevice,
+    disconnectDevice,
+    handleDeviceEvents,
     refreshToken,
     registerDevice,
 } from 'hooks/integrations/phone/utils'
@@ -34,7 +36,6 @@ import { VoiceDeviceActions } from 'pages/integrations/integration/components/vo
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
-import { mockMonitoringCall } from 'tests/twilioMocks'
 import * as envUtils from 'utils/environment'
 import { reportError } from 'utils/errors'
 import { getLDClient } from 'utils/launchDarkly'
@@ -377,10 +378,10 @@ describe('handleDeviceEvents', () => {
         const device: EventEmitter = new EventEmitter()
 
         const sendSocketEvent = jest
-            .spyOn(utils, 'sendTwilioSocketEvent')
+            .spyOn(twilioCallUtils, 'sendTwilioSocketEvent')
             .mockReturnValue()
         const refreshToken = jest.spyOn(utils, 'refreshToken')
-        const handleCallEvents = jest.spyOn(utils, 'handleCallEvents')
+        const handleCallEvents = jest.spyOn(twilioCallUtils, 'handleCallEvents')
 
         let variation: jest.Mock
 
@@ -582,11 +583,13 @@ describe('handleCallEvents', () => {
         const call: EventEmitter = new EventEmitter()
 
         const sendSocketEvent = jest
-            .spyOn(utils, 'sendTwilioSocketEvent')
+            .spyOn(twilioCallUtils, 'sendTwilioSocketEvent')
             .mockReturnValue()
         const cancelCall = jest.spyOn(api, 'cancelCall')
         const disconnectCall = jest.spyOn(api, 'disconnectCall')
-        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd').mockReturnValue()
+        const logCallEndSpy = jest
+            .spyOn(twilioCallUtils, 'logCallEnd')
+            .mockReturnValue()
 
         const callContext = {
             call_sid: undefined,
@@ -821,7 +824,7 @@ describe('getCallSid', () => {
 describe('logCallEnd', () => {
     it('should log the call end when call has a ticket_id param', () => {
         // reset original logCallEnd implementation
-        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
+        const logCallEndSpy = jest.spyOn(twilioCallUtils, 'logCallEnd')
         logCallEndSpy.mockRestore()
 
         const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
@@ -841,7 +844,7 @@ describe('logCallEnd', () => {
 
     it('should log the call end when call does not have a ticket_id param, and look it up from query cache', () => {
         // reset original logCallEnd implementation
-        const logCallEndSpy = jest.spyOn(utils, 'logCallEnd')
+        const logCallEndSpy = jest.spyOn(twilioCallUtils, 'logCallEnd')
         logCallEndSpy.mockRestore()
         const logEventSpy = jest.spyOn(activityTracker, 'logActivityEvent')
         const getQueriesDataSpy = jest.spyOn(appQueryClient, 'getQueriesData')
@@ -893,30 +896,5 @@ describe('isRecoverableError', () => {
         const error = new TwilioError.TwilioError()
         error.code = TwilioErrorCode.GeneralTransport
         expect(utils.isRecoverableError(error)).toBeTruthy()
-    })
-})
-
-describe('extractMonitoringCallParams', () => {
-    it('should extract monitoring call parameters from call object', () => {
-        const integrationId = 1
-        const inCallAgentId = 123
-        const customerId = 456
-        const customerPhoneNumber = '+14158880101'
-
-        const call = mockMonitoringCall(
-            integrationId,
-            inCallAgentId,
-            customerId,
-            customerPhoneNumber,
-        ) as Call
-
-        const params = extractMonitoringCallParams(call)
-
-        expect(params).toEqual({
-            integrationId,
-            inCallAgentId,
-            customerId,
-            customerPhoneNumber,
-        })
     })
 })

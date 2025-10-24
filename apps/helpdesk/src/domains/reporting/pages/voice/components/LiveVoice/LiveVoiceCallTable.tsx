@@ -1,7 +1,10 @@
 import React, { useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
@@ -15,9 +18,12 @@ import {
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { LIVE_VOICE_CALLS_TITLE } from 'domains/reporting/pages/voice/constants/liveVoice'
+import { canMonitorCall } from 'hooks/integrations/phone/monitoring.utils'
+import useAppSelector from 'hooks/useAppSelector'
 import useOrderBy from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 type Props = {
     voiceCalls: LiveCallQueueVoiceCall[]
@@ -25,6 +31,8 @@ type Props = {
 }
 
 export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
+    const isCallListeningEnabled = useFlag(FeatureFlagKey.CallListening)
+
     const [statusFilter, setStatusFilter] = useState(
         LiveVoiceStatusFilterOption.ALL,
     )
@@ -60,6 +68,12 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
         toggleOrderBy(column)
     }
 
+    const currentUser = useAppSelector(getCurrentUser)
+    const columns =
+        isCallListeningEnabled && canMonitorCall(currentUser)
+            ? [...liveVoiceCallTableColumns, VoiceCallTableColumn.Monitor]
+            : liveVoiceCallTableColumns
+
     return (
         <DashboardSection>
             <DashboardGridCell>
@@ -93,7 +107,7 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
                         data={displayedVoiceCalls}
                         isFetching={isLoading}
                         noDataTitle={noDataTitle[statusFilter]}
-                        columns={liveVoiceCallTableColumns}
+                        columns={columns}
                         ongoingTimeColumnTitle={
                             statusFilter ===
                             LiveVoiceStatusFilterOption.IN_QUEUE

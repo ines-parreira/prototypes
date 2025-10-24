@@ -257,6 +257,7 @@ describe('utils', () => {
                 has_voicemail: true,
                 has_call_recording: true,
                 queue_id: 1,
+                external_id: 'CA123456',
             } as LiveCallQueueVoiceCall
 
             const result = formatVoiceCallsData([voiceCall])
@@ -282,6 +283,7 @@ describe('utils', () => {
                     displayStatus: VoiceCallDisplayStatus.InProgress,
                     queueId: 1,
                     queueName: null,
+                    callSid: 'CA123456',
                 },
             ])
         })
@@ -302,6 +304,7 @@ describe('utils', () => {
                 ticket_id: 4,
                 has_voicemail: true,
                 has_call_recording: true,
+                external_id: 'CA789012',
             } as LiveCallQueueVoiceCall
 
             const result = formatVoiceCallsData([voiceCall])
@@ -327,6 +330,7 @@ describe('utils', () => {
                     displayStatus: VoiceCallDisplayStatus.InProgress,
                     queueId: null,
                     queueName: null,
+                    callSid: 'CA789012',
                 },
             ])
         })

@@ -3,18 +3,17 @@ import { ComponentProps, useEffect } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
-import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
-
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
+import { canMonitorCall } from 'hooks/integrations/phone/monitoring.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { Customer } from 'models/customer/types'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
+import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
@@ -57,8 +56,6 @@ export default function TicketVoiceCallContainer({
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = currentUser.get('id')
 
-    const { makeMonitoringCall } = useMonitoringCall()
-
     useEffect(() => {
         void setRecentItem(voiceCall)
     }, [setRecentItem, voiceCall])
@@ -94,23 +91,12 @@ export default function TicketVoiceCallContainer({
                 <div className={css.row}>
                     <div className={css.callStatus}>{callStatus}</div>
                     {isCallListeningEnabled &&
-                        (voiceCall.status === VoiceCallStatus.Answered ||
-                            voiceCall.status === VoiceCallStatus.Connected) && (
-                            <Button
-                                fillStyle="ghost"
-                                intent="primary"
-                                size="small"
-                                leadingIcon={
-                                    <i className="material-icons">
-                                        headset_mic
-                                    </i>
-                                }
-                                onClick={() =>
-                                    makeMonitoringCall(voiceCall, currentUserId)
-                                }
-                            >
-                                Listen
-                            </Button>
+                        canMonitorCall(currentUser) &&
+                        !isFinalVoiceCallStatus(voiceCall.status) && (
+                            <MonitorCallButton
+                                voiceCallToMonitor={voiceCall}
+                                agentId={currentUserId}
+                            />
                         )}
                     <TicketVoiceCallDuration voiceCall={voiceCall} />
                 </div>

@@ -122,4 +122,25 @@ describe('MonitoringPhoneCall', () => {
 
         expect(screen.getByText('Connected')).toBeInTheDocument()
     })
+
+    it('should handle custom parameters missing', () => {
+        const call = {
+            customParameters: new Map([
+                ['integration_id', 'null'],
+                ['in_call_agent_id', 'null'],
+                ['customer_id', 'null'],
+                ['customer_phone_number', customerPhoneNumber],
+            ]),
+        } as unknown as Call
+
+        renderWithStore(<MonitoringPhoneCall call={call} />, initialState)
+
+        expect(
+            screen.queryByText('My Phone Integration'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByTestId('customer-label')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('agent-label')).not.toBeInTheDocument()
+        expect(screen.getByText(customerPhoneNumber)).toBeInTheDocument()
+        expect(screen.getByText('unknown agent')).toBeInTheDocument()
+    })
 })

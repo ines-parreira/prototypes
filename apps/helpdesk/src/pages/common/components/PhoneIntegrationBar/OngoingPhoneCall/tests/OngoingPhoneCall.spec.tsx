@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
-import * as utils from 'hooks/integrations/phone/utils'
+import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
 import {
     TransferTarget,
@@ -104,7 +104,10 @@ describe('<OngoingPhoneCall/>', () => {
         thunk,
     ])
 
-    const sendTwilioSocketEvent = jest.spyOn(utils, 'sendTwilioSocketEvent')
+    const sendTwilioSocketEvent = jest.spyOn(
+        twilioCallUtils,
+        'sendTwilioSocketEvent',
+    )
 
     const integration = {
         id: integrationId,

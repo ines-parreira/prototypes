@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
+import MonitorCell from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
 import VoiceCallActivity from 'domains/reporting/pages/voice/components/VoiceCallActivity/VoiceCallActivity'
 import VoiceCallRecording from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {
@@ -151,6 +152,12 @@ export const getOrderedHeaderCells = ({
                 title: voiceCallTableColumnName[
                     VoiceCallTableColumn.LiveStatus
                 ],
+                className: css.smallCell,
+            },
+        },
+        [VoiceCallTableColumn.Monitor]: {
+            props: {
+                title: voiceCallTableColumnName[VoiceCallTableColumn.Monitor],
                 className: css.smallCell,
             },
         },
@@ -347,6 +354,12 @@ export const getOrderedCells = ({
                         status={item.status}
                     />
                 ),
+            },
+        },
+        [VoiceCallTableColumn.Monitor]: {
+            props: {
+                className: css.smallCell,
+                children: <MonitorCell voiceCall={item} />,
             },
         },
     }

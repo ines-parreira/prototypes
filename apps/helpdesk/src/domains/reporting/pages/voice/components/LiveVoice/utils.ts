@@ -145,6 +145,7 @@ export const formatVoiceCallsData = (
             displayStatus: displayStatus,
             queueId: voiceCall.queue_id ?? null,
             queueName: null,
+            callSid: voiceCall.external_id,
         }
     })
 

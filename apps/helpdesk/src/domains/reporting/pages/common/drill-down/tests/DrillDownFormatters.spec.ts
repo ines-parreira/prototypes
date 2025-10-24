@@ -58,6 +58,7 @@ describe('DrillDownFormatters', () => {
                 voicemailUrl: 'voicemailUrl',
                 callRecordingAvailable: 'callRecordingAvailable',
                 callRecordingUrl: 'callRecordingUrl',
+                callSid: 'undefined',
                 metricValue: 'metricField',
                 rowData: row,
             })
@@ -118,6 +119,7 @@ describe('DrillDownFormatters', () => {
                 transferTargetAgentId: 'agentId',
                 transferTargetQueueId: 'queueId',
                 transferTargetExternalNumber: 'externalNumber',
+                callSid: 'undefined',
                 rowData: row,
             })
         })

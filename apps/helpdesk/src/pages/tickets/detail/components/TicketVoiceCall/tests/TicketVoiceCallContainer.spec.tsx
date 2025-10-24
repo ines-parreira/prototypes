@@ -9,10 +9,10 @@ import configureMockStore from 'redux-mock-store'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { User } from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import { RootState } from 'state/types'
 
@@ -31,8 +31,8 @@ const icon = 'phone'
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('hooks/integrations/phone/useMonitoringCall')
-const useMonitoringCallMock = assumeMock(useMonitoringCall)
+jest.mock('pages/common/components/MonitorCallButton/MonitorCallButton')
+const MonitorCallButtonMock = assumeMock(MonitorCallButton)
 
 jest.mock(
     '../TicketVoiceCallAudios',
@@ -75,6 +75,7 @@ const renderComponent = (
         currentUser: fromJS({
             id: 123,
             name: 'Test User',
+            role: { name: UserRole.Admin },
         }),
     })
 
@@ -99,7 +100,6 @@ const renderComponent = (
 
 describe('TicketVoiceCallContainer', () => {
     const mockToggleRecording = jest.fn()
-    const mockMakeMonitoringCall = jest.fn()
 
     mockedUseVoiceRecordingsContext.mockReturnValue({
         isTranscriptionOpened: () => false,
@@ -118,9 +118,7 @@ describe('TicketVoiceCallContainer', () => {
             }
             return false
         })
-        useMonitoringCallMock.mockReturnValue({
-            makeMonitoringCall: mockMakeMonitoringCall,
-        })
+        MonitorCallButtonMock.mockReturnValue(<div>MonitorCallButton</div>)
     })
 
     it('renders the component with all props', () => {
@@ -226,8 +224,43 @@ describe('TicketVoiceCallContainer', () => {
         it.each([
             { status: VoiceCallStatus.Answered },
             { status: VoiceCallStatus.Connected },
+            { status: VoiceCallStatus.InProgress },
+            { status: VoiceCallStatus.Ringing },
         ])(
-            'should render Listen button when call is in progress with status $status',
+            'should render MonitorCallButton when call is not in final status ($status)',
+            ({ status }) => {
+                renderComponent({
+                    voiceCall: {
+                        ...voiceCall,
+                        status,
+                        external_id: 'test-call-sid',
+                    },
+                })
+
+                expect(
+                    screen.getByText('MonitorCallButton'),
+                ).toBeInTheDocument()
+                expect(MonitorCallButtonMock).toHaveBeenCalledWith(
+                    {
+                        voiceCallToMonitor: expect.objectContaining({
+                            status,
+                            external_id: 'test-call-sid',
+                        }),
+                        agentId: 123,
+                    },
+                    {},
+                )
+            },
+        )
+
+        it.each([
+            { status: VoiceCallStatus.Completed },
+            { status: VoiceCallStatus.Busy },
+            { status: VoiceCallStatus.Canceled },
+            { status: VoiceCallStatus.Failed },
+            { status: VoiceCallStatus.NoAnswer },
+        ])(
+            'should not render MonitorCallButton when call is in final status ($status)',
             ({ status }) => {
                 renderComponent({
                     voiceCall: {
@@ -236,11 +269,113 @@ describe('TicketVoiceCallContainer', () => {
                     },
                 })
 
-                expect(screen.getByText('Listen')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('MonitorCallButton'),
+                ).not.toBeInTheDocument()
             },
         )
 
-        it('should not render Listen button when feature flag is disabled', () => {
+        it('should render MonitorCallButton when user has permission', () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    id: 123,
+                    name: 'Test User',
+                    role: { name: UserRole.Admin },
+                }),
+            })
+
+            render(
+                <Provider store={store}>
+                    <TicketVoiceCallContainer
+                        header={header}
+                        user={user}
+                        callStatus={callStatus}
+                        dateTime={dateTime}
+                        voiceCall={{
+                            ...voiceCall,
+                            status: VoiceCallStatus.Answered,
+                            external_id: 'test-call-sid',
+                        }}
+                        icon={icon}
+                        source={{
+                            from: 'John Doe',
+                            to: 'Jane Doe',
+                        }}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('MonitorCallButton')).toBeInTheDocument()
+        })
+
+        it('should not render MonitorCallButton when user does not have permission', () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    id: 123,
+                    name: 'Test User',
+                    role: { name: UserRole.LiteAgent },
+                }),
+            })
+
+            render(
+                <Provider store={store}>
+                    <TicketVoiceCallContainer
+                        header={header}
+                        user={user}
+                        callStatus={callStatus}
+                        dateTime={dateTime}
+                        voiceCall={{
+                            ...voiceCall,
+                            status: VoiceCallStatus.Answered,
+                        }}
+                        icon={icon}
+                        source={{
+                            from: 'John Doe',
+                            to: 'Jane Doe',
+                        }}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('MonitorCallButton'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render MonitorCallButton for Agent users', () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    id: 123,
+                    name: 'Test User',
+                    role: { name: UserRole.Agent },
+                }),
+            })
+
+            render(
+                <Provider store={store}>
+                    <TicketVoiceCallContainer
+                        header={header}
+                        user={user}
+                        callStatus={callStatus}
+                        dateTime={dateTime}
+                        voiceCall={{
+                            ...voiceCall,
+                            status: VoiceCallStatus.Answered,
+                            external_id: 'test-call-sid',
+                        }}
+                        icon={icon}
+                        source={{
+                            from: 'John Doe',
+                            to: 'Jane Doe',
+                        }}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('MonitorCallButton')).toBeInTheDocument()
+        })
+
+        it('should not render MonitorCallButton when feature flag is disabled', () => {
             useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
                 if (flagKey === FeatureFlagKey.CallListening) {
                     return false
@@ -255,26 +390,9 @@ describe('TicketVoiceCallContainer', () => {
                 },
             })
 
-            expect(screen.queryByText('Listen')).not.toBeInTheDocument()
-        })
-
-        it('should call makeMonitoringCall with correct parameters when Listen button is clicked', () => {
-            const testVoiceCall = {
-                ...voiceCall,
-                status: VoiceCallStatus.Answered,
-                external_id: 'test-call-sid-123',
-            }
-
-            renderComponent({
-                voiceCall: testVoiceCall,
-            })
-
-            fireEvent.click(screen.getByText('Listen'))
-
-            expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
-                testVoiceCall,
-                123,
-            )
+            expect(
+                screen.queryByText('MonitorCallButton'),
+            ).not.toBeInTheDocument()
         })
     })
 })

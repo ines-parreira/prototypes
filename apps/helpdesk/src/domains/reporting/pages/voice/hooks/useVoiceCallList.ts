@@ -78,5 +78,6 @@ export const selectVoiceCallData = (
         displayStatus: row[VoiceCallDimension.DisplayStatus],
         queueId: parseNullableInteger(row[VoiceCallDimension.QueueId]),
         queueName: row[VoiceCallDimension.QueueName],
+        callSid: 'undefined', // can be filled if we ever need it, by adding it to the dimensions
     }))
 }

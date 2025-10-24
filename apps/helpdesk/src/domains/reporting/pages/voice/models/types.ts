@@ -59,6 +59,7 @@ export type VoiceCallSummary = {
     transferTargetAgentId?: number | null
     transferTargetExternalNumber?: string | null
     transferTargetQueueId?: number | null
+    callSid: string
 }
 
 export enum VoiceCallFilterDirection {

@@ -88,6 +88,7 @@ const data = [
         callRecordingUrl: 'callRecordingUrl',
         displayStatus: VoiceCallDisplayStatus.Answered,
         queueId: 1,
+        callSid: 'CA123',
     },
     {
         agentId: 2,
@@ -109,6 +110,7 @@ const data = [
         callRecordingUrl: null,
         displayStatus: VoiceCallDisplayStatus.Unanswered,
         queueId: 2,
+        callSid: 'CA234',
     },
     {
         agentId: 3,
@@ -130,6 +132,7 @@ const data = [
         callRecordingUrl: 'callRecordingUrl',
         displayStatus: VoiceCallDisplayStatus.Abandoned,
         queueId: null,
+        callSid: 'CA345',
     },
 ]
 

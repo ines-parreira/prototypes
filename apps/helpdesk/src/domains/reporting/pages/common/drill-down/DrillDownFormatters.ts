@@ -251,6 +251,7 @@ export const formatVoiceDrillDownRowData = ({
         row[VoiceEventsByAgentDimension.TransferTargetQueueId],
     transferTargetExternalNumber:
         row[VoiceEventsByAgentDimension.TransferTargetExternalNumber],
+    callSid: 'undefined', // can be filled if we ever need it, by adding it to the dimensions
     metricValue: row[metricField],
     rowData: row,
 })

@@ -2,7 +2,7 @@ import { Call } from '@twilio/voice-sdk'
 
 import { Button } from '@gorgias/axiom'
 
-import { extractMonitoringCallParams } from 'hooks/integrations/phone/utils'
+import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -24,14 +24,26 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
         <PhoneBarContainer>
             <PhoneBarInnerContent>
                 <PhoneBarCallerDetailsContainer>
-                    <PhoneIntegrationName integrationId={integrationId} />
-                    <VoiceCallCustomerLabel
-                        customerId={customerId}
-                        phoneNumber={customerPhoneNumber}
-                        showBothNameAndPhone
-                    />
+                    {integrationId && (
+                        <PhoneIntegrationName integrationId={integrationId} />
+                    )}
+                    {customerId ? (
+                        <VoiceCallCustomerLabel
+                            customerId={customerId}
+                            phoneNumber={customerPhoneNumber}
+                            showBothNameAndPhone
+                        />
+                    ) : (
+                        <span>
+                            <b>{customerPhoneNumber}</b>
+                        </span>
+                    )}
                     <span>and</span>
-                    <VoiceCallAgentLabel agentId={inCallAgentId} semibold />
+                    {inCallAgentId ? (
+                        <VoiceCallAgentLabel agentId={inCallAgentId} semibold />
+                    ) : (
+                        <span>unknown agent</span>
+                    )}
                 </PhoneBarCallerDetailsContainer>
                 <Button
                     intent="destructive"

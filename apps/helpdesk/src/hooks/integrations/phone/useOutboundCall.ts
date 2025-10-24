@@ -6,7 +6,7 @@ import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
-} from 'hooks/integrations/phone/utils'
+} from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import useVoiceDevice from './useVoiceDevice'

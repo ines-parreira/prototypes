@@ -9,7 +9,7 @@ import {
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
 
-import { getCallSid } from 'hooks/integrations/phone/utils'
+import { getCallSid } from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { UserSearchResult } from 'models/search/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
