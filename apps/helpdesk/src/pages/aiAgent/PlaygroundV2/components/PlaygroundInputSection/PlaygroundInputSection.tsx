@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { shortcutManager, shortcuts } from '@repo/utils'
@@ -20,7 +20,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
 
-import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
+import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
 import {
@@ -111,16 +111,16 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
         onChannelAvailabilityChange,
     } = useCoreContext()
 
-    const { onMessageSend, isMessageSending, messages } = usePlaygroundContext()
+    const { onMessageSend, isMessageSending, messages } = useMessagesContext()
 
     const { snippetHelpCenterId, storeConfiguration } =
         useConfigurationContext()
 
     const events = useEvents()
 
-    const isInitialMessage = !messages.some(
-        (message) => message.sender !== AI_AGENT_SENDER,
-    )
+    const isInitialMessage = useMemo(() => {
+        return !messages.some((message) => message.sender !== AI_AGENT_SENDER)
+    }, [messages])
 
     const {
         formValues,

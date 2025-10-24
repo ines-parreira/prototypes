@@ -13,7 +13,7 @@ import { renderWithRouter } from 'utils/testing'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
-import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
+import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import {
     PlaygroundChannelAvailability,
@@ -22,7 +22,7 @@ import {
 } from '../../types'
 import { PlaygroundInputSection } from './PlaygroundInputSection'
 
-const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUseMessagesContext = jest.mocked(useMessagesContext)
 const mockUsePlaygroundForm = jest.mocked(usePlaygroundForm)
 
 const mockUseCoreContext = jest.fn(() => ({
@@ -95,9 +95,9 @@ jest.mock('../../hooks/usePlaygroundTracking', () => ({
     }),
 }))
 
-jest.mock('../../contexts/PlaygroundContext', () => ({
-    ...jest.requireActual('../../contexts/PlaygroundContext'),
-    usePlaygroundContext: jest.fn(),
+jest.mock('../../contexts/MessagesContext', () => ({
+    ...jest.requireActual('../../contexts/MessagesContext'),
+    useMessagesContext: jest.fn(),
 }))
 
 jest.mock('../../hooks/usePlaygroundForm', () => ({
@@ -290,7 +290,7 @@ const renderComponent = (props: any = {}) => {
         } as any)
     }
 
-    mockUsePlaygroundContext.mockReturnValue({
+    mockUseMessagesContext.mockReturnValue({
         messages: mappedMessagesOverrides.messages || [],
         onMessageSend:
             mappedMessagesOverrides.onMessageSend || defaultProps.onSendMessage,

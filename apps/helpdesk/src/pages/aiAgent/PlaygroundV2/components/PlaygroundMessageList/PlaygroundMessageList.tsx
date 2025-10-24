@@ -6,7 +6,7 @@ import { MessageType } from 'models/aiAgentPlayground/types'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 
-import { usePlaygroundContext } from '../../contexts/PlaygroundContext'
+import { useMessagesContext } from '../../contexts/MessagesContext'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
@@ -18,7 +18,7 @@ export const PlaygroundMessageList = () => {
 
     const { storeConfiguration } = useConfigurationContext()
     const { channel } = useCoreContext()
-    const { messages } = usePlaygroundContext()
+    const { messages } = useMessagesContext()
 
     // Auto-scroll to bottom when messages change
     useEffect(() => {

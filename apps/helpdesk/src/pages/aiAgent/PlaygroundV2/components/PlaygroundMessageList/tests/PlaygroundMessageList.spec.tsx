@@ -5,11 +5,11 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 
 import { useConfigurationContext } from '../../../contexts/ConfigurationContext'
 import { useCoreContext } from '../../../contexts/CoreContext'
-import { usePlaygroundContext } from '../../../contexts/PlaygroundContext'
+import { useMessagesContext } from '../../../contexts/MessagesContext'
 import { PlaygroundMessageList } from '../PlaygroundMessageList'
 
-jest.mock('../../../contexts/PlaygroundContext', () => ({
-    usePlaygroundContext: jest.fn(),
+jest.mock('../../../contexts/MessagesContext', () => ({
+    useMessagesContext: jest.fn(),
 }))
 
 jest.mock('../../../contexts/ConfigurationContext', () => ({
@@ -44,7 +44,7 @@ jest.mock('../../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
     ),
 }))
 
-const mockUsePlaygroundContext = jest.mocked(usePlaygroundContext)
+const mockUseMessagesContext = jest.mocked(useMessagesContext)
 const mockUseConfigurationContext = jest.mocked(useConfigurationContext)
 const mockUseCoreContext = jest.mocked(useCoreContext)
 
@@ -88,7 +88,7 @@ const defaultCoreContext = {
 describe('PlaygroundMessageList', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUsePlaygroundContext.mockReturnValue(defaultMessagesState as any)
+        mockUseMessagesContext.mockReturnValue(defaultMessagesState as any)
         mockUseConfigurationContext.mockReturnValue(
             defaultConfigurationContext as any,
         )
@@ -105,7 +105,7 @@ describe('PlaygroundMessageList', () => {
 
     describe('Messages rendering', () => {
         it('should render messages when present', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -130,7 +130,7 @@ describe('PlaygroundMessageList', () => {
         })
 
         it('should render KnowledgeSourcesWrapper for AI Agent messages with executionId', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -153,7 +153,7 @@ describe('PlaygroundMessageList', () => {
         })
 
         it('should not render KnowledgeSourcesWrapper for messages without executionId', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -173,7 +173,7 @@ describe('PlaygroundMessageList', () => {
         })
 
         it('should not render KnowledgeSourcesWrapper for non-MESSAGE type messages', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -196,7 +196,7 @@ describe('PlaygroundMessageList', () => {
 
     describe('Ticket event outcome', () => {
         it('should pass outcome to KnowledgeSourcesWrapper when ticket event message exists', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -231,7 +231,7 @@ describe('PlaygroundMessageList', () => {
         })
 
         it('should pass undefined outcome when no ticket event message', () => {
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {
@@ -263,7 +263,7 @@ describe('PlaygroundMessageList', () => {
 
             const { rerender } = render(<PlaygroundMessageList />)
 
-            mockUsePlaygroundContext.mockReturnValue({
+            mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesState,
                 messages: [
                     {

@@ -1,9 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
-import {
-    InnerPlaygroundProvider,
-    usePlaygroundContext,
-} from '../PlaygroundContext'
+import { MessagesProvider, useMessagesContext } from '../MessagesContext'
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({
     usePlaygroundMessages: jest.fn(() => ({
@@ -15,28 +12,26 @@ jest.mock('../../hooks/usePlaygroundMessages', () => ({
     })),
 }))
 
-describe('PlaygroundContext', () => {
-    describe('usePlaygroundContext', () => {
+describe('MessagesContext', () => {
+    describe('useMessagesContext', () => {
         it('should throw error when used outside provider', () => {
             const consoleErrorSpy = jest
                 .spyOn(console, 'error')
                 .mockImplementation(() => {})
 
             expect(() => {
-                renderHook(() => usePlaygroundContext())
+                renderHook(() => useMessagesContext())
             }).toThrow(
-                'usePlaygroundContext must be used within PlaygroundProvider',
+                'useMessagesContext must be used within a MessagesProvider',
             )
 
             consoleErrorSpy.mockRestore()
         })
 
         it('should return context value when used inside provider', () => {
-            const { result } = renderHook(() => usePlaygroundContext(), {
+            const { result } = renderHook(() => useMessagesContext(), {
                 wrapper: ({ children }) => (
-                    <InnerPlaygroundProvider>
-                        {children}
-                    </InnerPlaygroundProvider>
+                    <MessagesProvider>{children}</MessagesProvider>
                 ),
             })
 
