@@ -1,4 +1,4 @@
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getMonitoringParameters } from 'hooks/integrations/phone/monitoring.utils'
@@ -21,10 +21,9 @@ export default function MonitorCallButton({
 
     return (
         <Button
-            fillStyle="ghost"
-            intent="primary"
-            size="small"
-            leadingIcon={<i className="material-icons">headset_mic</i>}
+            variant="tertiary"
+            size="sm"
+            leadingSlot="headset_mic"
             onClick={() =>
                 makeMonitoringCall(
                     callSidToMonitor,

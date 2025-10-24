@@ -12,6 +12,8 @@ import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLab
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
 
+import css from './MonitoringPhoneCall.less'
+
 type Props = {
     call: Call
 }
@@ -40,7 +42,11 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                     )}
                     <span>and</span>
                     {inCallAgentId ? (
-                        <VoiceCallAgentLabel agentId={inCallAgentId} semibold />
+                        <VoiceCallAgentLabel
+                            agentId={inCallAgentId}
+                            semibold
+                            className={css.phoneBarAgentLabel}
+                        />
                     ) : (
                         <span>unknown agent</span>
                     )}
