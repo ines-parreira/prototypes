@@ -7,6 +7,13 @@ import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance'
 
+const mockNotifyError = jest.fn()
+jest.mock('hooks/useNotify', () => ({
+    useNotify: jest.fn(() => ({
+        error: mockNotifyError,
+    })),
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({
         id: 1,
@@ -52,6 +59,8 @@ describe('KnowledgeEditorGuidance', () => {
             guidanceArticle,
             isGuidanceArticleLoading: false,
         })
+        updateGuidanceArticle.mockResolvedValue(guidanceArticle)
+        createGuidanceArticle.mockResolvedValue(guidanceArticle)
     })
 
     it('renders in edit mode and allows editing', () => {
@@ -338,5 +347,104 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         expect(createGuidanceArticle).toHaveBeenCalled()
+    })
+
+    it('shows error notification when article creation fails', async () => {
+        const error = new Error('Creation failed')
+        createGuidanceArticle.mockRejectedValue(error)
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'New Article' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+        })
+
+        await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while creating guidance.',
+            )
+        })
+    })
+
+    it('shows error notification when article update fails', async () => {
+        const error = new Error('Update failed')
+        updateGuidanceArticle.mockRejectedValue(error)
+
+        const { getByLabelText } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        const nameInput = getByLabelText(/Guidance name/i)
+        await act(async () => {
+            fireEvent.change(nameInput, { target: { value: 'Updated Title' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        })
+
+        await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while editing guidance.',
+            )
+        })
+    })
+
+    it('shows error notification when article deletion fails', async () => {
+        const error = new Error('Deletion failed')
+        const deleteGuidanceArticle = jest.fn().mockRejectedValue(error)
+
+        jest.mocked(
+            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
+                .useGuidanceArticleMutation,
+        ).mockReturnValue({
+            updateGuidanceArticle,
+            createGuidanceArticle,
+            deleteGuidanceArticle,
+            duplicateGuidanceArticle: jest.fn(),
+            isGuidanceArticleUpdating: false,
+        })
+
+        const { getByRole } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onDelete={jest.fn()}
+                    guidanceMode="read"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        await act(async () => {
+            fireEvent.click(getByRole('button', { name: 'delete' }))
+        })
+
+        await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while deleting guidance.',
+            )
+        })
     })
 })

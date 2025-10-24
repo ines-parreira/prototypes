@@ -4,6 +4,7 @@ import _noop from 'lodash/noop'
 
 import { LoadingSpinner, SidePanel } from '@gorgias/axiom'
 
+import { useNotify } from 'hooks/useNotify'
 import {
     ArticleTranslationResponseDto,
     ArticleWithLocalTranslation,
@@ -193,6 +194,8 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     onDeleteFn?: () => void
     onUpdateFn?: () => void
 }) => {
+    const { error: notifyError } = useNotify()
+
     const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
@@ -213,27 +216,43 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
 
     const onSave = useCallback(
         async (guidanceFormFields: GuidanceFormFields) => {
-            const response = await updateGuidanceArticle(
-                mapGuidanceFormFieldsToGuidanceArticle(
-                    guidanceFormFields,
-                    locale,
-                ),
-                { articleId: guidanceArticleId, locale },
-            )
-            if (response && onUpdateFn) {
-                onUpdateFn()
+            try {
+                const response = await updateGuidanceArticle(
+                    mapGuidanceFormFieldsToGuidanceArticle(
+                        guidanceFormFields,
+                        locale,
+                    ),
+                    { articleId: guidanceArticleId, locale },
+                )
+                if (response && onUpdateFn) {
+                    onUpdateFn()
+                }
+                return response
+                // oxlint-disable-next-line no-unused-vars
+            } catch (_) {
+                notifyError('An error occurred while editing guidance.')
             }
-            return response
         },
-        [updateGuidanceArticle, guidanceArticleId, locale, onUpdateFn],
+        [
+            updateGuidanceArticle,
+            guidanceArticleId,
+            locale,
+            onUpdateFn,
+            notifyError,
+        ],
     )
 
     const onDelete = useCallback(async () => {
-        await deleteGuidanceArticle(guidanceArticleId)
-        if (onDeleteFn) {
-            onDeleteFn()
+        try {
+            await deleteGuidanceArticle(guidanceArticleId)
+            if (onDeleteFn) {
+                onDeleteFn()
+            }
+            // oxlint-disable-next-line no-unused-vars
+        } catch (_) {
+            notifyError('An error occurred while deleting guidance.')
         }
-    }, [deleteGuidanceArticle, guidanceArticleId, onDeleteFn])
+    }, [deleteGuidanceArticle, guidanceArticleId, onDeleteFn, notifyError])
 
     const onDuplicate = useCallback(
         () => duplicateGuidanceArticle(guidanceArticleId, shopName),
@@ -279,6 +298,8 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     onArticleCreated: (articleId: number) => void
     onCreateFn?: () => void
 }) => {
+    const { error: notifyError } = useNotify()
+
     const { guidanceActions, isLoading: isLoadingActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
 
@@ -289,22 +310,27 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
 
     const onCreate = useCallback(
         async (guidanceFormFields: GuidanceFormFields) => {
-            const response = await createGuidanceArticle(
-                mapGuidanceFormFieldsToGuidanceArticle(
-                    guidanceFormFields,
-                    locale,
-                    guidanceTemplate
-                        ? `template_guidance_${guidanceTemplate.id}`
-                        : undefined,
-                ),
-            )
-            if (response) {
-                onArticleCreated(response.id)
-                if (onCreateFn) {
-                    onCreateFn()
+            try {
+                const response = await createGuidanceArticle(
+                    mapGuidanceFormFieldsToGuidanceArticle(
+                        guidanceFormFields,
+                        locale,
+                        guidanceTemplate
+                            ? `template_guidance_${guidanceTemplate.id}`
+                            : undefined,
+                    ),
+                )
+                if (response) {
+                    onArticleCreated(response.id)
+                    if (onCreateFn) {
+                        onCreateFn()
+                    }
                 }
+                return response
+                // oxlint-disable-next-line no-unused-vars
+            } catch (_) {
+                notifyError('An error occurred while creating guidance.')
             }
-            return response
         },
         [
             createGuidanceArticle,
@@ -312,6 +338,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
             guidanceTemplate,
             onArticleCreated,
             onCreateFn,
+            notifyError,
         ],
     )
 
