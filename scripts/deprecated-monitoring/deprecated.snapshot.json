@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1483,
-    "reportGeneratedAt": "2025-10-23T10:21:53.237Z"
+    "totalUsages": 1484,
+    "reportGeneratedAt": "2025-10-24T09:44:29.772Z"
   },
   "entries": [
     {
@@ -1232,7 +1232,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 672,
+          "usageCount": 673,
           "name": "@gorgias.LegacyButton",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -1899,6 +1899,7 @@
               "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketStatus.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketFeedback/TicketFeedback.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketFields/TicketFields.tsx",
+              "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentReasoning.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallContainer.tsx",
