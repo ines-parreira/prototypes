@@ -5,6 +5,7 @@ import {
     CheckBoxField,
     ColorValue,
     Dot,
+    Icon,
     ListItem,
     MultiSelect,
     NewTag,
@@ -185,9 +186,19 @@ export function InfobarTicketDetailsTags({
                     </OverflowListItem>
                 ))}
                 <OverflowListShowMore>
-                    {({ hiddenCount }) => `+ ${hiddenCount}`}
+                    {({ hiddenCount }) => (
+                        <div className={css.overflowButtonContent}>
+                            <span>+{hiddenCount}</span>
+                            <Icon name="arrow-chevron-down" />
+                        </div>
+                    )}
                 </OverflowListShowMore>
-                <OverflowListShowLess />
+                <OverflowListShowLess>
+                    <div className={css.overflowButtonContent}>
+                        <span>Show less</span>
+                        <Icon name="arrow-chevron-up" />
+                    </div>
+                </OverflowListShowLess>
             </OverflowList>
         </div>
     )
