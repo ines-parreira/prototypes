@@ -23,9 +23,10 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
 
         expect(onEdit).toHaveBeenCalled()
 
-        fireEvent.click(screen.getByRole('button', { name: 'copy' }))
+        // TODO: add copy button back in when implemented
+        // fireEvent.click(screen.getByRole('button', { name: 'copy' }))
 
-        expect(onCopy).toHaveBeenCalled()
+        // expect(onCopy).toHaveBeenCalled()
 
         fireEvent.click(screen.getByRole('button', { name: 'delete' }))
 
@@ -94,7 +95,8 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
         )
 
         expect(screen.getByRole('button', { name: 'edit' })).toBeDisabled()
-        expect(screen.getByRole('button', { name: 'copy' })).toBeDisabled()
+        // TODO: add copy button back in when implemented
+        // expect(screen.getByRole('button', { name: 'copy' })).toBeDisabled()
         expect(screen.getByRole('button', { name: 'delete' })).toBeDisabled()
     })
 

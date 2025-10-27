@@ -35,6 +35,15 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { notify } from 'state/notifications/actions'
 import { renderWithRouter } from 'utils/testing'
 
+jest.mock('react-chartjs-2', () => ({
+    Line: () => (
+        <>
+            <canvas id="lineChartTooltip" />
+            <div id="lineChartTooltip" />
+        </>
+    ),
+}))
+
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -370,7 +379,7 @@ describe('KnowledgeStep', () => {
 
         jest.runAllTimers()
 
-        const nextButton = screen.getByText('Next')
+        const nextButton = screen.getByRole('button', { name: /next/i })
 
         act(() => {
             userEvent.click(nextButton)
@@ -510,6 +519,64 @@ describe('KnowledgeStep', () => {
                     expect.objectContaining({
                         type: 'NOTIFY',
                     }),
+                )
+            })
+        })
+    })
+
+    describe('Loading state management', () => {
+        beforeEach(() => {
+            useGetHelpCentersByShopNameMock.mockReturnValue({
+                isHelpCenterLoading: false,
+                helpCenters: getHelpCentersResponseFixture.data,
+            })
+        })
+
+        it('should reset loading state when mutation fails', async () => {
+            let onErrorCallback: (() => void) | undefined
+
+            mockUseUpdateOnboarding.mockReturnValue({
+                mutate: (_data: any, { onError }: any) => {
+                    onErrorCallback = onError
+                    onError()
+                },
+                isLoading: false,
+            })
+
+            renderWithProvider()
+            jest.runAllTimers()
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+
+            act(() => {
+                userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(onErrorCallback).toBeDefined()
+            })
+        })
+
+        it('should keep loading state until navigation completes on success', async () => {
+            mockUseUpdateOnboarding.mockReturnValue({
+                mutate: (_data: any, { onSuccess }: any) => {
+                    Promise.resolve(onSuccess()).then(() => {})
+                },
+                isLoading: false,
+            })
+
+            const { history } = renderWithProvider()
+            jest.runAllTimers()
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+
+            act(() => {
+                userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(history.location.pathname).toEqual(
+                    '/app/ai-agent/overview',
                 )
             })
         })

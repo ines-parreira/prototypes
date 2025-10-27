@@ -34,7 +34,7 @@ export const DeleteModal = ({
         >
             <ModalHeader title={title} />
             <ModalBody>{description}</ModalBody>
-            <ModalActionsFooter innerClassName={css.footer}>
+            <ModalActionsFooter>
                 <Button
                     intent="secondary"
                     fillStyle="fill"

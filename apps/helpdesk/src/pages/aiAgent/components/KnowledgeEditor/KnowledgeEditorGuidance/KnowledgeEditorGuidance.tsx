@@ -186,6 +186,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     guidanceMode,
     onDeleteFn,
     onUpdateFn,
+    onCopyFn,
 }: BaseProps & {
     shopType: string
     guidanceArticleId: number
@@ -193,6 +194,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     locale: LocaleCode
     onDeleteFn?: () => void
     onUpdateFn?: () => void
+    onCopyFn?: () => void
 }) => {
     const { error: notifyError } = useNotify()
 
@@ -224,12 +226,9 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
                     ),
                     { articleId: guidanceArticleId, locale },
                 )
-                if (response && onUpdateFn) {
-                    onUpdateFn()
-                }
+                onUpdateFn?.()
                 return response
-                // oxlint-disable-next-line no-unused-vars
-            } catch (_) {
+            } catch {
                 notifyError('An error occurred while editing guidance.')
             }
         },
@@ -245,19 +244,26 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     const onDelete = useCallback(async () => {
         try {
             await deleteGuidanceArticle(guidanceArticleId)
-            if (onDeleteFn) {
-                onDeleteFn()
-            }
-            // oxlint-disable-next-line no-unused-vars
-        } catch (_) {
+            onDeleteFn?.()
+        } catch {
             notifyError('An error occurred while deleting guidance.')
         }
     }, [deleteGuidanceArticle, guidanceArticleId, onDeleteFn, notifyError])
 
-    const onDuplicate = useCallback(
-        () => duplicateGuidanceArticle(guidanceArticleId, shopName),
-        [guidanceArticleId, shopName, duplicateGuidanceArticle],
-    )
+    const onDuplicate = useCallback(async () => {
+        try {
+            await duplicateGuidanceArticle(guidanceArticleId, shopName)
+            onCopyFn?.()
+        } catch {
+            notifyError('An error occurred while duplicating guidance.')
+        }
+    }, [
+        duplicateGuidanceArticle,
+        guidanceArticleId,
+        shopName,
+        onCopyFn,
+        notifyError,
+    ])
 
     if (!guidanceArticle || isGuidanceArticleLoading || isLoadingActions) {
         return <LoadingSpinner size="big" />
@@ -322,13 +328,10 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
                 )
                 if (response) {
                     onArticleCreated(response.id)
-                    if (onCreateFn) {
-                        onCreateFn()
-                    }
+                    onCreateFn?.()
                 }
                 return response
-                // oxlint-disable-next-line no-unused-vars
-            } catch (_) {
+            } catch {
                 notifyError('An error occurred while creating guidance.')
             }
         },
@@ -372,6 +375,7 @@ const KnowledgeEditorGuidanceRouter = ({
     onDeleteFn,
     onCreateFn,
     onUpdateFn,
+    onCopyFn,
     guidanceMode,
 }: BaseProps & {
     shopType: string
@@ -382,6 +386,7 @@ const KnowledgeEditorGuidanceRouter = ({
     onDeleteFn?: () => void
     onCreateFn?: () => void
     onUpdateFn?: () => void
+    onCopyFn?: () => void
 }) => {
     const [currentGuidanceArticleId, setCurrentGuidanceArticleId] =
         useState(guidanceArticleId)
@@ -405,6 +410,7 @@ const KnowledgeEditorGuidanceRouter = ({
                 onClickNext={onClickNext}
                 onDeleteFn={onDeleteFn}
                 onUpdateFn={onUpdateFn}
+                onCopyFn={onCopyFn}
                 guidanceMode={currentGuidanceMode}
             />
         )
@@ -439,6 +445,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     onDelete,
     onCreate,
     onUpdate,
+    onCopy,
     isOpen,
 }: BaseProps & {
     shopName: string
@@ -448,6 +455,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     onDelete?: () => void
     onCreate?: () => void
     onUpdate?: () => void
+    onCopy?: () => void
     isOpen: boolean
 }) => {
     const guidanceHelpCenter = useAiAgentHelpCenter({
@@ -472,6 +480,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
                     onDeleteFn={onDelete}
                     onCreateFn={onCreate}
                     onUpdateFn={onUpdate}
+                    onCopyFn={onCopy}
                 />
             ) : (
                 <LoadingSpinner size="big" />

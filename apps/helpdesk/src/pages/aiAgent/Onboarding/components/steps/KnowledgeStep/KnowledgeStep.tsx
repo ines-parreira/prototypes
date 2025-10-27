@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
@@ -50,6 +52,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 }) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
+    const [isLoading, setIsLoading] = useState(false)
 
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
@@ -96,46 +99,54 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         ? routes.perShopOverview
         : routes.overview
 
-    const onNextClick = () => {
+    const onNextClick = async () => {
         if (data && 'id' in data) {
-            doUpdateOnboardingMutation(
-                {
-                    id: data.id,
-                    data: {
-                        ...data,
+            setIsLoading(true)
+            try {
+                doUpdateOnboardingMutation(
+                    {
                         id: data.id,
-                        completedDatetime: new Date().toISOString(),
-                        faqHelpCenterId: helpCenters[0]?.id ?? null,
+                        data: {
+                            ...data,
+                            id: data.id,
+                            completedDatetime: new Date().toISOString(),
+                            faqHelpCenterId: helpCenters[0]?.id ?? null,
+                        },
                     },
-                },
-                {
-                    onSuccess: async () => {
-                        void queryClient.invalidateQueries({
-                            queryKey: storeConfigurationKeys.all(),
-                        })
+                    {
+                        onSuccess: async () => {
+                            void queryClient.invalidateQueries({
+                                queryKey: storeConfigurationKeys.all(),
+                            })
 
-                        if (
-                            trialAccess.trialType ===
-                                TrialType.ShoppingAssistant &&
-                            shoppingAssistantTrialOptin
-                        ) {
-                            await startShoppingAssistantTrial([shopName])
-                            removeShoppingAssistantTrialOptin()
-                        }
+                            if (
+                                trialAccess.trialType ===
+                                    TrialType.ShoppingAssistant &&
+                                shoppingAssistantTrialOptin
+                            ) {
+                                await startShoppingAssistantTrial([shopName])
+                                removeShoppingAssistantTrialOptin()
+                            }
 
-                        logEvent(
-                            SegmentEvent.AiAgentNewOnboardingWizardFinished,
-                            {
-                                shopName,
-                            },
-                        )
-                        history.push({
-                            pathname: nextPath,
-                            search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
-                        })
+                            logEvent(
+                                SegmentEvent.AiAgentNewOnboardingWizardFinished,
+                                {
+                                    shopName,
+                                },
+                            )
+                            history.push({
+                                pathname: nextPath,
+                                search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
+                            })
+                        },
+                        onError: () => {
+                            setIsLoading(false)
+                        },
                     },
-                },
-            )
+                )
+            } catch {
+                setIsLoading(false)
+            }
         }
     }
 
@@ -172,6 +183,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 totalSteps={totalSteps}
                 onNextClick={onNextClick}
                 onBackClick={onBackClick}
+                isLoading={isLoading}
             >
                 <MainTitle
                     titleBlack="Great, start building "

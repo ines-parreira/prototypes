@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { Icon, IconSize, Skeleton, Text } from '@gorgias/axiom'
 
 import { GuidanceArticle } from 'pages/aiAgent/types'
@@ -54,7 +56,10 @@ export const GuidanceList = ({
                                 <Icon name="edit-pencil" />
                             </span>
                             <span
-                                className={css.actionButton}
+                                className={classNames(
+                                    css.actionButton,
+                                    css.deleteButton,
+                                )}
                                 onClick={() => onDelete(article.id)}
                             >
                                 <Icon name="trash-empty" />
@@ -71,7 +76,7 @@ export const GuidanceList = ({
                     rel="noopener noreferrer"
                 >
                     <Text size="sm" variant="bold">
-                        View all guidances
+                        View all guidance
                     </Text>
                     <Icon name="external-link" size={IconSize.Sm} />
                 </a>

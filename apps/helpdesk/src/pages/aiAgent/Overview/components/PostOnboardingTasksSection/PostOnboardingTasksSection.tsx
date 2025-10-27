@@ -4,7 +4,9 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
-import loadingStaticIcon from 'assets/img/icons/loading-static.svg'
+import loadingStaticIcon33 from 'assets/img/icons/loading-static-33.svg'
+import loadingStaticIcon66 from 'assets/img/icons/loading-static-66.svg'
+import loadingStaticIcon100 from 'assets/img/icons/loading-static-100.svg'
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
@@ -59,12 +61,22 @@ export const PostOnboardingTasksSection = () => {
         setExpandedStep(stepFromState ?? firstUncompletedStepName)
     }, [location.state, firstUncompletedStepName])
 
+    const getProgressIcon = () => {
+        if (completedStepsCount >= 3) return loadingStaticIcon100
+        if (completedStepsCount >= 2) return loadingStaticIcon66
+        return loadingStaticIcon33
+    }
+
     return (
         <div className={css.container}>
             <div className={css.header}>
                 <Heading size="md">Get started with AI Agent</Heading>
                 <div className={css.progress}>
-                    <img src={loadingStaticIcon} alt="loading icon" />
+                    <img
+                        alt="loading icon"
+                        src={getProgressIcon()}
+                        className={css.progressIcon}
+                    />
                     <Text size="sm" variant="bold">
                         {completedStepsCount} / 3 steps
                     </Text>

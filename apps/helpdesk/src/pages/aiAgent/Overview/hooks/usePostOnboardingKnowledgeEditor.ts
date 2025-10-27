@@ -90,7 +90,7 @@ export const usePostOnboardingKnowledgeEditor = ({
 
         dispatch(
             notify({
-                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e); text-decoration: underline !important;"> Knowledge</a>.`,
+                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e);"> Knowledge</a>.`,
                 allowHTML: true,
                 dismissAfter: 3000,
                 status: NotificationStatus.Success,
@@ -105,7 +105,7 @@ export const usePostOnboardingKnowledgeEditor = ({
     const handleUpdate = useCallback(() => {
         dispatch(
             notify({
-                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e); text-decoration: underline !important;"> Knowledge</a>.`,
+                message: `Guidance saved! You can update or edit it anytime in <a href=${routes.knowledge}  style="color: var(--content-neutral-default, #1e242e);"> Knowledge</a>.`,
                 allowHTML: true,
                 dismissAfter: 3000,
                 status: NotificationStatus.Success,
@@ -128,6 +128,20 @@ export const usePostOnboardingKnowledgeEditor = ({
         )
     }, [dispatch, closeEditor])
 
+    /**
+     * Called after a guidance article is successfully duplicated.
+     * Shows success notification.
+     */
+    const handleCopy = useCallback(() => {
+        dispatch(
+            notify({
+                message: 'Guidance successfully duplicated.',
+                dismissAfter: 3000,
+                status: NotificationStatus.Success,
+            }),
+        )
+    }, [dispatch])
+
     // -------------------------
     // Derived props for KnowledgeEditor component
     // -------------------------
@@ -142,6 +156,7 @@ export const usePostOnboardingKnowledgeEditor = ({
         onCreate: handleCreate,
         onUpdate: handleUpdate,
         onDelete: handleDelete,
+        onCopy: handleCopy,
     }
 
     return {

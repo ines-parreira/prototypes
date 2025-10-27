@@ -79,6 +79,16 @@ export const KnowledgeEditorGuidanceView = ({
     const [guidanceMode, setGuidanceMode] =
         useState<GuidanceMode['mode']>(initialGuidanceMode)
 
+    const hasContentChanged = useMemo(
+        () => title !== initialTitle || content !== initialContent,
+        [title, initialTitle, content, initialContent],
+    )
+
+    const isFormValid = useMemo(
+        () => title.trim() !== '' && content.trim() !== '',
+        [title, content],
+    )
+
     const onClickEdit = useCallback(() => {
         setGuidanceMode('edit')
     }, [])
@@ -89,9 +99,20 @@ export const KnowledgeEditorGuidanceView = ({
     }, [onSave, title, content, aiAgentEnabled])
 
     const onClickCancel = useCallback(() => {
-        onChangeTitle(initialTitle)
-        onChangeContent(initialContent)
-    }, [initialTitle, initialContent, onChangeTitle, onChangeContent])
+        if (hasContentChanged) {
+            onChangeTitle(initialTitle)
+            onChangeContent(initialContent)
+        } else {
+            onClose()
+        }
+    }, [
+        hasContentChanged,
+        initialTitle,
+        initialContent,
+        onChangeTitle,
+        onChangeContent,
+        onClose,
+    ])
 
     const onClickCreate = useCallback(async () => {
         await onCreate({ name: title, content, isVisible: aiAgentEnabled })
@@ -114,12 +135,15 @@ export const KnowledgeEditorGuidanceView = ({
                 : guidanceMode === 'edit'
                   ? {
                         mode: 'edit',
-                        onSave: onClickSave,
+                        onSave:
+                            hasContentChanged && isFormValid
+                                ? onClickSave
+                                : undefined,
                         onCancel: onClickCancel,
                     }
                   : {
                         mode: 'create',
-                        onCreate: onClickCreate,
+                        onCreate: isFormValid ? onClickCreate : undefined,
                         onCancel: onClickCancel,
                     },
         [
@@ -130,6 +154,8 @@ export const KnowledgeEditorGuidanceView = ({
             onClickSave,
             onClickCancel,
             onClickCreate,
+            hasContentChanged,
+            isFormValid,
         ],
     )
 
@@ -142,7 +168,7 @@ export const KnowledgeEditorGuidanceView = ({
     }
 
     return (
-        <div>
+        <div className={css.knowledgeEditorContainer}>
             <KnowledgeEditorTopBar
                 onClickPrevious={onClickPrevious}
                 onClickNext={onClickNext}

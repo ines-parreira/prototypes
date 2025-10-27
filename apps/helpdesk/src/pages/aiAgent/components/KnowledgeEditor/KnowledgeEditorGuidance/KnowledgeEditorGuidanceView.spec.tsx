@@ -158,39 +158,28 @@ describe('KnowledgeEditorGuidanceView', () => {
         ).toBeInTheDocument()
     })
 
-    it('calls onSave when Save button is clicked in edit mode', async () => {
-        const onSave = jest.fn()
+    it('disables Save button when no changes are made in edit mode', () => {
         render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidanceView
                     {...defaultProps}
-                    onSave={onSave}
                     guidanceMode="edit"
                 />
             </Provider>,
         )
 
-        await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-        })
-
-        expect(onSave).toHaveBeenCalledWith({
-            name: 'Test Title',
-            content: 'Test Content',
-            isVisible: true,
-        })
+        const saveButton = screen.getByRole('button', { name: 'Save' })
+        expect(saveButton).toBeDisabled()
     })
 
-    it('resets title and content when Cancel is clicked in edit mode', () => {
-        const onChangeTitle = jest.fn()
-        const onChangeContent = jest.fn()
+    it('closes editor when Cancel is clicked without changes in edit mode', () => {
+        const onClose = jest.fn()
 
         render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidanceView
                     {...defaultProps}
-                    onChangeTitle={onChangeTitle}
-                    onChangeContent={onChangeContent}
+                    onClose={onClose}
                     guidanceMode="edit"
                 />
             </Provider>,
@@ -200,8 +189,7 @@ describe('KnowledgeEditorGuidanceView', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
         })
 
-        expect(onChangeTitle).toHaveBeenCalledWith('Test Title')
-        expect(onChangeContent).toHaveBeenCalledWith('Test Content')
+        expect(onClose).toHaveBeenCalledTimes(1)
     })
 
     it('displays create view component in create mode', () => {

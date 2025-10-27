@@ -190,6 +190,21 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
     })
 
+    it('should dispatch notification when guidance is duplicated', () => {
+        const { result } = renderHook(() =>
+            usePostOnboardingKnowledgeEditor({
+                shopName: mockShopName,
+                shopType: mockShopType,
+            }),
+        )
+
+        act(() => {
+            result.current.knowledgeEditorProps.onCopy()
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+    })
+
     it('should return knowledgeEditorProps with correct values', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
@@ -208,5 +223,6 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         expect(typeof knowledgeEditorProps.onCreate).toBe('function')
         expect(typeof knowledgeEditorProps.onUpdate).toBe('function')
         expect(typeof knowledgeEditorProps.onDelete).toBe('function')
+        expect(typeof knowledgeEditorProps.onCopy).toBe('function')
     })
 })

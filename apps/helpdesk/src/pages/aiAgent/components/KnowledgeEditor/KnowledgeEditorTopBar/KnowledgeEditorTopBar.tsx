@@ -31,32 +31,37 @@ export const KnowledgeEditorTopBar = (props: Props) => {
     return (
         <div className={css.container}>
             <div className={css.navigationControls}>
-                <button
-                    className={classNames(
-                        controlsCss.icon,
-                        controlsCss.ghostButton,
-                    )}
-                    onClick={props.onClickPrevious}
-                    disabled={
-                        props.onClickPrevious === undefined || props.isUpdating
-                    }
-                    aria-label="previous"
-                >
-                    <Icon name="arrow-chevron-left" />
-                </button>
-                <button
-                    className={classNames(
-                        controlsCss.icon,
-                        controlsCss.ghostButton,
-                    )}
-                    onClick={props.onClickNext}
-                    disabled={
-                        props.onClickNext === undefined || props.isUpdating
-                    }
-                    aria-label="next"
-                >
-                    <Icon name="arrow-chevron-right" />
-                </button>
+                {props.onClickPrevious && (
+                    <button
+                        className={classNames(
+                            controlsCss.icon,
+                            controlsCss.ghostButton,
+                        )}
+                        onClick={props.onClickPrevious}
+                        disabled={
+                            props.onClickPrevious === undefined ||
+                            props.isUpdating
+                        }
+                        aria-label="previous"
+                    >
+                        <Icon name="arrow-chevron-left" />
+                    </button>
+                )}
+                {props.onClickNext && (
+                    <button
+                        className={classNames(
+                            controlsCss.icon,
+                            controlsCss.ghostButton,
+                        )}
+                        onClick={props.onClickNext}
+                        disabled={
+                            props.onClickNext === undefined || props.isUpdating
+                        }
+                        aria-label="next"
+                    >
+                        <Icon name="arrow-chevron-right" />
+                    </button>
+                )}
             </div>
 
             <div className={css.title}>
@@ -75,8 +80,8 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         <div className={controlsCss.separator} />
                     </>
                 )}
-
-                <button
+                {/* TODO: add fullscreen button back in when implemented */}
+                {/* <button
                     className={classNames(
                         controlsCss.icon,
                         controlsCss.secondaryButton,
@@ -92,7 +97,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                             props.isFullscreen ? 'arrow-shrink' : 'arrow-expand'
                         }
                     />
-                </button>
+                </button> */}
 
                 <button
                     className={classNames(

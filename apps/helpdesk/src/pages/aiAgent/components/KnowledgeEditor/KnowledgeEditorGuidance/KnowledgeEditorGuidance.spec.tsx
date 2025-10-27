@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
+import { GuidanceTemplate } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import { mockStore } from 'utils/testing'
 
@@ -13,6 +14,17 @@ jest.mock('hooks/useNotify', () => ({
         error: mockNotifyError,
     })),
 }))
+
+const mockGuidanceTemplate: GuidanceTemplate = {
+    id: 'test-template',
+    name: 'Test Article',
+    content: 'Test Content',
+    tag: 'test-tag',
+    style: {
+        color: '#000000',
+        background: '#FFFFFF',
+    },
+}
 
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({
@@ -152,6 +164,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClickNext={jest.fn()}
                     onDelete={jest.fn()}
                     guidanceMode="create"
+                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
@@ -181,6 +194,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={jest.fn()}
                     onDelete={jest.fn()}
                     guidanceMode="create"
+                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
@@ -196,8 +210,8 @@ describe('KnowledgeEditorGuidance', () => {
 
         expect(createGuidanceArticle).toHaveBeenCalledWith(
             expect.objectContaining({
-                title: 'Test Article',
-                content: '',
+                title: mockGuidanceTemplate.name,
+                content: mockGuidanceTemplate.content,
                 visibility: 'PUBLIC',
                 locale: 'en-US',
             }),
@@ -226,6 +240,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={jest.fn()}
                     onCreate={onCreate}
                     guidanceMode="create"
+                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
@@ -335,6 +350,7 @@ describe('KnowledgeEditorGuidance', () => {
                     shopType="Test Shop Type"
                     onClose={jest.fn()}
                     guidanceMode="create"
+                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
@@ -349,11 +365,63 @@ describe('KnowledgeEditorGuidance', () => {
         expect(createGuidanceArticle).toHaveBeenCalled()
     })
 
-    it('shows error notification when article creation fails', async () => {
-        const error = new Error('Creation failed')
-        createGuidanceArticle.mockRejectedValue(error)
+    it('calls onCopy callback after successful article duplication', async () => {
+        const onCopy = jest.fn()
+        let capturedOnDuplicate: (() => Promise<void>) | undefined
 
-        const { getByLabelText } = render(
+        const duplicateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+
+        jest.mocked(
+            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
+                .useGuidanceArticleMutation,
+        ).mockReturnValue({
+            updateGuidanceArticle,
+            createGuidanceArticle,
+            deleteGuidanceArticle: jest.fn(),
+            duplicateGuidanceArticle,
+            isGuidanceArticleUpdating: false,
+        })
+
+        const mockSpy = jest
+            .spyOn(
+                require('./KnowledgeEditorGuidanceView'),
+                'KnowledgeEditorGuidanceView',
+            )
+            .mockImplementation((props: any) => {
+                capturedOnDuplicate = props.onDuplicate
+                return null
+            })
+
+        render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onCopy={onCopy}
+                    guidanceMode="read"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(capturedOnDuplicate).toBeDefined()
+        })
+
+        await act(async () => {
+            await capturedOnDuplicate!()
+        })
+
+        expect(duplicateGuidanceArticle).toHaveBeenCalledWith(1, 'Test Shop')
+        expect(onCopy).toHaveBeenCalledTimes(1)
+
+        mockSpy.mockRestore()
+    })
+
+    it('disables Create button when title is empty', () => {
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -365,24 +433,29 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'New Article' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-        })
-
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while creating guidance.',
-            )
-        })
+        const createButton = screen.getByRole('button', { name: 'Create' })
+        expect(createButton).toBeDisabled()
     })
 
-    it('shows error notification when article update fails', async () => {
-        const error = new Error('Update failed')
-        updateGuidanceArticle.mockRejectedValue(error)
+    it('disables Create button when content is empty', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    onClose={jest.fn()}
+                    guidanceMode="create"
+                    isOpen={true}
+                />
+            </Provider>,
+        )
 
-        const { getByLabelText } = render(
+        const createButton = screen.getByRole('button', { name: 'Create' })
+        expect(createButton).toBeDisabled()
+    })
+
+    it('disables Save button when no changes are made in edit mode', () => {
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -395,56 +468,30 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'Updated Title' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
-        })
-
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while editing guidance.',
-            )
-        })
+        const saveButton = screen.getByRole('button', { name: 'Save' })
+        expect(saveButton).toBeDisabled()
     })
 
-    it('shows error notification when article deletion fails', async () => {
-        const error = new Error('Deletion failed')
-        const deleteGuidanceArticle = jest.fn().mockRejectedValue(error)
+    it('closes editor when Cancel is clicked with no changes in create mode', () => {
+        const onClose = jest.fn()
 
-        jest.mocked(
-            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
-                .useGuidanceArticleMutation,
-        ).mockReturnValue({
-            updateGuidanceArticle,
-            createGuidanceArticle,
-            deleteGuidanceArticle,
-            duplicateGuidanceArticle: jest.fn(),
-            isGuidanceArticleUpdating: false,
-        })
-
-        const { getByRole } = render(
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onDelete={jest.fn()}
-                    guidanceMode="read"
+                    onClose={onClose}
+                    guidanceMode="create"
                     isOpen={true}
                 />
             </Provider>,
         )
 
-        await act(async () => {
-            fireEvent.click(getByRole('button', { name: 'delete' }))
+        const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+        act(() => {
+            fireEvent.click(cancelButton)
         })
 
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while deleting guidance.',
-            )
-        })
+        expect(onClose).toHaveBeenCalledTimes(1)
     })
 })

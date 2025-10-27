@@ -2,7 +2,6 @@ import classNames from 'classnames'
 
 import {
     CancelButton,
-    CopyIconButton,
     DeleteIconButton,
     EditIconButton,
 } from './KnowledgeEditorTopBarCommonControls'
@@ -37,7 +36,8 @@ const ReadControls = (
 ) => (
     <>
         <EditIconButton onEdit={props.onEdit} disabled={props.disabled} />
-        <CopyIconButton onCopy={props.onCopy} disabled={props.disabled} />
+        {/* TODO: add copy button back in when implemented */}
+        {/* <CopyIconButton onCopy={props.onCopy} disabled={props.disabled} /> */}
         <DeleteIconButton onDelete={props.onDelete} disabled={props.disabled} />
     </>
 )

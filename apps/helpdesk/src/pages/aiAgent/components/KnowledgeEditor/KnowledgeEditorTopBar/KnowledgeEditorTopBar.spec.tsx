@@ -4,7 +4,6 @@ import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
 
 describe('KnowledgeEditorTopBar', () => {
     it('renders', () => {
-        const onToggleFullscreen = jest.fn()
         const onClose = jest.fn()
         const onToggleDetailsView = jest.fn()
         const onClickPrevious = jest.fn()
@@ -16,7 +15,7 @@ describe('KnowledgeEditorTopBar', () => {
                 isUpdating={false}
                 title="Guidance"
                 isFullscreen={false}
-                onToggleFullscreen={onToggleFullscreen}
+                onToggleFullscreen={jest.fn()}
                 onClose={onClose}
                 isDetailsView={false}
                 onToggleDetailsView={onToggleDetailsView}
@@ -31,57 +30,26 @@ describe('KnowledgeEditorTopBar', () => {
         expect(screen.getByText('Test Content')).toBeInTheDocument()
 
         fireEvent.click(screen.getByRole('button', { name: 'previous' }))
-
         expect(onClickPrevious).toHaveBeenCalled()
 
         fireEvent.click(screen.getByRole('button', { name: 'next' }))
-
         expect(onClickNext).toHaveBeenCalled()
 
         fireEvent.click(screen.getByRole('button', { name: 'close' }))
-
         expect(onClose).toHaveBeenCalled()
-
-        fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
-
-        expect(onToggleFullscreen).toHaveBeenCalled()
 
         fireEvent.click(
             screen.getByRole('button', { name: 'expand side panel' }),
         )
-
         expect(onToggleDetailsView).toHaveBeenCalled()
 
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'New Title' },
         })
-
         expect(onChangeTitle).toHaveBeenCalledWith('New Title')
     })
 
-    it('renders fullscreen', () => {
-        const onToggleFullscreen = jest.fn()
-
-        render(
-            <KnowledgeEditorTopBar
-                isUpdating={false}
-                title="Guidance"
-                isFullscreen={true}
-                onToggleFullscreen={onToggleFullscreen}
-                onClose={jest.fn()}
-                isDetailsView={false}
-                onToggleDetailsView={jest.fn()}
-            />,
-        )
-
-        fireEvent.click(
-            screen.getByRole('button', { name: 'leave fullscreen' }),
-        )
-
-        expect(onToggleFullscreen).toHaveBeenCalled()
-    })
-
-    it('renders disabled', () => {
+    it('renders disabled when updating', () => {
         render(
             <KnowledgeEditorTopBar
                 isUpdating={true}
@@ -94,14 +62,30 @@ describe('KnowledgeEditorTopBar', () => {
             />,
         )
 
-        expect(
-            screen.getByRole('button', { name: 'fullscreen' }),
-        ).toBeDisabled()
         expect(screen.getByRole('button', { name: 'close' })).toBeDisabled()
         expect(
             screen.getByRole('button', { name: 'expand side panel' }),
         ).toBeDisabled()
-        expect(screen.getByRole('button', { name: 'previous' })).toBeDisabled()
-        expect(screen.getByRole('button', { name: 'next' })).toBeDisabled()
+    })
+
+    it('disables navigation buttons when not provided', () => {
+        render(
+            <KnowledgeEditorTopBar
+                isUpdating={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('button', { name: 'previous' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'next' }),
+        ).not.toBeInTheDocument()
     })
 })

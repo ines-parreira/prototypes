@@ -88,10 +88,10 @@ describe('GuidanceList', () => {
         expect(onDelete).toHaveBeenCalledWith(1)
     })
 
-    it('does not show "View all guidances" link when there are 5 or fewer articles', () => {
+    it('does not show "View all guidance" link when there are 5 or fewer articles', () => {
         render(<GuidanceList {...defaultProps} />)
 
-        expect(screen.queryByText('View all guidances')).not.toBeInTheDocument()
+        expect(screen.queryByText('View all guidance')).not.toBeInTheDocument()
     })
 
     it('limits the displayed articles to 5 when there are more', () => {
@@ -110,7 +110,7 @@ describe('GuidanceList', () => {
             <GuidanceList {...defaultProps} guidanceArticles={manyArticles} />,
         )
 
-        expect(screen.getByText('View all guidances')).toBeInTheDocument()
+        expect(screen.getByText('View all guidance')).toBeInTheDocument()
 
         // First 5 should be visible
         expect(screen.getByText('Guidance Article 1')).toBeInTheDocument()
