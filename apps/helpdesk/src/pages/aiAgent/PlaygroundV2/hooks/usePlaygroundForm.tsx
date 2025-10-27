@@ -57,6 +57,7 @@ export const usePlaygroundForm = ({
     const isPendingResources = sourceItems
         ? sourceItems.some((item) => item.status === 'loading')
         : false
+
     const isKnowledgeBaseEmpty =
         sourceItems !== undefined &&
         sourceItems.length === 0 &&

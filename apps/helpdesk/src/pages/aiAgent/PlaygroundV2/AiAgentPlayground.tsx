@@ -144,6 +144,7 @@ export const AiAgentPlayground = ({
         return (
             <PlaygroundProvider
                 arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
+                shopName={shopName}
             >
                 <ResetEventEmitter
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}

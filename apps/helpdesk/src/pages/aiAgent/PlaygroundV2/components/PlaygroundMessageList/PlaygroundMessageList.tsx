@@ -43,8 +43,6 @@ export const PlaygroundMessageList = ({ onGuidanceClick }: Props) => {
             ? ticketEventMessage.outcome
             : undefined
 
-    if (!storeConfiguration) return null
-
     return (
         <div className={css.outputContainer}>
             <div
@@ -64,7 +62,8 @@ export const PlaygroundMessageList = ({ onGuidanceClick }: Props) => {
                                 withAnimation
                             >
                                 {message.type === MessageType.MESSAGE &&
-                                    message.executionId && (
+                                    message.executionId &&
+                                    storeConfiguration && (
                                         <KnowledgeSourcesWrapper
                                             executionId={message.executionId}
                                             storeConfiguration={

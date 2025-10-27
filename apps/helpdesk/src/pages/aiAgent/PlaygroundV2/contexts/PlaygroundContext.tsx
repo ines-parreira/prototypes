@@ -7,14 +7,19 @@ import { MessagesProvider } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesCo
 
 type PlaygroundProviderProps = {
     children: ReactNode
+    shopName: string
     arePlaygroundActionsAllowed?: boolean
 }
 
 export const PlaygroundProvider = (props: PlaygroundProviderProps) => {
     return (
         <EventsProvider>
-            <ConfigurationProvider>
-                <CoreProvider>
+            <ConfigurationProvider shopName={props.shopName}>
+                <CoreProvider
+                    arePlaygroundActionsAllowed={
+                        props.arePlaygroundActionsAllowed
+                    }
+                >
                     <MessagesProvider>{props.children}</MessagesProvider>
                 </CoreProvider>
             </ConfigurationProvider>

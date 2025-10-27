@@ -296,15 +296,31 @@ describe('PlaygroundMessageList', () => {
     })
 
     describe('Store configuration', () => {
-        it('should return null when storeConfiguration is undefined', () => {
+        it('should render without KnowledgeSourcesWrapper when storeConfiguration is undefined', () => {
             mockUseConfigurationContext.mockReturnValue({
                 ...defaultConfigurationContext,
                 storeConfiguration: null,
             } as any)
 
-            const { container } = render(<PlaygroundMessageList />)
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'AI Agent',
+                        type: MessageType.MESSAGE,
+                        content: 'Response',
+                        executionId: 'exec-123',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
+            } as any)
 
-            expect(container).toBeEmptyDOMElement()
+            render(<PlaygroundMessageList />)
+
+            expect(screen.getByText('Message: Response')).toBeInTheDocument()
+            expect(
+                screen.queryByText(/KnowledgeSourcesWrapper/),
+            ).not.toBeInTheDocument()
         })
     })
 })
