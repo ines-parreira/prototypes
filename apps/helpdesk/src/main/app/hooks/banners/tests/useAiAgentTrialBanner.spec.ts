@@ -67,6 +67,14 @@ describe('useAiAgentTrialBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        const { useTrialAccess } = jest.requireMock(
+            'pages/aiAgent/trial/hooks/useTrialAccess',
+        ) as { useTrialAccess: jest.Mock }
+        useTrialAccess.mockReturnValue({
+            canSeeSystemBanner: true,
+            trialType: TrialType.AiAgent,
+        })
+
         useAppSelectorMock.mockImplementation((selector: any) => {
             if (selector === 'MOCK_SHOPIFY_SELECTOR') {
                 return [
@@ -142,12 +150,12 @@ describe('useAiAgentTrialBanner', () => {
         expect(mockedAddBanner).not.toHaveBeenCalled()
     })
 
-    it('should not render if a trial has already started', () => {
+    it('should not render if canSeeSystemBanner is false', () => {
         const { useTrialAccess } = jest.requireMock(
             'pages/aiAgent/trial/hooks/useTrialAccess',
         ) as { useTrialAccess: jest.Mock }
         useTrialAccess.mockReturnValue({
-            hasAnyTrialStarted: true,
+            canSeeSystemBanner: false,
             trialType: TrialType.AiAgent,
         })
 
@@ -162,14 +170,14 @@ describe('useAiAgentTrialBanner', () => {
         ) as { useTrialAccess: jest.Mock }
         // First render eligible
         useTrialAccess.mockReturnValue({
-            hasAnyTrialStarted: false,
+            canSeeSystemBanner: true,
             trialType: TrialType.AiAgent,
         })
         const { rerender } = renderHook(useAiAgentTrialBanner)
 
         // Second render ineligible. Re-run the hook to trigger the new effect
         useTrialAccess.mockReturnValue({
-            hasAnyTrialStarted: true,
+            canSeeSystemBanner: false,
             trialType: TrialType.AiAgent,
         })
         rerender()

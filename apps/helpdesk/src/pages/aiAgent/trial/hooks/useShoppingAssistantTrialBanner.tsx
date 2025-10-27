@@ -8,6 +8,7 @@ import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -40,11 +41,13 @@ export const useShoppingAssistantTrialBanner = () => {
 
     const displayBanner = useMemo(
         () =>
+            trialType === TrialType.ShoppingAssistant &&
             !isTicketsPage &&
             !isShoppingAssistantPage &&
             canSeeSystemBanner &&
             !isAbTestingEnabled,
         [
+            trialType,
             isTicketsPage,
             isShoppingAssistantPage,
             canSeeSystemBanner,

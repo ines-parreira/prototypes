@@ -6,6 +6,7 @@ import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -43,13 +44,15 @@ export const useAiAgentTrialBanner = () => {
     const shouldDisplay = useMemo(
         () =>
             Boolean(
-                hasShopify &&
+                trialType === TrialType.AiAgent &&
+                    hasShopify &&
                     noAiAgentSubscription &&
                     !isTicketsPage &&
                     !isAiAgentPage &&
                     canSeeSystemBanner,
             ),
         [
+            trialType,
             hasShopify,
             noAiAgentSubscription,
             isTicketsPage,
