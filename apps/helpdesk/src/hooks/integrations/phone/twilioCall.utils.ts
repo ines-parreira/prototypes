@@ -111,24 +111,26 @@ export function handleCallEvents(
         reportError(error)
     })
 
-    call.on('warning', (metricName: string) => {
+    call.on('warning', (metricName: string, warningData: any) => {
         twilioCallUtils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallWarningStarted,
             data: {
                 ...twilioCallUtils.gatherCallContext(call),
                 metric_name: metricName,
+                warning_data: warningData,
             },
         })
 
         actions.setWarning(metricName)
     })
 
-    call.on('warning-cleared', (metricName: string) => {
+    call.on('warning-cleared', (metricName: string, warningData: any) => {
         twilioCallUtils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallWarningEnded,
             data: {
                 ...twilioCallUtils.gatherCallContext(call),
                 metric_name: metricName,
+                warning_data: warningData,
             },
         })
 

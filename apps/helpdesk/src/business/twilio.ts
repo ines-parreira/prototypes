@@ -436,6 +436,26 @@ export const callForwardingCountries = Object.keys(
     phoneCountryConfig,
 ) as CountryCode[]
 
+/**
+ * Warning data structure provided by Twilio SDK when a call quality warning is triggered.
+ * Contains detailed metrics about the warning condition.
+ */
+export type TwilioCallWarningData = {
+    /** The name of the stat that triggered the warning (e.g., 'rtt', 'mos') */
+    name: string
+    /** Array of metric values from the past 5 samples */
+    values: number[]
+    /** Array of WebRTC sample objects with detailed stats */
+    samples: Array<Record<string, unknown>>
+    /** Threshold configuration that was crossed */
+    threshold: {
+        /** Threshold type (e.g., 'min', 'max') */
+        name: string
+        /** The threshold value that was crossed */
+        value: number
+    }
+}
+
 export enum TwilioSocketEventType {
     DeviceRegistered = 'device-registered',
     DeviceUnregistered = 'device-unregistered',
@@ -502,5 +522,6 @@ export type TwilioSocketEvent =
               id: string
               call_sid: Maybe<string>
               metric_name: string
+              warning_data: TwilioCallWarningData
           }
       }

@@ -146,12 +146,25 @@ describe('handleCallEvents', () => {
 
         it('should handle "warning" event', () => {
             const warning = 'high-latency'
-            call.emit('warning', warning)
+            const warningData = {
+                name: 'rtt',
+                values: [425, 438, 412, 445, 429],
+                samples: [
+                    { rtt: 425, timestamp: 1234567890 },
+                    { rtt: 438, timestamp: 1234567891 },
+                ],
+                threshold: {
+                    name: 'max',
+                    value: 400,
+                },
+            }
+            call.emit('warning', warning, warningData)
 
             expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
                 type: TwilioSocketEventType.CallWarningStarted,
                 data: {
                     metric_name: warning,
+                    warning_data: warningData,
                     ...callContext,
                 },
             })
@@ -161,12 +174,25 @@ describe('handleCallEvents', () => {
 
         it('should handle "warning-cleared" event', () => {
             const warning = 'high-latency'
-            call.emit('warning-cleared', warning)
+            const warningData = {
+                name: 'rtt',
+                values: [385, 362, 378, 355, 340],
+                samples: [
+                    { rtt: 385, timestamp: 1234567895 },
+                    { rtt: 362, timestamp: 1234567896 },
+                ],
+                threshold: {
+                    name: 'max',
+                    value: 400,
+                },
+            }
+            call.emit('warning-cleared', warning, warningData)
 
             expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
                 type: TwilioSocketEventType.CallWarningEnded,
                 data: {
                     metric_name: warning,
+                    warning_data: warningData,
                     ...callContext,
                 },
             })
