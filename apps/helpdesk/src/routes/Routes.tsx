@@ -64,6 +64,7 @@ import {
     useAiAgentNavigation,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
+import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
@@ -372,6 +373,11 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         false,
     )
 
+    const isKnowledgeHubEnabled = useFlag(
+        FeatureFlagKey.KnowledgeHubEnabled,
+        false,
+    )
+
     const { routes } = useAiAgentNavigation({ shopName })
 
     if (shopType !== 'shopify') {
@@ -409,6 +415,10 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     }
 
     const isGorgiasUser = window.USER_IMPERSONATED || window.DEVELOPMENT
+
+    const knowledgeComponent = isKnowledgeHubEnabled
+        ? KnowledgeHubContainer
+        : AiAgentKnowledgeContainer
 
     return (
         <Switch>
@@ -561,7 +571,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/knowledge`}
                             exact
-                            component={AiAgentKnowledgeContainer}
+                            component={knowledgeComponent}
                         />
                         {isAiAgentScrapeStoreDomainEnabled && (
                             <>
@@ -569,7 +579,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                     <Route
                                         path={`${path}/knowledge/sources`}
                                         exact
-                                        component={AiAgentKnowledgeContainer}
+                                        component={knowledgeComponent}
                                     />
                                     <Route
                                         exact
