@@ -20,6 +20,7 @@ export const useHelpCenterAIArticlesLibrary = (
     helpCenterId: number,
     locale: Locale['code'],
     helpCenterShopName: string | null,
+    enabled = true,
 ) => {
     const [articles, setArticles] = useState<AIArticle[] | null>(null)
     const [mappedArticleItems, setMappedArticleItems] = useState<
@@ -55,6 +56,7 @@ export const useHelpCenterAIArticlesLibrary = (
             helpCenterId,
             storeIntegrationId,
             locale,
+            enabled,
         })
     const fetchedArticlesCount = fetchedArticles?.length ?? 0
 

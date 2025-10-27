@@ -11,11 +11,13 @@ interface OpportunityNavigationProps {
     selectedOpportunity: Opportunity | null
     opportunities?: Opportunity[]
     selectCertainOpportunity?: (index: number) => void
+    totalCount: number
 }
 export const OpportunitiesNavigation = ({
     opportunities,
     selectedOpportunity,
     selectCertainOpportunity,
+    totalCount,
 }: OpportunityNavigationProps) => {
     const navigationData = useOpportunitiesNavigation({
         selectedOpportunity,
@@ -54,7 +56,7 @@ export const OpportunitiesNavigation = ({
                 onClick={navigateForward}
             />
             <div>
-                {navigationData.position + 1} of {opportunities?.length}
+                {navigationData.position + 1} of {totalCount}
             </div>
         </div>
     )

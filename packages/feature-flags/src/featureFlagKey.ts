@@ -148,6 +148,7 @@ export enum FeatureFlagKey {
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     OfficeHours = 'office-hours',
     OnlyShowReasoningWhileImpersonating = 'linear.project_surface-ai-reasoning-in-ticket.only-show-reasoning-while-impersonating',
+    OpportunitiesMilestone2 = 'linear.project_proactively-surface-opportunities.enable-milestone-2-features',
     PauseSLA = 'linear.task_SUPXP-2724.pause-sla',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',

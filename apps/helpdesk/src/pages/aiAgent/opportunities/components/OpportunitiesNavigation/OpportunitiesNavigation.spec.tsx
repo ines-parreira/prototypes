@@ -55,6 +55,7 @@ describe('OpportunitiesNavigation', () => {
         selectedOpportunity: mockOpportunities[0],
         opportunities: mockOpportunities,
         selectCertainOpportunity: mockSelectCertainOpportunity,
+        totalCount: mockOpportunities.length,
     }
 
     beforeEach(() => {
@@ -132,6 +133,7 @@ describe('OpportunitiesNavigation', () => {
             <OpportunitiesNavigation
                 {...defaultProps}
                 opportunities={[mockOpportunities[0]]}
+                totalCount={1}
             />,
         )
 
@@ -235,6 +237,7 @@ describe('OpportunitiesNavigation', () => {
                 selectedOpportunity={mockOpportunities[0]}
                 opportunities={undefined}
                 selectCertainOpportunity={mockSelectCertainOpportunity}
+                totalCount={0}
             />,
         )
 

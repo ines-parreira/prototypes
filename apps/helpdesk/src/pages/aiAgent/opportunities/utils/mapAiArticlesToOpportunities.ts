@@ -8,6 +8,7 @@ export interface Opportunity {
     title: string
     content: string
     type: OpportunityType
+    ticketCount?: number
 }
 
 const removeAiPrefix = (key: string): string => {
@@ -17,11 +18,13 @@ const removeAiPrefix = (key: string): string => {
 export const mapAiArticlesToOpportunities = (
     aiArticles: AILibraryArticleItem[],
 ): Opportunity[] => {
-    return aiArticles.map((article) => ({
-        id: removeAiPrefix(article.key),
-        key: article.key,
-        title: article.title,
-        content: article.html_content,
-        type: OpportunityType.FILL_KNOWLEDGE_GAP,
-    }))
+    return aiArticles.map(
+        (article): Opportunity => ({
+            id: removeAiPrefix(article.key),
+            key: article.key,
+            title: article.title,
+            content: article.html_content,
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        }),
+    )
 }

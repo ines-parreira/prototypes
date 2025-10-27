@@ -7,7 +7,7 @@ import { OpportunityCard } from './OpportunityCard'
 describe('OpportunityCard', () => {
     const defaultProps = {
         title: 'Test Title',
-        count: 12,
+        ticketCount: 12,
     }
 
     it('should render with title', () => {
@@ -131,5 +131,40 @@ describe('OpportunityCard', () => {
 
         const titleElement = screen.getByText(longTitle)
         expect(titleElement).toBeInTheDocument()
+    })
+
+    it('should render ticket count when provided', () => {
+        render(<OpportunityCard {...defaultProps} ticketCount={12} />)
+
+        expect(screen.getByText('12')).toBeInTheDocument()
+    })
+
+    it('should not render ticket count when not provided', () => {
+        render(
+            <OpportunityCard
+                title="Test Title"
+                type={OpportunityType.FILL_KNOWLEDGE_GAP}
+            />,
+        )
+
+        expect(screen.queryByText('12')).not.toBeInTheDocument()
+    })
+
+    it('should render ticket count with tooltip showing related tickets text', () => {
+        render(<OpportunityCard {...defaultProps} ticketCount={5} />)
+
+        expect(screen.getByText('5')).toBeInTheDocument()
+    })
+
+    it('should render singular "ticket" when ticketCount is 1', () => {
+        render(<OpportunityCard {...defaultProps} ticketCount={1} />)
+
+        expect(screen.getByText('1')).toBeInTheDocument()
+    })
+
+    it('should render plural "tickets" when ticketCount is greater than 1', () => {
+        render(<OpportunityCard {...defaultProps} ticketCount={2} />)
+
+        expect(screen.getByText('2')).toBeInTheDocument()
     })
 })

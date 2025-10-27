@@ -63,6 +63,36 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(() => ({ shopName: 'test-shop' })),
 }))
 
+jest.mock('../hooks/useKnowledgeServiceOpportunities', () => ({
+    useKnowledgeServiceOpportunities: jest.fn(() => ({
+        opportunities: [],
+        isLoading: false,
+        isFetchingNextPage: false,
+        hasNextPage: false,
+        fetchNextPage: jest.fn(),
+        preloadNextPage: jest.fn(),
+        totalCount: 0,
+        refetch: jest.fn(),
+    })),
+}))
+
+jest.mock('../hooks/useSelectedOpportunity', () => ({
+    useSelectedOpportunity: jest.fn((opportunities) => ({
+        selectedOpportunity: opportunities[0] || null,
+        selectedOpportunityId: opportunities[0]?.id || null,
+        setSelectedOpportunityId: jest.fn(),
+        isLoading: false,
+    })),
+}))
+
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
+    useShopIntegrationId: jest.fn(() => undefined),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
+
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(() => ({
         storeConfiguration: { guidanceHelpCenterId: 1 },

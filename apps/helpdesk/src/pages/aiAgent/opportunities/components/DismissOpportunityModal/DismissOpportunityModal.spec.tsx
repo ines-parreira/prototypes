@@ -413,10 +413,6 @@ describe('DismissOpportunityModal', () => {
 
             await waitFor(() => {
                 expect(mockUpsertFeedback).toHaveBeenCalled()
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Successfully dismissed opportunity',
-                    status: NotificationStatus.Success,
-                })
                 expect(mockOnConfirm).toHaveBeenCalledTimes(1)
                 expect(mockOnClose).toHaveBeenCalledTimes(1)
             })

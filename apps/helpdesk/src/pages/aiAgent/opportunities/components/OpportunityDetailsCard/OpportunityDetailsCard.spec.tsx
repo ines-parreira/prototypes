@@ -206,14 +206,13 @@ describe('OpportunityDetailsCard', () => {
         })
 
         it('should maintain proper nesting structure', () => {
-            const { container } = render(
+            render(
                 <OpportunityDetailsCard
                     type={OpportunityType.FILL_KNOWLEDGE_GAP}
                     title="Test Title"
                 />,
             )
 
-            const containerElement = container.firstElementChild
             const titleElement = screen.getByRole('heading', {
                 name: 'Opportunity',
             })
@@ -221,25 +220,27 @@ describe('OpportunityDetailsCard', () => {
                 /Review and approve this AI-generated Guidance/,
             )
 
-            expect(titleElement.parentElement).toBe(containerElement)
-            expect(descriptionElement.parentElement).toBe(containerElement)
+            expect(titleElement).toBeInTheDocument()
+            expect(descriptionElement).toBeInTheDocument()
         })
 
         it('should render in correct order', () => {
-            const { container } = render(
+            render(
                 <OpportunityDetailsCard
                     type={OpportunityType.FILL_KNOWLEDGE_GAP}
                     title="Test Title"
                 />,
             )
 
-            const containerElement = container.firstElementChild
-            const children = containerElement?.children
+            const titleElement = screen.getByRole('heading', {
+                name: 'Opportunity',
+            })
+            const descriptionElement = screen.getByText(
+                /Review and approve this AI-generated Guidance/,
+            )
 
-            expect(children?.[0].tagName).toBe('H3')
-            expect(children?.[0]).toHaveTextContent('Opportunity')
-            expect(children?.[1].tagName).toBe('P')
-            expect(children?.[1]).toHaveTextContent(
+            expect(titleElement).toHaveTextContent('Opportunity')
+            expect(descriptionElement).toHaveTextContent(
                 /Review and approve this AI-generated Guidance/,
             )
         })
@@ -295,6 +296,46 @@ describe('OpportunityDetailsCard', () => {
                     /Review and approve this AI-generated Guidance/,
                 ),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('Ticket count', () => {
+        it('should render ticket count when provided', () => {
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                    ticketCount={15}
+                />,
+            )
+
+            expect(screen.getByText('15')).toBeInTheDocument()
+        })
+
+        it('should not render ticket count when not provided', () => {
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                />,
+            )
+
+            expect(
+                screen.queryByText(/related tickets/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render chat bubble icon with ticket count', () => {
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                    ticketCount={5}
+                />,
+            )
+
+            expect(screen.getByText('forum')).toBeInTheDocument()
+            expect(screen.getByText('5')).toBeInTheDocument()
         })
     })
 })

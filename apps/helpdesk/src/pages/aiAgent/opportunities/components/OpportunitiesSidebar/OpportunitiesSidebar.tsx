@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
@@ -15,6 +17,9 @@ interface OpportunitiesSidebarProps {
         opportunityId: string
         opportunityType: string
     }) => void
+    hasNextPage?: boolean
+    isFetchingNextPage?: boolean
+    onLoadMore?: () => void
 }
 
 export const OpportunitiesSidebar = ({
@@ -23,9 +28,12 @@ export const OpportunitiesSidebar = ({
     onSelectOpportunity,
     selectedOpportunity,
     onOpportunityViewed,
+    hasNextPage = false,
+    isFetchingNextPage = false,
+    onLoadMore,
 }: OpportunitiesSidebarProps) => {
     useEffect(() => {
-        if (opportunities.length > 0) {
+        if (opportunities.length > 0 && !selectedOpportunity) {
             const initialOpportunity = opportunities[0]
             onSelectOpportunity(initialOpportunity)
             onOpportunityViewed?.({
@@ -33,7 +41,12 @@ export const OpportunitiesSidebar = ({
                 opportunityType: initialOpportunity.type,
             })
         }
-    }, [opportunities, onSelectOpportunity, onOpportunityViewed])
+    }, [
+        opportunities,
+        onSelectOpportunity,
+        onOpportunityViewed,
+        selectedOpportunity,
+    ])
 
     const handleSelectCard = (opportunityId: string) => {
         const opportunity = opportunities.find(
@@ -78,20 +91,45 @@ export const OpportunitiesSidebar = ({
                                     <OpportunityCardSkeleton />
                                 </>
                             ) : (
-                                opportunities.map((opportunity) => (
-                                    <OpportunityCard
-                                        key={opportunity.id}
-                                        title={opportunity.title}
-                                        type={opportunity.type}
-                                        selected={
-                                            selectedOpportunity?.id ===
-                                            opportunity.id
-                                        }
-                                        onSelect={() =>
-                                            handleSelectCard(opportunity.id)
-                                        }
-                                    />
-                                ))
+                                <>
+                                    {opportunities.map((opportunity) => (
+                                        <OpportunityCard
+                                            key={opportunity.id}
+                                            title={opportunity.title}
+                                            type={opportunity.type}
+                                            ticketCount={
+                                                opportunity.ticketCount
+                                            }
+                                            selected={
+                                                selectedOpportunity?.id ===
+                                                opportunity.id
+                                            }
+                                            onSelect={() =>
+                                                handleSelectCard(opportunity.id)
+                                            }
+                                        />
+                                    ))}
+                                    {hasNextPage && onLoadMore && (
+                                        <div className={css.loadMoreContainer}>
+                                            <Button
+                                                intent="secondary"
+                                                fillStyle="ghost"
+                                                onClick={onLoadMore}
+                                                isLoading={isFetchingNextPage}
+                                                className={css.loadMoreButton}
+                                            >
+                                                {isFetchingNextPage
+                                                    ? 'Loading...'
+                                                    : 'Load More'}
+                                            </Button>
+                                        </div>
+                                    )}
+                                    {isFetchingNextPage && !hasNextPage && (
+                                        <div className={css.loadMoreContainer}>
+                                            <LoadingSpinner size="small" />
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
                     </>

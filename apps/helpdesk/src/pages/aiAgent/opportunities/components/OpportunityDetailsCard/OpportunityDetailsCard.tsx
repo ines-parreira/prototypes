@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import classNames from 'classnames'
+
 import { OpportunityType } from '../../enums'
 
 import css from './OpportunityDetailsCard.less'
@@ -8,11 +10,13 @@ interface OpportunityDetailsCardProps {
     type: OpportunityType
     title: string
     description?: string
+    ticketCount?: number
 }
 
 export const OpportunityDetailsCard = ({
     type,
     description,
+    ticketCount,
 }: OpportunityDetailsCardProps) => {
     const { defaultDescription } = useMemo(() => {
         switch (type) {
@@ -32,7 +36,22 @@ export const OpportunityDetailsCard = ({
 
     return (
         <div className={css.contentContainer}>
-            <h3 className={css.title}>Opportunity</h3>
+            <div className={css.header}>
+                <h3 className={css.title}>Opportunity</h3>
+                {ticketCount !== undefined && (
+                    <span className={css.ticketCount}>
+                        <i
+                            className={classNames(
+                                'material-icons',
+                                css.ticketCountIcon,
+                            )}
+                        >
+                            forum
+                        </i>
+                        {ticketCount}
+                    </span>
+                )}
+            </div>
             <p className={css.description}>
                 {description || defaultDescription}
             </p>

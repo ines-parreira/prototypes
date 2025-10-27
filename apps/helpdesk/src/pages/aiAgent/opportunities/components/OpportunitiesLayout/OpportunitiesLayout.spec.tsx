@@ -8,11 +8,15 @@ import { Provider } from 'react-redux'
 import { MemoryRouter, useParams } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 
 import { OpportunityType } from '../../enums'
+import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
+import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
 import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesLayout } from './OpportunitiesLayout'
 
@@ -60,6 +64,22 @@ jest.mock('state/ui/helpCenter', () => ({
 
 jest.mock('../../utils/mapAiArticlesToOpportunities', () => ({
     mapAiArticlesToOpportunities: jest.fn(),
+}))
+
+jest.mock('../../hooks/useKnowledgeServiceOpportunities', () => ({
+    useKnowledgeServiceOpportunities: jest.fn(),
+}))
+
+jest.mock('../../hooks/useSelectedOpportunity', () => ({
+    useSelectedOpportunity: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
+    useShopIntegrationId: jest.fn(),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
 }))
 
 jest.mock('../OpportunitiesSidebar/OpportunitiesSidebar', () => ({
@@ -113,6 +133,12 @@ const mockStore = configureStore([])
 const mockMapAiArticlesToOpportunities = assumeMock(
     mapAiArticlesToOpportunities,
 )
+const mockUseKnowledgeServiceOpportunities = assumeMock(
+    useKnowledgeServiceOpportunities,
+)
+const mockUseSelectedOpportunity = assumeMock(useSelectedOpportunity)
+const mockUseShopIntegrationId = assumeMock(useShopIntegrationId)
+const mockUseFlag = assumeMock(useFlag)
 
 describe('OpportunitiesLayout', () => {
     const mockMarkArticleAsReviewed = jest.fn()
@@ -197,6 +223,26 @@ describe('OpportunitiesLayout', () => {
             isLoading: false,
             markArticleAsReviewed: mockMarkArticleAsReviewed,
         })
+
+        // Mock new hooks with default legacy behavior
+        mockUseFlag.mockReturnValue(false)
+        mockUseShopIntegrationId.mockReturnValue(undefined)
+        mockUseKnowledgeServiceOpportunities.mockReturnValue({
+            opportunities: [],
+            isLoading: false,
+            isFetchingNextPage: false,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+            preloadNextPage: jest.fn(),
+            totalCount: 0,
+            refetch: jest.fn(),
+        })
+        mockUseSelectedOpportunity.mockImplementation(() => ({
+            selectedOpportunity: null,
+            selectedOpportunityId: null,
+            setSelectedOpportunityId: jest.fn(),
+            isLoading: false,
+        }))
     })
 
     it('should render sidebar and content components', () => {
@@ -255,6 +301,14 @@ describe('OpportunitiesLayout', () => {
     })
 
     it('should handle opportunity selection', async () => {
+        const mockSetSelectedOpportunityId = jest.fn()
+        mockUseSelectedOpportunity.mockImplementation((opportunities) => ({
+            selectedOpportunity: opportunities[0] || null,
+            selectedOpportunityId: opportunities[0]?.id || null,
+            setSelectedOpportunityId: mockSetSelectedOpportunityId,
+            isLoading: false,
+        }))
+
         renderComponent()
 
         const firstOpportunity = screen.getByTestId('opportunity-article-1')
@@ -264,9 +318,9 @@ describe('OpportunitiesLayout', () => {
         })
 
         await waitFor(() => {
-            expect(
-                screen.getByTestId('opportunities-content'),
-            ).toHaveTextContent('First Article')
+            expect(mockSetSelectedOpportunityId).toHaveBeenCalledWith(
+                'article-1',
+            )
         })
     })
 
@@ -570,5 +624,164 @@ describe('OpportunitiesLayout', () => {
         renderComponent()
 
         expect(screen.getByText('No opportunity selected')).toBeInTheDocument()
+    })
+
+    describe('Knowledge Service Integration', () => {
+        const mockKnowledgeServiceOpportunities = [
+            {
+                id: '1',
+                key: 'ks_1',
+                title: 'KS Opportunity 1',
+                content: '',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            },
+            {
+                id: '2',
+                key: 'ks_2',
+                title: 'KS Opportunity 2',
+                content: '',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            },
+        ]
+
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseShopIntegrationId.mockReturnValue(123)
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: mockKnowledgeServiceOpportunities,
+                isLoading: false,
+                isFetchingNextPage: false,
+                hasNextPage: true,
+                fetchNextPage: jest.fn(),
+                preloadNextPage: jest.fn(),
+                totalCount: 50,
+                refetch: jest.fn(),
+            })
+        })
+
+        it('should use knowledge service when feature flag is enabled', () => {
+            renderComponent()
+
+            expect(mockUseFlag).toHaveBeenCalled()
+            expect(mockUseKnowledgeServiceOpportunities).toHaveBeenCalledWith(
+                123,
+                true,
+            )
+        })
+
+        it('should pass pagination props to sidebar when using knowledge service', () => {
+            const {
+                OpportunitiesSidebar,
+            } = require('../OpportunitiesSidebar/OpportunitiesSidebar')
+
+            renderComponent()
+
+            expect(OpportunitiesSidebar).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    hasNextPage: true,
+                    isFetchingNextPage: false,
+                    onLoadMore: expect.any(Function),
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should not pass pagination props when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const {
+                OpportunitiesSidebar,
+            } = require('../OpportunitiesSidebar/OpportunitiesSidebar')
+
+            renderComponent()
+
+            expect(OpportunitiesSidebar).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    hasNextPage: false,
+                    isFetchingNextPage: false,
+                    onLoadMore: undefined,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should select next opportunity when archiving with knowledge service', async () => {
+            const mockSetSelectedOpportunityId = jest.fn()
+            mockUseSelectedOpportunity.mockImplementation((opportunities) => ({
+                selectedOpportunity: opportunities[0] || null,
+                selectedOpportunityId: opportunities[0]?.id || null,
+                setSelectedOpportunityId: mockSetSelectedOpportunityId,
+                isLoading: false,
+            }))
+
+            const {
+                OpportunitiesContent,
+            } = require('../OpportunitiesContent/OpportunitiesContent')
+
+            renderComponent()
+
+            const callArgs = OpportunitiesContent.mock.calls[0][0]
+
+            await act(async () => {
+                await callArgs.onArchive('ks_1')
+            })
+
+            await waitFor(() => {
+                expect(mockSetSelectedOpportunityId).toHaveBeenCalledWith('2')
+            })
+        })
+
+        it('should not call markArticleAsReviewed when using knowledge service', async () => {
+            const {
+                OpportunitiesContent,
+            } = require('../OpportunitiesContent/OpportunitiesContent')
+
+            renderComponent()
+
+            const callArgs = OpportunitiesContent.mock.calls[0][0]
+            await act(async () => {
+                await callArgs.onArchive('ks_1')
+            })
+
+            expect(mockMarkArticleAsReviewed).not.toHaveBeenCalled()
+        })
+
+        it('should pass shopIntegrationId to OpportunitiesContent', () => {
+            const {
+                OpportunitiesContent,
+            } = require('../OpportunitiesContent/OpportunitiesContent')
+
+            renderComponent()
+
+            expect(OpportunitiesContent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopIntegrationId: 123,
+                    useKnowledgeService: true,
+                }),
+                expect.anything(),
+            )
+        })
+
+        it('should show loading state for opportunity details', () => {
+            mockUseSelectedOpportunity.mockReturnValue({
+                selectedOpportunity: mockKnowledgeServiceOpportunities[0],
+                selectedOpportunityId: '1',
+                setSelectedOpportunityId: jest.fn(),
+                isLoading: true,
+            })
+
+            const {
+                OpportunitiesContent,
+            } = require('../OpportunitiesContent/OpportunitiesContent')
+
+            renderComponent()
+
+            expect(OpportunitiesContent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isLoadingOpportunityDetails: true,
+                }),
+                expect.anything(),
+            )
+        })
     })
 })

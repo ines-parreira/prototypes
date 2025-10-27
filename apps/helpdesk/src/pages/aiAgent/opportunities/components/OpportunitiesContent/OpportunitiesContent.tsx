@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,6 +25,11 @@ import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 import { GuidanceFormFields } from '../../../types'
 import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
+import {
+    buildApprovePayload,
+    buildDismissPayload,
+    useProcessOpportunity,
+} from '../../hooks/useProcessOpportunity'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
@@ -36,6 +41,7 @@ const MAX_GUIDANCES = 100
 interface OpportunitiesContentProps {
     selectedOpportunity: Opportunity | null
     shopName: string
+    shopIntegrationId: number | undefined
     helpCenterId: number
     guidanceHelpCenterId: number
     onArchive: (articleKey: string) => void
@@ -54,11 +60,15 @@ interface OpportunitiesContentProps {
         opportunityId: string
         opportunityType: string
     }) => void
+    useKnowledgeService: boolean
+    isLoadingOpportunityDetails: boolean
+    totalCount: number
 }
 
 export const OpportunitiesContent = ({
     selectedOpportunity,
     shopName,
+    shopIntegrationId,
     helpCenterId,
     guidanceHelpCenterId,
     onArchive,
@@ -68,6 +78,9 @@ export const OpportunitiesContent = ({
     selectCertainOpportunity,
     onOpportunityAccepted,
     onOpportunityDismissed,
+    useKnowledgeService,
+    isLoadingOpportunityDetails,
+    totalCount,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -87,6 +100,8 @@ export const OpportunitiesContent = ({
 
     const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({ guidanceHelpCenterId })
+
+    const processOpportunity = useProcessOpportunity(shopIntegrationId)
 
     const showEmptyState = !opportunities || opportunities.length === 0
 
@@ -115,22 +130,59 @@ export const OpportunitiesContent = ({
         setIsDismissModalOpen(true)
     }, [])
 
-    const handleConfirmDismiss = useCallback(() => {
+    const handleConfirmDismiss = useCallback(async () => {
         if (!selectedOpportunity) return
 
         setIsLoading(true)
-        reviewArticle.mutate([
-            undefined,
-            { help_center_id: helpCenterId },
-            {
-                action: 'archive',
-                template_key: `ai_${selectedOpportunity.id}`,
-                reason: 'Dismissed with feedback',
-            },
-        ])
-        setIsDismissModalOpen(false)
-        setIsLoading(false)
-    }, [selectedOpportunity, helpCenterId, reviewArticle])
+        try {
+            if (useKnowledgeService) {
+                await processOpportunity.mutateAsync({
+                    opportunityId: parseInt(selectedOpportunity.id, 10),
+                    data: buildDismissPayload(),
+                })
+                onOpportunityDismissed?.({
+                    opportunityId: selectedOpportunity.id,
+                    opportunityType: selectedOpportunity.type,
+                })
+                onArchive(selectedOpportunity.key)
+            } else {
+                reviewArticle.mutate([
+                    undefined,
+                    { help_center_id: helpCenterId },
+                    {
+                        action: 'archive',
+                        template_key: `ai_${selectedOpportunity.id}`,
+                        reason: 'Dismissed with feedback',
+                    },
+                ])
+            }
+            dispatch(
+                notify({
+                    message: 'Successfully dismissed opportunity',
+                    status: NotificationStatus.Success,
+                }),
+            )
+            setIsDismissModalOpen(false)
+        } catch {
+            dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to dismiss opportunity. Please try again.',
+                }),
+            )
+        } finally {
+            setIsLoading(false)
+        }
+    }, [
+        selectedOpportunity,
+        helpCenterId,
+        reviewArticle,
+        useKnowledgeService,
+        processOpportunity,
+        onOpportunityDismissed,
+        onArchive,
+        dispatch,
+    ])
 
     const handleCancelDismiss = useCallback(() => {
         setIsDismissModalOpen(false)
@@ -155,14 +207,35 @@ export const OpportunitiesContent = ({
 
         setIsLoading(true)
         try {
-            // Create the guidance
-            await createGuidanceArticle(
-                mapGuidanceFormFieldsToGuidanceArticle(
-                    currentFormData,
-                    locale,
-                    selectedOpportunity.id,
-                ),
-            )
+            if (useKnowledgeService) {
+                await processOpportunity.mutateAsync({
+                    opportunityId: parseInt(selectedOpportunity.id, 10),
+                    data: buildApprovePayload({
+                        isVisible: currentFormData.isVisible,
+                        title: currentFormData.name,
+                        content: currentFormData.content,
+                    }),
+                })
+                onArchive(selectedOpportunity.key)
+            } else {
+                await createGuidanceArticle(
+                    mapGuidanceFormFieldsToGuidanceArticle(
+                        currentFormData,
+                        locale,
+                        selectedOpportunity.id,
+                    ),
+                )
+
+                reviewArticle.mutate([
+                    undefined,
+                    { help_center_id: helpCenterId },
+                    {
+                        action: 'archive',
+                        template_key: `ai_${selectedOpportunity.id}`,
+                        reason: 'Created as guidance',
+                    },
+                ])
+            }
 
             dispatch(
                 notify({
@@ -170,16 +243,6 @@ export const OpportunitiesContent = ({
                     message: 'Guidance successfully created',
                 }),
             )
-
-            reviewArticle.mutate([
-                undefined,
-                { help_center_id: helpCenterId },
-                {
-                    action: 'archive',
-                    template_key: `ai_${selectedOpportunity.id}`,
-                    reason: 'Created as guidance',
-                },
-            ])
 
             onOpportunityAccepted?.({
                 opportunityId: selectedOpportunity.id,
@@ -204,6 +267,9 @@ export const OpportunitiesContent = ({
         locale,
         dispatch,
         onOpportunityAccepted,
+        useKnowledgeService,
+        processOpportunity,
+        onArchive,
     ])
 
     if (showEmptyState) {
@@ -225,6 +291,7 @@ export const OpportunitiesContent = ({
                             opportunities={opportunities}
                             selectedOpportunity={selectedOpportunity}
                             selectCertainOpportunity={selectCertainOpportunity}
+                            totalCount={totalCount}
                         />
                         <Button
                             intent="secondary"
@@ -287,11 +354,16 @@ export const OpportunitiesContent = ({
                 )}
             </div>
             <div className={css.contentBody}>
-                {selectedOpportunity ? (
+                {isLoadingOpportunityDetails ? (
+                    <div className={css.loadingContainer}>
+                        <LoadingSpinner />
+                    </div>
+                ) : selectedOpportunity ? (
                     <div className={css.opportunityDetails}>
                         <OpportunityDetailsCard
                             type={selectedOpportunity.type}
                             title={selectedOpportunity.title}
+                            ticketCount={selectedOpportunity.ticketCount}
                         />
                         <div className={css.guidanceFormWrapper}>
                             <GuidanceForm

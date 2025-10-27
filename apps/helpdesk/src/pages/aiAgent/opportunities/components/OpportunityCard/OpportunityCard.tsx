@@ -11,6 +11,7 @@ import css from './OpportunityCard.less'
 interface OpportunityCardProps {
     title: string
     type?: OpportunityType
+    ticketCount?: number
     selected?: boolean
     onSelect?: () => void
 }
@@ -19,11 +20,14 @@ export const OpportunityCard = ({
     title,
     type = OpportunityType.FILL_KNOWLEDGE_GAP,
     selected = false,
+    ticketCount,
     onSelect,
 }: OpportunityCardProps) => {
     const [isHovered, setIsHovered] = useState(false)
     const [isTextOverflowing, setIsTextOverflowing] = useState(false)
     const [titleRef, setTitleRef] = useState<HTMLSpanElement | null>(null)
+    const [ticketCountRef, setTicketCountRef] =
+        useState<HTMLSpanElement | null>(null)
 
     const titleCallbackRef = useCallback((node: HTMLSpanElement | null) => {
         if (node) {
@@ -67,7 +71,25 @@ export const OpportunityCard = ({
                 </i>
             </div>
             <div className={css.infoSection}>
-                <span className={css.infoText}>{infoContent.text}</span>
+                <div className={css.header}>
+                    <span className={css.infoText}>{infoContent.text}</span>
+                    {ticketCount !== undefined && (
+                        <span
+                            ref={setTicketCountRef}
+                            className={css.ticketCount}
+                        >
+                            <i
+                                className={classNames(
+                                    'material-icons',
+                                    css.ticketCountIcon,
+                                )}
+                            >
+                                forum
+                            </i>
+                            {ticketCount}
+                        </span>
+                    )}
+                </div>
                 <span ref={titleCallbackRef} className={css.title}>
                     {title}
                 </span>
@@ -75,6 +97,12 @@ export const OpportunityCard = ({
             {isTextOverflowing && titleRef && (
                 <Tooltip placement="top" target={titleRef}>
                     {title}
+                </Tooltip>
+            )}
+            {ticketCount !== undefined && ticketCountRef && (
+                <Tooltip placement="top" target={ticketCountRef}>
+                    {ticketCount} related{' '}
+                    {ticketCount > 1 ? 'tickets' : 'ticket'}
                 </Tooltip>
             )}
         </div>

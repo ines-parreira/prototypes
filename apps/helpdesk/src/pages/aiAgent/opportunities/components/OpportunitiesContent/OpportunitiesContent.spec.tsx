@@ -14,6 +14,7 @@ import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/querie
 import { notify } from 'state/notifications/actions'
 
 import { OpportunityType } from '../../enums'
+import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
@@ -55,6 +56,7 @@ jest.mock(
 )
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/knowledgeService/mutations')
+jest.mock('../../hooks/useProcessOpportunity')
 
 const mockUseGuidanceCount = jest.fn(() => ({
     guidanceCount: 0,
@@ -101,6 +103,7 @@ describe('OpportunitiesContent', () => {
     const mockOnPublish = jest.fn()
     const mockOnOpportunityAccepted = jest.fn()
     const mockUpsertFeedback = jest.fn()
+    const mockProcessOpportunity = jest.fn()
 
     const defaultProps = {
         selectedOpportunity: null,
@@ -109,7 +112,11 @@ describe('OpportunitiesContent', () => {
         guidanceHelpCenterId: 2,
         onArchive: mockOnArchive,
         onPublish: mockOnPublish,
+        shopIntegrationId: 1,
         markArticleAsReviewed: mockMarkArticleAsReviewed,
+        useKnowledgeService: false,
+        isLoadingOpportunityDetails: false,
+        totalCount: 10,
     }
 
     const queryClient = new QueryClient({
@@ -162,6 +169,11 @@ describe('OpportunitiesContent', () => {
             mutateAsync: mockUpsertFeedback.mockResolvedValue({}),
             isLoading: false,
         })
+        ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+            mutateAsync: mockProcessOpportunity,
+            isLoading: false,
+        })
+        mockProcessOpportunity.mockResolvedValue({})
     })
 
     it('should render content header with title', () => {

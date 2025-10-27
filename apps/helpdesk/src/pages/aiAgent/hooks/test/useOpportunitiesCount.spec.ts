@@ -8,6 +8,25 @@ jest.mock(
     'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary',
 )
 
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities',
+    () => ({
+        useKnowledgeServiceOpportunities: jest.fn(() => ({
+            opportunities: [],
+            isLoading: false,
+            totalCount: 0,
+        })),
+    }),
+)
+
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
+    useShopIntegrationId: jest.fn(() => undefined),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
+
 const mockUseHelpCenterAIArticlesLibrary =
     useHelpCenterAIArticlesLibrary as jest.MockedFunction<
         typeof useHelpCenterAIArticlesLibrary
@@ -112,6 +131,7 @@ describe('useOpportunitiesCount', () => {
             1,
             'en-US',
             null,
+            true,
         )
     })
 
@@ -190,6 +210,7 @@ describe('useOpportunitiesCount', () => {
             helpCenterId,
             locale,
             shopName,
+            true,
         )
     })
 

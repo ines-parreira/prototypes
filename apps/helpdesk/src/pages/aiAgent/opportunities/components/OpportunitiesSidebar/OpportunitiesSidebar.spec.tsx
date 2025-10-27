@@ -198,4 +198,100 @@ describe('OpportunitiesSidebar', () => {
         const skeletons = container.querySelectorAll('.card')
         expect(skeletons.length).toBe(3)
     })
+
+    describe('Pagination', () => {
+        const mockOnLoadMore = jest.fn()
+
+        it('should render Load More button when hasNextPage is true', () => {
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    onLoadMore={mockOnLoadMore}
+                />,
+            )
+
+            const loadMoreButton = screen.getByRole('button', {
+                name: /load more/i,
+            })
+            expect(loadMoreButton).toBeInTheDocument()
+        })
+
+        it('should not render Load More button when hasNextPage is false', () => {
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={false}
+                    onLoadMore={mockOnLoadMore}
+                />,
+            )
+
+            const loadMoreButton = screen.queryByRole('button', {
+                name: /load more/i,
+            })
+            expect(loadMoreButton).not.toBeInTheDocument()
+        })
+
+        it('should call onLoadMore when Load More button is clicked', async () => {
+            const user = userEvent.setup()
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    onLoadMore={mockOnLoadMore}
+                />,
+            )
+
+            const loadMoreButton = screen.getByRole('button', {
+                name: /load more/i,
+            })
+            await user.click(loadMoreButton)
+
+            expect(mockOnLoadMore).toHaveBeenCalledTimes(1)
+        })
+
+        it('should show loading state on Load More button when fetching', () => {
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={true}
+                    onLoadMore={mockOnLoadMore}
+                />,
+            )
+
+            const loadMoreButton = screen.getByRole('button', {
+                name: /loading/i,
+            })
+            expect(loadMoreButton).toBeInTheDocument()
+        })
+
+        it('should auto-select when opportunities go from empty to populated', async () => {
+            const { rerender } = render(
+                <OpportunitiesSidebar
+                    opportunities={[]}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />,
+            )
+
+            expect(mockOnSelectOpportunity).not.toHaveBeenCalled()
+
+            rerender(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
+                    mockOpportunities[0],
+                )
+            })
+        })
+    })
 })

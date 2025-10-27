@@ -164,20 +164,20 @@ catalogs:
       specifier: ^0.7.115
       version: 0.7.115
     '@gorgias/knowledge-service-client':
-      specifier: ^0.3.20
-      version: 0.3.20
+      specifier: ^0.3.21
+      version: 0.3.21
     '@gorgias/knowledge-service-mocks':
-      specifier: ^0.2.39
-      version: 0.2.39
-    '@gorgias/knowledge-service-queries':
       specifier: ^0.2.40
       version: 0.2.40
+    '@gorgias/knowledge-service-queries':
+      specifier: ^0.2.41
+      version: 0.2.41
     '@gorgias/knowledge-service-types':
-      specifier: ^0.4.11
-      version: 0.4.11
+      specifier: ^0.4.12
+      version: 0.4.12
     '@gorgias/knowledge-service-validators':
-      specifier: ^0.2.36
-      version: 0.2.36
+      specifier: ^0.2.37
+      version: 0.2.37
   styles:
     '@types/classnames':
       specifier: 2.2.10
@@ -440,16 +440,16 @@ importers:
         version: 0.7.115
       '@gorgias/knowledge-service-client':
         specifier: catalog:rest-api-sdk
-        version: 0.3.20
+        version: 0.3.21
       '@gorgias/knowledge-service-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.40(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.41(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/knowledge-service-types':
         specifier: catalog:rest-api-sdk
-        version: 0.4.11
+        version: 0.4.12
       '@gorgias/knowledge-service-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.2.36
+        version: 0.2.37
       '@gorgias/realtime':
         specifier: ^0.21.13
         version: 0.21.13(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/pubnub@7.4.2)(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -897,7 +897,7 @@ importers:
         version: 0.7.117(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/knowledge-service-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.39(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.2.40(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/static-analysis':
         specifier: 0.3.0
         version: 0.3.0(@types/node@22.13.13)
@@ -3513,23 +3513,23 @@ packages:
   '@gorgias/helpdesk-validators@0.7.115':
     resolution: {integrity: sha512-EavB4JWC2H9rZh6WzBvD94kq5AKAS3HN4PGmEwgFebOqiucCTtjRkje4G6UHnkB40mwqut5eklZ+PCmx/psRag==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-validators/0.7.115/4fe8707370f810fd74ebde1a701c3647b53ce108}
 
-  '@gorgias/knowledge-service-client@0.3.20':
-    resolution: {integrity: sha512-ig0g6O0cf+5UobDan6JXoIRbA8KGiotqQM+dRS5JMF9LdZ2l7ztFiRfYbjebDoeGXxcGQjCt+bgLefSRNnXWeQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-client/0.3.20/2e51a9b112987075b2b9bf854b1e0fe60d8d9e31}
+  '@gorgias/knowledge-service-client@0.3.21':
+    resolution: {integrity: sha512-/2PUY9UM8m2+4XzrxcggVsBBB1G7SL4YTTT5nGIZBmr7nIY/iwVf61L3GDhC93oeeSjGIfzshMSVv0zw6awQDA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-client/0.3.21/7340591279fc3458f074b30c6ad3b9b736b36109}
 
-  '@gorgias/knowledge-service-mocks@0.2.39':
-    resolution: {integrity: sha512-IBy9/egDQYA1hS3pvsIRxXvhZt4p+lqTmupi1o2Y31PHdUKJ1RN6ik8QUAjtEZcCwRijkKV10TxBFOz604vUIA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-mocks/0.2.39/31bd5f5a19738e463221631debdb3cd212f9f87a}
+  '@gorgias/knowledge-service-mocks@0.2.40':
+    resolution: {integrity: sha512-gHGm6H911mA48LqnqWup73YMfi9MS8opHU0Uc9UPOLbA5fjgrSbHPcyuJBk3ccwU01w5sO4OdhUsP85FVA1bPQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-mocks/0.2.40/76650fca204b70026eff9f9ef80e1518b04ea8b7}
 
-  '@gorgias/knowledge-service-queries@0.2.40':
-    resolution: {integrity: sha512-amgInwDKv4Q3sGDRwhdPtXO7MP9UNObKXH9KBuzvougEPFMdthNn/KRFbk3rFXtfZRYdYrhs3wunuayaRoMWtA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-queries/0.2.40/92960335f3196bee0208bc35e33ed2009271b312}
+  '@gorgias/knowledge-service-queries@0.2.41':
+    resolution: {integrity: sha512-7FSbyLVEbytZugdgIKMktxvKKlrEYrnSaZDKQzZlpEmD4AN/JAuz/JZiR0ARUQaYp9sJ3xpzW/pm7d3WEH/+Kw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-queries/0.2.41/f679aa2cd1f1d9ee89fcdcebe4e507f83eaad487}
 
-  '@gorgias/knowledge-service-spec@0.3.29':
-    resolution: {integrity: sha512-GOSUehQFqMt8c5yYp48X9BVuxOyAtvEmOXE519oXYQXoV/F6ffxrmBY219thgUu0RLhwv7Lx3PRaKe6IDDQY6Q==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-spec/0.3.29/1392250ef797de5a8780fc437b9fb87b6adec3d4}
+  '@gorgias/knowledge-service-spec@0.3.30':
+    resolution: {integrity: sha512-WCbqb0P7uANDV00UUs834L4iOZmAzJ41Daap9H/xA9jqI9UNgLizq0U812zpUf+3/W9YWjrguhID58jHbUQ+MA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-spec/0.3.30/a579ae7ab7e86b7f75568d62738a02ccd33b65bb}
 
-  '@gorgias/knowledge-service-types@0.4.11':
-    resolution: {integrity: sha512-nHiazvl5bBFm595+p1aVjT+4ffUkHTf85lr9UEJrVXjw0TzAAAWcQrwy4Jaou4t8cV9la6E4K5UgV9RYRo4Lgw==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-types/0.4.11/182eec000ff829b4b07b68b323f7988d1d86be8f}
+  '@gorgias/knowledge-service-types@0.4.12':
+    resolution: {integrity: sha512-RFrjiaoBUnVSp2CQDdo/W5ljCYpbHC5IMsZtV4FA+HAzJ3M68vV4sHK+ux5IFyOOwV214dyk8ugbwtqM3nv7yA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-types/0.4.12/cd0eb26ec4cb925a869ab7ff04c4413f9874ef86}
 
-  '@gorgias/knowledge-service-validators@0.2.36':
-    resolution: {integrity: sha512-GwQZWnu0ZP5jpb3JixgnUxLCJdMgl9JPkc3J9rGN2tBA4Dc4zSrVh+KRGQ1wxI1OeJVBMLObs4z/fWFpUKWPvQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.36/8b1dc855bf305037771b226be85a7f67e12d68f1}
+  '@gorgias/knowledge-service-validators@0.2.37':
+    resolution: {integrity: sha512-ZIFJViFGi/lHqpjT2sxOjTbFsKpxn67pVX02Pj1hMZWy+aY3J/JetcynCm5U2u9J404wf2hShMg0t6PdASWREA==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.37/bcf6da12ded797bc8e41fa738158afa9a560cfbd}
 
   '@gorgias/realtime-ably@0.2.4':
     resolution: {integrity: sha512-WzVfMoJ0ciee2co7pMnI+hLQ/8xAfHQ3MwdJ0h2WXO3QPGmxHXtsrKeOykKSFNlsLU5bDhtXVI2oSj5KSHVw+Q==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime-ably/0.2.4/ad9c3f762c858dae7313761300f9e5be5494f200}
@@ -15201,18 +15201,18 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/knowledge-service-client@0.3.20':
+  '@gorgias/knowledge-service-client@0.3.21':
     dependencies:
-      '@gorgias/knowledge-service-types': 0.4.11
+      '@gorgias/knowledge-service-types': 0.4.12
       '@gorgias/sdk-client': 0.9.9
       axios: 1.12.2
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/knowledge-service-mocks@0.2.39(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/knowledge-service-mocks@0.2.40(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/knowledge-service-spec': 0.3.29
-      '@gorgias/knowledge-service-types': 0.4.11
+      '@gorgias/knowledge-service-spec': 0.3.30
+      '@gorgias/knowledge-service-types': 0.4.12
       '@gorgias/sdk-mocks': 0.13.2(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/sdk-spec-utils': 0.10.2
       lodash-es: 4.17.21
@@ -15221,10 +15221,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/knowledge-service-queries@0.2.40(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/knowledge-service-queries@0.2.41(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/knowledge-service-client': 0.3.20
-      '@gorgias/knowledge-service-types': 0.4.11
+      '@gorgias/knowledge-service-client': 0.3.21
+      '@gorgias/knowledge-service-types': 0.4.12
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -15232,15 +15232,15 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/knowledge-service-spec@0.3.29': {}
+  '@gorgias/knowledge-service-spec@0.3.30': {}
 
-  '@gorgias/knowledge-service-types@0.4.11': {}
+  '@gorgias/knowledge-service-types@0.4.12': {}
 
-  '@gorgias/knowledge-service-validators@0.2.36':
+  '@gorgias/knowledge-service-validators@0.2.37':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/knowledge-service-spec': 0.3.29
-      '@gorgias/knowledge-service-types': 0.4.11
+      '@gorgias/knowledge-service-spec': 0.3.30
+      '@gorgias/knowledge-service-types': 0.4.12
       '@gorgias/sdk-spec-utils': 0.10.2
       '@gorgias/sdk-validators': 0.9.4
       ajv: 8.17.1

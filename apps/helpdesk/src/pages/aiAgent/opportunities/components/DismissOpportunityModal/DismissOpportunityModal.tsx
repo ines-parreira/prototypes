@@ -195,13 +195,6 @@ export const DismissOpportunityModal = ({
         try {
             await upsertFeedback({ data: feedbackData })
 
-            dispatch(
-                notify({
-                    message: 'Successfully dismissed opportunity',
-                    status: NotificationStatus.Success,
-                }),
-            )
-
             resetForm()
 
             onOpportunityDismissed?.({

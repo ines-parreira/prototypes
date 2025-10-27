@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
@@ -13,7 +16,9 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
+import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
+import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
 import {
     mapAiArticlesToOpportunities,
     Opportunity,
@@ -22,6 +27,8 @@ import { OpportunitiesContent } from '../OpportunitiesContent/OpportunitiesConte
 import { OpportunitiesSidebar } from '../OpportunitiesSidebar/OpportunitiesSidebar'
 
 import css from './OpportunitiesLayout.less'
+
+const PRELOAD_THRESHOLD = 5
 
 export const OpportunitiesLayout = () => {
     const { shopName } = useParams<{
@@ -35,6 +42,12 @@ export const OpportunitiesLayout = () => {
         helpCenterType: 'guidance',
         shopName,
     })
+    const shopIntegrationId = useShopIntegrationId(shopName)
+
+    const useKnowledgeService = useFlag(
+        FeatureFlagKey.OpportunitiesMilestone2,
+        false,
+    )
 
     const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
     useEffectOnce(() => {
@@ -54,10 +67,19 @@ export const OpportunitiesLayout = () => {
         storeConfiguration?.helpCenterId ?? 0,
         locale,
         shopName,
+        !useKnowledgeService,
     )
 
-    const [selectedOpportunity, setSelectedOpportunity] =
-        useState<Opportunity | null>(null)
+    const {
+        opportunities: knowledgeServiceOpportunities,
+        isLoading: isLoadingKnowledgeService,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+        preloadNextPage,
+        totalCount,
+        refetch: refetchOpportunities,
+    } = useKnowledgeServiceOpportunities(shopIntegrationId, useKnowledgeService)
 
     const {
         onOpportunityPageVisited,
@@ -70,37 +92,73 @@ export const OpportunitiesLayout = () => {
     })
 
     const opportunities: Opportunity[] = useMemo(() => {
+        if (useKnowledgeService) {
+            return knowledgeServiceOpportunities
+        }
         if (!storeConfiguration?.helpCenterId) return []
         return mapAiArticlesToOpportunities(aiArticles)
-    }, [aiArticles, storeConfiguration?.helpCenterId])
+    }, [
+        aiArticles,
+        knowledgeServiceOpportunities,
+        storeConfiguration?.helpCenterId,
+        useKnowledgeService,
+    ])
+
+    const {
+        selectedOpportunity,
+        setSelectedOpportunityId,
+        isLoading: isLoadingOpportunityDetails,
+    } = useSelectedOpportunity(opportunities, useKnowledgeService)
 
     const selectNextOpportunity = (articleKey: string) => {
-        // If the published opportunity was selected, select the next one
         if (selectedOpportunity?.key === articleKey) {
             const remainingOpportunities = opportunities.filter(
                 (opp) => opp.key !== articleKey,
             )
-            setSelectedOpportunity(remainingOpportunities[0] || null)
+            setSelectedOpportunityId(remainingOpportunities[0]?.id || null)
         }
     }
 
     const selectCertainOpportunity = (index: number) => {
-        setSelectedOpportunity(opportunities[index])
+        if (index < 0 || index >= opportunities.length) {
+            return
+        }
+
+        setSelectedOpportunityId(opportunities[index].id)
+
+        // Preload next page if we're close to the end
+        // Only for knowledge service with pagination
+        if (
+            useKnowledgeService &&
+            opportunities.length - index <= PRELOAD_THRESHOLD
+        ) {
+            preloadNextPage()
+        }
     }
 
-    const handleArchiveArticle = (articleKey: string) => {
-        markArticleAsReviewed(articleKey, 'archive')
+    const handleArchiveArticle = async (articleKey: string) => {
+        if (!useKnowledgeService) {
+            markArticleAsReviewed(articleKey, 'archive')
+        } else {
+            await refetchOpportunities()
+        }
 
         selectNextOpportunity(articleKey)
     }
 
-    const handlePublishArticle = (articleKey: string) => {
-        markArticleAsReviewed(articleKey, 'publish')
+    const handlePublishArticle = async (articleKey: string) => {
+        if (!useKnowledgeService) {
+            markArticleAsReviewed(articleKey, 'publish')
+        } else {
+            await refetchOpportunities()
+        }
 
         selectNextOpportunity(articleKey)
     }
 
-    const isLoading = isStoreConfigLoading || isLoadingAiArticles
+    const isLoading =
+        isStoreConfigLoading ||
+        (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
 
     useEffect(() => {
         onOpportunityPageVisited()
@@ -112,14 +170,24 @@ export const OpportunitiesLayout = () => {
                 <OpportunitiesSidebar
                     opportunities={opportunities}
                     isLoading={isLoading}
-                    onSelectOpportunity={setSelectedOpportunity}
+                    onSelectOpportunity={(opp) => {
+                        if (opp) {
+                            setSelectedOpportunityId(opp.id)
+                        }
+                    }}
                     selectedOpportunity={selectedOpportunity}
                     onOpportunityViewed={onOpportunityViewed}
+                    hasNextPage={useKnowledgeService ? hasNextPage : false}
+                    isFetchingNextPage={
+                        useKnowledgeService ? isFetchingNextPage : false
+                    }
+                    onLoadMore={useKnowledgeService ? fetchNextPage : undefined}
                 />
                 <OpportunitiesContent
                     key={selectedOpportunity?.key}
-                    selectedOpportunity={selectedOpportunity}
+                    selectedOpportunity={selectedOpportunity ?? null}
                     shopName={shopName}
+                    shopIntegrationId={shopIntegrationId}
                     helpCenterId={storeConfiguration?.helpCenterId ?? 0}
                     guidanceHelpCenterId={guidanceHelpCenter?.id ?? 0}
                     onArchive={handleArchiveArticle}
@@ -129,6 +197,11 @@ export const OpportunitiesLayout = () => {
                     selectCertainOpportunity={selectCertainOpportunity}
                     onOpportunityAccepted={onOpportunityAccepted}
                     onOpportunityDismissed={onOpportunityDismissed}
+                    useKnowledgeService={useKnowledgeService}
+                    isLoadingOpportunityDetails={isLoadingOpportunityDetails}
+                    totalCount={
+                        useKnowledgeService ? totalCount : opportunities.length
+                    }
                 />
             </div>
         </div>
