@@ -59,6 +59,10 @@ const renderHookWithMocks = (
 }
 
 describe('useDeleteNode', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('deleteNode', () => {
         it('should delete first step correctly', async () => {
             const flow = {
@@ -568,6 +572,47 @@ describe('useDeleteNode', () => {
                     },
                     { shouldDirty: true },
                 )
+            })
+        })
+    })
+
+    describe('removeUnlinkedSteps', () => {
+        it('should remove steps that are not linked to the flow anymore', async () => {
+            const flow: CallRoutingFlow = {
+                first_step_id: 'first-step',
+                steps: {
+                    'first-step': mockPlayMessageStep({
+                        id: 'first-step',
+                        next_step_id: 'second-step',
+                    }),
+                    'second-step': mockPlayMessageStep({
+                        id: 'second-step',
+                        next_step_id: 'third-step',
+                    }),
+                    'third-step': mockPlayMessageStep({
+                        id: 'third-step',
+                        next_step_id: null,
+                    }),
+                    'unlinked-step': mockPlayMessageStep({
+                        id: 'unlinked-step',
+                        next_step_id: null,
+                    }),
+                },
+            }
+
+            const { result } = renderHookWithMocks(flow)
+
+            await act(async () => {
+                await result.current.removeUnlinkedSteps()
+            })
+
+            await waitFor(() => {
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledTimes(1)
+                expect(
+                    useFormContextReturnValue.unregister,
+                ).toHaveBeenCalledWith('steps.unlinked-step')
             })
         })
     })

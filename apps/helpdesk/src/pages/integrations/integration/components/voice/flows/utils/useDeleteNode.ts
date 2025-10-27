@@ -8,6 +8,7 @@ import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { VoiceFlowFormValues } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import {
+    bfsFlow,
     getFormTargetStepId,
     getNextNodes,
     isBranchingNode,
@@ -183,5 +184,24 @@ export function useDeleteNode() {
         updateNodes()
     }
 
-    return { deleteNode, deleteBranch, deleteEnqueueBranches }
+    const removeUnlinkedSteps = () => {
+        const flow = watch()
+
+        const linkedSteps = bfsFlow(flow)
+
+        Object.keys(flow.steps).forEach((stepId) => {
+            if (!linkedSteps.includes(stepId)) {
+                unregister(`steps.${stepId}`)
+            }
+        })
+
+        updateNodes()
+    }
+
+    return {
+        deleteNode,
+        deleteBranch,
+        deleteEnqueueBranches,
+        removeUnlinkedSteps,
+    }
 }

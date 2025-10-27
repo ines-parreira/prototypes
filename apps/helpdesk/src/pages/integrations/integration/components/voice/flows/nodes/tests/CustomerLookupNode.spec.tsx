@@ -2,11 +2,24 @@ import { ComponentProps } from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
+    mockBooleanDataTypeDefinition,
+    mockBooleanDropdownInputSettings,
     mockCustomerFieldBranchOption,
     mockCustomerFieldsConditionalStep,
+    mockCustomField,
+    mockDropdownInputSettingsSettings,
+    mockListCustomFieldsHandler,
+    mockTextDataTypeDefinition,
 } from '@gorgias/helpdesk-mocks'
+import {
+    CustomField,
+    ListCustomFields200,
+    ObjectType,
+} from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
@@ -15,6 +28,52 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
 import { CustomerLookupNode } from '../CustomerLookupNode'
+
+const mockCustomFields: CustomField[] = [
+    mockCustomField({
+        id: 1,
+        label: 'Status',
+        object_type: ObjectType.Customer,
+        definition: mockTextDataTypeDefinition({
+            input_settings: mockDropdownInputSettingsSettings({
+                choices: ['active', 'inactive', 'pending'],
+            }),
+        }),
+    }),
+    mockCustomField({
+        id: 2,
+        label: 'Priority',
+        object_type: ObjectType.Customer,
+        definition: mockBooleanDataTypeDefinition({
+            input_settings: mockBooleanDropdownInputSettings({
+                choices: [true, false],
+            }),
+        }),
+    }),
+]
+
+const server = setupServer()
+const mockListCustomFields = mockListCustomFieldsHandler(async () =>
+    HttpResponse.json({
+        data: mockCustomFields,
+    } as ListCustomFields200),
+)
+
+beforeAll(() => {
+    server.listen()
+})
+
+beforeEach(() => {
+    server.use(mockListCustomFields.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const mockUpdateNodes = jest.fn()
 jest.mock(
@@ -89,7 +148,7 @@ const renderComponent = (
 }
 
 describe('CustomerLookupNode', () => {
-    it('should render node', () => {
+    it('should render node', async () => {
         renderComponent()
 
         expect(
@@ -98,15 +157,27 @@ describe('CustomerLookupNode', () => {
         expect(
             screen.getAllByText('Select customer field').length,
         ).toBeGreaterThanOrEqual(1)
-        expect(
-            screen.getAllByText('Customer fields retrieved').length,
-        ).toBeGreaterThanOrEqual(1)
-        expect(screen.getAllByText('Other').length).toBeGreaterThanOrEqual(1)
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByText('Customer fields retrieved').length,
+            ).toBeGreaterThanOrEqual(1)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByDisplayValue('Other').length,
+            ).toBeGreaterThanOrEqual(1)
+        })
     })
 
     it('should add new node to flow when add option button is clicked', async () => {
         const user = userEvent.setup()
         renderComponent()
+
+        await waitFor(() => {
+            expect(screen.getByText('Add option')).toBeInTheDocument()
+        })
 
         await act(async () => {
             await user.click(screen.getByText('Add option'))
@@ -114,27 +185,6 @@ describe('CustomerLookupNode', () => {
 
         await waitFor(() => {
             expect(mockUpdateNodes).toHaveBeenCalled()
-        })
-    })
-
-    it('should update node data when the value changes', async () => {
-        const user = userEvent.setup()
-
-        renderComponent()
-
-        const onNodesChangeNumberOfCalls = onNodesChange.mock.calls.length
-
-        await act(async () => {
-            await user.type(
-                screen.getAllByPlaceholderText('Branch name')[0],
-                'test-value',
-            )
-        })
-
-        await waitFor(() => {
-            expect(onNodesChange.mock.calls.length).toBeGreaterThan(
-                onNodesChangeNumberOfCalls,
-            )
         })
     })
 
@@ -149,19 +199,9 @@ describe('CustomerLookupNode', () => {
         expect(screen.queryByText('Customer lookup')).not.toBeInTheDocument()
     })
 
-    it('should render default branch name field', () => {
-        renderComponent()
-
-        expect(
-            screen.getAllByDisplayValue('Other').length,
-        ).toBeGreaterThanOrEqual(1)
-    })
-
     it('should render field value select for branch options', () => {
         renderComponent()
 
-        // The select fields are only visible when the node is expanded
-        // In the collapsed view, we can only see the node title and description
         expect(
             screen.getAllByText('Customer lookup').length,
         ).toBeGreaterThanOrEqual(1)
@@ -174,11 +214,13 @@ describe('CustomerLookupNode', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const removeButtons = screen.getAllByText('close')
+        await waitFor(() => {
+            expect(screen.getAllByText('close').length).toBeGreaterThanOrEqual(
+                customerLookupStep.branch_options.length,
+            )
+        })
 
-        expect(removeButtons.length).toBeGreaterThanOrEqual(
-            customerLookupStep.branch_options.length,
-        )
+        const removeButtons = screen.getAllByText('close')
 
         await act(async () => {
             await user.click(removeButtons[0])

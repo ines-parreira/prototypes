@@ -8,20 +8,22 @@ import { Form } from 'core/forms'
 import { CustomerLookupActionsFieldItem } from '../CustomerLookupActionsFieldItem'
 
 const defaultProps = {
-    name: 'branch_options.0',
+    stepName: 'stepName',
     onRemove: jest.fn(),
     isRemovable: true,
-    branchNameFieldName: 'branch_options.0.branch_name',
-    fieldValueName: 'branch_options.0.field_value',
+    branchNameFieldName: 'stepName.branch_options.0.branch_name',
+    fieldValueName: 'stepName.branch_options.0.field_value',
 }
 
 const defaultValues = {
-    branch_options: [
-        {
-            field_value: 'found',
-            branch_name: 'Customer found',
-        },
-    ],
+    stepName: {
+        branch_options: [
+            {
+                field_value: 'found',
+                branch_name: 'Customer found',
+            },
+        ],
+    },
 }
 
 const renderComponent = (
@@ -90,31 +92,32 @@ describe('CustomerLookupActionsFieldItem', () => {
         expect(branchNameInput).toHaveValue('Customer found')
     })
 
-    it('should handle empty branch name', () => {
-        renderComponent(defaultProps, {
-            branch_options: [
-                {
-                    field_value: 'found',
-                    branch_name: '',
-                },
-            ],
-        })
-
-        const branchNameInput = screen.getByPlaceholderText('Branch name')
-        expect(branchNameInput).toBeInTheDocument()
-        expect(branchNameInput).toHaveValue('')
-    })
-
     it('should render Other option in select field when fieldValueName is falsy', () => {
         renderComponent({ ...defaultProps, fieldValueName: undefined })
 
         expect(screen.getByText('Other')).toBeInTheDocument()
     })
 
-    it('should handle missing onRemove prop', () => {
-        renderComponent({ ...defaultProps, onRemove: undefined })
+    it('should render all options in select field', () => {
+        renderComponent(
+            { ...defaultProps, fieldValueOptions: ['option1', 'option2'] },
+            {
+                stepName: {
+                    branch_options: [
+                        { field_value: 'option1', branch_name: '' },
+                    ],
+                },
+            },
+        )
 
-        expect(screen.getByDisplayValue('Customer found')).toBeInTheDocument()
-        expect(screen.getByText('close')).toBeInTheDocument()
+        expect(screen.getByText('option1')).toBeInTheDocument()
+        expect(screen.getByText('option2')).toBeInTheDocument()
+    })
+
+    it('should render the correct labels for boolean field values', () => {
+        renderComponent({ ...defaultProps, fieldValueOptions: [true, false] })
+
+        expect(screen.getByText('Yes')).toBeInTheDocument()
+        expect(screen.getByText('No')).toBeInTheDocument()
     })
 })

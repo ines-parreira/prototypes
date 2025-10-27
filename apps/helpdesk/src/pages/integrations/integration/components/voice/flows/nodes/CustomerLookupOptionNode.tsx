@@ -1,18 +1,19 @@
-import { useFormContext } from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
+
+import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 
 import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
 
-import { type CustomerLookupOptionNode, VoiceFlowFormValues } from '../types'
+import { type CustomerLookupOptionNode } from '../types'
 
 type CustomerLookupOptionNodeProps = NodeProps<CustomerLookupOptionNode>
 
 export function CustomerLookupOptionNode(props: CustomerLookupOptionNodeProps) {
     const { data } = props
-    const { watch } = useFormContext<VoiceFlowFormValues>()
 
-    const label = watch(
-        `steps.${data.parentId}.branch_options.${data.optionIndex}.branch_name`,
-    )
+    const option: CustomerFieldBranchOption | undefined = useWatch({
+        name: `steps.${data.parentId}.branch_options.${data.optionIndex}`,
+    })
 
     return (
         <NodeWrapper {...props}>
@@ -20,9 +21,25 @@ export function CustomerLookupOptionNode(props: CustomerLookupOptionNodeProps) {
                 label={
                     data.isDefaultOption
                         ? 'Other'
-                        : label || `${(data.optionIndex ?? 0) + 1}`
+                        : option?.branch_name ||
+                          `${transformFieldValue(option?.field_value)}` ||
+                          `${(data?.optionIndex ?? 0) + 1}`
                 }
             />
         </NodeWrapper>
     )
+}
+
+const transformFieldValue = (
+    fieldValue: string | undefined,
+): string | undefined => {
+    if (fieldValue === 'True') {
+        return 'Yes'
+    }
+
+    if (fieldValue === 'False') {
+        return 'No'
+    }
+
+    return fieldValue
 }

@@ -941,3 +941,24 @@ export function updateFormFlowOnNodeDelete(
 
     return flow
 }
+
+export const bfsFlow = (flow: CallRoutingFlow): string[] => {
+    const visited: Record<string, boolean> = {}
+    const queue: (string | null | undefined)[] = [flow.first_step_id]
+    const result: string[] = []
+
+    while (queue.length > 0) {
+        const stepId = queue.shift()
+
+        if (!stepId || visited[stepId]) continue
+
+        visited[stepId] = true
+        result.push(stepId)
+
+        const nextSteps = getNextSteps(flow.steps, stepId)
+
+        queue.push(...nextSteps)
+    }
+
+    return result
+}

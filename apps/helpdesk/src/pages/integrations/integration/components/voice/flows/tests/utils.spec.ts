@@ -47,6 +47,7 @@ import {
     VoiceFlowNodeData,
 } from '../types'
 import {
+    bfsFlow,
     canAddNewStepOnEdge,
     createCustomerLookupOptionNode,
     createEnqueueOptionNode,
@@ -2788,6 +2789,56 @@ describe('utils', () => {
                 },
                 [fourthStep.id]: fourthStep,
             })
+        })
+    })
+
+    describe('bfsFlow', () => {
+        it('should return the correct steps for a flow', () => {
+            const steps: CallRoutingFlowSteps = {
+                'step-1': mockPlayMessageStep({
+                    id: 'step-1',
+                    next_step_id: 'step-2',
+                }),
+                'step-2': mockIvrMenuStep({
+                    id: 'step-2',
+                    branch_options: [
+                        { input_digit: '1', next_step_id: 'step-3' },
+                        { input_digit: '2', next_step_id: 'step-4' },
+                        { input_digit: '3', next_step_id: 'step-6' },
+                    ],
+                }),
+                'step-3': mockTimeSplitConditionalStep({
+                    id: 'step-3',
+                    on_true_step_id: 'step-5',
+                    on_false_step_id: 'step-6',
+                }),
+                'step-4': mockSendToVoicemailStep({
+                    id: 'step-4',
+                    next_step_id: null,
+                }),
+                'step-5': mockForwardToExternalNumberStep({
+                    id: 'step-5',
+                    next_step_id: 'step-6',
+                }),
+                'step-6': mockSendToSMSStep({
+                    id: 'step-6',
+                    next_step_id: 'step-7',
+                }),
+                'step-7': mockEnqueueStep({
+                    id: 'step-7',
+                    next_step_id: null,
+                }),
+            }
+
+            expect(bfsFlow({ first_step_id: 'step-1', steps })).toEqual([
+                'step-1',
+                'step-2',
+                'step-3',
+                'step-4',
+                'step-6',
+                'step-5',
+                'step-7',
+            ])
         })
     })
 })

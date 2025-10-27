@@ -1,28 +1,41 @@
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 
-import { useWatch } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 
-import { ListItem, SelectField } from '@gorgias/axiom'
-import { CustomerFieldsConditionalStep } from '@gorgias/helpdesk-types'
+import { ListItem, SelectField, SelectFieldProps } from '@gorgias/axiom'
+import {
+    CustomerFieldsConditionalStep,
+    CustomField,
+    ObjectType,
+} from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
 import { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
 import { CustomerLookupActionsFieldArray } from '../../CustomerLookupActionsFieldArray'
 import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
-import { CustomerLookupNode as CustomerLookupNodeType } from '../types'
+import {
+    CustomerLookupNode as CustomerLookupNodeType,
+    VoiceFlowFormValues,
+} from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { getFormTargetStepId } from '../utils'
 import { useDeleteNode } from '../utils/useDeleteNode'
+import { validateCustomerLookupStep } from '../utils/validationUtils'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
 
 export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
     const { data, id } = props
+    const { data: customFieldsData, isLoading } = useCustomFieldDefinitions({
+        object_type: ObjectType.Customer,
+        archived: false,
+    })
 
     const ref = useRef<HTMLDivElement>(null)
 
@@ -38,35 +51,53 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
         ? getFormTargetStepId(intermediaryNode, getNode)
         : null
 
+    const errors = useMemo(
+        () => (step ? validateCustomerLookupStep(step) : []),
+        [step],
+    )
+
     if (!step) {
         return null
     }
 
+    const customFields = customFieldsData?.data?.filter(
+        (field) =>
+            field.definition.data_type === 'text' ||
+            field.definition.data_type === 'boolean',
+    )
+    const selectedCustomField = customFields?.find(
+        (field) => field.id === step.custom_field_id,
+    )
+
     return (
         <VoiceStepNode
             title="Customer lookup"
-            description={'Select customer field'}
+            description={selectedCustomField?.label ?? 'Select customer field'}
             icon={
                 <StepCardIcon
-                    backgroundColor="teal"
+                    backgroundColor="fuchsia"
                     name="search-magnifying-glass"
                 />
             }
-            errors={[]}
+            errors={errors}
             drawerRef={ref}
             {...props}
         >
             <div className={css.formWithSeparator}>
                 <FormField
-                    name={`steps.${data.id}.field_id`}
-                    field={SelectField<{ id: string; name: string }>}
+                    name={`steps.${data.id}.custom_field_id`}
+                    field={FieldNameSelectField<CustomField>}
+                    stepId={data.id}
+                    isDisabled={isLoading || customFields?.length === 0}
+                    placeholder={customFields?.length ? 'Select' : 'No fields'}
                     label="Customer fields retrieved"
-                    placeholder="Select"
-                    items={[]}
+                    items={customFields ?? []}
+                    outputTransform={(field) => field.id}
+                    inputTransform={(fieldId: number) =>
+                        customFields?.find((field) => field.id === fieldId)
+                    }
                 >
-                    {(option: { id: string; name: string }) => (
-                        <ListItem label={option.name} />
-                    )}
+                    {(option: CustomField) => <ListItem label={option.label} />}
                 </FormField>
                 <CustomerLookupActionsFieldArray
                     stepName={`steps.${data.id}`}
@@ -75,6 +106,7 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
                             ? nextStepId
                             : step.default_next_step_id
                     }
+                    selectedCustomField={selectedCustomField}
                     onAddOption={() => updateNodes()}
                     onRemoveOption={(index) => {
                         deleteBranch(
@@ -87,5 +119,29 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
                 />
             </div>
         </VoiceStepNode>
+    )
+}
+
+function FieldNameSelectField<T extends object>({
+    onChange,
+    stepId,
+    ...props
+}: SelectFieldProps<T> & { stepId: string }): JSX.Element {
+    const { setValue } = useFormContext<VoiceFlowFormValues>()
+    const { removeUnlinkedSteps } = useDeleteNode()
+
+    const handleChange = () => {
+        setValue(`steps.${stepId}.branch_options`, [])
+        removeUnlinkedSteps()
+    }
+
+    return (
+        <SelectField
+            {...props}
+            onChange={(nextValue) => {
+                onChange?.(nextValue)
+                handleChange()
+            }}
+        />
     )
 }

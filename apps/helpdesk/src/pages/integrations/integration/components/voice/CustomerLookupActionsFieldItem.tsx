@@ -4,56 +4,115 @@ import {
     ListItem,
     SelectField,
 } from '@gorgias/axiom'
+import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 
-import { FormField } from 'core/forms'
+import { FormField, useWatch } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 
 import css from './IvrMenuActionsFieldItem.less'
 
 type CustomerLookupActionsFieldItemProps = {
-    name: string
+    stepName: string
     onRemove?: () => void
     isRemovable?: boolean
-    branchNameFieldName: string
+    branchNameFieldName?: string
     fieldValueName?: string
+    fieldValueOptions?: string[] | boolean[]
+}
+
+type Option = {
+    id: string
+    name: string
+}
+
+enum BooleanFieldValue {
+    True = 'True',
+    False = 'False',
 }
 
 export function CustomerLookupActionsFieldItem({
-    name,
+    stepName,
     onRemove,
     isRemovable,
     branchNameFieldName,
     fieldValueName,
+    fieldValueOptions = [],
 }: CustomerLookupActionsFieldItemProps): JSX.Element {
+    const branchOptions: CustomerFieldBranchOption[] = useWatch({
+        name: `${stepName}.branch_options`,
+        defaultValue: [],
+    })
+
+    const stringFieldValueOptions: string[] = fieldValueOptions.map(
+        (option) => {
+            if (typeof option === 'string') {
+                return option
+            }
+
+            return option ? BooleanFieldValue.True : BooleanFieldValue.False
+        },
+    )
+
+    const availableOptions = stringFieldValueOptions.filter(
+        (option) =>
+            !branchOptions.some(
+                (branchOption) => branchOption.field_value === option,
+            ),
+    )
+
     return (
         <Box gap="xs" alignItems="flex-end" width="100%">
-            {fieldValueName ? (
-                <FormField
-                    field={SelectField<{ id: string; name: string }>}
-                    name={fieldValueName}
-                    items={[]}
-                >
-                    {(option: { id: string; name: string }) => (
-                        <ListItem label={option.name} />
-                    )}
-                </FormField>
+            {fieldValueName && branchNameFieldName ? (
+                <>
+                    <FormField
+                        field={SelectField<Option>}
+                        placeholder="Select value"
+                        name={fieldValueName}
+                        items={stringFieldValueOptions.map((option) =>
+                            transformFieldValueOption(
+                                option,
+                                fieldValueOptions,
+                            ),
+                        )}
+                        outputTransform={(option) => option.id}
+                        inputTransform={(option: string) =>
+                            transformFieldValueOption(option, fieldValueOptions)
+                        }
+                    >
+                        {(option: { id: string; name: string }) => (
+                            <ListItem
+                                label={option.name}
+                                isDisabled={
+                                    !availableOptions.includes(option.id)
+                                }
+                            />
+                        )}
+                    </FormField>
+                    <FormField
+                        name={branchNameFieldName}
+                        className={css.branchName}
+                        placeholder="Branch name"
+                    />
+                </>
             ) : (
-                <SelectField
-                    value={otherOption}
-                    items={[otherOption]}
-                    isDisabled
-                >
-                    {(option: { id: string; name: string }) => (
-                        <ListItem label={option.name} />
-                    )}
-                </SelectField>
+                <>
+                    <SelectField
+                        value={otherOption}
+                        items={[otherOption]}
+                        isDisabled
+                    >
+                        {(option: { id: string; name: string }) => (
+                            <ListItem label={option.name} />
+                        )}
+                    </SelectField>
+                    <InputField
+                        placeholder="Branch name"
+                        className={css.branchName}
+                        isDisabled
+                    />
+                </>
             )}
 
-            <FormField
-                key={name}
-                className={css.branchName}
-                name={branchNameFieldName}
-                placeholder="Branch name"
-            />
             {isRemovable && (
                 <IconButton
                     icon="close"
@@ -69,4 +128,18 @@ export function CustomerLookupActionsFieldItem({
 const otherOption: { id: string; name: string } = {
     id: 'Other',
     name: 'Other',
+}
+
+const transformFieldValueOption = (
+    option: string,
+    fieldValueOptions: string[] | boolean[],
+): Option => {
+    if (typeof fieldValueOptions[0] === 'boolean') {
+        return {
+            id: option,
+            name: option === BooleanFieldValue.True ? 'Yes' : 'No',
+        }
+    }
+
+    return { id: option, name: option }
 }

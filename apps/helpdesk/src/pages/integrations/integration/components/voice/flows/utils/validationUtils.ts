@@ -1,4 +1,8 @@
-import { EnqueueStep, RouteToInternalNumber } from '@gorgias/helpdesk-types'
+import {
+    CustomerFieldsConditionalStep,
+    EnqueueStep,
+    RouteToInternalNumber,
+} from '@gorgias/helpdesk-types'
 import { validateVoiceCallbackRequests } from '@gorgias/helpdesk-validators'
 
 import { VoiceFlowNodeType } from '../constants'
@@ -31,6 +35,22 @@ export const validateRouteToStep = (
                 errors.push('Integration is required')
             }
             break
+    }
+
+    return errors
+}
+
+export const validateCustomerLookupStep = (
+    step: CustomerFieldsConditionalStep,
+): string[] => {
+    const errors: string[] = []
+
+    if (!step?.custom_field_id) {
+        errors.push('Customer field is required')
+    }
+
+    if (step.branch_options.some((option) => !option.field_value)) {
+        errors.push('Field value is required')
     }
 
     return errors

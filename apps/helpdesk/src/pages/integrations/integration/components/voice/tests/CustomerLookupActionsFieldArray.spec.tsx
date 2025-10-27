@@ -3,7 +3,15 @@ import { ComponentProps } from 'react'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { mockCustomerFieldBranchOption } from '@gorgias/helpdesk-mocks'
+import {
+    mockBooleanDataTypeDefinition,
+    mockBooleanDropdownInputSettings,
+    mockCustomerCustomField,
+    mockCustomerFieldBranchOption,
+    mockDropdownInputSettingsSettings,
+    mockTextDataTypeDefinition,
+} from '@gorgias/helpdesk-mocks'
+import { CustomField } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
@@ -15,6 +23,14 @@ const defaultProps = {
     onAddOption: jest.fn(),
     onRemoveOption: jest.fn(),
     branchNextId: 'end_call_node',
+    selectedCustomField: mockCustomerCustomField({
+        id: 1,
+        definition: mockTextDataTypeDefinition({
+            input_settings: mockDropdownInputSettingsSettings({
+                choices: ['vip', 'problematic', 'something else', 'option4'],
+            }),
+        }),
+    }) as unknown as CustomField,
 }
 
 const branchOptions = [
@@ -32,6 +48,7 @@ const branchOptions = [
 const defaultValues = {
     steps: {
         customerLookup: {
+            custom_field_id: 1,
             branch_options: branchOptions,
         },
     },
@@ -122,6 +139,7 @@ describe('CustomerLookupActionsFieldArray', () => {
             steps: {
                 customerLookup: {
                     branch_options: [],
+                    custom_field_id: 1,
                 },
             },
         })
@@ -133,5 +151,88 @@ describe('CustomerLookupActionsFieldArray', () => {
         expect(
             screen.getByRole('button', { name: /Add option/ }),
         ).toBeInTheDocument()
+    })
+
+    it('should render the component when the input settings is dropdown', () => {
+        const selectedCustomField = mockCustomerCustomField({
+            id: 1,
+            definition: mockTextDataTypeDefinition({
+                input_settings: mockDropdownInputSettingsSettings({
+                    choices: ['option1', 'option2'],
+                }),
+            }),
+        }) as unknown as CustomField
+
+        renderComponent(
+            { ...defaultProps, selectedCustomField },
+            {
+                steps: {
+                    customerLookup: {
+                        custom_field_id: 1,
+                        branch_options: [],
+                    },
+                },
+            },
+        )
+        expect(screen.getByText('Other')).toBeInTheDocument()
+        expect(screen.getByText('Add option')).toBeInTheDocument()
+    })
+
+    it('should render the component when the input settings is boolean dropdown', () => {
+        const selectedCustomField = mockCustomerCustomField({
+            id: 1,
+            definition: mockBooleanDataTypeDefinition({
+                input_settings: mockBooleanDropdownInputSettings({
+                    choices: [true, false],
+                }),
+            }),
+        }) as unknown as CustomField
+
+        renderComponent(
+            { ...defaultProps, selectedCustomField },
+            {
+                steps: {
+                    customerLookup: {
+                        custom_field_id: 1,
+                        branch_options: [],
+                    },
+                },
+            },
+        )
+        expect(screen.getByText('Other')).toBeInTheDocument()
+        expect(screen.getByText('Add option')).toBeInTheDocument()
+    })
+
+    it('should not render the component when the customer field is not defined', () => {
+        renderComponent(
+            { ...defaultProps, selectedCustomField: undefined },
+            {
+                steps: {
+                    customerLookup: {
+                        custom_field_id: 1,
+                        branch_options: [],
+                    },
+                },
+            },
+        )
+        expect(screen.queryByText('Other')).not.toBeInTheDocument()
+        expect(screen.queryByText('Add option')).not.toBeInTheDocument()
+    })
+
+    it('shoud not render the "add option" button when the form already has the max number of options', () => {
+        renderComponent(defaultProps, {
+            steps: {
+                customerLookup: {
+                    custom_field_id: 1,
+                    branch_options: [
+                        ...branchOptions,
+                        mockCustomerFieldBranchOption({
+                            field_value: 'option4',
+                        }),
+                    ],
+                },
+            },
+        })
+        expect(screen.queryByText('Add option')).not.toBeInTheDocument()
     })
 })

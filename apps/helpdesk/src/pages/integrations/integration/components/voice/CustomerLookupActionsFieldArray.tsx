@@ -1,5 +1,5 @@
 import { Box, Button, Icon } from '@gorgias/axiom'
-import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
+import { CustomerFieldBranchOption, CustomField } from '@gorgias/helpdesk-types'
 
 import { useFieldArray } from 'core/forms'
 
@@ -10,6 +10,7 @@ type Props = {
     onAddOption?: () => void
     onRemoveOption?: (optionIndex: number) => void
     branchNextId: string | null
+    selectedCustomField?: CustomField
 }
 
 export function CustomerLookupActionsFieldArray({
@@ -17,7 +18,8 @@ export function CustomerLookupActionsFieldArray({
     onAddOption,
     onRemoveOption,
     branchNextId,
-}: Props): JSX.Element {
+    selectedCustomField,
+}: Props): JSX.Element | null {
     const { fields, append, remove } = useFieldArray({
         name: `${stepName}.branch_options`,
     })
@@ -37,11 +39,16 @@ export function CustomerLookupActionsFieldArray({
         onRemoveOption?.(index)
     }
 
+    const inputSettings = selectedCustomField?.definition?.input_settings
+
+    if (!inputSettings || !('choices' in inputSettings)) {
+        return null
+    }
+
     return (
         <Box flexDirection="column" alignItems="flex-start" gap="sm">
             <CustomerLookupActionsFieldItem
-                name={`${stepName}.default_branch_name`}
-                branchNameFieldName={`${stepName}.default_branch_name`}
+                stepName={`${stepName}.default_branch_name`}
             />
             {fields.map((field, index) => {
                 const itemName = `${stepName}.branch_options.${index}`
@@ -49,21 +56,25 @@ export function CustomerLookupActionsFieldArray({
                 return (
                     <CustomerLookupActionsFieldItem
                         key={field.id}
-                        name={itemName}
+                        stepName={stepName}
                         branchNameFieldName={`${itemName}.branch_name`}
                         fieldValueName={`${itemName}.field_value`}
                         onRemove={() => handleRemoveOption(index)}
                         isRemovable
+                        fieldValueOptions={inputSettings.choices}
                     />
                 )
             })}
-            <Button
-                variant="secondary"
-                onClick={handleAddOption}
-                leadingSlot={<Icon name="add-plus" />}
-            >
-                Add option
-            </Button>
+            {inputSettings.choices &&
+                fields.length < inputSettings.choices.length && (
+                    <Button
+                        variant="secondary"
+                        onClick={handleAddOption}
+                        leadingSlot={<Icon name="add-plus" />}
+                    >
+                        Add option
+                    </Button>
+                )}
         </Box>
     )
 }
