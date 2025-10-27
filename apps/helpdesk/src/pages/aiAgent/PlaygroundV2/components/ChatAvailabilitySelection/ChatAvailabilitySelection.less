@@ -1,0 +1,28 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .chatAvailabilitySelection {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+
+        .label {
+            .body-medium();
+        }
+
+        label {
+            .body-regular();
+        }
+    }
+
+    .axios {
+        [type='radio'] {
+            &:checked {
+                border-color: var(--border-neutral-secondary, --main-primary);
+            }
+            &::before {
+                box-shadow: inset 1em 1em var(--content-selected-accent);
+            }
+        }
+    }
+}
