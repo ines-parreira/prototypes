@@ -95,6 +95,7 @@ const LiveVoiceMetricCardFull = ({
             }}
             isLoading={isLoading || isAdditionalDataFetching}
             titleExtra={
+                showPercentage &&
                 percentageOfValue !== null && (
                     <TableValueModeSwitch
                         size="extraSmall"

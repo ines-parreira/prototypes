@@ -216,6 +216,26 @@ describe('LiveVoiceMetricCard', () => {
                 title: 'Test Title',
                 hint: 'Test Hint',
                 metric: defaultMetric,
+                showPercentage: true,
+            }
+
+            renderComponent(props)
+
+            expect(screen.queryByText('#')).not.toBeInTheDocument()
+            expect(screen.queryByText('%')).not.toBeInTheDocument()
+        })
+
+        it('does not render format toggle when showPercentage is false', () => {
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    ...defaultMetric,
+                    data: {
+                        [VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal]: 100,
+                    },
+                },
+                showPercentage: false,
             }
 
             renderComponent(props)
