@@ -142,4 +142,57 @@ describe('<AutomateSubscriptionModal />', () => {
             ).toBeInTheDocument()
         })
     })
+
+    it('should display "Manage AI Agent" header when user has access', async () => {
+        renderWithStoreAndQueryClientProvider(
+            <AutomateSubscriptionModal {...minProps} isOpen />,
+            {
+                ...defaultState,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: automationSubscriptionProductPrices,
+                    },
+                }),
+            },
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: /manage ai agent/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should display "Subscribe to AI Agent" header when user has no access', async () => {
+        renderWithStoreAndQueryClientProvider(
+            <AutomateSubscriptionModal {...minProps} isOpen />,
+            defaultState,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: /subscribe to ai agent/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should display custom header when headerDescription prop is provided', async () => {
+        const customHeader = 'Custom Header Text'
+        renderWithStoreAndQueryClientProvider(
+            <AutomateSubscriptionModal
+                {...minProps}
+                isOpen
+                headerDescription={customHeader}
+            />,
+            defaultState,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: customHeader }),
+            ).toBeInTheDocument()
+        })
+    })
 })

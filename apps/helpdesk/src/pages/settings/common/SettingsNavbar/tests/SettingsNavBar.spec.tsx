@@ -6,6 +6,7 @@ import configureStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { logEvent } from 'common/segment'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ProductType } from 'models/billing/types'
 import { renderWithRouter } from 'utils/testing'
 
@@ -34,6 +35,7 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
         },
     ]),
 }))
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.fn()
 jest.mock(
@@ -71,6 +73,10 @@ describe('SettingsNavbar', () => {
         jest.clearAllMocks()
         ;(useLocation as jest.Mock).mockReturnValue(mockLocation)
         ;(logEvent as jest.Mock).mockImplementation(() => {})
+        ;(useAiAgentAccess as jest.Mock).mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
             enabled: true,
         })
@@ -188,22 +194,12 @@ describe('SettingsNavbar', () => {
     })
 
     it('renders Automate upgrade item when account does not have Automate', () => {
-        renderComponent(
-            mockStore({
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            product_111: '111',
-                        },
-                    },
-                    domain: 'test-domain',
-                }),
-                currentUser: mockCurrentUser,
-                billing: fromJS({
-                    products: [],
-                }),
-            }),
-        )
+        ;(useAiAgentAccess as jest.Mock).mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
+        renderComponent()
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByText('UPGRADE')).toBeInTheDocument()

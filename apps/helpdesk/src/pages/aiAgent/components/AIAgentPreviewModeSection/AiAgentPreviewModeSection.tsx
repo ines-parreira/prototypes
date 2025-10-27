@@ -5,11 +5,10 @@ import classNames from 'classnames'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { FormValues, UpdateValue } from '../../types'
 import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
@@ -33,7 +32,7 @@ export const AiAgentPreviewModeSection = ({
     isFollowUpAiAgentPreviewModeEnabled,
     className,
 }: Props) => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(storeConfiguration?.storeName)
     const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const handleAiAgentTrialModeChange = (value: string) => {
@@ -75,7 +74,7 @@ export const AiAgentPreviewModeSection = ({
                             caption:
                                 'Answer customer questions immediately, even outside business hours.',
                             label: 'Directly respond to customers',
-                            disabled: !hasAutomate,
+                            disabled: !hasAccess,
                             value: 'enabled',
                         },
                         {

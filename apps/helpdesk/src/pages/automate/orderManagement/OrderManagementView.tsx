@@ -7,7 +7,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import {
     PolicyKey,
@@ -22,7 +22,6 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { ORDER_MANAGEMENT } from '../common/components/constants'
 import {
@@ -68,7 +67,7 @@ const OrderManagementView = () => {
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const { channels } = useOrderManagementPreviewContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
@@ -148,7 +147,7 @@ const OrderManagementView = () => {
         }
     }
     const getAlert = (flow: PolicyKey) => {
-        if (!hasAutomate || !selfServiceConfiguration?.[flow].enabled) {
+        if (!hasAccess || !selfServiceConfiguration?.[flow].enabled) {
             return null
         }
 
@@ -194,7 +193,7 @@ const OrderManagementView = () => {
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('trackOrderPolicy')}
-                    {...(!hasAutomate
+                    {...(!hasAccess
                         ? { action: <AutomationSubscriptionAction /> }
                         : {
                               onClick: () => {
@@ -264,7 +263,7 @@ const OrderManagementView = () => {
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('reportIssuePolicy')}
-                    {...(!hasAutomate
+                    {...(!hasAccess
                         ? { action: <AutomationSubscriptionAction /> }
                         : {
                               onClick: () => {

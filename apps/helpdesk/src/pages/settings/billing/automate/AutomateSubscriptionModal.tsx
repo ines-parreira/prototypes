@@ -10,6 +10,7 @@ import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan } from 'models/billing/types'
@@ -26,7 +27,6 @@ import {
     getAvailableHelpdeskPlans,
     getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
-    getHasAutomate,
 } from 'state/billing/selectors'
 import { updateSubscription } from 'state/currentAccount/actions'
 import {
@@ -109,7 +109,7 @@ const AutomateSubscriptionModal = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const isTrialingSubscription = useAppSelector(isTrialing)
@@ -142,7 +142,7 @@ const AutomateSubscriptionModal = ({
         }, [])
     const header = headerDescription
         ? headerDescription
-        : hasAutomate
+        : hasAccess
           ? 'Manage AI Agent'
           : 'Subscribe to AI Agent'
 
@@ -238,7 +238,7 @@ const AutomateSubscriptionModal = ({
                     <AutomateModalStep
                         handleOnClose={handleOnClose}
                         automateAvailablePlans={automateAvailablePlans}
-                        hasAutomate={hasAutomate}
+                        hasAutomate={hasAccess}
                         header={header}
                         isTrialingSubscription={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}

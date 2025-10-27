@@ -1,14 +1,16 @@
-import { Redirect } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import { getHasAutomate } from 'state/billing/selectors'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 import { ConnectedChannelsView } from './ConnectedChannelsView'
 
 const ConnectedChannelsViewContainer = () => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    const { hasAccess } = useAiAgentAccess(shopName)
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return <Redirect to="/app/automation/connected-channels" />
     }
 

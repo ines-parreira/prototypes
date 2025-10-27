@@ -9,6 +9,7 @@ import { Badge } from 'reactstrap'
 import successIcon from 'assets/img/icons/success.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { fromAST } from 'common/utils'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -23,7 +24,6 @@ import { createTag, fetchTags } from 'models/tag/resources'
 import { TagDraft } from 'models/tag/types'
 import { createView, deleteView } from 'models/view/resources'
 import { View, ViewDraft } from 'models/view/types'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { ruleCreated } from 'state/entities/rules/actions'
 import {
@@ -80,9 +80,9 @@ function RuleRecipeCard({
         Partial<AnyManagedRuleSettings>
     >({})
     const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const { rule, tags, recipe_tag, views_per_section } = recipe
-    const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
+    const isBehindPaywall = rule.type === RuleType.Managed && !hasAccess
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Shopify),
     )
@@ -95,7 +95,7 @@ function RuleRecipeCard({
 
     // TODO: add link to the helpdesk when it will be ready
     const aiAgentLink =
-        firstShopifyIntegration && hasAutomate
+        firstShopifyIntegration && hasAccess
             ? `/app/automation/shopify/${getShopNameFromStoreIntegration(
                   firstShopifyIntegration as StoreIntegration,
               )}/ai-agent`

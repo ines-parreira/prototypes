@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { getHasAutomate } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -20,6 +19,7 @@ export default function WorkflowsViewContainer() {
     }>()
     const history = useHistory()
     const dispatch = useAppDispatch()
+    const { hasAccess } = useAiAgentAccess(shopName)
 
     const newWorkflowUrl = `${history.location.pathname}/new`
 
@@ -62,9 +62,7 @@ export default function WorkflowsViewContainer() {
         [dispatch],
     )
 
-    const hasAutomate = useAppSelector(getHasAutomate)
-
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
         )

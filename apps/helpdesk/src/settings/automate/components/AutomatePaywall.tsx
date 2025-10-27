@@ -1,22 +1,20 @@
-import React from 'react'
 import type { ReactNode } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import { getHasAutomate } from 'state/billing/selectors'
 
 type Props = {
     children: ReactNode
 }
 
 export function AutomatePaywall({ children }: Props) {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return (
             <AiAgentPaywallView
-                aiAgentPaywallFeature={AIAgentPaywallFeatures.Automate}
+                aiAgentPaywallFeature={AIAgentPaywallFeatures.TrialSetup}
             />
         )
     }

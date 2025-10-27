@@ -1,3 +1,6 @@
+import React from 'react'
+
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -6,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -171,6 +175,9 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
 }))
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
@@ -225,7 +232,12 @@ describe('<IntegrationDetail />', () => {
         }),
     }
 
-    beforeEach(() => {})
+    beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+    })
 
     it.each([
         [IntegrationType.Aircall],

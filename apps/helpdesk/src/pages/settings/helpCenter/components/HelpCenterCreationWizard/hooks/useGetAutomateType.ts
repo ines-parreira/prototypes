@@ -1,11 +1,11 @@
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterAutomateType } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 const useGetAutomateType = (): HelpCenterAutomateType => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
 
     const allStoreIntegrations = useAppSelector(
         getIntegrationsByTypes([
@@ -15,7 +15,7 @@ const useGetAutomateType = (): HelpCenterAutomateType => {
         ]),
     )
 
-    if (!hasAutomate) return HelpCenterAutomateType.NON_AUTOMATE
+    if (!hasAccess) return HelpCenterAutomateType.NON_AUTOMATE
 
     if (!allStoreIntegrations?.length)
         return HelpCenterAutomateType.AUTOMATE_NO_STORE

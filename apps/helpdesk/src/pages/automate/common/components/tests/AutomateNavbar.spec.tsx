@@ -16,6 +16,7 @@ import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { RootState } from 'state/types'
@@ -27,12 +28,15 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 const mockStore = configureMockStore()
 const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
 
 const mockUseFlag = useFlag as jest.Mock
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
@@ -53,6 +57,10 @@ describe('<AutomateNavbar />', () => {
             isLoading: false,
             isFetched: true,
             error: null,
+        })
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
         })
     })
 

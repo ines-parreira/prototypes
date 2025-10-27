@@ -10,11 +10,11 @@ import thunk from 'redux-thunk'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { account } from 'fixtures/account'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -22,12 +22,12 @@ import { useAiAgentOnboardingNotification } from '../useAiAgentOnboardingNotific
 import useMeetAiAgentNotifications from '../useMeetAiAgentNotification'
 import { useStoreConfiguration } from '../useStoreConfiguration'
 
-jest.mock('state/billing/selectors')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('../useAiAgentOnboardingNotification')
 jest.mock('../useStoreConfiguration')
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
-const mockGetHasAutomate = assumeMock(getHasAutomate)
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseGetOrCreateAccountConfiguration = assumeMock(
     useGetOrCreateAccountConfiguration,
 )
@@ -78,7 +78,10 @@ const getDependencyWrapper = (state = defaultState) => {
 describe('useMeetAiAgentNotifications', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockGetHasAutomate.mockReturnValue(true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
             isLoading: false,
@@ -287,7 +290,10 @@ describe('useMeetAiAgentNotifications', () => {
     })
 
     it('should call the custom hooks with enabled false if account does not have AI Agent subscription', () => {
-        mockGetHasAutomate.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         renderHook(() => useMeetAiAgentNotifications(), {
             wrapper: getDependencyWrapper(),
@@ -323,7 +329,10 @@ describe('useMeetAiAgentNotifications', () => {
     })
 
     it('should not trigger notification if account does not have AI Agent subscription', () => {
-        mockGetHasAutomate.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         renderHook(() => useMeetAiAgentNotifications(), {
             wrapper: getDependencyWrapper(),

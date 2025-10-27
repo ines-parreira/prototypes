@@ -13,6 +13,7 @@ import { TicketStatus } from 'business/types/ticket'
 import { SegmentEvent } from 'common/segment'
 import { logEvent, logEventWithSampling } from 'common/segment/segment'
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -21,7 +22,6 @@ import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentF
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
@@ -71,7 +71,7 @@ export const TicketInfobarContainer = ({
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
     const ticket = useAppSelector(getTicket)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
@@ -235,7 +235,7 @@ export const TicketInfobarContainer = ({
                 'hidden-panel': !isOpenedPanel,
             })}
         >
-            {hasAutomate && !hasUIVisionMS1 && (
+            {hasAccess && !hasUIVisionMS1 && (
                 <Navbar className={css.navbar}>
                     {tabs.map((tab) => (
                         <div
@@ -261,7 +261,7 @@ export const TicketInfobarContainer = ({
             ) : (
                 <div
                     className={classNames(css.infoBarContainer, {
-                        [css.infoBarContainerWithNavbar]: hasAutomate,
+                        [css.infoBarContainerWithNavbar]: hasAccess,
                     })}
                 >
                     <Infobar

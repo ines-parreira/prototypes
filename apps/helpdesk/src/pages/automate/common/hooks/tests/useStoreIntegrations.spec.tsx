@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -13,11 +13,15 @@ import {
     basicMonthlyAutomationPlan,
     products,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import useStoreIntegrations from '../useStoreIntegrations'
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const shopifyIntegration = integrationsStateWithShopify.getIn([
     'integrations',
@@ -51,6 +55,11 @@ const defaultState = {
 
 describe('useStoreIntegrations', () => {
     it('should return integrations without automated products by default', () => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
         const { result } = renderHook(useStoreIntegrations, {
             wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
@@ -61,6 +70,11 @@ describe('useStoreIntegrations', () => {
     })
 
     it('should return integrations when account has automate products', () => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
         const { result } = renderHook(useStoreIntegrations, {
             wrapper: ({ children }) => (
                 <Provider
@@ -91,6 +105,11 @@ describe('useStoreIntegrations', () => {
     })
 
     it('should return type filtered integrations', () => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
         const { result } = renderHook(
             () => useStoreIntegrations([IntegrationType.Shopify]),
             {

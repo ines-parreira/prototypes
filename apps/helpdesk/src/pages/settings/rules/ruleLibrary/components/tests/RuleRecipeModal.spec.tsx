@@ -10,14 +10,32 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { emptyManagedRule } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { ManagedRuleSettings } from 'state/rules/types'
 import { RootState, StoreDispatch } from 'state/types'
 
 import { RuleRecipeModal } from '../RuleRecipeModal'
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+
+const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+    typeof useAiAgentAccess
+>
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('RuleRecipeModal', () => {
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     const defaultState = {
         currentAccount: fromJS({
             ...account,

@@ -12,6 +12,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
 
 import shopify from 'assets/img/integrations/shopify.png'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { CreateHelpCenterDto, LocaleCode } from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -23,7 +24,6 @@ import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import { getHasAutomate } from 'state/billing/selectors'
 import {
     helpCenterCreated,
     helpCenterUpdated,
@@ -77,7 +77,7 @@ const HelpCenterNewView = ({
     const history = useHistory()
     const location = useLocation()
     const locales = useSupportedLocales()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
         option: css['select-option'],
         icon: css['shopify-icon'],
@@ -184,7 +184,7 @@ const HelpCenterNewView = ({
                 setNewHelpCenter((prevNewHelpCenter) => ({
                     ...prevNewHelpCenter,
                     shop_name: value,
-                    self_service_deactivated: !hasAutomate,
+                    self_service_deactivated: !hasAccess,
                 }))
 
                 return
@@ -196,7 +196,7 @@ const HelpCenterNewView = ({
                 self_service_deactivated: undefined,
             }))
         },
-        [setNewHelpCenter, hasAutomate],
+        [setNewHelpCenter, hasAccess],
     )
 
     const navigateToStartView = () =>

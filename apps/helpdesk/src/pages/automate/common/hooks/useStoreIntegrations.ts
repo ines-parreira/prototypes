@@ -1,19 +1,19 @@
 import { useMemo } from 'react'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 const useStoreIntegrations = (types?: IntegrationType[]) => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
 
     const getStoreIntegrations = useMemo(
         () =>
             getIntegrationsByTypes(
                 types
                     ? types
-                    : hasAutomate
+                    : hasAccess
                       ? [
                             IntegrationType.Shopify,
                             IntegrationType.BigCommerce,
@@ -21,7 +21,7 @@ const useStoreIntegrations = (types?: IntegrationType[]) => {
                         ]
                       : [IntegrationType.Shopify],
             ),
-        [types, hasAutomate],
+        [types, hasAccess],
     )
 
     return useAppSelector(getStoreIntegrations) as StoreIntegration[]

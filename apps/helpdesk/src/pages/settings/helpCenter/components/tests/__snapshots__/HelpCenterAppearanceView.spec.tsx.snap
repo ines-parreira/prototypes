@@ -36,32 +36,26 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         <div
           class="header"
         >
-          <div>
-            <div
-              class="d-flex align-items-center upgradeLink"
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1"
+            type="button"
+          >
+            <span
+              class="ui-button-content-cef1"
             >
-              <button
-                aria-disabled="false"
-                class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1"
-                type="button"
+              <span
+                class="wrapper connectStoreWarning"
               >
-                <span
-                  class="ui-button-content-cef1"
+                <i
+                  class="material-icons icon isLeft medium"
                 >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      bolt
-                    </i>
-                    Upgrade your help center with AI Agent
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
+                  warning
+                </i>
+                Connect store to enable AI Agent
+              </span>
+            </span>
+          </button>
           <button
             aria-disabled="false"
             aria-label="help center preview"
@@ -99,18 +93,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
       <a
         class="link"
         data-active-class-name="active"
-        href="/app/settings/help-center/1/ai-library"
-      >
-        <i
-          class="material-icons autoAwesome"
-        >
-          auto_awesome
-        </i>
-        AI Library
-      </a>
-      <a
-        class="link"
-        data-active-class-name="active"
         href="/app/settings/help-center/1/contact"
       >
         Contact
@@ -144,6 +126,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         href="/app/settings/help-center/1/publish-track"
       >
         Publish & Track
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        href="/app/settings/help-center/1/automate"
+      >
+        Automation Features
+        <img
+          alt="status icon"
+          class="redDot"
+          src="test-file-stub"
+        />
       </a>
     </nav>
     <div

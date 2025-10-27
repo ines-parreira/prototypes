@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     ContactFormIntegration,
     UpdateContactFormDto,
@@ -35,7 +35,6 @@ import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
-import { getHasAutomate } from 'state/billing/selectors'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -67,7 +66,7 @@ const ContactFormPreferences = (): JSX.Element => {
         contactForm,
     })
 
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(contactForm?.shop_name || undefined)
 
     const onConnectedShopChange = ({
         shop_name,
@@ -285,7 +284,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     />
                 </section>
 
-                {hasAutomate && (
+                {hasAccess && (
                     <ConnectContactFormToShopSection
                         onUpdate={onConnectedShopChange}
                         shopName={

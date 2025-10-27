@@ -847,10 +847,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
 export function RedirectToAiAgentRoutes() {
     const { path } = useRouteMatch()
 
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
-    )
-
     return (
         <Switch>
             {/* These routes will be redirected by the `useAutomateRedirects` hook */}
@@ -868,22 +864,14 @@ export function RedirectToAiAgentRoutes() {
                 component={withUserRoleRequired(AiAgentRoutes, AGENT_ROLE)}
             />
 
-            {!isAiAgentExpandingTrialExperienceForAllEnabled && (
-                <Route>
-                    <AiAgentRedirect />
-                </Route>
-            )}
-
-            {isAiAgentExpandingTrialExperienceForAllEnabled && (
-                <Route
-                    render={() => (
-                        <App
-                            content={() => <AiAgentRedirect />}
-                            navbar={AiAgentNavbar}
-                        />
-                    )}
-                ></Route>
-            )}
+            <Route
+                render={() => (
+                    <App
+                        content={() => <AiAgentRedirect />}
+                        navbar={AiAgentNavbar}
+                    />
+                )}
+            ></Route>
         </Switch>
     )
 }

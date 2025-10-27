@@ -9,9 +9,12 @@ import thunk from 'redux-thunk'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock(
     '../components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable',
@@ -30,6 +33,12 @@ jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => (
     <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 ))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+
 const defaultState: Partial<RootState> = {
     integrations: fromJS(integrationsState),
     billing: fromJS(billingState),
@@ -44,6 +53,13 @@ const defaultState: Partial<RootState> = {
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('GorgiasChatIntegrationLanguages', () => {
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
+
     it('should render', () => {
         render(
             <Provider store={mockStore(defaultState)}>

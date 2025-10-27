@@ -7,6 +7,7 @@ import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import store from 'assets/img/icons/store.svg'
 import { useTheme } from 'core/theme'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -16,7 +17,6 @@ import SelectStore, {
     HelpCenterContactFormIntegrationTypes,
 } from 'pages/settings/common/SelectStore/SelectStore'
 import settingsCss from 'pages/settings/settings.less'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
@@ -52,7 +52,7 @@ export const ConnectToShopSection = ({
         setSelectedShop({ shopName, shopIntegrationId })
     }, [shopName, shopIntegrationId])
 
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName || undefined)
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
     const gorgiasChatIntegrations = useAppSelector(
@@ -184,7 +184,7 @@ export const ConnectToShopSection = ({
                                     shop_name: selectedShop.shopName,
                                     shop_integration_id:
                                         selectedShop.shopIntegrationId,
-                                    self_service_deactivated: !hasAutomate,
+                                    self_service_deactivated: !hasAccess,
                                 })
 
                                 setConnectModalOpen(false)

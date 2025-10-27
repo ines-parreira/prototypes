@@ -11,6 +11,7 @@ import { billingState } from 'fixtures/billing'
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { createRule, deleteRule } from 'models/rule/resources'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import {
@@ -23,6 +24,7 @@ import { RootState, StoreDispatch } from 'state/types'
 
 import { RuleRow } from '../RuleRow'
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('models/rule/resources')
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -45,6 +47,9 @@ describe('<RuleRow />', () => {
 
     const createRuleMock = createRule as jest.MockedFunction<typeof createRule>
     const deleteRuleMock = deleteRule as jest.MockedFunction<typeof deleteRule>
+    const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+        typeof useAiAgentAccess
+    >
 
     const minProps: ComponentProps<typeof RuleRow> = {
         rule: ruleFixture,
@@ -69,6 +74,17 @@ describe('<RuleRow />', () => {
             helpCenter: helpCenterInitialState,
         },
     } as RootState)
+
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('should render a row with a rule', () => {
         const { container } = render(

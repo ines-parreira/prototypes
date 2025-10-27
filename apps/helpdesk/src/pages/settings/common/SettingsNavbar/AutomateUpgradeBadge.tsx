@@ -1,15 +1,14 @@
 import { Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { getHasAutomate } from 'state/billing/selectors'
 
 export function AutomateUpgradeBadge() {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const integrations = useStoreIntegrations()
 
-    if (hasAutomate && integrations.length === 0) {
+    if (hasAccess && integrations.length === 0) {
         return null
     }
 

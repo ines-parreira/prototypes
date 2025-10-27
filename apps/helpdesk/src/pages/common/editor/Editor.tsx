@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { ListMacrosParams } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { MacrosProperties } from 'models/macro/types'
 import { Ticket } from 'models/ticket/types'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
@@ -15,7 +15,6 @@ import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/Ticke
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
@@ -45,7 +44,7 @@ export default function Editor({
     submit,
     ticket,
 }: Props) {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const { showWhatsAppTemplateEditor } = useWhatsAppEditor()
 
     const { formRef, onSubmit, setTicketStatus } = useForm(submit)
@@ -88,7 +87,7 @@ export default function Editor({
                     {!showWhatsAppTemplateEditor && (
                         <TicketReplyArea
                             hasShownMacros={hasShown}
-                            hasAutomate={hasAutomate}
+                            hasAutomate={hasAccess}
                             filters={filters}
                             isMacrosLoading={isLoading}
                             isMacrosActive={isActive}

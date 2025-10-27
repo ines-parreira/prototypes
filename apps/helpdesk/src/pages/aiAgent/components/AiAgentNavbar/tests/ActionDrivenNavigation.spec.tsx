@@ -129,6 +129,13 @@ jest.mock('hooks/aiAgent/useCanUseAiAgent', () => ({
     })),
 }))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(() => ({
+        hasAccess: true,
+        isLoading: false,
+    })),
+}))
+
 // Mock useAppSelector
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -145,6 +152,10 @@ const mockedTrialAccessHook = jest.requireMock(
 
 const mockedCanUseAiAgent = jest.requireMock('hooks/aiAgent/useCanUseAiAgent')
     .useCanUseAiAgent as jest.Mock
+
+const mockedUseAiAgentAccess = jest.requireMock(
+    'hooks/aiAgent/useAiAgentAccess',
+).useAiAgentAccess as jest.Mock
 
 const mockShopifyIntegration: StoreIntegration = {
     id: 1,
@@ -211,6 +222,10 @@ describe('ActionDrivenNavigation', () => {
         mockedCanUseAiAgent.mockReturnValue({
             isCurrentStoreDuringTrial: true,
             hasAnyActiveTrial: true,
+        })
+        mockedUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
         })
         mockUseActionDrivenNavbarSections.mockReturnValue({
             selectedStore: 'test-store-1',
@@ -397,5 +412,143 @@ describe('ActionDrivenNavigation', () => {
         renderComponent()
 
         expect(screen.getByText('Get started')).toBeInTheDocument()
+    })
+
+    describe('hasAccess scenarios', () => {
+        describe('when hasAccess is true (with access via plan or trial)', () => {
+            beforeEach(() => {
+                mockedUseAiAgentAccess.mockReturnValue({
+                    hasAccess: true,
+                    isLoading: false,
+                })
+            })
+
+            it('renders navigation items when store is onboarded', () => {
+                mockedOnboardingHook.mockReturnValue('onboarded')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(screen.getByText('Overview')).toBeInTheDocument()
+                expect(screen.getByText('Analyze')).toBeInTheDocument()
+            })
+
+            it('renders navigation items when store is active', () => {
+                mockedOnboardingHook.mockReturnValue('onboardingWizard')
+                mockGetStoreActivationStatus.mockReturnValue(true)
+
+                renderComponent()
+
+                expect(screen.getByText('Overview')).toBeInTheDocument()
+                expect(screen.getByText('Analyze')).toBeInTheDocument()
+            })
+
+            it('does not render collapsed item when onboarded', () => {
+                mockedOnboardingHook.mockReturnValue('onboarded')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(
+                    screen.queryByText('Try for free'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Get started'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render collapsed item when active', () => {
+                mockedOnboardingHook.mockReturnValue('onboardingWizard')
+                mockGetStoreActivationStatus.mockReturnValue(true)
+
+                renderComponent()
+
+                expect(
+                    screen.queryByText('Try for free'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Get started'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('renders Actions platform link when flag is enabled', () => {
+                mockUseFlag.mockImplementation(
+                    (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+                )
+
+                renderComponent()
+
+                const link = screen.getByText('Actions platform')
+                expect(link).toBeInTheDocument()
+                expect((link as HTMLAnchorElement).getAttribute('href')).toBe(
+                    '/app/ai-agent/actions-platform',
+                )
+            })
+
+            it('does not render Actions platform link when flag is disabled', () => {
+                mockUseFlag.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(
+                    screen.queryByText('Actions platform'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('when hasAccess is false (no plan, no trial)', () => {
+            beforeEach(() => {
+                mockedUseAiAgentAccess.mockReturnValue({
+                    hasAccess: false,
+                    isLoading: false,
+                })
+            })
+
+            it('renders collapsed item and hides navigation items when in onboarding', () => {
+                mockedOnboardingHook.mockReturnValue('onboardingWizard')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+                mockedTrialAccessHook.mockReturnValue({
+                    hasCurrentStoreTrialStarted: false,
+                })
+
+                renderComponent()
+
+                expect(screen.getByText('Try for free')).toBeInTheDocument()
+                expect(screen.queryByText('Overview')).not.toBeInTheDocument()
+                expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
+            })
+
+            it('renders collapsed item when onboarded but not active', () => {
+                mockedOnboardingHook.mockReturnValue('onboarded')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(screen.queryByText('Overview')).not.toBeInTheDocument()
+                expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
+            })
+
+            it('does not render Actions platform link even when flag is enabled', () => {
+                mockUseFlag.mockImplementation(
+                    (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+                )
+
+                renderComponent()
+
+                expect(
+                    screen.queryByText('Actions platform'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render navigation items when store is active but hasAccess is false', () => {
+                mockedOnboardingHook.mockReturnValue('onboardingWizard')
+                mockGetStoreActivationStatus.mockReturnValue(true)
+
+                renderComponent()
+
+                expect(screen.queryByText('Overview')).not.toBeInTheDocument()
+                expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
+            })
+        })
     })
 })

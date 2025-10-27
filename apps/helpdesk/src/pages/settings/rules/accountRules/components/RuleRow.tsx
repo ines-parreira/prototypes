@@ -16,6 +16,7 @@ import { Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -24,7 +25,6 @@ import { createRule, deactivateRule, deleteRule } from 'models/rule/resources'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import { getSortedRuleRecipes } from 'state/entities/ruleRecipes/selectors'
 import {
@@ -69,7 +69,7 @@ export function RuleRow({
 }: Props) {
     const dispatch = useAppDispatch()
     const [error, setError] = useState<string>()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const helpCenters = useAppSelector(getHelpCenterFAQList)
     const hasAgentPrivileges = useHasAgentPrivileges()
@@ -160,7 +160,7 @@ export function RuleRow({
 
     const handleActivate = useCallback(() => {
         if (
-            !hasAutomate &&
+            !hasAccess &&
             rule.type === RuleType.Managed &&
             !rule.name.includes('[Auto Close]')
         ) {
@@ -168,7 +168,7 @@ export function RuleRow({
             return
         }
         void onActivate(rule.id)
-    }, [hasAutomate, rule, onActivate, handleUpgrade])
+    }, [hasAccess, rule, onActivate, handleUpgrade])
 
     const handleDeactivate = async () => {
         try {

@@ -14,6 +14,7 @@ import {
 } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -24,7 +25,6 @@ import {
 import { RuleAction, RuleType } from 'models/rule/types'
 import { ActionStatus, Ticket } from 'models/ticket/types'
 import { actionsConfig } from 'pages/common/components/ast/actions/config'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
@@ -96,7 +96,7 @@ export const isSuggestionEmpty = ({
 
 export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
     const dispatch = useAppDispatch()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const recipes = useRuleRecipes()
     const emailChannels = useAppSelector(getEmailChannels)
     const currentUser = useAppSelector(getCurrentUser)
@@ -115,7 +115,7 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
 
     useEffectOnce(() => {
         if (
-            !hasAutomate &&
+            !hasAccess &&
             shouldDisplayDemoSuggestion &&
             !isSuggestionEmpty({ actions, text })
         ) {
@@ -310,12 +310,12 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
             text={text?.body_html}
             macroActions={actions}
             actionsContent={
-                hasAutomate
+                hasAccess
                     ? actionsContentForAutomate
                     : actionsContentForNonAutomate
             }
             infoContent={
-                hasAutomate ? infoContentForAutomate : infoContentForNonAutomate
+                hasAccess ? infoContentForAutomate : infoContentForNonAutomate
             }
         />
     )

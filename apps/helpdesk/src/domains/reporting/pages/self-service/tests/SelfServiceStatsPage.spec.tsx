@@ -34,6 +34,7 @@ import {
     selfServiceTopReportedIssues,
     selfServiceTopReportedIssuesNoData,
 } from 'fixtures/stats'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
@@ -106,6 +107,9 @@ jest.mock('models/workflows/queries', () => ({
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
     useTrialAccess: jest.fn(),
 }))
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
@@ -146,6 +150,9 @@ const mockUseGetAIArticles = useGetAIArticles as jest.MockedFunction<
 >
 const mockUseTrialAccess = useTrialAccess as jest.MockedFunction<
     typeof useTrialAccess
+>
+const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+    typeof useAiAgentAccess
 >
 
 const mockClient = mockQueryClient()
@@ -384,6 +391,10 @@ describe('<SelfServiceStatsPage />', () => {
             data: [],
             isLoading: false,
         } as any)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         useStatResourceMock.mockReturnValue([null, true, _noop])
         mockedUseWorkflowConfigurations.mockReturnValue({
             isLoading: false,

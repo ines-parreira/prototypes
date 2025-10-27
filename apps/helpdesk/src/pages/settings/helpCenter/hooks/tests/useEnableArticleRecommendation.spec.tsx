@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,19 +8,23 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { HelpCenter } from 'models/helpCenter/types'
 import {
     fetchSelfServiceConfigurationSSP,
     updateSelfServiceConfigurationSSP,
 } from 'models/selfServiceConfiguration/resources'
-import { getHasAutomate } from 'state/billing/selectors'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnableArticleRecommendation } from '../useEnableArticleRecommendation'
 
-jest.mock('state/billing/selectors')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 jest.mock('models/selfServiceConfiguration/resources')
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+const useTrialAccessMock = assumeMock(useTrialAccess)
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
@@ -55,6 +59,9 @@ const defaultState: Partial<RootState> = {
             },
         ],
     }),
+    billing: fromJS({
+        products: [],
+    }),
 }
 
 const getDependencyWrapper = (state = defaultState) => {
@@ -74,10 +81,18 @@ const getDependencyWrapper = (state = defaultState) => {
 describe('useEnableArticleRecommendation', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        useTrialAccessMock.mockReturnValue({
+            hasAnyTrialActive: false,
+            hasCurrentStoreTrialActive: false,
+            isLoading: false,
+        } as any)
     })
 
     it('Should call updateSelfServiceConfiguration', async () => {
-        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         ;(fetchSelfServiceConfigurationSSP as jest.Mock).mockResolvedValue({
             articleRecommendationHelpCenterId: null,
         })
@@ -101,7 +116,10 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if there is already a help-center with the same store', async () => {
-        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
 
         const { result } = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper({
@@ -127,7 +145,10 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if AI Agent is not enabled', async () => {
-        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(false)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         const { result } = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),
@@ -141,7 +162,10 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if there is already a articleRecommendationHelpCenterId', async () => {
-        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         ;(fetchSelfServiceConfigurationSSP as jest.Mock).mockResolvedValue({
             articleRecommendationHelpCenterId: 2,
         })
@@ -161,7 +185,10 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should not call if they are not related to the same shop', async () => {
-        ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
 
         const { result } = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),

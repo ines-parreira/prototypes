@@ -24,6 +24,10 @@ jest.mock('../components/RuleRow', () => () => (
         <td>last updated</td>
     </tr>
 ))
+jest.mock(
+    '../../../billing/automate/AutomateSubscriptionModal',
+    () => () => null,
+)
 
 const createRuleFixtures = (length: number) => {
     return Array.from({ length }, (_, i) => ({

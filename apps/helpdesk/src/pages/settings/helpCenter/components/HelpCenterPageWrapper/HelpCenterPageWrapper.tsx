@@ -7,6 +7,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenter } from 'models/helpCenter/types'
@@ -16,7 +17,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import settingsCss from 'pages/settings/settings.less'
-import { getHasAutomate } from 'state/billing/selectors'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 
 import { HELP_CENTER_DEFAULT_LOCALE } from '../../constants'
@@ -65,7 +65,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [showCloseModal, setShowCloseModal] = useState(false)
     const [locale, setLocale] = useState(viewLanguage)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(helpCenter.shop_name || undefined)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const helpCenterUrl = useMemo(() => {
@@ -126,7 +126,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
             >
                 <div className={css.header}>
                     {!changeAutomateSettingButtomPosition &&
-                        (hasAutomate ? (
+                        (hasAccess ? (
                             !helpCenter.shop_name && (
                                 <Button
                                     fillStyle="ghost"

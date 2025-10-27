@@ -1,17 +1,19 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import { getHasAutomate } from 'state/billing/selectors'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 import AutomatePaywallView from '../common/components/AutomatePaywallView'
 import { AutomateFeatures } from '../common/types'
 import TrainMyAiView from './TrainMyAiView'
 
 const TrainMyAiViewContainer = () => {
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
     const { key } = useLocation()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
         )

@@ -8,11 +8,10 @@ import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { useHasAccessToAILibrary } from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
@@ -30,7 +29,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     helpCenterShopName,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(helpCenterShopName || undefined)
     const history = useHistory()
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -89,7 +88,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                 Customization
             </NavLink>
             <NavLink to={`${baseURL}/publish-track`}>Publish & Track</NavLink>
-            {hasAutomate && (
+            {hasAccess && (
                 <NavLink to={`${baseURL}/automate`}>
                     Automation Features
                     {!helpCenterShopName && (
@@ -101,7 +100,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                     )}
                 </NavLink>
             )}
-            {changeAutomateSettingButtomPosition && !hasAutomate && (
+            {changeAutomateSettingButtomPosition && !hasAccess && (
                 <>
                     <AutomateSubscriptionButton
                         fillStyle="ghost"

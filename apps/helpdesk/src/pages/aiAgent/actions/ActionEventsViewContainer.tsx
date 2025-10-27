@@ -1,15 +1,17 @@
-import { Redirect } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import ActionsExecutionsView from './ActionEventsView'
 
 export default function ActionEventsViewContainer() {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    const { hasAccess } = useAiAgentAccess(shopName)
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return <Redirect to="/app/automation" />
     }
 

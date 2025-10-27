@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import {
     ReturnAction,
     SelfServiceConfigurationFilter,
@@ -13,7 +13,6 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import ReturnOrderAction from './components/ReturnOrderAction'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
@@ -33,7 +32,7 @@ const ReturnOrderFlowView = () => {
         selfServiceConfiguration,
         handleReturnOrderFlowUpdate,
     } = useReturnOrderFlow(shopName)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
@@ -141,7 +140,7 @@ const ReturnOrderFlowView = () => {
                         eligibility={dirtyReturnOrderFlow?.eligibilities[0]}
                         onChange={handleEligibilityChange}
                     />
-                    {hasAutomate && (
+                    {hasAccess && (
                         <ReturnOrderAction
                             action={dirtyReturnAction}
                             onChange={handleActionChange}

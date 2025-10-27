@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { renderWithRouter } from 'utils/testing'
@@ -19,19 +19,20 @@ jest.mock('react-router-dom', () => ({
     Redirect: jest.fn(({ to }) => <div data-testid="redirect" data-to={to} />),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
 jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
     useIsAutomateSettings: jest.fn(),
 }))
 jest.mock('settings/automate/hooks/useAutomateBaseURL', () => ({
     useAutomateBaseURL: jest.fn(),
 }))
-jest.mock('state/billing/selectors')
 jest.mock('../WorkflowTemplatesView', () =>
     jest.fn(() => <div data-testid="workflow-templates-view" />),
 )
 
-const useAppSelectorMock = assumeMock(useAppSelector)
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 const useIsAutomateSettingsMock = assumeMock(useIsAutomateSettings)
 const useAutomateBaseURLMock = assumeMock(useAutomateBaseURL)
 const WorkflowTemplatesViewMock = assumeMock(WorkflowTemplatesView)
@@ -39,26 +40,26 @@ const historyPushMock = jest.fn()
 
 describe('WorkflowTemplatesViewContainer', () => {
     beforeEach(() => {
-        // Default mock implementations
         useIsAutomateSettingsMock.mockReturnValue(false)
         useAutomateBaseURLMock.mockReturnValue('/app/settings')
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
 
-        // Mock useAppSelector to return true for hasAutomate by default
-        useAppSelectorMock.mockReturnValue(true)
-
-        // Mock history
         require('react-router-dom').useHistory.mockReturnValue({
             push: historyPushMock,
         })
     })
 
     it('should redirect when user does not have automate', () => {
-        // Set hasAutomate to false
-        useAppSelectorMock.mockReturnValue(false)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         renderWithRouter(<WorkflowTemplatesViewContainer />)
 
-        // Check if Redirect component is rendered with correct props
         const redirectElement = screen.getByTestId('redirect')
         expect(redirectElement).toBeInTheDocument()
         expect(redirectElement).toHaveAttribute('data-to', '/app/settings')
@@ -67,12 +68,10 @@ describe('WorkflowTemplatesViewContainer', () => {
     it('should render WorkflowTemplatesView when user has automate', () => {
         renderWithRouter(<WorkflowTemplatesViewContainer />)
 
-        // Check if WorkflowTemplatesView is rendered
         expect(
             screen.getByTestId('workflow-templates-view'),
         ).toBeInTheDocument()
 
-        // Check if WorkflowTemplatesView is called with correct props
         expect(WorkflowTemplatesViewMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 workflowsURL:
@@ -85,12 +84,10 @@ describe('WorkflowTemplatesViewContainer', () => {
     })
 
     it('should use correct URL when in automate settings', () => {
-        // Set isAutomateSettings to true
         useIsAutomateSettingsMock.mockReturnValue(true)
 
         renderWithRouter(<WorkflowTemplatesViewContainer />)
 
-        // Check if WorkflowTemplatesView is called with correct URL
         expect(WorkflowTemplatesViewMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 workflowsURL:
@@ -103,14 +100,11 @@ describe('WorkflowTemplatesViewContainer', () => {
     it('should navigate to new workflow page when goToNewWorkflowPage is called', () => {
         renderWithRouter(<WorkflowTemplatesViewContainer />)
 
-        // Get the goToNewWorkflowPage function from props
         const { goToNewWorkflowPage } =
             WorkflowTemplatesViewMock.mock.calls[0][0]
 
-        // Call the function
         goToNewWorkflowPage()
 
-        // Check if history.push was called with correct URL
         expect(historyPushMock).toHaveBeenCalledWith(
             '/app/automation/test-shop-type/test-shop-name/flows/new?from=templates',
         )
@@ -119,14 +113,11 @@ describe('WorkflowTemplatesViewContainer', () => {
     it('should navigate to new workflow from template page when goToNewWorkflowFromTemplatePage is called', () => {
         renderWithRouter(<WorkflowTemplatesViewContainer />)
 
-        // Get the goToNewWorkflowFromTemplatePage function from props
         const { goToNewWorkflowFromTemplatePage } =
             WorkflowTemplatesViewMock.mock.calls[0][0]
 
-        // Call the function with a template slug
         goToNewWorkflowFromTemplatePage('test-template')
 
-        // Check if history.push was called with correct URL
         expect(historyPushMock).toHaveBeenCalledWith(
             '/app/automation/test-shop-type/test-shop-name/flows/new?template=test-template&from=templates',
         )

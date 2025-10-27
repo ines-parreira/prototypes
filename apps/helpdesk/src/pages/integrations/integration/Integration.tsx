@@ -12,8 +12,8 @@ import { bindActionCreators } from 'redux'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider } from 'models/integration/constants'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -23,7 +23,7 @@ import {
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { getHasAutomate, makeHasFeature } from 'state/billing/selectors'
+import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import {
     chatInstallationStatusFetched,
@@ -51,7 +51,9 @@ import EmailIntegrationOnboarding from './components/email/CustomerOnboarding/Em
 import DEPRECATED_EmailDomainVerificationContainer from './components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer'
 import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
+// oxlint-disable-next-line no-named-as-default
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
+// oxlint-disable-next-line no-named-as-default
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
 import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
@@ -59,8 +61,10 @@ import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLay
 import EmailMigration from './components/email/EmailMigration/EmailMigration'
 import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
+// oxlint-disable-next-line no-named-as-default
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
+// oxlint-disable-next-line no-named-as-default
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
 import { GorgiasAutomateChatIntegration } from './components/gorgias_chat/GorgiasAutomateChatIntegration'
@@ -85,6 +89,7 @@ import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
 import SmileIntegrationList from './components/smile/SmileIntegrationList'
 import SmsIntegration from './components/sms/SmsIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
+// oxlint-disable-next-line no-named-as-default
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import VoiceIntegration from './components/voice/VoiceIntegration'
 import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
@@ -113,7 +118,7 @@ export const IntegrationDetail = ({
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
 
     const isIntegrationId = ![
         'new',
@@ -287,10 +292,10 @@ export const IntegrationDetail = ({
         if (appId) {
             setArticleRecommendationEnabled(
                 applicationsAutomationSettings[appId]?.articleRecommendation
-                    ?.enabled && hasAutomate,
+                    ?.enabled && hasAccess,
             )
         }
-    }, [hasAutomate, chatApplicationIds, applicationsAutomationSettings])
+    }, [hasAccess, chatApplicationIds, applicationsAutomationSettings])
 
     useUpdateEffect(() => {
         if (integrationId && isIntegrationId) {

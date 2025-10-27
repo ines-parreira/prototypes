@@ -3769,8 +3769,8 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
     >
       <div>
         <button
-          aria-disabled="true"
-          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+          aria-disabled="false"
+          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
           form="rule-form"
           id="rule-item-save"
           type="button"

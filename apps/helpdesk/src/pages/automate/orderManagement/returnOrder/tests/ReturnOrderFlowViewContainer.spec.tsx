@@ -14,6 +14,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { RootState, StoreDispatch } from 'state/types'
@@ -22,6 +23,7 @@ import { renderWithRouter } from 'utils/testing'
 import ReturnOrderFlowViewContainer from '../ReturnOrderFlowViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -62,6 +64,10 @@ describe('<ReturnOrderFlowViewContainer />', () => {
             selfServiceConfiguration: selfServiceConfiguration1,
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
+        ;(useAiAgentAccess as jest.Mock).mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
     })
 
     it('should redirect if not automate subscribed', () => {
@@ -75,6 +81,11 @@ describe('<ReturnOrderFlowViewContainer />', () => {
     })
 
     it('should render return order flow', () => {
+        ;(useAiAgentAccess as jest.Mock).mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
         renderWithRouter(
             <Provider
                 store={mockStore({

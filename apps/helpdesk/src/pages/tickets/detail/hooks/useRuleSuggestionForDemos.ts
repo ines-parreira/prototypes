@@ -4,9 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { getCurrentHelpdeskPlan, getHasAutomate } from 'state/billing/selectors'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getInTicketSuggestionSettings } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
@@ -31,7 +32,7 @@ export default function useRuleSuggestionForDemos(
     const [demoSuggestionDismissedTickets, setDemoSuggestionDismissedTickets] =
         useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS, [])
 
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentPlanName = currentHelpdeskPlan
         ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
@@ -110,7 +111,7 @@ export default function useRuleSuggestionForDemos(
     }
 
     return {
-        shouldDisplayDemoSuggestion: hasAutomate || shouldDisplayDemoSuggestion,
+        shouldDisplayDemoSuggestion: hasAccess || shouldDisplayDemoSuggestion,
         setDemoSuggestionSettingPerUser,
         setDemoSuggestionSettingPerAccount,
     }

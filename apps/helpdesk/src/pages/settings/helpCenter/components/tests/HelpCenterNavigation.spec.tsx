@@ -7,19 +7,14 @@ import { TicketChannel } from 'business/types/ticket'
 import * as segment from 'common/segment'
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
-import { getHasAutomate } from 'state/billing/selectors'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { HelpCenterNavigation } from '../HelpCenterNavigation'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('state/billing/selectors', () => ({
-    ...jest.requireActual('state/billing/selectors'),
-    __esModule: true,
-    getHasAutomate: jest.fn(),
-}))
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
     return ({ children }: { children: React.ReactNode }) => (
@@ -54,8 +49,8 @@ jest.mock('react-router-dom', () => {
 jest.mock('core/flags')
 
 const mockUseFlags = useFlag as jest.MockedFunction<typeof useFlag>
-const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
-    typeof getHasAutomate
+const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+    typeof useAiAgentAccess
 >
 
 const defaultState = {
@@ -76,6 +71,10 @@ describe('HelpCenterNavigation', () => {
         mockUseFlags.mockReturnValue({
             'new-channels-view': true,
         })
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
     it('should render', () => {
         renderWithStoreAndQueryClientProvider(
@@ -88,7 +87,10 @@ describe('HelpCenterNavigation', () => {
     })
 
     it('should not render the Automation Features tab when `hasAutomate` is false', () => {
-        mockGetHasAutomate.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation
                 helpCenterId={1}
@@ -102,7 +104,10 @@ describe('HelpCenterNavigation', () => {
     })
 
     it('should display automation features menu item', () => {
-        mockGetHasAutomate.mockReturnValue(true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation
                 helpCenterId={1}
@@ -129,7 +134,10 @@ describe('HelpCenterNavigation', () => {
 
         const log = jest.spyOn(segment, 'logEvent')
 
-        mockGetHasAutomate.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation helpCenterId={1} />,
             defaultState,

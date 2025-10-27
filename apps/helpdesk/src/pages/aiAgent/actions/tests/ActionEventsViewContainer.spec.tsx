@@ -15,6 +15,7 @@ import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { shopifyIntegration } from 'fixtures/integrations'
 import { statsFilters } from 'fixtures/stats'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import {
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,
@@ -41,6 +42,7 @@ jest.mock('../hooks/useGetAppImageUrl')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('pages/aiAgent/Activation/hooks/useActivation')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
@@ -61,6 +63,7 @@ const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
     useGetWorkflowConfigurationTemplates,
 )
 const mockUseEnableAiAgent = assumeMock(useAiAgentEnabled)
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
@@ -87,6 +90,11 @@ const defaultStore = mockStore({
 
 describe('ActionEventsViewContainer', () => {
     beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
         useGetWorkflowConfigurationMocked.mockReturnValue({
             isFetching: false,
             data: {
@@ -159,19 +167,13 @@ describe('ActionEventsViewContainer', () => {
         })
     })
 
-    it('redirect if has no automate subscription', () => {
-        const defaultStore = mockStore({
-            currentAccount: fromJS({
-                ...account,
-                current_subscription: {
-                    products: {},
-                },
-            }),
-            billing: fromJS(billingState),
-            integrations: fromJS([shopifyIntegration]),
+    it('redirects to automation when access is denied', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
         })
 
-        const component = renderWithRouter(
+        const { history } = renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
                     <ActionEventsViewContainer />
@@ -183,7 +185,7 @@ describe('ActionEventsViewContainer', () => {
             },
         )
 
-        expect(component.container).toBeEmptyDOMElement()
+        expect(history.location.pathname).toBe('/app/automation')
     })
     it('renders loading page', () => {
         useGetWorkflowConfigurationMocked.mockReturnValue({

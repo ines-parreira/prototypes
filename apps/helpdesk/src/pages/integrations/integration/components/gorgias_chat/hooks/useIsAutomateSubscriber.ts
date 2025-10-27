@@ -1,15 +1,14 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
-import { getHasAutomate } from 'state/billing/selectors'
 
 const useIsAutomateSubscriber = (
     integration: GorgiasChatIntegration,
 ): boolean => {
-    const hasAutomate = useAppSelector(getHasAutomate)
-    const shopName = integration.meta?.shop_name as string | null
+    const shopName = integration.meta?.shop_name as string | undefined
     const shopType = integration.meta?.shop_type as string | null
+    const { hasAccess } = useAiAgentAccess(shopName)
 
-    return Boolean(hasAutomate && shopName && shopType)
+    return Boolean(hasAccess && shopName && shopType)
 }
 
 export default useIsAutomateSubscriber

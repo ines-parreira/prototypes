@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'
-import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
     aiAgentRoutes,
@@ -16,7 +15,6 @@ import {
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
 import { useActionDrivenNavbarSections } from './useActionDrivenNavbarSections'
@@ -44,10 +42,7 @@ export const ActionDrivenNavigation = () => {
         hasCurrentStoreTrialStarted,
     } = useTrialAccess(selectedStore)
 
-    const hasAutomate = useAppSelector(getHasAutomate)
-    const { isCurrentStoreDuringTrial } = useCanUseAiAgent(selectedStore)
-
-    const shouldDisplayAIAgentItems = hasAutomate || isCurrentStoreDuringTrial
+    const { hasAccess } = useAiAgentAccess(selectedStore)
 
     const onboardingState = useAiAgentOnboardingState(selectedStore || '')
     const isOnboarded = onboardingState === OnboardingState.Onboarded
@@ -66,7 +61,7 @@ export const ActionDrivenNavigation = () => {
 
     const shouldRenderCollapsedItem =
         !!selectedStore &&
-        (!shouldDisplayAIAgentItems ||
+        (!hasAccess ||
             (onboardingState === OnboardingState.OnboardingWizard && !isActive))
 
     const collapsedSectionName = getCollapsedSectionName(
@@ -75,9 +70,7 @@ export const ActionDrivenNavigation = () => {
     )
 
     const shouldRenderAIAgentItems =
-        !!selectedStore &&
-        shouldDisplayAIAgentItems &&
-        (isActive || isOnboarded)
+        !!selectedStore && hasAccess && (isActive || isOnboarded)
 
     return (
         <Navigation.Root
@@ -85,7 +78,7 @@ export const ActionDrivenNavigation = () => {
             value={expandedSections}
             onValueChange={handleExpandedSectionsChange}
         >
-            {hasAutomate && isActionsInternalPlatformEnabled && (
+            {hasAccess && isActionsInternalPlatformEnabled && (
                 <Navigation.SectionItem
                     as={NavLink}
                     to={aiAgentRoutes.actionsPlatform}

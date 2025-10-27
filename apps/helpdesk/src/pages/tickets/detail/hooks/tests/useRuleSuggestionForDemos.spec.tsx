@@ -13,6 +13,7 @@ import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { AccountSettingType } from 'state/currentAccount/types'
 
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
@@ -44,9 +45,18 @@ jest.mock('core/flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+const mockUseAiAgentAccess = useAiAgentAccess as jest.Mock
+
 describe('useRuleSuggestionForDemos', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(100)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
     })
 
     useLocalStorageSpy.mockReturnValue([])
@@ -66,6 +76,11 @@ describe('useRuleSuggestionForDemos', () => {
         })
 
         it('should return true [ADDON]', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: true,
+                isLoading: false,
+            })
+
             const addonAccountStore = {
                 ...store,
                 currentAccount: fromJS({
@@ -215,6 +230,24 @@ describe('useRuleSuggestionForDemos', () => {
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
+        })
+
+        it('should return true [AI AGENT ACCESS]', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: true,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useRuleSuggestionForDemos(ticketId, true),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(store)}>{children}</Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
         })
     })
 

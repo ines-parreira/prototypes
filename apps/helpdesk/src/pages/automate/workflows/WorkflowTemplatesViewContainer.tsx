@@ -2,11 +2,10 @@ import React, { useCallback, useMemo } from 'react'
 
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import WorkflowTemplatesView from './WorkflowTemplatesView'
 
@@ -40,11 +39,11 @@ const WorkflowTemplatesViewContainer = () => {
         [history, newWorkflowURL],
     )
 
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
 
     const redirectURL = useAutomateBaseURL()
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return <Redirect to={redirectURL} />
     }
 

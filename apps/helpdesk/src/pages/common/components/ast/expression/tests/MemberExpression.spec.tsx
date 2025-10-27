@@ -20,6 +20,7 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { rule } from 'fixtures/rule'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
 import { IdentifierCategoryKey } from 'models/rule/types'
 import { generateExpression } from 'models/rule/utils'
@@ -35,6 +36,11 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
 }))
 const mockUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
+
 describe('<MemberExpression/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
@@ -46,6 +52,10 @@ describe('<MemberExpression/>', () => {
             isLoading: false,
             isFetched: true,
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
     })
 
     const minProps = {
@@ -168,6 +178,10 @@ describe('<MemberExpression/>', () => {
         )
 
     it('should render', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         renderComponent()
 
         expect(
@@ -223,6 +237,10 @@ describe('<MemberExpression/>', () => {
     })
 
     it('should exclude quick responses from the drop down', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         renderComponent()
 
         expect(screen.queryByText('Quick Responses')).not.toBeInTheDocument()
@@ -243,6 +261,23 @@ describe('<MemberExpression/>', () => {
 
         fireEvent.click(screen.getByText('Ticket'))
         expect(screen.queryByText('Ticket fields')).toBeInTheDocument()
+    })
+
+    it('should show Self Service category when hasAccess is true', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        renderComponent()
+
+        expect(screen.getByText('Self Service')).toBeInTheDocument()
+    })
+
+    it('should not show Self Service category when hasAccess is false', () => {
+        // by default, hasAccess is false in the test setup
+        renderComponent()
+
+        expect(screen.queryByText('Self Service')).not.toBeInTheDocument()
     })
 
     it('should handle custom fields selection and show second dropdown', async () => {
@@ -336,6 +371,10 @@ describe('<MemberExpression/>', () => {
     })
 
     it('should filter categories based on integration types', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         renderComponent(
             {},
             {

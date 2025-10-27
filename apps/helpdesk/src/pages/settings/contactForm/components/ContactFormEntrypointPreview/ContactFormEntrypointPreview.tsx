@@ -1,3 +1,4 @@
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { ContactForm } from 'models/contactForm/types'
 import { Integration, IntegrationType } from 'models/integration/types'
@@ -5,7 +6,6 @@ import SelfServicePreviewContext from 'pages/automate/common/components/preview/
 import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
@@ -26,8 +26,8 @@ const ContactFormEntrypointPreview = ({
         (integration) =>
             integration.id === contactForm.shop_integration?.integration_id,
     )
-    const hasAutomate = useAppSelector(getHasAutomate)
-    if (contactFormShopIntegration && hasAutomate) {
+    const { hasAccess } = useAiAgentAccess(contactForm?.shop_name || undefined)
+    if (contactFormShopIntegration && hasAccess) {
         return (
             <ContactFormWithShopIntegration
                 contactForm={contactForm}

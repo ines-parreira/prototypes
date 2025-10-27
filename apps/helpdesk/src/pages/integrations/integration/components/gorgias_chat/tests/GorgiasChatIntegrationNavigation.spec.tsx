@@ -11,7 +11,7 @@ import {
 } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
-import { getHasAutomate } from 'state/billing/selectors'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
@@ -20,9 +20,8 @@ jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
 
-jest.mock('state/billing/selectors', () => ({
-    __esModule: true,
-    getHasAutomate: jest.fn(),
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
 }))
 
 jest.mock('core/flags')
@@ -37,6 +36,7 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ],
 }))
 
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 jest.mock(
     '../GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
     () => ({
@@ -45,10 +45,16 @@ jest.mock(
     }),
 )
 
-const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockUseFlag = useFlag as jest.Mock
 
 describe('<GorgiasChatIntegrationNavigation />', () => {
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
+
     const integration = {
         id: 16,
         name: 'myChat1',
@@ -78,7 +84,10 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should render automation features tab', () => {
-        mockGetHasAutomate.mockReturnValue(true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         render(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
@@ -90,7 +99,6 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should not render automation features tab', () => {
-        mockGetHasAutomate.mockReturnValue(false)
         render(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
@@ -101,6 +109,17 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
         expect(
             screen.queryByText('Automation Features'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should call useAiAgentAccess with shopName from integration metadata', () => {
+        render(
+            <Provider store={store}>
+                <GorgiasChatIntegrationNavigation
+                    integration={fromJS(integration)}
+                ></GorgiasChatIntegrationNavigation>
+            </Provider>,
+        )
+        expect(mockUseAiAgentAccess).toHaveBeenCalledWith('myStore1')
     })
 
     it('should render GorgiasChatIntegrationNavigation', () => {

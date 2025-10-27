@@ -1,18 +1,29 @@
 import React from 'react'
 
-import { renderHook } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { useSelfServiceStoreIntegrationMultiStore } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 describe('useSelfServiceStoreIntegrationMultiStore', () => {
     const SHOP_NAME_1 = 'My Shop'
     const SHOP_NAME_2 = 'My Other Shop'
     const shopNames = [SHOP_NAME_1, SHOP_NAME_2]
+
+    beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
 
     it('should return undefined when no integration found for the requested type', () => {
         const store = configureMockStore()({

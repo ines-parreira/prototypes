@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 
 import { AGENT_ROLE } from 'config/user'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType, StoreIntegration } from 'models/integration/types'
 import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -24,9 +25,14 @@ jest.mock('settings/automate', () => ({
 }))
 
 jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
-const getHasAutomateMock = assumeMock(getHasAutomate)
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
+const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -67,6 +73,10 @@ describe('FlowsSettings', () => {
             integrations,
             onChange,
             selected: undefined,
+        })
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
         })
     })
 

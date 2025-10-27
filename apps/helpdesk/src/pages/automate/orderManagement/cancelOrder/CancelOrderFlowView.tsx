@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import {
     AUTOMATED_RESPONSE,
     ResponseMessageContent,
@@ -14,7 +14,6 @@ import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
 import CancelOrderFlowViewContext, {
@@ -34,7 +33,7 @@ const CancelOrderFlowView = () => {
         selfServiceConfiguration,
         handleCancelOrderFlowUpdate,
     } = useCancelOrderFlow(shopName)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const isAutomateSettings = useIsAutomateSettings()
 
     const [errors, setErrors] = useState<Record<string, true>>({})
@@ -148,7 +147,7 @@ const CancelOrderFlowView = () => {
                         eligibility={dirtyCancelOrderFlow?.eligibilities[0]}
                         onChange={handleEligibilityChange}
                     />
-                    {hasAutomate && (
+                    {hasAccess && (
                         <CancelOrderResponseMessageContent
                             responseMessageContent={
                                 dirtyCancelOrderFlow?.action

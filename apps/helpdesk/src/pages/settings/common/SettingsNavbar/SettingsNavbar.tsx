@@ -7,7 +7,7 @@ import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
@@ -15,7 +15,6 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import { AutomateUpgradeBadge } from './AutomateUpgradeBadge'
 import Item from './Item'
@@ -35,7 +34,7 @@ const Sections = {
 } as const
 
 const SettingsNavbar = () => {
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess, isLoading } = useAiAgentAccess()
     const integrations = useStoreIntegrations()
 
     const [expandedCategories, setExpandedCategories] =
@@ -49,13 +48,13 @@ const SettingsNavbar = () => {
     }
 
     const shouldRender = useMemo(
-        () => hasAutomate && integrations.length > 0,
-        [hasAutomate, integrations],
+        () => hasAccess && integrations.length > 0 && !isLoading,
+        [hasAccess, integrations, isLoading],
     )
 
     const shouldRenderAutomate = useMemo(
-        () => !hasAutomate || integrations.length === 0,
-        [hasAutomate, integrations],
+        () => (!hasAccess || integrations.length === 0) && !isLoading,
+        [hasAccess, integrations, isLoading],
     )
 
     // If there is no usage of article recommendations during the last month,

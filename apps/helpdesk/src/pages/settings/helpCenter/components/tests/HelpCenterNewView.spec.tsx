@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
@@ -56,6 +57,9 @@ jest.mock('../../hooks/useShopifyStoreWithChatConnectionsOptions', () => {
 jest.mock('../../providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+
 const mockEnableArticleRecommendation = jest.fn()
 jest.mock('../../hooks/useEnableArticleRecommendation', () => ({
     useEnableArticleRecommendation: () => mockEnableArticleRecommendation,
@@ -75,6 +79,10 @@ describe('<HelpCenterNewView />', () => {
         mockCreateHelpCenter.mockResolvedValue({ data: {} })
         mockIsPassingRuleCheck.mockReturnValue(true)
         mockEnableArticleRecommendation.mockReturnValue({})
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
 
     it('should render the component', async () => {

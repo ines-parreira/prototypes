@@ -6,9 +6,9 @@ import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
 import { IntegrationType } from '../../../../../models/integration/types'
@@ -33,7 +33,8 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
         ['meta', 'shop_integration_id'],
         null,
     )
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const shopName = integration.getIn(['meta', 'shop_name'])
+    const { hasAccess } = useAiAgentAccess(shopName)
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId,
     )
@@ -84,7 +85,7 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
                 )}
             </NavLink>
 
-            {hasAutomate && (
+            {hasAccess && (
                 <NavLink to={`${baseURL}/automate`} exact>
                     Automation Features
                     {isStoreNotConnected && (

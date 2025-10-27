@@ -17,6 +17,7 @@ import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -43,7 +44,6 @@ import ContactFormCustomization from 'pages/settings/contactForm/views/ContactFo
 import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
 import settingsCss from 'pages/settings/settings.less'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentContactForm } from 'state/entities/contactForm/contactForms'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -65,7 +65,7 @@ const ContactFormSettingsView = (): JSX.Element => {
     const { fetchContactFormById, isReady } = useContactFormApi()
     const { id: contactFormId, isValid: isIdValid } = useContactFormIdParam()
     const contactForm = useAppSelector(getCurrentContactForm)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(contactForm?.shop_name || undefined)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
 
@@ -157,7 +157,7 @@ const ContactFormSettingsView = (): JSX.Element => {
             >
                 <div className={css.header}>
                     {!changeAutomateSettingButtomPosition &&
-                        (hasAutomate ? (
+                        (hasAccess ? (
                             !contactForm.shop_integration && (
                                 <Button
                                     fillStyle="ghost"
@@ -207,7 +207,7 @@ const ContactFormSettingsView = (): JSX.Element => {
             <SecondaryNavbar>
                 {Object.entries({
                     ...navLinks,
-                    ...(hasAutomate
+                    ...(hasAccess
                         ? { 'Automation Features': CONTACT_FORM_AUTOMATE_PATH }
                         : {}),
                 }).map(([name, to]) => (
@@ -227,7 +227,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                     </NavLink>
                 ))}
                 {changeAutomateSettingButtomPosition &&
-                    (hasAutomate ? (
+                    (hasAccess ? (
                         <>
                             {!contactForm.shop_integration && (
                                 <Button

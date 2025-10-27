@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { voiceCall } from 'fixtures/voiceCalls'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useSearch } from 'hooks/useSearch'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
@@ -73,6 +74,9 @@ const mockTicketBodyElement = assumeMock(TicketBodyElement)
 jest.mock('hooks/useSearch')
 const mockUseSearch = assumeMock(useSearch)
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
+
 jest.mock(
     'state/queries/selectors',
     () =>
@@ -106,6 +110,10 @@ describe('TicketBody', () => {
         )
 
         mockGetQueryData.mockReturnValue(jest.fn() as any)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
 
     it('should render an element for each given element', () => {

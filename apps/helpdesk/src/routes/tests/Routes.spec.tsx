@@ -28,6 +28,7 @@ import * as billingFixtures from 'fixtures/billing'
 import { billingState } from 'fixtures/billing'
 import { shopifyProductResult } from 'fixtures/shopify'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
@@ -147,6 +148,10 @@ jest.mock('pages/aiAgent/actions/ActionTemplatesView', () => () => (
     <div>ActionTemplatesView</div>
 ))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
@@ -217,6 +222,8 @@ const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 const mockUseFlag = useFlag as jest.Mock
@@ -281,6 +288,11 @@ describe('<Routes/>', () => {
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
             data: undefined,
+        })
+
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
         })
 
         jest.mocked(
@@ -921,15 +933,17 @@ describe('<Routes/>', () => {
 
         it('should render actions templates page', () => {
             render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/actions/templates',
-                        ]}
-                    >
-                        <Routes />
-                    </MemoryRouter>
-                </Provider>,
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/actions/templates',
+                            ]}
+                        >
+                            <Routes />
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
             )
 
             expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()

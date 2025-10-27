@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -17,23 +18,18 @@ import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { getHasAutomate } from 'state/billing/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { useHasAccessToAILibrary } from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
-jest.mock('state/billing/selectors', () => ({
-    __esModule: true,
-    ...jest.requireActual('state/billing/selectors'),
-    getHasAutomate: jest.fn(),
-}))
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
-
-const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+mockUseAiAgentAccess.mockReturnValue({ hasAccess: false, isLoading: false })
 
 jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
@@ -102,6 +98,12 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 describe('<HelpCenterPageWrapper />', () => {
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
     const props: ComponentProps<typeof HelpCenterPageWrapper> = {
         helpCenter: getSingleHelpCenterResponseFixture,
     }
@@ -191,7 +193,10 @@ describe('<HelpCenterPageWrapper />', () => {
     })
 
     it('renders the connect store warning button when shop is not connected', () => {
-        mockGetHasAutomate.mockReturnValue(true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         mockUseFlag.mockImplementation((key, defaultValue) => {
             if (key === FeatureFlagKey.ChangeAutomateSettingButtomPosition)
                 return false
@@ -203,15 +208,8 @@ describe('<HelpCenterPageWrapper />', () => {
             shop_name: null,
         }
 
-        const stateWithAutomate = {
-            ...defaultState,
-            billing: fromJS({ ...billingState, hasAutomate: true }),
-        }
-
-        const automateStore = mockStore(stateWithAutomate)
-
         renderWithRouter(
-            <Provider store={automateStore}>
+            <Provider store={store}>
                 <HelpCenterPageWrapper helpCenter={helpCenter} />
             </Provider>,
         )

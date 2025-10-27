@@ -15,12 +15,14 @@ import {
     emptyRuleRecipeFixtureWithSections,
 } from 'fixtures/ruleRecipe'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { createRule } from 'models/rule/resources'
 import { createSection } from 'models/section/resources'
 import { createTag } from 'models/tag/resources'
 import { createView } from 'models/view/resources'
 import RuleRecipeCard from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('models/view/resources')
 jest.mock('models/tag/resources', () => {
     const resource = jest.requireActual('models/tag/resources')
@@ -56,6 +58,9 @@ describe('<RuleRecipeCard/>', () => {
     const createSectionMock = createSection as jest.MockedFunction<
         typeof createSection
     >
+    const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+        typeof useAiAgentAccess
+    >
 
     let defaultStore = mockStore({
         entities: {},
@@ -70,6 +75,10 @@ describe('<RuleRecipeCard/>', () => {
     }
 
     beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         defaultStore = mockStore({
             entities: {},
             billing: fromJS(billingState),

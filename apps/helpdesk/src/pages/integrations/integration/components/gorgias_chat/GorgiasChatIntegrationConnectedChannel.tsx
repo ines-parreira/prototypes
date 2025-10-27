@@ -5,17 +5,16 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import { getHasAutomate } from 'state/billing/selectors'
 
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 
 const GorgiasChatIntegrationConnectedChannel = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
 
     const changeAutomateSettingButtomPosition = useFlag(
         FeatureFlagKey.ChangeAutomateSettingButtomPosition,
@@ -29,7 +28,7 @@ const GorgiasChatIntegrationConnectedChannel = () => {
         })
     }
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return (
             <>
                 <AutomateSubscriptionButton

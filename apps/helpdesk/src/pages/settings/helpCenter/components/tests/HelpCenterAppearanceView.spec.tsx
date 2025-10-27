@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { FontCatalogueModal } from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -22,17 +23,23 @@ import { renderWithRouter } from 'utils/testing'
 
 import { getHelpCenterTranslationsResponseFixture } from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import { HelpCenterTranslationProvider } from '../../providers/HelpCenterTranslation'
-import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+mockUseAiAgentAccess.mockReturnValue({ hasAccess: false, isLoading: false })
+
 jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
 
-jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
-;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+;(useAiAgentAccess as jest.Mock).mockReturnValue({
+    hasAccess: true,
+    isLoading: false,
+})
 
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     return {
@@ -63,6 +70,9 @@ const defaultState: Partial<RootState> = {
     } as any,
     ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     billing: fromJS(billingState),
+    integrations: fromJS({
+        integrations: [],
+    }),
 }
 
 const mockedUpdateHelpCenter = jest

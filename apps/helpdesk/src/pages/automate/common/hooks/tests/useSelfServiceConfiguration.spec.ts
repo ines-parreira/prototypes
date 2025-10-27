@@ -2,8 +2,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { notify } from 'state/notifications/actions'
@@ -13,8 +13,8 @@ import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfiguratio
 import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
 
 jest.mock('@tanstack/react-query')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector')
 jest.mock('models/selfServiceConfiguration/queries')
 jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('state/notifications/actions')
@@ -24,7 +24,7 @@ jest.mock('../useSelfServiceConfigurationUpdate')
 const useSelfServiceConfigurationUpdateMock =
     useSelfServiceConfigurationUpdate as jest.Mock
 const useAppDispatchMock = useAppDispatch as jest.Mock
-const useAppSelectorMock = useAppSelector as jest.Mock
+const useAiAgentAccessMock = useAiAgentAccess as jest.Mock
 const useGetSelfServiceConfigurationMock =
     useGetSelfServiceConfiguration as jest.Mock
 const useSelfServiceStoreIntegrationMock =
@@ -62,7 +62,10 @@ describe('useSelfServiceConfiguration', () => {
             jest.fn()
         })
         useAppDispatchMock.mockReturnValue(mockDispatch)
-        useAppSelectorMock.mockReturnValue(true) // hasAutomate
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         useGetSelfServiceConfigurationMock.mockReturnValue({
             data: mockConfigurationData,
             isLoading: false,
@@ -100,7 +103,7 @@ describe('useSelfServiceConfiguration', () => {
         )
     })
 
-    it('should update selfServiceConfiguration if deletedDatetime exists and hasAutomate is true', () => {
+    it('should update selfServiceConfiguration if deletedDatetime exists and hasAccess is true', () => {
         useGetSelfServiceConfigurationMock.mockReturnValue({
             data: {
                 ...mockConfigurationData,

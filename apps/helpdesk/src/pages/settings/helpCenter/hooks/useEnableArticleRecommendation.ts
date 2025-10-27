@@ -1,9 +1,9 @@
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenter } from 'models/helpCenter/types'
 import { fetchSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getHelpCenterList } from 'state/entities/helpCenter/helpCenters/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
@@ -13,7 +13,7 @@ export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(
         (helpCenter) => !helpCenter.deactivated_datetime,
     )
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const dispatch = useAppDispatch()
 
@@ -40,7 +40,7 @@ export const useEnableArticleRecommendation = () => {
         )
 
         if (
-            !hasAutomate ||
+            !hasAccess ||
             !newHelpCenter.shop_name ||
             hasHelpCenterWithSameStore
         ) {

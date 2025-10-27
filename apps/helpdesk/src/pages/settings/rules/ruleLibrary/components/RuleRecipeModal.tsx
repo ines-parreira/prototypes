@@ -10,13 +10,13 @@ import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { RuleRecipe } from 'models/ruleRecipe/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import {
@@ -74,12 +74,12 @@ export const RuleRecipeModal = ({
             ? [InstallationError.MaxRulesReached]
             : [],
     )
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const appNode = useAppNode()
 
     const isBehindPaywall =
         rule.type === RuleType.Managed &&
-        !hasAutomate &&
+        !hasAccess &&
         rule.settings?.slug !== ManagedRulesSlugs.AutoCloseSpam
 
     const handleSubscription = () => {

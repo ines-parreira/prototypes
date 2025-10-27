@@ -6,12 +6,11 @@ import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { getHasAutomate } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { Notification } from 'state/notifications/types'
 
@@ -27,7 +26,7 @@ export default function WorkflowEditorViewContainer() {
     }>()
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const isAutomateSettings = useIsAutomateSettings()
     const location = useLocation<{ from?: string }>()
     const { from } = location.state || {}
@@ -138,7 +137,7 @@ export default function WorkflowEditorViewContainer() {
         })
     }
 
-    if (!hasAutomate) {
+    if (!hasAccess) {
         return <Redirect to={baseURL} />
     }
 

@@ -10,13 +10,19 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { emptyManagedRule, rule as ruleFixture } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RuleRecipeTag } from 'models/ruleRecipe/types'
 import { ManagedRulesSlugs } from 'state/rules/types'
 
 import RuleLibrary from '../RuleLibrary'
 
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+
 describe('<RuleLibrary/>', () => {
     const mockStore = configureMockStore([thunk])
+    const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+        typeof useAiAgentAccess
+    >
     const defaultStore = mockStore({
         entities: {},
         billing: fromJS(billingState),
@@ -40,6 +46,14 @@ describe('<RuleLibrary/>', () => {
         isReady: true,
         rules: [ruleFixture],
     }
+
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+    })
+
     describe('render', () => {
         it('should render cards for the library', () => {
             const { container } = render(

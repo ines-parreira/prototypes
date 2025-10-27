@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -12,6 +13,8 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasTranslateText from '../GorgiasTranslateText'
@@ -33,7 +36,16 @@ jest.mock(
         }) as Record<string, any>,
 )
 
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
+
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+const mockUseStoreIntegrations = jest.mocked(useStoreIntegrations)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -59,12 +71,18 @@ describe('GorgiasTranslateText', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
         store = mockStore({
             entities: entitiesInitialState,
             billing: fromJS(billingState),
             currentAccount: fromJS(account),
             integrations: fromJS(integrationsState),
         })
+        mockUseStoreIntegrations.mockReturnValue([])
     })
 
     it('renders without crashing', () => {

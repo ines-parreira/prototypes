@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
 import { ShopifyIntegration } from 'models/integration/types'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useAiAgentOnboardingNotification } from './useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from './useStoreConfiguration'
 
 const useMeetAiAgentNotifications = () => {
-    const hasAutomateSubscription = useAppSelector(getHasAutomate)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
@@ -25,12 +24,14 @@ const useMeetAiAgentNotifications = () => {
     const shopName: string | undefined =
         shopifyStoreIntegrations[storeIndex]?.meta?.shop_name
 
+    const { hasAccess } = useAiAgentAccess(shopName)
+
     const {
         status: accountConfigRetrievalStatus,
         isLoading: isLoadingAccountConfiguration,
     } = useGetOrCreateAccountConfiguration(
         { accountId, accountDomain, storeNames },
-        { refetchOnWindowFocus: false, enabled: hasAutomateSubscription },
+        { refetchOnWindowFocus: false, enabled: hasAccess },
     )
 
     const {
@@ -41,14 +42,14 @@ const useMeetAiAgentNotifications = () => {
         isAiAgentOnboardingNotificationEnabled,
     } = useAiAgentOnboardingNotification({
         shopName,
-        hasAutomateSubscription,
+        hasAutomateSubscription: hasAccess,
     })
 
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useStoreConfiguration({
             shopName,
             accountDomain,
-            enabled: hasAutomateSubscription,
+            enabled: hasAccess,
         })
 
     useEffect(() => {
@@ -79,7 +80,7 @@ const useMeetAiAgentNotifications = () => {
         )
             return
 
-        if (hasAutomateSubscription) {
+        if (hasAccess) {
             handleOnSendOrCancelNotification({
                 aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
             })
@@ -87,7 +88,7 @@ const useMeetAiAgentNotifications = () => {
     }, [
         accountConfigRetrievalStatus,
         handleOnSendOrCancelNotification,
-        hasAutomateSubscription,
+        hasAccess,
         isAdmin,
         isAiAgentOnboardingNotificationEnabled,
         isLoadingAccountConfiguration,

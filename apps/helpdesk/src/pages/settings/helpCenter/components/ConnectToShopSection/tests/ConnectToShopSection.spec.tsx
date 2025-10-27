@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -18,6 +19,8 @@ import { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { ConnectToShopSection } from '../ConnectToShopSection'
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -86,10 +89,16 @@ const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+
 describe('<ConnectToShopSection />', () => {
     beforeEach(() => {
         store.clearActions()
         mockFlags({})
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
 
     it('renders in disabled state while fetching data', async () => {
@@ -136,7 +145,7 @@ describe('<ConnectToShopSection />', () => {
 
         expect(onUpdate).toBeCalledWith({
             shop_name: 'Meow shop',
-            self_service_deactivated: true,
+            self_service_deactivated: false,
             shop_integration_id: 1,
         })
     })

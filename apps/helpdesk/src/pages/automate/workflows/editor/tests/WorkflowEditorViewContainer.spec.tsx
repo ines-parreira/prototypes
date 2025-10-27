@@ -1,21 +1,37 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useAppSelector from 'hooks/useAppSelector'
+import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
+import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import WorkflowEditorViewContainer from '../WorkflowEditorViewContainer'
 
 const mockStore = configureStore([])
+const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+    typeof useAiAgentAccess
+>
+const mockUseAutomateBaseURL = useAutomateBaseURL as jest.MockedFunction<
+    typeof useAutomateBaseURL
+>
+const mockUseIsAutomateSettings = useIsAutomateSettings as jest.MockedFunction<
+    typeof useIsAutomateSettings
+>
+const mockUseAppSelector = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('state/billing/selectors', () => ({
-    getHasAutomate: jest.fn(() => true),
-}))
+jest.mock('hooks/useAppSelector')
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+jest.mock('settings/automate/hooks/useAutomateBaseURL')
+jest.mock('settings/automate/hooks/useIsAutomateSettings')
 
 jest.mock('common/segment', () => ({
     SegmentEvent: {
@@ -25,13 +41,18 @@ jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
 }))
 
+jest.mock('../WorkflowEditorView', () => ({
+    __esModule: true,
+    default: () => (
+        <div data-testid="workflow-editor-view">WorkflowEditorView</div>
+    ),
+}))
+
 describe('WorkflowEditorViewContainer', () => {
     let history: ReturnType<typeof createMemoryHistory>
 
-    const renderComponent = (
-        storeState = { billing: { hasAutomate: true } },
-    ) => {
-        const store = mockStore(storeState)
+    const renderComponent = () => {
+        const store = mockStore({})
         return render(
             <Provider store={store}>
                 <Router history={history}>
@@ -43,18 +64,26 @@ describe('WorkflowEditorViewContainer', () => {
 
     beforeEach(() => {
         history = createMemoryHistory()
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseAutomateBaseURL.mockReturnValue('/app/automation')
+        mockUseIsAutomateSettings.mockReturnValue(false)
+        mockUseAppSelector.mockReturnValue([])
     })
 
     it('renders WorkflowEditorViewContainer correctly', () => {
-        const storeState = { billing: { hasAutomate: true } }
-        renderComponent(storeState)
         const { container } = renderComponent()
         expect(container).toBeTruthy()
     })
 
-    it('redirects to /app/automation if hasAutomate is false', () => {
-        const storeState = { billing: { hasAutomate: false } }
-        renderComponent(storeState)
+    it('redirects to /app/automation if hasAccess is false', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+        renderComponent()
         expect(history.location.pathname).toBe('/app/automation')
     })
 
@@ -95,14 +124,18 @@ describe('WorkflowEditorViewContainer', () => {
     it('navigates correctly using goToWorkflowsListPage', () => {
         history = createMemoryHistory({ initialEntries: ['/'] })
         renderComponent()
-        history.push('/base/shopType/shopName/flows')
+        act(() => {
+            history.push('/base/shopType/shopName/flows')
+        })
         expect(history.location.pathname).toBe('/base/shopType/shopName/flows')
     })
 
     it('navigates correctly using goToWorkflowTemplatesPage', () => {
         history = createMemoryHistory({ initialEntries: ['/'] })
         renderComponent()
-        history.push('/base/shopType/shopName/flows/templates')
+        act(() => {
+            history.push('/base/shopType/shopName/flows/templates')
+        })
         expect(history.location.pathname).toBe(
             '/base/shopType/shopName/flows/templates',
         )

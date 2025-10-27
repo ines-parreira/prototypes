@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { account } from 'fixtures/account'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
@@ -20,7 +21,6 @@ import {
     selfServiceConfigurationFixture,
 } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
 import { Components } from 'rest_api/help_center_api/client.generated'
-import { getHasAutomate } from 'state/billing/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
@@ -41,17 +41,14 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
-jest.mock('state/billing/selectors', () => ({
-    __esModule: true,
-    getHasAutomate: jest.fn(),
-}))
 jest.mock('models/workflows/queries', () => ({
     useListWorkflowEntryPoints: jest.fn(),
 }))
-const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
+jest.mock('hooks/aiAgent/useAiAgentAccess')
 
+const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
 const mockUseSelfServiceConfiguration = jest.mocked(useSelfServiceConfiguration)
-const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 const mockStore = configureMockStore([thunk])
 
 type automationSettings = {
@@ -125,11 +122,14 @@ describe('<ContactFormEntrypointPreview />', () => {
         mockUseSelfServiceConfiguration.mockReturnValue(
             mockSelfServiceConfiguration,
         )
-        mockGetHasAutomate.mockReturnValue(true)
         mockedUseListWorkflowEntryPoints.mockReturnValue({
             isLoading: false,
             data: {},
         } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
     it('should render component with form when Contact Form does not have shop integration', () => {
         renderComponent({})
@@ -137,7 +137,10 @@ describe('<ContactFormEntrypointPreview />', () => {
         expect(screen.getByText('Write your message')).toBeInTheDocument()
     })
     it('should render component with form when Contact Form does not have AI Agent subscription', () => {
-        mockGetHasAutomate.mockReturnValue(false)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
         renderComponent({
             contactForm: {
                 ...ContactFormFixture,

@@ -14,9 +14,9 @@ import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import { RootState, StoreState } from 'state/types'
@@ -52,8 +52,9 @@ jest.mock('auto_qa', () => ({
 
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
-jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
-const getHasAutomateMock = assumeMock(getHasAutomate)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 const useHasAIAgentMock = assumeMock(useHasAIAgent)
@@ -146,7 +147,10 @@ describe('<TicketInfobarContainer />', () => {
             }),
         )
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
-        getHasAutomateMock.mockReturnValue(true)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
             {
@@ -199,7 +203,10 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should not show the AI Feedback tab when AI Agent feature not enabled', () => {
-        getHasAutomateMock.mockReturnValue(false)
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         renderWithRouter(
             <Provider store={store}>

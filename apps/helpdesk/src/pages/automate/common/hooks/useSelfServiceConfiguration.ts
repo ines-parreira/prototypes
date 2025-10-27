@@ -3,15 +3,14 @@ import { useCallback, useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Draft } from 'immer'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     selfServiceConfigurationKeys,
     useGetSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import { getHasAutomate } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import {
     AlertNotification,
@@ -27,14 +26,14 @@ const useSelfServiceConfiguration = (
     notificationHandler?: (notification: AlertNotification) => void,
 ) => {
     const dispatch = useAppDispatch()
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess(shopName)
     const queryClient = useQueryClient()
 
     const { data: selfServiceConfiguration, isLoading: isFetchPending } =
         useGetSelfServiceConfiguration(shopType, shopName)
 
     useEffect(() => {
-        if (selfServiceConfiguration?.deletedDatetime && hasAutomate) {
+        if (selfServiceConfiguration?.deletedDatetime && hasAccess) {
             void updateSelfServiceConfigurationSSP({
                 ...selfServiceConfiguration,
                 deletedDatetime: null,
@@ -47,7 +46,7 @@ const useSelfServiceConfiguration = (
                 })
                 .catch(console.error)
         }
-    }, [hasAutomate, selfServiceConfiguration, queryClient, shopName, shopType])
+    }, [hasAccess, selfServiceConfiguration, queryClient, shopName, shopType])
 
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id

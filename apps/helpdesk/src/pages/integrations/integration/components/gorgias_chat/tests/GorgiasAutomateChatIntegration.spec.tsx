@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 import { RootState } from 'state/types'
 
@@ -49,6 +50,12 @@ jest.mock(
     }),
 )
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+
 const mockStore = configureMockStore([thunk])
 
 const defaultState = {
@@ -69,6 +76,13 @@ const mockedStore = mockStore({
 })
 
 describe('GorgiasAutomateChatIntegration', () => {
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+    })
+
     it('should render', () => {
         render(
             <Provider store={mockedStore}>

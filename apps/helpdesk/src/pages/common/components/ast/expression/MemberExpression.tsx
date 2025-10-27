@@ -9,6 +9,7 @@ import { CustomField, ObjectType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -26,7 +27,6 @@ import {
     getCategoryFromPath,
 } from 'models/rule/utils'
 import { RuleItemActions } from 'pages/settings/rules/types'
-import { getHasAutomate } from 'state/billing/selectors'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { ObjectExpressionPropertyKey, RuleOperation } from 'state/rules/types'
 import { getIconFromUrl } from 'utils'
@@ -88,7 +88,7 @@ export function MemberExpression({
     ])
 
     const hasIntegrationType = useAppSelector(makeHasIntegrationOfTypes)
-    const hasAutomate = useAppSelector(getHasAutomate)
+    const { hasAccess } = useAiAgentAccess()
     const [selectedCategory, setSelectedCategory] =
         useState<IdentifierCategoryKey | null>(null)
 
@@ -256,12 +256,12 @@ export function MemberExpression({
                 case IdentifierCategoryKey.BigCommerceLastOrder:
                     return hasIntegrationType(IntegrationType.BigCommerce)
                 case IdentifierCategoryKey.SelfServiceFlow:
-                    return hasAutomate
+                    return hasAccess
                 default:
                     return true
             }
         })
-    }, [hasIntegrationType, hasAutomate])
+    }, [hasIntegrationType, hasAccess])
 
     const handleSelect = (value: string) => {
         setSelectedCategory(null)

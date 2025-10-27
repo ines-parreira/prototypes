@@ -13,6 +13,7 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { emptyManagedRule, emptyRule } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { sendTicketMessage } from 'state/newMessage/actions'
 import { emailTicket } from 'state/ticket/tests/fixtures'
 
@@ -32,6 +33,11 @@ jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 
 jest.mock('core/flags')
 const useFlagMock = useFlag as jest.Mock
+
+jest.mock('hooks/aiAgent/useAiAgentAccess')
+const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
+    typeof useAiAgentAccess
+>
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -82,6 +88,10 @@ const minProps = {
 describe('RuleSuggestion', () => {
     beforeEach(() => {
         ;(sendTicketMessage as jest.Mock).mockReset()
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
         jest.useFakeTimers()
     })
 
@@ -99,6 +109,11 @@ describe('RuleSuggestion', () => {
     })
 
     it('should not display RuleSuggestion (no addon)', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
         const noAddonStore = {
             ...store,
             currentAccount: fromJS({ ...account }),
@@ -250,6 +265,10 @@ describe('RuleSuggestion', () => {
 
     it('should display the CTAs for no addon and admin role', () => {
         useFlagMock.mockReturnValue(10)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         render(
             <Provider store={mockStore(store)}>
@@ -269,6 +288,10 @@ describe('RuleSuggestion', () => {
 
     it('should display the CTAs for no addon and agent role', () => {
         useFlagMock.mockReturnValue(10)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
 
         const liteAgentStore = {
             ...store,
