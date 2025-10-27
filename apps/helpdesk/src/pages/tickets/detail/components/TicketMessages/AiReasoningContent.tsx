@@ -10,9 +10,23 @@ import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRender
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'
+import { coerceResourceType } from './utils'
 
 import knowledgeSourceIconCss from '../AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 import css from './AiAgentReasoning.less'
+
+const isKnownResourceType = (markerString: string): boolean => {
+    const stringParts = markerString
+        .replace('<<<', '')
+        .replace('>>>', '')
+        .split('::')
+
+    const resourceType = coerceResourceType(stringParts)
+
+    return Object.values(AiAgentKnowledgeResourceTypeEnum).includes(
+        resourceType as AiAgentKnowledgeResourceTypeEnum,
+    )
+}
 
 export type AiAgentReasoningContentProps = {
     reasoningContent: string | null
@@ -53,19 +67,36 @@ export const AiAgentReasoningContent = ({
 }: AiAgentReasoningContentProps) => {
     if (reasoningContent === null) return null
 
-    const resourceMatches = reasoningContent.match(/<<<(.*?)>>>/g) || []
+    const allResourceMatches = reasoningContent.match(/<<<(.*?)>>>/g) || []
+    const resourceMatches = allResourceMatches.filter(isKnownResourceType)
+
+    let processedContent = reasoningContent
+
+    // remove all unknown resource markers
+    allResourceMatches.forEach((match) => {
+        if (!isKnownResourceType(match)) {
+            const contentMatch = match.match(/<<<(.*?)>>>/)
+            if (contentMatch) {
+                const innerContent = contentMatch[1]
+                const sanitizedContent = sanitizeHtmlDefault(innerContent)
+                const escapedPattern = `<<<${sanitizedContent}>>>`
+                processedContent = processedContent.replace(
+                    new RegExp(escapedPattern, 'g'),
+                    '',
+                )
+            }
+        }
+    })
 
     if (resourceMatches.length === 0) {
         return (
             <div className={css.contentWithIcons}>
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                    {reasoningContent}
+                    {processedContent}
                 </ReactMarkdown>
             </div>
         )
     }
-
-    let processedContent = reasoningContent
     resourceMatches.forEach((match, index) => {
         const contentMatch = match.match(/<<<(.*?)>>>/)
         if (contentMatch) {

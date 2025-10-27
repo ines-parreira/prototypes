@@ -26,11 +26,8 @@ import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 
-import {
-    AiAgentReasoning,
-    coerceResourceType,
-    parseReasoningResources,
-} from '../AiAgentReasoning'
+import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
+import { coerceResourceType } from '../utils'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -1253,6 +1250,156 @@ describe('AiAgentReasoning', () => {
                 screen.getByText(/Task 3 content - should be included/),
             ).toBeInTheDocument()
         })
+
+        it('should not render unknown resource type markers in the content', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Check this article <<<article::16::13608>>> and this discount <<<discount::1234::recommendation>>> offer',
+                        },
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'Successfully provided information',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Used resources including <<<unknown_type::999>>>',
+                        },
+                    ],
+                    resources: [
+                        {
+                            resourceType: 'ARTICLE',
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'Test Article',
+                            resourceLocale: 'en',
+                            taskIds: [],
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [
+                    {
+                        title: 'Test Article',
+                        content: 'Article content',
+                        url: 'https://example.com/article',
+                        isDeleted: false,
+                    },
+                ],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText(/Check this article/)).toBeInTheDocument()
+            expect(screen.getByText(/and this discount/)).toBeInTheDocument()
+            expect(screen.getByText(/offer/)).toBeInTheDocument()
+
+            expect(
+                screen.getByTestId('knowledge-source-icon-ARTICLE'),
+            ).toBeInTheDocument()
+
+            const content = document.body.textContent || ''
+            expect(content).not.toContain(
+                '<<<discount::1234::recommendation>>>',
+            )
+            expect(content).not.toContain('<<<unknown_type::999>>>')
+        })
+
+        it('should render only known resource types when mixed with unknown types', () => {
+            mockUseGetMessageAiReasoning.mockReturnValue({
+                data: {
+                    reasoning: [
+                        {
+                            responseType: 'RESPONSE',
+                            value: 'Resources: <<<article::16::13608>>> <<<discount::111::knowledge>>> <<<guidance::26665::1045245>>> <<<unknown::999>>>',
+                        },
+                        {
+                            responseType: 'OUTCOME',
+                            value: 'Task completed',
+                        },
+                        {
+                            responseType: 'TASK',
+                            value: 'Task details',
+                        },
+                    ],
+                    resources: [
+                        {
+                            resourceType: 'ARTICLE',
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'Test Article',
+                            resourceLocale: 'en',
+                            taskIds: [],
+                        },
+                        {
+                            resourceType: 'GUIDANCE',
+                            resourceId: '1045245',
+                            resourceSetId: '26665',
+                            resourceTitle: 'Test Guidance',
+                            resourceLocale: 'en',
+                            taskIds: [],
+                        },
+                    ],
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                refetch: jest.fn(),
+            } as any)
+
+            mockUseGetResourcesReasoningMetadata.mockReturnValue({
+                data: [
+                    {
+                        title: 'Test Article',
+                        content: 'Article content',
+                        url: 'https://example.com/article',
+                        isDeleted: false,
+                    },
+                    {
+                        title: 'Test Guidance',
+                        content: 'Guidance content',
+                        url: 'https://example.com/guidance',
+                        isDeleted: false,
+                    },
+                ],
+                isLoading: false,
+            })
+
+            renderComponent()
+            expandComponent()
+
+            expect(
+                screen.getByTestId('knowledge-source-icon-ARTICLE'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('knowledge-source-icon-GUIDANCE'),
+            ).toBeInTheDocument()
+
+            expect(
+                screen.queryByTestId('knowledge-source-icon-DISCOUNT'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('knowledge-source-icon-UNKNOWN'),
+            ).not.toBeInTheDocument()
+
+            const content = document.body.textContent || ''
+            expect(content).not.toContain('<<<discount::111::knowledge>>>')
+            expect(content).not.toContain('<<<unknown::999>>>')
+        })
     })
 
     describe('Error state', () => {
@@ -2052,6 +2199,25 @@ describe('AiAgentReasoning', () => {
             const result = parseReasoningResources(content, mockResources)
 
             expect(result).toEqual([])
+        })
+
+        it('should filter out unknown resource types like discount', () => {
+            const content =
+                'Text <<<article::16::13608>>> and <<<discount::1234::recommendation>>> more text'
+            const result = parseReasoningResources(content, mockResources)
+
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual(expectedArticleResource)
+        })
+
+        it('should filter out multiple unknown resource types', () => {
+            const content =
+                'Text <<<article::16::13608>>> <<<discount::1234::recommendation>>> <<<unknown_type::567>>> <<<guidance::26665::1045245>>> more text'
+            const result = parseReasoningResources(content, mockResources)
+
+            expect(result).toHaveLength(2)
+            expect(result[0]).toEqual(expectedArticleResource)
+            expect(result[1]).toEqual(expectedGuidanceResource)
         })
 
         it('should handle duplicate resources', () => {
