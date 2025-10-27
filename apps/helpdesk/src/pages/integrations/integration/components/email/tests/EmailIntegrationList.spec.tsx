@@ -5,7 +5,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 
 import { useFlag } from 'core/flags'
@@ -134,10 +133,7 @@ describe('<EmailIntegrationList/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.DefaultEmailAddress]: false,
-            [FeatureFlagKey.NewDomainVerification]: false,
-        }))
+
         isBaseEmailIntegrationMock.mockReturnValue(false)
         canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
         EmailIntegrationListVerificationStatusMock.mockImplementation(() => (

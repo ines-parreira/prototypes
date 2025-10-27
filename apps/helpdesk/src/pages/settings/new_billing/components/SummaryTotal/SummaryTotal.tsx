@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import {
     Cadence,
     CouponSummary,
@@ -93,8 +93,9 @@ const SummaryTotal = ({
 }
 
 function usePriceSummary(selectedPlans: SelectedPlans) {
-    const billingSummaryTotalWithCouponsEnabled =
-        !!useFlags()[FeatureFlagKey.BillingSummaryTotalWithCoupons]
+    const billingSummaryTotalWithCouponsEnabled = useFlag(
+        FeatureFlagKey.BillingSummaryTotalWithCoupons,
+    )
 
     const { data: billingState } = useBillingStateWithSideEffects()
     const coupon: CouponSummary | null =

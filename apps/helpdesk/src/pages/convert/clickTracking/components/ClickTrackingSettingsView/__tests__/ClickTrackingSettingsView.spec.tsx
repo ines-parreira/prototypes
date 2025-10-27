@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -52,7 +51,6 @@ describe('<ClickTrackingSettingsView />', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber',
         ).mockImplementation(() => false)
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
         render(
             <MemoryRouter>

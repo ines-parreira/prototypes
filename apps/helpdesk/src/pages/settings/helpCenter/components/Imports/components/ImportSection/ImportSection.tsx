@@ -4,13 +4,13 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 import { Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
@@ -70,9 +70,10 @@ export const ImportSection: React.FC<Props> = ({
     const currentHelpCenter = useCurrentHelpCenter()
     const history = useHistory()
 
-    const _migrationConfig = useFlags()[
-        FeatureFlagKey.HelpCenterMigrationConfig
-    ] as HelpCenterMigrationConfig
+    const _migrationConfig = useFlag<HelpCenterMigrationConfig>(
+        FeatureFlagKey.HelpCenterMigrationConfig,
+    )
+
     const migrationConfigProviders = useMemo(
         () => _migrationConfig?.providers || [], // in case of invalid value
         [_migrationConfig],

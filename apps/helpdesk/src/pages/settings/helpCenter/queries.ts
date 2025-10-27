@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { Paths } from '../../../rest_api/help_center_api/client.generated'
@@ -228,8 +228,7 @@ export const useGetAIArticles = <
     >,
 ) => {
     const { client } = useHelpCenterApi()
-    const isAIArticlesEnabled =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
+    const isAIArticlesEnabled = useFlag(FeatureFlagKey.ObservabilityAIArticles)
 
     return useQuery({
         queryKey: aiArticleKeys.listAll(locale),

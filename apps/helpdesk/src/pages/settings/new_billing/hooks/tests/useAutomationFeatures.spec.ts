@@ -8,8 +8,6 @@ import {
 
 import useAutomationFeatures from '../useAutomationFeatures'
 
-jest.mock('launchdarkly-react-client-sdk')
-
 describe('useAutomationFeatures', () => {
     it('should return features including AI Agent', () => {
         const { result } = renderHook(() => useAutomationFeatures())

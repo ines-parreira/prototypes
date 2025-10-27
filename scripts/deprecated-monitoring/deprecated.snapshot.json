@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 75,
-    "totalUsages": 1484,
-    "reportGeneratedAt": "2025-10-24T09:44:29.772Z"
+    "totalUsages": 1469,
+    "reportGeneratedAt": "2025-10-24T13:09:06.701Z"
   },
   "entries": [
     {
@@ -520,30 +520,15 @@
       "type": "feature-flag cleanup initiative",
       "entries": [
         {
-          "usageCount": 16,
-          "name": "launchdarkly-react-client-sdk.useFlags",
+          "usageCount": 1,
+          "name": "launchdarkly-react-client-sdk.LDProvider",
           "nodeType": "Identifier",
           "deprecationDate": "2025-02-10",
           "deprecationType": "feature-flag cleanup initiative",
           "declarationFile": "package.json",
           "usageUrls": {
             "named": [
-              "apps/helpdesk/src/Widgets/modules/Shopify/components/OrderNotesField.tsx",
-              "apps/helpdesk/src/Widgets/modules/Shopify/components/tests/OrderNotesField.spec.tsx",
-              "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/InventoryScopeMissingBanner.tsx",
-              "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/tests/InventoryScopeMissingBanner.spec.tsx",
-              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/tests/useThemeAppExtensionInstallation.spec.ts",
-              "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation.ts",
-              "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppIntegrationMigration.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterTable.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/ImportSection.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/components/SearchView/SearchView.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter.tsx",
-              "apps/helpdesk/src/pages/settings/helpCenter/queries.ts",
-              "apps/helpdesk/src/pages/settings/new_billing/components/SummaryTotal/SummaryTotal.tsx",
-              "apps/helpdesk/src/pages/settings/new_billing/hooks/tests/useAutomatedHelpdeskCancellationFlowAvailable.spec.ts"
+              "apps/helpdesk/src/pages/Root.tsx"
             ],
             "default": []
           }
@@ -1435,6 +1420,7 @@
               "apps/helpdesk/src/pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.tsx",
               "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
               "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
+              "apps/helpdesk/src/pages/common/components/MonitorCallButton/MonitorCallButton.tsx",
               "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.stories.tsx",
               "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
               "apps/helpdesk/src/pages/common/components/Paywall/Paywall.stories.tsx",
@@ -1902,7 +1888,6 @@
               "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentReasoning.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
-              "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallContainer.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TranscriptionData.tsx",
               "apps/helpdesk/src/pages/tickets/list/OnboardingSidePanel.tsx",
               "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",

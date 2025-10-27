@@ -2,11 +2,11 @@ import React, { MouseEvent, useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
@@ -45,8 +45,9 @@ export const HelpCenterTable: React.FC<Props> = ({
     onClick,
     duplicateHelpCenter,
 }) => {
-    const helpCenterCreationWizard =
-        useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+    const helpCenterCreationWizard = useFlag(
+        FeatureFlagKey.HelpCenterCreationWizard,
+    )
 
     const handleDuplicate = useCallback(
         (helpCenter: HelpCenter, event: MouseEvent): void => {

@@ -6,7 +6,6 @@ import { assetsUrl } from 'utils'
 import { AutomateFeatures } from '../../types'
 import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock('utils')
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),

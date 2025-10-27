@@ -4,7 +4,6 @@ import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -73,7 +72,6 @@ const mockedUseDeleteWorkflowConfiguration = jest.mocked(
 describe('useStoreWorkflowsApi', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.spyOn(LD, 'useFlags').mockReturnValue({})
         mockedUseWorkflowConfigurations.mockReturnValue({
             isFetched: true,
             isLoading: false,

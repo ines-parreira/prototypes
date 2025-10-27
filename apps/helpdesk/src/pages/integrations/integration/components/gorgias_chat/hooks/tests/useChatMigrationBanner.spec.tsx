@@ -3,11 +3,11 @@ import React, { ComponentType } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS, Map } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
+import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
 import { getStoreIntegrations } from 'state/integrations/selectors'
@@ -33,9 +33,7 @@ const defaultState = {
     }),
 } as RootState
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
+jest.mock('core/flags')
 
 jest.mock('state/integrations/selectors', () => ({
     getStoreIntegrations: jest.fn(),
@@ -45,6 +43,8 @@ jest.mock('../useThemeAppExtensionInstallation', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+
+const mockUseFlag = useFlag as jest.Mock
 
 describe('useChatMigrationBanner', () => {
     beforeEach(() => {
@@ -79,9 +79,13 @@ describe('useChatMigrationBanner', () => {
             showBanner,
             hasScope,
         }) => {
-            mockFlags({
-                [FeatureFlagKey.SwitchToShopifyThemeAppExtension]:
-                    themeAppExtensionEnabled ? Date.now() : false,
+            mockUseFlag.mockImplementation((flagKey: FeatureFlagKey) => {
+                if (
+                    flagKey === FeatureFlagKey.SwitchToShopifyThemeAppExtension
+                ) {
+                    return themeAppExtensionEnabled ? Date.now() : false
+                }
+                return false
             })
             ;(useThemeAppExtensionInstallation as jest.Mock).mockReturnValue({
                 themeAppExtensionEnabled,

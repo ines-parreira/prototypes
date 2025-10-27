@@ -1,10 +1,9 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import _keyBy from 'lodash/keyBy'
 
+import { useFlag } from 'core/flags'
 import { Locale } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 
@@ -13,10 +12,13 @@ import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fix
 import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
 import { HelpCenterTable } from '../HelpCenterTable'
 
+jest.mock('core/flags')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 jest.mock('../../hooks/useStoreIntegrationByShopName')
+
+const mockUseFlag = useFlag as jest.Mock
 
 describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
@@ -40,9 +42,7 @@ describe('<HelpCenterTable />', () => {
             name: 'My Shop',
             type: IntegrationType.Shopify,
         } as unknown as ReturnType<typeof useStoreIntegrationByShopName>)
-        mockFlags({
-            [FeatureFlagKey.HelpCenterCreationWizard]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
     })
     it('should display the table correctly when loading', () => {
         const { container } = render(
@@ -76,9 +76,7 @@ describe('<HelpCenterTable />', () => {
     })
 
     it('should call the onClick callback when clicking on wizard setup button', () => {
-        mockFlags({
-            [FeatureFlagKey.HelpCenterCreationWizard]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
 
         const firstHelpCenter = props.list[0]
 

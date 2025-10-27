@@ -1,10 +1,6 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import WorkflowsEmptyState from '../WorkflowsEmptyState'
-
-jest.mock('launchdarkly-react-client-sdk')
 
 describe('WorkflowsEmptyState', () => {
     const mockGoToWorkflowTemplatesPage = jest.fn()

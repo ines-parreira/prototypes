@@ -1,12 +1,9 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import { WORKFLOW_TEMPLATES_LIST } from '../workflowTemplates'
 import WorkflowTemplatesView from '../WorkflowTemplatesView'
 
-jest.mock('launchdarkly-react-client-sdk')
 jest.mock(
     'assets/img/icons/arrow-backward.svg',
     () => 'arrow-backward-icon-mock',

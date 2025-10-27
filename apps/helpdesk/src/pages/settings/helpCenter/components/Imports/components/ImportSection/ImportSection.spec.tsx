@@ -1,16 +1,15 @@
 import React, { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { createMemoryHistory } from 'history'
-import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider as ReduxProvider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
@@ -97,6 +96,9 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('rest_api/auth')
 ;(getAccessToken as jest.Mock).mockImplementation(() => 'token')
 
+jest.mock('core/flags')
+const mockUseFlag = useFlag as jest.Mock
+
 const history = createMemoryHistory()
 
 const renderWithStore = (element: React.ReactElement) =>
@@ -164,11 +166,7 @@ describe('<ImportSection />', () => {
     beforeEach(() => {
         mockAPI.reset()
 
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.HelpCenterMigrationConfig]:
-                helpCenterMigrationConfig,
-        })
+        mockUseFlag.mockReturnValue(helpCenterMigrationConfig)
     })
 
     it("displays import in progress and is able to open status modal if there's an active migration", async () => {
@@ -390,11 +388,8 @@ describe('<ImportSection />', () => {
 
         mockAPI.onGet('/api/sessions').reply(200, [])
 
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.HelpCenterMigrationConfig]: {
-                providers: ['Zendesk', 'HelpDocs'],
-            },
+        mockUseFlag.mockReturnValue({
+            providers: ['Zendesk', 'HelpDocs'],
         })
 
         renderWithStore(<ImportSection />)

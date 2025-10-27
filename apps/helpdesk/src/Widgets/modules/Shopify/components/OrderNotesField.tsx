@@ -1,16 +1,10 @@
-import React, {
-    ChangeEvent,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -49,7 +43,7 @@ export function OrderNotesField({ source }: Props) {
         }
     }, [textAreaRef, value])
 
-    const featureEnabled = useFlags()[FeatureFlagKey.ShopifyOrderNotes]
+    const featureEnabled = useFlag(FeatureFlagKey.ShopifyOrderNotes)
     if (!featureEnabled) {
         return <>{source ?? '-'}</>
     }

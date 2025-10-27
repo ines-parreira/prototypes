@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { ShopifyIntegration } from 'models/integration/types'
 import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
 
@@ -11,8 +11,9 @@ const useThemeAppExtensionInstallation = (
     shouldUseThemeAppExtensionInstallation: boolean // This determines if the Theme App Extension should be used for this integration.
     themeAppExtensionInstallationUrl: string | null
 } => {
-    const switchToShopifyThemeAppExtensionRawValue =
-        useFlags()[FeatureFlagKey.SwitchToShopifyThemeAppExtension]
+    const switchToShopifyThemeAppExtensionRawValue = useFlag(
+        FeatureFlagKey.SwitchToShopifyThemeAppExtension,
+    )
 
     const themeAppExtensionEnabled = !!switchToShopifyThemeAppExtensionRawValue
 

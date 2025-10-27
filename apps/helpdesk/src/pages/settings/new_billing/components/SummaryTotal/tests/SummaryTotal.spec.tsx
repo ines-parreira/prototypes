@@ -1,10 +1,7 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
+import { useFlag } from 'core/flags'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
@@ -15,6 +12,10 @@ import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessVi
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
+
+jest.mock('core/flags')
+
+const mockUseFlag = useFlag as jest.Mock
 
 const selectedPlans: SelectedPlans = {
     helpdesk: {
@@ -45,9 +46,7 @@ const mockedServer = new MockAdapter(client)
 
 describe('SummaryTotal without coupons', () => {
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.BillingSummaryTotalWithCoupons]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render total price without old price', () => {
@@ -79,9 +78,7 @@ describe('SummaryTotal without coupons', () => {
 
 describe('SummaryTotal with coupons', () => {
     beforeEach(() => {
-        mockFlags({
-            [FeatureFlagKey.BillingSummaryTotalWithCoupons]: true,
-        })
+        mockUseFlag.mockReturnValue(true)
     })
 
     it('should render subtotal and discount line if there is a coupon', async () => {

@@ -1,5 +1,4 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import { useFlags } from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@repo/testing'
 
 import {
     advancedMonthlyHelpdeskPlan,
@@ -10,14 +9,7 @@ import {
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
 
-jest.mock('launchdarkly-react-client-sdk')
-const useFlagsMock = assumeMock(useFlags)
-
 describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
-    afterEach(() => {
-        useFlagsMock.mockClear()
-    })
-
     it('returns false if helpdeskProduct is null', () => {
         const { result } = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(null),

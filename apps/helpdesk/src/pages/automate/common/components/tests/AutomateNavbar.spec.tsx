@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router-dom'
@@ -27,9 +26,6 @@ import AutomateNavbar from '../AutomateNavbar'
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
-
-const allFlagsMock = assumeMock(useFlags)
-allFlagsMock.mockReturnValue({})
 
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 const mockStore = configureMockStore()

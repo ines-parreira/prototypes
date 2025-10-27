@@ -1,10 +1,7 @@
-import React from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { executeAction } from 'state/infobar/actions'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
@@ -12,28 +9,26 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { OrderNotesField } from '../OrderNotesField'
 
-// Mock the dependencies
+jest.mock('core/flags')
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShopifyEditOrderNoteEditStarted: 'ShopifyEditOrderNoteEditStarted',
     },
 }))
-const integrationId = 1234
-const customerId = 4321
-const orderId = 9876
-const mockedDispatch = jest.fn()
-const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
-
-mockUseFlags.mockReturnValue({
-    [FeatureFlagKey.ShopifyOrderNotes]: true,
-})
-
 jest.mock('hooks/useAppSelector', () => () => customerId)
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))
+
+const integrationId = 1234
+const customerId = 4321
+const orderId = 9876
+const mockedDispatch = jest.fn()
+const mockUseFlag = useFlag as jest.Mock
+
+mockUseFlag.mockReturnValue(true)
 
 describe('OrderNotesField', () => {
     const renderComponent = (source: string) => {
@@ -150,9 +145,7 @@ describe('OrderNotesField', () => {
     })
 
     it('does not use the textarea to display the order notes', () => {
-        mockUseFlags.mockReturnValue({
-            [FeatureFlagKey.ShopifyOrderNotes]: false,
-        })
+        mockUseFlag.mockReturnValue(false)
 
         renderComponent('Initial note')
 

@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -17,8 +17,9 @@ type Props = {
 const READ_INVENTORY_ITEMS_SCOPE = 'read_inventory'
 
 export const InventoryScopeMissingBanner = ({ integrationId }: Props) => {
-    const isShopifyInventoryItemScopeBannerEnabled =
-        useFlags()[FeatureFlagKey.ShopifyInventoryItemScopeBanner]
+    const isShopifyInventoryItemScopeBannerEnabled = useFlag(
+        FeatureFlagKey.ShopifyInventoryItemScopeBanner,
+    )
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
     const shopIntegration: ShopifyIntegration | undefined = useAppSelector(
         getIntegrationByIdAndType(integrationId, IntegrationType.Shopify),

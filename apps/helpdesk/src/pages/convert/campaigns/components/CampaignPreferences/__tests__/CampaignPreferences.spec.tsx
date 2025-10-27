@@ -1,10 +1,6 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 
 import { CampaignPreferences } from '../CampaignPreferences'
-
-jest.mock('launchdarkly-react-client-sdk')
 
 describe('CampaignPreferences', () => {
     it('should render correctly', () => {

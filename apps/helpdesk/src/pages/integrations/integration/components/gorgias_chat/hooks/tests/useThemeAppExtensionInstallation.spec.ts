@@ -1,16 +1,15 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { useFlag } from 'core/flags'
 import { ShopifyIntegration } from 'models/integration/types'
 import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
 
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 
-jest.mock('launchdarkly-react-client-sdk', () => ({
-    useFlags: jest.fn(),
-}))
+jest.mock('core/flags')
 jest.mock('utils/environment')
+
+const mockUseFlag = useFlag as jest.Mock
 
 describe('useThemeAppExtensionInstallation', () => {
     beforeEach(() => {
@@ -23,9 +22,7 @@ describe('useThemeAppExtensionInstallation', () => {
     ])(
         'should return false and null if SwitchToShopifyThemeAppExtension flag is loading, or turned off.',
         (value) => {
-            ;(useFlags as jest.Mock).mockReturnValue({
-                [FeatureFlagKey.SwitchToShopifyThemeAppExtension]: value,
-            })
+            mockUseFlag.mockReturnValue(value)
 
             const shopifyIntegration = {
                 created_datetime: new Date().toISOString(),
@@ -46,10 +43,7 @@ describe('useThemeAppExtensionInstallation', () => {
     it('should return true if shopify store created_datetime is after the switch date', () => {
         const switchTimestamp = Date.now() - 1000
 
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.SwitchToShopifyThemeAppExtension]:
-                switchTimestamp.toString(),
-        })
+        mockUseFlag.mockReturnValue(switchTimestamp.toString())
 
         const shopifyIntegration = {
             created_datetime: new Date().toISOString(),
@@ -70,10 +64,7 @@ describe('useThemeAppExtensionInstallation', () => {
     it('should return true if store is undefined', () => {
         const switchTimestamp = Date.now() + 1000
 
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.SwitchToShopifyThemeAppExtension]:
-                switchTimestamp.toString(),
-        })
+        mockUseFlag.mockReturnValue(switchTimestamp.toString())
 
         const { result } = renderHook(() =>
             useThemeAppExtensionInstallation(undefined),
@@ -89,10 +80,7 @@ describe('useThemeAppExtensionInstallation', () => {
     it('should return false if shopify store is before the switch date', () => {
         const switchTimestamp = Date.now() + 1000
 
-        ;(useFlags as jest.Mock).mockReturnValue({
-            [FeatureFlagKey.SwitchToShopifyThemeAppExtension]:
-                switchTimestamp.toString(),
-        })
+        mockUseFlag.mockReturnValue(switchTimestamp.toString())
 
         const shopifyIntegration = {
             created_datetime: new Date().toISOString(),

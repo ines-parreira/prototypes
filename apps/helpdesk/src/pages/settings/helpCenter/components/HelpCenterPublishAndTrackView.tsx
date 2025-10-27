@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
@@ -12,6 +11,7 @@ import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
@@ -65,8 +65,9 @@ import css from './HelpCenterPublishAndTrackView.less'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
-    const canUseHelpCenterAutoEmbed =
-        useFlags()[FeatureFlagKey.HelpCenterAutoEmbed]
+    const canUseHelpCenterAutoEmbed = useFlag(
+        FeatureFlagKey.HelpCenterAutoEmbed,
+    )
     const history = useHistory()
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()

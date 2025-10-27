@@ -40,7 +40,6 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
 }
-jest.mock('launchdarkly-react-client-sdk')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

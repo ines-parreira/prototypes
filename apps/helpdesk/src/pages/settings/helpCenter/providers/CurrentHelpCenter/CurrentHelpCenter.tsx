@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import axios from 'axios'
-import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Route,
     Switch,
@@ -11,6 +10,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -58,8 +58,9 @@ const CurrentHelpCenter: React.FC = () => {
     const helpCenter = useAppSelector(getCurrentHelpCenter)
     const viewLanguage = useAppSelector(getViewLanguage)
 
-    const helpCenterCreationWizard =
-        useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
+    const helpCenterCreationWizard = useFlag(
+        FeatureFlagKey.HelpCenterCreationWizard,
+    )
 
     const hasAccessToAILibrary = useHasAccessToAILibrary()
 

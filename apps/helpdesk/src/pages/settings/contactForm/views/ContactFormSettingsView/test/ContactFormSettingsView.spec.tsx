@@ -1,10 +1,7 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -45,8 +42,6 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 
 const queryClient = mockQueryClient()
-
-jest.mock('launchdarkly-react-client-sdk')
 
 const mockGetHasAutomate = getHasAutomate as jest.MockedFunction<
     typeof getHasAutomate
@@ -115,7 +110,6 @@ describe('<ContactFormSettingsView />', () => {
             handleContactFormAutomationSettingsFetch: jest.fn(),
             handleContactFormAutomationSettingsUpdate: jest.fn(),
         })
-        jest.spyOn(LD, 'useFlags').mockReturnValue({})
     })
 
     it('should redirect to CUSTOMIZATION page if just form id provided', () => {
