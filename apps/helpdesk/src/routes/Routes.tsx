@@ -354,11 +354,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
 
-    const isAiShoppingAssistantProductRecommendationsEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantProductRecommendations,
-        false,
-    )
-
     const isNewPlayground = useFlag(
         FeatureFlagKey.MakePlaygroundAvailableEverywhere,
         false,
@@ -801,36 +796,32 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             component={AiAgentCustomerEngagementWithPaywall}
                         />
                     </AiAgentErrorBoundary>
-                    {isAiShoppingAssistantProductRecommendationsEnabled && (
-                        <AiAgentErrorBoundary
-                            section="ai-agent-product-recommendations"
-                            team={SentryTeam.MARKETING}
-                        >
-                            <Route
-                                path={`${path}/sales/product-recommendations`}
-                                exact
-                                component={
-                                    AiAgentProductRecommendationsWithPaywall
-                                }
-                            />
+                    <AiAgentErrorBoundary
+                        section="ai-agent-product-recommendations"
+                        team={SentryTeam.MARKETING}
+                    >
+                        <Route
+                            path={`${path}/sales/product-recommendations`}
+                            exact
+                            component={AiAgentProductRecommendationsWithPaywall}
+                        />
 
-                            <Route
-                                path={`${path}/sales/product-recommendations/promote`}
-                                exact
-                                component={
-                                    AiAgentProductRecommendationsPromoteWithPaywall
-                                }
-                            />
+                        <Route
+                            path={`${path}/sales/product-recommendations/promote`}
+                            exact
+                            component={
+                                AiAgentProductRecommendationsPromoteWithPaywall
+                            }
+                        />
 
-                            <Route
-                                path={`${path}/sales/product-recommendations/exclude`}
-                                exact
-                                component={
-                                    AiAgentProductRecommendationsExcludeWithPaywall
-                                }
-                            />
-                        </AiAgentErrorBoundary>
-                    )}
+                        <Route
+                            path={`${path}/sales/product-recommendations/exclude`}
+                            exact
+                            component={
+                                AiAgentProductRecommendationsExcludeWithPaywall
+                            }
+                        />
+                    </AiAgentErrorBoundary>
                     {location.pathname.includes('/sales/analytics') && (
                         <Redirect to={`/app/stats/ai-sales-agent/overview`} />
                     )}

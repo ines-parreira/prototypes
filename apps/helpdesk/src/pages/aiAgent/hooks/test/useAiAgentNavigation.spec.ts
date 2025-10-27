@@ -380,37 +380,6 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for product recommendations when ai shopping assistant and product recommendations are enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                    key ===
-                        FeatureFlagKey.AiShoppingAssistantProductRecommendations ||
-                    false,
-            )
-
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'my-shop' }),
-            )
-
-            const trainItem = result.current.navigationItems.find(
-                (item) => item.dataCanduId === 'ai-agent-navbar-train',
-            )
-            const salesItems = trainItem?.items?.find(
-                (item) => item.title === SALES,
-            )?.items
-
-            expect(salesItems).toEqual(
-                expect.arrayContaining([
-                    {
-                        route: '/app/ai-agent/shopify/my-shop/sales/product-recommendations',
-                        title: PRODUCT_RECOMMENDATIONS,
-                        exact: true,
-                    },
-                ]),
-            )
-        })
-
         it('should not return ai-agent route for product recommendations when ai shopping assistant is enabled but product recommendations is disabled', () => {
             mockUseFlag.mockImplementation(
                 (key) =>

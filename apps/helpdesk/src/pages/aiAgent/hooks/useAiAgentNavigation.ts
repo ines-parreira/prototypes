@@ -148,10 +148,6 @@ const useNavigationItems = (
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
 
-    const isAiShoppingAssistantProductRecommendationsEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantProductRecommendations,
-    )
-
     const isShoppingAssistantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
@@ -246,12 +242,11 @@ const useNavigationItems = (
                                       title: CUSTOMER_ENGAGEMENT,
                                       exact: true,
                                   },
-                                  isAiShoppingAssistantEnabled &&
-                                      isAiShoppingAssistantProductRecommendationsEnabled && {
-                                          route: routes.productRecommendations,
-                                          title: PRODUCT_RECOMMENDATIONS,
-                                          exact: true,
-                                      },
+                                  isAiShoppingAssistantEnabled && {
+                                      route: routes.productRecommendations,
+                                      title: PRODUCT_RECOMMENDATIONS,
+                                      exact: true,
+                                  },
                               ].filter((x) => !!x) as NavigationItem[])
                             : undefined,
                     },
@@ -302,7 +297,6 @@ const useNavigationItems = (
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isAiShoppingAssistantEnabled,
-        isAiShoppingAssistantProductRecommendationsEnabled,
         shouldRenderShoppingAssistantPages,
         isOpportunitiesEnabled,
         routes,
