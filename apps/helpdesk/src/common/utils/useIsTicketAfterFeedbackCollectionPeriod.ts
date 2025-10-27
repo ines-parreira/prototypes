@@ -45,7 +45,8 @@ export const useTicketIsAfterFeedbackCollectionPeriod = () => {
     })
 
     return useMemo(() => {
-        if (!isNewAgenticArchitectureEnabled || !earliestExecution) return false
+        if (!isNewAgenticArchitectureEnabled) return false
+        if (!earliestExecution) return true
 
         const ticketDate = createdDatetime ? new Date(createdDatetime) : null
         if (!ticketDate) return true

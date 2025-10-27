@@ -82,7 +82,7 @@ describe('useTicketIsAfterFeedbackCollectionPeriod', () => {
         expect(result.current).toBe(false)
     })
 
-    it('should return false when earliest execution data is not available', () => {
+    it('should return true when earliest execution data is not available', () => {
         mockUseGetEarliestExecution.mockReturnValue({
             data: null,
             isLoading: false,
@@ -92,10 +92,10 @@ describe('useTicketIsAfterFeedbackCollectionPeriod', () => {
             useTicketIsAfterFeedbackCollectionPeriod(),
         )
 
-        expect(result.current).toBe(false)
+        expect(result.current).toBe(true)
     })
 
-    it('should return false when earliest execution data is undefined', () => {
+    it('should return true when earliest execution data is undefined', () => {
         mockUseGetEarliestExecution.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -105,7 +105,7 @@ describe('useTicketIsAfterFeedbackCollectionPeriod', () => {
             useTicketIsAfterFeedbackCollectionPeriod(),
         )
 
-        expect(result.current).toBe(false)
+        expect(result.current).toBe(true)
     })
 
     it('should return true when ticket date is null', () => {
@@ -349,7 +349,7 @@ describe('useTicketIsAfterFeedbackCollectionPeriod', () => {
         )
 
         // When loading, we should return true to show the loading state
-        expect(result.current).toBe(false)
+        expect(result.current).toBe(true)
     })
 
     it('should work with different earliest execution timestamps', () => {
