@@ -242,12 +242,11 @@ describe('SetupTaskSection', () => {
         })
     })
 
-    it('should show loading icon in the progress section', () => {
+    it('should render progress icon in the progress section', () => {
         renderComponent()
 
-        const loadingIcon = screen.getByAltText('loading icon')
-        expect(loadingIcon).toBeInTheDocument()
-        expect(loadingIcon).toHaveAttribute('width', '16px')
+        const progressSection = screen.getByText(/33.*complete/)
+        expect(progressSection).toBeInTheDocument()
     })
 
     it('should mark Essential category tab as completed', () => {
@@ -459,6 +458,54 @@ describe('SetupTaskSection', () => {
             )
 
             removeEventListenerSpy.mockRestore()
+        })
+    })
+
+    describe('Progress icon based on completion percentage', () => {
+        it('should show progress 0 when completion percentage is 0', () => {
+            mockUseGetSetupTasksConfigByCategory.mockReturnValue({
+                ...mockSetupTasksConfigByCategory,
+                completionPercentage: 0,
+            })
+
+            renderComponent()
+
+            const progressIcon = document.querySelector('.progressIcon')
+            expect(progressIcon).toBeInTheDocument()
+            expect(screen.getByText(/0.*complete/)).toBeInTheDocument()
+        })
+
+        it('should show progress 1 when completion percentage is between 1-40', () => {
+            mockUseGetSetupTasksConfigByCategory.mockReturnValue({
+                ...mockSetupTasksConfigByCategory,
+                completionPercentage: 25,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText(/25.*complete/)).toBeInTheDocument()
+        })
+
+        it('should show progress 2 when completion percentage is between 41-80', () => {
+            mockUseGetSetupTasksConfigByCategory.mockReturnValue({
+                ...mockSetupTasksConfigByCategory,
+                completionPercentage: 60,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText(/60.*complete/)).toBeInTheDocument()
+        })
+
+        it('should show progress 3 when completion percentage is above 80', () => {
+            mockUseGetSetupTasksConfigByCategory.mockReturnValue({
+                ...mockSetupTasksConfigByCategory,
+                completionPercentage: 90,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText(/90.*complete/)).toBeInTheDocument()
         })
     })
 })

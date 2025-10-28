@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
-import loadingStaticIcon from 'assets/img/ai-agent/loading.svg'
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 
+import { ProgressIcon } from '../AiAgentTasks/ProgressIcon'
 import { CategoryContent } from './CategoryContent'
 import { CategoryList } from './CategoryList'
 import { useGetSetupTasksConfigByCategory } from './hooks/useGetSetupTasksConfigByCategory'
@@ -117,6 +117,13 @@ export const SetupTaskSection = ({
         })
     }
 
+    const getProgressBasedOnPercentage = () => {
+        if (completionPercentage > 80) return 3
+        if (completionPercentage > 40) return 2
+        if (completionPercentage > 0) return 1
+        return 0
+    }
+
     if (categories.length === 0 || isPostGoLiveStepCompleted) {
         return null
     }
@@ -126,11 +133,12 @@ export const SetupTaskSection = ({
             <div className={css.header}>
                 <Heading>Setup checklist</Heading>
                 <div className={css.progress}>
-                    <img
-                        src={loadingStaticIcon}
-                        alt="loading icon"
-                        width="16px"
-                    />
+                    <span>
+                        <ProgressIcon
+                            progress={getProgressBasedOnPercentage()}
+                            className={css.progressIcon}
+                        />
+                    </span>
                     <Text size="sm" variant="bold">
                         {completionPercentage}% complete
                     </Text>
