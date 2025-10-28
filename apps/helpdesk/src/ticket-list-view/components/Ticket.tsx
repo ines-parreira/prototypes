@@ -179,13 +179,14 @@ export default function Ticket({
                                             {ticket.channel}
                                         </Tooltip>
                                     </span>
-                                    {!!ticket.priority && (
-                                        <PriorityLabel
-                                            priority={ticket.priority}
-                                            displayLabel={false}
-                                            hasTooltip
-                                        />
-                                    )}
+                                    {!!ticket.priority &&
+                                        ticket.priority !== 'normal' && (
+                                            <PriorityLabel
+                                                priority={ticket.priority}
+                                                displayLabel={false}
+                                                hasTooltip
+                                            />
+                                        )}
                                     {!!datetime && (
                                         <span className={css.time}>
                                             <RelativeTime datetime={datetime} />

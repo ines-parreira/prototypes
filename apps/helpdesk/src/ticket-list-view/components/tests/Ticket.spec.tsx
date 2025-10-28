@@ -422,6 +422,19 @@ describe('Ticket', () => {
             ).toBeInTheDocument()
         })
 
+        it('should not display priority badge when ticket priority is normal', () => {
+            render(
+                <Ticket
+                    {...defaultProps}
+                    ticket={ticketWithPriority(TicketPriority.Normal)}
+                />,
+            )
+
+            expect(
+                screen.queryByText(`priority: ${TicketPriority.Normal}`),
+            ).not.toBeInTheDocument()
+        })
+
         it('should not display priority badge when ticket has no priority', () => {
             render(
                 <Ticket
