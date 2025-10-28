@@ -83,6 +83,12 @@ describe('RouteToNode', () => {
         expect(screen.getByLabelText('arrow-routing')).toBeInTheDocument()
     })
 
+    it('handles empty step', () => {
+        const mockStep = mockRouteToInternalNumber()
+        renderComponent(mockStep, { first_step_id: null, steps: {} } as any)
+        expect(screen.queryByRole('arrow-routing')).toBeNull()
+    })
+
     describe('when the step type is Enqueue', () => {
         it('should render first step form field', () => {
             const mockStep = mockEnqueueStep()
@@ -114,6 +120,19 @@ describe('RouteToNode', () => {
                 screen.getByRole('img', { name: 'octagon-warning' }),
             ).toBeInTheDocument()
         })
+
+        it.each(['test', null])(
+            'should not display warning no matter the a next step',
+            (nextStep: string | null) => {
+                const mockStep = mockEnqueueStep({
+                    next_step_id: nextStep,
+                })
+                renderComponent(mockStep)
+                expect(
+                    screen.queryByRole('img', { name: 'triangle-warning' }),
+                ).toBeNull()
+            },
+        )
     })
 
     describe('when the step type is Route to internal number', () => {
@@ -152,6 +171,26 @@ describe('RouteToNode', () => {
             expect(
                 screen.getByRole('img', { name: 'octagon-warning' }),
             ).toBeInTheDocument()
+        })
+
+        it('should display warning when we have next steps', () => {
+            const mockStep = mockRouteToInternalNumber({
+                next_step_id: 'some_step_id',
+            })
+            renderComponent(mockStep)
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not display warning when we have no next step', () => {
+            const mockStep = mockRouteToInternalNumber({
+                next_step_id: null,
+            })
+            renderComponent(mockStep)
+            expect(
+                screen.queryByRole('img', { name: 'triangle-warning' }),
+            ).toBeNull()
         })
     })
 })

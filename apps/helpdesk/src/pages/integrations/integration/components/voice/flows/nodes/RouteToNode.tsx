@@ -70,10 +70,6 @@ export function RouteToNode(
         },
     )
 
-    const errors = useMemo(() => {
-        return step ? validateRouteToStep(step) : []
-    }, [step])
-
     const isQueueOptionSelected = step?.step_type === VoiceFlowNodeType.Enqueue
     const isVoiceIntegrationOptionSelected =
         step?.step_type === VoiceFlowNodeType.RouteToInternalNumber
@@ -81,6 +77,16 @@ export function RouteToNode(
         isVoiceIntegrationOptionSelected &&
         integrationData?.data &&
         integrationData?.data.type !== IntegrationType.Phone
+
+    const errors = useMemo(() => {
+        return step ? validateRouteToStep(step) : []
+    }, [step])
+    const warnings =
+        isVoiceIntegrationOptionSelected && step.next_step_id
+            ? [
+                  'The following steps will be ignored as this step ends the call.',
+              ]
+            : []
 
     if (!step || isIntegrationTypeNotPhone) {
         return null
@@ -100,7 +106,8 @@ export function RouteToNode(
             icon={
                 <StepCardIcon backgroundColor="orange" name="arrow-routing" />
             }
-            errors={errors ?? []}
+            errors={errors}
+            warnings={warnings}
         >
             {isVoiceIntegrationOptionSelected && (
                 <Banner>
