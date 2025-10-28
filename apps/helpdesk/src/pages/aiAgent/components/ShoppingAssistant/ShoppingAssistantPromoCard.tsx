@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { TrialSharedModals } from 'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
@@ -20,7 +21,6 @@ import {
 } from './components'
 import { useTrialPromoCard } from './hooks/useTrialPromoCard'
 import { PromoCardVariant, TrialType } from './types/ShoppingAssistant'
-import { extractShopNameFromUrl } from './utils/extractShopNameFromUrl'
 
 interface ShoppingAssistantPromoCardProps {
     className?: string

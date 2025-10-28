@@ -1,0 +1,110 @@
+:local {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+        height: 52px;
+        padding: 12px var(--spacing-lg, 24px);
+        gap: 16px;
+    }
+
+    .leftSection {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs, 12px);
+    }
+
+    .backButton {
+        color: inherit;
+    }
+
+    .title {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px;
+    }
+
+    .titleLink {
+        color: var(--content-neutral-default);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .titleText {
+        color: var(--content-neutral-default);
+    }
+
+    .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        padding: 0 var(--spacing-sm);
+        gap: var(--spacing-xxxs);
+        border-radius: var(--xs, 8px);
+        border: 0.5px solid var(--border-neutral-tertiary);
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+
+        &.secondaryButton {
+            background: var(--surface-button-secondary);
+            color: var(--content-neutral-default);
+        }
+
+        &.primaryButton {
+            background: var(--surface-inverted-default);
+            color: var(--content-inverted-default);
+        }
+
+        &.destructiveButton {
+            background: var(--surface-button-secondary);
+            border: 0.5px solid var(--border-error-primary, #d90b28);
+            color: var(--content-error-primary);
+        }
+
+        &.iconOnlyButton {
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: var(--spacing-xs);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+
+    .middleSection {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+    }
+
+    .rightSection {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+    }
+
+    .lastSyncedText {
+        color: var(--content-neutral-secondary, #5c6370);
+
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.12px;
+    }
+}

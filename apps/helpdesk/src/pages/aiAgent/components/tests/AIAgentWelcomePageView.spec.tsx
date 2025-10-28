@@ -160,11 +160,11 @@ Object.defineProperty(window, 'open', {
     writable: true,
 })
 
-jest.mock('../ShoppingAssistant/utils/extractShopNameFromUrl', () => ({
+jest.mock('pages/aiAgent/utils/extractShopNameFromUrl', () => ({
     extractShopNameFromUrl: jest.fn(),
 }))
 const mockExtractShopNameFromUrl =
-    require('../ShoppingAssistant/utils/extractShopNameFromUrl')
+    require('pages/aiAgent/utils/extractShopNameFromUrl')
         .extractShopNameFromUrl as jest.MockedFunction<any>
 
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({

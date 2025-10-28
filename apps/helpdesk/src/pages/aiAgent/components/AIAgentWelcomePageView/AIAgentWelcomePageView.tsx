@@ -14,7 +14,6 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { useAiAgentCtas } from 'pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
@@ -32,6 +31,7 @@ import {
     useTrialModalProps,
 } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 

@@ -14,7 +14,7 @@ import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
+import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -35,9 +35,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/notifications/actions')
 jest.mock('core/flags')
-jest.mock(
-    'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl',
-)
+jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
 jest.mock('pages/aiAgent/utils/getShopNameFromStoreActivations')
 
 const mockUseStartShoppingAssistantTrial = assumeMock(

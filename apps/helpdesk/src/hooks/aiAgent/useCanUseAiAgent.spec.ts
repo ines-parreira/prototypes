@@ -7,9 +7,7 @@ import { useCanUseAiAgent } from './useCanUseAiAgent'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
-jest.mock(
-    'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl',
-)
+jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
 
 const mockUseAppSelector = jest.fn()
 const mockUseTrialAccess = jest.fn()
@@ -19,7 +17,7 @@ jest.requireMock('hooks/useAppSelector').default = mockUseAppSelector
 jest.requireMock('pages/aiAgent/trial/hooks/useTrialAccess').useTrialAccess =
     mockUseTrialAccess
 jest.requireMock(
-    'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl',
+    'pages/aiAgent/utils/extractShopNameFromUrl',
 ).extractShopNameFromUrl = mockExtractShopNameFromUrl
 
 const createMockShopifyIntegration = (shopName: string) => ({

@@ -1,4 +1,4 @@
-import { extractShopNameFromUrl } from '../utils/extractShopNameFromUrl'
+import { extractShopNameFromUrl } from '../extractShopNameFromUrl'
 
 describe('extractShopNameFromUrl', () => {
     it('should extract shop name from a full URL', () => {

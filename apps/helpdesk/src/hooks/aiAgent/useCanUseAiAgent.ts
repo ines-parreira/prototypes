@@ -1,7 +1,7 @@
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
-import { extractShopNameFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopNameFromUrl'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 /**
