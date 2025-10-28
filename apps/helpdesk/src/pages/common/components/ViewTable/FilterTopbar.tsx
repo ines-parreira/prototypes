@@ -390,10 +390,6 @@ export const FilterTopbar = ({
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const isFilterViewsByStoreEnabled = useFlag(
-        FeatureFlagKey.FilterViewsByStore,
-    )
-
     const filterableFields = useMemo(
         () =>
             (config.get('fields') as List<any>)
@@ -417,19 +413,11 @@ export const FilterTopbar = ({
                         return isCustomerFieldsViewFilterEnabled
                     }
 
-                    if (
-                        fieldName === ViewField.Store &&
-                        !isFilterViewsByStoreEnabled
-                    ) {
-                        return false
-                    }
-
                     return true
                 })
                 .sortBy((field) => field.get('title')),
         [
             config,
-            isFilterViewsByStoreEnabled,
             isSearch,
             isTicketFieldsViewFilterEnabled,
             hasAutomate,
