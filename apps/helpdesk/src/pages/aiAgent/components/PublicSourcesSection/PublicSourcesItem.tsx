@@ -71,6 +71,15 @@ const isUrlWithDocumentExtension = (url: string): boolean => {
     }
 }
 
+const hasAnchorTag = (url: string): boolean => {
+    try {
+        const urlObj = new URL(url)
+        return urlObj.hash !== ''
+    } catch {
+        return false
+    }
+}
+
 const isDeleteDisabled = (
     date: string,
     status: SourceItem['status'],
@@ -89,6 +98,7 @@ const getInputError = (
     isRootUrl: boolean,
     isDuplicate: boolean,
     hasDocumentExtension: boolean,
+    hasAnchor: boolean,
     status: SourceItem['status'],
 ) => {
     if (isInvalid) {
@@ -109,6 +119,10 @@ const getInputError = (
 
     if (hasDocumentExtension) {
         return 'URL cannot be a document'
+    }
+
+    if (hasAnchor) {
+        return "URLs with # anchors aren't supported. We'll sync the full page content instead of just that section."
     }
 
     if (status === 'error') {
@@ -210,6 +224,7 @@ export const PublicSourcesItem = ({
     )
     const isRootUrl = isUrlRoot(value)
     const hasDocumentExtension = isUrlWithDocumentExtension(value)
+    const urlHasAnchorTag = hasAnchorTag(value)
 
     const isValid =
         isValidUrl &&
@@ -217,7 +232,8 @@ export const PublicSourcesItem = ({
         !isGorgiasHelpCenterUrl &&
         !isRootUrl &&
         !isDuplicate &&
-        !hasDocumentExtension
+        !hasDocumentExtension &&
+        !urlHasAnchorTag
 
     const isEditingDisabled =
         source.status !== 'idle' && source.status !== 'error'
@@ -231,6 +247,7 @@ export const PublicSourcesItem = ({
         isRootUrl,
         isDuplicate,
         hasDocumentExtension,
+        urlHasAnchorTag,
         source.status,
     )
 

@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { useParams } from 'react-router-dom'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -185,6 +186,94 @@ describe('PublicSourcesItem', () => {
                 name: 'Delete public URL',
             })
             expect(deleteButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    describe('URL validation - anchor tags', () => {
+        it('should show error when URL contains anchor tag', async () => {
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: '',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                } as SourceItem,
+            })
+
+            const input = screen.getByRole('textbox', { name: 'Public URL' })
+            await userEvent.type(input, 'https://example.com/page#section')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        "URLs with # anchors aren't supported. We'll sync the full page content instead of just that section.",
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should disable sync button when URL contains anchor tag', async () => {
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: '',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                } as SourceItem,
+            })
+
+            const input = screen.getByRole('textbox', { name: 'Public URL' })
+            await userEvent.type(input, 'https://example.com/page#section')
+
+            await waitFor(() => {
+                const syncButton = screen.getByRole('button', {
+                    name: 'Sync URL',
+                })
+                expect(syncButton).toHaveAttribute('aria-disabled', 'true')
+            })
+        })
+
+        it('should not show error when URL does not contain anchor tag', async () => {
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: '',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                } as SourceItem,
+            })
+
+            const input = screen.getByRole('textbox', { name: 'Public URL' })
+            await userEvent.type(input, 'https://example.com/page')
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        "URLs with # anchors aren't supported. We'll sync the full page content instead of just that section.",
+                    ),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should enable sync button when URL does not contain anchor tag', async () => {
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: '',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                } as SourceItem,
+            })
+
+            const input = screen.getByRole('textbox', { name: 'Public URL' })
+            await userEvent.type(input, 'https://example.com/page')
+
+            await waitFor(() => {
+                const syncButton = screen.getByRole('button', {
+                    name: 'Sync URL',
+                })
+                expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+            })
         })
     })
 })
