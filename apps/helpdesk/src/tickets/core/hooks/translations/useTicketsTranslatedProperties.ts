@@ -16,7 +16,7 @@ import { useFlag } from 'core/flags'
 
 import { KeyPrefixes } from './constants'
 import type { TicketTranslationsQueryKeyParams } from './types'
-import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from './useCurrentUserLanguagePreferences'
 
 type TicketPropertiesTranslationsParams = {
     ticket_ids: (number | undefined)[]
@@ -32,7 +32,7 @@ export function useTicketsTranslatedProperties({
     const queryClient = useQueryClient()
     const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
 
-    const { primary } = useCurrentUserPreferredLanguage()
+    const { primary } = useCurrentUserLanguagePreferences()
 
     // So that the tanstack query cache is as stable as possible
     const stableTicketIds = useMemo(

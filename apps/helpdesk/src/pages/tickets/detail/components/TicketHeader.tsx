@@ -44,7 +44,7 @@ import {
     getShouldDisplayAllFollowUps,
     shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents,
 } from 'state/ticket/selectors'
-import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
@@ -103,9 +103,9 @@ const TicketHeader = ({
         allMessageDisplayState,
     } = useTicketMessageTranslationDisplay()
 
-    const { primary } = useCurrentUserPreferredLanguage()
+    const { primary } = useCurrentUserLanguagePreferences()
 
-    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
+    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const { translationMap, updateTicketTranslatedSubject, isInitialLoading } =
         useTicketsTranslatedProperties({
             ticket_ids: [ticket.get('id')],

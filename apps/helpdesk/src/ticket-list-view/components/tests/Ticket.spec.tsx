@@ -24,9 +24,9 @@ jest.mock('pages/tickets/common/components/PriorityLabel', () => ({
 
 const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
 jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
     () => ({
-        useCurrentUserPreferredLanguage: () => ({
+        useCurrentUserLanguagePreferences: () => ({
             shouldShowTranslatedContent: mockShouldShowTranslatedContent,
         }),
     }),

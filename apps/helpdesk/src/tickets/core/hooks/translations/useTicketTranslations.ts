@@ -7,7 +7,7 @@ import {
 
 import { useFlag } from 'core/flags'
 
-import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from './useCurrentUserLanguagePreferences'
 
 type TicketTranslationsParams = {
     ticket_id?: number
@@ -19,7 +19,7 @@ export function useTicketTranslations({
     enabled = true,
 }: TicketTranslationsParams) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
-    const { primary } = useCurrentUserPreferredLanguage()
+    const { primary } = useCurrentUserLanguagePreferences()
 
     return useListTicketMessageTranslations(
         {

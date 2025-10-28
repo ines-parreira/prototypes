@@ -60,6 +60,7 @@ export function useYourProfileForm({
                 ...DEFAULT_PREFERENCES,
                 primary: '',
                 proficient: [],
+                enabled: false,
                 ...settingsPreferences?.data,
                 ...languagePreferences?.data,
             },
@@ -78,12 +79,8 @@ export function useYourProfileForm({
 
     const handlePreferenceChange = useCallback(
         (
-            preferenceKey: string,
-            value:
-                | boolean
-                | string
-                | string[]
-                | Record<string, string | string[] | undefined>,
+            preferenceKey: keyof typeof defaultFormValues.preferences,
+            value: ValueOf<typeof defaultFormValues.preferences>,
         ) => {
             setFormValues({
                 ...formValues,

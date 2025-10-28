@@ -199,6 +199,7 @@ const languagePreferences = {
     data: {
         primary: 'en',
         proficient: ['fr'],
+        enabled: true,
     },
 }
 

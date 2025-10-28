@@ -5,7 +5,7 @@ import { Language } from '@gorgias/helpdesk-types'
 import useAppSelector from 'hooks/useAppSelector'
 import { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
-import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 
 import { DisplayedContent } from './context/ticketMessageTranslationDisplayContext'
@@ -22,7 +22,7 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
     return (props: T) => {
         const ticket = useAppSelector(getTicket)
         const { shouldShowTranslatedContent } =
-            useCurrentUserPreferredLanguage()
+            useCurrentUserLanguagePreferences()
         const { getTicketMessageTranslationDisplay } =
             useTicketMessageTranslationDisplay()
         const { getMessageTranslation } = useTicketMessageTranslations({

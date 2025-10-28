@@ -87,7 +87,7 @@ export default function MultiSelectOptionsField(props: Props) {
     }
 
     const handleFocus = () => {
-        if (onFocus && !isFocused) onFocus()
+        if (onFocus && !isFocused && !isDisabled) onFocus()
         setIsFocused(true)
     }
 
@@ -238,8 +238,13 @@ export default function MultiSelectOptionsField(props: Props) {
                     [css.compact]: isCompact,
                     [css.focused]: isFocused,
                     [css.hasError]: hasError,
+                    [css.disabled]: isDisabled,
                 })}
-                onClick={focus}
+                onClick={() => {
+                    if (!isDisabled) {
+                        focus()
+                    }
+                }}
             >
                 {selectedOptions.map((selectedOption: Option) => (
                     <OptionTag
@@ -255,6 +260,7 @@ export default function MultiSelectOptionsField(props: Props) {
                     placeholder={`Add ${plural}...`}
                     value={input}
                     options={displayOptions}
+                    isDisabled={isDisabled}
                     isFocused={isFocused}
                     isLoading={loading}
                     onChange={handleChange}

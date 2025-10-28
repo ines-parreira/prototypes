@@ -444,12 +444,28 @@ export function YourProfileView({
                                         css.headings,
                                     )}
                                 >
-                                    Translation settings
+                                    Ticket translation settings
                                 </h3>
                                 <div className={settingsCss.subsection}>
                                     <FormGroup
                                         className={css.conversationSettings}
                                     >
+                                        <div data-testid="enable-ticket-translations">
+                                            <ToggleField
+                                                name="enabled"
+                                                label="Enable ticket translations"
+                                                value={
+                                                    formValues.preferences
+                                                        ?.enabled ?? false
+                                                }
+                                                onChange={(value: boolean) => {
+                                                    handlePreferenceChange(
+                                                        'enabled',
+                                                        value,
+                                                    )
+                                                }}
+                                            ></ToggleField>
+                                        </div>
                                         <div data-testid="default-translation-language">
                                             <SelectField<
                                                 (typeof translationLanguageOptions)[number]
@@ -457,6 +473,10 @@ export function YourProfileView({
                                                 label="Default translation language"
                                                 options={
                                                     translationLanguageOptions
+                                                }
+                                                isDisabled={
+                                                    !formValues.preferences
+                                                        .enabled
                                                 }
                                                 selectedOption={translationLanguageOptions.find(
                                                     (option) =>
@@ -489,6 +509,10 @@ export function YourProfileView({
                                                 id="proficient-languages"
                                                 plural="Languages"
                                                 showAllOptions
+                                                isDisabled={
+                                                    !formValues.preferences
+                                                        .enabled
+                                                }
                                                 onInputChange={
                                                     handleProficientLanguagesInputChange
                                                 }
@@ -701,7 +725,10 @@ export function YourProfileView({
                                     formValues.preferences?.forward_when_offline
                                 }
                                 setPreference={(preferenceKey, value) => {
-                                    handlePreferenceChange(preferenceKey, value)
+                                    handlePreferenceChange(
+                                        preferenceKey as keyof typeof formValues.preferences,
+                                        value,
+                                    )
                                 }}
                             />
                         </div>

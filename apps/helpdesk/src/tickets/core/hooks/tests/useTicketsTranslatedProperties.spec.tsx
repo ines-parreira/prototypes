@@ -15,7 +15,7 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
 
-import { CurrentUser } from '../translations/useCurrentUserPreferredLanguage'
+import { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../translations/useTicketsTranslatedProperties'
 
 // Mock the feature flag hook

@@ -112,7 +112,7 @@ export function getNextNodes(
     switch (node.type) {
         case VoiceFlowNodeType.CustomerLookup:
             const branchOptions = node.data.branch_options.map(
-                (option) => option.next_step_id,
+                (option) => option.next_step_id ?? END_CALL_NODE.id,
             )
             return [
                 ...branchOptions,

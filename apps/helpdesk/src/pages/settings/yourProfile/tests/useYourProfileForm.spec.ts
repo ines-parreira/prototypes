@@ -44,6 +44,7 @@ describe('useYourProfileForm', () => {
         data: {
             primary: 'en',
             proficient: ['en', 'fr'],
+            enabled: true,
         },
     }
 
@@ -74,6 +75,7 @@ describe('useYourProfileForm', () => {
                     ...DEFAULT_PREFERENCES,
                     primary: '',
                     proficient: [],
+                    enabled: false,
                 },
             })
 

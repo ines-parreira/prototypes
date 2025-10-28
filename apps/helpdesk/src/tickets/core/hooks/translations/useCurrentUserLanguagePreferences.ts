@@ -14,7 +14,7 @@ export type CurrentUser = GetCurrentUserResult & {
     }
 }
 
-export function useCurrentUserPreferredLanguage() {
+export function useCurrentUserLanguagePreferences() {
     const { data: currentUser } = useGetCurrentUser<CurrentUser>({
         query: {
             staleTime: 60000 * 5,
@@ -39,12 +39,13 @@ export function useCurrentUserPreferredLanguage() {
     )
 
     const shouldShowTranslatedContent = useCallback(
-        (language?: Language | null) =>
-            !language
-                ? false
-                : !languagePreferences?.primary
-                  ? false
-                  : !languagesNotToTranslateFor.includes(language),
+        (language?: Language | null) => {
+            if (!language) return false
+            if (!languagePreferences?.enabled) return false
+            if (!languagePreferences?.primary) return false
+            if (languagesNotToTranslateFor.includes(language)) return false
+            return true
+        },
         [languagesNotToTranslateFor, languagePreferences],
     )
 

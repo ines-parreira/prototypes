@@ -23,7 +23,7 @@ import {
     TicketMessagesTranslationDisplayContext,
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
-import { CurrentUser } from '../translations/useCurrentUserPreferredLanguage'
+import { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
 import { useLiveTicketTranslationsUpdates } from '../translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 
 type UseLiveTicketTranslationsUpdatesParams = Parameters<
@@ -148,6 +148,7 @@ const mockGetCurrentUserEnglish = mockGetCurrentUserHandler(async ({ data }) =>
                 data: {
                     primary: Language.En,
                     proficient: [],
+                    enabled: true,
                 },
             },
         ],
@@ -164,6 +165,7 @@ const mockGetCurrentUserFrench = mockGetCurrentUserHandler(async ({ data }) =>
                 data: {
                     primary: Language.Fr,
                     proficient: [],
+                    enabled: true,
                 },
             },
         ],

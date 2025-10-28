@@ -52,6 +52,7 @@ const mockFormValues = {
     preferences: {
         primary: 'en',
         proficient: ['fr', 'es'],
+        enabled: false,
         time_format: TimeFormatType.AmPm,
         date_format: DateFormatType.en_US,
         forward_when_offline: true,
@@ -77,6 +78,7 @@ const mockLanguagePreferences = {
     data: {
         primary: 'en',
         proficient: ['fr'],
+        enabled: true,
     },
 }
 
@@ -146,6 +148,7 @@ describe('useYourProfileMutations', () => {
                     data: {
                         primary: 'en',
                         proficient: ['fr', 'es'],
+                        enabled: false,
                     },
                 },
             })
@@ -175,6 +178,7 @@ describe('useYourProfileMutations', () => {
                     data: {
                         primary: 'en',
                         proficient: ['fr', 'es'],
+                        enabled: false,
                     },
                 },
             })
@@ -272,6 +276,7 @@ describe('useYourProfileMutations', () => {
                     data: {
                         primary: 'en',
                         proficient: [],
+                        enabled: false,
                     },
                 },
             })
@@ -356,7 +361,7 @@ describe('useYourProfileMutations', () => {
             expect(mockUpdateCurrentUserSettings).not.toHaveBeenCalled()
         })
 
-        it('should exclude primary and proficient languages from settings preferences', async () => {
+        it('should exclude primary, proficient, and enabled from settings preferences', async () => {
             const { result } = renderHook(
                 () =>
                     useYourProfileMutations({
@@ -377,6 +382,7 @@ describe('useYourProfileMutations', () => {
                 mockUpdateCurrentUserSettings.mock.calls[0][0].data.data
             expect(callData).not.toHaveProperty('primary')
             expect(callData).not.toHaveProperty('proficient')
+            expect(callData).not.toHaveProperty('enabled')
             expect(callData).toHaveProperty('time_format')
             expect(callData).toHaveProperty('date_format')
         })
@@ -470,6 +476,7 @@ describe('useYourProfileMutations', () => {
                 preferences: {
                     primary: 'en',
                     proficient: ['fr'],
+                    enabled: false,
                     time_format: TimeFormatType.AmPm,
                     date_format: DateFormatType.en_US,
                     forward_when_offline: false,

@@ -46,6 +46,7 @@ const languagePreferences = {
     data: {
         primary: 'en',
         proficient: [],
+        enabled: true,
     },
 }
 
@@ -85,6 +86,7 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
+    appQueryClient.clear()
 })
 
 afterAll(() => {
@@ -500,7 +502,9 @@ describe('Your profile page', () => {
                 expect(getByText('Your profile')).toBeInTheDocument()
             })
 
-            expect(queryByText('Translation settings')).not.toBeInTheDocument()
+            expect(
+                queryByText('Ticket translation settings'),
+            ).not.toBeInTheDocument()
         })
         it('should display the translation settings without the user primary language when he has none', async () => {
             mockUseFlag.mockImplementation(() => true)
@@ -548,6 +552,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: ['fr'],
+                                enabled: true,
                             },
                         },
                     ],
@@ -564,7 +569,6 @@ describe('Your profile page', () => {
 
             expect(getByLabelText(/Languages you know/i)).toBeInTheDocument()
 
-            // Check that English and French text elements exist
             const englishElements = getAllByText('English')
             const frenchElements = getAllByText('French')
 
@@ -584,6 +588,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: ['fr'],
+                                enabled: true,
                             },
                         },
                     ],
@@ -628,6 +633,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: ['fr'],
+                                enabled: true,
                             },
                         },
                     ],
@@ -687,6 +693,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: ['fr'],
+                                enabled: true,
                             },
                         },
                     ],
@@ -714,6 +721,90 @@ describe('Your profile page', () => {
             })
         })
 
+        describe('Translation toggle and field states', () => {
+            it('should render toggle unchecked and disable fields when translations are disabled', async () => {
+                mockUseFlag.mockImplementation(() => true)
+                server.resetHandlers()
+                server.use(
+                    http.get('http://localhost/api/users/:id', () =>
+                        HttpResponse.json({
+                            ...mockGetCurrentUser.data,
+                            settings: [
+                                settingsPreferences,
+                                {
+                                    id: 1,
+                                    type: 'language-preferences',
+                                    data: {
+                                        primary: 'en',
+                                        proficient: ['fr'],
+                                        enabled: false,
+                                    },
+                                },
+                            ],
+                        } as unknown as CurrentUser['data']),
+                    ),
+                    mockUpdateCurrentUserSettings.handler,
+                    mockUpdateCurrentUser.handler,
+                    mockUploadFile,
+                )
+
+                const { getByText, getByLabelText } = renderComponent()
+
+                await waitFor(() => {
+                    expect(getByText('Your profile')).toBeInTheDocument()
+                })
+
+                const toggle = getByLabelText(/Enable ticket translations/i)
+                expect(toggle).toBeInTheDocument()
+                expect(toggle).not.toBeChecked()
+
+                const proficientLanguagesInput =
+                    getByLabelText(/Languages you know/i)
+                expect(proficientLanguagesInput).toBeDisabled()
+            })
+
+            it('should render toggle checked and enable fields when translations are enabled', async () => {
+                mockUseFlag.mockImplementation(() => true)
+                server.resetHandlers()
+                server.use(
+                    http.get('http://localhost/api/users/:id', () =>
+                        HttpResponse.json({
+                            ...mockGetCurrentUser.data,
+                            settings: [
+                                settingsPreferences,
+                                {
+                                    id: 1,
+                                    type: 'language-preferences',
+                                    data: {
+                                        primary: 'en',
+                                        proficient: [],
+                                        enabled: true,
+                                    },
+                                },
+                            ],
+                        } as unknown as CurrentUser['data']),
+                    ),
+                    mockUpdateCurrentUserSettings.handler,
+                    mockUpdateCurrentUser.handler,
+                    mockUploadFile,
+                )
+
+                const { getByText, getByLabelText } = renderComponent()
+
+                await waitFor(() => {
+                    expect(getByText('Your profile')).toBeInTheDocument()
+                })
+
+                const toggle = getByLabelText(/Enable ticket translations/i)
+                expect(toggle).toBeInTheDocument()
+                expect(toggle).toBeChecked()
+
+                const proficientLanguagesInput =
+                    getByLabelText(/Languages you know/i)
+                expect(proficientLanguagesInput).not.toBeDisabled()
+            })
+        })
+
         it('should filter proficient languages options based on search input', async () => {
             const user = userEvent.setup()
             mockUseFlag.mockImplementation(() => true)
@@ -727,6 +818,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: [],
+                                enabled: true,
                             },
                         },
                     ],
@@ -774,6 +866,7 @@ describe('Your profile page', () => {
                             data: {
                                 primary: 'en',
                                 proficient: [],
+                                enabled: true,
                             },
                         },
                     ],

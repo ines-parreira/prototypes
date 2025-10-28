@@ -49,6 +49,7 @@ export function useYourProfileMutations({
         const newLanguagePreferences = {
             primary: formValues.preferences.primary ?? '',
             proficient: formValues.preferences.proficient ?? [],
+            enabled: formValues.preferences.enabled ?? false,
         }
 
         if (!validateLanguagePreferences(newLanguagePreferences)) {
@@ -84,6 +85,7 @@ export function useYourProfileMutations({
         const newSettingsPreferences = _omit(formValues.preferences, [
             'primary',
             'proficient',
+            'enabled',
         ])
 
         const settingsPreferencesMutation = hasExistingSettingsPreferences

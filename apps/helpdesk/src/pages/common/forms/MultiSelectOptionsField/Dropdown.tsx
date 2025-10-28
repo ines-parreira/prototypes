@@ -17,6 +17,7 @@ type Props = {
     placeholder: string
     value: string
     options: Option[]
+    isDisabled?: boolean
     isFocused: boolean
     isLoading?: boolean
     onChange: (option: string) => void
@@ -36,6 +37,7 @@ export default function Dropdown(props: Props) {
         isFocused,
         options,
         value,
+        isDisabled = false,
         onChange,
         onFocus,
         onBlur,
@@ -81,13 +83,19 @@ export default function Dropdown(props: Props) {
                 'multiSelectOptionField-dropdown',
                 {
                     [css.compact]: isCompact,
+                    [css.disabled]: isDisabled,
                 },
             )}
         >
             <UncontrolledDropdown
                 isOpen={isFocused && (!!options.length || !!value)}
+                disabled={isDisabled}
             >
-                <DropdownToggle tag="div" data-toggle="dropdown">
+                <DropdownToggle
+                    tag="div"
+                    data-toggle="dropdown"
+                    disabled={isDisabled}
+                >
                     <Input
                         id={id}
                         placeholder={placeholder}
@@ -101,6 +109,7 @@ export default function Dropdown(props: Props) {
                         onDelete={onDelete}
                         onChange={onChange}
                         isCompact={isCompact}
+                        isDisabled={isDisabled}
                     />
                 </DropdownToggle>
                 <CustomDropdownMenu

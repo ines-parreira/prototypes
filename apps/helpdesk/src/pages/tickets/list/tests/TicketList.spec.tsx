@@ -86,9 +86,9 @@ jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({
 
 const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
 jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
     () => ({
-        useCurrentUserPreferredLanguage: () => ({
+        useCurrentUserLanguagePreferences: () => ({
             shouldShowTranslatedContent: mockShouldShowTranslatedContent,
         }),
     }),

@@ -20,7 +20,7 @@ import {
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
-import { useCurrentUserPreferredLanguage } from '../useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from '../useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../useTicketsTranslatedProperties'
 import { useTicketTranslations } from '../useTicketTranslations'
 import { useTicketMessageTranslationCompleteEventHandler } from './useTicketMessageTranslationCompleteEventHandler'
@@ -106,7 +106,7 @@ export const useLiveTicketTranslationsUpdates = ({
     )
 
     const { primary, shouldShowTranslatedContent } =
-        useCurrentUserPreferredLanguage()
+        useCurrentUserLanguagePreferences()
 
     const { translationMap, isInitialLoading } = useTicketsTranslatedProperties(
         {

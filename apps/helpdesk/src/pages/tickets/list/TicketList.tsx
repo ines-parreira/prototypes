@@ -29,7 +29,7 @@ import {
     hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
-import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import { compactInteger } from 'utils'
 
@@ -48,7 +48,7 @@ const TicketList = () => {
                 .toJS() as number[],
         [tickets],
     )
-    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
+    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const { translationMap } = useTicketsTranslatedProperties({
         ticket_ids: ticketIds,
     })

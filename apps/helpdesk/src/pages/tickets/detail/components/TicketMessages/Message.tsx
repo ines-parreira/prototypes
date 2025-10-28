@@ -13,7 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
-import { useCurrentUserPreferredLanguage } from 'tickets/core/hooks/translations/useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
@@ -60,7 +60,7 @@ export default function Message({
 
     const { getTicketMessageTranslationDisplay } =
         useTicketMessageTranslationDisplay()
-    const { shouldShowTranslatedContent } = useCurrentUserPreferredLanguage()
+    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
 
     const messageTranslations = useMemo(
         () => (message?.id ? getMessageTranslation(message.id) : null),

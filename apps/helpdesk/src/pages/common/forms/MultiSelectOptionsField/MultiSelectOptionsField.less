@@ -18,6 +18,13 @@
         &.hasError {
             border-color: var(--feedback-error);
         }
+
+        &.disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            background-color: var(--neutral-grey-1);
+            color: var(--neutral-grey-4);
+        }
     }
 
     .compact {
@@ -34,9 +41,5 @@
             );
         border: 1px solid #80bdff;
         border-radius: 0.25rem;
-    }
-
-    .disabled {
-        pointer-events: none;
     }
 }

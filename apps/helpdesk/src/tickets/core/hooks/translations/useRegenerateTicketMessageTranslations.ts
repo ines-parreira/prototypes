@@ -5,10 +5,10 @@ import { useRequestTicketMessageTranslation } from '@gorgias/helpdesk-queries'
 import { FetchingState } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
-import { useCurrentUserPreferredLanguage } from './useCurrentUserPreferredLanguage'
+import { useCurrentUserLanguagePreferences } from './useCurrentUserLanguagePreferences'
 
 export function useRegenerateTicketMessageTranslations() {
-    const { primary } = useCurrentUserPreferredLanguage()
+    const { primary } = useCurrentUserLanguagePreferences()
     const {
         setTicketMessageTranslationDisplay,
         getTicketMessageTranslationDisplay,

@@ -8,6 +8,7 @@ type Props = {
     placeholder: string
     value?: string
     isFocused: boolean
+    isDisabled?: boolean
     onFocus: () => void
     onBlur: () => void
     onSubmit: () => void
@@ -99,7 +100,14 @@ export default class Input extends Component<Props> {
     }
 
     render() {
-        const { placeholder, value, onFocus, isCompact, id } = this.props
+        const {
+            placeholder,
+            value,
+            onFocus,
+            isCompact,
+            id,
+            isDisabled = false,
+        } = this.props
 
         return (
             <input
@@ -107,8 +115,10 @@ export default class Input extends Component<Props> {
                 ref={this.inputRef}
                 className={classnames(css.input, {
                     [css.compact]: isCompact,
+                    [css.disabled]: isDisabled,
                 })}
                 placeholder={placeholder}
+                disabled={isDisabled}
                 value={value}
                 onFocus={onFocus}
                 onBlur={this.handleBlur}

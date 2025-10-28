@@ -51,15 +51,15 @@ const mockUseTicketMessageTranslations =
 
 // Mock the user language preference hook
 jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserPreferredLanguage',
+    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
     () => ({
-        useCurrentUserPreferredLanguage: jest.fn(),
+        useCurrentUserLanguagePreferences: jest.fn(),
     }),
 )
 
 const mockUseCurrentUserPreferredLanguage =
-    require('tickets/core/hooks/translations/useCurrentUserPreferredLanguage')
-        .useCurrentUserPreferredLanguage as jest.MockedFunction<any>
+    require('tickets/core/hooks/translations/useCurrentUserLanguagePreferences')
+        .useCurrentUserLanguagePreferences as jest.MockedFunction<any>
 
 // Create mock user with language preferences
 const mockCurrentUser = {
