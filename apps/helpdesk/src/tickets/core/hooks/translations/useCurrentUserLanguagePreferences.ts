@@ -41,7 +41,7 @@ export function useCurrentUserLanguagePreferences() {
     const shouldShowTranslatedContent = useCallback(
         (language?: Language | null) => {
             if (!language) return false
-            if (!languagePreferences?.enabled) return false
+            // if (!languagePreferences?.enabled) return false
             if (!languagePreferences?.primary) return false
             if (languagesNotToTranslateFor.includes(language)) return false
             return true

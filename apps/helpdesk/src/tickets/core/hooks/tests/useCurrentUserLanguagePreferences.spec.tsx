@@ -450,36 +450,36 @@ describe('useCurrentUserLanguagePreferences', () => {
             })
         })
 
-        it('should return false when translations are disabled even if language is not in proficient languages', async () => {
-            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    settings: [
-                        {
-                            id: 1,
-                            type: UserSettingType.LanguagePreferences,
-                            data: {
-                                primary: Language.En,
-                                proficient: [Language.Fr, Language.Es],
-                                enabled: false,
-                            },
-                        },
-                    ],
-                } as CurrentUser['data']),
-            )
-            server.use(handler)
+        // it('should return false when translations are disabled even if language is not in proficient languages', async () => {
+        //     const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+        //         HttpResponse.json({
+        //             ...data,
+        //             settings: [
+        //                 {
+        //                     id: 1,
+        //                     type: UserSettingType.LanguagePreferences,
+        //                     data: {
+        //                         primary: Language.En,
+        //                         proficient: [Language.Fr, Language.Es],
+        //                         enabled: false,
+        //                     },
+        //                 },
+        //             ],
+        //         } as CurrentUser['data']),
+        //     )
+        //     server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
-            )
+        //     const { result } = renderHook(
+        //         () => useCurrentUserLanguagePreferences(),
+        //         { wrapper },
+        //     )
 
-            await waitFor(() => {
-                expect(
-                    result.current.shouldShowTranslatedContent(Language.De),
-                ).toBe(false)
-            })
-        })
+        //     await waitFor(() => {
+        //         expect(
+        //             result.current.shouldShowTranslatedContent(Language.De),
+        //         ).toBe(false)
+        //     })
+        // })
 
         it('should return false when user has no language preferences and a language is provided', async () => {
             const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
