@@ -380,10 +380,6 @@ export const FilterTopbar = ({
             await dispatch(createJob(activeView, JobType.ExportTicket, {}))
         }, [dispatch, activeView])
 
-    const isTicketFieldsViewFilterEnabled = useFlag(
-        FeatureFlagKey.FilterViewsByTicketFields,
-    )
-
     const isCustomerFieldsViewFilterEnabled = useFlag(
         FeatureFlagKey.TicketCustomerFieldsInSearchAndViews,
     )
@@ -405,10 +401,6 @@ export const FilterTopbar = ({
                         return false
                     }
 
-                    if (field.get('path', '') === OBJECT_PATHS.TICKET) {
-                        return isSearch ? true : isTicketFieldsViewFilterEnabled
-                    }
-
                     if (field.get('path', '') === OBJECT_PATHS.CUSTOMER) {
                         return isCustomerFieldsViewFilterEnabled
                     }
@@ -416,13 +408,7 @@ export const FilterTopbar = ({
                     return true
                 })
                 .sortBy((field) => field.get('title')),
-        [
-            config,
-            isSearch,
-            isTicketFieldsViewFilterEnabled,
-            hasAutomate,
-            isCustomerFieldsViewFilterEnabled,
-        ],
+        [config, hasAutomate, isCustomerFieldsViewFilterEnabled],
     )
 
     const totalSearchResources = useMemo(() => {

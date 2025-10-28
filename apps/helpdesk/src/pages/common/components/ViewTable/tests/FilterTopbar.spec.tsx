@@ -706,21 +706,7 @@ describe('<FilterTopbar />', () => {
         expect(getByText('Ticket field')).toBeInTheDocument()
     })
 
-    it('should not render Ticket Fields filter when FF is disabled', () => {
-        const { getByLabelText, queryByText } = render(
-            <Provider store={mockStore(defaultState)}>
-                <FilterTopbar {...minProps} />
-            </Provider>,
-        )
-
-        const addFilterButton = getByLabelText('Add filter')
-        fireEvent.click(addFilterButton)
-
-        expect(queryByText('Ticket field')).not.toBeInTheDocument()
-    })
-
-    it('should render Ticket Fields filter when FF is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should render Ticket Fields filter', () => {
         const { getByLabelText, getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
