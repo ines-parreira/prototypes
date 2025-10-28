@@ -14,8 +14,8 @@ import css from './KnowledgeEditorGuidanceReadView.less'
 type Props = {
     content: string
     title: string
-    availableActions: GuidanceAction[]
-    availableVariables: GuidanceVariableGroup[]
+    availableActions?: GuidanceAction[]
+    availableVariables?: GuidanceVariableGroup[]
 }
 
 export const KnowledgeEditorGuidanceReadView = ({
@@ -55,13 +55,13 @@ export const KnowledgeEditorGuidanceReadView = ({
                         ActionName.Underline,
                         ActionName.Link,
                         ActionName.Emoji,
-                        ActionName.GuidanceVariable,
-                        ActionName.GuidanceAction,
+                        // ActionName.GuidanceVariable,
+                        // ActionName.GuidanceAction,
                         ActionName.BulletedList,
                         ActionName.OrderedList,
                     ]}
                     noAutoScroll
-                    getGuidanceVariables={() => availableVariables}
+                    getGuidanceVariables={() => availableVariables || []}
                 />
             </ToolbarProvider>
         </div>

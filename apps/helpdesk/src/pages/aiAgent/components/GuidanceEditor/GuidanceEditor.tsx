@@ -20,6 +20,7 @@ type GuidanceEditorProps = {
     shopName: string
     availableActions: GuidanceAction[]
     showActionsButton: boolean
+    showVariablesButton?: boolean
     handleUpdateContent: (content: string) => void
     onBlur?: () => void
     label?: string
@@ -43,19 +44,28 @@ export function GuidanceEditor({
     shopName,
     availableActions,
     showActionsButton,
+    showVariablesButton = true,
     handleUpdateContent,
     onBlur,
     label,
 }: GuidanceEditorProps) {
-    const toolbarActions = useMemo(
-        () =>
-            showActionsButton
-                ? defaultToolbarActions
-                : defaultToolbarActions.filter(
-                      (action) => action !== ActionName.GuidanceAction,
-                  ),
-        [showActionsButton],
-    )
+    const toolbarActions = useMemo(() => {
+        let actions = defaultToolbarActions
+
+        if (!showActionsButton) {
+            actions = actions.filter(
+                (action) => action !== ActionName.GuidanceAction,
+            )
+        }
+
+        if (!showVariablesButton) {
+            actions = actions.filter(
+                (action) => action !== ActionName.GuidanceVariable,
+            )
+        }
+
+        return actions
+    }, [showActionsButton, showVariablesButton])
 
     const richFieldValue = useMemo(
         () => ({

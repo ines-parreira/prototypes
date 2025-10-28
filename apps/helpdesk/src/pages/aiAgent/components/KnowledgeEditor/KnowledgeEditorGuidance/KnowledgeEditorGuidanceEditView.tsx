@@ -4,6 +4,8 @@ import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/Guidance
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import InputField from 'pages/common/forms/input/InputField'
 
+import { GuidanceVariableGroup } from '../../GuidanceEditor/variables.types'
+
 import css from './KnowledgeEditorGuidanceEditView.less'
 
 type Props = {
@@ -14,6 +16,7 @@ type Props = {
     shopName: string
 
     availableActions?: GuidanceAction[]
+    availableVariables?: GuidanceVariableGroup[]
 }
 
 export const KnowledgeEditorGuidanceEditView = ({
@@ -23,6 +26,7 @@ export const KnowledgeEditorGuidanceEditView = ({
     onChangeTitle,
     shopName,
     availableActions,
+    availableVariables,
 }: Props) => (
     <div className={css.container}>
         <InputField
@@ -42,6 +46,7 @@ export const KnowledgeEditorGuidanceEditView = ({
                 shopName={shopName}
                 availableActions={availableActions || []}
                 showActionsButton={availableActions !== undefined}
+                showVariablesButton={availableVariables !== undefined}
             />
             <Caption isValid>
                 Provide instructions on how AI Agent should handle this

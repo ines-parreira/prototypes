@@ -54,8 +54,6 @@ export const KnowledgeEditorGuidanceView = ({
     onClose,
     onClickPrevious,
     onClickNext,
-    availableActions,
-    availableVariables,
     onSave,
     onCreate,
     onDelete,
@@ -189,8 +187,6 @@ export const KnowledgeEditorGuidanceView = ({
             <div className={css.knowledgeEditor}>
                 {guidanceMode === 'read' && (
                     <KnowledgeEditorGuidanceReadView
-                        availableActions={availableActions}
-                        availableVariables={availableVariables}
                         content={content}
                         title={title}
                     />
@@ -198,7 +194,6 @@ export const KnowledgeEditorGuidanceView = ({
 
                 {guidanceMode === 'edit' && (
                     <KnowledgeEditorGuidanceEditView
-                        availableActions={availableActions}
                         content={content}
                         title={title}
                         onChangeContent={onChangeContent}
@@ -209,7 +204,6 @@ export const KnowledgeEditorGuidanceView = ({
 
                 {guidanceMode === 'create' && (
                     <KnowledgeEditorGuidanceCreateView
-                        availableActions={availableActions}
                         content={content}
                         title={title}
                         onChangeContent={onChangeContent}
