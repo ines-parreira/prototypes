@@ -1,6 +1,10 @@
 import React, { memo, useMemo, useState } from 'react'
 
-import { Avatar, LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyAvatar as Avatar,
+    LegacyButton as Button,
+    Tooltip,
+} from '@gorgias/axiom'
 
 import { User } from 'config/types/user'
 import Modal from 'pages/common/components/modal/Modal'

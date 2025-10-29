@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
-import { Avatar } from '@gorgias/axiom'
+import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -10,7 +10,7 @@ import { useFlag } from 'core/flags'
 import { TicketAssignee } from '../TicketAssignee'
 
 jest.mock('@gorgias/axiom', () => ({
-    Avatar: jest.fn(() => <div />),
+    LegacyAvatar: jest.fn(() => <div />),
 }))
 
 jest.mock('emoji-mart', () => ({

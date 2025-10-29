@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { isNumber } from 'lodash'
 
 import {
-    Avatar,
+    LegacyAvatar as Avatar,
     Icon,
     ListItem,
     ListSection,

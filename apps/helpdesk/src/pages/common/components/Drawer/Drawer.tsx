@@ -7,7 +7,7 @@ import { Container } from 'reactstrap'
 
 import {
     LegacyIconButton as IconButton,
-    ShortcutKey,
+    LegacyShortcutKey as ShortcutKey,
     Tooltip,
 } from '@gorgias/axiom'
 

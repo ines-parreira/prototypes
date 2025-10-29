@@ -11,11 +11,11 @@ catalogs:
       version: 0.1.14
   axiom:
     '@gorgias/axiom':
-      specifier: 0.88.0
-      version: 0.88.0
+      specifier: 0.95.1
+      version: 0.95.1
     '@gorgias/design-tokens':
-      specifier: 0.10.7
-      version: 0.10.7
+      specifier: 0.11.1
+      version: 0.11.1
   copy-to-clipboard:
     copy-to-clipboard:
       specifier: 3.3.1
@@ -377,10 +377,10 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.88.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.95.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -395,7 +395,7 @@ importers:
         version: 0.2.30(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.10.7
+        version: 0.11.1
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.5
@@ -1419,10 +1419,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.88.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.95.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.10.7
+        version: 0.11.1
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1657,14 +1657,14 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.88.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.95.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
     devDependencies:
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.10.7
+        version: 0.11.1
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1876,7 +1876,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.88.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.95.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.61
@@ -3388,8 +3388,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.88.0':
-    resolution: {integrity: sha512-rlyRPAXULt2fkupJ3D8XB+iEV4xoA8flrQWkGmwWmSFOS25dO8WqdVRjNTh66fIMcjoWDTg5SrFfjaAznzfJOA==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.88.0/78f630f175218be681305a01cff52049a000a084}
+  '@gorgias/axiom@0.95.1':
+    resolution: {integrity: sha512-m1rCJ7yDPLFknAKBxMcaYhKoUp8cWZHGxN19CKWhuP5tIOpAqc1TbjLXt2UXLsvcZgGh09XuDujNxIrOXWISAg==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.95.1/c737610cf2687813a526994ad7a0ad76fa1eb3fe}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -3437,8 +3437,8 @@ packages:
   '@gorgias/convert-types@0.4.7':
     resolution: {integrity: sha512-+Nf2r4xLl4jnh8b2i/D5O0HvQZ20GrYLrqMIkvwNOFj11yg78cdbFlPtgLzygejZ52YMR12bQ4bRkhzD4HNStg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.7/237665d76593ab566cf10180a8bb706238c928e2}
 
-  '@gorgias/design-tokens@0.10.7':
-    resolution: {integrity: sha512-sFXY69SdAZQeTk4SaFBTbXWZ43lL45O2k90APYb0LhRBX5ApiQmpv0VeS7R7Fsb6LxVL79gUW9vPJLjSvPjcgg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.10.7/2e21cae01577d5c462d91a68c4669064922056ec}
+  '@gorgias/design-tokens@0.11.1':
+    resolution: {integrity: sha512-IlmWbgfQ1p+zua+ENIFAMR3nriA98ZzjOJ/vbsizRgoDrIn/R4u6tq5ldf9tYvx3MlhGZiIUnNGiLCESNz0rSA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.1/7e2844221cf37e5f7ba2d41c98dd611dce8ee973}
 
   '@gorgias/ecommerce-storage-client@0.2.5':
     resolution: {integrity: sha512-sIaYqAQaIcah+4uYYjeVQHRbknsidJz2j2T38CRtlzcjKemFMH7P2uI5mqbaU/Z6wYLWAYIYCnxNVFB7sU2VVg==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-client/0.2.5/6cb0111c2e60ae3b070ca9e40cc62f06c7912254}
@@ -14956,17 +14956,17 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.10.7)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
+  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
     dependencies:
-      '@gorgias/design-tokens': 0.10.7
+      '@gorgias/design-tokens': 0.11.1
       classnames: 2.2.6
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.88.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.95.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@gorgias/design-tokens': 0.10.7
+      '@gorgias/design-tokens': 0.11.1
       '@internationalized/date': 3.10.0
       '@tanstack/react-table': 8.21.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       classnames: 2.5.1
@@ -15038,7 +15038,7 @@ snapshots:
 
   '@gorgias/convert-types@0.4.7': {}
 
-  '@gorgias/design-tokens@0.10.7': {}
+  '@gorgias/design-tokens@0.11.1': {}
 
   '@gorgias/ecommerce-storage-client@0.2.5':
     dependencies:

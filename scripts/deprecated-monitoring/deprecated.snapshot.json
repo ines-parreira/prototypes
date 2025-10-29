@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 75,
-    "totalUsages": 1469,
-    "reportGeneratedAt": "2025-10-24T13:09:06.701Z"
+    "totalEntries": 76,
+    "totalUsages": 1471,
+    "reportGeneratedAt": "2025-10-29T12:20:30.640Z"
   },
   "entries": [
     {
@@ -1342,6 +1342,7 @@
               "apps/helpdesk/src/pages/aiAgent/components/TicketTag/TagList.tsx",
               "apps/helpdesk/src/pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunitiesContent/OpportunitiesContent.tsx",
+              "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunitiesSidebar/OpportunitiesSidebar.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialManageModal/TrialManageModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal.tsx",
@@ -1420,7 +1421,6 @@
               "apps/helpdesk/src/pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.tsx",
               "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
               "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
-              "apps/helpdesk/src/pages/common/components/MonitorCallButton/MonitorCallButton.tsx",
               "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.stories.tsx",
               "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
               "apps/helpdesk/src/pages/common/components/Paywall/Paywall.stories.tsx",
@@ -2465,6 +2465,25 @@
           }
         },
         {
+          "usageCount": 6,
+          "name": "@gorgias.LegacyAvatar",
+          "nodeType": "Identifier",
+          "deprecationDate": "2025-10-15",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "package.json",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
+              "apps/helpdesk/src/pages/common/components/RequestTrialModal/RequestTrialModal.tsx",
+              "apps/helpdesk/src/tickets/ticket-detail/components/MessageAvatar.tsx",
+              "apps/helpdesk/src/tickets/ticket-detail/components/TicketAssignee.tsx",
+              "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageAvatar.spec.tsx",
+              "apps/helpdesk/src/tickets/ticket-detail/components/tests/TicketAssignee.spec.tsx"
+            ],
+            "default": []
+          }
+        },
+        {
           "usageCount": 4,
           "name": "ToggleInputField",
           "nodeType": "VariableDeclaration",
@@ -2518,6 +2537,20 @@
           "defaultImportNames": [
             "ProgressBar"
           ]
+        },
+        {
+          "usageCount": 1,
+          "name": "@gorgias.LegacyShortcutKey",
+          "nodeType": "Identifier",
+          "deprecationDate": "2025-10-15",
+          "deprecationType": "ui-kit-migration",
+          "declarationFile": "package.json",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/pages/tickets/navbar/PlaceCallNavbarButton.tsx"
+            ],
+            "default": []
+          }
         }
       ]
     },
@@ -2525,15 +2558,13 @@
       "type": "Others",
       "entries": [
         {
-          "usageCount": 5,
+          "usageCount": 3,
           "name": "getStoresEligibleForTrial",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2025-06-27",
           "declarationFile": "apps/helpdesk/src/pages/aiAgent/utils/aiSalesAgentTrialUtils.ts",
           "usageUrls": {
             "named": [
-              "apps/helpdesk/src/main/app/hooks/tests/useAiShoppingAssistantTrialBanner.spec.ts",
-              "apps/helpdesk/src/main/app/hooks/useAiShoppingAssistantTrialBanner.ts",
               "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationModal/tests/AiAgentActivationModal.spec.tsx",
               "apps/helpdesk/src/pages/aiAgent/Overview/hooks/kpis/tests/useGmvInfluencedCtaButton.spec.tsx",
               "apps/helpdesk/src/pages/aiAgent/hooks/useTrialEligibility.ts"
@@ -2552,21 +2583,6 @@
               "apps/helpdesk/src/hooks/aiAgent/useCanUseAiSalesAgent.spec.ts",
               "apps/helpdesk/src/hooks/aiAgent/useCanUseAiSalesAgent.ts",
               "apps/helpdesk/src/pages/aiAgent/utils/tests/aiSalesAgentTrialUtils.spec.ts"
-            ],
-            "default": []
-          }
-        },
-        {
-          "usageCount": 3,
-          "name": "useAiShoppingAssistantTrialBanner",
-          "nodeType": "FunctionDeclaration",
-          "deprecationDate": "2025-06-26",
-          "declarationFile": "apps/helpdesk/src/main/app/hooks/useAiShoppingAssistantTrialBanner.ts",
-          "usageUrls": {
-            "named": [
-              "apps/helpdesk/src/main/app/hooks/tests/useAiShoppingAssistantTrialBanner.spec.ts",
-              "apps/helpdesk/src/main/app/hooks/tests/useSetBanners.spec.ts",
-              "apps/helpdesk/src/main/app/hooks/useSetBanners.ts"
             ],
             "default": []
           }

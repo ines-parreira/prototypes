@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import {
-    Avatar,
+    LegacyAvatar as Avatar,
     LegacyButton as Button,
     Skeleton,
     Tooltip,

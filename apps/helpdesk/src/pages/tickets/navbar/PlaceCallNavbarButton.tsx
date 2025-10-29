@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useConditionalShortcuts } from '@repo/utils'
 
-import { ShortcutKey, Tooltip } from '@gorgias/axiom'
+import { LegacyShortcutKey as ShortcutKey, Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {

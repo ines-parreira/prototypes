@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
-import { Avatar } from '@gorgias/axiom'
+import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'

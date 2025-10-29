@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { Avatar } from '@gorgias/axiom'
+import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -11,7 +11,7 @@ import { getAvatar } from 'pages/common/components/Avatar/utils'
 import { AVATAR_SIZE, MessageAvatar } from '../MessageAvatar'
 
 jest.mock('@gorgias/axiom', () => ({
-    Avatar: jest.fn(() => null),
+    LegacyAvatar: jest.fn(() => null),
 }))
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))

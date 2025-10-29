@@ -134,7 +134,7 @@ export function InfobarTicketDetailsTags({
     return (
         <div className={css.container}>
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
-                <OverflowListItem index={0}>
+                <OverflowListItem>
                     <MultiSelect
                         trigger={() => (
                             <Button
@@ -166,8 +166,8 @@ export function InfobarTicketDetailsTags({
                         )}
                     </MultiSelect>
                 </OverflowListItem>
-                {ticket?.data.tags.map((tag, index) => (
-                    <OverflowListItem key={tag.id} index={index + 1}>
+                {ticket?.data.tags.map((tag) => (
+                    <OverflowListItem key={tag.id}>
                         <NewTag
                             onClose={() => handleCloseTag(tag)}
                             aria-label="Remove tag"
