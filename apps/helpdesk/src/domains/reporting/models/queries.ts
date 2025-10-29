@@ -37,15 +37,19 @@ export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
 export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<TData>
 
 export const reportingKeys = {
-    post: (data: ReportingParams) => ['reporting', 'post-reporting', data],
-    postV2: <TMeta extends ScopeMeta>(
-        data: ReportingParams,
-        dataV2: BuiltQuery<TMeta>,
-    ) => ['reporting-v2', 'post-reporting-v2', data, dataV2],
-    postEnriched: (data: {
+    post: (payload: ReportingParams) => [
+        'reporting',
+        'post-reporting',
+        payload,
+    ],
+    postV2: <TMeta extends ScopeMeta = ScopeMeta>(
+        payload: ReportingParams,
+        newPayload: BuiltQuery<TMeta>,
+    ) => ['reporting', 'post-reporting-v2', payload, newPayload],
+    postEnriched: (payload: {
         query: ReportingQuery
         enrichment_fields: EnrichmentFields[]
-    }) => ['reporting', 'post-reporting-enriched', data],
+    }) => ['reporting', 'post-reporting-enriched', payload],
 }
 
 export const fetchPostReporting = <
@@ -53,7 +57,7 @@ export const fetchPostReporting = <
     SelectData = UsePostReportingQueryData<TData>,
     TCube extends Cube = Cube,
 >(
-    data: ReportingParams<TCube>,
+    payload: ReportingParams<TCube>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
         unknown,
@@ -61,8 +65,8 @@ export const fetchPostReporting = <
     >,
 ) => {
     return appQueryClient.fetchQuery({
-        queryKey: reportingKeys.post(data),
-        queryFn: () => postReporting<TData, TCube>(data),
+        queryKey: reportingKeys.post(payload),
+        queryFn: () => postReporting<TData, TCube>(payload),
         ...defaultOptions,
         ...overrides,
     })
@@ -73,7 +77,7 @@ export const usePostReporting = <
     SelectData = UsePostReportingQueryData<TData>,
     TCube extends Cube = Cube,
 >(
-    query: ReportingParams<TCube>,
+    payload: ReportingParams<TCube>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
         unknown,
@@ -81,8 +85,8 @@ export const usePostReporting = <
     >,
 ) => {
     return useQuery({
-        queryKey: reportingKeys.post(query),
-        queryFn: () => postReporting<TData, TCube>(query),
+        queryKey: reportingKeys.post(payload),
+        queryFn: () => postReporting<TData, TCube>(payload),
         ...defaultOptions,
         ...overrides,
     })
@@ -99,8 +103,8 @@ export const usePostReportingV2 = <
     TCube extends Cube = Cube,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    oldQuery: ReportingParams<TCube>,
-    newQuery?: BuiltQuery<TMeta>,
+    payload: ReportingParams<TCube>,
+    newPayload?: BuiltQuery<TMeta>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
         unknown,
@@ -108,10 +112,10 @@ export const usePostReportingV2 = <
     >,
 ) => {
     return useQuery({
-        queryKey: newQuery
-            ? reportingKeys.postV2(oldQuery, newQuery)
-            : reportingKeys.post(oldQuery),
-        queryFn: () => postReporting<TData, TCube, TMeta>(oldQuery, newQuery),
+        queryKey: newPayload
+            ? reportingKeys.postV2(payload, newPayload!)
+            : reportingKeys.post(payload),
+        queryFn: () => postReporting<TData, TCube, TMeta>(payload, newPayload),
         ...defaultOptions,
         ...overrides,
     })
@@ -122,7 +126,7 @@ export const useEnrichedPostReporting = <
     SelectData,
     TCube extends Cube = Cube,
 >(
-    data: {
+    payload: {
         query: ReportingQuery<TCube>
         enrichment_fields: EnrichmentFields[]
     },
@@ -133,11 +137,11 @@ export const useEnrichedPostReporting = <
     >,
 ) => {
     return useQuery({
-        queryKey: reportingKeys.postEnriched(data),
+        queryKey: reportingKeys.postEnriched(payload),
         queryFn: () =>
             postEnrichedReporting<TData, TCube>(
-                data.query,
-                data.enrichment_fields,
+                payload.query,
+                payload.enrichment_fields,
             ),
         ...defaultOptions,
         ...overrides,

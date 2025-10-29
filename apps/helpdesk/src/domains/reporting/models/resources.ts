@@ -1,10 +1,12 @@
 import { AxiosResponse, isAxiosError } from 'axios'
 
+import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     BuiltQuery,
     QueryFor,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
+import { compareAndReportQueries } from 'domains/reporting/models/scopes/utils'
 import {
     Cube,
     EnrichmentFields,
@@ -16,9 +18,6 @@ import {
 import { executeMetric } from 'domains/reporting/utils/executeMetric'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
-
-import { MetricName } from '../hooks/metricNames'
-import { compareAndReportQueries } from './scopes/utils'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
 export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'
