@@ -92,8 +92,21 @@ describe('MetricPerDimension', () => {
         } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
 
     describe('useMetricPerDimension', () => {
+        function mockUsePostReporting(response: any) {
+            const mockedClientResponse = {
+                data: {
+                    data: response.data,
+                },
+            } as any
+
+            usePostReportingMock.mockImplementation((_, overrides) => ({
+                ...response,
+                data: overrides!.select!(mockedClientResponse),
+            }))
+        }
+
         it('should usePostReporting with query and select', () => {
-            usePostReportingMock.mockReturnValue(mockedResponse)
+            mockUsePostReporting(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimension(query, String(agentId)),
@@ -112,7 +125,7 @@ describe('MetricPerDimension', () => {
 
         it('should return null when data not available for entity id', () => {
             const agentId = 'notInResponse'
-            usePostReportingMock.mockReturnValue(mockedResponse)
+            mockUsePostReporting(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimension(query, agentId),
@@ -122,7 +135,7 @@ describe('MetricPerDimension', () => {
         })
 
         it('should return null when called without entity', () => {
-            usePostReportingMock.mockReturnValue(mockedResponse)
+            mockUsePostReporting(mockedResponse)
 
             const { result } = renderHook(() => useMetricPerDimension(query))
 
@@ -131,7 +144,7 @@ describe('MetricPerDimension', () => {
 
         it('should return null when no data in response', () => {
             const agentIdNotInResponse = 'notInResponse'
-            usePostReportingMock.mockReturnValue({
+            mockUsePostReporting({
                 ...mockedResponse,
                 data: undefined,
             })
@@ -144,24 +157,7 @@ describe('MetricPerDimension', () => {
         })
 
         it('should use the select function', () => {
-            const mockedClientResponse = {
-                data: {
-                    data: mockedResponse.data,
-                },
-            } as any
-            usePostReportingMock.mockImplementation(
-                jest
-                    .fn()
-                    .mockImplementation(
-                        (
-                            query,
-                            { select }: { select: (data: unknown) => unknown },
-                        ) => ({
-                            ...mockedResponse,
-                            data: select(mockedClientResponse),
-                        }),
-                    ),
-            )
+            mockUsePostReporting(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimension(query, String(agentId)),
@@ -172,8 +168,23 @@ describe('MetricPerDimension', () => {
     })
 
     describe('useMetricPerDimensionV2', () => {
+        function mockUsePostReportingV2(response: any) {
+            const mockedClientResponse = {
+                data: {
+                    data: response.data,
+                },
+            } as any
+
+            usePostReportingMockV2.mockImplementation(
+                (_v1, _v2, overrides) => ({
+                    ...response,
+                    data: overrides!.select!(mockedClientResponse),
+                }),
+            )
+        }
+
         it('should usePostReporting with query and select', () => {
-            usePostReportingMockV2.mockReturnValue(mockedResponse)
+            mockUsePostReportingV2(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, String(agentId)),
@@ -191,7 +202,7 @@ describe('MetricPerDimension', () => {
         })
         it('should return null when data not available for entity id', () => {
             const agentId = 'notInResponse'
-            usePostReportingMockV2.mockReturnValue(mockedResponse)
+            mockUsePostReportingV2(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, agentId),
@@ -201,7 +212,7 @@ describe('MetricPerDimension', () => {
         })
 
         it('should return null when called without entity', () => {
-            usePostReportingMockV2.mockReturnValue(mockedResponse)
+            mockUsePostReportingV2(mockedResponse)
 
             const { result } = renderHook(() => useMetricPerDimension(query))
 
@@ -210,7 +221,7 @@ describe('MetricPerDimension', () => {
 
         it('should return null when no data in response', () => {
             const agentIdNotInResponse = 'notInResponse'
-            usePostReportingMockV2.mockReturnValue({
+            mockUsePostReportingV2({
                 ...mockedResponse,
                 data: undefined,
             })
@@ -223,25 +234,7 @@ describe('MetricPerDimension', () => {
         })
 
         it('should use the select function', () => {
-            const mockedClientResponse = {
-                data: {
-                    data: mockedResponse.data,
-                },
-            } as any
-            usePostReportingMockV2.mockImplementation(
-                jest
-                    .fn()
-                    .mockImplementation(
-                        (
-                            query,
-                            queryV2,
-                            { select }: { select: (data: unknown) => unknown },
-                        ) => ({
-                            ...mockedResponse,
-                            data: select(mockedClientResponse),
-                        }),
-                    ),
-            )
+            mockUsePostReportingV2(mockedResponse)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, String(agentId)),
@@ -397,6 +390,19 @@ describe('useMetricPerDimensionWithBreakdown', () => {
 })
 
 describe('useMetricPerDimensionWithEnrichment', () => {
+    function mockUseEnrichedPostReporting(response: any) {
+        const mockedClientResponse = {
+            data: {
+                data: response.data,
+            },
+        } as any
+
+        useEnrichedPostReportingMock.mockImplementation((_, overrides) => ({
+            ...response,
+            data: overrides!.select!(mockedClientResponse),
+        }))
+    }
+
     it('should send a query with custom queryFn', async () => {
         const timezone = 'America'
         const statsFilters = {
@@ -445,7 +451,7 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 enrichment: enrichments,
             },
         }
-        useEnrichedPostReportingMock.mockReturnValue(mockedResponse as any)
+        mockUseEnrichedPostReporting(mockedResponse)
         postEnrichedReportingMock.mockResolvedValue(mockedResponse as any)
 
         const { result } = renderHook(() =>

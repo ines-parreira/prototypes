@@ -1,5 +1,3 @@
-import { UseQueryResult } from '@tanstack/react-query'
-
 import { BuiltQuery, ScopeMeta } from 'domains/reporting//models/scopes/scope'
 import { RequestedData } from 'domains/reporting/hooks/types'
 import {
@@ -89,83 +87,73 @@ export type MergedRecordWithEnrichment = MergedRecord<
 > &
     IDRecord<DrillDownReportingQuery['dimensions'][0]>
 
+export type MetricPerDimensionWithEnrichmentData<
+    T extends string,
+    ID extends string,
+> = {
+    value: number | null
+    allData: (MergedRecord<T, EnrichmentFields | EnrichmentFields.TicketId> &
+        IDRecord<ID>)[]
+} | null
+
 export type MetricPerDimensionWithEnrichment<
     T extends string,
     ID extends string,
 > = RequestedData & {
-    data: {
-        value: number | null
-        allData: (MergedRecord<
-            T,
-            EnrichmentFields | EnrichmentFields.TicketId
-        > &
-            IDRecord<ID>)[]
-    } | null
+    data: MetricPerDimensionWithEnrichmentData<T, ID>
 }
 
 export type QueryReturnType<TCube extends Cubes> = ReportingMetricItem<TCube>[]
 
-const selectMeasurePerDimension = <TCube extends Cubes = Cubes>(
-    measure: TCube['measures'],
-    dimension: TCube['dimensions'],
-    dimensionId: string,
-    data: Record<string, string | null>[],
-): { value: number | null; decile: number | null } => {
-    const dataMeasure =
-        data?.find((row) => row[dimension] === dimensionId) || null
+const selectMeasurePerDimension = <
+    TData extends Record<string, string | null>,
+    TCube extends Cubes,
+>(
+    data: TData[] | null | undefined,
+    query: ReportingQuery<TCube>,
+    dimensionId?: string, // TODO(Nicolas): dimension should not be optional
+) => {
+    if (data === null || data === undefined) return null
 
-    const metric = (dataMeasure && dataMeasure[measure]) || null
-    const decile = (dataMeasure && dataMeasure['decile']) || null
+    const measure = query.measures[0]
+    const dimension = query.dimensions[0]
+
+    if (!dimensionId || !measure || !dimension) {
+        return { value: null, decile: null, allData: data }
+    }
+
+    const dataMeasure =
+        data.find((row) => row[dimension] === dimensionId) ?? null
+
+    const metric = dataMeasure?.[measure] ?? null
+    const decile = dataMeasure?.['decile'] ?? null
+
+    const parseNumber = (value: string | null): number | null => {
+        if (value === null) return null
+        const parsed = parseFloat(value)
+        return isNaN(parsed) ? null : parsed
+    }
 
     return {
-        value: metric !== null ? parseFloat(metric) : null,
-        decile: decile !== null ? parseFloat(decile) : null,
+        value: parseNumber(metric),
+        decile: parseNumber(decile),
+        allData: data,
     }
 }
 
-const selectMetric =
-    <TCube extends Cubes>(query: ReportingQuery<TCube>, dimensionId: string) =>
-    (data: Record<string, string | null>[]) =>
-        selectMeasurePerDimension<TCube>(
-            query.measures[0],
-            query.dimensions[0],
-            String(dimensionId),
-            data,
-        )
-
-const formatMetricPerDimension = <
-    TData extends Record<string, string | null>,
-    TCube extends Cubes,
+const handleDataOnError = <
+    TData,
+    TObj extends { data: TData | null | undefined },
 >(
-    metricData: TData[],
-    query: ReportingQuery<TCube>,
-    dimensionId?: string,
-) => ({
-    ...(dimensionId
-        ? selectMetric(query, dimensionId)(metricData)
-        : { value: null, decile: null }),
-    allData: metricData,
-})
+    metricData: TObj,
+): TObj & { data: TData | null } => {
+    // `data` can be undefined on error
+    if (metricData.data === undefined) {
+        return { ...metricData, data: null }
+    }
 
-const formatMetricPerDimensionResponse = <
-    TData extends Record<string, string | null>,
-    TCube extends Cubes,
->(
-    metricData: UseQueryResult<TData[]>,
-    query: ReportingQuery<TCube>,
-    dimensionId?: string,
-) => ({
-    isFetching: metricData.isFetching,
-    isError: metricData.isError,
-    data:
-        metricData.data !== undefined
-            ? formatMetricPerDimension<TData, TCube>(
-                  metricData.data,
-                  query,
-                  dimensionId,
-              )
-            : null,
-})
+    return metricData as TObj & { data: TData | null } // TypeScript doesn't seem to understand data cannot be undefined here
+}
 
 const queryWithDeciles =
     <TCube extends Cubes, TMeta extends ScopeMeta>(
@@ -185,14 +173,15 @@ export function useMetricPerDimension<TCube extends Cubes>(
 ): MetricWithDecile<TCube> {
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
-        QueryReturnType<TCube>
+        MetricWithDecileData<TCube>
     >([query], {
-        select: (data) => data.data.data,
+        select: (data) =>
+            selectMeasurePerDimension(data.data.data, query, dimensionId),
         queryFn: queryWithDeciles(query),
         enabled,
     })
 
-    return formatMetricPerDimensionResponse(metricData, query, dimensionId)
+    return handleDataOnError(metricData)
 }
 
 export function useMetricPerDimensionV2<
@@ -206,16 +195,17 @@ export function useMetricPerDimensionV2<
 ): MetricWithDecile<TCube> {
     const metricData = usePostReportingV2<
         QueryReturnType<TCube>,
-        QueryReturnType<TCube>,
+        MetricWithDecileData<TCube>,
         TCube,
         TMeta
     >([query], newQuery, {
-        select: (data) => data.data.data,
+        select: (data) =>
+            selectMeasurePerDimension(data.data.data, query, dimensionId),
         queryFn: queryWithDeciles(query, newQuery),
         enabled,
     })
 
-    return formatMetricPerDimensionResponse(metricData, query, dimensionId)
+    return handleDataOnError(metricData)
 }
 
 export const fetchMetricPerDimension = async <TCube extends Cubes>(
@@ -226,7 +216,7 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
         queryFn: queryWithDeciles(query),
     })
         .then((res) => ({
-            data: formatMetricPerDimension(res.data.data, query, dimensionId),
+            data: selectMeasurePerDimension(res.data.data, query, dimensionId),
             isFetching: false,
             isError: false,
         }))
@@ -286,19 +276,15 @@ export function useMetricPerDimensionWithEnrichment(
         {
             data: MergedRecordWithEnrichment[]
         },
-        MergedRecordWithEnrichment[]
+        MetricPerDimensionWithEnrichmentData<
+            DrillDownReportingQuery['measures'][0],
+            DrillDownReportingQuery['dimensions'][0]
+        >
     >(
         { query, enrichment_fields: enrichmentFields },
         {
-            select: (
-                data: UseEnrichedPostReportingQueryData<{
-                    data: MergedRecordWithEnrichment[]
-                }>,
-            ): UseEnrichedPostReportingQueryData<{
-                data: MergedRecordWithEnrichment[]
-            }>['data']['data'] => {
-                return data.data.data
-            },
+            select: (data) =>
+                selectMeasurePerDimension(data.data.data, query, dimensionId),
             queryFn: () => {
                 return postEnrichedReporting<{
                     data: MergedRecordWithEnrichment[]
@@ -315,7 +301,7 @@ export function useMetricPerDimensionWithEnrichment(
         },
     )
 
-    return formatMetricPerDimensionResponse(metricData, query, dimensionId)
+    return handleDataOnError(metricData)
 }
 
 export function useMetricPerDimensionWithEnrichmentOnTwoDimensions(
