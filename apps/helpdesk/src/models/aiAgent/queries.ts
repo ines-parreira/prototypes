@@ -584,7 +584,19 @@ export const useGetTrials = (
 ) => {
     return useQuery({
         queryKey: trialsKeys.list(gorgiasDomain),
-        queryFn: () => getTrials(gorgiasDomain),
+        queryFn: async () => {
+            try {
+                return await getTrials(gorgiasDomain)
+            } catch (error) {
+                if (
+                    error instanceof AxiosError &&
+                    error.response?.status === 404
+                ) {
+                    return []
+                }
+                throw error
+            }
+        },
         select: (data) => data.map(transformResponseTrialToTrial),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

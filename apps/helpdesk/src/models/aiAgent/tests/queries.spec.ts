@@ -1,4 +1,5 @@
 import { waitFor } from '@testing-library/react'
+import { AxiosError } from 'axios'
 import { fromJS } from 'immutable'
 
 import * as accountFixtures from 'fixtures/account'
@@ -613,6 +614,35 @@ describe('aiAgent queries', () => {
             expect(onErrorMock).toHaveBeenCalledWith(mockError)
         })
 
+        it('should return empty array on 404 error', async () => {
+            const axiosError = new AxiosError('Not Found')
+            axiosError.response = {
+                status: 404,
+                statusText: 'Not Found',
+                data: {},
+                headers: {},
+                config: {
+                    headers: {} as any,
+                },
+            }
+            mockGetTrials.mockRejectedValue(axiosError)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () =>
+                    useGetTrials('test-domain', {
+                        enabled: true,
+                        retry: false,
+                    }),
+                defaultState,
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.isError).toBe(false)
+            expect(result.current.data).toEqual([])
+        })
         it('should respect enabled override', () => {
             const { result } = renderHookWithStoreAndQueryClientProvider(
                 () =>
