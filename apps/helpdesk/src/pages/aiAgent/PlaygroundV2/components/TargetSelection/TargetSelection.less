@@ -1,0 +1,59 @@
+@import (reference) '~css/typography';
+
+:local {
+    .targetSelection {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+
+        .targetSelectionLabel {
+            .body-medium();
+        }
+
+        [class*='PlaygroundCustomerSelection--container--'] {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xxs);
+        }
+
+        [class*='PlaygroundCustomerSelection--ticketSearch--'],
+        [class*='CustomerSearchDropdownSelectComponent--container--'] {
+            margin-top: 0;
+        }
+
+        [class='dropdown'],
+        [class='dropdown show'] {
+            .body-regular();
+
+            border-radius: 6px;
+            border: 1px solid var(--border-neutral-default);
+            height: 32px;
+            gap: var(--spacing-xxs);
+
+            [class*='SelectField--select--'] {
+                background-color: transparent;
+                padding: var(--spacing-xxs) var(--spacing-xs);
+                user-select: none;
+            }
+        }
+
+        [class*='TextInput--wrapper--'] {
+            border: 1px solid var(--border-neutral-default);
+            border-radius: 6px;
+            height: 32px;
+            padding: var(--spacing-xxs) var(--spacing-xs);
+
+            [class*='TextInput--prefix--'] {
+                padding-left: 0;
+            }
+        }
+
+        [class*='PlaygroundCustomerSelection--senderSelect--'] {
+            height: 100%;
+        }
+
+        [class*='TicketSearchDropdownSelectComponent--dropdownContainer--'] {
+            background-color: var(--neutral-grey-0);
+        }
+    }
+}
