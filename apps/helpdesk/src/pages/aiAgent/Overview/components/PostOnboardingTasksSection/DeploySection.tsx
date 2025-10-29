@@ -90,6 +90,7 @@ export const DeploySection = ({
             logEventsForDeploymentStep()
         } catch (error) {
             handleAiAgentConfigurationError(error, dispatch)
+            setIsAiAgentDuringDeployment(false)
         }
     }
 

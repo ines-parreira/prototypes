@@ -1,17 +1,3 @@
-import classnames from 'classnames'
-import {
-    ContentState,
-    EditorState,
-    KeyBindingUtil,
-    Modifier,
-    RichUtils,
-} from 'draft-js'
-import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
-import Editor, { composeDecorators } from 'draft-js-plugins-editor'
-import createResizeablePlugin from 'draft-js-resizeable-plugin'
-
-import 'draft-js/dist/Draft.css'
-
 import React, {
     Component,
     ComponentProps,
@@ -23,6 +9,17 @@ import React, {
 } from 'react'
 
 import { shortcutManager } from '@repo/utils'
+import classnames from 'classnames'
+import {
+    ContentState,
+    EditorState,
+    KeyBindingUtil,
+    Modifier,
+    RichUtils,
+} from 'draft-js'
+import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
+import Editor, { composeDecorators } from 'draft-js-plugins-editor'
+import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
@@ -71,6 +68,8 @@ import withGrammarlyUsageTracking, {
 } from './withGrammarlyUsageTracking'
 
 import css from './RichFieldEditor.less'
+
+import 'draft-js/dist/Draft.css'
 
 type suggestionsType = List<any>
 type canAddMentionType = boolean
@@ -229,13 +228,22 @@ export class RichFieldEditor extends Component<Props, State> {
             plugins.push(this.workflowVariablesPlugin)
         }
 
-        if (props.displayedActions?.includes(ActionName.GuidanceAction)) {
+        // Always create guidance plugins if guidance variables/actions are provided,
+        // even if toolbar buttons are hidden. The plugins are needed for rendering
+        // tags/buttons within the editor content.
+        if (
+            props.displayedActions?.includes(ActionName.GuidanceAction) ||
+            props.getGuidanceVariables
+        ) {
             this.guidanceActionsPlugin = createGuidanceActionsPlugin()
 
             plugins.push(this.guidanceActionsPlugin)
         }
 
-        if (props.displayedActions?.includes(ActionName.GuidanceVariable)) {
+        if (
+            props.displayedActions?.includes(ActionName.GuidanceVariable) ||
+            props.getGuidanceVariables
+        ) {
             this.guidanceVariablesPlugin = createGuidanceVariablesPlugin({
                 getVariables: this.props.getGuidanceVariables,
             })

@@ -40,7 +40,10 @@ export const TrainButton = ({
                     ? 'Add Guidance'
                     : 'Create Guidance'}
             </DropdownButton>
-            <UncontrolledDropdown target={dropdownTargetRef} placement="bottom">
+            <UncontrolledDropdown
+                target={dropdownTargetRef}
+                placement="bottom-start"
+            >
                 <DropdownBody>
                     <DropdownItem
                         option={{

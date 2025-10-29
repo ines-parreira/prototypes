@@ -55,8 +55,8 @@ export const KnowledgeEditorGuidanceReadView = ({
                         ActionName.Underline,
                         ActionName.Link,
                         ActionName.Emoji,
-                        // ActionName.GuidanceVariable,
-                        // ActionName.GuidanceAction,
+                        ActionName.GuidanceVariable,
+                        ActionName.GuidanceAction,
                         ActionName.BulletedList,
                         ActionName.OrderedList,
                     ]}

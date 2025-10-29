@@ -69,6 +69,8 @@ export const KnowledgeEditorGuidanceView = ({
     onChangeContent,
     isGuidanceArticleUpdating,
     guidanceMode: initialGuidanceMode,
+    availableActions,
+    availableVariables,
 }: Props) => {
     const [initialTitle] = useState(title)
     const [initialContent] = useState(content)
@@ -189,6 +191,8 @@ export const KnowledgeEditorGuidanceView = ({
                     <KnowledgeEditorGuidanceReadView
                         content={content}
                         title={title}
+                        availableActions={availableActions}
+                        availableVariables={availableVariables}
                     />
                 )}
 
@@ -199,6 +203,8 @@ export const KnowledgeEditorGuidanceView = ({
                         onChangeContent={onChangeContent}
                         onChangeTitle={onChangeTitle}
                         shopName={shopName}
+                        availableActions={availableActions}
+                        availableVariables={availableVariables}
                     />
                 )}
 
@@ -209,6 +215,8 @@ export const KnowledgeEditorGuidanceView = ({
                         onChangeContent={onChangeContent}
                         onChangeTitle={onChangeTitle}
                         shopName={shopName}
+                        availableActions={availableActions}
+                        availableVariables={availableVariables}
                     />
                 )}
 
