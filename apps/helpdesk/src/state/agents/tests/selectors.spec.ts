@@ -172,6 +172,12 @@ describe('agents selectors', () => {
         )
     })
 
+    it('getAgentJS()', () => {
+        expect(selectors.getAgentJS(4)(state)).toEqual(gorgiasSupportAgent)
+        expect(selectors.getAgentJS(12345)(state)).toBeUndefined()
+        expect(selectors.getAgentJS()({} as RootState)).toBeUndefined()
+    })
+
     it('getAgentsIdsLocation()', () => {
         expect(selectors.getAgentsIdsLocation(state)).toEqualImmutable(
             state.agents.get('locations'),

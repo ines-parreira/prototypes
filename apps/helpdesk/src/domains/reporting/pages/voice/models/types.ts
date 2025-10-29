@@ -8,7 +8,10 @@ import {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import {
+    VoiceCallDisplayStatus,
+    VoiceCallMonitoringStatus,
+} from 'models/voiceCall/types'
 
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null
@@ -60,6 +63,8 @@ export type VoiceCallSummary = {
     transferTargetExternalNumber?: string | null
     transferTargetQueueId?: number | null
     callSid: string
+    monitoringStatus?: VoiceCallMonitoringStatus | null
+    lastMonitoringAgentId?: number | null
 }
 
 export enum VoiceCallFilterDirection {

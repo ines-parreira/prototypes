@@ -3,13 +3,73 @@ import { Map } from 'immutable'
 
 import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 
-import { UserRole } from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
 import { VoiceCall } from 'models/voiceCall/types'
+import {
+    isCallAnsweredByExternalNumber,
+    isCallBeingMonitored,
+    isCallBeingTransferredToQueue,
+    isCallInProgress,
+} from 'models/voiceCall/utils'
 import { hasRole } from 'utils'
 
 export function canMonitorCall(user: Map<any, any>) {
     return hasRole(user, UserRole.Admin) || hasRole(user, UserRole.Agent)
+}
+
+export function getCallMonitorability(
+    voiceCall: VoiceCall | VoiceCallSummary,
+    currentAgentId: number,
+    inCallAgent: User | undefined,
+): {
+    isMonitorable: boolean
+    reason?: string
+} {
+    if (!isCallInProgress(voiceCall)) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS,
+        }
+    }
+
+    if (isCallBeingTransferredToQueue(voiceCall)) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE,
+        }
+    }
+
+    if (isCallAnsweredByExternalNumber(voiceCall)) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.ANSWERED_BY_EXTERNAL_NUMBER,
+        }
+    }
+
+    if (inCallAgent?.id === currentAgentId) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
+        }
+    }
+
+    if (inCallAgent?.role?.name === UserRole.Admin) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN,
+        }
+    }
+
+    if (isCallBeingMonitored(voiceCall)) {
+        return {
+            isMonitorable: false,
+            reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORED,
+        }
+    }
+
+    return { isMonitorable: true }
 }
 
 function parseCustomParameterAsInt(

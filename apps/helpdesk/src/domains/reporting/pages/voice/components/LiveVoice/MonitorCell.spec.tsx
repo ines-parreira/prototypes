@@ -1,39 +1,61 @@
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { getCallMonitorability } from 'hooks/integrations/phone/monitoring.utils'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
+import { renderWithStore } from 'utils/testing'
 
 import MonitorCell from './MonitorCell'
 
-jest.mock('hooks/useAppSelector')
+jest.mock('hooks/integrations/phone/monitoring.utils')
 jest.mock('pages/common/components/MonitorCallButton/MonitorCallButton')
 
-const useAppSelectorMock = assumeMock(useAppSelector)
+const getCallMonitorabilityMock = assumeMock(getCallMonitorability)
 const MonitorCallButtonMock = assumeMock(MonitorCallButton)
 
 describe('MonitorCell', () => {
     const mockVoiceCall = {
         callSid: 'CA123',
+        agentId: 789,
     } as VoiceCallSummary
 
+    const mockCurrentUser = fromJS({ id: 456 })
+    const mockInCallAgent = { id: 789, name: 'Guybrush Threepwood' }
+
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue(fromJS({ id: 456 }))
+        getCallMonitorabilityMock.mockReturnValue({
+            isMonitorable: false,
+            reason: 'You cannot monitor this call',
+        })
         MonitorCallButtonMock.mockReturnValue(<div>MonitorCallButton</div>)
     })
 
     it('should render MonitorCallButton with correct props', () => {
-        const { getByText } = render(<MonitorCell voiceCall={mockVoiceCall} />)
+        const { getByText } = renderWithStore(
+            <MonitorCell voiceCall={mockVoiceCall} />,
+            {
+                currentUser: mockCurrentUser,
+                agents: fromJS({
+                    all: [fromJS(mockInCallAgent)],
+                }),
+            },
+        )
 
         expect(getByText('MonitorCallButton')).toBeInTheDocument()
         expect(MonitorCallButtonMock).toHaveBeenCalledWith(
             {
                 voiceCallToMonitor: mockVoiceCall,
                 agentId: 456,
+                isMonitorable: false,
+                reason: 'You cannot monitor this call',
             },
             {},
+        )
+        expect(getCallMonitorabilityMock).toHaveBeenCalledWith(
+            mockVoiceCall,
+            456,
+            mockInCallAgent,
         )
     })
 })

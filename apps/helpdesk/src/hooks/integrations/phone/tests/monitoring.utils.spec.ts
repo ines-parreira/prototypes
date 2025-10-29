@@ -1,16 +1,18 @@
 import { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-types'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { UserRole } from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
 import { VoiceCall } from 'models/voiceCall/types'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
 import {
     canMonitorCall,
     extractMonitoringCallParams,
+    getCallMonitorability,
     getMonitoringParameters,
 } from '../monitoring.utils'
 
@@ -35,6 +37,132 @@ describe('monitoring.utils', () => {
         it('should return false for users without a role', () => {
             const user = fromJS({})
             expect(canMonitorCall(user)).toBe(false)
+        })
+    })
+
+    describe('getCallMonitorability', () => {
+        it('should be false when trying to monitor your own call', () => {
+            const result = getCallMonitorability(
+                { status: VoiceCallStatus.Answered } as VoiceCall,
+                42,
+                { id: 42 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
+            })
+        })
+
+        it('should be false when trying to monitor call handled by admin', () => {
+            const result = getCallMonitorability(
+                { status: VoiceCallStatus.Answered } as VoiceCall,
+                42,
+                { id: 89, role: { name: UserRole.Admin } } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN,
+            })
+        })
+
+        it('should be false when trying to monitor call already monitored', () => {
+            const result = getCallMonitorability(
+                {
+                    status: VoiceCallStatus.Answered,
+                    monitoring_status: 'listening',
+                    last_monitoring_agent_id: 123,
+                } as VoiceCall,
+                42,
+                { id: 89 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORED,
+            })
+        })
+
+        it('should be false when trying to monitor call answered by external number', () => {
+            const result = getCallMonitorability(
+                {
+                    status: VoiceCallStatus.Answered,
+                    answered_by_external_number: '+123456789',
+                } as VoiceCall,
+                42,
+                { id: 89 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.ANSWERED_BY_EXTERNAL_NUMBER,
+            })
+        })
+
+        it('should be false when trying to monitor call being transferred to queue', () => {
+            const result = getCallMonitorability(
+                {
+                    direction: VoiceCallDirection.Inbound,
+                    status: VoiceCallStatus.Queued,
+                    last_answered_by_agent_id: 123,
+                } as VoiceCall,
+                42,
+                { id: 89 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE,
+            })
+        })
+
+        it('should be false when trying to monitor call not in progress', () => {
+            const result = getCallMonitorability(
+                {
+                    direction: VoiceCallDirection.Inbound,
+                    status: VoiceCallStatus.Queued,
+                } as VoiceCall,
+                42,
+                { id: 89 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS,
+            })
+        })
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Answered,
+                last_answered_by_agent_id: 123,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Connected,
+            } as VoiceCallSummary,
+        ])('should be true when call is monitorable', (voiceCall) => {
+            const result = getCallMonitorability(voiceCall, 42, {
+                id: 89,
+            } as User)
+
+            expect(result).toEqual({
+                isMonitorable: true,
+            })
+        })
+
+        it('should be true when agent is not found but call is in progress', () => {
+            const result = getCallMonitorability(
+                { status: VoiceCallStatus.Answered } as VoiceCall,
+                42,
+                undefined,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: true,
+            })
         })
     })
 

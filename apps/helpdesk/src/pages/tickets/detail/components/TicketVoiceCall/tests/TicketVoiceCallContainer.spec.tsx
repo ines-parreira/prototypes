@@ -2,19 +2,21 @@ import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { User, UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
+import {
+    canMonitorCall,
+    getCallMonitorability,
+} from 'hooks/integrations/phone/monitoring.utils'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
-import { RootState } from 'state/types'
+import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 
@@ -25,14 +27,20 @@ const dateTime = '2022-01-01T00:00:00.000Z'
 const voiceCall = {
     duration: 60,
     has_call_recording: false,
+    last_answered_by_agent_id: 789,
 } as VoiceCall
 const icon = 'phone'
+const inCallAgent = { id: 789, name: 'Guybrush Threepwood' }
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/common/components/MonitorCallButton/MonitorCallButton')
 const MonitorCallButtonMock = assumeMock(MonitorCallButton)
+
+jest.mock('hooks/integrations/phone/monitoring.utils')
+const canMonitorCallMock = assumeMock(canMonitorCall)
+const getCallMonitorabilityMock = assumeMock(getCallMonitorability)
 
 jest.mock(
     '../TicketVoiceCallAudios',
@@ -66,35 +74,39 @@ jest.mock('../TicketVoiceCallSummary', () => () => <div>Summary</div>)
 jest.mock('pages/common/hooks/useVoiceRecordingsContext')
 const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
-const mockStore = configureMockStore<Partial<RootState>>()
+jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
+    setRecentItem: jest.fn(),
+}))
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof TicketVoiceCallContainer>>,
-): RenderResult => {
-    const store = mockStore({
-        currentUser: fromJS({
-            id: 123,
-            name: 'Test User',
-            role: { name: UserRole.Admin },
-        }),
-    })
-
-    return render(
-        <Provider store={store}>
-            <TicketVoiceCallContainer
-                header={header}
-                user={user}
-                callStatus={callStatus}
-                dateTime={dateTime}
-                voiceCall={voiceCall}
-                icon={icon}
-                source={{
-                    from: 'John Doe',
-                    to: 'Jane Doe',
-                }}
-                {...props}
-            />
-        </Provider>,
+    props: Partial<ComponentProps<typeof TicketVoiceCallContainer>> = {},
+    stateOverrides = {},
+) => {
+    return renderWithStore(
+        <TicketVoiceCallContainer
+            header={header}
+            user={user}
+            callStatus={callStatus}
+            dateTime={dateTime}
+            voiceCall={voiceCall}
+            icon={icon}
+            source={{
+                from: 'John Doe',
+                to: 'Jane Doe',
+            }}
+            {...props}
+        />,
+        {
+            currentUser: fromJS({
+                id: 123,
+                name: 'Test User',
+                role: { name: UserRole.Admin },
+            }),
+            agents: fromJS({
+                all: [fromJS(inCallAgent)],
+            }),
+            ...stateOverrides,
+        },
     )
 }
 
@@ -117,6 +129,11 @@ describe('TicketVoiceCallContainer', () => {
                 return true
             }
             return false
+        })
+        canMonitorCallMock.mockReturnValue(true)
+        getCallMonitorabilityMock.mockReturnValue({
+            isMonitorable: true,
+            reason: undefined,
         })
         MonitorCallButtonMock.mockReturnValue(<div>MonitorCallButton</div>)
     })
@@ -229,12 +246,13 @@ describe('TicketVoiceCallContainer', () => {
         ])(
             'should render MonitorCallButton when call is not in final status ($status)',
             ({ status }) => {
+                const currentVoiceCall = {
+                    ...voiceCall,
+                    status,
+                    external_id: 'test-call-sid',
+                }
                 renderComponent({
-                    voiceCall: {
-                        ...voiceCall,
-                        status,
-                        external_id: 'test-call-sid',
-                    },
+                    voiceCall: currentVoiceCall,
                 })
 
                 expect(
@@ -247,8 +265,15 @@ describe('TicketVoiceCallContainer', () => {
                             external_id: 'test-call-sid',
                         }),
                         agentId: 123,
+                        isMonitorable: true,
+                        reason: undefined,
                     },
                     {},
+                )
+                expect(getCallMonitorabilityMock).toHaveBeenCalledWith(
+                    currentVoiceCall,
+                    123,
+                    inCallAgent,
                 )
             },
         )
@@ -276,65 +301,34 @@ describe('TicketVoiceCallContainer', () => {
         )
 
         it('should render MonitorCallButton when user has permission', () => {
-            const store = mockStore({
-                currentUser: fromJS({
-                    id: 123,
-                    name: 'Test User',
-                    role: { name: UserRole.Admin },
-                }),
+            renderComponent({
+                voiceCall: {
+                    ...voiceCall,
+                    status: VoiceCallStatus.Answered,
+                    external_id: 'test-call-sid',
+                },
             })
-
-            render(
-                <Provider store={store}>
-                    <TicketVoiceCallContainer
-                        header={header}
-                        user={user}
-                        callStatus={callStatus}
-                        dateTime={dateTime}
-                        voiceCall={{
-                            ...voiceCall,
-                            status: VoiceCallStatus.Answered,
-                            external_id: 'test-call-sid',
-                        }}
-                        icon={icon}
-                        source={{
-                            from: 'John Doe',
-                            to: 'Jane Doe',
-                        }}
-                    />
-                </Provider>,
-            )
 
             expect(screen.getByText('MonitorCallButton')).toBeInTheDocument()
         })
 
         it('should not render MonitorCallButton when user does not have permission', () => {
-            const store = mockStore({
-                currentUser: fromJS({
-                    id: 123,
-                    name: 'Test User',
-                    role: { name: UserRole.LiteAgent },
-                }),
-            })
+            canMonitorCallMock.mockReturnValue(false)
 
-            render(
-                <Provider store={store}>
-                    <TicketVoiceCallContainer
-                        header={header}
-                        user={user}
-                        callStatus={callStatus}
-                        dateTime={dateTime}
-                        voiceCall={{
-                            ...voiceCall,
-                            status: VoiceCallStatus.Answered,
-                        }}
-                        icon={icon}
-                        source={{
-                            from: 'John Doe',
-                            to: 'Jane Doe',
-                        }}
-                    />
-                </Provider>,
+            renderComponent(
+                {
+                    voiceCall: {
+                        ...voiceCall,
+                        status: VoiceCallStatus.Answered,
+                    },
+                },
+                {
+                    currentUser: fromJS({
+                        id: 123,
+                        name: 'Test User',
+                        role: { name: UserRole.LiteAgent },
+                    }),
+                },
             )
 
             expect(
@@ -343,33 +337,21 @@ describe('TicketVoiceCallContainer', () => {
         })
 
         it('should render MonitorCallButton for Agent users', () => {
-            const store = mockStore({
-                currentUser: fromJS({
-                    id: 123,
-                    name: 'Test User',
-                    role: { name: UserRole.Agent },
-                }),
-            })
-
-            render(
-                <Provider store={store}>
-                    <TicketVoiceCallContainer
-                        header={header}
-                        user={user}
-                        callStatus={callStatus}
-                        dateTime={dateTime}
-                        voiceCall={{
-                            ...voiceCall,
-                            status: VoiceCallStatus.Answered,
-                            external_id: 'test-call-sid',
-                        }}
-                        icon={icon}
-                        source={{
-                            from: 'John Doe',
-                            to: 'Jane Doe',
-                        }}
-                    />
-                </Provider>,
+            renderComponent(
+                {
+                    voiceCall: {
+                        ...voiceCall,
+                        status: VoiceCallStatus.Answered,
+                        external_id: 'test-call-sid',
+                    },
+                },
+                {
+                    currentUser: fromJS({
+                        id: 123,
+                        name: 'Test User',
+                        role: { name: UserRole.Agent },
+                    }),
+                },
             )
 
             expect(screen.getByText('MonitorCallButton')).toBeInTheDocument()

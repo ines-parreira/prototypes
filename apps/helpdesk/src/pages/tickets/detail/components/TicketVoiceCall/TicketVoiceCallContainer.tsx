@@ -5,18 +5,25 @@ import classNames from 'classnames'
 
 import { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { canMonitorCall } from 'hooks/integrations/phone/monitoring.utils'
+import {
+    canMonitorCall,
+    getCallMonitorability,
+} from 'hooks/integrations/phone/monitoring.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { Customer } from 'models/customer/types'
 import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
-import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
+import {
+    getInCallAgentId,
+    isFinalVoiceCallStatus,
+} from 'models/voiceCall/utils'
 import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
+import { getAgentJS } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
@@ -55,6 +62,9 @@ export default function TicketVoiceCallContainer({
 
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = currentUser.get('id')
+    const inCallAgent = useAppSelector(
+        getAgentJS(getInCallAgentId(voiceCall) ?? undefined),
+    )
 
     useEffect(() => {
         void setRecentItem(voiceCall)
@@ -96,6 +106,11 @@ export default function TicketVoiceCallContainer({
                             <MonitorCallButton
                                 voiceCallToMonitor={voiceCall}
                                 agentId={currentUserId}
+                                {...getCallMonitorability(
+                                    voiceCall,
+                                    currentUserId,
+                                    inCallAgent,
+                                )}
                             />
                         )}
                     <TicketVoiceCallDuration voiceCall={voiceCall} />

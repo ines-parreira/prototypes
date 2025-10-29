@@ -9,6 +9,7 @@ import { getMoment, stringToDatetime } from 'utils/date'
 import {
     VoiceCall,
     VoiceCallEvent,
+    VoiceCallMonitoringStatus,
     VoiceCallSubject,
     VoiceCallSubjectType,
 } from './types'
@@ -274,4 +275,111 @@ export const getTransferTargetVoiceCallSubject = (
         }
     }
     return null
+}
+
+export const isCallBeingTransferredToQueue = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+): boolean => {
+    const agentId =
+        'last_answered_by_agent_id' in voiceCall
+            ? voiceCall.last_answered_by_agent_id
+            : voiceCall.agentId
+
+    if (voiceCall.status === VoiceCallStatus.Queued && agentId) {
+        // covers inbound calls being transferred to a queue
+        return true
+    }
+    if (
+        voiceCall.status === VoiceCallStatus.Queued &&
+        voiceCall.direction === VoiceCallDirection.Outbound
+    ) {
+        // covers outbound calls being transferred to a queue
+        return true
+    }
+    return false
+}
+
+export const isCallInProgress = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+): boolean => {
+    if (voiceCall.status === VoiceCallStatus.Answered) {
+        // covers inbound + successfully transferred inbound/outbound calls
+        return true
+    }
+    if (voiceCall.status === VoiceCallStatus.Connected) {
+        // covers non-transferred outbound calls
+        return true
+    }
+    if (isCallBeingTransferredToQueue(voiceCall)) {
+        // when the call is being transferred to a queue, it is still considered in progress
+        // even though the status in not answered or connected
+        return true
+    }
+
+    return false
+}
+
+export const getInCallAgentId = (voiceCall: VoiceCall): number | null => {
+    return (
+        voiceCall.last_answered_by_agent_id ??
+        voiceCall.initiated_by_agent_id ??
+        null
+    )
+}
+
+export const isCallAnsweredByExternalNumber = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+): boolean => {
+    if ('answered_by_external_number' in voiceCall) {
+        return !!voiceCall.answered_by_external_number
+    }
+    // we remove calls answered by an external number from live voice view
+    // for this reason, if we have VoiceCallSummary we can assume it's not answered by an external number
+    return false
+}
+
+const getMonitoringData = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+): {
+    monitoringStatus: VoiceCallMonitoringStatus | null
+    lastMonitoringAgentId: number | null
+} => {
+    if (
+        'monitoring_status' in voiceCall &&
+        'last_monitoring_agent_id' in voiceCall
+    ) {
+        return {
+            monitoringStatus: voiceCall.monitoring_status ?? null,
+            lastMonitoringAgentId: voiceCall.last_monitoring_agent_id ?? null,
+        }
+    }
+    if (
+        'monitoringStatus' in voiceCall &&
+        'lastMonitoringAgentId' in voiceCall
+    ) {
+        return {
+            monitoringStatus: voiceCall.monitoringStatus ?? null,
+            lastMonitoringAgentId: voiceCall.lastMonitoringAgentId ?? null,
+        }
+    }
+    return {
+        monitoringStatus: null,
+        lastMonitoringAgentId: null,
+    }
+}
+
+export const isCallBeingMonitored = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+    byAgentId?: number,
+): boolean => {
+    const { monitoringStatus, lastMonitoringAgentId } =
+        getMonitoringData(voiceCall)
+
+    if (monitoringStatus && monitoringStatus !== 'none') {
+        if (byAgentId) {
+            return lastMonitoringAgentId === byAgentId
+        }
+        return true
+    }
+    return false
 }

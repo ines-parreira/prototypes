@@ -12,7 +12,12 @@ import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
     getFormattedDurationTranscriptionStart,
+    getInCallAgentId,
     getTransferTargetVoiceCallSubject,
+    isCallAnsweredByExternalNumber,
+    isCallBeingMonitored,
+    isCallBeingTransferredToQueue,
+    isCallInProgress,
     isCallTransfer,
     isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
@@ -626,6 +631,289 @@ describe('voice call utils', () => {
                 )
 
                 expect(result).toBeNull()
+            },
+        )
+    })
+
+    describe('isCallBeingTransferredToQueue', () => {
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                last_answered_by_agent_id: 42,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                agentId: 42,
+            } as VoiceCallSummary,
+        ])(
+            'should return true when inbound call is being transferred to a queue',
+            (voiceCall) => {
+                const result = isCallBeingTransferredToQueue(voiceCall)
+
+                expect(result).toBe(true)
+            },
+        )
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCallSummary,
+        ])(
+            'should return true when outbound call is being transferred to a queue',
+            (voiceCall) => {
+                const result = isCallBeingTransferredToQueue(voiceCall)
+
+                expect(result).toBe(true)
+            },
+        )
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                last_answered_by_agent_id: null,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                agentId: null,
+            } as VoiceCallSummary,
+        ])(
+            'should return false when inbound call is being qeueued',
+            (voiceCall) => {
+                const result = isCallBeingTransferredToQueue(voiceCall)
+
+                expect(result).toBe(false)
+            },
+        )
+    })
+
+    describe('isCallInProgress', () => {
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Answered,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Answered,
+            } as VoiceCallSummary,
+        ])('should return true for answered inbound call', (voiceCall) => {
+            const result = isCallInProgress(voiceCall)
+
+            expect(result).toBe(true)
+        })
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Connected,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Connected,
+            } as VoiceCallSummary,
+        ])('should return true for connected outbound call', (voiceCall) => {
+            const result = isCallInProgress(voiceCall)
+
+            expect(result).toBe(true)
+        })
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                last_answered_by_agent_id: 42,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+                agentId: 42,
+            } as VoiceCallSummary,
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Outbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCallSummary,
+        ])(
+            'should return true when the call is being transferred to queue',
+            (voiceCall) => {
+                const result = isCallBeingTransferredToQueue(voiceCall)
+
+                expect(result).toBe(true)
+            },
+        )
+
+        it.each([
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCall,
+            {
+                direction: VoiceCallDirection.Inbound,
+                status: VoiceCallStatus.Queued,
+            } as VoiceCallSummary,
+        ])(
+            'should return false when the call still has to be answered',
+            (voiceCall) => {
+                const result = isCallBeingTransferredToQueue(voiceCall)
+
+                expect(result).toBe(false)
+            },
+        )
+
+        it.each([
+            {
+                status: VoiceCallStatus.Completed,
+            } as VoiceCall,
+            {
+                status: VoiceCallStatus.Completed,
+            } as VoiceCallSummary,
+        ])('should return false when the call is ended', (voiceCall) => {
+            const result = isCallBeingTransferredToQueue(voiceCall)
+
+            expect(result).toBe(false)
+        })
+    })
+
+    describe('getInCallAgentId', () => {
+        it.each([
+            {
+                voiceCall: {
+                    status: VoiceCallStatus.Completed,
+                    last_answered_by_agent_id: 42,
+                } as VoiceCall,
+                inCallAgentId: 42,
+            },
+            {
+                voiceCall: {
+                    status: VoiceCallStatus.Completed,
+                    initiated_by_agent_id: 42,
+                } as VoiceCall,
+                inCallAgentId: 42,
+            },
+            {
+                voiceCall: {
+                    status: VoiceCallStatus.Completed,
+                    last_answered_by_agent_id: 89,
+                    initiated_by_agent_id: 42,
+                } as VoiceCall,
+                inCallAgentId: 89,
+            },
+            {
+                voiceCall: {
+                    status: VoiceCallStatus.Completed,
+                } as VoiceCall,
+                inCallAgentId: null,
+            },
+        ])('should return correct agent id', ({ voiceCall, inCallAgentId }) => {
+            const result = getInCallAgentId(voiceCall)
+
+            expect(result).toEqual(inCallAgentId)
+        })
+    })
+
+    describe('isCallAnsweredByExternalNumber', () => {
+        it('should return true if answered by external number', () => {
+            const result = isCallAnsweredByExternalNumber({
+                answered_by_external_number: '+123456789',
+            } as VoiceCall)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return false if not answered by external number', () => {
+            const result = isCallAnsweredByExternalNumber({} as VoiceCall)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return false for any VoiceCallSummary as we remove them after they are answered by external numbers', () => {
+            const result = isCallAnsweredByExternalNumber(
+                {} as VoiceCallSummary,
+            )
+
+            expect(result).toBe(false)
+        })
+    })
+
+    describe('isCallBeingMonitored', () => {
+        it.each([
+            {
+                monitoring_status: 'listening',
+                last_monitoring_agent_id: 42,
+            } as VoiceCall,
+            {
+                monitoringStatus: 'listening',
+                lastMonitoringAgentId: 42,
+            } as VoiceCallSummary,
+        ])('should return true if call is being monitored', (voiceCall) => {
+            const result = isCallBeingMonitored(voiceCall)
+
+            expect(result).toBe(true)
+        })
+
+        it.each([
+            {} as VoiceCall,
+            {} as VoiceCallSummary,
+            {
+                monitoring_status: 'none',
+            } as VoiceCall,
+            {
+                monitoringStatus: 'none',
+            } as VoiceCallSummary,
+        ])(
+            'should return false if call is not being monitored',
+            (voiceCall) => {
+                const result = isCallBeingMonitored(voiceCall)
+
+                expect(result).toBe(false)
+            },
+        )
+
+        it.each([
+            {
+                monitoring_status: 'listening',
+                last_monitoring_agent_id: 42,
+            } as VoiceCall,
+            {
+                monitoringStatus: 'listening',
+                lastMonitoringAgentId: 42,
+            } as VoiceCallSummary,
+        ])(
+            'should return true if call is being monitored by a specific agent',
+            (voiceCall) => {
+                const result = isCallBeingMonitored(voiceCall, 42)
+
+                expect(result).toBe(true)
+            },
+        )
+
+        it.each([
+            {
+                monitoring_status: 'listening',
+                last_monitoring_agent_id: 42,
+            } as VoiceCall,
+            {
+                monitoringStatus: 'listening',
+                lastMonitoringAgentId: 42,
+            } as VoiceCallSummary,
+        ])(
+            'should return false if call is being monitored but by another agent',
+            (voiceCall) => {
+                const result = isCallBeingMonitored(voiceCall, 89)
+
+                expect(result).toBe(false)
             },
         )
     })

@@ -134,6 +134,14 @@ export const getAgent = (id?: number) =>
         )
     })
 
+export const getAgentJS = (id?: number) =>
+    createSelector(getAgent(id), (agent: Agent): User | undefined => {
+        if (!agent.get('id')) {
+            return undefined
+        }
+        return agent.toJS() as User
+    })
+
 export const makeGetAgent =
     (state: RootState) =>
     (id: number): Agent =>

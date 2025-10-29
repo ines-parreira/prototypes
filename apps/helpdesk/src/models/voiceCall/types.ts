@@ -29,6 +29,8 @@ export type VoiceCallSummary = {
     summary: string
 }
 
+export type VoiceCallMonitoringStatus = 'none' | 'listening' | 'whispering'
+
 export type VoiceCall = {
     id: number
     integration_id: number
@@ -58,6 +60,8 @@ export type VoiceCall = {
     termination_status?: VoiceCallTerminationStatus
     answered_by_external_number?: string
     answered_by_external_customer_id?: number
+    monitoring_status?: VoiceCallMonitoringStatus | null
+    last_monitoring_agent_id?: number | null
 }
 
 export enum VoiceCallRecordingType {
