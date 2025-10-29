@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { isNumber } from 'lodash'
 
 import {
-    LegacyAvatar as Avatar,
+    Avatar,
     Icon,
     ListItem,
     ListSection,
@@ -89,8 +89,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                                 <Avatar
                                     name={user.name || ''}
                                     url={profilePictureUrl ?? undefined}
-                                    size={'xs'}
-                                    shape="circle"
+                                    size="sm"
                                 />
                             ) : (
                                 <Icon name="user" size="sm" />
@@ -138,8 +137,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                                         <Avatar
                                             name={user.name || ''}
                                             url={profilePictureUrl ?? undefined}
-                                            size={'xs'}
-                                            shape="circle"
+                                            size="sm"
                                         />
                                     ) : (
                                         <Icon name="user" size="sm" />
