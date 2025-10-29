@@ -1,10 +1,21 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
+import React, {
+    createContext,
+    ReactNode,
+    useCallback,
+    useContext,
+    useRef,
+    useState,
+} from 'react'
+
+import { createPortal } from 'react-dom'
 
 interface AppContextType {
     collapsibleColumnChildren: ReactNode | null
     setCollapsibleColumnChildren: (children: ReactNode | null) => void
     isCollapsibleColumnOpen: boolean
     setIsCollapsibleColumnOpen: (isOpen: boolean) => void
+    collapsibleColumnRef: React.RefObject<HTMLDivElement>
+    warpToCollapsibleColumn: (component: ReactNode) => React.ReactPortal | null
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -29,11 +40,26 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
     const [isCollapsibleColumnOpen, setIsCollapsibleColumnOpen] =
         useState(false)
 
+    // used to portal components into the collapsible column
+    const collapsibleColumnRef = useRef<HTMLDivElement>(null)
+
+    const warpToCollapsibleColumn = useCallback(
+        (component: ReactNode) => {
+            if (!collapsibleColumnRef.current) {
+                return null
+            }
+            return createPortal(component, collapsibleColumnRef.current)
+        },
+        [collapsibleColumnRef],
+    )
+
     const value: AppContextType = {
         collapsibleColumnChildren,
         setCollapsibleColumnChildren,
         isCollapsibleColumnOpen,
         setIsCollapsibleColumnOpen,
+        collapsibleColumnRef,
+        warpToCollapsibleColumn,
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

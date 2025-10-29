@@ -215,4 +215,69 @@ describe('useCollapsibleColumn', () => {
         expect(result.current.setCollapsibleColumnChildren).toBe(setChildrenRef)
         expect(result.current.setIsCollapsibleColumnOpen).toBe(setOpenRef)
     })
+
+    it('should return collapsibleColumnRef', () => {
+        const { result } = renderHook(() => useCollapsibleColumn(), { wrapper })
+
+        expect(result.current.collapsibleColumnRef).toBeDefined()
+        expect(result.current.collapsibleColumnRef).toHaveProperty('current')
+        expect(result.current.collapsibleColumnRef.current).toBe(null)
+    })
+
+    it('should return warpToCollapsibleColumn function', () => {
+        const { result } = renderHook(() => useCollapsibleColumn(), { wrapper })
+
+        expect(typeof result.current.warpToCollapsibleColumn).toBe('function')
+    })
+
+    it('should return null when warpToCollapsibleColumn is called without ref', () => {
+        const { result } = renderHook(() => useCollapsibleColumn(), { wrapper })
+
+        const testComponent = <div>Test Component</div>
+        const portal = result.current.warpToCollapsibleColumn(testComponent)
+
+        expect(portal).toBe(null)
+    })
+
+    it('should create portal when warpToCollapsibleColumn is called with ref', () => {
+        const { result } = renderHook(() => useCollapsibleColumn(), { wrapper })
+
+        const container = document.createElement('div')
+        Object.defineProperty(result.current.collapsibleColumnRef, 'current', {
+            value: container,
+            writable: true,
+        })
+
+        const testComponent = <div>Portal Content</div>
+        const portal = result.current.warpToCollapsibleColumn(testComponent)
+
+        expect(portal).not.toBe(null)
+    })
+
+    it('should preserve warpToCollapsibleColumn function reference across renders', () => {
+        const { result, rerender } = renderHook(() => useCollapsibleColumn(), {
+            wrapper,
+        })
+
+        const warpToCollapsibleColumnRef =
+            result.current.warpToCollapsibleColumn
+
+        rerender()
+
+        expect(result.current.warpToCollapsibleColumn).toBe(
+            warpToCollapsibleColumnRef,
+        )
+    })
+
+    it('should preserve collapsibleColumnRef reference across renders', () => {
+        const { result, rerender } = renderHook(() => useCollapsibleColumn(), {
+            wrapper,
+        })
+
+        const refObject = result.current.collapsibleColumnRef
+
+        rerender()
+
+        expect(result.current.collapsibleColumnRef).toBe(refObject)
+    })
 })

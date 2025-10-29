@@ -7,8 +7,11 @@ import css from './CollapsibleColumn.less'
 
 export const CollapsibleColumn = () => {
     const collapsibleColumnClassName = 'collapsible-column'
-    const { isCollapsibleColumnOpen, collapsibleColumnChildren } =
-        useCollapsibleColumn()
+    const {
+        isCollapsibleColumnOpen,
+        collapsibleColumnChildren,
+        collapsibleColumnRef,
+    } = useCollapsibleColumn()
 
     return (
         <div
@@ -29,7 +32,10 @@ export const CollapsibleColumn = () => {
                     css['collapsible-column-content'],
                 )}
             >
-                <div className={cn('d-flex flex-grow-1', appCss.content)}>
+                <div
+                    className={cn('d-flex flex-grow-1', appCss.content)}
+                    ref={collapsibleColumnRef}
+                >
                     {isCollapsibleColumnOpen && collapsibleColumnChildren}
                 </div>
             </div>

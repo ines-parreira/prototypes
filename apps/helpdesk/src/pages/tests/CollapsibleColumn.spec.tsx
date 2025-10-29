@@ -1,3 +1,5 @@
+import { createRef } from 'react'
+
 import { render, screen } from '@testing-library/react'
 
 import { CollapsibleColumn } from '../CollapsibleColumn'
@@ -14,9 +16,11 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should render closed state when isCollapsibleColumnOpen is false', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: false,
             collapsibleColumnChildren: null,
+            collapsibleColumnRef,
         })
 
         const { container } = render(<CollapsibleColumn />)
@@ -28,9 +32,11 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should render open state when isCollapsibleColumnOpen is true', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: null,
+            collapsibleColumnRef,
         })
 
         const { container } = render(<CollapsibleColumn />)
@@ -42,10 +48,12 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should not render children when column is closed', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         const testContent = <div>Test Content</div>
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: false,
             collapsibleColumnChildren: testContent,
+            collapsibleColumnRef,
         })
 
         render(<CollapsibleColumn />)
@@ -54,10 +62,12 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should render children when column is open', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         const testContent = <div>Test Content</div>
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: testContent,
+            collapsibleColumnRef,
         })
 
         render(<CollapsibleColumn />)
@@ -66,6 +76,7 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should render complex children correctly when open', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         const complexContent = (
             <div>
                 <h1>Header</h1>
@@ -76,6 +87,7 @@ describe('CollapsibleColumn', () => {
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: complexContent,
+            collapsibleColumnRef,
         })
 
         render(<CollapsibleColumn />)
@@ -90,9 +102,11 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should apply correct CSS classes structure', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: <div>Content</div>,
+            collapsibleColumnRef,
         })
 
         const { container } = render(<CollapsibleColumn />)
@@ -115,9 +129,11 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should handle null children gracefully', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: null,
+            collapsibleColumnRef,
         })
 
         const { container } = render(<CollapsibleColumn />)
@@ -128,9 +144,11 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should handle undefined children gracefully', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: undefined,
+            collapsibleColumnRef,
         })
 
         const { container } = render(<CollapsibleColumn />)
@@ -141,11 +159,13 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should toggle between open and closed states', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         const { rerender, container } = render(<CollapsibleColumn />)
 
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: false,
             collapsibleColumnChildren: <div>Toggle Content</div>,
+            collapsibleColumnRef,
         })
         rerender(<CollapsibleColumn />)
 
@@ -156,6 +176,7 @@ describe('CollapsibleColumn', () => {
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: <div>Toggle Content</div>,
+            collapsibleColumnRef,
         })
         rerender(<CollapsibleColumn />)
 
@@ -165,11 +186,13 @@ describe('CollapsibleColumn', () => {
     })
 
     it('should update children content when prop changes', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
         const { rerender } = render(<CollapsibleColumn />)
 
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: <div>Initial Content</div>,
+            collapsibleColumnRef,
         })
         rerender(<CollapsibleColumn />)
 
@@ -178,10 +201,39 @@ describe('CollapsibleColumn', () => {
         mockUseCollapsibleColumn.mockReturnValue({
             isCollapsibleColumnOpen: true,
             collapsibleColumnChildren: <div>Updated Content</div>,
+            collapsibleColumnRef,
         })
         rerender(<CollapsibleColumn />)
 
         expect(screen.queryByText('Initial Content')).not.toBeInTheDocument()
         expect(screen.getByText('Updated Content')).toBeInTheDocument()
+    })
+
+    it('should attach collapsibleColumnRef to the content div', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
+        mockUseCollapsibleColumn.mockReturnValue({
+            isCollapsibleColumnOpen: true,
+            collapsibleColumnChildren: <div>Test Content</div>,
+            collapsibleColumnRef,
+        })
+
+        const { container } = render(<CollapsibleColumn />)
+
+        const contentElement = container.querySelector('.content')
+        expect(collapsibleColumnRef.current).toBe(contentElement)
+    })
+
+    it('should attach ref regardless of open state', () => {
+        const collapsibleColumnRef = createRef<HTMLDivElement>()
+        mockUseCollapsibleColumn.mockReturnValue({
+            isCollapsibleColumnOpen: false,
+            collapsibleColumnChildren: null,
+            collapsibleColumnRef,
+        })
+
+        const { container } = render(<CollapsibleColumn />)
+
+        const contentElement = container.querySelector('.content')
+        expect(collapsibleColumnRef.current).toBe(contentElement)
     })
 })

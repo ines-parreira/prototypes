@@ -6,6 +6,8 @@ export const useCollapsibleColumn = () => {
         setCollapsibleColumnChildren,
         isCollapsibleColumnOpen,
         setIsCollapsibleColumnOpen,
+        collapsibleColumnRef,
+        warpToCollapsibleColumn,
     } = useAppContext()
 
     return {
@@ -13,5 +15,7 @@ export const useCollapsibleColumn = () => {
         setCollapsibleColumnChildren,
         isCollapsibleColumnOpen,
         setIsCollapsibleColumnOpen,
+        collapsibleColumnRef,
+        warpToCollapsibleColumn,
     }
 }
