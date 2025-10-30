@@ -28,10 +28,10 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.14'
   rest-api-sdk:
-    '@gorgias/convert-client': '^0.3.12'
-    '@gorgias/convert-mocks': '^0.2.29'
-    '@gorgias/convert-queries': '^0.2.30'
-    '@gorgias/convert-types': '^0.4.7'
+    '@gorgias/convert-client': '^0.3.15'
+    '@gorgias/convert-mocks': '^0.2.32'
+    '@gorgias/convert-queries': '^0.2.33'
+    '@gorgias/convert-types': '^0.4.10'
     '@gorgias/ecommerce-storage-client': '^0.2.5'
     '@gorgias/ecommerce-storage-mocks': '^0.2.5'
     '@gorgias/ecommerce-storage-queries': '^0.2.6'

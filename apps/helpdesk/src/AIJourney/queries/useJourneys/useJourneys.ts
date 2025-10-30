@@ -1,15 +1,19 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import { getAllJourneysPublic } from '@gorgias/convert-client'
+import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { aiJourneyKeys } from '../utils'
 
-const fetchJourneys = async (integrationId: number, accessToken: string) => {
+const fetchJourneys = async (
+    integrationId: number,
+    accessToken: string,
+    types: JourneyTypeEnum[],
+) => {
     return getAllJourneysPublic(
-        { integration_id: integrationId },
+        { integration_id: integrationId, types },
         {
             baseURL: getGorgiasRevenueAddonApiBaseUrl(),
             headers: { Authorization: accessToken },
@@ -19,6 +23,7 @@ const fetchJourneys = async (integrationId: number, accessToken: string) => {
 
 export const useJourneys = <TData = Awaited<ReturnType<typeof fetchJourneys>>>(
     integrationId: number | undefined,
+    types: JourneyTypeEnum[],
     options: UseQueryOptions<
         Awaited<ReturnType<typeof fetchJourneys>>,
         unknown,
@@ -27,8 +32,8 @@ export const useJourneys = <TData = Awaited<ReturnType<typeof fetchJourneys>>>(
 ) => {
     const accessToken = useAccessToken()
     return useQuery({
-        queryKey: aiJourneyKeys.journeys(integrationId),
-        queryFn: () => fetchJourneys(integrationId!, accessToken!),
+        queryKey: aiJourneyKeys.journeys(integrationId, types),
+        queryFn: () => fetchJourneys(integrationId!, accessToken!, types),
         enabled: !!accessToken && !!integrationId && options.enabled !== false,
         refetchOnWindowFocus: false,
         refetchOnMount: false,

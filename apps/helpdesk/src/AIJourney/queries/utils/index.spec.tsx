@@ -1,8 +1,18 @@
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { aiJourneyKeys } from './index'
 
 jest.mock('utils/environment', () => ({
     isProduction: jest.fn(),
     isStaging: jest.fn(),
+}))
+
+jest.mock('@gorgias/convert-client', () => ({
+    JourneyTypeEnum: {
+        CartAbandoned: 'cart_abandoned',
+        SessionAbandoned: 'session_abandoned',
+        Campaign: 'campaign',
+    },
 }))
 
 describe('AIJourney Utils', () => {
@@ -16,25 +26,52 @@ describe('AIJourney Utils', () => {
                 const integrationId = 123
                 const result = aiJourneyKeys.journeys(integrationId)
 
-                expect(result).toEqual(['journeys', 123])
+                expect(result).toEqual(['journeys', 123, undefined])
             })
 
             it('should return correct query key for journeys with undefined integration ID', () => {
                 const result = aiJourneyKeys.journeys(undefined)
 
-                expect(result).toEqual(['journeys', undefined])
+                expect(result).toEqual(['journeys', undefined, undefined])
             })
 
             it('should return correct query key for journeys with zero integration ID', () => {
                 const result = aiJourneyKeys.journeys(0)
 
-                expect(result).toEqual(['journeys', 0])
+                expect(result).toEqual(['journeys', 0, undefined])
             })
 
             it('should return correct query key for journeys with null integration ID', () => {
                 const result = aiJourneyKeys.journeys(null as any)
 
-                expect(result).toEqual(['journeys', null])
+                expect(result).toEqual(['journeys', null, undefined])
+            })
+
+            it('should return correct query key for journeys with types parameter', () => {
+                const integrationId = 123
+                const types = [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]
+                const result = aiJourneyKeys.journeys(integrationId, types)
+
+                expect(result).toEqual(['journeys', 123, types])
+            })
+
+            it('should return correct query key for journeys with single type', () => {
+                const integrationId = 456
+                const types = [JourneyTypeEnum.CartAbandoned]
+                const result = aiJourneyKeys.journeys(integrationId, types)
+
+                expect(result).toEqual(['journeys', 456, types])
+            })
+
+            it('should return correct query key for journeys with empty types array', () => {
+                const integrationId = 789
+                const types: JourneyTypeEnum[] = []
+                const result = aiJourneyKeys.journeys(integrationId, types)
+
+                expect(result).toEqual(['journeys', 789, types])
             })
         })
 
@@ -100,11 +137,25 @@ describe('AIJourney Utils', () => {
             expect(Array.isArray(journeysKey)).toBe(true)
             expect(Array.isArray(configKey)).toBe(true)
 
-            expect(journeysKey.length).toBe(2)
+            expect(journeysKey.length).toBe(3)
             expect(configKey.length).toBe(2)
 
             expect(typeof journeysKey[0]).toBe('string')
             expect(typeof configKey[0]).toBe('string')
+        })
+
+        it('should generate different query keys for different types arrays', () => {
+            const integrationId = 123
+            const types1 = [JourneyTypeEnum.CartAbandoned]
+            const types2 = [
+                JourneyTypeEnum.CartAbandoned,
+                JourneyTypeEnum.SessionAbandoned,
+            ]
+
+            const journeysKey1 = aiJourneyKeys.journeys(integrationId, types1)
+            const journeysKey2 = aiJourneyKeys.journeys(integrationId, types2)
+
+            expect(journeysKey1).not.toEqual(journeysKey2)
         })
     })
 })

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { getAllJourneysPublic } from '@gorgias/convert-client'
+import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
@@ -9,6 +9,7 @@ import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/cli
 import { useJourneys } from './useJourneys'
 
 jest.mock('@gorgias/convert-client', () => ({
+    ...jest.requireActual('@gorgias/convert-client'),
     getAllJourneysPublic: jest.fn(),
 }))
 
@@ -60,15 +61,28 @@ describe('useJourneys', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
 
-        const { result } = renderHook(() => useJourneys(123), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(
+            () =>
+                useJourneys(123, [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]),
+            {
+                wrapper: createWrapper(),
+            },
+        )
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
         expect(mockGetAllJourneysPublic).toHaveBeenCalledTimes(1)
         expect(mockGetAllJourneysPublic).toHaveBeenCalledWith(
-            { integration_id: 123 },
+            {
+                integration_id: 123,
+                types: [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ],
+            },
             {
                 baseURL: 'http://mocked-base-url',
                 headers: { Authorization: 'mock-access-token' },
@@ -83,9 +97,16 @@ describe('useJourneys', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic.mockRejectedValue(mockError)
 
-        const { result } = renderHook(() => useJourneys(123), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(
+            () =>
+                useJourneys(123, [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]),
+            {
+                wrapper: createWrapper(),
+            },
+        )
 
         await waitFor(() => expect(result.current.isError).toBe(true))
 
@@ -96,9 +117,16 @@ describe('useJourneys', () => {
     it('should not fetch journeys if accessToken is missing', async () => {
         mockUseAccessToken.mockReturnValue(null)
 
-        const { result } = renderHook(() => useJourneys(123), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(
+            () =>
+                useJourneys(123, [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]),
+            {
+                wrapper: createWrapper(),
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.fetchStatus).toBe('idle')
@@ -111,9 +139,16 @@ describe('useJourneys', () => {
     it('should not fetch journeys if integrationId is undefined', async () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
 
-        const { result } = renderHook(() => useJourneys(undefined), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(
+            () =>
+                useJourneys(undefined, [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]),
+            {
+                wrapper: createWrapper(),
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.fetchStatus).toBe('idle')
@@ -127,7 +162,15 @@ describe('useJourneys', () => {
         mockUseAccessToken.mockReturnValue('mock-access-token')
 
         const { result } = renderHook(
-            () => useJourneys(123, { enabled: false }),
+            () =>
+                useJourneys(
+                    123,
+                    [
+                        JourneyTypeEnum.CartAbandoned,
+                        JourneyTypeEnum.SessionAbandoned,
+                    ],
+                    { enabled: false },
+                ),
             { wrapper: createWrapper() },
         )
 
@@ -151,7 +194,11 @@ describe('useJourneys', () => {
             .mockResolvedValueOnce({ data: mockJourneys2 })
 
         const { result, rerender } = renderHook(
-            ({ integrationId }) => useJourneys(integrationId),
+            ({ integrationId }) =>
+                useJourneys(integrationId, [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ]),
             {
                 wrapper: createWrapper(),
                 initialProps: { integrationId: 123 },
@@ -168,13 +215,53 @@ describe('useJourneys', () => {
         expect(mockGetAllJourneysPublic).toHaveBeenCalledTimes(2)
         expect(mockGetAllJourneysPublic).toHaveBeenNthCalledWith(
             1,
-            { integration_id: 123 },
+            {
+                integration_id: 123,
+                types: [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ],
+            },
             expect.any(Object),
         )
         expect(mockGetAllJourneysPublic).toHaveBeenNthCalledWith(
             2,
-            { integration_id: 456 },
+            {
+                integration_id: 456,
+                types: [
+                    JourneyTypeEnum.CartAbandoned,
+                    JourneyTypeEnum.SessionAbandoned,
+                ],
+            },
             expect.any(Object),
         )
+    })
+
+    it('should accept custom types parameter', async () => {
+        const mockJourneys = [
+            { id: 1, type: 'cart_abandoned', state: 'active' },
+        ]
+
+        mockUseAccessToken.mockReturnValue('mock-access-token')
+        mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
+
+        const customTypes = [JourneyTypeEnum.CartAbandoned]
+        const { result } = renderHook(() => useJourneys(123, customTypes, {}), {
+            wrapper: createWrapper(),
+        })
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetAllJourneysPublic).toHaveBeenCalledWith(
+            {
+                integration_id: 123,
+                types: customTypes,
+            },
+            {
+                baseURL: 'http://mocked-base-url',
+                headers: { Authorization: 'mock-access-token' },
+            },
+        )
+        expect(result.current.data).toEqual(mockJourneys)
     })
 })

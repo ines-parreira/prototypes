@@ -2,7 +2,11 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 import { matchPath, useLocation, useParams } from 'react-router-dom'
 
-import { JourneyApiDTO, JourneyDetailApiDTO } from '@gorgias/convert-client'
+import {
+    JourneyApiDTO,
+    JourneyDetailApiDTO,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
@@ -69,6 +73,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
 
     const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
         integrationId,
+        [JourneyTypeEnum.CartAbandoned, JourneyTypeEnum.SessionAbandoned],
         {
             enabled: !!integrationId,
         },
