@@ -117,7 +117,7 @@ describe('monitoring.utils', () => {
             })
         })
 
-        it('should be false when trying to monitor call not in progress', () => {
+        it('should be false when trying to monitor inbound call not in progress', () => {
             const result = getCallMonitorability(
                 {
                     direction: VoiceCallDirection.Inbound,
@@ -130,6 +130,22 @@ describe('monitoring.utils', () => {
             expect(result).toEqual({
                 isMonitorable: false,
                 reason: MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS,
+            })
+        })
+
+        it('should be false when trying to monitor outbound call not yet connected', () => {
+            const result = getCallMonitorability(
+                {
+                    direction: VoiceCallDirection.Outbound,
+                    status: VoiceCallStatus.Ringing,
+                } as VoiceCall,
+                42,
+                { id: 89 } as User,
+            )
+
+            expect(result).toEqual({
+                isMonitorable: false,
+                reason: MONITORING_RESTRICTION_REASONS.NOT_YET_CONNECTED,
             })
         })
 

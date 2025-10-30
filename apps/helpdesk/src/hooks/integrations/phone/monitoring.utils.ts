@@ -30,7 +30,10 @@ export function getCallMonitorability(
     if (!isCallInProgress(voiceCall)) {
         return {
             isMonitorable: false,
-            reason: MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS,
+            reason:
+                voiceCall.direction === 'inbound'
+                    ? MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS
+                    : MONITORING_RESTRICTION_REASONS.NOT_YET_CONNECTED,
         }
     }
 
