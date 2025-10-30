@@ -59,15 +59,40 @@ jobs:
       - id: setup-git
         name: Setup git
         if: steps.check-changes.outputs.changed == 'true'
+        env:
+          SIGNING_KEY_PUBLIC: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PUBLIC }}
+          SIGNING_KEY_PRIVATE: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PRIVATE }}
         run: |
+          mkdir -p "$HOME/.ssh"
+          echo "$SIGNING_KEY_PRIVATE\n" > "$HOME/.ssh/signing-key"
+          echo "$SIGNING_KEY_PUBLIC\n" > "$HOME/.ssh/signing-key.pub"
+          chmod 600 "$HOME/.ssh/signing-key"
+          chmod 600 "$HOME/.ssh/signing-key.pub"
           git config --global --add safe.directory $(pwd)
           git config --global user.name "gorgias-bot-frontend"
           git config --global user.email "engineering-sre+frontend@gorgias.com"
+          git config --global user.signingkey "$HOME/.ssh/signing-key.pub"
+          git config --global commit.gpgsign true
+          git config --global gpg.format ssh
 
       - name: Commit and push changes
         if: steps.check-changes.outputs.changed == 'true'
         shell: bash
+        env:
+          SIGNING_KEY_PUBLIC: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PUBLIC }}
+          SIGNING_KEY_PRIVATE: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PRIVATE }}
         run: |
+          mkdir -p "$HOME/.ssh"
+          echo "$SIGNING_KEY_PRIVATE\n" > "$HOME/.ssh/signing-key"
+          echo "$SIGNING_KEY_PUBLIC\n" > "$HOME/.ssh/signing-key.pub"
+          chmod 600 "$HOME/.ssh/signing-key"
+          chmod 600 "$HOME/.ssh/signing-key.pub"
+          git config --global --add safe.directory $(pwd)
+          git config --global user.name "gorgias-bot-frontend"
+          git config --global user.email "engineering-sre+frontend@gorgias.com"
+          git config --global user.signingkey "$HOME/.ssh/signing-key.pub"
+          git config --global commit.gpgsign true
+          git config --global gpg.format ssh
           git checkout -b update-deprecated-monitoring-snapshot-${{ steps.set-date-token.outputs.date-token }}
           git add scripts/deprecated-monitoring/deprecated.snapshot.json
           git commit -m "chore(deprecated-monitoring): update deprecated monitoring snapshot ${{ steps.set-date-token.outputs.date-token }}"
@@ -76,6 +101,9 @@ jobs:
       - name: Open PR
         if: steps.check-changes.outputs.changed == 'true'
         uses: gorgias/reusable-actions/.github/actions/open-pr@main
+        env:
+          SIGNING_KEY_PUBLIC: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PUBLIC }}
+          SIGNING_KEY_PRIVATE: ${{ secrets.GORGIAS_BOT_FRONTEND_SIGNING_KEY_PRIVATE }}
         with:
           github-token: ${{ secrets.GH_BOT_FRONTEND_PKG_WRITE_TOKEN }}
           repo: ${{ github.repository }}
