@@ -24,6 +24,9 @@ export const METRIC_NAMES = {
     AI_JOURNEY_REPLIED_MESSAGES: 'ai-journey-replied-messages',
     AI_JOURNEY_REPLIED_MESSAGES_TIME_SERIES:
         'ai-journey-replied-messages-time-series',
+    AI_JOURNEY_FAILED_MESSAGES: 'ai-journey-failed-messages',
+    AI_JOURNEY_FAILED_MESSAGES_TIME_SERIES:
+        'ai-journey-failed-messages-time-series',
     AI_JOURNEY_OPTED_OUT_CONVERSATIONS: 'ai-journey-opted-out-conversations',
     AI_JOURNEY_TOTAL_CONVERSATIONS: 'ai-journey-total-conversations',
     AI_JOURNEY_TOTAL_NUMBER_OF_ORDER: 'ai-journey-total-number-of-order',

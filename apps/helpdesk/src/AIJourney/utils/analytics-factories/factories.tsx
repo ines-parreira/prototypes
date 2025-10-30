@@ -359,6 +359,74 @@ export const aiJourneyRepliedMessagesTimeSeriesQuery = (
     }
 }
 
+export const aiJourneyFailedMessagesQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter = journeyId
+        ? [
+              {
+                  member: AiSalesAgentConversationsDimension.JourneyId,
+                  operator: ReportingFilterOperator.Equals,
+                  values: [journeyId],
+              },
+          ]
+        : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_FAILED_MESSAGES,
+        measures: [
+            AiSalesAgentConversationsMeasure.AiJourneyTotalFailedMessages,
+        ],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyFailedMessagesTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyFailedMessagesQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_FAILED_MESSAGES_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}
+
 export const aiJourneyUniqClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
