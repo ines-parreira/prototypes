@@ -209,25 +209,4 @@ describe('CustomerLookupNode', () => {
             screen.getAllByText('Select customer field').length,
         ).toBeGreaterThanOrEqual(1)
     })
-
-    it('should call onRemoveOption when remove button is clicked', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        await waitFor(() => {
-            expect(screen.getAllByText('close').length).toBeGreaterThanOrEqual(
-                customerLookupStep.branch_options.length,
-            )
-        })
-
-        const removeButtons = screen.getAllByText('close')
-
-        await act(async () => {
-            await user.click(removeButtons[0])
-        })
-
-        await waitFor(() => {
-            expect(onNodesChange).toHaveBeenCalled()
-        })
-    })
 })

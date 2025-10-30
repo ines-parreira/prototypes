@@ -3,12 +3,12 @@ import { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { useFieldArray, useWatch } from 'core/forms'
 
+import { useDeleteNode } from './flows/utils/useDeleteNode'
 import { IvrMenuActionFieldItem } from './IvrMenuActionsFieldItem'
 
 type Props = {
     name: string
     onAddOption?: () => void
-    onRemoveOption?: (optionIndex: number) => void
     branchNextId: string | null
     maxOptions?: number
 }
@@ -16,7 +16,6 @@ type Props = {
 export function IvrMenuActionsFieldArray({
     name,
     onAddOption,
-    onRemoveOption,
     branchNextId,
     maxOptions = 9,
 }: Props): JSX.Element {
@@ -24,6 +23,7 @@ export function IvrMenuActionsFieldArray({
         name,
     })
     const fieldValue = useWatch({ name })
+    const { removeUnlinkedSteps } = useDeleteNode()
 
     const handleAddOption = () => {
         const nextAvailableDigit = getNextAvailableDigit(fieldValue, maxOptions)
@@ -42,7 +42,7 @@ export function IvrMenuActionsFieldArray({
 
     const handleRemoveOption = (index: number) => {
         remove(index)
-        onRemoveOption?.(index)
+        removeUnlinkedSteps()
     }
 
     return (

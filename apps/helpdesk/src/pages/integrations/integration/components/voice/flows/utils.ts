@@ -42,6 +42,7 @@ import {
     IvrOptionNode,
     TimeSplitConditionalNode,
     TimeSplitOptionNode,
+    VoiceFlowFormValues,
     VoiceFlowNode,
     VoiceFlowNodeBase,
     VoiceFlowNodeData,
@@ -423,7 +424,7 @@ function connectTerminalStepsToEndCallStep(
 }
 
 export function transformToReactFlowNodes(
-    flow: CallRoutingFlow,
+    flow: VoiceFlowFormValues,
 ): VoiceFlowNode[] {
     const steps = connectTerminalStepsToEndCallStep(flow.steps)
     const nodes = Object.entries(steps).map(([id, step]) => {
@@ -874,7 +875,6 @@ export const pointsToEndNode = (
 export function updateFormFlowOnNodeDelete(
     prevFlow: CallRoutingFlow,
     nodeId: string,
-    branchingSubflowNodes: string[],
     branchConnectorStepId?: string | null,
 ): CallRoutingFlow {
     const flow = cloneDeep(prevFlow)
@@ -891,12 +891,6 @@ export function updateFormFlowOnNodeDelete(
      * 3. if parent is branching step, we need to set the branch option next_step_id to the next step
      * 4. if current node is branching step, we need to remove all subflow nodes
      */
-
-    if (isBranchingNode) {
-        branchingSubflowNodes.forEach((nodeId) => {
-            delete flow.steps[nodeId]
-        })
-    }
 
     if (nodeId === flow.first_step_id) {
         flow.first_step_id = nextStepId

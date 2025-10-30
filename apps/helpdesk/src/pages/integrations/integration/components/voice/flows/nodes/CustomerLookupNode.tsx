@@ -16,7 +16,6 @@ import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
 import { CustomerLookupActionsFieldArray } from '../../CustomerLookupActionsFieldArray'
-import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import {
     CustomerLookupNode as CustomerLookupNodeType,
@@ -40,7 +39,6 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
     const ref = useRef<HTMLDivElement>(null)
 
     const { getNode } = useVoiceFlow()
-    const { deleteBranch } = useDeleteNode()
     const step: CustomerFieldsConditionalStep | null = useWatch({
         name: `steps.${data.id}`,
     })
@@ -108,14 +106,6 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
                     }
                     selectedCustomField={selectedCustomField}
                     onAddOption={() => updateNodes()}
-                    onRemoveOption={(index) => {
-                        deleteBranch(
-                            VoiceFlowNodeType.CustomerLookupOption,
-                            index,
-                            id,
-                            intermediaryNode?.id ?? END_CALL_NODE.id,
-                        )
-                    }}
                 />
             </div>
         </VoiceStepNode>

@@ -4,11 +4,11 @@ import { CustomerFieldBranchOption, CustomField } from '@gorgias/helpdesk-types'
 import { useFieldArray } from 'core/forms'
 
 import { CustomerLookupActionsFieldItem } from './CustomerLookupActionsFieldItem'
+import { useDeleteNode } from './flows/utils/useDeleteNode'
 
 type Props = {
     stepName: string
     onAddOption?: () => void
-    onRemoveOption?: (optionIndex: number) => void
     branchNextId: string | null
     selectedCustomField?: CustomField
 }
@@ -16,13 +16,13 @@ type Props = {
 export function CustomerLookupActionsFieldArray({
     stepName,
     onAddOption,
-    onRemoveOption,
     branchNextId,
     selectedCustomField,
 }: Props): JSX.Element | null {
     const { fields, append, remove } = useFieldArray({
         name: `${stepName}.branch_options`,
     })
+    const { removeUnlinkedSteps } = useDeleteNode()
 
     const handleAddOption = () => {
         const newOption: CustomerFieldBranchOption = {
@@ -36,7 +36,7 @@ export function CustomerLookupActionsFieldArray({
 
     const handleRemoveOption = (index: number) => {
         remove(index)
-        onRemoveOption?.(index)
+        removeUnlinkedSteps()
     }
 
     const inputSettings = selectedCustomField?.definition?.input_settings

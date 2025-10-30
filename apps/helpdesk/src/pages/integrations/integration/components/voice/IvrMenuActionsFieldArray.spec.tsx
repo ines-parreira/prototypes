@@ -10,6 +10,16 @@ import { FlowProvider } from 'core/ui/flows'
 
 import { IvrMenuActionsFieldArray } from './IvrMenuActionsFieldArray'
 
+const useDeleteNodeMock = {
+    removeUnlinkedSteps: jest.fn(),
+}
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
+    () => ({
+        useDeleteNode: () => useDeleteNodeMock,
+    }),
+)
+
 const defaultProps = {
     name: 'someFieldArray',
     onAddOption: jest.fn(),
@@ -128,7 +138,7 @@ describe('IvrMenuActionsFieldArray', () => {
         })
 
         await waitFor(() => {
-            expect(defaultProps.onRemoveOption).toHaveBeenCalled()
+            expect(useDeleteNodeMock.removeUnlinkedSteps).toHaveBeenCalled()
         })
     })
 

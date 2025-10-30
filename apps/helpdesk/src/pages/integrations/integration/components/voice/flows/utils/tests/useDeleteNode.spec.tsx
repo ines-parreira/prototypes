@@ -1,6 +1,8 @@
 import { assumeMock } from '@repo/testing'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import { CheckBoxField } from '@gorgias/axiom'
 import {
     mockEnqueueStep,
     mockIvrMenuStep,
@@ -9,7 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
-import { useFormContext } from 'core/forms'
+import { Form, FormField, FormSubmitButton } from 'core/forms'
 
 import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
@@ -26,13 +28,11 @@ jest.mock(
 )
 
 jest.mock('../../useVoiceFlow')
-jest.mock('core/forms')
 
 const useVoiceFlowMock = assumeMock(useVoiceFlow)
-const useFormContextMock = assumeMock(useFormContext)
+const onSubmit = jest.fn()
 
 let useVoiceFlowReturnValue: ReturnType<typeof useVoiceFlow>
-let useFormContextReturnValue: ReturnType<typeof useFormContext>
 
 const renderHookWithMocks = (
     flow: CallRoutingFlow,
@@ -46,16 +46,34 @@ const renderHookWithMocks = (
         setNodes: jest.fn(),
     } as unknown as ReturnType<typeof useVoiceFlow>
 
-    useFormContextReturnValue = {
-        watch: jest.fn(() => flow),
-        setValue: jest.fn(),
-        unregister: jest.fn(),
-    } as unknown as ReturnType<typeof useFormContext>
-
     useVoiceFlowMock.mockReturnValue(useVoiceFlowReturnValue)
-    useFormContextMock.mockReturnValue(useFormContextReturnValue)
 
-    return renderHook(() => useDeleteNode())
+    return renderHook(() => useDeleteNode(), {
+        wrapper: (props) => (
+            <Form
+                {...props}
+                onValidSubmit={onSubmit}
+                onInvalidSubmit={onSubmit}
+                defaultValues={flow}
+                mode="all"
+            >
+                {props.children}
+                {Object.values(flow.steps)
+                    .filter(
+                        (step) => step.step_type === VoiceFlowNodeType.Enqueue,
+                    )
+                    .map((step) => (
+                        <FormField
+                            key={step.id}
+                            name={`steps.${step.id}.conditional_routing`}
+                            field={CheckBoxField}
+                            label="Conditional routing"
+                        />
+                    ))}
+                <FormSubmitButton>Submit</FormSubmitButton>
+            </Form>
+        ),
+    })
 }
 
 describe('useDeleteNode', () => {
@@ -75,23 +93,25 @@ describe('useDeleteNode', () => {
                 },
             }
 
+            const user = userEvent.setup()
+
             const { result } = renderHookWithMocks(flow)
 
             await act(async () => {
                 result.current.deleteNode('first-step')
             })
 
+            await waitFor(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
             await waitFor(() => {
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
-                    {},
-                    { shouldDirty: true },
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        first_step_id: null,
+                        steps: {},
+                    },
+                    expect.any(Object),
                 )
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'first_step_id',
-                    null,
-                )
-                expect(mockUpdateNodes).toHaveBeenCalled()
             })
         })
 
@@ -136,201 +156,33 @@ describe('useDeleteNode', () => {
                 },
             }
 
+            const user = userEvent.setup()
+
             const { result } = renderHookWithMocks(flow)
 
             await act(async () => {
                 result.current.deleteNode('second-step')
             })
 
+            await waitFor(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
+                expect(onSubmit).toHaveBeenCalledWith(
                     {
-                        [firstStep.id]: {
-                            ...firstStep,
-                            next_step_id: beforeEndCall.id,
+                        first_step_id: firstStep.id,
+                        steps: {
+                            [firstStep.id]: {
+                                ...firstStep,
+                                next_step_id: beforeEndCall.id,
+                            },
+                            [beforeEndCall.id]: beforeEndCall,
                         },
-                        [beforeEndCall.id]: {
-                            ...beforeEndCall,
-                            next_step_id: null,
-                        },
                     },
-                    { shouldDirty: true },
-                )
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'first_step_id',
-                    firstStep.id,
-                )
-                expect(mockUpdateNodes).toHaveBeenCalled()
-            })
-        })
-    })
-
-    describe('deleteIvrBranch', () => {
-        it('should delete a branch and its nodes correctly', async () => {
-            const ivrMenuStep = mockIvrMenuStep({
-                id: 'ivr-menu',
-                branch_options: [
-                    {
-                        input_digit: '1',
-                        next_step_id: 'branch-1-step-1',
-                    },
-                    {
-                        input_digit: '2',
-                        next_step_id: 'branch-2-step-1',
-                    },
-                    {
-                        input_digit: '3',
-                        next_step_id: 'branch-3-step-1',
-                    },
-                ],
-            })
-            const branch1Step1 = mockPlayMessageStep({
-                id: 'branch-1-step-1',
-                next_step_id: 'branch-1-step-2',
-            })
-            const branch1Step2 = mockSendToSMSStep({
-                id: 'branch-1-step-2',
-                next_step_id: 'end-node',
-            })
-            const branch2Step1 = mockPlayMessageStep({
-                id: 'branch-2-step-1',
-                next_step_id: 'end-node',
-            })
-            const branch3Step1 = mockSendToSMSStep({
-                id: 'branch-3-step-1',
-                next_step_id: 'end-node',
-            })
-            const endNode = mockPlayMessageStep({
-                id: 'end-node',
-                next_step_id: null,
-            })
-
-            const flow: CallRoutingFlow = {
-                first_step_id: ivrMenuStep.id,
-                steps: {
-                    [ivrMenuStep.id]: ivrMenuStep,
-                    [branch1Step1.id]: branch1Step1,
-                    [branch1Step2.id]: branch1Step2,
-                    [branch2Step1.id]: branch2Step1,
-                    [branch3Step1.id]: branch3Step1,
-                    [endNode.id]: endNode,
-                },
-            }
-
-            const { result } = renderHookWithMocks(flow)
-
-            await act(async () => {
-                result.current.deleteBranch(
-                    VoiceFlowNodeType.IvrOption,
-                    1,
-                    ivrMenuStep.id,
-                    endNode.id,
+                    expect.any(Object),
                 )
             })
-
-            await waitFor(() => {
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.branch-2-step-1')
-            })
-        })
-
-        it('should delete a branch with multiple steps in the subflow', async () => {
-            const ivrMenuStep = mockIvrMenuStep({
-                id: 'ivr-menu',
-                branch_options: [
-                    {
-                        input_digit: '1',
-                        next_step_id: 'branch-1-step-1',
-                    },
-                    {
-                        input_digit: '2',
-                        next_step_id: 'branch-2-step-1',
-                    },
-                ],
-            })
-            const branch1Step1 = mockPlayMessageStep({
-                id: 'branch-1-step-1',
-                next_step_id: 'branch-1-step-2',
-            })
-            const branch1Step2 = mockPlayMessageStep({
-                id: 'branch-1-step-2',
-                next_step_id: 'branch-1-step-3',
-            })
-            const branch1Step3 = mockSendToSMSStep({
-                id: 'branch-1-step-3',
-                next_step_id: 'end-node',
-            })
-            const branch2Step1 = mockPlayMessageStep({
-                id: 'branch-2-step-1',
-                next_step_id: 'end-node',
-            })
-            const endNode = mockPlayMessageStep({
-                id: 'end-node',
-                next_step_id: null,
-            })
-
-            const flow: CallRoutingFlow = {
-                first_step_id: ivrMenuStep.id,
-                steps: {
-                    [ivrMenuStep.id]: ivrMenuStep,
-                    [branch1Step1.id]: branch1Step1,
-                    [branch1Step2.id]: branch1Step2,
-                    [branch1Step3.id]: branch1Step3,
-                    [branch2Step1.id]: branch2Step1,
-                    [endNode.id]: endNode,
-                },
-            }
-
-            const { result } = renderHookWithMocks(flow)
-
-            await act(async () => {
-                result.current.deleteBranch(
-                    VoiceFlowNodeType.IvrOption,
-                    0,
-                    ivrMenuStep.id,
-                    endNode.id,
-                )
-            })
-
-            await waitFor(() => {
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.branch-1-step-1')
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.branch-1-step-2')
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.branch-1-step-3')
-            })
-        })
-
-        it('should handle deletion when option node is not found', async () => {
-            const flow: CallRoutingFlow = {
-                first_step_id: 'ivr-menu',
-                steps: {
-                    'ivr-menu': mockIvrMenuStep({
-                        id: 'ivr-menu',
-                        branch_options: [],
-                    }),
-                },
-            }
-
-            const { result } = renderHookWithMocks(flow)
-
-            await act(async () => {
-                result.current.deleteBranch(
-                    VoiceFlowNodeType.IvrOption,
-                    0,
-                    'ivr-menu',
-                    'end-node',
-                )
-            })
-
-            expect(useVoiceFlowReturnValue.setNodes).not.toHaveBeenCalled()
-            expect(useFormContextReturnValue.unregister).not.toHaveBeenCalled()
         })
     })
 
@@ -373,32 +225,33 @@ describe('useDeleteNode', () => {
             ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
                 false
 
+            const user = userEvent.setup()
+
             const { result } = renderHookWithMocks(flow, nodes)
 
             await act(async () => {
                 await result.current.deleteEnqueueBranches(enqueueStep.id)
             })
 
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.default-branch-step')
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.skip-branch-step')
-                // check that we only have the incoming, first step, enqueue, last node and end call nodes
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
+                expect(onSubmit).toHaveBeenCalledWith(
                     {
-                        [firstStep.id]: firstStep,
-                        [enqueueStep.id]: {
-                            ...enqueueStep,
-                            next_step_id: 'last-node',
-                            skip_step_id: undefined,
+                        first_step_id: firstStep.id,
+                        steps: {
+                            [firstStep.id]: firstStep,
+                            [enqueueStep.id]: {
+                                ...enqueueStep,
+                                next_step_id: 'last-node',
+                                skip_step_id: undefined,
+                            },
+                            [lastNode.id]: lastNode,
                         },
-                        [lastNode.id]: lastNode,
                     },
-                    { shouldDirty: true },
+                    expect.any(Object),
                 )
             })
         })
@@ -434,8 +287,8 @@ describe('useDeleteNode', () => {
             }
 
             const nodes = transformToReactFlowNodes(flow)
-            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
-                false
+
+            const user = userEvent.setup()
 
             const { result } = renderHookWithMocks(flow, nodes)
 
@@ -443,20 +296,31 @@ describe('useDeleteNode', () => {
                 await result.current.deleteEnqueueBranches(enqueueStep.id)
             })
 
+            await waitFor(async () => {
+                await user.click(screen.getByLabelText('Conditional routing'))
+            })
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
+                expect(onSubmit).toHaveBeenCalledWith(
                     {
-                        [firstStep.id]: firstStep,
-                        [enqueueStep.id]: {
-                            ...enqueueStep,
-                            next_step_id: 'connector-step',
-                            skip_step_id: undefined,
+                        first_step_id: firstStep.id,
+                        steps: {
+                            [firstStep.id]: firstStep,
+                            [enqueueStep.id]: {
+                                ...enqueueStep,
+                                next_step_id: 'connector-step',
+                                conditional_routing: false,
+                                skip_step_id: undefined,
+                            },
+                            [connectorStep.id]: connectorStep,
+                            [lastNode.id]: lastNode,
                         },
-                        [connectorStep.id]: connectorStep,
-                        [lastNode.id]: lastNode,
                     },
-                    { shouldDirty: true },
+                    expect.any(Object),
                 )
             })
         })
@@ -492,28 +356,39 @@ describe('useDeleteNode', () => {
             }
 
             const nodes = transformToReactFlowNodes(flow)
-            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
-                false
+
+            const user = userEvent.setup()
 
             const { result } = renderHookWithMocks(flow, nodes)
+
+            await waitFor(async () => {
+                await user.click(screen.getByLabelText('Conditional routing'))
+            })
 
             await act(async () => {
                 await result.current.deleteEnqueueBranches(enqueueStep.id)
             })
 
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
+                expect(onSubmit).toHaveBeenCalledWith(
                     {
-                        [firstStep.id]: firstStep,
-                        [enqueueStep.id]: {
-                            ...enqueueStep,
-                            next_step_id: lastNode.id,
-                            skip_step_id: undefined,
+                        first_step_id: firstStep.id,
+                        steps: {
+                            [firstStep.id]: firstStep,
+                            [enqueueStep.id]: {
+                                ...enqueueStep,
+                                next_step_id: lastNode.id,
+                                skip_step_id: undefined,
+                                conditional_routing: false,
+                            },
+                            [lastNode.id]: lastNode,
                         },
-                        [lastNode.id]: lastNode,
                     },
-                    { shouldDirty: true },
+                    expect.any(Object),
                 )
             })
         })
@@ -549,28 +424,39 @@ describe('useDeleteNode', () => {
             }
 
             const nodes = transformToReactFlowNodes(flow)
-            ;(flow.steps[enqueueStep.id] as EnqueueStep).conditional_routing =
-                false
+
+            const user = userEvent.setup()
 
             const { result } = renderHookWithMocks(flow, nodes)
+
+            await waitFor(async () => {
+                await user.click(screen.getByLabelText('Conditional routing'))
+            })
 
             await act(async () => {
                 await result.current.deleteEnqueueBranches(enqueueStep.id)
             })
 
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(useFormContextReturnValue.setValue).toHaveBeenCalledWith(
-                    'steps',
+                expect(onSubmit).toHaveBeenCalledWith(
                     {
-                        [firstStep.id]: firstStep,
-                        [enqueueStep.id]: {
-                            ...enqueueStep,
-                            next_step_id: lastNode.id,
-                            skip_step_id: undefined,
+                        first_step_id: firstStep.id,
+                        steps: {
+                            [firstStep.id]: firstStep,
+                            [enqueueStep.id]: {
+                                ...enqueueStep,
+                                next_step_id: lastNode.id,
+                                skip_step_id: undefined,
+                                conditional_routing: false,
+                            },
+                            [lastNode.id]: lastNode,
                         },
-                        [lastNode.id]: lastNode,
                     },
-                    { shouldDirty: true },
+                    expect.any(Object),
                 )
             })
         })
@@ -578,27 +464,33 @@ describe('useDeleteNode', () => {
 
     describe('removeUnlinkedSteps', () => {
         it('should remove steps that are not linked to the flow anymore', async () => {
+            const firstStep = mockPlayMessageStep({
+                id: 'first-step',
+                next_step_id: 'second-step',
+            })
+            const secondStep = mockPlayMessageStep({
+                id: 'second-step',
+                next_step_id: 'third-step',
+            })
+            const thirdStep = mockPlayMessageStep({
+                id: 'third-step',
+                next_step_id: null,
+            })
+            const unlinkedStep = mockPlayMessageStep({
+                id: 'unlinked-step',
+                next_step_id: null,
+            })
             const flow: CallRoutingFlow = {
-                first_step_id: 'first-step',
+                first_step_id: firstStep.id,
                 steps: {
-                    'first-step': mockPlayMessageStep({
-                        id: 'first-step',
-                        next_step_id: 'second-step',
-                    }),
-                    'second-step': mockPlayMessageStep({
-                        id: 'second-step',
-                        next_step_id: 'third-step',
-                    }),
-                    'third-step': mockPlayMessageStep({
-                        id: 'third-step',
-                        next_step_id: null,
-                    }),
-                    'unlinked-step': mockPlayMessageStep({
-                        id: 'unlinked-step',
-                        next_step_id: null,
-                    }),
+                    [firstStep.id]: firstStep,
+                    [secondStep.id]: secondStep,
+                    [thirdStep.id]: thirdStep,
+                    [unlinkedStep.id]: unlinkedStep,
                 },
             }
+
+            const user = userEvent.setup()
 
             const { result } = renderHookWithMocks(flow)
 
@@ -606,13 +498,22 @@ describe('useDeleteNode', () => {
                 await result.current.removeUnlinkedSteps()
             })
 
+            await waitFor(async () => {
+                await user.click(screen.getByRole('button', { name: 'Submit' }))
+            })
+
             await waitFor(() => {
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledTimes(1)
-                expect(
-                    useFormContextReturnValue.unregister,
-                ).toHaveBeenCalledWith('steps.unlinked-step')
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        first_step_id: 'first-step',
+                        steps: {
+                            [firstStep.id]: firstStep,
+                            [secondStep.id]: secondStep,
+                            [thirdStep.id]: thirdStep,
+                        },
+                    },
+                    expect.any(Object),
+                )
             })
         })
     })

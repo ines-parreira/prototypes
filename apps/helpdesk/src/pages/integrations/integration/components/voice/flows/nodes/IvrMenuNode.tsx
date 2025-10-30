@@ -16,12 +16,11 @@ import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
-import { END_CALL_NODE, VoiceFlowNodeType } from '../constants'
+import { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { type IvrMenuNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { getFormTargetStepId } from '../utils'
-import { useDeleteNode } from '../utils/useDeleteNode'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
@@ -32,7 +31,6 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
     const { data } = props
     const ref = useRef<HTMLDivElement>(null)
     const { getNodes, getNode } = useVoiceFlow()
-    const { deleteBranch } = useDeleteNode()
     const updateNodes = useUpdateNodes()
 
     const { id } = data
@@ -66,7 +64,6 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
     }, [step])
 
     const intermediaryNode = getNode(getIntermediaryNodeId(id))
-    const intermediaryNodeId = intermediaryNode?.id ?? END_CALL_NODE.id
     const nextStepId = intermediaryNode
         ? getFormTargetStepId(intermediaryNode, getNode)
         : null
@@ -114,14 +111,6 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                     name={`steps.${id}.branch_options`}
                     onAddOption={updateNodes}
                     branchNextId={nextStepId}
-                    onRemoveOption={(optionIndex) =>
-                        deleteBranch(
-                            VoiceFlowNodeType.IvrOption,
-                            optionIndex,
-                            id,
-                            intermediaryNodeId,
-                        )
-                    }
                     maxOptions={isNestedIvr ? 8 : 9}
                 />
             </div>

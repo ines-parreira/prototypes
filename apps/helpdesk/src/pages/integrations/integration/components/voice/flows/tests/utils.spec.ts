@@ -2473,7 +2473,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(flow, 'first-step', [])
+            const updated = updateFormFlowOnNodeDelete(flow, 'first-step')
 
             expect(updated.first_step_id).toBe(null)
             expect(updated.steps).toEqual({})
@@ -2496,7 +2496,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(flow, secondStep.id, [])
+            const updated = updateFormFlowOnNodeDelete(flow, secondStep.id)
 
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({
@@ -2546,7 +2546,6 @@ describe('utils', () => {
             const updated = updateFormFlowOnNodeDelete(
                 flow,
                 secondStep.id,
-                [branchOption1.id, branchOption2.id],
                 null,
             )
 
@@ -2556,6 +2555,9 @@ describe('utils', () => {
                     ...firstStep,
                     next_step_id: null,
                 },
+                /* branch options are not deleted in this function, they are deleted in the removeUnlinkedSteps function */
+                [branchOption1.id]: branchOption1,
+                [branchOption2.id]: branchOption2,
             })
         })
 
@@ -2594,11 +2596,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(
-                flow,
-                branchOption1.id,
-                [],
-            )
+            const updated = updateFormFlowOnNodeDelete(flow, branchOption1.id)
 
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({
@@ -2642,7 +2640,7 @@ describe('utils', () => {
                     [convNode.id]: convNode,
                 },
             }
-            const updated = updateFormFlowOnNodeDelete(flow, convNode.id, [])
+            const updated = updateFormFlowOnNodeDelete(flow, convNode.id)
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({
                 [firstStep.id]: firstStep,
@@ -2684,11 +2682,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(
-                flow,
-                branchOption1.id,
-                [],
-            )
+            const updated = updateFormFlowOnNodeDelete(flow, branchOption1.id)
 
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({
@@ -2730,11 +2724,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(
-                flow,
-                branchOption2.id,
-                [],
-            )
+            const updated = updateFormFlowOnNodeDelete(flow, branchOption2.id)
 
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({
@@ -2777,7 +2767,7 @@ describe('utils', () => {
                 },
             }
 
-            const updated = updateFormFlowOnNodeDelete(flow, thirdStep.id, [])
+            const updated = updateFormFlowOnNodeDelete(flow, thirdStep.id)
 
             expect(updated.first_step_id).toBe(firstStep.id)
             expect(updated.steps).toEqual({

@@ -18,6 +18,16 @@ import { FlowProvider } from 'core/ui/flows'
 
 import { CustomerLookupActionsFieldArray } from '../CustomerLookupActionsFieldArray'
 
+const useDeleteNodeMock = {
+    removeUnlinkedSteps: jest.fn(),
+}
+jest.mock(
+    'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
+    () => ({
+        useDeleteNode: () => useDeleteNodeMock,
+    }),
+)
+
 const defaultProps = {
     stepName: 'steps.customerLookup',
     onAddOption: jest.fn(),
@@ -123,7 +133,7 @@ describe('CustomerLookupActionsFieldArray', () => {
         })
 
         await waitFor(() => {
-            expect(defaultProps.onRemoveOption).toHaveBeenCalledWith(0)
+            expect(useDeleteNodeMock.removeUnlinkedSteps).toHaveBeenCalled()
         })
     })
 
