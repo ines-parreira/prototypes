@@ -47,9 +47,6 @@ export function CustomerLookupActionsFieldArray({
 
     return (
         <Box flexDirection="column" alignItems="flex-start" gap="sm">
-            <CustomerLookupActionsFieldItem
-                stepName={`${stepName}.default_branch_name`}
-            />
             {fields.map((field, index) => {
                 const itemName = `${stepName}.branch_options.${index}`
 
@@ -65,6 +62,9 @@ export function CustomerLookupActionsFieldArray({
                     />
                 )
             })}
+            <CustomerLookupActionsFieldItem
+                stepName={`${stepName}.default_branch_name`}
+            />
             {inputSettings.choices &&
                 fields.length < inputSettings.choices.length && (
                     <Button
