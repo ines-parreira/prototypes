@@ -85,7 +85,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
-                order: [['tickets', 'desc']],
+                order: [['ticketId', 'desc']],
                 metricName: 'support-performance-one-touch-tickets',
                 scope: 'one-touch-tickets',
                 time_dimensions: [
@@ -188,7 +188,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
-                order: [['tickets', 'asc']],
+                order: [['ticketId', 'asc']],
                 metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
                 time_dimensions: [
@@ -258,7 +258,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
-                order: [['tickets', 'desc']],
+                order: [['ticketId', 'desc']],
                 metricName: 'support-performance-one-touch-tickets-per-channel',
                 scope: 'one-touch-tickets',
                 time_dimensions: [

@@ -24,7 +24,7 @@ const oneTouchTicketsScope = defineScope({
         'customFields',
         'tags',
     ],
-    order: ['tickets', 'createdDatetime'],
+    order: ['ticketId', 'createdDatetime', 'closedDatetime', 'ticketCount'],
 })
 
 export const oneTouchTickets = oneTouchTicketsScope
@@ -37,7 +37,7 @@ export const oneTouchTickets = oneTouchTicketsScope
         if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', ctx.sortDirection]] as const,
+                order: [['ticketId', ctx.sortDirection]] as const,
             }
         }
 
@@ -77,7 +77,7 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
         if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', ctx.sortDirection]] as const,
+                order: [['ticketId', ctx.sortDirection]] as const,
             }
         }
 
@@ -100,7 +100,7 @@ export const oneTouchTicketsPerChannel = oneTouchTicketsScope
         if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['tickets', ctx.sortDirection]] as const,
+                order: [['ticketId', ctx.sortDirection]] as const,
             }
         }
 
