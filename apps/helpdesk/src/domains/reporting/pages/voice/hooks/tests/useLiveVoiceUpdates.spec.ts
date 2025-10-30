@@ -1846,4 +1846,113 @@ describe('useLiveVoiceUpdates', () => {
             })
         })
     })
+
+    describe('handles monitoring events', () => {
+        const params = {
+            agent_ids: [1],
+            integration_ids: [2],
+            voice_queue_ids: [3],
+        }
+
+        const voiceCallsQueryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
+
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0',
+            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0',
+        ])(
+            'should update voice call monitoring status to listening',
+            (dataschema) => {
+                const mockOldData = {
+                    data: {
+                        data: [
+                            {
+                                id: 123,
+                                status: 'answered',
+                                monitoring_status: 'none',
+                            },
+                        ],
+                    },
+                }
+                appQueryClient.setQueryData(voiceCallsQueryKey, mockOldData)
+
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+                const mockEvent = {
+                    id: 'monitoring-started-event',
+                    dataschema: dataschema,
+                    data: {
+                        voice_call_id: 123,
+                        account_id: 1,
+                        user_id: 42,
+                    },
+                } as DomainEvent
+
+                result.current.handleEvent(mockEvent)
+
+                expect(appQueryClient.getQueryData(voiceCallsQueryKey)).toEqual(
+                    {
+                        data: {
+                            data: [
+                                {
+                                    id: 123,
+                                    status: 'answered',
+                                    monitoring_status: 'listening',
+                                    last_monitoring_agent_id: 42,
+                                },
+                            ],
+                        },
+                    },
+                )
+            },
+        )
+
+        it.each([
+            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0',
+            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0',
+        ])(
+            'should update voice call monitoring status to none',
+            (dataschema) => {
+                const mockOldData = {
+                    data: {
+                        data: [
+                            {
+                                id: 123,
+                                status: 'answered',
+                                monitoring_status: 'listening',
+                            },
+                        ],
+                    },
+                }
+                appQueryClient.setQueryData(voiceCallsQueryKey, mockOldData)
+
+                const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+                const mockEvent = {
+                    id: 'monitoring-ended-event',
+                    dataschema: dataschema,
+                    data: {
+                        voice_call_id: 123,
+                        account_id: 1,
+                    },
+                } as DomainEvent
+
+                result.current.handleEvent(mockEvent)
+
+                expect(appQueryClient.getQueryData(voiceCallsQueryKey)).toEqual(
+                    {
+                        data: {
+                            data: [
+                                {
+                                    id: 123,
+                                    status: 'answered',
+                                    monitoring_status: 'none',
+                                },
+                            ],
+                        },
+                    },
+                )
+            },
+        )
+    })
 })

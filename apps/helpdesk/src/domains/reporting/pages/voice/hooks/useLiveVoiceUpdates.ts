@@ -408,6 +408,29 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
+                case '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0':
+                case '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0': {
+                    updateVoiceCallInLiveCallsQueryCache(
+                        {
+                            id: event.data.voice_call_id,
+                            monitoring_status: 'listening',
+                            last_monitoring_agent_id: event.data.user_id,
+                        },
+                        params,
+                    )
+                    break
+                }
+                case '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0':
+                case '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0': {
+                    updateVoiceCallInLiveCallsQueryCache(
+                        {
+                            id: event.data.voice_call_id,
+                            monitoring_status: 'none',
+                        },
+                        params,
+                    )
+                    break
+                }
             }
         },
         [useLiveUpdates, params],
