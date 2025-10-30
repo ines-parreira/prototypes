@@ -8,7 +8,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersFilterMember,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { postReporting } from 'domains/reporting/models/resources'
+import { postReportingV1 } from 'domains/reporting/models/resources'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -19,7 +19,7 @@ import {
 } from './useFetchInfluencedOrders'
 
 jest.mock('domains/reporting/models/resources')
-const mockPostReporting = jest.mocked(postReporting)
+const mockPostReporting = jest.mocked(postReportingV1)
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
     useCanUseAiSalesAgent: jest.fn(),

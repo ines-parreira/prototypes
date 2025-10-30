@@ -110,10 +110,6 @@ export type ReportingResponse<TData> = {
     query: ReportingQuery
 }
 
-export type ReportingV2Response<TData> = {
-    data: TData
-}
-
 export type ReportingV2QueryResponse<TData> = TData
 
 export type QueryFactory<T extends Cube> = (

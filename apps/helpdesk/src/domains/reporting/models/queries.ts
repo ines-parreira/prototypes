@@ -5,7 +5,7 @@ import { appQueryClient } from 'api/queryClient'
 import { doNotRetry40xAnd5xxErrors } from 'api/utils'
 import {
     postEnrichedReporting,
-    postReporting,
+    postReportingV1,
 } from 'domains/reporting/models/resources'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
@@ -14,8 +14,8 @@ import {
     ReportingParams,
     ReportingQuery,
     ReportingResponse,
-    ReportingV2Response,
 } from 'domains/reporting/models/types'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 
 const stopOnError = (query: Pick<Query, 'state'>) =>
     query.state.status !== 'error'
@@ -31,7 +31,7 @@ const defaultOptions = {
 } as const
 
 export type UsePostReportingQueryData<TData extends unknown[]> = AxiosResponse<
-    ReportingResponse<TData> | ReportingV2Response<TData>
+    ReportingResponse<TData>
 >
 
 export type UseEnrichedPostReportingQueryData<TData> = AxiosResponse<TData>
@@ -66,7 +66,7 @@ export const fetchPostReporting = <
 ) => {
     return appQueryClient.fetchQuery({
         queryKey: reportingKeys.post(payload),
-        queryFn: () => postReporting<TData, TCube>(payload),
+        queryFn: () => postReportingV1<TData, TCube>(payload),
         ...defaultOptions,
         ...overrides,
     })
@@ -86,7 +86,7 @@ export const usePostReporting = <
 ) => {
     return useQuery({
         queryKey: reportingKeys.post(payload),
-        queryFn: () => postReporting<TData, TCube>(payload),
+        queryFn: () => postReportingV1<TData, TCube>(payload),
         ...defaultOptions,
         ...overrides,
     })
@@ -113,9 +113,14 @@ export const usePostReportingV2 = <
 ) => {
     return useQuery({
         queryKey: newPayload
-            ? reportingKeys.postV2(payload, newPayload!)
+            ? reportingKeys.postV2(payload, newPayload)
             : reportingKeys.post(payload),
-        queryFn: () => postReporting<TData, TCube, TMeta>(payload, newPayload),
+        queryFn: () =>
+            metricExecutionHandler<TData, TCube, TMeta>({
+                metricName: payload[0].metricName,
+                oldPayload: payload,
+                newPayload: newPayload,
+            }),
         ...defaultOptions,
         ...overrides,
     })

@@ -4,10 +4,9 @@ import { getLDClient } from 'utils/launchDarkly'
  * Migration modes for metric execution
  * - off: run only old implementation
  * - shadow: run both, return old result, compare in background
- * - live: run both, return new result, compare in background
  * - complete: run only new implementation
  */
-export type MigrationMode = 'off' | 'shadow' | 'live' | 'complete'
+export type MigrationMode = 'off' | 'shadow' | 'complete'
 
 /**
  * Gets the migration mode from LaunchDarkly for a given flag name

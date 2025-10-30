@@ -2,6 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
     fetchMetricPerDimension,
@@ -37,13 +38,14 @@ import {
     CustomFieldsReportingQuery,
     customFieldsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import { postEnrichedReporting } from 'domains/reporting/models/resources'
+import {
+    postEnrichedReporting,
+    postReportingV1,
+} from 'domains/reporting/models/resources'
 import {
     EnrichmentFields,
     ReportingQuery,
 } from 'domains/reporting/models/types'
-
-import { METRIC_NAMES, MetricScope } from '../metricNames'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -52,9 +54,15 @@ const fetchPostReportingMock = assumeMock(fetchPostReporting)
 jest.mock('domains/reporting/models/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
+const postReportingV1Mock = assumeMock(postReportingV1)
+
+jest.mock('domains/reporting/hooks/withBreakdown')
+const withBreakdownMock = assumeMock(withBreakdown)
 
 jest.mock('domains/reporting/hooks/withEnrichment')
 const withEnrichmentMock = assumeMock(withEnrichment)
+
+jest.mock('domains/reporting/utils/metricExecutionHandler')
 
 describe('MetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
@@ -168,79 +176,145 @@ describe('MetricPerDimension', () => {
     })
 
     describe('useMetricPerDimensionV2', () => {
-        function mockUsePostReportingV2(response: any) {
-            const mockedClientResponse = {
+        const decileValue = 5
+
+        const dataWithDeciles = Array.from(Array(150).keys()).map((index) => ({
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
+                agentId + index,
+            ),
+            [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+                metricValue + index,
+            ),
+            decile: String(decileValue + index),
+        }))
+
+        const mockedResponseWithDeciles: UseQueryResult<
+            QueryReturnType<TicketMessagesCube>
+        > = {
+            isFetching: false,
+            isError: false,
+            data: dataWithDeciles,
+        } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should return metric data with value and decile when dimensionId is provided', () => {
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
                 data: {
-                    data: response.data,
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
                 },
-            } as any
+            }
 
-            usePostReportingMockV2.mockImplementation(
-                (_v1, _v2, overrides) => ({
-                    ...response,
-                    data: overrides!.select!(mockedClientResponse),
-                }),
-            )
-        }
-
-        it('should usePostReporting with query and select', () => {
-            mockUsePostReportingV2(mockedResponse)
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, String(agentId)),
             )
 
             expect(result.current).toEqual({
-                isFetching: mockedResponse.isFetching,
-                isError: mockedResponse.isError,
+                isFetching: mockedResponseWithDeciles.isFetching,
+                isError: mockedResponseWithDeciles.isError,
                 data: {
                     value: metricValue,
-                    allData: mockedResponse.data,
-                    decile: null,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
                 },
             })
         })
-        it('should return null when data not available for entity id', () => {
+
+        it('should return null values when dimensionId is not found in data', () => {
             const agentId = 'notInResponse'
-            mockUsePostReportingV2(mockedResponse)
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            }
+
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, agentId),
             )
 
             expect(result.current?.data?.value).toBeNull()
+            expect(result.current?.data?.decile).toBeNull()
         })
 
-        it('should return null when called without entity', () => {
-            mockUsePostReportingV2(mockedResponse)
+        it('should return null values when dimensionId is not provided', () => {
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            }
 
-            const { result } = renderHook(() => useMetricPerDimension(query))
-
-            expect(result.current?.data?.value).toBeNull()
-        })
-
-        it('should return null when no data in response', () => {
-            const agentIdNotInResponse = 'notInResponse'
-            mockUsePostReportingV2({
-                ...mockedResponse,
-                data: undefined,
-            })
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
 
             const { result } = renderHook(() =>
-                useMetricPerDimensionV2(query, queryV2, agentIdNotInResponse),
+                useMetricPerDimensionV2(query, queryV2),
             )
 
-            expect(result.current?.data).toBeNull()
+            expect(result.current).toEqual({
+                isFetching: mockedResponseWithDeciles.isFetching,
+                isError: mockedResponseWithDeciles.isError,
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            })
         })
 
-        it('should use the select function', () => {
-            mockUsePostReportingV2(mockedResponse)
+        it('should handle loading state', () => {
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
+                isFetching: true,
+                isError: false,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            }
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
 
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, queryV2, String(agentId)),
             )
 
-            expect(result.current?.data?.allData).toEqual(mockedResponse.data)
+            expect(result.current.isFetching).toBe(true)
+            expect(result.current.isError).toBe(false)
+        })
+
+        it('should handle error state', () => {
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
+                isFetching: false,
+                isError: true,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            }
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
+
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(result.current.isFetching).toBe(false)
+            expect(result.current.isError).toBe(true)
         })
     })
 
@@ -349,42 +423,68 @@ describe('useMetricPerDimensionWithBreakdown', () => {
         data: data,
     }
 
-    it('should usePostReporting with query and select', () => {
-        usePostReportingMock.mockReturnValue(
-            withBreakdown(
-                { data: mockedResponse } as any,
-                BREAKDOWN_FIELD,
-                VALUE_FIELD,
-            ).data as any,
+    it('should usePostReporting with query and select', async () => {
+        const rawApiResponse = {
+            data: { data: data },
+        }
+        const processedData = {
+            data: [
+                {
+                    [BREAKDOWN_FIELD]: ticketField,
+                    [VALUE_FIELD]: String(10),
+                    children: [
+                        {
+                            ...data[0],
+                            [BREAKDOWN_FIELD]: ticketFieldL2_1,
+                            children: [],
+                        },
+                        {
+                            ...data[1],
+                            [BREAKDOWN_FIELD]: ticketFieldL2_2,
+                            children: [],
+                        },
+                    ],
+                },
+            ],
+        }
+
+        postReportingV1Mock.mockResolvedValue(rawApiResponse as any)
+        withBreakdownMock.mockReturnValue(processedData as any)
+
+        let capturedQueryFn: (() => Promise<any>) | undefined
+        usePostReportingMock.mockImplementation(
+            jest.fn().mockImplementation((query, options) => {
+                capturedQueryFn = options.queryFn
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: processedData.data,
+                }
+            }),
         )
 
         const { result } = renderHook(() =>
             useMetricPerDimensionWithBreakdown(query),
         )
 
-        expect(result.current).toEqual({
-            isFetching: mockedResponse.isFetching,
-            isError: mockedResponse.isError,
-            data: {
-                allData: [
-                    {
-                        [BREAKDOWN_FIELD]: ticketField,
-                        [VALUE_FIELD]: String(10),
-                        children: [
-                            {
-                                ...data[0],
-                                [BREAKDOWN_FIELD]: ticketFieldL2_1,
-                                children: [],
-                            },
-                            {
-                                ...data[1],
-                                [BREAKDOWN_FIELD]: ticketFieldL2_2,
-                                children: [],
-                            },
-                        ],
-                    },
-                ],
-            },
+        if (capturedQueryFn) {
+            await capturedQueryFn()
+        }
+
+        await waitFor(() => {
+            expect(postReportingV1Mock).toHaveBeenCalledWith([query])
+            expect(withBreakdownMock).toHaveBeenCalledWith(
+                rawApiResponse,
+                query['dimensions'][0],
+                query['measures'][0],
+            )
+            expect(result.current).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    allData: processedData.data,
+                },
+            })
         })
     })
 })

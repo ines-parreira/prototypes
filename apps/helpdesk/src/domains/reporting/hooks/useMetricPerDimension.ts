@@ -21,13 +21,14 @@ import {
 import { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     postEnrichedReporting,
-    postReporting,
+    postReportingV1,
 } from 'domains/reporting/models/resources'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     EnrichmentFields,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { OrderDirection } from 'models/api/types'
 import { DrillDownReportingQuery } from 'models/job/types'
 import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
@@ -161,10 +162,11 @@ const queryWithDeciles =
         newQuery?: BuiltQuery<TMeta>,
     ) =>
     () =>
-        postReporting<QueryReturnType<TCube>, TCube, TMeta>(
-            [query],
-            newQuery,
-        ).then(withDeciles)
+        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>({
+            metricName: query.metricName,
+            oldPayload: [query],
+            newPayload: newQuery,
+        }).then(withDeciles)
 
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
@@ -238,7 +240,7 @@ export function useMetricPerDimensionWithBreakdown(
             return data.data.data
         },
         queryFn: () =>
-            postReporting<WithChildren<TicketCustomFieldsTicketCountData[]>>([
+            postReportingV1<WithChildren<TicketCustomFieldsTicketCountData[]>>([
                 query,
             ]).then((data) =>
                 withBreakdown(

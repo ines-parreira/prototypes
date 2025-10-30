@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     postEnrichedReporting,
-    postReporting,
+    postReportingV1,
     postReportingV2,
     postReportingV2Query,
     QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
@@ -16,21 +16,15 @@ import {
 import { BuiltQuery } from 'domains/reporting/models/scopes/scope'
 import {
     EnrichmentFields,
+    ReportingParams,
     ReportingQuery,
     ReportingResponse,
 } from 'domains/reporting/models/types'
-import { executeMetric } from 'domains/reporting/utils/executeMetric'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
-
-jest.mock('domains/reporting/utils/executeMetric', () => ({
-    executeMetric: jest.fn(),
-}))
-
-const executeMetricMock = assumeMock(executeMetric)
 
 // Mock URL constructor to handle relative paths
 global.URL = jest.fn().mockImplementation((url: string) => {
@@ -88,7 +82,90 @@ describe('Reporting resources', () => {
         mockedAPIClient
             .onPost(REPORTING_ENRICHED_ENDPOINT)
             .reply(200, resFixture)
-        executeMetricMock.mockClear()
+    })
+
+    describe('postReportingV1', () => {
+        const queries: ReportingParams = [
+            {
+                dimensions: [],
+                measures: ['count'],
+                filters: [],
+                metricName: METRIC_NAMES.TEST_METRIC,
+            },
+        ]
+
+        it('should resolve with the data on success', async () => {
+            const res = await postReportingV1<[number]>(queries)
+
+            expect(res.data.data).toEqual(resFixture.data)
+            expect(res.data.query.metricName).toEqual(METRIC_NAMES.TEST_METRIC)
+            const lastRequest = mockedAPIClient.history.post[0]
+            expect(lastRequest.url).toBe(REPORTING_ENDPOINT)
+            const { metricName, ...rest } = queries[0]
+            expect(JSON.parse(lastRequest.data)).toEqual({
+                metric_name: metricName,
+                query: [rest],
+            })
+        })
+
+        it('should reject with an error on failure', async () => {
+            const statusCode = 503
+            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(statusCode)
+
+            const request = postReportingV1<[number]>(queries)
+
+            await expect(request).rejects.toEqual(
+                new Error(`Request failed with status code ${statusCode}`),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_ENDPOINT)
+                .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
+
+            const request = postReportingV1<[number]>(queries)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
+            mockedAPIClient
+                .onPost(REPORTING_ENDPOINT)
+                .reply(
+                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
+                )
+
+            const request = postReportingV1<[number]>(queries)
+
+            await expect(request).rejects.toEqual(
+                new Error(
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
+            )
+        })
+
+        it('should report 4xx errors with query details', async () => {
+            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(400)
+
+            const error = new Error('Request failed with status code 400')
+            const request = postReportingV1<[number]>(queries)
+
+            const { metricName } = queries[0]
+            await expect(request).rejects.toEqual(error)
+            expect(reportErrorMock).toHaveBeenCalledWith(error, {
+                extra: {
+                    context: {
+                        query: JSON.stringify(queries),
+                        metricName: metricName,
+                    },
+                },
+            })
+        })
     })
 
     describe('postEnrichedReporting', () => {
@@ -107,139 +184,6 @@ describe('Reporting resources', () => {
                 query: rest,
                 enrichment_fields: [EnrichmentFields.TicketId],
             })
-        })
-    })
-
-    describe('postReporting', () => {
-        it('should resolve with the data on success', async () => {
-            executeMetricMock.mockImplementation(async (config) => {
-                return await config.oldApi!()
-            })
-
-            const res = await postReporting<[number]>([query])
-
-            expect(res.data.data).toEqual([1])
-        })
-
-        it('should reject with an error on success', async () => {
-            executeMetricMock.mockImplementation(async (config) => {
-                return await config.oldApi!()
-            })
-
-            const statusCode = 503
-            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(statusCode)
-
-            const request = postReporting<[number]>([query])
-
-            await expect(request).rejects.toEqual(
-                new Error(`Request failed with status code ${statusCode}`),
-            )
-        })
-
-        it('should throw and error to trigger retry on result not yet ready status (202)', async () => {
-            executeMetricMock.mockImplementation(async (config) => {
-                return await config.oldApi!()
-            })
-
-            mockedAPIClient
-                .onPost(REPORTING_ENDPOINT)
-                .reply(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS)
-
-            const request = postReporting<[number]>([query])
-
-            await expect(request).rejects.toEqual(
-                new Error(
-                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
-                ),
-            )
-        })
-
-        it('should throw and error to trigger retry on result not yet ready status (202) even if it is a string', async () => {
-            executeMetricMock.mockImplementation(async (config) => {
-                return await config.oldApi!()
-            })
-
-            mockedAPIClient
-                .onPost(REPORTING_ENDPOINT)
-                .reply(
-                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
-                )
-
-            const request = postReporting<[number]>([query])
-
-            await expect(request).rejects.toEqual(
-                new Error(
-                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
-                ),
-            )
-        })
-
-        it('should report 4xx errors with query details', async () => {
-            executeMetricMock.mockImplementation(async (config) => {
-                return await config.oldApi!()
-            })
-
-            mockedAPIClient.onPost(REPORTING_ENDPOINT).reply(400)
-
-            const error = new Error('Request failed with status code 400')
-            const request = postReporting<[number]>([query])
-
-            await expect(request).rejects.toEqual(error)
-            expect(reportErrorMock).toHaveBeenCalledWith(error, {
-                extra: {
-                    context: {
-                        query: JSON.stringify([query]),
-                        metricName: METRIC_NAMES.TEST_METRIC,
-                    },
-                },
-            })
-        })
-
-        it('should call executeMetric with correct parameters', async () => {
-            const mockResponse = { data: [42] }
-            executeMetricMock.mockResolvedValue(mockResponse as any)
-
-            // Spy on the functions that should be called
-            const postReportingV1Spy = jest.spyOn(
-                require('domains/reporting/models/resources'),
-                'postReportingV1',
-            )
-            const postReportingV2QuerySpy = jest.spyOn(
-                require('domains/reporting/models/resources'),
-                'postReportingV2Query',
-            )
-
-            postReportingV1Spy.mockResolvedValue({ data: [100] } as any)
-            postReportingV2QuerySpy.mockResolvedValue({ data: [200] } as any)
-
-            const builtQuery: BuiltQuery = {
-                scope: MetricScope.TicketsClosed,
-                dimensions: [],
-                measures: [],
-                filters: [],
-                metricName: METRIC_NAMES.TEST_METRIC,
-            }
-
-            const result = await postReporting<[number]>([query], builtQuery)
-
-            expect(executeMetricMock).toHaveBeenCalledWith({
-                metricName: METRIC_NAMES.TEST_METRIC,
-                oldApi: expect.any(Function),
-                newQueryApi: expect.any(Function),
-                validateQuery: expect.any(Function),
-            })
-
-            const callArgs = executeMetricMock.mock.calls[0][0] as any
-            await callArgs.oldApi()
-            expect(postReportingV1Spy).toHaveBeenCalledWith([query])
-
-            await callArgs.newQueryApi()
-            expect(postReportingV2QuerySpy).toHaveBeenCalledWith(builtQuery)
-
-            expect(result).toBe(mockResponse)
-
-            postReportingV1Spy.mockRestore()
-            postReportingV2QuerySpy.mockRestore()
         })
     })
 

@@ -11,15 +11,19 @@ import {
 } from 'domains/reporting/models/queries'
 import {
     postEnrichedReporting,
-    postReporting,
+    postReportingV1,
 } from 'domains/reporting/models/resources'
 import { BuiltQuery } from 'domains/reporting/models/scopes/scope'
 import { ReportingParams } from 'domains/reporting/models/types'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 jest.mock('domains/reporting/models/resources')
-const postReportingMock = assumeMock(postReporting)
+jest.mock('domains/reporting/utils/metricExecutionHandler')
+
+const postReportingMock = assumeMock(postReportingV1)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
+const executeMetricCallMock = assumeMock(metricExecutionHandler)
 
 describe('Reporting queries', () => {
     const mockData = {
@@ -54,6 +58,7 @@ describe('Reporting queries', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         postReportingMock.mockResolvedValue(mockData)
+        executeMetricCallMock.mockResolvedValue(mockData)
     })
 
     describe('usePostReporting', () => {
@@ -77,10 +82,11 @@ describe('Reporting queries', () => {
                 },
             )
             await waitFor(() => {
-                expect(postReportingMock).toHaveBeenCalledWith(
-                    cubeQueries,
-                    newQuery,
-                )
+                expect(executeMetricCallMock).toHaveBeenCalledWith({
+                    metricName: METRIC_NAMES.TEST_METRIC,
+                    oldPayload: cubeQueries,
+                    newPayload: newQuery,
+                })
                 expect(result.current.data?.data.data).toEqual([42])
             })
         })

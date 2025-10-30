@@ -1,21 +1,17 @@
 import { AxiosResponse, isAxiosError } from 'axios'
 
-import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     BuiltQuery,
     QueryFor,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import { compareAndReportQueries } from 'domains/reporting/models/scopes/utils'
 import {
     Cube,
     EnrichmentFields,
     ReportingParams,
     ReportingQuery,
     ReportingResponse,
-    ReportingV2Response,
 } from 'domains/reporting/models/types'
-import { executeMetric } from 'domains/reporting/utils/executeMetric'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
@@ -108,24 +104,6 @@ const enrichedPost =
         })
     }
 
-export const postReporting = <
-    TData,
-    TCube extends Cube = Cube,
-    TMeta extends ScopeMeta = ScopeMeta,
->(
-    oldQuery: ReportingParams<TCube>,
-    newQuery?: BuiltQuery<TMeta>,
-) => {
-    return executeMetric<TData>({
-        metricName: oldQuery[0].metricName,
-        oldApi: () => postReportingV1<TData, TCube>(oldQuery),
-        newQueryApi: newQuery
-            ? () => postReportingV2Query<TCube, TMeta>(newQuery)
-            : undefined,
-        validateQuery: compareAndReportQueries,
-    })
-}
-
 /**
  * @deprecated Use postReportingV2 instead
  */
@@ -144,13 +122,13 @@ export const postReportingV1 = <TData, TCube extends Cube = Cube>(
     )
 }
 
-export const postReportingV2 = <TData>(
-    query: BuiltQuery<ScopeMeta, MetricName>,
-): Promise<AxiosResponse<ReportingV2Response<TData>>> => {
+export const postReportingV2 = <TData, TMeta extends ScopeMeta = ScopeMeta>(
+    query: BuiltQuery<TMeta>,
+): Promise<AxiosResponse<ReportingResponse<TData>>> => {
     const { metricName, ...baseQuery } = query
 
     return postV2(REPORTING_STATS_ENDPOINT)<TData>({
-        query: baseQuery,
+        query: baseQuery as APIReportingV2Query,
         metric_name: metricName!,
     }).catch(
         getReportQueryErrorHandler({
