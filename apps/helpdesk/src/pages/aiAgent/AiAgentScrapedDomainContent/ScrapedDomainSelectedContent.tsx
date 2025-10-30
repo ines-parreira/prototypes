@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
 import { Badge } from '@gorgias/axiom'
@@ -8,6 +9,8 @@ import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import useFlag from 'core/flags/hooks/useFlag'
+import { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
@@ -24,6 +27,7 @@ import {
 } from './constant'
 import IngestionProductView from './IngestionProductView'
 import IntegrationProductView from './IntegrationProductView'
+import ProductAdditionalInfoView from './ProductAdditionalInfoView'
 import ScrapedDomainQuestion from './ScrapedDomainQuestion'
 import ScrapedDomainSelectedModal from './ScrapedDomainSelectedModal'
 import {
@@ -45,6 +49,8 @@ type ProductProps = {
     contentType: typeof CONTENT_TYPE.PRODUCT
     selectedContent: ProductWithAiAgentStatus | null
     detail?: IngestedProduct | null
+    integrationId?: number | null
+    additionalInfo?: ProductAdditionalInfoPayload | null
 }
 
 type FileQuestionProps = {
@@ -84,16 +90,23 @@ const SelectedProductView = ({
     detail,
     storeWebsiteContentRoute,
     latestSync,
+    integrationId,
+    additionalInfo,
 }: {
     product: ProductWithAiAgentStatus
     detail: IngestedProduct
     storeWebsiteContentRoute: string
     latestSync?: string | null
+    integrationId?: number | null
+    additionalInfo?: ProductAdditionalInfoPayload | null
 }) => {
     const id = useId()
     const syncDateId = `syncDate-${id}`
     const syncDateString = getFormattedSyncDate(latestSync)
     const syncDateTimeString = getFormattedSyncDatetime(latestSync)
+    const isAdditionalInfoEnabled = useFlag(
+        FeatureFlagKey.AiAgentProductAdditionalInfo,
+    )
 
     return (
         <div className={css.contentContainer}>
@@ -168,23 +181,58 @@ const SelectedProductView = ({
                             </AccordionBody>
                         </AccordionItem>
                     )}
+                    {isAdditionalInfoEnabled && integrationId && product && (
+                        <AccordionItem id="additional-info">
+                            <AccordionHeader>
+                                <div className={css.productHeaderContainer}>
+                                    <i
+                                        className="material-icons"
+                                        style={{
+                                            fontSize: '20px',
+                                            color: 'var(--primary-blue-5)',
+                                        }}
+                                    >
+                                        edit_note
+                                    </i>
+                                    <div className={css.productHeader}>
+                                        <span className="body-semibold">
+                                            Additional Information
+                                        </span>
+                                        <span className="body-regular">
+                                            Custom context that you can add to
+                                            enhance AI Agent&apos;s knowledge
+                                            about this product.
+                                        </span>
+                                    </div>
+                                </div>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <ProductAdditionalInfoView
+                                    integrationId={integrationId}
+                                    productId={String(product.id)}
+                                    initialValue={additionalInfo?.data}
+                                />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )}
                 </Accordion>
             </div>
         </div>
     )
 }
 
-const ScrapedDomainSelectedContent = ({
-    shopName,
-    latestSync,
-    selectedContent,
-    contentType,
-    isOpened,
-    isLoading,
-    onClose,
-    detail,
-    onUpdateStatus,
-}: Props) => {
+const ScrapedDomainSelectedContent = (props: Props) => {
+    const {
+        shopName,
+        latestSync,
+        selectedContent,
+        contentType,
+        isOpened,
+        isLoading,
+        onClose,
+        detail,
+        onUpdateStatus,
+    } = props
     const { routes } = useAiAgentNavigation({ shopName })
     const titleForQuestion = 'Question details'
     const titleForProduct = 'Product details'
@@ -202,12 +250,15 @@ const ScrapedDomainSelectedContent = ({
             questionAnswer={selectedQuestionDetail?.translation?.content}
         />
     )
+    const productProps = props as ProductProps
     const contentForProduct = (
         <SelectedProductView
             product={selectedContent as ProductWithAiAgentStatus}
             detail={detail as IngestedProduct}
             storeWebsiteContentRoute={routes.questionsContent}
             latestSync={latestSync}
+            integrationId={productProps.integrationId}
+            additionalInfo={productProps.additionalInfo}
         />
     )
 

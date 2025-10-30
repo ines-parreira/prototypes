@@ -3,7 +3,15 @@ import { ApiPaginationParams } from 'models/api/types'
 import { IntegrationDataItem } from 'models/integration/types/misc'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import { LookupValue, Product, ProductCollection } from './types'
+import {
+    AdditionalInfoKey,
+    AdditionalInfoObjectType,
+    AdditionalInfoSourceType,
+    LookupValue,
+    Product,
+    ProductAdditionalInfoPayload,
+    ProductCollection,
+} from './types'
 
 const client = createClient()
 client.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -79,3 +87,26 @@ export const fetchEcommerceProductCollections = async (
             indexes: null,
         },
     })
+
+/**
+ * Updates additional information for a product in the ecommerce API
+ * @param objectType - The type of object
+ * @param sourceType - The source type
+ * @param integrationId - The integration ID
+ * @param externalId - The external ID of the product
+ * @param key - The key for the additional info
+ * @param data - The additional information payload
+ * @returns The updated additional information
+ */
+export const updateProductAdditionalInfo = async (
+    objectType: AdditionalInfoObjectType,
+    sourceType: AdditionalInfoSourceType,
+    integrationId: number,
+    externalId: string,
+    key: AdditionalInfoKey,
+    data: ProductAdditionalInfoPayload,
+) =>
+    await client.put<ProductAdditionalInfoPayload>(
+        `/api/ecommerce/${objectType}/${sourceType}/${integrationId}/${externalId}/additional-info/${key}`,
+        data,
+    )

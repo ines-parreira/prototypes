@@ -1,4 +1,9 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import {
+    useMutation,
+    UseMutationOptions,
+    useQuery,
+    UseQueryOptions,
+} from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
 import { ApiPaginationParams } from 'models/api/types'
@@ -9,7 +14,14 @@ import {
     fetchEcommerceLookupValues,
     fetchEcommerceProductCollections,
     fetchEcommerceProducts,
+    updateProductAdditionalInfo,
 } from './resources'
+import {
+    AdditionalInfoKey,
+    AdditionalInfoObjectType,
+    AdditionalInfoSourceType,
+    ProductAdditionalInfoPayload,
+} from './types'
 
 export const ecommerceKeys = {
     all: () => ['ecommerce'] as const,
@@ -143,6 +155,49 @@ export const useGetEcommerceProductCollections = (
                 params,
             )
             return response.data
+        },
+        ...overrides,
+    })
+}
+
+type UpdateProductAdditionalInfoParams = {
+    objectType: AdditionalInfoObjectType
+    sourceType: AdditionalInfoSourceType
+    integrationId: number
+    externalId: string
+    key: AdditionalInfoKey
+    data: ProductAdditionalInfoPayload
+}
+
+/**
+ * Hook for updating product additional information
+ * @param overrides - Optional mutation overrides
+ * @returns Mutation hook for updating product additional info
+ */
+export const useUpdateProductAdditionalInfo = (
+    overrides?: UseMutationOptions<
+        Awaited<ReturnType<typeof updateProductAdditionalInfo>>,
+        AxiosError,
+        UpdateProductAdditionalInfoParams
+    >,
+) => {
+    return useMutation({
+        mutationFn: async ({
+            objectType,
+            sourceType,
+            integrationId,
+            externalId,
+            key,
+            data,
+        }: UpdateProductAdditionalInfoParams) => {
+            return await updateProductAdditionalInfo(
+                objectType,
+                sourceType,
+                integrationId,
+                externalId,
+                key,
+                data,
+            )
         },
         ...overrides,
     })

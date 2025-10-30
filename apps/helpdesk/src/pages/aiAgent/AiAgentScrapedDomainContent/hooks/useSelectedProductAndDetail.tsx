@@ -4,6 +4,7 @@ import { history } from '@repo/routing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
+import { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { notify } from 'state/notifications/actions'
@@ -63,6 +64,14 @@ export const useSelectedProductAndDetail = ({
         return ecommerceProduct.additional_info.scraped_data.data
     }, [ecommerceProduct])
 
+    const additionalInfo = useMemo(() => {
+        if (!ecommerceProduct?.additional_info?.ai_agent_extended_context) {
+            return null
+        }
+        return ecommerceProduct.additional_info
+            .ai_agent_extended_context as ProductAdditionalInfoPayload
+    }, [ecommerceProduct])
+
     useEffect(() => {
         if (
             selectedProductData.isError ||
@@ -90,6 +99,7 @@ export const useSelectedProductAndDetail = ({
         return {
             selectedProduct,
             productDetail: ingestedProduct,
+            additionalInfo,
             isError: selectedProductData.isError,
             isLoading:
                 selectedProductData.isLoading || isLoadingEcommerceProduct,
@@ -97,6 +107,7 @@ export const useSelectedProductAndDetail = ({
     }, [
         selectedProduct,
         ingestedProduct,
+        additionalInfo,
         selectedProductData,
         isLoadingEcommerceProduct,
     ])

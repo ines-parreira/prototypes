@@ -1,0 +1,69 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .caption {
+        .body-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+    }
+
+    .charCount {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+
+        &.limitReached {
+            color: var(--error-red-6);
+            font-weight: 600;
+        }
+    }
+
+    .savingIndicator {
+        .caption-regular();
+        color: var(--primary-blue-5);
+        font-style: italic;
+    }
+}
+
+.axiom :local {
+    .editorContainer {
+        border-color: var(--border-default);
+
+        &.focused {
+            border-color: var(--border-focused);
+        }
+    }
+
+    .caption {
+        color: var(--text-secondary);
+    }
+
+    .charCount {
+        color: var(--text-secondary);
+
+        &.limitReached {
+            color: var(--text-error);
+        }
+    }
+
+    .savingIndicator {
+        color: var(--text-brand);
+    }
+}

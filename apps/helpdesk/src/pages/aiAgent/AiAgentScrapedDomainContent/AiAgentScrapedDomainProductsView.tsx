@@ -84,6 +84,7 @@ const AiAgentScrapedDomainProductsView = ({
     const {
         selectedProduct,
         productDetail,
+        additionalInfo,
         isLoading: isFetchingProductAndDetail,
     } = useSelectedProductAndDetail({
         shopName,
@@ -124,6 +125,8 @@ const AiAgentScrapedDomainProductsView = ({
                 isLoading={syncIsPending || isFetchingProductAndDetail}
                 onClose={handleOnClose}
                 detail={productDetail}
+                integrationId={integrationId || null}
+                additionalInfo={additionalInfo}
             />
         </>
     )

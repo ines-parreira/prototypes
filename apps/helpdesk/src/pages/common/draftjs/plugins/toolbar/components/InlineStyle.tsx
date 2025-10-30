@@ -22,8 +22,9 @@ const InlineStyle = ({
     isBlockType,
     isDisabled = false,
 }: Props) => {
+    const editorState = getEditorState()
+
     const isActive = useMemo(() => {
-        const editorState = getEditorState()
         const contentState = editorState.getCurrentContent()
 
         if (!contentState.hasText()) {
@@ -32,7 +33,7 @@ const InlineStyle = ({
 
         const currentStyle = editorState.getCurrentInlineStyle()
         return currentStyle.has(style)
-    }, [getEditorState, style])
+    }, [editorState, style])
 
     const onToggle = () => {
         const editorState = getEditorState()

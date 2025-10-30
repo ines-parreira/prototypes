@@ -7,7 +7,13 @@ import {
     fetchEcommerceLookupValues,
     fetchEcommerceProductCollections,
     fetchEcommerceProducts,
+    updateProductAdditionalInfo,
 } from '../resources'
+import {
+    AdditionalInfoKey,
+    AdditionalInfoObjectType,
+    AdditionalInfoSourceType,
+} from '../types'
 import {
     mockEcommerceData,
     mockEcommerceItem,
@@ -254,6 +260,71 @@ describe('Ecommerce Resources', () => {
 
             return expect(
                 fetchEcommerceProductCollections(integrationId),
+            ).rejects.toEqual(new Error('Request failed with status code 500'))
+        })
+    })
+
+    describe('updateProductAdditionalInfo', () => {
+        it('should update product additional information', async () => {
+            const objectType = AdditionalInfoObjectType.PRODUCT
+            const sourceType = AdditionalInfoSourceType.SHOPIFY
+            const integrationId = 123
+            const externalId = 'ext-456'
+            const key = AdditionalInfoKey.AI_AGENT_EXTENDED_CONTEXT
+            const data = {
+                data: {
+                    rich_text: '<p>Additional product information</p>',
+                },
+                version: new Date().toISOString(),
+            }
+
+            mockedServer
+                .onPut(
+                    `/api/ecommerce/${objectType}/${sourceType}/${integrationId}/${externalId}/additional-info/${key}`,
+                    data,
+                )
+                .reply(200, data)
+
+            const result = await updateProductAdditionalInfo(
+                objectType,
+                sourceType,
+                integrationId,
+                externalId,
+                key,
+                data,
+            )
+
+            expect(result.data).toEqual(data)
+        })
+
+        it('should handle error when updating product additional information', async () => {
+            const objectType = AdditionalInfoObjectType.PRODUCT
+            const sourceType = AdditionalInfoSourceType.SHOPIFY
+            const integrationId = 123
+            const externalId = 'ext-456'
+            const key = AdditionalInfoKey.AI_AGENT_EXTENDED_CONTEXT
+            const data = {
+                data: {
+                    rich_text: '<p>Additional product information</p>',
+                },
+                version: new Date().toISOString(),
+            }
+
+            mockedServer
+                .onPut(
+                    `/api/ecommerce/${objectType}/${sourceType}/${integrationId}/${externalId}/additional-info/${key}`,
+                )
+                .reply(500, { message: 'error' })
+
+            return expect(
+                updateProductAdditionalInfo(
+                    objectType,
+                    sourceType,
+                    integrationId,
+                    externalId,
+                    key,
+                    data,
+                ),
             ).rejects.toEqual(new Error('Request failed with status code 500'))
         })
     })

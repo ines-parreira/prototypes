@@ -130,4 +130,72 @@ describe('useSelectedProductAndDetail', () => {
         expect(result.current.selectedProduct).toBeNull()
         expect(result.current.productDetail).toBeNull()
     })
+
+    it('returns additional info when present in ecommerce product', () => {
+        const mockedSelectedProduct = {
+            id: 1,
+            title: 'Duo Baguette Birthstone Ring',
+        }
+        const additionalInfo = {
+            rich_text: '<p>Additional product information</p>',
+        }
+
+        mockUseGetProductsByIdsFromIntegration.mockReturnValue({
+            data: [mockedSelectedProduct],
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
+
+        mockUseGetEcommerceItemByExternalId.mockReturnValue({
+            data: {
+                additional_info: {
+                    scraped_data: { data: { name: 'Product' } },
+                    ai_agent_extended_context: additionalInfo,
+                },
+            },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetEcommerceItemByExternalId>)
+
+        const { result } = renderHook(() =>
+            useSelectedProductAndDetail({
+                shopName: mockedShopName,
+                integrationId: mockedIntegrationId,
+                productId: mockedProductId,
+            }),
+        )
+
+        expect(result.current.additionalInfo).toEqual(additionalInfo)
+    })
+
+    it('returns null for additionalInfo when not present', () => {
+        const mockedSelectedProduct = {
+            id: 1,
+            title: 'Duo Baguette Birthstone Ring',
+        }
+
+        mockUseGetProductsByIdsFromIntegration.mockReturnValue({
+            data: [mockedSelectedProduct],
+            isLoading: false,
+            isError: false,
+        } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
+
+        mockUseGetEcommerceItemByExternalId.mockReturnValue({
+            data: {
+                additional_info: {
+                    scraped_data: { data: { name: 'Product' } },
+                },
+            },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetEcommerceItemByExternalId>)
+
+        const { result } = renderHook(() =>
+            useSelectedProductAndDetail({
+                shopName: mockedShopName,
+                integrationId: mockedIntegrationId,
+                productId: mockedProductId,
+            }),
+        )
+
+        expect(result.current.additionalInfo).toBeNull()
+    })
 })

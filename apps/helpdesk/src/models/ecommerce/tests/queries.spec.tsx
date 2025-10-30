@@ -10,8 +10,14 @@ import {
     useGetEcommerceLookupValues,
     useGetEcommerceProductCollections,
     useGetEcommerceProducts,
+    useUpdateProductAdditionalInfo,
 } from '../queries'
 import * as resources from '../resources'
+import {
+    AdditionalInfoKey,
+    AdditionalInfoObjectType,
+    AdditionalInfoSourceType,
+} from '../types'
 import {
     mockEcommerceData,
     mockEcommerceItem,
@@ -34,6 +40,10 @@ const fetchEcommerceProducts = jest.spyOn(resources, 'fetchEcommerceProducts')
 const fetchEcommerceProductCollections = jest.spyOn(
     resources,
     'fetchEcommerceProductCollections',
+)
+const updateProductAdditionalInfo = jest.spyOn(
+    resources,
+    'updateProductAdditionalInfo',
 )
 
 const queryClient = mockQueryClient()
@@ -325,6 +335,128 @@ describe('Ecommerce Queries', () => {
 
             expect(result.current.isLoading).toBe(true)
             expect(fetchEcommerceProductCollections).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useUpdateProductAdditionalInfo', () => {
+        it('should update product additional info', async () => {
+            const mockResponse = {
+                data: {
+                    rich_text: '<p>Updated additional info</p>',
+                },
+            }
+
+            updateProductAdditionalInfo.mockResolvedValueOnce(
+                mockResponse as AxiosResponse,
+            )
+
+            const { result } = renderHook(
+                () => useUpdateProductAdditionalInfo(),
+                { wrapper },
+            )
+
+            const params = {
+                objectType: AdditionalInfoObjectType.PRODUCT,
+                sourceType: AdditionalInfoSourceType.SHOPIFY,
+                integrationId: 123,
+                externalId: 'ext-456',
+                key: AdditionalInfoKey.AI_AGENT_EXTENDED_CONTEXT,
+                data: {
+                    data: {
+                        rich_text: '<p>Updated additional info</p>',
+                    },
+                    version: new Date().toISOString(),
+                },
+            }
+
+            await result.current.mutateAsync(params)
+
+            expect(updateProductAdditionalInfo).toHaveBeenCalledWith(
+                'product',
+                'shopify',
+                123,
+                'ext-456',
+                'ai_agent_extended_context',
+                {
+                    data: {
+                        rich_text: '<p>Updated additional info</p>',
+                    },
+                    version: expect.any(String),
+                },
+            )
+        })
+
+        it('should handle errors when updating product additional info', async () => {
+            const mockError = new Error('Update failed')
+            updateProductAdditionalInfo.mockRejectedValueOnce(mockError)
+
+            const { result } = renderHook(
+                () => useUpdateProductAdditionalInfo(),
+                { wrapper },
+            )
+
+            const params = {
+                objectType: AdditionalInfoObjectType.PRODUCT,
+                sourceType: AdditionalInfoSourceType.SHOPIFY,
+                integrationId: 123,
+                externalId: 'ext-456',
+                key: AdditionalInfoKey.AI_AGENT_EXTENDED_CONTEXT,
+                data: {
+                    data: {
+                        rich_text: '<p>Updated additional info</p>',
+                    },
+                    version: new Date().toISOString(),
+                },
+            }
+
+            await expect(result.current.mutateAsync(params)).rejects.toThrow(
+                'Update failed',
+            )
+        })
+
+        it('should accept custom mutation options', async () => {
+            const mockResponse = {
+                data: {
+                    rich_text: '<p>Updated additional info</p>',
+                },
+            }
+            const onSuccessMock = jest.fn()
+
+            updateProductAdditionalInfo.mockResolvedValueOnce(
+                mockResponse as AxiosResponse,
+            )
+
+            const { result } = renderHook(
+                () =>
+                    useUpdateProductAdditionalInfo({
+                        onSuccess: onSuccessMock,
+                    }),
+                { wrapper },
+            )
+
+            const params = {
+                objectType: AdditionalInfoObjectType.PRODUCT,
+                sourceType: AdditionalInfoSourceType.SHOPIFY,
+                integrationId: 123,
+                externalId: 'ext-456',
+                key: AdditionalInfoKey.AI_AGENT_EXTENDED_CONTEXT,
+                data: {
+                    data: {
+                        rich_text: '<p>Updated additional info</p>',
+                    },
+                    version: new Date().toISOString(),
+                },
+            }
+
+            await result.current.mutateAsync(params)
+
+            await waitFor(() => {
+                expect(onSuccessMock).toHaveBeenCalledWith(
+                    mockResponse,
+                    params,
+                    undefined,
+                )
+            })
         })
     })
 })
