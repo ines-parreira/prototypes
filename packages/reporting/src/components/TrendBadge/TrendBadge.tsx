@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Skeleton, Tooltip } from '@gorgias/axiom'
+import { Icon, Skeleton, Tooltip } from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
 import { MetricValueFormat, TrendDirection } from '../../types'
@@ -9,8 +9,8 @@ import {
     formatMetricTrend,
     formatMetricValue,
     getTrendColorFromValue,
+    getTrendIconFromSign,
 } from '../../utils/helpers'
-import { TrendIcon } from '../TrendIcon/TrendIcon'
 
 import styles from './TrendBadge.less'
 
@@ -49,6 +49,7 @@ export function TrendBadge({
     )
 
     const trendColor = getTrendColorFromValue(sign, interpretAs)
+    const trendIcon = getTrendIconFromSign(sign)
 
     const formattedPrevValue = formatMetricValue(
         prevValue,
@@ -71,7 +72,7 @@ export function TrendBadge({
                 )}
                 id={badgeId}
             >
-                <TrendIcon value={sign} />
+                {trendIcon && <Icon name={trendIcon} />}
                 {formattedTrend}
             </div>
             <Tooltip

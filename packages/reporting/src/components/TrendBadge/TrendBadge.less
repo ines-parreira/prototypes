@@ -10,26 +10,23 @@
         font-weight: @caption-all-caps-font-weight;
         letter-spacing: @caption-all-caps-letter-spacing;
         line-height: @caption-all-caps-line-height;
+        gap: var(--spacing-xxxxs);
     }
 
     .color-unchanged {
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey5);
+        color: var(--content-neutral-secondary);
     }
 
     .color-neutral {
-        background-color: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        color: var(--content-neutral-strong);
     }
 
     .color-positive {
-        background-color: var(--accessory-green-1);
-        color: var(--accessory-green-3);
+        color: var(--content-success-primary);
     }
 
     .color-negative {
-        background-color: var(--accessory-red-1);
-        color: var(--accessory-red-3);
+        color: var(--static-error);
     }
 
     .size-sm {
@@ -38,27 +35,5 @@
 
     .size-md {
         height: 24px;
-    }
-}
-
-.axiom :local {
-    .color-unchanged {
-        background-color: var(--surface-neutral-secondary);
-        color: var(--content-neutral-secondary);
-    }
-
-    .color-neutral {
-        background-color: var(--surface-neutral-tertiary);
-        color: var(--content-neutral-strong);
-    }
-
-    .color-positive {
-        background-color: var(--surface-success-secondary);
-        color: var(--static-success);
-    }
-
-    .color-negative {
-        background-color: var(--surface-error-secondary);
-        color: var(--static-error);
     }
 }

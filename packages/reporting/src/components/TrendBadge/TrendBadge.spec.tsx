@@ -2,17 +2,25 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { vi } from 'vitest'
 
+import { IconName } from '@gorgias/axiom'
+
 import { DEFAULT_BADGE_TEXT, TREND_BADGE_FORMAT } from '../../constants'
 import { formatMetricTrend, formatMetricValue } from '../../utils/helpers'
 import { TrendBadge } from './TrendBadge'
 
-vi.mock('@gorgias/axiom', () => ({
-    Skeleton: () => <div role="progressbar" />,
-    Tooltip: ({ children }: { children: React.ReactNode }) => (
-        <div role="tooltip">{children}</div>
-    ),
-    Icon: () => <div role="img" />,
-}))
+vi.mock('@gorgias/axiom', async (importOriginal) => {
+    const originalModule =
+        (await importOriginal()) as typeof import('@gorgias/axiom')
+
+    return {
+        IconName: originalModule.IconName,
+        Icon: originalModule.Icon,
+        Skeleton: () => <div role="progressbar" />,
+        Tooltip: ({ children }: { children: React.ReactNode }) => (
+            <div role="tooltip">{children}</div>
+        ),
+    }
+})
 
 describe('<TrendBadge />', () => {
     it('should render the badge with default value when no values provided', () => {
@@ -56,9 +64,11 @@ describe('<TrendBadge />', () => {
         )
         const badge = document.querySelector(`[class*=${badgeClass}]`)
 
-        act(() => {
-            badge && userEvent.hover(badge)
-        })
+        if (badge) {
+            await act(async () => {
+                await userEvent.hover(badge)
+            })
+        }
 
         expect(await screen.findByRole('tooltip')).toHaveTextContent(
             tooltipResultingText,
@@ -77,5 +87,67 @@ describe('<TrendBadge />', () => {
 
         expect(screen.getByText(formattedValue)).toBeTruthy()
         expect(screen.getByRole('img')).toBeInTheDocument()
+    })
+
+    it('should not render trend Icon when values are equal', async () => {
+        const badgeClass = 'badge'
+        const value = 5
+        const prevValue = 5
+
+        render(
+            <TrendBadge
+                className={badgeClass}
+                interpretAs="more-is-better"
+                value={value}
+                prevValue={prevValue}
+            />,
+        )
+
+        const svg = screen.queryByRole('img')
+        expect(svg).not.toBeInTheDocument()
+    })
+
+    it('should render TrendingUp icon when value is greater than prevValue', async () => {
+        const badgeClass = 'badge'
+        const value = 5
+        const prevValue = 2
+
+        render(
+            <TrendBadge
+                className={badgeClass}
+                interpretAs="more-is-better"
+                value={value}
+                prevValue={prevValue}
+            />,
+        )
+
+        const svg = screen.getByRole('img')
+        expect(svg).toBeInTheDocument()
+        expect(svg.querySelector('use')).toHaveAttribute(
+            'href',
+            expect.stringContaining(`#${IconName.TrendingUp}`),
+        )
+    })
+
+    it('should render TrendingDown icon when value is less than prevValue', async () => {
+        const badgeClass = 'badge'
+        const value = 5
+        const prevValue = 20
+
+        render(
+            <TrendBadge
+                className={badgeClass}
+                interpretAs="more-is-better"
+                value={value}
+                prevValue={prevValue}
+            />,
+        )
+
+        const svg = screen.getByRole('img')
+        expect(svg).toBeInTheDocument()
+        expect(svg.querySelector('use')).toHaveAttribute(
+            'href',
+            expect.stringContaining(`#${IconName.TrendingDown}`),
+        )
     })
 })
