@@ -1,9 +1,15 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { Variant } from 'constants/integrations/types/shopify'
+import { useFlag } from 'core/flags'
 import { shopifyProductFixture } from 'fixtures/shopify'
 
 import IntegrationProductView from '../IntegrationProductView'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 const mockProduct = {
     ...shopifyProductFixture({
@@ -28,6 +34,8 @@ const mockProduct = {
     }),
     body_html: 'Test Description',
     vendor: 'Test Vendor',
+    imgAiDescription:
+        'AI generated description for the first product image from Shopify',
 }
 
 // Mock Image constructor
@@ -44,6 +52,8 @@ beforeAll(() => {
             }, 0)
         },
     })) as any
+
+    useFlagMock.mockReturnValue(false)
 })
 
 describe('IntegrationProductView', () => {
@@ -59,6 +69,15 @@ describe('IntegrationProductView', () => {
         expect(screen.getByText('Title:')).toBeInTheDocument()
         expect(screen.getByText('Test Product')).toBeInTheDocument()
         expect(screen.getByText('Description')).toBeInTheDocument()
+
+        expect(
+            screen.queryByText('AI-generated image description'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'AI generated description for the first product image from Shopify',
+            ),
+        ).not.toBeInTheDocument()
 
         // Wait for images to load
         await waitFor(() => {
@@ -87,6 +106,50 @@ describe('IntegrationProductView', () => {
         render(<IntegrationProductView product={productWithoutDescription} />)
 
         expect(screen.queryByText('Description')).not.toBeInTheDocument()
+    })
+
+    it('shows image description when feature flag is enabled', () => {
+        useFlagMock.mockImplementation(
+            (flag) =>
+                flag ===
+                FeatureFlagKey.AiAgentShowImageDescriptionInProductCatalog,
+        )
+
+        render(<IntegrationProductView product={mockProduct} />)
+
+        expect(
+            screen.getByText('AI-generated image description'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'AI generated description for the first product image from Shopify',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('handles product without image description', () => {
+        useFlagMock.mockImplementation(
+            (flag) =>
+                flag ===
+                FeatureFlagKey.AiAgentShowImageDescriptionInProductCatalog,
+        )
+
+        const productWithoutImageDescription = {
+            ...mockProduct,
+            imgAiDescription: undefined,
+        }
+        render(
+            <IntegrationProductView product={productWithoutImageDescription} />,
+        )
+
+        expect(
+            screen.queryByText('AI-generated image description'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'AI generated description for the first product image from Shopify',
+            ),
+        ).not.toBeInTheDocument()
     })
 
     it('handles product without variants', () => {

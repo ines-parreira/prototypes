@@ -34,6 +34,7 @@ export enum FeatureFlagKey {
     AiAgentPostStoreInstallationSteps = 'linear.project_improve_post_onboarding_experience.enable-post-store-installation-steps',
     AIAgentPreviewModeAllowed = 'ai-agent-preview-mode-allowed',
     AiAgentScrapeStoreDomain = 'ai-agent-scrape-store-domain',
+    AiAgentShowImageDescriptionInProductCatalog = 'ai-agent-show-image-description-in-product-catalog',
     AiAgentSms = 'ai-agent-for-sms',
     AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentSupportActionInGuidance = 'ai-agent-support-action-in-guidance',

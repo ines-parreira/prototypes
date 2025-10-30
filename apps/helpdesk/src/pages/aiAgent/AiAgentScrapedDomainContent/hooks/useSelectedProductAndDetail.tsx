@@ -45,12 +45,15 @@ export const useSelectedProductAndDetail = ({
             selectedProductData?.data?.[0]
                 ? {
                       ...selectedProductData.data[0],
+                      imgAiDescription:
+                          ecommerceProduct?.additional_info?.enriched_images
+                              ?.data?.images[0]?.ai_description,
                       is_used_by_ai_agent: !isProductExcludedFromAiAgent(
                           selectedProductData.data[0],
                       ),
                   }
                 : null,
-        [selectedProductData],
+        [selectedProductData, ecommerceProduct],
     )
 
     const ingestedProduct = useMemo(() => {

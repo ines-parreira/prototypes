@@ -7,6 +7,23 @@
         }
     }
 
+    .aiContainer {
+        background:
+            linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
+                padding-box,
+            linear-gradient(90deg, #f58d86, #a084e1) border-box; // legacy
+
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: var(--layout-spacing-s);
+    }
+
+    .productFieldTitle {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xxs);
+    }
+
     .imageGrid {
         display: grid;
         grid-template-columns: repeat(auto-fill, 95px);
