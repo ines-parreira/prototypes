@@ -55,6 +55,7 @@ catalogs:
   react:
     react: '18.2.0'
     react-dom: '18.2.0'
+    react-is: '18.2.0'
     react-test-renderer: '18.2.0'
     '@types/react': '18.2.67'
     '@types/react-dom': '18.2.22'
@@ -122,3 +123,5 @@ catalogs:
   mousetrap:
     'mousetrap': '^1.6.5'
     '@types/mousetrap': '^1.6.15'
+  recharts:
+    recharts: 3.3.0

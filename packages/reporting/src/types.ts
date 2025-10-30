@@ -32,3 +32,14 @@ export type TooltipData = {
     link?: string
     linkText?: string
 }
+
+export type TwoDimensionalDataItem = {
+    label: string
+    tooltip?: string
+    values: {
+        x: string
+        y: number
+    }[]
+    isDashed?: boolean
+    isDisabled?: boolean
+}

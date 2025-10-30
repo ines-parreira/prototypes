@@ -16,14 +16,15 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
-        "@gorgias/axiom": "catalog:axiom",
         "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit",
+        "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
         "classnames": "catalog:styles",
         "moment": "catalog:moment",
         "moment-timezone": "catalog:moment",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "react-is": "catalog:react"
     },
     "devDependencies": {
         "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit",
@@ -50,5 +51,8 @@
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
+    },
+    "dependencies": {
+        "recharts": "catalog:recharts"
     }
 }
