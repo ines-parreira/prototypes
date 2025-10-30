@@ -410,14 +410,28 @@ export const useLiveVoiceUpdates = (
                 }
                 case '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0':
                 case '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0': {
+                    const monitoringAgentId = event.data.user_id
                     updateVoiceCallInLiveCallsQueryCache(
                         {
                             id: event.data.voice_call_id,
                             monitoring_status: 'listening',
-                            last_monitoring_agent_id: event.data.user_id,
+                            last_monitoring_agent_id: monitoringAgentId,
                         },
                         params,
                     )
+                    const voiceCallSid =
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
+                    if (voiceCallSid) {
+                        updateAgentStatusInLiveAgentsQueryCache(
+                            monitoringAgentId,
+                            {
+                                agent_id: monitoringAgentId,
+                                call_sid: voiceCallSid,
+                                status: AgentStatus.Monitoring,
+                            },
+                            params,
+                        )
+                    }
                     break
                 }
                 case '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0':
@@ -429,6 +443,15 @@ export const useLiveVoiceUpdates = (
                         },
                         params,
                     )
+                    const voiceCallSid =
+                        voiceCallIdToSidRef.current[event.data.voice_call_id]
+                    if (voiceCallSid) {
+                        removeAgentStatusInLiveAgentsQueryCache(
+                            event.data.user_id,
+                            voiceCallSid,
+                            params,
+                        )
+                    }
                     break
                 }
             }

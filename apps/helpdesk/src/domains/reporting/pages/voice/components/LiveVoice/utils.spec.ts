@@ -562,6 +562,27 @@ describe('utils', () => {
             })
         })
 
+        it('should return "Busy (Monitoring)" description for Monitoring status', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                call_statuses: [
+                    {
+                        status: 'monitoring',
+                        created_datetime: '2021-08-01T09:59:00Z',
+                    },
+                ],
+                is_available_for_call: false,
+            }
+
+            const result = mapBusyAgentStatus(agent)
+
+            expect(result).toEqual({
+                description: 'Busy (Monitoring)',
+                isDescriptionTimestamp: false,
+            })
+        })
+
         it('should return "Ringing" description for Ringing status', () => {
             const agent: LiveCallQueueAgent = {
                 id: 1,
