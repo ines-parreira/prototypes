@@ -2,9 +2,9 @@ import React, { ReactNode, useMemo, useState } from 'react'
 
 import cs from 'classnames'
 
-import { compare } from 'utils'
-import { isRecord } from 'utils/types'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
+
+import { OrderBy, sortListItems } from '../../utils/sortListItems'
 
 import css from './List.less'
 
@@ -13,10 +13,7 @@ type Props<I extends unknown[]> = {
     dataKey: string
     listItems: I
     initialItemDisplayedNumber?: number
-    orderBy?: {
-        key: string
-        direction: 'ASC' | 'DESC'
-    }
+    orderBy?: OrderBy
     isEditing: boolean
     children: (listItems: I) => ReactNode
 }
@@ -33,18 +30,7 @@ function List<I extends unknown[]>({
     const [showMoreTimes, setShowMoreTimes] = useState(0)
 
     const sortedItems = useMemo(() => {
-        const sortedItems = [...listItems]
-        if (orderBy) {
-            sortedItems.sort((a, b) => {
-                if (isRecord(a) && isRecord(b)) {
-                    return orderBy.direction === 'ASC'
-                        ? compare(a[orderBy.key], b[orderBy.key])
-                        : compare(b[orderBy.key], a[orderBy.key])
-                }
-                return 0
-            })
-        }
-        return sortedItems
+        return sortListItems(listItems, orderBy)
     }, [listItems, orderBy])
 
     if (!listItems.length) {
