@@ -1,4 +1,9 @@
 // Update these statuspage components as well when you add a new integration here:
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from 'pages/integrations/integration/components/voice/VoiceMessageTTS/constants'
+
 import { VoiceMessageNone } from './types'
 
 // src/services/statusPageManager/constants.ts
@@ -141,11 +146,15 @@ export const DEFAULT_CALLBACK_REQUESTS = {
     prompt_message: {
         voice_message_type: VoiceMessageType.TextToSpeech,
         text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call shortly.`,
+        language: DEFAULT_TTS_LANGUAGE,
+        gender: DEFAULT_TTS_GENDER,
     },
     confirmation_message: {
         voice_message_type: VoiceMessageType.TextToSpeech,
         text_to_speech_content:
             'Your callback has been requested. Please leave a message after the tone.',
+        language: DEFAULT_TTS_LANGUAGE,
+        gender: DEFAULT_TTS_GENDER,
     },
     allow_to_leave_voicemail: true,
 } as const

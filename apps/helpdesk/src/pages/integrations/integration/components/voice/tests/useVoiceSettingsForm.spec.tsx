@@ -31,6 +31,10 @@ import {
     useDeletePhoneIntegration,
     useFormSubmit,
 } from '../useVoiceSettingsForm'
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../VoiceMessageTTS/constants'
 
 const queryClient = mockQueryClient()
 
@@ -253,17 +257,7 @@ describe('getDefaultValues', () => {
                     },
                 },
                 callback_requests: {
-                    enabled: false,
-                    prompt_message: {
-                        voice_message_type: VoiceMessageType.TextToSpeech,
-                        text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call shortly.`,
-                    },
-                    confirmation_message: {
-                        voice_message_type: VoiceMessageType.TextToSpeech,
-                        text_to_speech_content:
-                            'Your callback has been requested. Please leave a message after the tone.',
-                    },
-                    allow_to_leave_voicemail: true,
+                    ...DEFAULT_CALLBACK_REQUESTS,
                 },
             },
         })
@@ -328,10 +322,14 @@ describe('getDefaultValues', () => {
                     prompt_message: {
                         voice_message_type: VoiceMessageType.TextToSpeech,
                         text_to_speech_content: `Test prompt message`,
+                        language: DEFAULT_TTS_LANGUAGE,
+                        gender: DEFAULT_TTS_GENDER,
                     },
                     confirmation_message: {
                         voice_message_type: VoiceMessageType.TextToSpeech,
                         text_to_speech_content: `Test confirmation message`,
+                        language: DEFAULT_TTS_LANGUAGE,
+                        gender: DEFAULT_TTS_GENDER,
                     },
                     allow_to_leave_voicemail: false,
                 },

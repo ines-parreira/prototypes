@@ -3,7 +3,11 @@ import {
     Integration as ApiIntegration,
     VoiceQueueWaitMusicLibrary,
 } from '@gorgias/helpdesk-queries'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import {
+    CallRoutingFlow,
+    VoiceGender,
+    VoiceLanguage,
+} from '@gorgias/helpdesk-types'
 
 import { PhoneFunction } from 'business/twilio'
 
@@ -81,6 +85,9 @@ export type PhoneIntegrationIvrSettings = {
 export type VoiceMessageTextToSpeech = {
     voice_message_type: VoiceMessageType.TextToSpeech | 'text_to_speech'
     text_to_speech_content: Maybe<string>
+    text_to_speech_recording_file_path?: string | null
+    language?: VoiceLanguage | null
+    gender?: VoiceGender | null
 }
 
 export type VoiceMessageRecording = {

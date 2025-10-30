@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
@@ -12,6 +13,7 @@ import {
     type VoiceMessageType as VoiceMessageTypeType,
 } from '@gorgias/helpdesk-types'
 
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
@@ -24,6 +26,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
+import VoiceMessageTTSPreviewFields from './VoiceMessageTTS/VoiceMessageTTSPreviewFields'
 import VoiceRecordingInput from './VoiceRecordingInput'
 
 import css from './VoiceMessageField.less'
@@ -36,6 +39,7 @@ type Props = {
     isDisabled?: boolean
     customRecordingType: CustomRecordingType
     label?: string
+    name?: string
 }
 
 const LABELS = {
@@ -45,6 +49,7 @@ const LABELS = {
 }
 
 const VoiceMessageField = ({
+    name,
     value,
     onChange,
     allowNone,
@@ -67,6 +72,7 @@ const VoiceMessageField = ({
         VoiceMessageType.VoiceRecording,
         ...(allowNone ? [VoiceMessageType.None] : []),
     ]
+    const withPreview = useFlag(FeatureFlagKey.UseVoiceTTSRecording)
 
     useEffect(() => {
         if (
@@ -186,12 +192,22 @@ const VoiceMessageField = ({
                 />
             )}
             {value.voice_message_type === VoiceMessageType.TextToSpeech && (
-                <TextToSpeechRecordingInput
-                    onChange={onChange}
-                    selectedValue={value}
-                    className={css.optionContentHorizontal}
-                    isDisabled={isDisabled}
-                />
+                <>
+                    <TextToSpeechRecordingInput
+                        onChange={onChange}
+                        selectedValue={value}
+                        className={css.optionContentHorizontal}
+                        isDisabled={isDisabled}
+                        withLength={withPreview}
+                    />
+                    {withPreview && name && (
+                        <VoiceMessageTTSPreviewFields
+                            value={value}
+                            onChange={onChange}
+                            fieldName={name}
+                        />
+                    )}
+                </>
             )}
         </div>
     )

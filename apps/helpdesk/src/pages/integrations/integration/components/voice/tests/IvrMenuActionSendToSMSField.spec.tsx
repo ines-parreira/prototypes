@@ -145,6 +145,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
             confirmation_message: {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'confirmation message test',
+                text_to_speech_recording_file_path: null,
             },
             sms_content: 'sms content test',
             sms_integration_id: 2,

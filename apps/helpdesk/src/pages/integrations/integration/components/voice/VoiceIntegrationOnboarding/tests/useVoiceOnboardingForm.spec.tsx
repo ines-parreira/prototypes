@@ -20,6 +20,10 @@ import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../../VoiceMessageTTS/constants'
 import { SUCCESSFUL_ONBOARDING_PARAM, VOICEMAIL_FLOW_STEP } from '../constants'
 import {
     useOnboardingForm,
@@ -229,6 +233,8 @@ describe('useOnboardingForm', () => {
                                 name: 'IVR Menu',
                                 step_type: 'ivr_menu',
                                 message: {
+                                    language: DEFAULT_TTS_LANGUAGE,
+                                    gender: DEFAULT_TTS_GENDER,
                                     voice_message_type: 'text_to_speech',
                                     text_to_speech_content:
                                         'Hello, thanks for calling. This IVR number was not fully configured. Press 1 for set up instructions. Press 2 for more.',
@@ -251,6 +257,8 @@ describe('useOnboardingForm', () => {
                                 name: 'IVR instructions (1)',
                                 step_type: 'play_message',
                                 message: {
+                                    language: DEFAULT_TTS_LANGUAGE,
+                                    gender: DEFAULT_TTS_GENDER,
                                     voice_message_type: 'text_to_speech',
                                     text_to_speech_content:
                                         'You can update IVR menu options on the Call flow page.',
@@ -262,6 +270,8 @@ describe('useOnboardingForm', () => {
                                 name: 'IVR instructions (2)',
                                 step_type: 'play_message',
                                 message: {
+                                    language: DEFAULT_TTS_LANGUAGE,
+                                    gender: DEFAULT_TTS_GENDER,
                                     voice_message_type: 'text_to_speech',
                                     text_to_speech_content:
                                         'By default, the call will go to voicemail outside business hours.',

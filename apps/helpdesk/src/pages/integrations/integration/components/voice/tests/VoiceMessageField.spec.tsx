@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -7,6 +8,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
+import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
 import { Account } from 'state/currentAccount/types'
@@ -23,6 +25,9 @@ jest.mock('../utils', () => ({
         .fn()
         .mockRejectedValue(new Error('Invalid format')),
 }))
+jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => () => (
+    <div>VoiceMessageTTSPreviewFields</div>
+))
 
 const mutateUploadMock = jest.fn()
 
@@ -31,6 +36,9 @@ const uploadResponse = (isLoading = false) =>
         isLoading,
         mutate: mutateUploadMock,
     }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
+
+jest.mock('core/flags')
+const useFlagsMock = assumeMock(useFlag)
 
 describe('VoiceMessageField', () => {
     const onChange = jest.fn()
@@ -57,6 +65,7 @@ describe('VoiceMessageField', () => {
     ) => {
         return renderWithStoreAndQueryClientProvider(
             <VoiceMessageField
+                name={'testing'}
                 value={value}
                 onChange={onChange}
                 customRecordingType={CustomRecordingType.GreetingMessage}
@@ -142,6 +151,25 @@ describe('VoiceMessageField', () => {
             expect(textarea).toHaveValue('Thank you for calling')
         })
 
+        it('should display preview fields', () => {
+            useFlagsMock.mockReturnValue(true)
+            renderComponent()
+
+            expect(
+                screen.getByText('VoiceMessageTTSPreviewFields'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('21 / 1000')).toBeInTheDocument()
+        })
+
+        it('should not display preview fields when FF is off', () => {
+            useFlagsMock.mockReturnValue(false)
+            renderComponent()
+
+            expect(
+                screen.queryByText('VoiceMessageTTSPreviewFields'),
+            ).toBeNull()
+        })
+
         it('should update text-to-speech content when typing', async () => {
             const user = userEvent.setup()
             renderComponent()
@@ -157,6 +185,7 @@ describe('VoiceMessageField', () => {
                 expect(onChange).toHaveBeenLastCalledWith({
                     voice_message_type: VoiceMessageType.TextToSpeech,
                     text_to_speech_content: 'Thank you for callingA',
+                    text_to_speech_recording_file_path: null,
                 })
             })
         })

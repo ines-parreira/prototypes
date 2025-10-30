@@ -16,6 +16,7 @@ type PropsTextToSpeechRecordingInput = {
     onChange: (value: VoiceMessage) => void
     className?: string
     isDisabled?: boolean
+    withLength?: boolean
 }
 
 const TextToSpeechRecordingInput = ({
@@ -23,6 +24,7 @@ const TextToSpeechRecordingInput = ({
     onChange,
     className = css.optionContent,
     isDisabled = false,
+    withLength,
 }: PropsTextToSpeechRecordingInput) => {
     const textToSpeechLines =
         selectedValue.voice_message_type === VoiceMessageType.TextToSpeech &&
@@ -31,6 +33,7 @@ const TextToSpeechRecordingInput = ({
             : 0
     const value = selectedValue.text_to_speech_content ?? ''
     const noMessageProvided = value.length === 0
+
     return (
         <div className={className}>
             <Textarea
@@ -41,6 +44,7 @@ const TextToSpeechRecordingInput = ({
                     onChange({
                         ...selectedValue,
                         text_to_speech_content: message,
+                        text_to_speech_recording_file_path: null,
                     })
                 }}
                 rows={textToSpeechLines > 2 ? textToSpeechLines : 2}
@@ -51,6 +55,13 @@ const TextToSpeechRecordingInput = ({
                         : ''
                 }
                 isDisabled={isDisabled}
+                caption={
+                    withLength ? (
+                        <div className={css.textareaCaption}>
+                            {value.length} / {TEXT_TO_SPEECH_MAX_LENGTH}
+                        </div>
+                    ) : undefined
+                }
             />
         </div>
     )

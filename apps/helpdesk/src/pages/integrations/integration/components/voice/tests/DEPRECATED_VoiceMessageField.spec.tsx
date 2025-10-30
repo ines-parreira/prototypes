@@ -80,6 +80,7 @@ describe('<VoiceMessageField />', () => {
         expect(onChange).toHaveBeenCalledWith({
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: 'Please hold',
+            text_to_speech_recording_file_path: null,
         })
     })
 
@@ -221,6 +222,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         expect(onChange).toHaveBeenCalledWith({
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: 'Please hold',
+            text_to_speech_recording_file_path: null,
         })
     })
 
@@ -246,6 +248,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         expect(onChange).toHaveBeenCalledWith({
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: 'Please hold',
+            text_to_speech_recording_file_path: null,
         })
     })
 

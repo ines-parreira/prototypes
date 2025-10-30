@@ -190,6 +190,7 @@ export enum FeatureFlagKey {
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',
     UseLiveVoiceUpdates = 'use-live-voice-updates',
+    UseVoiceTTSRecording = 'use-voice-tts-recording',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',

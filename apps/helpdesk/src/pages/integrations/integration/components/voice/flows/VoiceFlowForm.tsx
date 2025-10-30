@@ -10,6 +10,7 @@ import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
+import TextToSpeechProvider from '../VoiceMessageTTS/TextToSpeechProvider'
 import { VoiceFlowNodeType } from './constants'
 import { VoiceFlowFormValues } from './types'
 import { useVoiceFlowForm } from './utils/useVoiceFlowForm'
@@ -45,38 +46,40 @@ function VoiceFlowForm({
     }, [])
 
     return (
-        <Form
-            className={css.formContainer}
-            onValidSubmit={onSubmit}
-            defaultValues={getDefaultValues(defaultValues)}
-            resetOptions={{
-                keepDirty: false,
-                keepDefaultValues: false,
-                keepDirtyValues: false,
-            }}
-            validator={(values: VoiceFlowFormValues) => {
-                try {
-                    return toFormErrors(
-                        validateCallRoutingFlow(
-                            omit(values, [
-                                'business_hours_id',
-                                'record_inbound_calls',
-                            ]),
-                        ),
-                    )
-                } catch {
-                    return { steps: 'An unexpected error occurred' }
-                }
-            }}
-        >
-            <div className={css.buttonsBanner}>
-                <GenericVoiceFormSubmitButton>
-                    Save changes
-                </GenericVoiceFormSubmitButton>
-            </div>
-            <FormUnsavedChangesPrompt onSave={onSubmit} />
-            {children}
-        </Form>
+        <TextToSpeechProvider integrationId={integration.id}>
+            <Form
+                className={css.formContainer}
+                onValidSubmit={onSubmit}
+                defaultValues={getDefaultValues(defaultValues)}
+                resetOptions={{
+                    keepDirty: false,
+                    keepDefaultValues: false,
+                    keepDirtyValues: false,
+                }}
+                validator={(values: VoiceFlowFormValues) => {
+                    try {
+                        return toFormErrors(
+                            validateCallRoutingFlow(
+                                omit(values, [
+                                    'business_hours_id',
+                                    'record_inbound_calls',
+                                ]),
+                            ),
+                        )
+                    } catch {
+                        return { steps: 'An unexpected error occurred' }
+                    }
+                }}
+            >
+                <div className={css.buttonsBanner}>
+                    <GenericVoiceFormSubmitButton>
+                        Save changes
+                    </GenericVoiceFormSubmitButton>
+                </div>
+                <FormUnsavedChangesPrompt onSave={onSubmit} />
+                {children}
+            </Form>
+        </TextToSpeechProvider>
     )
 }
 export default VoiceFlowForm

@@ -9,6 +9,10 @@ import {
 
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../VoiceMessageTTS/constants'
 import { VOICEMAIL_FLOW_STEP } from './constants'
 
 export const getSendToVoicemailFlow = (): CallRoutingFlow => {
@@ -87,6 +91,8 @@ export const getDefaultIvrFlow = (): CallRoutingFlow => {
                 name: 'IVR Menu',
                 step_type: 'ivr_menu',
                 message: {
+                    language: DEFAULT_TTS_LANGUAGE,
+                    gender: DEFAULT_TTS_GENDER,
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         'Hello, thanks for calling. This IVR number was not fully configured. Press 1 for set up instructions. Press 2 for more.',
@@ -109,6 +115,8 @@ export const getDefaultIvrFlow = (): CallRoutingFlow => {
                 name: 'IVR instructions (1)',
                 step_type: 'play_message',
                 message: {
+                    language: DEFAULT_TTS_LANGUAGE,
+                    gender: DEFAULT_TTS_GENDER,
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         'You can update IVR menu options on the Call flow page.',
@@ -120,6 +128,8 @@ export const getDefaultIvrFlow = (): CallRoutingFlow => {
                 name: 'IVR instructions (2)',
                 step_type: 'play_message',
                 message: {
+                    language: DEFAULT_TTS_LANGUAGE,
+                    gender: DEFAULT_TTS_GENDER,
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         'By default, the call will go to voicemail outside business hours.',

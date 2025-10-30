@@ -10,6 +10,11 @@ import {
     VOICEMAIL_DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
 
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../VoiceMessageTTS/constants'
+
 export enum VoiceIntegrationOnboardingStep {
     AddPhoneNumber = 'add-phone-number',
     ConfigureRoutingBehavior = 'configure-routing-behavior',
@@ -55,7 +60,11 @@ export const VOICEMAIL_FLOW_STEP: SendToVoicemailStep = {
     id: 'voicemail',
     name: 'Voicemail',
     step_type: 'send_to_voicemail',
-    voicemail: { ...VOICEMAIL_DEFAULT_VOICE_MESSAGE },
+    voicemail: {
+        ...VOICEMAIL_DEFAULT_VOICE_MESSAGE,
+        language: DEFAULT_TTS_LANGUAGE,
+        gender: DEFAULT_TTS_GENDER,
+    },
     allow_to_leave_voicemail: true,
     next_step_id: null,
 }

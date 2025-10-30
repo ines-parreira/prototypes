@@ -8,6 +8,10 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../../VoiceMessageTTS/constants'
+import {
     getDefaultIvrFlow,
     getDefaultStandardFlow,
     getRouteToQueueFlow,
@@ -46,6 +50,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'Voicemail',
                         step_type: 'send_to_voicemail',
                         voicemail: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 "Hello, unfortunately we aren't able to take your call right now. Please leave us a voicemail and we'll get back to you as soon as possible. Thank you!",
@@ -89,10 +95,14 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         callback_requests: {
                             enabled: false,
                             prompt_message: {
+                                language: DEFAULT_TTS_LANGUAGE,
+                                gender: DEFAULT_TTS_GENDER,
                                 voice_message_type: 'text_to_speech',
                                 text_to_speech_content: `You can request a callback at any time. Just press star and we'll return your call shortly.`,
                             },
                             confirmation_message: {
+                                language: DEFAULT_TTS_LANGUAGE,
+                                gender: DEFAULT_TTS_GENDER,
                                 voice_message_type: 'text_to_speech',
                                 text_to_speech_content:
                                     'Your callback has been requested. Please leave a message after the tone.',
@@ -106,6 +116,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'Voicemail',
                         step_type: 'send_to_voicemail',
                         voicemail: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 "Hello, unfortunately we aren't able to take your call right now. Please leave us a voicemail and we'll get back to you as soon as possible. Thank you!",
@@ -217,6 +229,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'IVR Menu',
                         step_type: 'ivr_menu',
                         message: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 'Hello, thanks for calling. This IVR number was not fully configured. Press 1 for set up instructions. Press 2 for more.',
@@ -239,6 +253,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'IVR instructions (1)',
                         step_type: 'play_message',
                         message: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 'You can update IVR menu options on the Call flow page.',
@@ -250,6 +266,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'IVR instructions (2)',
                         step_type: 'play_message',
                         message: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 'By default, the call will go to voicemail outside business hours.',
@@ -261,6 +279,8 @@ describe('VoiceIntegrationOnboarding utils', () => {
                         name: 'Voicemail',
                         step_type: 'send_to_voicemail',
                         voicemail: {
+                            language: DEFAULT_TTS_LANGUAGE,
+                            gender: DEFAULT_TTS_GENDER,
                             voice_message_type: 'text_to_speech',
                             text_to_speech_content:
                                 "Hello, unfortunately we aren't able to take your call right now. Please leave us a voicemail and we'll get back to you as soon as possible. Thank you!",
