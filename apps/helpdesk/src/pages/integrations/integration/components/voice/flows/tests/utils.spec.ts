@@ -2827,6 +2827,7 @@ describe('utils', () => {
                 'step-7': mockEnqueueStep({
                     id: 'step-7',
                     next_step_id: null,
+                    conditional_routing: false,
                 }),
             }
 
