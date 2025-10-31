@@ -16,6 +16,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import { TicketsFirstAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { SHOUTOUT_NO_VALUE_PLACEHOLDER } from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
 import {
     AgentsShoutOutsConfig,
@@ -76,9 +77,8 @@ describe('<AgentsShoutouts />', () => {
                 [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: String(
                     10 + idx,
                 ),
-                [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-                    10 + idx,
-                ),
+                [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
+                    String(10 + idx),
                 [TicketMessagesMeasure.MedianResolutionTime]: String(10 + idx),
                 [TicketMeasure.TicketCount]: String(10 + idx),
             })),
@@ -139,9 +139,8 @@ describe('<AgentsShoutouts />', () => {
                     /**
                      * this will be different for every agent
                      */
-                    [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-                        10 + idx,
-                    ),
+                    [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
+                        String(10 + idx),
                 })),
             },
         }

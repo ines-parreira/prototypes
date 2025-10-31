@@ -11,6 +11,7 @@ import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/Hel
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import { TicketsFirstAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatMetricValue,
@@ -79,7 +80,8 @@ export const AgentsShoutOutsConfig: Record<TopPerformersChart, ShoutoutConfig> =
             queryOrder: OrderDirection.Asc,
             metricName: TableLabels[AgentsTableColumn.MedianFirstResponseTime],
             formatValue: formatDuration,
-            measure: TicketMessagesMeasure.MedianFirstResponseTime,
+            measure:
+                TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
             title: `${AGENTS_SHOUT_OUTS_TITLE} - ${TableLabels[AgentsTableColumn.MedianFirstResponseTime]}`,
             hint: {
                 title: `${SHOUTOUT_DESCRIPTION} ${TableLabels[AgentsTableColumn.MedianFirstResponseTime]}`,
