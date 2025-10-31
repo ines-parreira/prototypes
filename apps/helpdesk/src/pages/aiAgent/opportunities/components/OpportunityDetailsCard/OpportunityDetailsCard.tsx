@@ -1,8 +1,8 @@
-import { useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { OpportunityType } from '../../enums'
 
@@ -22,8 +22,6 @@ export const OpportunityDetailsCard = ({
     ticketCount,
     onTicketCountClick,
 }: OpportunityDetailsCardProps) => {
-    const ticketCountRef = useRef<HTMLSpanElement>(null)
-
     const { defaultDescription } = useMemo(() => {
         switch (type) {
             case OpportunityType.RESOLVE_CONFLICT:
@@ -46,34 +44,28 @@ export const OpportunityDetailsCard = ({
                 <h3 className={css.title}>Opportunity</h3>
                 {ticketCount !== undefined && onTicketCountClick && (
                     <>
-                        <span
-                            ref={ticketCountRef}
-                            className={css.ticketCount}
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                onTicketCountClick()
-                            }}
-                        >
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.ticketCountIcon,
-                                )}
-                            >
-                                forum
-                            </i>
-                            {ticketCount}
-                        </span>
-                        {ticketCountRef.current && (
-                            <Tooltip
-                                placement="top"
-                                target={ticketCountRef.current}
-                                trigger={['hover']}
-                                delay={{ show: 0, hide: 300 }}
-                            >
-                                View related tickets
-                            </Tooltip>
-                        )}
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <span
+                                    className={css.ticketCount}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        onTicketCountClick()
+                                    }}
+                                >
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            css.ticketCountIcon,
+                                        )}
+                                    >
+                                        forum
+                                    </i>
+                                    {ticketCount}
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent title="View related tickets" />
+                        </Tooltip>
                     </>
                 )}
             </div>

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownInfobar.less'
@@ -94,30 +94,33 @@ export const OpportunityTicketDrillDownInfoBar = ({
             <div className={css.text}>
                 {isLoading ? resultsPlaceholder : getInfoLabel(totalTickets)}
             </div>
-            <Button
-                id={tooltipTargetID}
-                isDisabled={isDisabled}
-                variant="tertiary"
-                leadingSlot={getButtonIcon()}
-                className={
-                    isDownloadRequested && !isDownloadError
-                        ? localCss.successButton
-                        : localCss.downloadButton
-                }
-                {...(!isDownloadRequested && {
-                    onClick: onDownload,
-                })}
-            >
-                {getButtonText()}
-            </Button>
-            <Tooltip
-                disabled={!isDisabled}
-                target={tooltipTargetID}
-                trigger={['hover']}
-            >
-                {running !== false
-                    ? OPERATION_IN_PROGRESS_CONTENT
-                    : NO_PERMISSIONS_CONTENT}
+
+            <Tooltip>
+                <TooltipTrigger>
+                    <Button
+                        id={tooltipTargetID}
+                        isDisabled={isDisabled}
+                        variant="tertiary"
+                        leadingSlot={getButtonIcon()}
+                        className={
+                            isDownloadRequested && !isDownloadError
+                                ? localCss.successButton
+                                : localCss.downloadButton
+                        }
+                        {...(!isDownloadRequested && {
+                            onClick: onDownload,
+                        })}
+                    >
+                        {getButtonText()}
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent
+                    title={
+                        running !== false
+                            ? OPERATION_IN_PROGRESS_CONTENT
+                            : NO_PERMISSIONS_CONTENT
+                    }
+                />
             </Tooltip>
         </div>
     )
