@@ -79,6 +79,7 @@ export const ChannelsFormComponent = ({
 }: Props) => {
     const isAiAgentChatEnabled = useFlag(FeatureFlagKey.AiAgentChat)
     const isAiAgentSmsEnabled = useFlag(FeatureFlagKey.AiAgentSms)
+    const aiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
     const isAiAgentActivationEnabled = useFlag(FeatureFlagKey.AiAgentActivation)
     const hasAiAgentNewActivationXp = useFlag(
         FeatureFlagKey.AiAgentNewActivationXp,
@@ -239,6 +240,11 @@ export const ChannelsFormComponent = ({
                             <div className={css.sectionBlock}>
                                 <ChannelToggleInput
                                     isToggled={isSmsChannelEnabled}
+                                    warningText={
+                                        aiJourneyEnabled
+                                            ? 'Disabling AI Agent on SMS will deactivate AI Journey. Keep AI Agent on SMS enabled to avoid disruptions.'
+                                            : undefined
+                                    }
                                     onUpdate={(isToggled) => {
                                         updateSmsChannelDeactivatedDatetime(
                                             isToggled

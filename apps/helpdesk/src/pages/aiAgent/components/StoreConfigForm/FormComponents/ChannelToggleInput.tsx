@@ -1,6 +1,10 @@
+import { useMemo } from 'react'
+
 import { useLocalStorage } from '@repo/hooks'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
+
+import { Banner } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {
@@ -25,6 +29,7 @@ type Props = {
     type: SettingsBannerType
     orderManagementRoute?: string
     flowsRoute?: string
+    warningText?: string
 }
 
 export const ChannelToggleInput = ({
@@ -36,6 +41,7 @@ export const ChannelToggleInput = ({
     type,
     orderManagementRoute,
     flowsRoute,
+    warningText,
 }: Props) => {
     const [bannerAcknowledged, setBannerAcknowledged] =
         useLocalStorage<boolean>(
@@ -47,11 +53,17 @@ export const ChannelToggleInput = ({
         onUpdate(!isToggled)
 
         if (isToggled) {
-            const event =
-                channel === 'chat'
-                    ? SegmentEvent.AiAgentChatConfigurationDisabled
-                    : SegmentEvent.AiAgentEmailConfigurationDisabled
-            logEvent(event)
+            switch (channel) {
+                case 'chat':
+                    logEvent(SegmentEvent.AiAgentChatConfigurationDisabled)
+                    break
+                case 'email':
+                    logEvent(SegmentEvent.AiAgentEmailConfigurationDisabled)
+                    break
+                case 'sms':
+                    logEvent(SegmentEvent.AiAgentSmsConfigurationDisabled)
+                    break
+            }
         }
     }
 
@@ -64,8 +76,8 @@ export const ChannelToggleInput = ({
         ),
         [SettingsBannerType.Sms]: (
             <p>
-                🚨 At the moment SMS channel is only available for AI Journey
-                scenarios and admin usage.
+                When shoppers message via SMS, AI Agent automatically picks up
+                the tickets to respond.
             </p>
         ),
         [SettingsBannerType.Email]: (
@@ -85,29 +97,47 @@ export const ChannelToggleInput = ({
         ),
     }
 
+    const channelName = useMemo(() => {
+        return type === SettingsBannerType.Sms ? 'SMS' : _upperFirst(type)
+    }, [type])
+
     return (
         <SettingsCard>
             <SettingsCardHeader>
                 <SettingsCardTitle>
-                    Enable AI Agent on {_upperFirst(type)}
+                    Enable AI Agent on {channelName}
                 </SettingsCardTitle>
                 {subtitle[type]}
             </SettingsCardHeader>
             <SettingsCardContent>
-                {deactivatedDatetime && !bannerAcknowledged && (
+                {deactivatedDatetime &&
+                    !bannerAcknowledged &&
+                    BannerText[type] && (
+                        <div data-testid="info-banner">
+                            <Tip
+                                onClose={() => setBannerAcknowledged(true)}
+                                icon={true}
+                                actionLabel=""
+                                storageKey={`ai-settings-${type}-banner-acknowledged`}
+                            >
+                                {BannerText[type]}
+                            </Tip>
+                        </div>
+                    )}
+
+                {warningText && (
                     <div>
-                        <Tip
-                            onClose={() => setBannerAcknowledged(true)}
-                            icon={true}
-                            actionLabel=""
-                            storageKey={`ai-settings-${type}-banner-acknowledged`}
+                        <Banner
+                            variant="inline"
+                            fillStyle="fill"
+                            type="warning"
                         >
-                            {BannerText[type]}
-                        </Tip>
+                            {warningText}
+                        </Banner>
                     </div>
                 )}
                 <SettingsFeatureRow
-                    title={`Enable AI Agent on ${_upperFirst(type)}`}
+                    title={`Enable AI Agent on ${channelName}`}
                     type="toggle"
                     isChecked={isToggled}
                     isDisabled={isDisabled}

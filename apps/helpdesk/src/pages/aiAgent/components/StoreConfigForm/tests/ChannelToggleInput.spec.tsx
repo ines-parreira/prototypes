@@ -72,9 +72,10 @@ describe('ChannelToggleInput', () => {
         ).toBeInTheDocument()
     })
 
-    it.each<['chat' | 'email', SegmentEvent]>([
+    it.each<['chat' | 'email' | 'sms', SegmentEvent]>([
         ['chat', SegmentEvent.AiAgentChatConfigurationDisabled],
         ['email', SegmentEvent.AiAgentEmailConfigurationDisabled],
+        ['sms', SegmentEvent.AiAgentSmsConfigurationDisabled],
     ])(
         'should fire segment event for %s when toggle is off',
         (channel, segmentEvent) => {
@@ -155,4 +156,31 @@ describe('ChannelToggleInput', () => {
             })
         },
     )
+
+    it('should not show the info banner for SMS', () => {
+        renderComponent({
+            channel: 'sms',
+            type: SettingsBannerType.Sms,
+        })
+        expect(screen.queryByTestId('info-banner')).not.toBeInTheDocument()
+    })
+
+    it('should show the warning text if it is provided', () => {
+        renderComponent({
+            channel: 'sms',
+            type: SettingsBannerType.Sms,
+            warningText: 'This is a warning text',
+        })
+        expect(screen.getByText('This is a warning text')).toBeInTheDocument()
+    })
+
+    it('should not show the warning text if it is not provided', () => {
+        renderComponent({
+            channel: 'sms',
+            type: SettingsBannerType.Sms,
+        })
+        expect(
+            screen.queryByText('This is a warning text'),
+        ).not.toBeInTheDocument()
+    })
 })

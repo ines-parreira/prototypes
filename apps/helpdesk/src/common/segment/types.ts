@@ -13,6 +13,7 @@ export enum SegmentEvent {
     AiAgentConfigurationDisabled = 'ai-agent-configuration-disabled',
     AiAgentCopiedToEditor = 'ai-agent-copied-to-editor',
     AiAgentEmailConfigurationDisabled = 'ai-agent-email-configuration-disabled',
+    AiAgentSmsConfigurationDisabled = 'ai-agent-sms-configuration-disabled',
     AiAgentEnabled = 'ai-agent-enabled',
     AiAgentEnablementPostReceivedOnboardingNotification = 'ai-agent-enablement-post-received-onboarding-notification',
     AiAgentFeedbackBannerClicked = 'ai-agent-feedback-banner-clicked',

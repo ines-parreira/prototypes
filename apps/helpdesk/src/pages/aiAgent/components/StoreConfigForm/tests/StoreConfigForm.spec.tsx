@@ -2538,7 +2538,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent({ section: 'sms' })
 
             expect(
-                screen.getAllByText('Enable AI Agent on Sms').length,
+                screen.getAllByText('Enable AI Agent on SMS').length,
             ).toBeGreaterThan(0)
 
             expect(
@@ -2660,7 +2660,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent({ section: 'sms' })
 
             expect(
-                screen.getAllByText('Enable AI Agent on Sms').length,
+                screen.getAllByText('Enable AI Agent on SMS').length,
             ).toBeGreaterThan(0)
 
             expect(
