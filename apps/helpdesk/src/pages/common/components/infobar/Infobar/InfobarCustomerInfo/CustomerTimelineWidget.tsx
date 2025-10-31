@@ -152,9 +152,14 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
 
     const widgetContext = useAppSelector(getContext)
 
+    const otherCustomerTickets = tickets.filter(
+        (ticket) => ticket.id.toString() !== activeTicketId,
+    )
+
     const ticketCount = tickets.length
     const hasNoTickets = !isLoading && ticketCount === 0
-    const hasNoHistory = !isLoading && ticketCount < 2
+    const hasNoHistory = !isLoading && otherCustomerTickets.length === 0
+
     const { openTicketCount, snoozedTicketCount } = getTicketsCount(tickets)
 
     const showToggle = !(

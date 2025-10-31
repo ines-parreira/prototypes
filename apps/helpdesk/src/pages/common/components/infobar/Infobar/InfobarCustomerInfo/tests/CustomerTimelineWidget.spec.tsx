@@ -4,7 +4,6 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { Button, LegacyButton, Text } from '@gorgias/axiom'
 import { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -25,19 +24,6 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: jest.fn(({ onClick, children }) => (
-        <button onClick={onClick}>{children}</button>
-    )),
-    LegacyButton: jest.fn(({ onClick, children }) => (
-        <button onClick={onClick}>{children}</button>
-    )),
-    Text: jest.fn(({ children }) => <span>{children}</span>),
-    Icon: jest.fn(({ name }) => (
-        <span data-testid={`icon-${name}`}>{name}</span>
-    )),
-}))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -153,25 +139,47 @@ describe('CustomerTimelineButton', () => {
         expect(closeTimelineMock).toHaveBeenCalled()
     })
 
-    it('should display that there is no history', () => {
+    it('should display that there is no history when customer has no tickets', () => {
         useTicketListDataMock.mockReturnValue({
             ...defaultTimelineDataReturnValue,
             tickets: [],
         })
 
-        const { rerender } = render(
-            <CustomerTimelineWidget {...defaultProps} />,
-        )
+        render(<CustomerTimelineWidget {...defaultProps} />)
 
         expect(screen.getByText('No other tickets')).toBeInTheDocument()
+    })
 
+    it('should display that there is no history when customer has only the active ticket', () => {
         useTicketListDataMock.mockReturnValue({
             ...defaultTimelineDataReturnValue,
             tickets: [closedTickets[0]],
         })
+        useParamsMock.mockReturnValue({
+            ticketId: closedTickets[0].id.toString(),
+        })
 
-        rerender(<CustomerTimelineWidget {...defaultProps} />)
+        render(<CustomerTimelineWidget {...defaultProps} />)
+
         expect(screen.getByText('No other tickets')).toBeInTheDocument()
+        const button = screen.getByRole('button', { name: /open timeline/i })
+        expect(button).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should enable timeline button when customer has a single ticket that is not the active ticket', () => {
+        useTicketListDataMock.mockReturnValue({
+            ...defaultTimelineDataReturnValue,
+            tickets: [closedTickets[0]],
+        })
+        useParamsMock.mockReturnValue({
+            ticketId: '999',
+        })
+
+        render(<CustomerTimelineWidget {...defaultProps} />)
+
+        expect(screen.getByText('1 ticket')).toBeInTheDocument()
+        const button = screen.getByRole('button', { name: /open timeline/i })
+        expect(button).not.toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should display the correct number of tickets', () => {
@@ -193,12 +201,8 @@ describe('CustomerTimelineButton', () => {
 
         render(<CustomerTimelineWidget {...defaultProps} />)
 
-        expect(LegacyButton).toHaveBeenCalledWith(
-            expect.objectContaining({
-                intent: 'secondary',
-            }),
-            {},
-        )
+        const button = screen.getByRole('button', { name: /open timeline/i })
+        expect(button.className).toMatch(/ui-button-secondary/)
     })
 
     it('should call history.replace when the widget is unmounted with same customerId as opened timeline', () => {
@@ -220,11 +224,9 @@ describe('CustomerTimelineButton', () => {
                 shopperId: defaultProps.shopperId + 1,
             })
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(LegacyButton).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    leadingIcon: 'forum',
-                }),
-                {},
+            const button = screen.getByRole('button', { name: /open this/i })
+            expect(button.querySelector('.material-icons')).toHaveTextContent(
+                'forum',
             )
         })
 
@@ -299,11 +301,12 @@ describe('CustomerTimelineButton', () => {
     describe('Candu target attribute', () => {
         it('should be set to true when there is history', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(LegacyButton).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    'data-candu-trigger-timeline': true,
-                }),
-                {},
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button).toHaveAttribute(
+                'data-candu-trigger-timeline',
+                'true',
             )
         })
 
@@ -313,11 +316,12 @@ describe('CustomerTimelineButton', () => {
                 tickets: [],
             })
             render(<CustomerTimelineWidget {...defaultProps} />)
-            expect(LegacyButton).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    'data-candu-trigger-timeline': false,
-                }),
-                {},
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button).toHaveAttribute(
+                'data-candu-trigger-timeline',
+                'false',
             )
         })
     })
@@ -336,7 +340,7 @@ describe('CustomerTimelineButton', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
 
             expect(
-                screen.getByRole('button', { name: 'Open timeline' }),
+                screen.getByRole('button', { name: /open timeline/i }),
             ).toBeInTheDocument()
         })
 
@@ -351,12 +355,10 @@ describe('CustomerTimelineButton', () => {
         it('should show primary button when there are multiple open tickets', () => {
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(Button).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    variant: 'primary',
-                }),
-                {},
-            )
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button.className).toMatch(/ui-button-primary/)
         })
 
         it('should show secondary button when viewing the only open ticket', () => {
@@ -370,15 +372,13 @@ describe('CustomerTimelineButton', () => {
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(Button).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    variant: 'secondary',
-                }),
-                {},
-            )
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button.className).toMatch(/ui-button-secondary/)
         })
 
-        it('should show disabled button when there is no history', () => {
+        it('should show disabled button when customer has no tickets', () => {
             useTicketListDataMock.mockReturnValue({
                 ...defaultTimelineDataReturnValue,
                 tickets: [],
@@ -386,12 +386,45 @@ describe('CustomerTimelineButton', () => {
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(Button).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    isDisabled: true,
-                }),
-                {},
-            )
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should show disabled button when customer has only the active ticket', () => {
+            useTicketListDataMock.mockReturnValue({
+                ...defaultTimelineDataReturnValue,
+                tickets: [closedTickets[0]],
+            })
+            useParamsMock.mockReturnValue({
+                ticketId: closedTickets[0].id.toString(),
+            })
+
+            render(<CustomerTimelineWidget {...defaultProps} />)
+
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable timeline button when customer has a single ticket that is not the active ticket', () => {
+            useTicketListDataMock.mockReturnValue({
+                ...defaultTimelineDataReturnValue,
+                tickets: [closedTickets[0]],
+            })
+            useParamsMock.mockReturnValue({
+                ticketId: '999',
+            })
+
+            render(<CustomerTimelineWidget {...defaultProps} />)
+
+            expect(screen.getByText('1 ticket')).toBeInTheDocument()
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button).not.toHaveAttribute('aria-disabled', 'true')
         })
 
         it('should display "No other tickets" when there is no history', () => {
@@ -462,13 +495,12 @@ describe('CustomerTimelineButton', () => {
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 
-            expect(Text).not.toHaveBeenCalled()
-            expect(Button).not.toHaveBeenCalled()
-            expect(LegacyButton).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    leadingIcon: 'forum',
-                }),
-                {},
+            const button = screen.getByRole('button', {
+                name: /open timeline/i,
+            })
+            expect(button.className).toMatch(/ui-button-primary/)
+            expect(button.querySelector('.material-icons')).toHaveTextContent(
+                'forum',
             )
         })
 
