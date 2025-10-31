@@ -26,6 +26,7 @@ export const KnowledgeEditorGuidanceEditView = ({
     onChangeTitle,
     shopName,
     availableActions,
+    availableVariables,
 }: Props) => (
     <div className={css.container}>
         <InputField
@@ -44,8 +45,8 @@ export const KnowledgeEditorGuidanceEditView = ({
                 label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                 shopName={shopName}
                 availableActions={availableActions || []}
-                showActionsButton={false}
-                showVariablesButton={false}
+                showActionsButton={!!availableActions?.length}
+                showVariablesButton={!!availableVariables?.length}
             />
             <Caption isValid>
                 Provide instructions on how AI Agent should handle this

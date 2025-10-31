@@ -228,22 +228,13 @@ export class RichFieldEditor extends Component<Props, State> {
             plugins.push(this.workflowVariablesPlugin)
         }
 
-        // Always create guidance plugins if guidance variables/actions are provided,
-        // even if toolbar buttons are hidden. The plugins are needed for rendering
-        // tags/buttons within the editor content.
-        if (
-            props.displayedActions?.includes(ActionName.GuidanceAction) ||
-            props.getGuidanceVariables
-        ) {
+        if (props.displayedActions?.includes(ActionName.GuidanceAction)) {
             this.guidanceActionsPlugin = createGuidanceActionsPlugin()
 
             plugins.push(this.guidanceActionsPlugin)
         }
 
-        if (
-            props.displayedActions?.includes(ActionName.GuidanceVariable) ||
-            props.getGuidanceVariables
-        ) {
+        if (props.displayedActions?.includes(ActionName.GuidanceVariable)) {
             this.guidanceVariablesPlugin = createGuidanceVariablesPlugin({
                 getVariables: this.props.getGuidanceVariables,
             })

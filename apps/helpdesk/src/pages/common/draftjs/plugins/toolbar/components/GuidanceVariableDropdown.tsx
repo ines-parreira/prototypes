@@ -144,8 +144,17 @@ const GuidanceVariableDropdown = ({
         return null // We'll handle grouped variables separately
     }, [searchResults, selectedProvider, guidanceVariablesProp])
 
+    const overlayRootNode = useMemo(
+        () =>
+            document.querySelector<HTMLElement>(
+                '[class*="ui-sidepanel-sidepanel"]',
+            ) ?? undefined,
+        [],
+    )
+
     return (
         <Dropdown
+            root={overlayRootNode}
             isDisabled={isDisabled}
             isOpen={isOpen}
             target={target}

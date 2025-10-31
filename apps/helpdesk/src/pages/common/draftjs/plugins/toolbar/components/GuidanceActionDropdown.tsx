@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useState } from 'react'
+import React, { RefObject, useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -57,8 +57,17 @@ const GuidanceActionDropdown = ({
         }
     }, [isOpen])
 
+    const overlayRootNode = useMemo(
+        () =>
+            document.querySelector<HTMLElement>(
+                '[class*="ui-sidepanel-sidepanel"]',
+            ) ?? undefined,
+        [],
+    )
+
     return (
         <Dropdown
+            root={overlayRootNode}
             isDisabled={isDisabled}
             isOpen={isOpen}
             target={target}
