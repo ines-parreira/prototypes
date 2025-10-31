@@ -109,7 +109,8 @@ export const ActionDrivenNavigationItems = ({
                                         exact={subItem.exact}
                                     >
                                         {subItem.title === 'Chat' ||
-                                        subItem.title === 'Email' ? (
+                                        subItem.title === 'Email' ||
+                                        subItem.title === 'SMS' ? (
                                             <StatusIndicator
                                                 title={subItem.title}
                                                 isActive={

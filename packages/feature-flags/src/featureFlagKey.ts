@@ -42,6 +42,7 @@ export enum FeatureFlagKey {
     AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
+    AiAgentSmsChannel = 'ai-agent-sms-channel',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',

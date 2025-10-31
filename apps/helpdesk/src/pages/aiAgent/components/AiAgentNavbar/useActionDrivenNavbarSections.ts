@@ -117,6 +117,12 @@ export const useActionDrivenNavbarSections = () => {
                     configuration.emailChannelDeactivatedDatetime,
                 )
             }
+
+            if (channelType === 'sms') {
+                return isAiAgentEnabled(
+                    configuration.smsChannelDeactivatedDatetime,
+                )
+            }
             return false
         },
         [storeActivations, selectedStore],

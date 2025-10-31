@@ -66,6 +66,7 @@ describe('useActionDrivenNavbarSections', () => {
             configuration: {
                 chatChannelDeactivatedDatetime: null,
                 emailChannelDeactivatedDatetime: '2024-01-01',
+                smsChannelDeactivatedDatetime: null,
             },
         },
         teststore2: {
@@ -349,6 +350,13 @@ describe('useActionDrivenNavbarSections', () => {
             const { result } = renderHook(() => useActionDrivenNavbarSections())
 
             const status = result.current.getChannelStatus('email')
+            expect(status).toBe(true)
+        })
+
+        it('should return true when SMS channel is enabled', () => {
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            const status = result.current.getChannelStatus('sms')
             expect(status).toBe(true)
         })
 

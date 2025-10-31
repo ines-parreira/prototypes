@@ -122,6 +122,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         trainAiFeedback: `${basePath}/train/ai-feedback`,
         deployChat: `${basePath}/deploy/chat`,
         deployEmail: `${basePath}/deploy/email`,
+        deploySms: `${basePath}/deploy/sms`,
     }
 }
 
@@ -156,6 +157,8 @@ const useNavigationItems = (
         FeatureFlagKey.AiShoppingAssistantAbTesting,
         false,
     )
+
+    const isSmsChannelEnabled = useFlag(FeatureFlagKey.AiAgentSmsChannel)
 
     const isOpportunitiesEnabled = useFlag(FeatureFlagKey.SurfaceOpportunities)
     const shouldRenderShoppingAssistantPages =
@@ -272,7 +275,12 @@ const useNavigationItems = (
                         title: EMAIL,
                         exact: true,
                     },
-                ],
+                    isSmsChannelEnabled && {
+                        route: routes.deploySms,
+                        title: 'SMS',
+                        exact: true,
+                    },
+                ].filter((x) => !!x) as NavigationItem[],
             },
             {
                 title: SETTINGS,
@@ -297,6 +305,7 @@ const useNavigationItems = (
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isAiShoppingAssistantEnabled,
+        isSmsChannelEnabled,
         shouldRenderShoppingAssistantPages,
         isOpportunitiesEnabled,
         routes,

@@ -12,7 +12,7 @@ export const getSectionKeyFromStoreIntegration = (
     return `${integration.type}:${getShopNameFromStoreIntegration(integration)}`
 }
 
-export type NavigationChannelType = 'chat' | 'email'
+export type NavigationChannelType = 'chat' | 'email' | 'sms'
 
 /* *
  * Get the name of the collapsed section in the navbar.
