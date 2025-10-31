@@ -16,7 +16,7 @@ import {
 } from '../utils'
 
 export function useDeleteNode() {
-    const { unregister, setValue, watch } =
+    const { unregister, setValue, watch, trigger } =
         useFormContext<VoiceFlowFormValues>()
     const { getNode } = useVoiceFlow()
     const updateNodes = useUpdateNodes()
@@ -96,6 +96,8 @@ export function useDeleteNode() {
         })
 
         setValue('steps', flowClone.steps, { shouldDirty: true })
+        /* trigger validation manually to make sure the old errors are cleared */
+        trigger()
         updateNodes()
     }
 
