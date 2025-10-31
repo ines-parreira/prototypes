@@ -1691,7 +1691,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         title: 'Set customer field',
         icon: 'person',
         arguments: {
-            customer_field_id: {
+            custom_field_id: {
                 label: 'Field',
                 default: '',
                 editable: false,

@@ -356,7 +356,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                         case 'customer_field-select':
                             return null
                         case 'customer_field-input':
-                            if (!actionArgs.get('customer_field_id')) {
+                            if (!actionArgs.get('custom_field_id')) {
                                 return null
                             }
                             return (
@@ -366,9 +366,10 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                 >
                                     <CustomFieldSelect
                                         value={actionArgs.get(
-                                            'customer_field_id',
+                                            'custom_field_id',
                                         )}
                                         className={css.customFieldSelect}
+                                        objectType="Customer"
                                         viewMode
                                     />
                                     <CustomFieldIdInput
@@ -376,7 +377,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             this.setValue(key, value!)
                                         }
                                         customFieldId={actionArgs.get(
-                                            'customer_field_id',
+                                            'custom_field_id',
                                         )}
                                         value={value}
                                         className={css.customFieldInput}

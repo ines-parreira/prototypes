@@ -97,7 +97,7 @@ const SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
 }
 
 const SET_CUSTOMER_CUSTOM_FIELD_VALUE_ACTION_DEFAULT = {
-    customer_field_id: '',
+    custom_field_id: '',
     value: '',
 }
 

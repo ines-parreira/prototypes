@@ -100,7 +100,7 @@ export const SimpleActionPreview = ({ action }: Props) => {
                     </div>
                 )
             case MacroActionName.SetCustomerCustomFieldValue:
-                if (!args.customer_field_id) return null
+                if (!args.custom_field_id) return null
                 return <div>Customer Field: {args.value}</div>
             default:
                 break

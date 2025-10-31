@@ -48,6 +48,7 @@ const displayedArg: Record<string, string> = {
     [MacroActionName.SetTeamAssignee]: 'assignee_team',
     [MacroActionName.SnoozeTicket]: 'snooze_timedelta',
     [MacroActionName.SetCustomFieldValue]: 'value',
+    [MacroActionName.SetCustomerCustomFieldValue]: 'value',
 }
 
 type Props = {

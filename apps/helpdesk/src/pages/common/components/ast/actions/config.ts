@@ -70,10 +70,10 @@ export function validateSetCustomFieldValue(values: {
 }
 
 export function validateSetCustomerCustomFieldValue(values: {
-    customer_field_id?: number
+    custom_field_id?: number
     value?: number | string | boolean
 }) {
-    if (!values.customer_field_id) {
+    if (!values.custom_field_id) {
         return 'Field must be selected'
     }
     if (isCustomFieldValueEmpty(values.value)) {
@@ -164,7 +164,6 @@ export type Argument = {
     snooze_timedelta: Pick<Properties, 'widget'>
     priority: Pick<Properties, 'widget'>
     custom_field_id: Pick<Properties, 'widget'>
-    customer_field_id: Pick<Properties, 'widget'>
     value: Pick<Properties, 'widget'>
 }
 
@@ -335,7 +334,7 @@ export const actionsConfig: { [key in ActionType | 'notify']: ActionConfig } = {
         compact: true,
         name: 'Set customer field',
         args: {
-            customer_field_id: {
+            custom_field_id: {
                 widget: 'customer_field-select',
             },
             value: {

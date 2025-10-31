@@ -186,7 +186,7 @@ describe('<TicketReplyAction />', () => {
                         action={fromJS({
                             name: MacroActionName.SetCustomerCustomFieldValue,
                             arguments: {
-                                customer_field_id: 123,
+                                custom_field_id: 123,
                                 value,
                             },
                         })}
@@ -198,7 +198,7 @@ describe('<TicketReplyAction />', () => {
         expect(screen.getByDisplayValue(value)).toBeInTheDocument()
     })
 
-    it('should return null when customer_field-input has no customer_field_id', () => {
+    it('should return null when customer_field-input has no custom_field_id', () => {
         render(
             <Provider
                 store={mockStore({ integrations: fromJS(integrationsState) })}
@@ -209,7 +209,7 @@ describe('<TicketReplyAction />', () => {
                         action={fromJS({
                             name: MacroActionName.SetCustomerCustomFieldValue,
                             arguments: {
-                                // No customer_field_id provided
+                                // No custom_field_id provided
                                 value: 'some value',
                             },
                         })}

@@ -76,7 +76,7 @@ export function mergeCustomerFieldsStateWithMacroValues({
             action.name === MacroActionName.SetCustomerCustomFieldValue &&
             action.arguments.value !== ''
         ) {
-            const customerFieldId = action.arguments.customer_field_id
+            const customerFieldId = action.arguments.custom_field_id
             if (customerFieldId) {
                 customerFieldsWithMacro[customerFieldId] = {
                     ...fieldsState[customerFieldId],

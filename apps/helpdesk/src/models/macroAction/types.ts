@@ -71,7 +71,6 @@ export type MacroAction = {
         bcc?: string
         from?: string
         custom_field_id?: number
-        customer_field_id?: number
         value?: number | string | boolean
     }
     description?: string

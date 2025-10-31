@@ -101,10 +101,17 @@ export default function TicketReplyActions({
                         ) => {
                             // It is critical to have a proper key here
                             let key: string = action.get('name')
-                            const customFieldId = action.getIn([
-                                'arguments',
-                                'custom_field_id',
-                            ]) as number | undefined
+                            let customFieldId: number | undefined
+                            if (
+                                key === MacroActionName.SetCustomFieldValue ||
+                                key ===
+                                    MacroActionName.SetCustomerCustomFieldValue
+                            ) {
+                                customFieldId = action.getIn([
+                                    'arguments',
+                                    'custom_field_id',
+                                ]) as number | undefined
+                            }
                             if (customFieldId !== undefined) {
                                 key += `_${customFieldId}`
                             } else {

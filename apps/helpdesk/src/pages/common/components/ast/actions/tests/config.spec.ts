@@ -233,9 +233,9 @@ describe('isValidActionKey', () => {
 describe('validateSetCustomerCustomFieldValue', () => {
     it('should validate customer field value', () => {
         const valid = [
-            { value: 'hoy', customer_field_id: 1 },
-            { value: 10, customer_field_id: 1 },
-            { value: true, customer_field_id: 1 },
+            { value: 'hoy', custom_field_id: 1 },
+            { value: 10, custom_field_id: 1 },
+            { value: true, custom_field_id: 1 },
         ]
         valid.forEach((input) => {
             expect(validateSetCustomerCustomFieldValue(input)).toBeFalsy()
@@ -246,9 +246,9 @@ describe('validateSetCustomerCustomFieldValue', () => {
         const invalid = [
             {},
             { value: 'hoy' },
-            { value: 'hoy', customer_field_id: 0 },
-            { customer_field_id: 1 },
-            { customer_field_id: 1, value: '' },
+            { value: 'hoy', custom_field_id: 0 },
+            { custom_field_id: 1 },
+            { custom_field_id: 1, value: '' },
         ]
         invalid.forEach((input) => {
             expect(validateSetCustomerCustomFieldValue(input)).toBeTruthy()

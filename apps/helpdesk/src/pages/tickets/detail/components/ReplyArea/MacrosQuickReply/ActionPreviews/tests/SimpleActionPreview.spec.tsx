@@ -37,7 +37,7 @@ describe('<SimpleActionPreview />', () => {
             ...setCustomerCustomFieldValueAction,
             arguments: {
                 ...setCustomerCustomFieldValueAction.arguments,
-                customer_field_id: undefined,
+                custom_field_id: undefined,
             },
         }
 

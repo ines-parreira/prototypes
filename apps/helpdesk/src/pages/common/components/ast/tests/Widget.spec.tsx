@@ -551,7 +551,7 @@ describe('<Widget />', () => {
                     ])}
                     properties={[
                         {
-                            key: { name: 'customer_field_id' },
+                            key: { name: 'custom_field_id' },
                             value: { value: null },
                         },
                     ]}

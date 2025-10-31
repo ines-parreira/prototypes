@@ -153,7 +153,7 @@ describe('mergeCustomerFieldsStateWithMacroValues', () => {
         expect(result[1].value).toBe('old customer value')
     })
 
-    it('should handle actions without customer_field_id', () => {
+    it('should handle actions without custom_field_id', () => {
         const fieldsState = {
             1: { id: 1, value: 'old customer value' },
         }
@@ -162,7 +162,7 @@ describe('mergeCustomerFieldsStateWithMacroValues', () => {
             ...setCustomerCustomFieldValueAction,
             arguments: {
                 ...setCustomerCustomFieldValueAction.arguments,
-                customer_field_id: undefined,
+                custom_field_id: undefined,
             },
         }
 
@@ -192,7 +192,7 @@ describe('mergeCustomerFieldsStateWithMacroValues', () => {
                     ...setCustomerCustomFieldValueAction,
                     arguments: {
                         ...setCustomerCustomFieldValueAction.arguments,
-                        customer_field_id: 2,
+                        custom_field_id: 2,
                         value: 'New customer value',
                     },
                 },

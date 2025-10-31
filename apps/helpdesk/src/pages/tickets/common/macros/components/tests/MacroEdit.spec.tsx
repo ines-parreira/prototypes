@@ -555,7 +555,7 @@ describe('MacroEdit component', () => {
         const customerFieldAction = {
             name: MacroActionName.SetCustomerCustomFieldValue,
             arguments: {
-                customer_field_id: 1,
+                custom_field_id: 1,
                 value: 'VIP Customer',
             },
         }
@@ -569,7 +569,7 @@ describe('MacroEdit component', () => {
         const customerFieldAction = {
             name: MacroActionName.SetCustomerCustomFieldValue,
             arguments: {
-                customer_field_id: 1,
+                custom_field_id: 1,
                 value: 'VIP Customer',
             },
         }
@@ -584,14 +584,14 @@ describe('MacroEdit component', () => {
             {
                 name: MacroActionName.SetCustomerCustomFieldValue,
                 arguments: {
-                    customer_field_id: 1,
+                    custom_field_id: 1,
                     value: 'VIP Customer',
                 },
             },
             {
                 name: MacroActionName.SetCustomerCustomFieldValue,
                 arguments: {
-                    customer_field_id: 2,
+                    custom_field_id: 2,
                     value: 'Premium Customer',
                 },
             },

@@ -264,7 +264,7 @@ export const setCustomerCustomFieldValueAction: MacroAction = {
     type: MacroActionType.User,
     title: 'Set customer field',
     arguments: {
-        customer_field_id: 1,
+        custom_field_id: 1,
         value: 'Customer field value',
     },
 }

@@ -128,7 +128,7 @@ describe('<ActionSelect />', () => {
         expect(actionsConfig.setCustomerCustomFieldValue.compact).toBe(true)
         expect(actionsConfig.setCustomerCustomFieldValue.args).toBeDefined()
         expect(
-            actionsConfig.setCustomerCustomFieldValue.args?.customer_field_id,
+            actionsConfig.setCustomerCustomFieldValue.args?.custom_field_id,
         ).toBeDefined()
         expect(
             actionsConfig.setCustomerCustomFieldValue.args?.value,
@@ -139,7 +139,7 @@ describe('<ActionSelect />', () => {
     it('should have proper widget configuration for customer field action', () => {
         const customerFieldConfig = actionsConfig.setCustomerCustomFieldValue
 
-        expect(customerFieldConfig.args?.customer_field_id?.widget).toBe(
+        expect(customerFieldConfig.args?.custom_field_id?.widget).toBe(
             'customer_field-select',
         )
         expect(customerFieldConfig.args?.value?.widget).toBe(
