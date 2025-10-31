@@ -286,6 +286,7 @@ describe('integrations selectors', () => {
                         id: 2,
                         type: 'phone',
                         name: 'John Doe',
+                        phoneNumberName: 'John Doe',
                         meta: {
                             phone_number_id: 1,
                         },
@@ -294,6 +295,7 @@ describe('integrations selectors', () => {
                         id: 3,
                         type: 'sms',
                         name: 'John Doe',
+                        phoneNumberName: 'John Doe',
                         meta: {
                             phone_number_id: 1,
                         },
@@ -302,6 +304,7 @@ describe('integrations selectors', () => {
                         id: 4,
                         type: 'whatsapp',
                         name: 'John Doe',
+                        phoneNumberName: 'John Doe',
                         meta: {
                             routing: {
                                 phone_number: '+123456789',
@@ -322,6 +325,7 @@ describe('integrations selectors', () => {
                 newPhoneNumbers: {
                     1: {
                         phone_number: '+1234567890',
+                        phoneNumberName: 'John Doe',
                     },
                 },
             },
@@ -407,6 +411,7 @@ describe('integrations selectors', () => {
                             '1',
                             'name',
                         ]),
+                        phoneNumberName: state.entities.newPhoneNumbers[1].name,
                         address: state.entities.newPhoneNumbers[1].phone_number,
                         isDeactivated: false,
                         channel: 'phone',
@@ -436,6 +441,7 @@ describe('integrations selectors', () => {
                             '2',
                             'name',
                         ]),
+                        phoneNumberName: state.entities.newPhoneNumbers[1].name,
                         address: state.entities.newPhoneNumbers[1].phone_number,
                         isDeactivated: false,
                         channel: 'sms',

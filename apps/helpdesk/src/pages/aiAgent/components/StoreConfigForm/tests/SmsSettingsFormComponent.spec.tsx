@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -10,14 +8,15 @@ import thunk from 'redux-thunk'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
-import useAppSelector from 'hooks/useAppSelector'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { SmsSettingsFormComponent } from '../FormComponents/SmsSettingsFormComponent'
+import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
+import { SmsPhoneNumber } from '../types'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('../hooks/useSmsPhoneNumbers')
 
 type SmsItem = { id: number; name: string }
 
@@ -49,7 +48,7 @@ jest.mock(
     }),
 )
 
-const mockUseAppSelector = jest.mocked(useAppSelector)
+const mockUseSmsPhoneNumbers = jest.mocked(useSmsPhoneNumbers)
 const mockUpdateValue = jest.fn()
 const mockSetIsPristine = jest.fn()
 
@@ -78,13 +77,29 @@ const renderWithProvider = (props: any = defaultProps) => {
 }
 
 describe('SmsSettingsFormComponent', () => {
-    const mockSmsIntegrations = [
-        { id: 1, name: 'SMS Integration 1' },
-        { id: 2, name: 'SMS Integration 2' },
+    const mockSmsPhoneNumbers: SmsPhoneNumber[] = [
+        {
+            id: 1,
+            phoneNumberName: 'SMS Integration 1',
+            address: '+1234567890',
+            isDeactivated: false,
+            channel: 'sms',
+            type: 'sms',
+            name: 'SMS Integration 1',
+        },
+        {
+            id: 2,
+            phoneNumberName: 'SMS Integration 2',
+            address: '+1234567890',
+            isDeactivated: false,
+            channel: 'sms',
+            type: 'sms',
+            name: 'SMS Integration 2',
+        },
     ]
 
     beforeEach(() => {
-        mockUseAppSelector.mockReturnValue(mockSmsIntegrations)
+        mockUseSmsPhoneNumbers.mockReturnValue(mockSmsPhoneNumbers)
         mockUpdateValue.mockClear()
         mockSetIsPristine.mockClear()
     })
@@ -92,7 +107,7 @@ describe('SmsSettingsFormComponent', () => {
     it('renders the form with default SMS list and shows required label', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
 
-        screen.getByText(/Select one or more SMS integrations for AI Agent/i)
+        screen.getByText(/Select one or more SMS phone numbers/i)
         screen.getByText('SMS Integration 1')
         screen.getByText('SMS Integration 2')
         screen.getByText('One or more SMS required.')
@@ -131,7 +146,7 @@ describe('SmsSettingsFormComponent', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
 
         screen.getByText('One or more SMS required.')
-        screen.getByText(/Select one or more SMS integrations for AI Agent/i)
+        screen.getByText(/Select one or more SMS phone numbers/i)
     })
 
     it('does not show error message when isRequired is false', () => {

@@ -1,13 +1,13 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import { ReactNode, useRef, useState } from 'react'
 
-import { SmsIntegration } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
+
+import { SmsPhoneNumber } from '../StoreConfigForm/types'
 
 import css from './SmsIntegrationListSelection.less'
 
@@ -25,13 +25,13 @@ type SmsIntegrationListSelectionProps = {
     /**
      * SMS integration list to compute the dropdown items
      */
-    smsItems: SmsIntegration[]
+    smsItems: SmsPhoneNumber[]
     /* id of connected label tag  */
     hasError?: boolean
     error?: string | ReactNode
     isDisabled?: boolean
     labelId?: string
-    sortingCallback?: (a: SmsIntegration, b: SmsIntegration) => number
+    sortingCallback?: (a: SmsPhoneNumber, b: SmsPhoneNumber) => number
 }
 
 export const SmsIntegrationListSelection = ({
@@ -57,7 +57,7 @@ export const SmsIntegrationListSelection = ({
     // used to display the list of selected sms when the dropdown is closed
     const selectedSmsLabels = selectedIds
         .map((selectedId) => smsItems.find((sms) => sms.id === selectedId))
-        .filter((input): input is SmsIntegration => Boolean(input))
+        .filter((input): input is SmsPhoneNumber => Boolean(input))
         .map((selectedSms) => selectedSms.name)
 
     // handle the toggle action on a list item then send the resulting list
@@ -100,17 +100,21 @@ export const SmsIntegrationListSelection = ({
                         target={targetRef}
                         value={selectedIds}
                     >
-                        <DropdownSearch autoFocus withClearText />
                         <DropdownBody>
-                            {smsItems.map(({ id, name }) => (
-                                <DropdownItem
-                                    key={id}
-                                    option={{ label: name, value: id }}
-                                    onClick={handleIdToggled}
-                                >
-                                    {name}
-                                </DropdownItem>
-                            ))}
+                            {smsItems.map(
+                                ({ id, phoneNumberName, address }) => (
+                                    <DropdownItem
+                                        key={id}
+                                        option={{
+                                            label: phoneNumberName,
+                                            value: id,
+                                        }}
+                                        onClick={handleIdToggled}
+                                    >
+                                        {phoneNumberName} {address}
+                                    </DropdownItem>
+                                ),
+                            )}
                         </DropdownBody>
                     </Dropdown>
                 )}

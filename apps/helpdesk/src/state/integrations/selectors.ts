@@ -448,6 +448,7 @@ export const makeGetPhoneChannels = (
                     id: integration.get('id'),
                     type: integration.get('type'),
                     name: integration.get('name'),
+                    phoneNumberName: phoneNumber?.name,
                     address: phoneNumber?.phone_number,
                     isDeactivated: !!integration.get('deactivated_datetime'),
                     channel: type,

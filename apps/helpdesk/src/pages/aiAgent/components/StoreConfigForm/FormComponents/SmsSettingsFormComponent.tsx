@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/constants'
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 import { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
@@ -12,9 +10,9 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import { SmsIntegrationListSelection } from '../../SmsIntegrationListSelection/SmsIntegrationListSelection'
+import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
 
 import css from './SmsSettingsFormComponent.less'
 
@@ -40,11 +38,7 @@ export const SmsSettingsFormComponent = ({
 }: SmsSettingsFormComponentProps) => {
     const useInitialValue = React.useRef(true)
 
-    const selector = useMemo(
-        () => getIntegrationsByTypes([IntegrationType.Sms]),
-        [],
-    )
-    const smsIntegrations = useAppSelector(selector)
+    const smsPhoneNumbers = useSmsPhoneNumbers()
 
     useEffect(() => {
         if (
@@ -67,10 +61,10 @@ export const SmsSettingsFormComponent = ({
         const monitoredSmsIntegrationsSet = new Set(
             monitoredSmsIntegrations ?? [],
         )
-        return smsIntegrations.filter((sms) =>
+        return smsPhoneNumbers.filter((sms) =>
             monitoredSmsIntegrationsSet.has(sms.id),
         )
-    }, [smsIntegrations, monitoredSmsIntegrations])
+    }, [monitoredSmsIntegrations, smsPhoneNumbers])
 
     const smsIntegrationsValidationError = useMemo(() => {
         // The first error is displayed, so the errors should be pushed in order of priority
@@ -102,8 +96,10 @@ export const SmsSettingsFormComponent = ({
                             id="monitored-sms-channels"
                             isRequired={isRequired}
                         >
-                            Select one or more SMS integrations for AI Agent
+                            Select one or more SMS phone numbers
                         </SettingsCardTitle>
+                        Connect phone numbers associated with your existing SMS
+                        integrations.
                     </SettingsCardHeader>
                     <SettingsCardContent>
                         <div>
@@ -115,7 +111,7 @@ export const SmsSettingsFormComponent = ({
                                         : INITIAL_FORM_VALUES.monitoredSmsIntegrations
                                 }
                                 onSelectionChange={handleSelectSmsIntegration}
-                                smsItems={smsIntegrations}
+                                smsItems={smsPhoneNumbers}
                                 hasError={hasError}
                                 isDisabled={isDisabled}
                             />

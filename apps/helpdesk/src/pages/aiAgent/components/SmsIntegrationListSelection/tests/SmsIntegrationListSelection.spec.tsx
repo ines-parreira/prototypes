@@ -2,10 +2,14 @@ import React from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { SmsIntegration } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 
+import { SmsPhoneNumber } from '../../StoreConfigForm/types'
 import { SmsIntegrationListSelection } from '../SmsIntegrationListSelection'
+
+jest.mock('../../StoreConfigForm/hooks/useSmsPhoneNumbers', () => ({
+    useSmsPhoneNumbers: jest.fn(),
+}))
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
@@ -70,25 +74,34 @@ jest.mock('pages/common/forms/input/SelectInputBox', () => ({
 }))
 
 describe('SmsIntegrationListSelection', () => {
-    const mockSmsIntegrations: SmsIntegration[] = [
+    const mockSmsIntegrations: SmsPhoneNumber[] = [
         {
             id: 1,
-            name: 'SMS Integration 1',
+            phoneNumberName: 'SMS Integration 1',
+            address: '+1234567890',
+            isDeactivated: false,
+            channel: 'sms',
             type: 'sms',
-            meta: {},
-        } as SmsIntegration,
+            name: 'SMS Integration 1',
+        },
         {
             id: 2,
-            name: 'SMS Integration 2',
+            phoneNumberName: 'SMS Integration 2',
+            address: '+1234567890',
+            isDeactivated: false,
+            channel: 'sms',
             type: 'sms',
-            meta: {},
-        } as SmsIntegration,
+            name: 'SMS Integration 2',
+        },
         {
             id: 3,
-            name: 'SMS Integration 3',
+            phoneNumberName: 'SMS Integration 3',
+            address: '+1234567890',
+            isDeactivated: false,
+            channel: 'sms',
             type: 'sms',
-            meta: {},
-        } as SmsIntegration,
+            name: 'SMS Integration 3',
+        },
     ]
 
     const defaultProps = {
@@ -130,7 +143,6 @@ describe('SmsIntegrationListSelection', () => {
         await waitFor(() => {
             expect(screen.getByTestId('dropdown')).toBeInTheDocument()
             expect(screen.getByTestId('dropdown-body')).toBeInTheDocument()
-            expect(screen.getByTestId('dropdown-search')).toBeInTheDocument()
         })
     })
 
@@ -239,7 +251,7 @@ describe('SmsIntegrationListSelection', () => {
     })
 
     it('sorts SMS items when sortingCallback is provided', async () => {
-        const sortingCallback = (a: SmsIntegration, b: SmsIntegration) =>
+        const sortingCallback = (a: SmsPhoneNumber, b: SmsPhoneNumber) =>
             b.name.localeCompare(a.name)
 
         const props = {
