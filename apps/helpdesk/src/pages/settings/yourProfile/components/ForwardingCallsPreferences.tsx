@@ -26,9 +26,12 @@ function ForwardingCallsPreferences({
         <FormGroup
             className={classnames(settingsCss.inputField, settingsCss.mb40)}
         >
-            <div className={settingsCss.headingSubsection}>
+            <h3
+                id="forward-calls-to-an-external-number"
+                className={settingsCss.headingSubsection}
+            >
                 Forward calls to an external number
-            </div>
+            </h3>
             <p className="body-regular">
                 When you are routed a call in Gorgias, forward the call to a
                 mobile device or landline.

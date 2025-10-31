@@ -82,6 +82,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: undefined,
                 proficient: undefined,
                 shouldShowTranslatedContent: expect.any(Function),
@@ -117,6 +118,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: undefined,
                 proficient: undefined,
                 shouldShowTranslatedContent: expect.any(Function),
@@ -152,6 +154,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: Language.Fr,
                 proficient: [Language.En, Language.Es],
                 shouldShowTranslatedContent: expect.any(Function),
@@ -192,6 +195,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: Language.Es,
                 proficient: [Language.En],
                 shouldShowTranslatedContent: expect.any(Function),
@@ -218,6 +222,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: undefined,
                 proficient: undefined,
                 shouldShowTranslatedContent: expect.any(Function),
@@ -253,6 +258,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: Language.Fr,
                 proficient: [],
                 shouldShowTranslatedContent: expect.any(Function),
@@ -287,6 +293,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual({
+                isFetching: false,
                 primary: Language.De,
                 proficient: undefined,
                 shouldShowTranslatedContent: expect.any(Function),

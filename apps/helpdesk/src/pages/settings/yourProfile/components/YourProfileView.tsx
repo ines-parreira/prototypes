@@ -37,6 +37,7 @@ import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 
+import { useScrollToHash } from '../hooks/useScrollToHash'
 import { useUpdateCurrentUserProfilePicture } from '../hooks/useUpdateCurrentUserProfile'
 import { useYourProfileForm } from '../hooks/useYourProfileForm'
 import { useYourProfileMutations } from '../hooks/useYourProfileMutations'
@@ -92,6 +93,7 @@ export function YourProfileView({
     isGorgiasAgent,
 }: YourProfileViewFunctionalProps) {
     const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
+    useScrollToHash()
     const queryClient = useQueryClient()
     const { mutateAsync: updateCurrentUserProfilePicture } =
         useUpdateCurrentUserProfilePicture()
@@ -228,6 +230,7 @@ export function YourProfileView({
             <PageHeader title="Your profile" />
             <div className={settingsCss.pageContainer}>
                 <h2
+                    id="personal-information"
                     className={classnames(
                         settingsCss.headingSection,
                         css.headings,
@@ -309,6 +312,7 @@ export function YourProfileView({
                             {hasMessagesTranslations && (
                                 <>
                                     <h3
+                                        id="theme"
                                         className={classnames(
                                             settingsCss.headingSubsection,
                                             css.headings,
@@ -326,6 +330,7 @@ export function YourProfileView({
                             )}
 
                             <h2
+                                id="date-and-time-settings"
                                 className={classnames(
                                     settingsCss.headingSection,
                                     css.headings,
@@ -427,6 +432,7 @@ export function YourProfileView({
                     <div className={settingsCss.contentWrapper}>
                         {!hasMessagesTranslations && (
                             <h2
+                                id="account-preferences"
                                 className={classnames(
                                     settingsCss.headingSection,
                                     css.headings,
@@ -439,6 +445,7 @@ export function YourProfileView({
                         {hasMessagesTranslations && (
                             <div className={settingsCss.section}>
                                 <h3
+                                    id="translation-settings"
                                     className={classnames(
                                         settingsCss.headingSubsection,
                                         css.headings,
@@ -548,6 +555,7 @@ export function YourProfileView({
                             {!hasMessagesTranslations && (
                                 <>
                                     <h3
+                                        id="theme"
                                         className={classnames(
                                             settingsCss.headingSubsection,
                                             css.headings,

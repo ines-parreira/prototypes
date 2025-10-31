@@ -15,7 +15,7 @@ export type CurrentUser = GetCurrentUserResult & {
 }
 
 export function useCurrentUserLanguagePreferences() {
-    const { data: currentUser } = useGetCurrentUser<CurrentUser>({
+    const { data: currentUser, isFetching } = useGetCurrentUser<CurrentUser>({
         query: {
             staleTime: 60000 * 5,
         },
@@ -23,7 +23,11 @@ export function useCurrentUserLanguagePreferences() {
 
     const languagePreferences = useMemo(() => {
         const preferences = currentUser?.data?.settings?.find(
-            (setting) => setting.type === UserSettingType.LanguagePreferences,
+            (
+                setting:
+                    | UserPreferencesSetting
+                    | UserLanguagePreferencesSetting,
+            ) => setting.type === UserSettingType.LanguagePreferences,
         ) as UserLanguagePreferencesSetting | undefined
 
         return preferences?.data
@@ -50,6 +54,7 @@ export function useCurrentUserLanguagePreferences() {
     )
 
     return {
+        isFetching,
         primary: languagePreferences?.primary as Language | undefined,
         proficient: languagePreferences?.proficient as Language[] | undefined,
         shouldShowTranslatedContent,

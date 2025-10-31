@@ -16,6 +16,7 @@ import { TicketsPage } from 'tickets/pages'
 import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketsListPanel } from 'tickets/tickets-list'
+import { TranslationsOnboardingModal } from 'tickets/translations/TranslationsOnboardingModal'
 import { ViewPanel } from 'tickets/view'
 
 import { MobileRoutes } from './MobileRoutes'
@@ -46,6 +47,7 @@ export default function PanelRoutes() {
         return (
             <TicketsLegacyBridgeProvider {...ticketLegacyBridgeFunctions}>
                 <MobileRoutes />
+                <TranslationsOnboardingModal />
             </TicketsLegacyBridgeProvider>
         )
     }
@@ -66,6 +68,7 @@ export default function PanelRoutes() {
                         </Route>
                     </Switch>
                 </Panels>
+                <TranslationsOnboardingModal />
             </TicketsLegacyBridgeProvider>
         )
     }
@@ -166,6 +169,7 @@ export default function PanelRoutes() {
                     </Switch>
                 </ContentPanels>
             </Panels>
+            <TranslationsOnboardingModal />
         </TicketsLegacyBridgeProvider>
     )
 }
