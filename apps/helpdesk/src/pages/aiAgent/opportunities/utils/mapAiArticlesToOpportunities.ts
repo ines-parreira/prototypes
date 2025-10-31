@@ -9,6 +9,7 @@ export interface Opportunity {
     content: string
     type: OpportunityType
     ticketCount?: number
+    detectionObjectIds?: string[]
 }
 
 const removeAiPrefix = (key: string): string => {

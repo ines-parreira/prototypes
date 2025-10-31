@@ -38,6 +38,7 @@ import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
+import { OpportunityTicketDrillDownModal } from '../OpportunityTicketDrillDownModal/OpportunityTicketDrillDownModal'
 
 import css from './OpportunitiesContent.less'
 
@@ -90,6 +91,8 @@ export const OpportunitiesContent = ({
     const queryClient = useQueryClient()
     const [isLoading, setIsLoading] = useState(false)
     const [isDismissModalOpen, setIsDismissModalOpen] = useState(false)
+    const [isTicketDrillDownModalOpen, setIsTicketDrillDownModalOpen] =
+        useState(false)
     const [currentFormData, setCurrentFormData] = useState<GuidanceFormFields>({
         name: selectedOpportunity?.title || '',
         content: selectedOpportunity?.content || '',
@@ -190,6 +193,24 @@ export const OpportunitiesContent = ({
 
     const handleCancelDismiss = useCallback(() => {
         setIsDismissModalOpen(false)
+    }, [])
+
+    const handleOpenTicketDrillDownModal = useCallback(() => {
+        if (
+            selectedOpportunity?.detectionObjectIds &&
+            selectedOpportunity.detectionObjectIds.length > 0
+        ) {
+            setIsTicketDrillDownModalOpen(true)
+        } else {
+            console.warn(
+                'No detectionObjectIds available for opportunity:',
+                selectedOpportunity,
+            )
+        }
+    }, [selectedOpportunity])
+
+    const handleCloseTicketDrillDownModal = useCallback(() => {
+        setIsTicketDrillDownModalOpen(false)
     }, [])
     const { guidanceCount, isLoading: isLoadingGuidanceCount } =
         useGuidanceCount({
@@ -368,6 +389,7 @@ export const OpportunitiesContent = ({
                             type={selectedOpportunity.type}
                             title={selectedOpportunity.title}
                             ticketCount={selectedOpportunity.ticketCount}
+                            onTicketCountClick={handleOpenTicketDrillDownModal}
                         />
                         <div className={css.guidanceFormWrapper}>
                             <GuidanceForm
@@ -410,6 +432,14 @@ export const OpportunitiesContent = ({
                 onConfirm={handleConfirmDismiss}
                 onOpportunityDismissed={onOpportunityDismissed}
             />
+
+            {selectedOpportunity?.detectionObjectIds && (
+                <OpportunityTicketDrillDownModal
+                    isOpen={isTicketDrillDownModalOpen}
+                    onClose={handleCloseTicketDrillDownModal}
+                    ticketIds={selectedOpportunity.detectionObjectIds}
+                />
+            )}
         </div>
     )
 }

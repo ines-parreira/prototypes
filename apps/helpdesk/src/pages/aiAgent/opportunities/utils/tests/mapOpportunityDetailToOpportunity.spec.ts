@@ -17,6 +17,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
+                detectionObjectIds: ['1', '2', '3', '4', '5'],
                 knowledgeResource: {
                     title: 'Test Knowledge Gap Title',
                     body: '<p>Test knowledge gap content</p>',
@@ -37,6 +38,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '<p>Test knowledge gap content</p>',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                detectionObjectIds: ['1', '2', '3', '4', '5'],
             })
         })
 
@@ -49,6 +51,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
+                detectionObjectIds: [],
                 knowledgeResource: {
                     title: '',
                     body: '',
@@ -69,6 +72,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                detectionObjectIds: [],
             })
         })
 
@@ -81,6 +85,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
+                detectionObjectIds: ['10', '11'],
                 knowledgeResource: undefined as any,
                 resources: [],
             }
@@ -94,6 +99,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                detectionObjectIds: ['10', '11'],
             })
         })
 
@@ -106,6 +112,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
+                detectionObjectIds: ['20'],
                 knowledgeResource: {
                     title: null as any,
                     body: null as any,
@@ -126,6 +133,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                detectionObjectIds: ['20'],
             })
         })
 
@@ -138,6 +146,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
+                detectionObjectIds: ['30', '31', '32'],
                 knowledgeResource: {
                     title: undefined as any,
                     body: undefined as any,
@@ -158,6 +167,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                detectionObjectIds: ['30', '31', '32'],
             })
         })
 
@@ -170,6 +180,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 3,
+                detectionObjectIds: ['40', '41', '42'],
                 knowledgeResource: {
                     title: 'Guidance Title',
                     body: '<p>Guidance content</p>',
@@ -190,6 +201,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 content: '<p>Guidance content</p>',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 3,
+                detectionObjectIds: ['40', '41', '42'],
             })
         })
     })
@@ -204,6 +216,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 7,
+                detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
                 conflictingResources: [
                     {
                         title: 'First Conflict Title',
@@ -233,6 +246,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 title: 'First Conflict Title',
                 content: '<p>First conflict content</p>',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
             })
         })
 
@@ -245,6 +259,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
+                detectionObjectIds: ['60', '61'],
                 conflictingResources: [],
                 resources: [],
             }
@@ -257,6 +272,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 title: 'Untitled',
                 content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['60', '61'],
             })
         })
 
@@ -269,6 +285,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
+                detectionObjectIds: ['70', '71'],
                 conflictingResources: [
                     {
                         title: null as any,
@@ -290,6 +307,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 title: 'Untitled',
                 content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['70', '71'],
             })
         })
 
@@ -302,6 +320,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
+                detectionObjectIds: ['80', '81'],
                 conflictingResources: [
                     {
                         title: undefined as any,
@@ -323,6 +342,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 title: 'Untitled',
                 content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['80', '81'],
             })
         })
 
@@ -335,6 +355,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
+                detectionObjectIds: ['90', '91'],
                 conflictingResources: [
                     {
                         title: '',
@@ -356,6 +377,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 title: 'Untitled',
                 content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['90', '91'],
             })
         })
 
@@ -368,6 +390,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 10,
+                detectionObjectIds: [
+                    '100',
+                    '101',
+                    '102',
+                    '103',
+                    '104',
+                    '105',
+                    '106',
+                    '107',
+                    '108',
+                    '109',
+                ],
                 conflictingResources: [
                     {
                         title: 'Keep This Title',
@@ -407,6 +441,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 1,
+                detectionObjectIds: ['200'],
                 knowledgeResource: {
                     title: 'Test',
                     body: 'Test',
@@ -433,6 +468,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 shopName: 'Test Shop',
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 1,
+                detectionObjectIds: ['300'],
                 knowledgeResource: {
                     title: 'Test',
                     body: 'Test',

@@ -2,11 +2,28 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
+import { initialState as statsInitialState } from 'domains/reporting/state/stats/statsSlice'
+
 import { AiAgentOpportunities } from '../AiAgentOpportunities'
+
+jest.mock('domains/reporting/state/stats/selectors', () => {
+    const actual = jest.requireActual(
+        'domains/reporting/state/stats/statsSlice',
+    )
+    return {
+        getStats: jest.fn(() => actual.initialState),
+        getStatsMessagingAndAppIntegrations: jest.fn(() => []),
+    }
+})
+
+jest.mock('domains/reporting/state/ui/stats/selectors', () => ({
+    getCleanStatsFiltersWithTimezone: jest.fn(() => ({})),
+}))
 
 const mockStore = configureStore([])
 
@@ -18,9 +35,10 @@ const createMockStore = (initialState = {}) => {
                 viewLanguage: 'en-US',
             },
         },
-        integrations: {
+        integrations: fromJS({
             data: [],
-        },
+        }),
+        stats: statsInitialState,
         ...initialState,
     })
 }

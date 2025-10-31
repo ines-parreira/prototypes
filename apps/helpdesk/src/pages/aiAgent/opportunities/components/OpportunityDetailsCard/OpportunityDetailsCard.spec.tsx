@@ -300,12 +300,15 @@ describe('OpportunityDetailsCard', () => {
     })
 
     describe('Ticket count', () => {
-        it('should render ticket count when provided', () => {
+        it('should render ticket count when provided with onClick handler', () => {
+            const onTicketCountClick = jest.fn()
+
             render(
                 <OpportunityDetailsCard
                     type={OpportunityType.FILL_KNOWLEDGE_GAP}
                     title="Test Title"
                     ticketCount={15}
+                    onTicketCountClick={onTicketCountClick}
                 />,
             )
 
@@ -313,10 +316,13 @@ describe('OpportunityDetailsCard', () => {
         })
 
         it('should not render ticket count when not provided', () => {
+            const onTicketCountClick = jest.fn()
+
             render(
                 <OpportunityDetailsCard
                     type={OpportunityType.FILL_KNOWLEDGE_GAP}
                     title="Test Title"
+                    onTicketCountClick={onTicketCountClick}
                 />,
             )
 
@@ -326,16 +332,88 @@ describe('OpportunityDetailsCard', () => {
         })
 
         it('should render chat bubble icon with ticket count', () => {
+            const onTicketCountClick = jest.fn()
+
             render(
                 <OpportunityDetailsCard
                     type={OpportunityType.FILL_KNOWLEDGE_GAP}
                     title="Test Title"
                     ticketCount={5}
+                    onTicketCountClick={onTicketCountClick}
                 />,
             )
 
             expect(screen.getByText('forum')).toBeInTheDocument()
             expect(screen.getByText('5')).toBeInTheDocument()
+        })
+
+        it('should render ticket count with onTicketCountClick handler', () => {
+            const onTicketCountClick = jest.fn()
+
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                    ticketCount={10}
+                    onTicketCountClick={onTicketCountClick}
+                />,
+            )
+
+            expect(screen.getByText('10')).toBeInTheDocument()
+        })
+
+        it('should not render ticket count when onTicketCountClick is not provided', () => {
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                    ticketCount={10}
+                />,
+            )
+
+            expect(screen.queryByText('10')).not.toBeInTheDocument()
+        })
+
+        it('should call onTicketCountClick when ticket count is clicked', () => {
+            const onTicketCountClick = jest.fn()
+
+            render(
+                <OpportunityDetailsCard
+                    type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                    title="Test Title"
+                    ticketCount={15}
+                    onTicketCountClick={onTicketCountClick}
+                />,
+            )
+
+            const ticketCountElement = screen.getByText('15')
+            expect(ticketCountElement).toBeInTheDocument()
+
+            ticketCountElement.click()
+
+            expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+        })
+
+        it('should stop propagation when ticket count is clicked', () => {
+            const onTicketCountClick = jest.fn()
+            const onParentClick = jest.fn()
+
+            render(
+                <div onClick={onParentClick}>
+                    <OpportunityDetailsCard
+                        type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                        title="Test Title"
+                        ticketCount={15}
+                        onTicketCountClick={onTicketCountClick}
+                    />
+                </div>,
+            )
+
+            const ticketCountElement = screen.getByText('15')
+            ticketCountElement.click()
+
+            expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            expect(onParentClick).not.toHaveBeenCalled()
         })
     })
 })

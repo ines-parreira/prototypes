@@ -41,6 +41,7 @@ describe('useFindOneOpportunity', () => {
         shopName: 'Test Shop',
         createdDatetime: '2024-01-01T00:00:00Z',
         detectionCount: 5,
+        detectionObjectIds: ['1', '2', '3', '4', '5'],
         knowledgeResource: {
             title: 'Test Opportunity',
             body: '<p>Test content</p>',
@@ -59,6 +60,7 @@ describe('useFindOneOpportunity', () => {
         content: '<p>Test content</p>',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
         ticketCount: 5,
+        detectionObjectIds: ['1', '2', '3', '4', '5'],
     }
 
     beforeEach(() => {

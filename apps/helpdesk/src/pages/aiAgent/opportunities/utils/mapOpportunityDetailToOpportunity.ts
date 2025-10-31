@@ -23,6 +23,7 @@ export const mapOpportunityDetailToOpportunity = (
             content: knowledgeGap.knowledgeResource?.body || '',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: knowledgeGap.detectionCount,
+            detectionObjectIds: knowledgeGap.detectionObjectIds,
         }
     }
 
@@ -33,5 +34,6 @@ export const mapOpportunityDetailToOpportunity = (
         title: firstConflictingResource?.title || 'Untitled',
         content: firstConflictingResource?.body || '',
         type: OpportunityType.RESOLVE_CONFLICT,
+        detectionObjectIds: conflict.detectionObjectIds,
     }
 }

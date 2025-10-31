@@ -974,4 +974,92 @@ describe('OpportunitiesContent', () => {
             ).not.toBeInTheDocument()
         })
     })
+
+    describe('Ticket drilldown functionality', () => {
+        it('should open ticket drilldown modal when ticket count is clicked', async () => {
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+                ticketCount: 10,
+                detectionObjectIds: ['123', '456'],
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('10')).toBeInTheDocument()
+            })
+        })
+
+        it('should handle missing detectionObjectIds with console.warn', () => {
+            const consoleWarnSpy = jest
+                .spyOn(console, 'warn')
+                .mockImplementation()
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+            })
+
+            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+
+            consoleWarnSpy.mockRestore()
+        })
+    })
+
+    describe('Knowledge service integration', () => {
+        it('should render correctly when useKnowledgeService is true', () => {
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+                useKnowledgeService: true,
+            })
+
+            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Approve/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Loading states', () => {
+        it('should show loading spinner when isLoadingOpportunityDetails is true', () => {
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+                isLoadingOpportunityDetails: true,
+            })
+
+            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+        })
+    })
 })
