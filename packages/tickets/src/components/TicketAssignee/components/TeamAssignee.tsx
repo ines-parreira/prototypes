@@ -8,8 +8,8 @@ import {
     ListItem,
     ListSection,
     LoadingSpinner,
-    NewTag,
     Select,
+    Tag,
 } from '@gorgias/axiom'
 import { Team } from '@gorgias/helpdesk-queries'
 
@@ -78,7 +78,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
                     : null
                 return (
-                    <NewTag
+                    <Tag
                         leadingSlot={
                             isUpdatingTeam || isLoading ? (
                                 <LoadingSpinner size={16} />
@@ -106,7 +106,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                         }
                     >
                         {isPlaceholder ? 'No team' : selectedText}
-                    </NewTag>
+                    </Tag>
                 )
             }}
         >

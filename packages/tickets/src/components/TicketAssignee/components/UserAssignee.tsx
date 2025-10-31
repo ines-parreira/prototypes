@@ -8,8 +8,8 @@ import {
     ListItem,
     ListSection,
     LoadingSpinner,
-    NewTag,
     Select,
+    Tag,
 } from '@gorgias/axiom'
 import { TicketUser } from '@gorgias/helpdesk-queries'
 
@@ -81,7 +81,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                         : null
 
                 return (
-                    <NewTag
+                    <Tag
                         leadingSlot={
                             isUpdatingUser || isLoading ? (
                                 <LoadingSpinner size={16} />
@@ -107,7 +107,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                         }
                     >
                         {isPlaceholder ? 'Unassigned' : selectedText}
-                    </NewTag>
+                    </Tag>
                 )
             }}
         >

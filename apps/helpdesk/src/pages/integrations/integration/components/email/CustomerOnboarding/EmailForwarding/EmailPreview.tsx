@@ -2,7 +2,7 @@ import React from 'react'
 
 import cn from 'classnames'
 
-import { Tag } from '@gorgias/axiom'
+import { LegacyTag as Tag } from '@gorgias/axiom'
 
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding.less'
 

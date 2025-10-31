@@ -8,11 +8,11 @@ import {
     Icon,
     ListItem,
     MultiSelect,
-    NewTag,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
     OverflowListShowMore,
+    Tag,
 } from '@gorgias/axiom'
 import { TicketTag } from '@gorgias/helpdesk-queries'
 
@@ -168,7 +168,7 @@ export function InfobarTicketDetailsTags({
                 </OverflowListItem>
                 {ticket?.data.tags.map((tag) => (
                     <OverflowListItem key={tag.id}>
-                        <NewTag
+                        <Tag
                             onClose={() => handleCloseTag(tag)}
                             aria-label="Remove tag"
                             {...(tag.decoration?.color && {
@@ -182,7 +182,7 @@ export function InfobarTicketDetailsTags({
                             })}
                         >
                             {tag.name}
-                        </NewTag>
+                        </Tag>
                     </OverflowListItem>
                 ))}
                 <OverflowListShowMore>
