@@ -9,6 +9,7 @@ import {
     StepCardActionMenuItem,
 } from 'core/ui/flows'
 import { Drawer } from 'pages/common/components/Drawer'
+import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 
 import { useVoiceFlow } from '../useVoiceFlow'
 import { useDeleteNode } from '../utils/useDeleteNode'
@@ -114,11 +115,11 @@ export function VoiceStepNode({
                 </Drawer.Header>
 
                 <Drawer.Content>
-                    {/*<div className={css.learnMoreLink}>*/}
-                    {/*    <LearnMoreLink url="#">*/}
-                    {/*        Learn more about Call Flows*/}
-                    {/*    </LearnMoreLink>*/}
-                    {/*</div>*/}
+                    <div className={css.learnMoreLink}>
+                        <LearnMoreLink url="https://docs.gorgias.com/en-US/manage-gorgias-call-flows-and-ivr-menus-296981">
+                            Learn more about Call Flows
+                        </LearnMoreLink>
+                    </div>
                     <div className={css.drawerForm} ref={drawerRef}>
                         {children}
                     </div>
