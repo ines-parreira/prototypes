@@ -1,3 +1,15 @@
+import { useCallback } from 'react'
+
+import { useFormContext } from 'react-hook-form'
+
+import { DomainEvent } from '@gorgias/events'
+import { useChannel } from '@gorgias/realtime'
+
+import useAppSelector from 'hooks/useAppSelector'
+import { useNotify } from 'hooks/useNotify'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
+
 import TextToSpeechContext from './TextToSpeechContext'
 
 export default function TextToSpeechProvider({
@@ -7,6 +19,64 @@ export default function TextToSpeechProvider({
     integrationId: number
     children: React.ReactNode
 }) {
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
+    const notify = useNotify()
+
+    const { watch, setValue } = useFormContext()
+
+    const handleTTSEvent = useCallback(
+        (event: DomainEvent) => {
+            if (
+                event.dataschema ===
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0' ||
+                event.dataschema ===
+                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.0'
+            ) {
+                const {
+                    tts_url,
+                    text,
+                    property_url,
+                    language_code,
+                    voice_gender,
+                    error_message,
+                } = event.data
+
+                if (error_message) {
+                    void notify.error(
+                        `Failed to generate voice preview: ${error_message}`,
+                    )
+                    return
+                }
+
+                const currentValues = watch(property_url)
+                if (
+                    currentValues.text_to_speech_content !== text ||
+                    currentValues.language !== language_code ||
+                    currentValues.gender !== voice_gender
+                ) {
+                    // The text has changed since the request was made; ignore this result
+                    return
+                }
+
+                setValue(
+                    `${property_url}.text_to_speech_recording_file_path`,
+                    tts_url,
+                )
+            }
+        },
+        [setValue, notify, watch],
+    )
+
+    useChannel({
+        channel: {
+            name: 'user',
+            accountId,
+            userId,
+        },
+        onEvent: handleTTSEvent,
+    })
+
     return (
         <TextToSpeechContext.Provider value={{ integrationId }}>
             {children}

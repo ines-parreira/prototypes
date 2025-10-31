@@ -25,6 +25,7 @@ import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallR
 import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
 import VoiceIntegrationSettingsFormCallFlowSection from './VoiceIntegrationSettingsFormCallFlowSection'
 import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
+import TextToSpeechProvider from './VoiceMessageTTS/TextToSpeechProvider'
 
 import css from './VoiceIntegrationSettingsForm.less'
 
@@ -38,7 +39,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
     const useExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
 
     return (
-        <>
+        <TextToSpeechProvider integrationId={integration.id}>
             {useExtendedCallFlows ? (
                 <div className={css.settingsContainer}>
                     <SettingsCard>
@@ -120,7 +121,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                 </ConfirmButton>
             </div>
             <FormUnsavedChangesPrompt onSave={onSubmit} />
-        </>
+        </TextToSpeechProvider>
     )
 }
 

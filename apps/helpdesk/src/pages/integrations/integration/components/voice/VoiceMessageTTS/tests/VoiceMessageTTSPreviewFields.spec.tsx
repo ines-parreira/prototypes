@@ -9,10 +9,8 @@ import VoiceMessageTTSPreviewFields from '../VoiceMessageTTSPreviewFields'
 
 jest.mock('../VoiceMessageTTSPreviewButton', () => ({
     __esModule: true,
-    default: ({ fieldName, value }: any) => (
-        <div data-testid="preview-button">
-            Preview Button - {fieldName} - {value.text_to_speech_content}
-        </div>
+    default: ({ fieldName }: any) => (
+        <div data-testid="preview-button">Preview Button - {fieldName}</div>
     ),
 }))
 
@@ -121,21 +119,10 @@ describe('VoiceMessageTTSPreviewFields', () => {
         })
     })
 
-    describe('preview button integration', () => {
-        it('should pass fieldName to preview button', () => {
-            renderComponent()
+    it('should pass fieldName to preview button', () => {
+        renderComponent()
 
-            const previewButton = screen.getByTestId('preview-button')
-            expect(previewButton).toHaveTextContent(mockFieldName)
-        })
-
-        it('should pass value to preview button', () => {
-            renderComponent()
-
-            const previewButton = screen.getByTestId('preview-button')
-            expect(previewButton).toHaveTextContent(
-                mockValue.text_to_speech_content!,
-            )
-        })
+        const previewButton = screen.getByTestId('preview-button')
+        expect(previewButton).toHaveTextContent(mockFieldName)
     })
 })

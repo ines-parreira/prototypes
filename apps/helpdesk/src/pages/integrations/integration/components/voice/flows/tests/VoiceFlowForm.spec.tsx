@@ -14,6 +14,9 @@ import {
 } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { VoiceFlowNodeType } from '../constants'
 import { useVoiceFlowForm } from '../utils/useVoiceFlowForm'
@@ -45,6 +48,9 @@ jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => {
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
+jest.mock('@gorgias/realtime')
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
 
 const mockValidateCallRoutingFlow = assumeMock(validateCallRoutingFlow)
 
@@ -130,6 +136,11 @@ describe('VoiceFlowForm', () => {
             isValid: true,
             data: defaultFlowValues,
             errors: [],
+        })
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) return '1'
+            if (selector === getCurrentUserId) return '1'
+            return null
         })
     })
 

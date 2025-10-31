@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -7,6 +8,8 @@ import { mockSynthesizeSpeechPreviewHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
+import { Form } from 'core/forms'
+import useAppSelector from 'hooks/useAppSelector'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import TextToSpeechProvider from '../TextToSpeechProvider'
@@ -16,6 +19,7 @@ import VoiceMessageTTSPreviewButton from '../VoiceMessageTTSPreviewButton'
 jest.mock('utils', () => ({
     replaceAttachmentURL: (url: string) => url,
 }))
+
 const mockNotify = {
     success: jest.fn(),
     error: jest.fn(),
@@ -23,11 +27,26 @@ const mockNotify = {
 jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
+jest.mock('@gorgias/realtime')
+
+jest.mock('state/currentAccount/selectors', () => ({
+    getCurrentAccountId: jest.fn(),
+}))
+
+jest.mock('state/currentUser/selectors', () => ({
+    getCurrentUserId: jest.fn(),
+}))
+
+jest.mock('hooks/useAppSelector')
+const mockUseAppSelector = assumeMock(useAppSelector)
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
+    mockUseAppSelector.mockImplementation(() => {
+        return '1'
+    })
 })
 
 beforeEach(() => {
@@ -59,12 +78,11 @@ describe('VoiceMessageTTSPreviewButton', () => {
 
     const renderComponent = (value: VoiceMessageTextToSpeech) => {
         return renderWithQueryClientProvider(
-            <TextToSpeechProvider integrationId={1}>
-                <VoiceMessageTTSPreviewButton
-                    value={value}
-                    fieldName={'testing'}
-                />
-            </TextToSpeechProvider>,
+            <Form defaultValues={{ testing: value }} onValidSubmit={jest.fn()}>
+                <TextToSpeechProvider integrationId={1}>
+                    <VoiceMessageTTSPreviewButton fieldName={'testing'} />
+                </TextToSpeechProvider>
+            </Form>,
         )
     }
 
@@ -98,8 +116,7 @@ describe('VoiceMessageTTSPreviewButton', () => {
             })
 
             await waitFor(() => {
-                const icon = button.querySelector('.material-icons')
-                expect(icon).toHaveTextContent('downloading')
+                expect(screen.getByText('Loading')).toBeInTheDocument()
             })
         })
 
@@ -145,6 +162,9 @@ describe('VoiceMessageTTSPreviewButton', () => {
 
             // Button should no longer be generating after error
             await waitFor(() => {
+                expect(mockNotify.error).toHaveBeenCalledWith(
+                    'Failed to generate voice preview.',
+                )
                 expect(button).not.toBeDisabled()
             })
         })
@@ -163,9 +183,9 @@ describe('VoiceMessageTTSPreviewButton', () => {
                 await userEvent.click(button)
             })
 
-            // Should show downloading icon while generating
+            // Should show loading while generating
             await waitFor(() => {
-                expect(icon).toHaveTextContent('downloading')
+                expect(screen.getByText('Loading')).toBeInTheDocument()
             })
 
             // Button should be disabled while generating
@@ -216,7 +236,7 @@ describe('VoiceMessageTTSPreviewButton', () => {
                 await userEvent.click(button)
             })
 
-            expect(audio?.pause).toHaveBeenCalled()
+            waitFor(() => expect(audio?.pause).toHaveBeenCalled())
         })
 
         it('should update icon to pause when audio is playing', async () => {
@@ -240,7 +260,7 @@ describe('VoiceMessageTTSPreviewButton', () => {
             })
         })
 
-        it('should update icon to play when audio is paused', async () => {
+        it('should update button when audio is paused', async () => {
             renderComponent(mockValueWithFile)
 
             const button = screen.getByRole('button', { name: /preview/i })
@@ -249,17 +269,25 @@ describe('VoiceMessageTTSPreviewButton', () => {
             // Start playing
             await act(async () => {
                 await userEvent.click(button)
-                audio?.dispatchEvent(new Event('play'))
+            })
+
+            waitFor(() => {
+                expect(audio?.play).toHaveBeenCalled()
+                expect(
+                    screen.getByRole('button', { name: /pause/i }),
+                ).toBeInTheDocument()
             })
 
             // Pause
             await act(async () => {
-                audio?.dispatchEvent(new Event('pause'))
+                await userEvent.click(button)
             })
 
             await waitFor(() => {
-                const icon = button.querySelector('.material-icons')
-                expect(icon).toHaveTextContent('play_arrow')
+                expect(audio?.pause).toHaveBeenCalled()
+                expect(
+                    screen.getByRole('button', { name: /resume/i }),
+                ).toBeInTheDocument()
             })
         })
     })
@@ -283,6 +311,54 @@ describe('VoiceMessageTTSPreviewButton', () => {
             const audio = document.querySelector('audio')
             expect(audio).toBeInTheDocument()
             expect(audio).toHaveAttribute('src', '')
+        })
+    })
+
+    describe('API request', () => {
+        it('should send correct data to synthesize API', async () => {
+            const waitForRequest =
+                mockSynthesizeSpeechPreviewHandler().waitForRequest(server)
+
+            renderComponent(mockValue)
+
+            const button = screen.getByRole('button', { name: /preview/i })
+
+            await act(async () => {
+                await userEvent.click(button)
+            })
+
+            await waitForRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({
+                    language_code: VoiceLanguage.EnUs,
+                    voice_gender: VoiceGender.Female,
+                    property_url: 'testing',
+                    text: 'Hello, this is a test message',
+                })
+            })
+        })
+
+        it('should use default language when language is not provided', async () => {
+            const waitForRequest =
+                mockSynthesizeSpeechPreviewHandler().waitForRequest(server)
+
+            const valueWithoutLanguage = {
+                ...mockValue,
+                language: undefined,
+            } as VoiceMessageTextToSpeech
+
+            renderComponent(valueWithoutLanguage)
+
+            const button = screen.getByRole('button', { name: /preview/i })
+
+            await act(async () => {
+                await userEvent.click(button)
+            })
+
+            await waitForRequest(async (request) => {
+                const body = await request.json()
+                expect(body.language_code).toBe(VoiceLanguage.EnUs)
+            })
         })
     })
 })

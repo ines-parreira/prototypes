@@ -1,27 +1,23 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { useWatch } from 'react-hook-form'
+
 import { useSynthesizeSpeechPreview } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
 import { VoiceMessageTextToSpeech } from 'models/integration/types'
-import { replaceAttachmentURL } from 'utils'
 
 import { DEFAULT_TTS_LANGUAGE } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'
+import TTSPreviewButton, { AudioState } from './TTSPreviewButton'
 
 type Props = {
     fieldName: string
-    value: VoiceMessageTextToSpeech
 }
 
-const VoiceMessageTTSPreviewButton = ({
-    fieldName,
-    value,
-}: Props): JSX.Element => {
-    const audioRef = useRef<HTMLAudioElement>(null)
-    const [isPaused, setIsPaused] = useState(true)
-    const [isGenerating, setIsGenerating] = useState(false)
+const VoiceMessageTTSPreviewButton = ({ fieldName }: Props): JSX.Element => {
+    const [audioState, setAudioState] = useState<AudioState>(AudioState.NEW)
+    const value: VoiceMessageTextToSpeech = useWatch({ name: fieldName })
     const src = value.text_to_speech_recording_file_path || ''
 
     const notify = useNotify()
@@ -30,16 +26,15 @@ const VoiceMessageTTSPreviewButton = ({
     const { mutate: generatePreview } = useSynthesizeSpeechPreview({
         mutation: {
             onError: () => {
-                setIsGenerating(false)
+                setAudioState(AudioState.NEW)
                 void notify.error('Failed to generate voice preview.')
             },
         },
     })
 
-    const playOrPause = async (event: React.MouseEvent) => {
-        event.stopPropagation()
+    const handleButtonClick = async () => {
+        // generate new preview if none exists & we have text to synthesize
         if (!src && value.text_to_speech_content) {
-            setIsGenerating(true)
             generatePreview({
                 integrationId: integrationId,
                 data: {
@@ -49,48 +44,34 @@ const VoiceMessageTTSPreviewButton = ({
                     text: value.text_to_speech_content,
                 },
             })
-            return
-        }
-
-        const audio = audioRef.current
-        if (!audio) {
-            return
-        }
-        if (audio.paused) {
-            await audio.play()
-        } else {
-            audio.pause()
         }
     }
 
+    useEffect(() => {
+        // automatically play the audio once the src is available
+        if (src && audioState === AudioState.LOADING) {
+            setAudioState(AudioState.PLAYING)
+        }
+    }, [src, audioState, setAudioState])
+
+    // Reset button state if TTS parameters change
+    useEffect(() => {
+        setAudioState(AudioState.NEW)
+    }, [
+        value.text_to_speech_content,
+        value.language,
+        value.gender,
+        setAudioState,
+    ])
+
     return (
-        <div>
-            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-            <audio
-                hidden
-                src={replaceAttachmentURL(src)}
-                ref={audioRef}
-                loop={false}
-                onPlay={() => setIsPaused(false)}
-                onPause={() => setIsPaused(true)}
-            />
-            <Button
-                variant="secondary"
-                onClick={playOrPause}
-                leadingSlot={
-                    <i className="material-icons" style={{ fontSize: '20px' }}>
-                        {isPaused
-                            ? isGenerating
-                                ? 'downloading'
-                                : 'play_arrow'
-                            : 'pause'}
-                    </i>
-                }
-                isDisabled={isGenerating || !value.text_to_speech_content}
-            >
-                Preview
-            </Button>
-        </div>
+        <TTSPreviewButton
+            src={src}
+            audioState={audioState}
+            setAudioState={setAudioState}
+            onLoad={handleButtonClick}
+            isDisabled={!value.text_to_speech_content}
+        />
     )
 }
 

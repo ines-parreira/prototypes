@@ -22,6 +22,7 @@ jest.mock(
         VoiceFlow: () => <div>VoiceFlow</div>,
     }),
 )
+jest.mock('@gorgias/realtime')
 
 const server = setupServer()
 

@@ -46,31 +46,31 @@ function VoiceFlowForm({
     }, [])
 
     return (
-        <TextToSpeechProvider integrationId={integration.id}>
-            <Form
-                className={css.formContainer}
-                onValidSubmit={onSubmit}
-                defaultValues={getDefaultValues(defaultValues)}
-                resetOptions={{
-                    keepDirty: false,
-                    keepDefaultValues: false,
-                    keepDirtyValues: false,
-                }}
-                validator={(values: VoiceFlowFormValues) => {
-                    try {
-                        return toFormErrors(
-                            validateCallRoutingFlow(
-                                omit(values, [
-                                    'business_hours_id',
-                                    'record_inbound_calls',
-                                ]),
-                            ),
-                        )
-                    } catch {
-                        return { steps: 'An unexpected error occurred' }
-                    }
-                }}
-            >
+        <Form
+            className={css.formContainer}
+            onValidSubmit={onSubmit}
+            defaultValues={getDefaultValues(defaultValues)}
+            resetOptions={{
+                keepDirty: false,
+                keepDefaultValues: false,
+                keepDirtyValues: false,
+            }}
+            validator={(values: VoiceFlowFormValues) => {
+                try {
+                    return toFormErrors(
+                        validateCallRoutingFlow(
+                            omit(values, [
+                                'business_hours_id',
+                                'record_inbound_calls',
+                            ]),
+                        ),
+                    )
+                } catch {
+                    return { steps: 'An unexpected error occurred' }
+                }
+            }}
+        >
+            <TextToSpeechProvider integrationId={integration.id}>
                 <div className={css.buttonsBanner}>
                     <GenericVoiceFormSubmitButton>
                         Save changes
@@ -78,8 +78,8 @@ function VoiceFlowForm({
                 </div>
                 <FormUnsavedChangesPrompt onSave={onSubmit} />
                 {children}
-            </Form>
-        </TextToSpeechProvider>
+            </TextToSpeechProvider>
+        </Form>
     )
 }
 export default VoiceFlowForm

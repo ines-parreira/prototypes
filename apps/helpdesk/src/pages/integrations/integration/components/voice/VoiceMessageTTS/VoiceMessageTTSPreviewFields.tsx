@@ -65,7 +65,7 @@ const VoiceMessageTTSPreviewFields = ({
                     )}
                 </SelectField>
             </div>
-            <VoiceMessageTTSPreviewButton value={value} fieldName={fieldName} />
+            <VoiceMessageTTSPreviewButton fieldName={fieldName} />
         </div>
     )
 }
