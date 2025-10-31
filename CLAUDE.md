@@ -104,20 +104,6 @@ const form = screen.getByRole('form')
 
 ## Implementation Guidelines
 
-### For Component Testing:
-
-- Use semantic HTML elements with proper roles
-- Add meaningful `alt` attributes to images
-- Use proper `aria-*` attributes for accessibility
-- Ensure form inputs have associated labels
-- Avoid mocking the components
-- Don't test if components have a certain class as this is too brittle, instead focus on behavioral testing
-
-### For Mock Components:
-
-- Prefer testing through props and rendered content
-- Consider refactoring mocks to be more testable
-
 # Use rest-api-sdk for all HTTP related operations
 
 ## Core Principle
@@ -382,27 +368,131 @@ const renderComponent = () => {
 }
 ```
 
+### For Component Testing:
+
+- Use semantic HTML elements with proper roles
+- Add meaningful `alt` attributes to images
+- Use proper `aria-*` attributes for accessibility
+- Ensure form inputs have associated labels
+- Avoid mocking the components
+- Don't test if components have a certain class as this is too brittle, instead focus on behavioral testing
+
+### For Mock Components:
+
+- Prefer testing through props and rendered content
+- Consider refactoring mocks to be more testable
+
 ### Async testing patterns
 
-- **Always use `waitFor`** for async operations
+- **Use `act()` for update management** to ensure the action is complete
+  - **Always `await` `act()`** instead of using the synchronous call and `waitFor()` to check an effect's state
+- **Use `waitFor()`** for async operations which **can't** be checked via `act()`
+  - **`waitFor()` can be used after `act()` if actions do not fully encompass changes**, e.g. if clicking causes an eventually consistent change, then we `waitFor()` the consistency
 - **Wait for component to load** before making assertions
-- **Use `act()` for user interactions** that trigger state changes
 - **Test loading states** before testing final states
 
-### User interaction testing
-
 ```typescript
-// Use userEvent for interactions
-act(() => {
-    userEvent.click(getByLabelText(/Some Label/))
-    userEvent.type(getByRole('textbox'), 'new value')
-})
+// ❌: Bad, userEvent promise is never awaited
+await act(() => {userEvent.click(getByLabelText(/Some Label/))})
 
-// Wait for async operations
-await waitFor(() => {
-    expect(getByText('Expected text')).toBeInTheDocument()
+// ✅: Good, userEvent promise is returned to act and awaited
+await act(() => userEvent.click(getByLabelText(/Some Label/)))
+
+
+// ✅: Good, userEvent promises are explicitly awaited
+await act(async () => {
+  await userEvent.click(getByLabelText(/Some Label/))
+  await userEvent.click(getByLabelText(/Some Other Label/))
 })
 ```
+
+```typescript
+// Use userEvent for interactions, and always wrap them in act
+await act(async () => {
+    await userEvent.click(getByLabelText(/Some Label/))
+    await userEvent.type(getByRole('textbox'), 'new value')
+})
+
+// Then check state after the action is complete
+expect(getByText('Expected text')).toBeInTheDocument()
+```
+
+```typescript
+// If the action does not fully encompass the change
+await act(() => 
+    // Clicking button causes an eventually consistent update
+    // act() will be complete before the third party 
+    // (e.g. sending a message via chat)
+    userEvent.click(getByLabelText(/Send/)) 
+)
+
+// Then check state after the action is complete
+await waitFor(() => {
+    // Chat service won't respond immediately, so wait for the change to come in
+    expect(getByText('Expected response')).toBeInTheDocument()
+})
+```
+
+### User Interaction Testing
+
+`userEvent` simulates full user interactions, while `fireEvent` only dispatches single DOM events. This makes `userEvent` more realistic and reliable for testing user behavior.
+
+Always use events within an `await`ed `act()`, this ensures that React's update scheduling has had time to fully action the change
+
+#### Key Differences:
+
+- **fireEvent**: Dispatches single DOM events (low-level)
+- **userEvent**: Simulates complete user interactions with multiple events and checks
+- **userEvent**: Includes visibility and interactability checks
+- **userEvent**: Manipulates DOM exactly like real browser interactions
+
+#### Setup Pattern:
+
+```tsx
+import userEvent from '@testing-library/user-event'
+
+// ✅ Recommended: Setup in each test
+test('user can click button', async () => {
+    const user = userEvent.setup()
+    render(<MyComponent />)
+
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    // ...assertions...
+})
+
+// ✅ Alternative: Setup function
+function setup(jsx) {
+    return {
+        user: userEvent.setup(),
+        ...render(jsx),
+    }
+}
+
+test('with setup function', async () => {
+    const { user } = setup(<MyComponent />)
+    await act(() => user.type(screen.getByRole('textbox'), 'Hello world'))
+})
+```
+
+#### Examples:
+
+```tsx
+// ❌ Avoid - fireEvent doesn't simulate real user behavior
+fireEvent.click(button)
+fireEvent.change(input, { target: { value: 'text' } })
+
+// ✅ Prefer - userEvent simulates realistic interactions
+await act(() => user.click(button))
+await act(() => user.type(input, 'text'))
+await act(() => user.clear(input))
+await act(() => user.selectOptions(select, 'option1'))
+```
+
+#### When to Use fireEvent:
+
+- Only as last resort for interactions not yet implemented in `userEvent`
+- For testing specific edge cases requiring low-level event dispatch
+- When testing event handlers directly rather than user interactions
 
 ## Mock Usage Patterns
 
