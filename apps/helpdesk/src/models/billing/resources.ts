@@ -90,3 +90,13 @@ export async function upgradeAiAgentSubscriptionGeneration6Plan() {
     const res = await client.post('/api/billing/ai-agent-generation-6', {})
     return res.data
 }
+
+export async function deactivateAccount() {
+    const res = await client.post(`/billing/deactivate-account`)
+    return res
+}
+
+export async function reactivateAccount() {
+    const res = await client.post(`/billing/reactivate-account`)
+    return res
+}

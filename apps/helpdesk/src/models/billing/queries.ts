@@ -7,11 +7,13 @@ import {
 
 import { MutationOverrides } from '../../types/query'
 import {
+    deactivateAccount,
     extendTrial,
     getAiAgentGeneration6Plan,
     getBillingContact,
     getBillingState,
     getCouponsForSales,
+    reactivateAccount,
     reactivateTrial,
     updateBillingContact,
     upgradeAiAgentSubscriptionGeneration6Plan,
@@ -131,5 +133,23 @@ export const useUpgradeAiAgentSubscriptionGeneration6Plan = (
         onError: (...args) => {
             overrides?.onError?.(...args)
         },
+    })
+}
+
+export const useDeactivateAccount = (
+    overrides?: MutationOverrides<typeof deactivateAccount>,
+) => {
+    return useMutation({
+        mutationFn: deactivateAccount,
+        ...overrides,
+    })
+}
+
+export const useReactivateAccount = (
+    overrides?: MutationOverrides<typeof reactivateAccount>,
+) => {
+    return useMutation({
+        mutationFn: reactivateAccount,
+        ...overrides,
     })
 }

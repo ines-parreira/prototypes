@@ -1,9 +1,11 @@
-import { assumeMock, userEvent } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { assumeMock } from '@repo/testing'
+import { act, screen, within } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import client from 'models/api/resources'
 import {
     CouponSummary,
     ProductType,
@@ -18,7 +20,14 @@ import {
 } from 'pages/settings/new_billing/fixtures'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+
+const mockedServer = new MockAdapter(client)
+
+// Mock notify
+jest.mock('state/notifications/actions')
 
 const availableHdAoCoupons = [
     'sales-hd+ao-year-05%-once',
@@ -88,8 +97,6 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 const dispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatch)
 
-const queryClient = mockQueryClient()
-
 // Mock useExtendTrialMock
 const useExtendTrialMutateMock = jest.fn()
 jest.mock('pages/settings/new_billing/hooks/useExtendTrialWithSideEffects')
@@ -111,14 +118,16 @@ useReactivateTrialMock.mockImplementation(() => {
 })
 
 describe('BillingInternalViewUI', () => {
+    beforeEach(() => {
+        mockedServer.reset()
+    })
+
     it('When customer has a paying subscription', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={payingWithCreditCard}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={payingWithCreditCard}
+            />,
         )
 
         // Then he should not be able to add a coupon or to extend trial or reactivate trial
@@ -139,13 +148,11 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, which has NOT been extended', async () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={trial}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={trial}
+            />,
         )
 
         // Then he should be able to add a coupon or to extend trial but NOT to reactivate trial
@@ -165,25 +172,29 @@ describe('BillingInternalViewUI', () => {
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
 
         // When clicking on 'Extend trial' button
-        userEvent.click(screen.getByRole('button', { name: /Extend trial/i }))
+        await act(() =>
+            userEvent.click(
+                screen.getByRole('button', { name: /Extend trial/i }),
+            ),
+        )
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
 
-        userEvent.click(confirmButton)
-
+        await act(() => userEvent.click(confirmButton))
         expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
 
         // When clicking on 'Apply coupon' button
-        userEvent.click(screen.getByRole('button', { name: /Apply coupon/i }))
-
+        await act(async () =>
+            userEvent.click(
+                screen.getByRole('button', { name: /Apply coupon/i }),
+            ),
+        )
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
-        await waitFor(() => {
-            expect(
-                within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
-            ).toBeInTheDocument()
-        })
+        expect(
+            within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
+        ).toBeInTheDocument()
 
         // with a dropdown having the list of available coupons
         const items = document.getElementsByClassName('dropdown-item')
@@ -191,7 +202,6 @@ describe('BillingInternalViewUI', () => {
         expect(items[1]).toHaveTextContent(availableHdAoCoupons[1])
 
         // with 'Cancel' and 'Apply Coupon' buttons
-
         expect(
             within(modal).queryByRole('button', { name: 'Delete Coupon' }),
         ).not.toBeInTheDocument()
@@ -200,13 +210,11 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, which has been already extended', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={extendedTrial}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={extendedTrial}
+            />,
         )
 
         // Then he should be able to add a coupon or to extend trial but NOT to reactivate trial
@@ -227,13 +235,11 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, and a coupon has been added', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={trialWithHdAoCoupon}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={trialWithHdAoCoupon}
+            />,
         )
         expect(
             screen.queryByRole('button', { name: /Apply coupon/i }),
@@ -251,13 +257,11 @@ describe('BillingInternalViewUI', () => {
     it('When trial has ended and has NOT been extended previously + customer hasn’t converted (no active subscription)', async () => {
         MockDate.set('2050-08-10T00:00:00.000Z')
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={trialOverAndUnconverted}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={trialOverAndUnconverted}
+            />,
         )
         expect(
             screen.queryByRole('button', { name: /Apply coupon/i }),
@@ -283,43 +287,39 @@ describe('BillingInternalViewUI', () => {
         expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
 
         // When clicking on 'Reactivate trial' button
-        userEvent.click(
-            screen.getByRole('button', { name: /Reactivate trial/i }),
+        await act(() =>
+            userEvent.click(
+                screen.getByRole('button', { name: /Reactivate trial/i }),
+            ),
         )
 
         // Then
-        await waitFor(() => {
-            expect(
-                screen.getByText(/Do you want to reactivate trial until/i),
-            ).toBeInTheDocument()
-            expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
-            expect(
-                screen.getByText(
-                    /Note, that once confirmed, the reactivation cannot be undone./i,
-                ),
-            ).toBeInTheDocument()
-        })
+        expect(
+            screen.getByText(/Do you want to reactivate trial until/i),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /Note, that once confirmed, the reactivation cannot be undone./i,
+            ),
+        ).toBeInTheDocument()
 
         expect(useReactivateTrialMutateMock).not.toHaveBeenCalledWith([])
 
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
-        userEvent.click(confirmButton)
+        await act(() => userEvent.click(confirmButton))
 
-        await waitFor(() => {
-            expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
-        })
+        expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
     })
 
     it('When trial has ended and has been extended previously + customer hasn’t converted (no active subscription)', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={extendedTrialOverAndUnconverted}
-                />
-            </QueryClientProvider>,
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={extendedTrialOverAndUnconverted}
+            />,
         )
         expect(
             screen.queryByRole('button', { name: /Apply coupon/i }),
@@ -345,5 +345,65 @@ describe('BillingInternalViewUI', () => {
         expect(
             screen.queryByText(/Extended trial ended on/i),
         ).toBeInTheDocument()
+    })
+
+    it('should be always possible to deactivate (ban) an account if active', async () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={payingWithCreditCard}
+            />,
+        )
+
+        const deactivateButton = screen.getByRole('button', {
+            name: /Deactivate\/Ban Account/i,
+        })
+
+        mockedServer.onPost('/billing/deactivate-account').reply(200, {})
+        await act(() => userEvent.click(deactivateButton))
+
+        expect(mockedServer.history.post.length).toBe(1)
+        expect(mockedServer.history.post[0].url).toBe(
+            '/billing/deactivate-account',
+        )
+
+        expect(notify).toHaveBeenNthCalledWith(1, {
+            allowHTML: true,
+            message: 'Account has been successfully banned and deactivated.',
+            noAutoDismiss: false,
+            showDismissButton: true,
+            status: NotificationStatus.Success,
+            style: 'alert',
+        })
+    })
+
+    it('should be always possible to reactivate an account if deactivated', async () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={payingWithCreditCard}
+            />,
+        )
+
+        const reactivateButton = screen.getByRole('button', {
+            name: /Reactivate Account/i,
+        })
+
+        mockedServer.onPost('/billing/reactivate-account').reply(200, {})
+        await act(() => userEvent.click(reactivateButton))
+
+        expect(mockedServer.history.post.length).toBe(1)
+        expect(mockedServer.history.post[0].url).toBe(
+            '/billing/reactivate-account',
+        )
+
+        expect(notify).toHaveBeenNthCalledWith(1, {
+            allowHTML: true,
+            message: 'Account has been successfully reactivated.',
+            noAutoDismiss: false,
+            showDismissButton: true,
+            status: NotificationStatus.Success,
+            style: 'alert',
+        })
     })
 })

@@ -42,14 +42,12 @@ export function BillingInternalView() {
     } = groupCoupons(coupons.data)
 
     return (
-        <>
-            {BillingInternalViewUI({
-                helpdeskAndAutomateCoupons,
-                helpdeskOnlyCoupons,
-                automateOnlyCoupons,
-                billingState,
-            })}
-        </>
+        <BillingInternalViewUI
+            helpdeskAndAutomateCoupons={helpdeskAndAutomateCoupons}
+            helpdeskOnlyCoupons={helpdeskOnlyCoupons}
+            automateOnlyCoupons={automateOnlyCoupons}
+            billingState={billingState}
+        />
     )
 }
 

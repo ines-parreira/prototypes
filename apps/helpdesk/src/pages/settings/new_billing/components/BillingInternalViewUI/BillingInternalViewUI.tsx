@@ -1,7 +1,11 @@
+import { Button } from '@gorgias/axiom'
+
 import { BillingState, SubscriptionStatus } from 'models/billing/types'
 
 import ProductCardForCoupon from '../../components/ProductCardForCoupon'
 import UpcomingInvoiceCard from '../../components/UpcomingInvoiceCard'
+import { useDeactivateAccountWithSideEffects } from '../../hooks/useDeactivateAccountWithSideEffects'
+import { useReactivateAccountWithSideEffects } from '../../hooks/useReactivateAccountWithSideEffects'
 
 import css from './BillingInternalViewUI.less'
 
@@ -17,6 +21,9 @@ export function BillingInternalViewUI({
     helpdeskOnlyCoupons,
     automateOnlyCoupons,
 }: BillingInternalViewUIProps) {
+    const deactivateAccount = useDeactivateAccountWithSideEffects()
+    const reactivateAccount = useReactivateAccountWithSideEffects()
+
     const currentCoupon = billingState.subscription?.coupon
 
     const isHelpdeskAndAutomateCoupon = (currentCoupon?.name || '').includes(
@@ -30,6 +37,24 @@ export function BillingInternalViewUI({
 
     return (
         <div className={css.container}>
+            <div className={css.deactivation_buttons_line}>
+                <Button
+                    onClick={() => {
+                        deactivateAccount.mutate([])
+                    }}
+                    isLoading={deactivateAccount.isLoading}
+                >
+                    Deactivate/Ban account
+                </Button>
+                <Button
+                    onClick={() => {
+                        reactivateAccount.mutate([])
+                    }}
+                    isLoading={reactivateAccount.isLoading}
+                >
+                    Reactivate account
+                </Button>
+            </div>
             <UpcomingInvoiceCard
                 subscriptionStatus={billingState.subscription.status}
                 endOfTrialDatetime={endOfTrialDatetime}
