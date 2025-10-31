@@ -14,6 +14,7 @@ import {
     mockDropdownInputSettingsSettings,
     mockListCustomFieldsHandler,
     mockTextDataTypeDefinition,
+    mockTextInputSettings,
 } from '@gorgias/helpdesk-mocks'
 import {
     CustomField,
@@ -32,7 +33,7 @@ import { CustomerLookupNode } from '../CustomerLookupNode'
 const mockCustomFields: CustomField[] = [
     mockCustomField({
         id: 1,
-        label: 'Status',
+        label: 'Dropdown field',
         object_type: ObjectType.Customer,
         definition: mockTextDataTypeDefinition({
             input_settings: mockDropdownInputSettingsSettings({
@@ -42,12 +43,20 @@ const mockCustomFields: CustomField[] = [
     }),
     mockCustomField({
         id: 2,
-        label: 'Priority',
+        label: 'Boolean field',
         object_type: ObjectType.Customer,
         definition: mockBooleanDataTypeDefinition({
             input_settings: mockBooleanDropdownInputSettings({
                 choices: [true, false],
             }),
+        }),
+    }),
+    mockCustomField({
+        id: 3,
+        label: 'Text field',
+        object_type: ObjectType.Customer,
+        definition: mockTextDataTypeDefinition({
+            input_settings: mockTextInputSettings(),
         }),
     }),
 ]
@@ -208,5 +217,19 @@ describe('CustomerLookupNode', () => {
         expect(
             screen.getAllByText('Select customer field').length,
         ).toBeGreaterThanOrEqual(1)
+    })
+
+    it('should only display dropdown and boolean fields in the select field', async () => {
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.getAllByText('Dropdown field').length,
+            ).toBeGreaterThanOrEqual(1)
+            expect(
+                screen.getAllByText('Boolean field').length,
+            ).toBeGreaterThanOrEqual(1)
+            expect(screen.queryByText('Text field')).not.toBeInTheDocument()
+        })
     })
 })

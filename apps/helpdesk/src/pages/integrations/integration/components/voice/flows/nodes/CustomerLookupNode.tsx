@@ -60,7 +60,7 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
 
     const customFields = customFieldsData?.data?.filter(
         (field) =>
-            field.definition.data_type === 'text' ||
+            field.definition.input_settings.input_type === 'dropdown' ||
             field.definition.data_type === 'boolean',
     )
     const selectedCustomField = customFields?.find(
