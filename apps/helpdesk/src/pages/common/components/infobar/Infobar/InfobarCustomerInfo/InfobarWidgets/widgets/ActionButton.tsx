@@ -10,7 +10,7 @@ import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 import {
     LegacyButton as Button,
     type LegacyButtonProps as ButtonProps,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'

@@ -8,7 +8,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { eventNameToLabel } from 'config/rules'
 import { TAGS_ADDED_KEY, TAGS_REMOVED_KEY } from 'models/event/constants'

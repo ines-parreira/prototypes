@@ -42,7 +42,7 @@ const store = mockStore({})
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: () => 'TooltipMock',
+        LegacyTooltip: () => 'TooltipMock',
         Badge: jest.fn(({ children }) => <div>{children}</div>),
     } as Record<string, unknown>
 })

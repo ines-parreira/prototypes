@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent } from 'common/segment'
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
@@ -27,7 +27,7 @@ jest.mock('common/segment')
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: ({
+        LegacyTooltip: ({
             children,
             ...otherProps
         }: ComponentProps<typeof Tooltip>) => {

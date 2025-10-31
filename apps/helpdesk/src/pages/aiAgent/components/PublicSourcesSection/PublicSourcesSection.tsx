@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'

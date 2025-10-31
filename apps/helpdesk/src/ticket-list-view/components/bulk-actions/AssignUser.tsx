@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { Item } from 'components/Dropdown'
 import IconButton from 'pages/common/components/button/IconButton'

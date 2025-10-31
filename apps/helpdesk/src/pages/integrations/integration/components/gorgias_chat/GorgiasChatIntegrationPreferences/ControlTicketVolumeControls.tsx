@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { ToggleField, Tooltip } from '@gorgias/axiom'
+import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'

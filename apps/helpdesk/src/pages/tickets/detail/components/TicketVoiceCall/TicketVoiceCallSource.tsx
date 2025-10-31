@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { DateAndTimeFormatting } from 'constants/datetime'

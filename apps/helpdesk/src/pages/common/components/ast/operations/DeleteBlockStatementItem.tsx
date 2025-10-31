@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import { List, Map } from 'immutable'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { RuleOperation } from '../../../../../state/rules/types'
 import { RuleItemActions } from '../../../../settings/rules/types'

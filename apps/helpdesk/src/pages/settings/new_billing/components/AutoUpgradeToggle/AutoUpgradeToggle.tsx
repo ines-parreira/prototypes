@@ -3,7 +3,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import { useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import { Plan, ProductType } from 'models/billing/types'

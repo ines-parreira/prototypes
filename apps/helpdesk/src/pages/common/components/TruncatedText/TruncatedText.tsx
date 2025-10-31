@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useIsTruncated } from '../../hooks/useIsTruncated'
 

@@ -3,7 +3,10 @@ import { useMemo } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Plan, ProductType } from 'models/billing/types'

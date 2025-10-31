@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { logEvent, SegmentEvent } from 'common/segment'

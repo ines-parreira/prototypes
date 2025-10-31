@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent } from 'common/segment/segment'
 import { SegmentEvent } from 'common/segment/types'

@@ -10,7 +10,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { ViewCategoryNavbar } from 'models/view/types'

@@ -2,7 +2,10 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import { logEvent, SegmentEvent } from 'common/segment'

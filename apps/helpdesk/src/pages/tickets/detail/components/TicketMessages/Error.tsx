@@ -5,7 +5,12 @@ import { Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { Banner, Box, LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    Banner,
+    Box,
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { Action } from '../../../../../models/ticket/types'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'

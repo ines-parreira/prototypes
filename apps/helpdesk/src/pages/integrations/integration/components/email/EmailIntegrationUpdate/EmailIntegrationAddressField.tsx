@@ -2,7 +2,11 @@ import { useCallback, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

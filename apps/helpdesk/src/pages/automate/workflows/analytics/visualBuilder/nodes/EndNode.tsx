@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { Handle, NodeProps, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
 
-import { Badge, Tooltip } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import {

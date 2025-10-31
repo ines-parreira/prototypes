@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import {
     BigCommerceCart,

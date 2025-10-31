@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, ToggleField, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-types'
 

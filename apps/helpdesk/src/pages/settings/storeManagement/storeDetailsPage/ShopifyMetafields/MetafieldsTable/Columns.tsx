@@ -4,7 +4,7 @@ import {
     ColumnDef,
     createSortableColumn,
     Text,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import CategoryChip from '../CategoryChip/CategoryChip'

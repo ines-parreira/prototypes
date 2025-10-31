@@ -5,7 +5,7 @@ import { fromJS, List, Map } from 'immutable'
 import _isObject from 'lodash/isObject'
 import moment from 'moment'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { StatConfigMetric } from 'domains/reporting/config/stats'
 import { StatType } from 'domains/reporting/models/stat/types'

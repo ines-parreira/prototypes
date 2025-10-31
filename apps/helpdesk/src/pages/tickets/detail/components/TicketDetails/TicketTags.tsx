@@ -8,7 +8,7 @@ import {
     Badge,
     BadgeIcon,
     LegacyButton as Button,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 

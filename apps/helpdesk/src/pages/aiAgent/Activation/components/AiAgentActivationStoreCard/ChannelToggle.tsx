@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import css from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard.less'

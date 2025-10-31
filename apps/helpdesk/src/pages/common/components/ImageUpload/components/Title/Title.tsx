@@ -3,7 +3,7 @@ import React, { createRef, FunctionComponent, ReactChild } from 'react'
 import classNames from 'classnames'
 import { UncontrolledTooltipProps } from 'reactstrap'
 
-import { Tooltip as TooltipComponent } from '@gorgias/axiom'
+import { LegacyTooltip as TooltipComponent } from '@gorgias/axiom'
 
 import css from './Title.less'
 

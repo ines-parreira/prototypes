@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './FilterName.less'
 

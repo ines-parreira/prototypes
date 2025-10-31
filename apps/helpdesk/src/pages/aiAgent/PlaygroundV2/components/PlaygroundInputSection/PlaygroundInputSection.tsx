@@ -5,7 +5,7 @@ import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FROALA_KEY } from 'config'
 import { useFlag } from 'core/flags'

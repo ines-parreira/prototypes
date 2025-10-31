@@ -45,7 +45,7 @@ jest.mock(
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: ({ children }: { children: ReactNode }) => (
+        LegacyTooltip: ({ children }: { children: ReactNode }) => (
             <div>TooltipMock{children}</div>
         ),
     } as Record<string, unknown>

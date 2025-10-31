@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ToggleField, Tooltip } from '@gorgias/axiom'
+import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

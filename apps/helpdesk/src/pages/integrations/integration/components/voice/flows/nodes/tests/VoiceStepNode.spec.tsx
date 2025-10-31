@@ -61,9 +61,7 @@ describe('VoiceStepNode', () => {
         //     screen.getByText('Learn more about Call Flows'),
         // ).toBeInTheDocument()
 
-        expect(
-            screen.queryByRole('img', { name: 'octagon-warning' }),
-        ).toBeNull()
+        expect(screen.queryByRole('img', { name: 'octagon-error' })).toBeNull()
     })
 
     it('renders with errors', () => {
@@ -71,7 +69,7 @@ describe('VoiceStepNode', () => {
         renderComponent({ ...defaultProps, errors })
 
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
     })
 

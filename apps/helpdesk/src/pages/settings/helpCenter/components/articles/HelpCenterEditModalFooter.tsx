@@ -8,7 +8,11 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { LegacyButton as Button, ButtonGroup, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    ButtonGroup,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'

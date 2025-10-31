@@ -2,7 +2,10 @@ import React, { useRef } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import {
     GorgiasChatInstallationVisibilityCondition,

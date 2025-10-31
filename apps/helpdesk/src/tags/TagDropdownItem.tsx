@@ -1,6 +1,6 @@
 import React, { CSSProperties, useCallback, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Tag } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'

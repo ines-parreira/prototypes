@@ -1,4 +1,4 @@
-import { Badge, Tooltip } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import TicketTag from 'pages/common/components/TicketTag'
 

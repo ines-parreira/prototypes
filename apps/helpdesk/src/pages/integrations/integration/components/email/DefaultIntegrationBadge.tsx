@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import { Badge, Tooltip } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 function DefaultIntegrationBadge() {
     const badgeRef = useRef<HTMLDivElement>(null)

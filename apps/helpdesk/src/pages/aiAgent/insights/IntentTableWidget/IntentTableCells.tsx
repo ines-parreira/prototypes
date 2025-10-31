@@ -4,7 +4,7 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Skeleton, Tooltip } from '@gorgias/axiom'
+import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'

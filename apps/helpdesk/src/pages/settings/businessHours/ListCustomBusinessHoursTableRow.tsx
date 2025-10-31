@@ -6,7 +6,7 @@ import {
     Badge,
     LegacyIconButton as IconButton,
     Label,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { BusinessHoursList } from '@gorgias/helpdesk-types'
 

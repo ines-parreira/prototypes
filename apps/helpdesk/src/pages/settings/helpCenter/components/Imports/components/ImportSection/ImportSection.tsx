@@ -7,7 +7,11 @@ import { Map } from 'immutable'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'

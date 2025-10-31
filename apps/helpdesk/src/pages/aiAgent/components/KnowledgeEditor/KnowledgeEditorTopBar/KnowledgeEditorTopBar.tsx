@@ -127,8 +127,8 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     <Icon
                         name={
                             props.isDetailsView
-                                ? 'system-bar-collapsed'
-                                : 'system-bar-expanded'
+                                ? 'system-bar-collapse'
+                                : 'system-bar-expand'
                         }
                     />
                 </button>

@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Icon, Skeleton, Tooltip } from '@gorgias/axiom'
+import { Icon, Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
 import { MetricValueFormat, TrendDirection } from '../../types'

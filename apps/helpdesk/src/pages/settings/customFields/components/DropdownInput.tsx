@@ -2,7 +2,11 @@ import { memo, useCallback, useState } from 'react'
 
 import uniqueId from 'lodash/uniqueId'
 
-import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import {

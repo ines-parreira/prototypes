@@ -5,7 +5,10 @@ import { history } from '@repo/routing'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import PageHeader from 'pages/common/components/PageHeader'

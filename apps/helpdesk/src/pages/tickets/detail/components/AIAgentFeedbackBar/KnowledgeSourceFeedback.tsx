@@ -5,7 +5,7 @@ import cn from 'classnames'
 import {
     LegacyIconButton as IconButton,
     Skeleton,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'

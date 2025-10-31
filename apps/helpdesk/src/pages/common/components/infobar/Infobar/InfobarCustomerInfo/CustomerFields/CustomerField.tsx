@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'

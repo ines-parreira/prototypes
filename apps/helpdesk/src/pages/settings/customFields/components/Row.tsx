@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { Badge, Tooltip } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'

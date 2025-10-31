@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

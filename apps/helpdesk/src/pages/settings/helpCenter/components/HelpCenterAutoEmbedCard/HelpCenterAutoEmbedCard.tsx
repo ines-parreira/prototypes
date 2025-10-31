@@ -4,7 +4,11 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

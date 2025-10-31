@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 import { TrendIcon } from '@repo/reporting'
 import classnames from 'classnames'
 
-import { Skeleton, Tooltip } from '@gorgias/axiom'
+import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { getTrendColorFromSign } from 'domains/reporting/pages/common/components/TrendBadge/helper'
 import css from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge.less'

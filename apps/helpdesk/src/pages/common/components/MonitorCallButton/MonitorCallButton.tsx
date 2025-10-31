@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Button, Tooltip } from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getMonitoringParameters } from 'hooks/integrations/phone/monitoring.utils'

@@ -9,7 +9,7 @@ import {
     LegacyButton as Button,
     CheckBoxField,
     Label,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'

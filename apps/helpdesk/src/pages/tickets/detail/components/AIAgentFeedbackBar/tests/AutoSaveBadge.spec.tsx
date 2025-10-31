@@ -18,7 +18,7 @@ jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
         LoadingSpinner: () => <div>Spinner</div>,
-        Tooltip: (props: any) => mockTooltip(props),
+        LegacyTooltip: (props: any) => mockTooltip(props),
     }
 })
 

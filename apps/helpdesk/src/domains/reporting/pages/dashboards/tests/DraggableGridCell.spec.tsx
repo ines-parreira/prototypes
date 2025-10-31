@@ -54,7 +54,7 @@ jest.mock(
 )
 jest.mock('pages/common/forms/input/IconInput', () => 'span')
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: 'div',
+    LegacyTooltip: 'div',
 }))
 
 const mockUseDragLayer = assumeMock(useDragLayer)

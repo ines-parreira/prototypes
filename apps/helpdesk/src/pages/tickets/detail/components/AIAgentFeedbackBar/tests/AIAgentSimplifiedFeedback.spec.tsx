@@ -28,7 +28,7 @@ import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: () => <div>Tooltip</div>,
+        LegacyTooltip: () => <div>Tooltip</div>,
     }
 })
 

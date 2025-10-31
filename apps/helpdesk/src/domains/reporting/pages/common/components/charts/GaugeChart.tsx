@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 
 import css from 'domains/reporting/pages/common/components/charts/GaugeChart.less'

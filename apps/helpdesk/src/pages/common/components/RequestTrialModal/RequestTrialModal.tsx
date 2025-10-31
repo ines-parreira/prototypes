@@ -3,7 +3,7 @@ import React, { memo, useMemo, useState } from 'react'
 import {
     LegacyAvatar as Avatar,
     LegacyButton as Button,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { User } from 'config/types/user'

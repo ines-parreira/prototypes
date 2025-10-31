@@ -50,7 +50,9 @@ jest.mock('components/Popover', () => {
 })
 
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: ({ children }: any) => <div data-testid="tooltip">{children}</div>,
+    LegacyTooltip: ({ children }: any) => (
+        <div data-testid="tooltip">{children}</div>
+    ),
 }))
 
 describe('TicketSummaryPopover', () => {

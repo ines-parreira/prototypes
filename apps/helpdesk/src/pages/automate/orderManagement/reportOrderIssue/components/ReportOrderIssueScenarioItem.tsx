@@ -4,7 +4,7 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import {

@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { logEvent, SegmentEvent } from 'common/segment'

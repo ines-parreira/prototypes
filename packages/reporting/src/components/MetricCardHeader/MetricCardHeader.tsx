@@ -1,6 +1,6 @@
 import { ReactNode, useRef } from 'react'
 
-import { Icon, Tooltip } from '@gorgias/axiom'
+import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { HINT_TOOLTIP_DELAY } from '../../constants'
 import { TooltipData } from '../../types'

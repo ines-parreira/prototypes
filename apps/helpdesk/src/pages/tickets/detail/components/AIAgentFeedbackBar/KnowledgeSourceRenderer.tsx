@@ -2,7 +2,7 @@ import React, { ReactNode, RefObject } from 'react'
 
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import KnowledgeSourceIcon from './KnowledgeSourceIcon'
 import KnowledgeSourcePopover from './KnowledgeSourcePopover'

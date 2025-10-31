@@ -3,7 +3,10 @@ import { useCallback, useMemo, useState } from 'react'
 import { useDismissFlag, useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'

@@ -109,7 +109,7 @@ jest.mock('pages/common/forms/input/TextInput', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({ children, target, placement, offset }: any) => (
+    LegacyTooltip: ({ children, target, placement, offset }: any) => (
         <div
             data-testid={`tooltip-${target}`}
             data-placement={placement}

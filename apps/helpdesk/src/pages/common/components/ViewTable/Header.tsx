@@ -6,7 +6,7 @@ import { Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import { getConfigByName } from 'config/views'

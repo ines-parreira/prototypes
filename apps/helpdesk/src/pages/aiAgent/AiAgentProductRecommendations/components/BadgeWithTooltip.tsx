@@ -1,6 +1,6 @@
 import { useId } from '@repo/hooks'
 
-import { Badge, ColorType, Tooltip } from '@gorgias/axiom'
+import { Badge, ColorType, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 type BadgeWithTooltipProps = {
     label: string

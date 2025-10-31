@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { useId } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import css from 'common/navigation/components/GlobalNavigationItem.less'

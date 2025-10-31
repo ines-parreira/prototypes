@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import { Table } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FulfillmentStatus } from 'constants/integrations/types/shopify'
 

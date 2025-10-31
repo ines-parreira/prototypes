@@ -11,7 +11,7 @@ import { Map } from 'immutable'
 import {
     LegacyButton as Button,
     LegacyTextField as TextField,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import {
     useListCustomerIntegrationsWithChannelDefault,

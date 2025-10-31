@@ -2,7 +2,10 @@ import React, { useRef } from 'react'
 
 import { ModalFooter } from 'reactstrap'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'

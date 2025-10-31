@@ -2,7 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { cloneDeep, pick, set } from 'lodash'
 
-import { Badge, LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'

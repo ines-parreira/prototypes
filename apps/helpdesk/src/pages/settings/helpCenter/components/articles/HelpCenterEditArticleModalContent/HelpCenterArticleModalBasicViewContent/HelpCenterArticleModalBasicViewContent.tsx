@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import {
     Article,

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Icon, Tooltip } from '@gorgias/axiom'
+import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './StepCardTitleIcon.less'
 
@@ -28,7 +28,7 @@ export function StepCardTitleIcon({
                     ref={targetRef}
                     name={
                         variant === 'error'
-                            ? 'octagon-warning'
+                            ? 'octagon-error'
                             : 'triangle-warning'
                     }
                 />

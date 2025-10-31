@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { Button } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import shopifyLogo from 'assets/img/integrations/shopify.png'

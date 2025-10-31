@@ -4,7 +4,7 @@ import { renderHook, userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import {
     bigCommerceCartFixture,
@@ -19,7 +19,7 @@ import { ShippingMethod, useShippingMethods } from '../ShippingMethod'
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => (
+        LegacyTooltip: ({ children }: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
         ),
     } as Record<string, unknown>

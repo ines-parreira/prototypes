@@ -117,7 +117,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'octagon-error' }),
             ).toBeInTheDocument()
         })
 
@@ -169,7 +169,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'octagon-error' }),
             ).toBeInTheDocument()
         })
 

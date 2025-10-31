@@ -9,7 +9,7 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { humanize } from 'business/format'

@@ -10,7 +10,7 @@ jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: ({ children }: { children: ReactNode }) => (
+    LegacyTooltip: ({ children }: { children: ReactNode }) => (
         <div>Tooltip{children}</div>
     ),
 }))

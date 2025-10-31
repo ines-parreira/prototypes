@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import moment, { Moment } from 'moment-timezone'
 
-import { LegacyIconButton, Tooltip } from '@gorgias/axiom'
+import { LegacyIconButton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Language, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'

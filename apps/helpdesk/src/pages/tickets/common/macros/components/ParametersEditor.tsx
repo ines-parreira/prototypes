@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { List, Map } from 'immutable'
 import { Col, Row } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'

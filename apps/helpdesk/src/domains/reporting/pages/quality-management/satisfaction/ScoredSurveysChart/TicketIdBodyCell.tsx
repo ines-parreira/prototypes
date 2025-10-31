@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell, {

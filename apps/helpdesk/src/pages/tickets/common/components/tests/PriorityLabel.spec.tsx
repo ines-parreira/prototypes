@@ -15,7 +15,7 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </div>
     ),
-    Tooltip: ({ children, target }: any) => (
+    LegacyTooltip: ({ children, target }: any) => (
         <div data-testid="tooltip" data-target={target?.current}>
             {children}
         </div>

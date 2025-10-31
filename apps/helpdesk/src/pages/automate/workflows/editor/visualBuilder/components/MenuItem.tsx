@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'

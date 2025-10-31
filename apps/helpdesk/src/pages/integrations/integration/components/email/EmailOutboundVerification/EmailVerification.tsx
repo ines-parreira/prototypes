@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 
 import { history } from '@repo/routing'
 
-import { Badge, LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { EmailProvider } from 'models/integration/constants'
 import { EmailIntegration } from 'models/integration/types'

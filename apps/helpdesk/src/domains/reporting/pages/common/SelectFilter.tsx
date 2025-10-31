@@ -28,7 +28,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import QuickSelectionOption from 'domains/reporting/pages/common/QuickSelectionOption'
 import css from 'domains/reporting/pages/common/SelectFilter.less'

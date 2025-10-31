@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { HELP_CENTER_DOMAIN } from 'pages/settings/helpCenter/constants'

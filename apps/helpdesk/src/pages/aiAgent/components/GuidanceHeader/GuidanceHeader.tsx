@@ -2,7 +2,11 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { useParams } from 'react-router'
 
-import { Banner, LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    Banner,
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import {

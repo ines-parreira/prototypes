@@ -3,7 +3,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { ClassValue } from 'classnames/types'
 
-import { LegacyButton as Button, Separator, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Separator,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import dotError from 'assets/img/icons/dot-error.svg'

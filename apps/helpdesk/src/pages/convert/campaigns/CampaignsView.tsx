@@ -5,7 +5,10 @@ import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

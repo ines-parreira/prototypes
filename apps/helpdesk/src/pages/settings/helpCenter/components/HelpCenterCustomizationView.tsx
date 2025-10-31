@@ -5,7 +5,10 @@ import classNames from 'classnames'
 import { FormGroup } from 'reactstrap'
 import isURL, { IsURLOptions } from 'validator/lib/isURL'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

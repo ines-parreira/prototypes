@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'

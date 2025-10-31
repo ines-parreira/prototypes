@@ -4,7 +4,7 @@ import {
     LegacyAvatar as Avatar,
     LegacyButton as Button,
     Skeleton,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'

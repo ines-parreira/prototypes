@@ -14,7 +14,7 @@ jest.mock('../utils', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: jest.fn(({ children, target }) => (
+    LegacyTooltip: jest.fn(({ children, target }) => (
         <div data-testid="tooltip" data-target={target}>
             {children}
         </div>

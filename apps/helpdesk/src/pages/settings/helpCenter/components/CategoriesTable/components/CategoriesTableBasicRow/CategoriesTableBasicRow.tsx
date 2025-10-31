@@ -3,7 +3,7 @@ import React, { ReactElement, useCallback, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import { Badge } from 'reactstrap'
 
-import { LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import { LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Article } from 'models/helpCenter/types'

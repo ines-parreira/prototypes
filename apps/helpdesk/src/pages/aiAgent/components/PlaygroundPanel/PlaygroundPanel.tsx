@@ -2,7 +2,10 @@ import { useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 
-import { LegacyIconButton as IconButton, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'

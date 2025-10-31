@@ -4,7 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

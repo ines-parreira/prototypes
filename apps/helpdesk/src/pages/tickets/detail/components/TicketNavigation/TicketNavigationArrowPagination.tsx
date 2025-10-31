@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ArrowPagination } from 'pages/common/components/Paginations'

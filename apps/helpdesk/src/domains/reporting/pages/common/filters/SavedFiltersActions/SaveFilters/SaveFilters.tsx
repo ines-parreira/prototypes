@@ -1,4 +1,7 @@
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 export const SAVE_FILTERS = 'Save Filters'
 export const SAVE_FILTERS_ID = 'save-filters'

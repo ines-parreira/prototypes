@@ -7,7 +7,7 @@ import {
     CheckBoxField,
     LegacyIconButton as IconButton,
     Label,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { FindFeedbackObjectType } from '@gorgias/knowledge-service-types'
 

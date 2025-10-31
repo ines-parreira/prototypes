@@ -11,7 +11,10 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import { getVariables } from 'tickets/common/utils'

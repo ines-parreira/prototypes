@@ -3,7 +3,7 @@ import { ComponentProps } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,7 +25,7 @@ const mockUseFlag = useFlag as jest.Mock
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => {
+        LegacyTooltip: ({ children }: ComponentProps<typeof Tooltip>) => {
             return <div aria-label="tooltip mock">{children}</div>
         },
     } as Record<string, unknown>

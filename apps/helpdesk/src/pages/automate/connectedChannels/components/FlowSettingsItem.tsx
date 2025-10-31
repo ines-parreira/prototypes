@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Label, Tooltip } from '@gorgias/axiom'
+import { Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'

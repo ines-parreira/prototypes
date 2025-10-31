@@ -7,7 +7,7 @@ import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
     Label,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import {

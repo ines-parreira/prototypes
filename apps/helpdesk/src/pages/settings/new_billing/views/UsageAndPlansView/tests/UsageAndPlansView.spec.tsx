@@ -140,7 +140,7 @@ describe('UsageAndPlansView', () => {
                 : cadence,
     )
 
-    const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
+    const MockTooltip = jest.spyOn(uiKit, 'LegacyTooltip')
 
     const helpdeskBanner = {
         description: 'Helpdesk banner',

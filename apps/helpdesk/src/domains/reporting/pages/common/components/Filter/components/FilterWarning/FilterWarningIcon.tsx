@@ -2,7 +2,7 @@ import React, { ComponentProps, useRef } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon.less'
 import { FILTER_WARNING_ICON } from 'domains/reporting/pages/common/components/Filter/constants'

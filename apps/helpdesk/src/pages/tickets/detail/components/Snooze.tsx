@@ -4,7 +4,10 @@ import { useShortcuts } from '@repo/utils'
 import cn from 'classnames'
 import { Moment } from 'moment'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

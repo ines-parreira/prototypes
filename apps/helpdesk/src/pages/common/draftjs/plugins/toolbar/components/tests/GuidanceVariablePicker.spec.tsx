@@ -31,7 +31,7 @@ jest.mock('../GuidanceVariableDropdown', () => {
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: jest.fn(({ children }) => (
+    LegacyTooltip: jest.fn(({ children }) => (
         <div data-testid="tooltip">{children}</div>
     )),
 }))

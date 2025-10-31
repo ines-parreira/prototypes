@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'

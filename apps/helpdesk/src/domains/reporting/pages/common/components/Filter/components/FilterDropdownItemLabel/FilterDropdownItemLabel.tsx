@@ -10,7 +10,7 @@ import React, {
 import classnames from 'classnames'
 import _escapeRegExp from 'lodash/escapeRegExp'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'

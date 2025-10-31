@@ -12,7 +12,7 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'

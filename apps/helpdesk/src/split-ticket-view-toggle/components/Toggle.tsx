@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { useId } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { logEvent, SegmentEvent } from 'common/segment'

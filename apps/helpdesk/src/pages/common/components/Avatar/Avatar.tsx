@@ -2,7 +2,7 @@ import React, { CSSProperties, useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { getAvatar, getAvatarFromCache, getInitials } from './utils'
 

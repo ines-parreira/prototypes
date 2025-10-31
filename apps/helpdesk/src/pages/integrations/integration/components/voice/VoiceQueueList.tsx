@@ -8,7 +8,7 @@ import {
     LegacyIconButton as IconButton,
     Label,
     Skeleton,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 

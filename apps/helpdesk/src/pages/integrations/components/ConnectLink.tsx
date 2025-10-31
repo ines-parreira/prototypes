@@ -2,7 +2,7 @@ import React, { ReactElement, ReactNode } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'

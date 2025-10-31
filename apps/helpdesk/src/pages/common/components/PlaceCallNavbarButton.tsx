@@ -3,7 +3,10 @@ import React, { useEffect } from 'react'
 import { useConditionalShortcuts } from '@repo/utils'
 import classNames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import {

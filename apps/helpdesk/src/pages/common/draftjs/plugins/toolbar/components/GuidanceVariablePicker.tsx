@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import {
     LegacyButton as Button,
     LegacyButtonSize,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'

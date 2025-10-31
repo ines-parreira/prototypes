@@ -233,7 +233,7 @@ describe('IvrMenuNode', () => {
             })
 
             await act(async () => {
-                await user.hover(screen.getByLabelText('octagon-warning'))
+                await user.hover(screen.getByLabelText('octagon-error'))
             })
 
             await waitFor(() => {
@@ -262,7 +262,7 @@ describe('IvrMenuNode', () => {
             })
 
             await act(async () => {
-                await user.hover(screen.getByLabelText('octagon-warning'))
+                await user.hover(screen.getByLabelText('octagon-error'))
             })
 
             await waitFor(() => {

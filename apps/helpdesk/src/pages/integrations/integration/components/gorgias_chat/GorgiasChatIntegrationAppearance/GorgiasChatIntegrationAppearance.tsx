@@ -21,7 +21,7 @@ import {
     LegacyButton as Button,
     Label,
     ToggleField,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'

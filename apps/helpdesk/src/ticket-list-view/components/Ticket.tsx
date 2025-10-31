@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { Components } from 'react-virtuoso'
 
-import { CheckBoxField, Tooltip } from '@gorgias/axiom'
+import { CheckBoxField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Language, TicketTranslationCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'

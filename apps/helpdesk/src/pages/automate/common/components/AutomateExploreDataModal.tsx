@@ -1,6 +1,10 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
-import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'

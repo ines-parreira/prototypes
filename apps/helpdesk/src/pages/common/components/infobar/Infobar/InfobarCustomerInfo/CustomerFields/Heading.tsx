@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'

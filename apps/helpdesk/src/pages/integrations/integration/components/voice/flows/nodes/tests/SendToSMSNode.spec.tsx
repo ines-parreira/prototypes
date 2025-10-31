@@ -162,7 +162,7 @@ describe('SendToSMSNode', () => {
             ).toBeInTheDocument()
             // error message
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'octagon-error' }),
             ).toBeInTheDocument()
             // dropdown should show placeholder
             expect(screen.getByText('Select')).toBeInTheDocument()
@@ -184,7 +184,7 @@ describe('SendToSMSNode', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'octagon-error' }),
             ).toBeInTheDocument()
         })
     })
@@ -206,7 +206,7 @@ describe('SendToSMSNode', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'octagon-warning' }),
+                screen.getByRole('img', { name: 'octagon-error' }),
             ).toBeInTheDocument()
         })
     })

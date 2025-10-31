@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/Legend.less'
 import CheckBox from 'pages/common/forms/CheckBox'

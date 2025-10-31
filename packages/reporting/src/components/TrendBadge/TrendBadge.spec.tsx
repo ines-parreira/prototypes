@@ -16,7 +16,7 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
         IconName: originalModule.IconName,
         Icon: originalModule.Icon,
         Skeleton: () => <div role="progressbar" />,
-        Tooltip: ({ children }: { children: React.ReactNode }) => (
+        LegacyTooltip: ({ children }: { children: React.ReactNode }) => (
             <div role="tooltip">{children}</div>
         ),
     }

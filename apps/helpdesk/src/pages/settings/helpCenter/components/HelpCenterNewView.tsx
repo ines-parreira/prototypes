@@ -9,7 +9,11 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { LegacyButton as Button, Label, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    Label,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

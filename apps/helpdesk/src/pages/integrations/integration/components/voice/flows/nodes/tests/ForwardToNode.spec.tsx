@@ -120,7 +120,7 @@ describe('ForwardToNode', () => {
 
             await act(async () => {
                 await user.hover(
-                    screen.getByRole('img', { name: 'octagon-warning' }),
+                    screen.getByRole('img', { name: 'octagon-error' }),
                 )
             })
 
@@ -137,7 +137,7 @@ describe('ForwardToNode', () => {
 
             await act(async () => {
                 await user.hover(
-                    screen.getByRole('img', { name: 'octagon-warning' }),
+                    screen.getByRole('img', { name: 'octagon-error' }),
                 )
             })
 
@@ -185,13 +185,13 @@ describe('ForwardToNode', () => {
                     ),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByRole('img', { name: 'octagon-warning' }),
+                    screen.getByRole('img', { name: 'octagon-error' }),
                 ).toBeInTheDocument()
             })
 
             await act(async () => {
                 await user.hover(
-                    screen.getByRole('img', { name: 'octagon-warning' }),
+                    screen.getByRole('img', { name: 'octagon-error' }),
                 )
             })
 
@@ -209,7 +209,7 @@ describe('ForwardToNode', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByRole('img', { name: 'octagon-warning' }),
+                    screen.queryByRole('img', { name: 'octagon-error' }),
                 ).toBeNull()
             })
 

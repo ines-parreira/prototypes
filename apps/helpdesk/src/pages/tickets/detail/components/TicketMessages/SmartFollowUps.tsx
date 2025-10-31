@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { SmartFollowUp } from 'models/ticket/types'

@@ -3,7 +3,7 @@ import React, { createRef } from 'react'
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './ConnectionStatus.less'
 

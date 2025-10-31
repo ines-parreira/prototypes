@@ -5,7 +5,11 @@ import { fromJS } from 'immutable'
 import _truncate from 'lodash/truncate'
 import { Badge } from 'reactstrap'
 
-import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { ActionTemplate, ActionTemplateExecution } from 'config'

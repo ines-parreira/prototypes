@@ -2,7 +2,10 @@ import { useCallback, useRef, useState } from 'react'
 
 import _capitalize from 'lodash/capitalize'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

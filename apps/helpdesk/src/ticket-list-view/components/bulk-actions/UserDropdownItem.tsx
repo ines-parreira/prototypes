@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { User } from '@gorgias/helpdesk-queries'
 
 import { Item } from 'components/Dropdown'

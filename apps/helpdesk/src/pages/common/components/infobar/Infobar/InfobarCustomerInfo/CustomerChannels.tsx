@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import cn from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

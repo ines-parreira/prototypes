@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 

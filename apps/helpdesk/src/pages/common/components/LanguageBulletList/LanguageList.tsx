@@ -1,4 +1,4 @@
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { Locale } from '../../../../models/helpCenter/types'
 import { moveLocaleToBack, moveLocaleToFront } from '../../utils/locale'

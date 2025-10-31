@@ -1,6 +1,6 @@
 import _noop from 'lodash/noop'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { Option } from '../../../../../common/components/RichDropdown/types'
 import { Messages } from './constants'

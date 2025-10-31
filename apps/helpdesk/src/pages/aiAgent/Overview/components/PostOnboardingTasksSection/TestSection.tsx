@@ -8,7 +8,7 @@ import {
     Heading,
     LegacyIconButton as IconButton,
     Text,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'

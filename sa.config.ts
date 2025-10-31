@@ -30,6 +30,7 @@ export default defineConfig({
                         'LegacySelectField',
                         'LegacyAvatar',
                         'LegacyShortcutKey',
+                        'LegacyTooltip',
                     ],
                     type: 'ui-kit-migration',
                     date: '2025-10-15',

@@ -1,7 +1,7 @@
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Box, Label, Tooltip } from '@gorgias/axiom'
+import { Box, Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'

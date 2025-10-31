@@ -16,7 +16,10 @@ import { fromJS } from 'immutable'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
-import { LegacyIconButton as IconButton, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'

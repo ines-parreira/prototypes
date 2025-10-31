@@ -19,7 +19,7 @@ jest.mock('pages/phoneNumbers/utils', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    Tooltip: ({ children }: { children: ReactNode }) => (
+    LegacyTooltip: ({ children }: { children: ReactNode }) => (
         <div data-testid="tooltip">{children}</div>
     ),
 }))

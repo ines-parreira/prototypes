@@ -1,7 +1,7 @@
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Icon, IconSize, Tooltip } from '@gorgias/axiom'
+import { Icon, IconSize, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
 import { selectText } from 'pages/common/components/CopyText/utils'

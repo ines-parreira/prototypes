@@ -15,7 +15,11 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
-import { LegacyButton as Button, ToggleField, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

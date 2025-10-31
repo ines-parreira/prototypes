@@ -99,7 +99,7 @@ describe('DEPRECATED_EnqueueNode', () => {
         renderComponent(mockStep)
 
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
     })
 
@@ -170,7 +170,7 @@ describe('DEPRECATED_EnqueueNode', () => {
         renderComponent(mockStep)
 
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
     })
 

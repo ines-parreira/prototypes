@@ -1,4 +1,7 @@
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import IconButton from 'pages/common/components/button/IconButton'

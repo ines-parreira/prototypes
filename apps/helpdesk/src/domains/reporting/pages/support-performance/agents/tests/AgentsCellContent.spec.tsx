@@ -26,7 +26,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('@gorgias/axiom'),
-            Tooltip: () => <div />,
+            LegacyTooltip: () => <div />,
         }) as typeof import('@gorgias/axiom'),
 )
 

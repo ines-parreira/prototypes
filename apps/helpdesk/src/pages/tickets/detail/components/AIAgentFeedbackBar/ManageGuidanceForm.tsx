@@ -7,7 +7,7 @@ import _omit from 'lodash/omit'
 import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
-    Tooltip,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'

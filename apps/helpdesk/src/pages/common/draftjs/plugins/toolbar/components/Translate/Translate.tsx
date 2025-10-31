@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Language } from '@gorgias/helpdesk-types'
 
 import Loader from 'pages/common/components/Loader/Loader'

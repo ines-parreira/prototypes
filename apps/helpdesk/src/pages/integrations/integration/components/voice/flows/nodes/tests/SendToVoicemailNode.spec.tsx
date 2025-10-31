@@ -113,7 +113,7 @@ describe('SendToVoicemailNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Message' (default text for empty content)
         expect(screen.getByText('Add voicemail')).toBeInTheDocument()
@@ -134,7 +134,7 @@ describe('SendToVoicemailNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Custom recording'
         expect(screen.getAllByText('Custom recording')).toHaveLength(2)

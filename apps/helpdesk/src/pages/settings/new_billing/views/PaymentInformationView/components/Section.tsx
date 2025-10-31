@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './Section.less'
 

@@ -3,7 +3,11 @@ import { useMemo, useRef } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { LegacyButton as Button, ToggleField, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'

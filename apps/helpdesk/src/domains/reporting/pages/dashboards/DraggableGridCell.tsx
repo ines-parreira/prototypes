@@ -11,7 +11,7 @@ import {
 } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import DashboardGrid from 'domains/reporting/pages/common/layout/DashboardGrid'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'

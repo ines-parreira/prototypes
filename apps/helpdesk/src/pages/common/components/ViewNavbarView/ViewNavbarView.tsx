@@ -8,7 +8,7 @@ import _debounce from 'lodash/debounce'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { UserSettingType } from 'config/types/user'

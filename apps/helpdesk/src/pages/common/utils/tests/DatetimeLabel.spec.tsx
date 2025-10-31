@@ -12,7 +12,7 @@ const mockStore = configureMockStore()
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: () => 'TooltipMock',
+        LegacyTooltip: () => 'TooltipMock',
     } as Record<string, unknown>
 })
 jest.mock('state/integrations/selectors', () => ({

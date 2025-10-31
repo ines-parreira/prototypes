@@ -3,7 +3,7 @@ import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { DateAndTimeFormatting } from 'constants/datetime'

@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import ReactACE from './WithACEEditor/ReactACE'
 import { ACEProps } from './WithACEEditor/types'

@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import { isEmpty } from 'lodash'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { useCustomerDetails } from 'pages/tickets/detail/components/TicketVoiceCall/hooks'

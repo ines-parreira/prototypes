@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { Cadence, Plan, ProductType } from 'models/billing/types'
 import {

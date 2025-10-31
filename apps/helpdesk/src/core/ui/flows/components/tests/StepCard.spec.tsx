@@ -69,7 +69,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
     })
 
@@ -96,7 +96,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'octagon-warning' }),
+            screen.queryByRole('img', { name: 'octagon-error' }),
         ).not.toBeInTheDocument()
     })
 
@@ -112,7 +112,7 @@ describe('StepCard', () => {
         const stepCard = container.firstChild as HTMLElement
         expect(stepCard).not.toHaveClass('withErrors')
         expect(
-            screen.queryByRole('img', { name: 'octagon-warning' }),
+            screen.queryByRole('img', { name: 'octagon-error' }),
         ).not.toBeInTheDocument()
     })
 
@@ -172,7 +172,7 @@ describe('StepCard', () => {
         expect(stepCard).toHaveClass('withErrors')
         expect(stepCard).not.toHaveClass('withWarnings')
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
         expect(
             screen.queryByRole('img', { name: 'triangle-warning' }),
@@ -354,7 +354,7 @@ describe('StepCard', () => {
 
         expect(screen.getByText('test-icon')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'octagon-warning' }),
+            screen.getByRole('img', { name: 'octagon-error' }),
         ).toBeInTheDocument()
         expect(screen.getByTitle('Action menu')).toBeInTheDocument()
 

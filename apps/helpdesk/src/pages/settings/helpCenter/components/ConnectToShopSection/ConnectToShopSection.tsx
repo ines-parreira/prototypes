@@ -3,7 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import store from 'assets/img/icons/store.svg'
 import { useTheme } from 'core/theme'

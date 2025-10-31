@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 

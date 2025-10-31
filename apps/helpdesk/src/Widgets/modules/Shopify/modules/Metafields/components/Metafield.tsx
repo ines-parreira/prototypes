@@ -2,7 +2,7 @@ import React, { createRef, useContext } from 'react'
 
 import { isArray, map, startCase, truncate } from 'lodash'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import {
     DimensionShopifyMetafieldData,
     MoneyShopifyMetafield,

@@ -5,7 +5,10 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalFooter } from 'reactstrap'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { logEvent, SegmentEvent } from 'common/segment'

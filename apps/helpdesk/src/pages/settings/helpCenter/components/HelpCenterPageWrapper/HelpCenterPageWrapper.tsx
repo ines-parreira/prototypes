@@ -4,7 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

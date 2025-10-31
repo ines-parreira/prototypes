@@ -18,7 +18,7 @@ import { MacrosSettingsTable } from '../MacrosSettingsTable'
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        Tooltip: () => <div>Tooltip</div>,
+        LegacyTooltip: () => <div>Tooltip</div>,
     } as Record<string, unknown>
 })
 jest.mock('@repo/routing', () => ({

@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Link, NavLink } from 'react-router-dom'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
 import dotNeutral from 'assets/img/icons/dot-neutral.svg'

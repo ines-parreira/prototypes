@@ -2,7 +2,11 @@ import { useCallback, useRef, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LegacyButton as Button, LoadingSpinner, Tooltip } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

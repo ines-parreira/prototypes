@@ -3,7 +3,12 @@ import { useState } from 'react'
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Icon, IconSize, TextField, Tooltip } from '@gorgias/axiom'
+import {
+    Icon,
+    IconSize,
+    TextField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import css from '../KnowledgeEditorSidePanelSectionHelpCenterArticleSettings.less'
 

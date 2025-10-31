@@ -5,7 +5,7 @@ import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import { Label } from 'reactstrap'
 
-import { Tooltip } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { formatPrice } from 'business/shopify/number'
 import {
