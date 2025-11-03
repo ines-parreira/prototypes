@@ -57,6 +57,15 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
         [teamsMap, updateTicketTeam],
     )
 
+    const clearSearch = useCallback(
+        (isOpen: boolean) => {
+            if (!isOpen) {
+                setSearch('')
+            }
+        },
+        [setSearch],
+    )
+
     return (
         <Select
             placeholder="No team"
@@ -72,6 +81,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
             isDisabled={isUpdatingTeam || isLoading}
             maxHeight={220}
             onLoadMore={() => shouldLoadMore && onLoad()}
+            onOpenChange={clearSearch}
             aria-label="Team selection"
             trigger={({ selectedText, isPlaceholder, isOpen }) => {
                 const emoji = isNumber(selectedOption?.id)

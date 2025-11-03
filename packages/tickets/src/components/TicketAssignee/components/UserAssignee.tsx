@@ -55,6 +55,15 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
         [usersMap, updateTicketUser],
     )
 
+    const clearSearch = useCallback(
+        (isOpen: boolean) => {
+            if (!isOpen) {
+                setSearch('')
+            }
+        },
+        [setSearch],
+    )
+
     return (
         <Select
             placeholder="Unassigned"
@@ -70,6 +79,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
             isDisabled={isUpdatingUser || isLoading}
             maxHeight={306}
             onLoadMore={() => shouldLoadMore && onLoad()}
+            onOpenChange={clearSearch}
             aria-label="User selection"
             trigger={({ selectedText, isPlaceholder, isOpen }) => {
                 const user = isNumber(selectedOption?.id)

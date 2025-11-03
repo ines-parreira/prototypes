@@ -266,4 +266,28 @@ describe('UserAssignee', () => {
             expect(select).not.toBeDisabled()
         })
     })
+
+    it('should clear search when dropdown is closed', async () => {
+        const { user } = render(
+            <UserAssignee ticketId={ticketId} currentAssignee={null} />,
+        )
+
+        const select = await waitUntilLoaded()
+        await user.click(select)
+
+        const searchInput = await screen.findByRole('searchbox')
+        await user.type(searchInput, 'test search')
+
+        expect(searchInput).toHaveValue('test search')
+
+        await user.click(select)
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+
+        await user.click(select)
+        const searchInputAfterReopen = await screen.findByRole('searchbox')
+
+        expect(searchInputAfterReopen).toHaveValue('')
+    })
 })
