@@ -10,7 +10,7 @@ exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should add email
   },
   "newMessage": {
     "attachments": [],
-    "body_html": "<div>Hello</div><div><br></div><div>Foo <strong>signature</strong></div><div><br></div><div>On Mon, Jul 31, 2017, at 11:07 PM, Acme Support &lt;<a href="mailto:support@acme.gorgias.io" target="_blank">support@acme.gorgias.io</a>&gt; wrote:</div><blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><div data-gorgias-quote-depth="1">Hi! How are <strong>you</strong>?</div></blockquote>",
+    "body_html": "<div>Hello</div><div><br /></div><div>Foo <strong>signature</strong></div><div><br /></div><div>On Mon, Jul 31, 2017, at 11:07 PM, Acme Support &lt;<a href="mailto:support@acme.gorgias.io" target="_blank">support@acme.gorgias.io</a>&gt; wrote:</div><blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><div data-gorgias-quote-depth="1">Hi! How are <strong>you</strong>?</div></blockquote>",
     "body_text": "Hello
 
 Foo signature

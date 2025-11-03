@@ -165,6 +165,31 @@ describe('html util', () => {
                 '<?xml version="1.0" encoding="utf-16"?><html>Pizza gorgias.io'
             expect(linkifyHtml(html)).toMatchSnapshot()
         })
+
+        it('should add target="_blank" to URL links', () => {
+            const html = 'Visit our website at www.example.com'
+            const result = linkifyHtml(html)
+            expect(result).toContain('target="_blank"')
+            expect(result).toContain('http://www.example.com')
+        })
+
+        it('should add target="_self" to email links', () => {
+            const html = 'Contact us at support@example.com'
+            const result = linkifyHtml(html)
+            expect(result).toContain('target="_self"')
+            expect(result).toContain('mailto:support@example.com')
+        })
+
+        it('should add correct target attributes to mixed content with URLs and emails', () => {
+            const html = 'Visit www.example.com or email support@example.com'
+            const result = linkifyHtml(html)
+            // Should contain both target types
+            expect(result).toContain('target="_blank"')
+            expect(result).toContain('target="_self"')
+            // Verify the URLs
+            expect(result).toContain('http://www.example.com')
+            expect(result).toContain('mailto:support@example.com')
+        })
     })
 
     describe('sanitizeHtmlDefault', () => {

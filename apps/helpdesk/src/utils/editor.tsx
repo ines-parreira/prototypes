@@ -271,7 +271,7 @@ export function convertToHTML(contentState: ContentState): string {
             return linkifyhtml(str, {
                 className: 'linkified',
                 target: (_href: unknown, type: string) =>
-                    type === 'url' && '_blank',
+                    type === 'url' ? '_blank' : '_self',
                 validate: {
                     url(value: any) {
                         return linkify.test(value)

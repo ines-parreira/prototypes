@@ -30,7 +30,7 @@ describe('<TextReplyEditor />', () => {
             type: 'text_reply',
             data: {
                 content: {
-                    html: '<div><br></div>',
+                    html: '<div><br /></div>',
                     text: '',
                 },
             },

@@ -30,7 +30,7 @@ describe('<OrderSelectionEditor />', () => {
             type: 'order_selection',
             data: {
                 content: {
-                    html: '<div><br></div>',
+                    html: '<div><br /></div>',
                     text: '',
                 },
             },

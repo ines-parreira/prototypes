@@ -30,7 +30,7 @@ describe('<FileUploadEditor />', () => {
             type: 'file_upload',
             data: {
                 content: {
-                    html: '<div><br></div>',
+                    html: '<div><br /></div>',
                     text: '',
                 },
             },

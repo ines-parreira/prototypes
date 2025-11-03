@@ -2369,7 +2369,7 @@ exports[`actions new message sendTicketMessage should submit new message 1`] = `
     "message": {
       "actions": undefined,
       "attachments": [],
-      "body_html": "<div><br></div>",
+      "body_html": "<div><br /></div>",
       "body_text": "",
       "channel": "email",
       "from_agent": true,

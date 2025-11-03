@@ -117,6 +117,22 @@ describe('editor utils', () => {
             expect(convertToHTML(contentState)).toMatchSnapshot()
         })
 
+        it('should convert email addresses with target="_self"', () => {
+            const text = 'Contact us at support@example.com'
+            const contentState = ContentState.createFromText(text)
+            const html = convertToHTML(contentState)
+            expect(html).toContain('target="_self"')
+            expect(html).toContain('mailto:support@example.com')
+        })
+
+        it('should convert URLs with target="_blank"', () => {
+            const text = 'Visit www.example.com'
+            const contentState = ContentState.createFromText(text)
+            const html = convertToHTML(contentState)
+            expect(html).toContain('target="_blank"')
+            expect(html).toContain('http://www.example.com')
+        })
+
         it('should turn newlines into br', () => {
             const text = 'One\nTwo\n\nThree\n\n\n'
             const contentState = ContentState.createFromText(text)

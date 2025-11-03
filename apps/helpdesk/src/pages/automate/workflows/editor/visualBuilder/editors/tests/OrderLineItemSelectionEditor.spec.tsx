@@ -30,7 +30,7 @@ describe('<OrderLineItemSelectionEditor />', () => {
             type: 'order_line_item_selection',
             data: {
                 content: {
-                    html: '<div><br></div>',
+                    html: '<div><br /></div>',
                     text: '',
                 },
             },

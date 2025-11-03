@@ -29,7 +29,7 @@ describe('<AutomatedMessageEditor />', () => {
             type: 'automated_message',
             data: {
                 content: {
-                    html: '<div><br></div>',
+                    html: '<div><br /></div>',
                     text: '',
                 },
             },

@@ -8,7 +8,8 @@ const linkifyOptions = {
         rel: 'noreferrer noopener',
     },
     className: 'linkified',
-    target: (_href: unknown, type: string) => type === 'url' && '_blank',
+    target: (_href: unknown, type: string) =>
+        type === 'url' ? '_blank' : '_self',
 }
 
 /* Forgiving html parser:
