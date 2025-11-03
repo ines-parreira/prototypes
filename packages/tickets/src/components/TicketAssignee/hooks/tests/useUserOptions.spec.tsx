@@ -55,7 +55,7 @@ afterAll(() => {
 })
 
 describe('useUserOptions', () => {
-    it('should return user sections with "You" and "Assign to others" when no user is assigned', async () => {
+    it('should return user sections with "Assign yourself" and "Assign to others" when no user is assigned', async () => {
         const { result } = renderHook(() =>
             useUserOptions({ currentAssignee: null }),
         )
@@ -65,9 +65,9 @@ describe('useUserOptions', () => {
         })
 
         expect(result.current.userSections).toHaveLength(2)
-        expect(result.current.userSections[0].id).toBe('you')
+        expect(result.current.userSections[0].id).toBe('self')
         expect(result.current.userSections[0].items).toEqual([
-            { id: 1, label: 'You' },
+            { id: 1, label: 'Assign yourself' },
         ])
         expect(result.current.userSections[1].id).toBe('others')
         expect(result.current.userSections[1].items).toEqual([
@@ -89,7 +89,7 @@ describe('useUserOptions', () => {
         expect(result.current.userSections).toHaveLength(3)
         expect(result.current.userSections[0].id).toBe('unassigned')
         expect(result.current.userSections[0].items).toEqual([NO_USER_OPTION])
-        expect(result.current.userSections[1].id).toBe('you')
+        expect(result.current.userSections[1].id).toBe('self')
         expect(result.current.userSections[2].id).toBe('others')
         expect(result.current.selectedOption).toEqual({
             id: 2,

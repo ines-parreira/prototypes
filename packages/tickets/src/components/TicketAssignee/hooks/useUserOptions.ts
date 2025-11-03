@@ -6,7 +6,7 @@ import { NonNullableUser, useListUsersSearch } from './useListUsersSearch'
 
 const SECTION_DETAILS = {
     SELF: {
-        id: 'you',
+        id: 'self',
         name: '',
     },
     OTHERS: {
@@ -83,7 +83,7 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
                 items: [
                     {
                         id: currentUserId,
-                        label: 'You',
+                        label: 'Assign yourself',
                     },
                 ],
             })

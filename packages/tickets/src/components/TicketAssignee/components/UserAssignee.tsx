@@ -21,6 +21,8 @@ import {
     useUserOptions,
 } from '../hooks/useUserOptions'
 
+import css from './SelectStyles.less'
+
 type Props = {
     ticketId: number
     currentAssignee: TicketUser | null
@@ -77,6 +79,8 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isUpdatingUser || isLoading}
+            minWidth={210}
+            maxWidth={210}
             maxHeight={306}
             onLoadMore={() => shouldLoadMore && onLoad()}
             onOpenChange={clearSearch}
@@ -90,17 +94,21 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                         ? user.meta.profile_picture_url
                         : null
 
+                const label = user ? user.name : selectedText
+
                 return (
                     <Tag
                         leadingSlot={
                             isUpdatingUser || isLoading ? (
                                 <LoadingSpinner size={16} />
                             ) : user ? (
-                                <Avatar
-                                    name={user.name || ''}
-                                    url={profilePictureUrl ?? undefined}
-                                    size="sm"
-                                />
+                                <div>
+                                    <Avatar
+                                        name={user.name || ''}
+                                        url={profilePictureUrl ?? undefined}
+                                        size="sm"
+                                    />
+                                </div>
                             ) : (
                                 <Icon name="user" size="sm" />
                             )
@@ -115,8 +123,9 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                                 size="xs"
                             />
                         }
+                        className={css.trigger}
                     >
-                        {isPlaceholder ? 'Unassigned' : selectedText}
+                        {isPlaceholder ? 'Unassigned' : label}
                     </Tag>
                 )
             }}

@@ -1,0 +1,15 @@
+:local {
+    .trigger {
+        max-width: 132px;
+
+        > :first-child {
+            overflow: hidden;
+
+            [class*='typography'] {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+}

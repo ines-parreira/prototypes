@@ -111,8 +111,7 @@ describe('UserAssignee', () => {
 
         await waitUntilLoaded()
 
-        const currentUserTexts = screen.getAllByText('You')
-        expect(currentUserTexts.length).toBe(2)
+        expect(screen.getByText(currentTicketAssignee.name)).toBeInTheDocument()
     })
 
     it('should be disabled while loading', () => {
@@ -122,13 +121,13 @@ describe('UserAssignee', () => {
         expect(select[0]).toBeDisabled()
     })
 
-    it('should show "You" section for current user, as well as other users when not assigned', async () => {
+    it('should show "Assign yourself" section for current user, as well as other users when not assigned', async () => {
         render(<UserAssignee ticketId={ticketId} currentAssignee={null} />)
 
         await waitUntilLoaded()
 
         await waitFor(() => {
-            expect(screen.getByText('You')).toBeInTheDocument()
+            expect(screen.getByText('Assign yourself')).toBeInTheDocument()
             expect(screen.getByText('Jane Smith')).toBeInTheDocument()
             expect(screen.getByText('Bob Johnson')).toBeInTheDocument()
         })
@@ -152,7 +151,7 @@ describe('UserAssignee', () => {
         })
     })
 
-    it('should update user assignment when selecting current user (You)', async () => {
+    it('should update user assignment when selecting current user (Assign yourself)', async () => {
         const waitForUpdateTicketRequest =
             mockUpdateTicket.waitForRequest(server)
 
@@ -163,8 +162,8 @@ describe('UserAssignee', () => {
         const select = await waitUntilLoaded()
         await user.click(select)
 
-        const youOptions = await screen.findAllByText('You')
-        await user.click(youOptions[youOptions.length - 1])
+        const yourselfOptions = await screen.findAllByText('Assign yourself')
+        await user.click(yourselfOptions[yourselfOptions.length - 1])
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -255,8 +254,8 @@ describe('UserAssignee', () => {
 
         await user.click(select)
 
-        const youOptions = await screen.findAllByText('You')
-        await user.click(youOptions[youOptions.length - 1])
+        const yourselfOptions = await screen.findAllByText('Assign yourself')
+        await user.click(yourselfOptions[yourselfOptions.length - 1])
 
         await waitFor(() => {
             expect(select).toBeDisabled()

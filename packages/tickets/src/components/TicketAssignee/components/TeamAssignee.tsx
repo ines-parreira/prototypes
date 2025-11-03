@@ -21,6 +21,8 @@ import {
 } from '../hooks/useTeamOptions'
 import { useUpdateTicketTeam } from '../hooks/useUpdateTicketTeam'
 
+import css from './SelectStyles.less'
+
 type Props = {
     ticketId: number
     currentTeam: Team | null
@@ -79,6 +81,8 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isUpdatingTeam || isLoading}
+            minWidth={210}
+            maxWidth={210}
             maxHeight={220}
             onLoadMore={() => shouldLoadMore && onLoad()}
             onOpenChange={clearSearch}
@@ -114,6 +118,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                                 size="xs"
                             />
                         }
+                        className={css.trigger}
                     >
                         {isPlaceholder ? 'No team' : selectedText}
                     </Tag>
