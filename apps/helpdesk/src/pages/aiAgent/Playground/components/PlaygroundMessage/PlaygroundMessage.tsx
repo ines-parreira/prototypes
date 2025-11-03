@@ -174,6 +174,8 @@ const MessageContainer = ({
                 return 'forum'
             case 'email':
                 return 'mail'
+            case 'sms':
+                return 'sms'
         }
     }
 

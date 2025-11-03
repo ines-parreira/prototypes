@@ -1,0 +1,21 @@
+:local {
+    .toggleFieldsContainer {
+        // The gap is not using our default spacings on figma
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .messageInstructions {
+        :first-child {
+            margin-bottom: var(--spacing-xxs);
+            .component-button-medium();
+        }
+
+        :last-child {
+            // Give axiom aspect to it.
+            box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+            border: unset;
+        }
+    }
+}

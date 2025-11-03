@@ -6,5 +6,5 @@ export type PlaygroundFormValues = {
     customer: PlaygroundCustomer
 }
 
-export type PlaygroundChannels = 'chat' | 'email'
+export type PlaygroundChannels = 'chat' | 'email' | 'sms'
 export type PlaygroundChannelAvailability = 'online' | 'offline'
