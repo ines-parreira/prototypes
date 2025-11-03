@@ -130,9 +130,15 @@ export const getDefaultValues = (
         },
     }
 
+    // remove ivr from meta if function is standard to avoid validation errors
+    const oldMeta = integration.meta
+    if (integration.meta.function === 'standard') {
+        oldMeta.ivr = undefined
+    }
+
     return merge(defaultValues, {
         name: integration.name,
-        meta: integration.meta,
+        meta: oldMeta,
         business_hours_id: integration.business_hours_id,
     })
 }
