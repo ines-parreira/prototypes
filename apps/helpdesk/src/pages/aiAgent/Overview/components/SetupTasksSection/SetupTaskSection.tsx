@@ -131,7 +131,7 @@ export const SetupTaskSection = ({
     return (
         <div className={css.container}>
             <div className={css.header}>
-                <Heading>Setup checklist</Heading>
+                <Heading size="sm">Setup checklist</Heading>
                 <div className={css.progress}>
                     <span>
                         <ProgressIcon
