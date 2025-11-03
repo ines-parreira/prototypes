@@ -123,7 +123,7 @@ export const useFeedbackActions = ({
                     return {
                         resourceType:
                             AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
-                        resourceId: storeWebsiteQuestion.id.toString(),
+                        resourceId: storeWebsiteQuestion.article_id.toString(),
                         resourceSetId:
                             storeConfiguration?.snippetHelpCenterId?.toString(),
                         resourceLocale: null,

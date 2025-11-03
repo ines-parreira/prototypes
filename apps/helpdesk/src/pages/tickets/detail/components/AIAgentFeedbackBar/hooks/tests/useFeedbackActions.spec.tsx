@@ -175,6 +175,7 @@ const createResourceData = (
                         id,
                         helpCenterId: 101,
                         url: 'https://store.example.com/faq',
+                        article_id: 12345,
                     },
                 ],
             }
