@@ -77,7 +77,7 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
         if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['ticketId', ctx.sortDirection]] as const,
+                order: [['ticketCount', ctx.sortDirection]] as const,
             }
         }
 

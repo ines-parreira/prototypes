@@ -30,7 +30,7 @@ const ticketHandleTimeScope = defineScope({
         'customFields',
         'tags',
     ],
-    order: ['tickets', 'handleTime'],
+    order: ['tickets', 'handleTime', 'avgHandleTime'],
 })
 
 export const ticketAverageHandleTime = ticketHandleTimeScope
@@ -44,10 +44,19 @@ export const ticketAverageHandleTimeQueryV2Factory = (ctx: Context) =>
 
 export const ticketAverageHandleTimePerAgent = ticketHandleTimeScope
     .defineMetricName(METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT)
-    .defineQuery(() => ({
-        measures: ['averageHandleTime'] as const,
-        dimensions: ['agentId'] as const,
-    }))
+    .defineQuery(({ ctx }) => {
+        const query = {
+            measures: ['averageHandleTime'] as const,
+            dimensions: ['agentId'] as const,
+        }
+        if (ctx.sortDirection) {
+            return {
+                ...query,
+                order: [['avgHandleTime', ctx.sortDirection]] as const,
+            }
+        }
+        return query
+    })
 
 export const ticketAverageHandleTimePerAgentQueryV2Factory = (ctx: Context) =>
     ticketAverageHandleTimePerAgent.build(ctx)

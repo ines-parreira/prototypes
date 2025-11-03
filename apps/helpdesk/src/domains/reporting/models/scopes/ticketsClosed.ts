@@ -45,7 +45,9 @@ export const closedTicketsTimeseries = ticketsClosedScope
                 granularity: ctx.granularity,
             },
         ],
-        order: [['closedDatetime', OrderDirection.Asc]] as const,
+        order: [
+            ['closedDatetime', ctx.sortDirection || OrderDirection.Asc],
+        ] as const,
     }))
 
 export const closedTicketsTimeseriesQueryV2Factory = (ctx: Context) =>

@@ -8,6 +8,7 @@ import {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
+import { OrderDirection } from 'models/api/types'
 
 describe('onlineTimeScope', () => {
     const filters: StatsFilters = {
@@ -27,29 +28,41 @@ describe('onlineTimeScope', () => {
     }
 
     describe('onlineTime', () => {
+        const expected = {
+            measures: ['onlineTime'],
+            timezone: 'utc',
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ],
+            metricName: 'agentxp-online-time',
+            scope: 'online-time',
+        }
+
         it('creates query', () => {
             const actual = onlineTime.build(context)
 
-            const expected = {
-                measures: ['onlineTime'],
-                timezone: 'utc',
-                filters: [
-                    {
-                        member: 'periodStart',
-                        operator: 'afterDate',
-                        values: ['2025-09-03T00:00:00.000'],
-                    },
-                    {
-                        member: 'periodEnd',
-                        operator: 'beforeDate',
-                        values: ['2025-09-03T23:59:59.000'],
-                    },
-                ],
-                metricName: 'agentxp-online-time',
-                scope: 'online-time',
-            }
-
             expect(actual).toEqual(expected)
+        })
+
+        it('creates query with sort direction', () => {
+            const actual = onlineTime.build({
+                ...context,
+                sortDirection: OrderDirection.Asc,
+            })
+
+            expect(actual).toEqual({
+                ...expected,
+                order: [['onlineTime', 'asc']],
+            })
         })
     })
 

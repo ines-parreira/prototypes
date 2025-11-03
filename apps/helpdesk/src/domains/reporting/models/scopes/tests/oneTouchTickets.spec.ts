@@ -188,7 +188,7 @@ describe('oneTouchTicketsScope', () => {
                         values: ['2025-09-03T23:59:59.000'],
                     },
                 ],
-                order: [['ticketId', 'asc']],
+                order: [['ticketCount', 'asc']],
                 metricName: 'support-performance-one-touch-tickets-per-agent',
                 scope: 'one-touch-tickets',
                 time_dimensions: [

@@ -28,10 +28,19 @@ export const onlineTimeQueryV2Factory = (ctx: Context) => onlineTime.build(ctx)
 
 export const onlineTimePerAgent = onlineTimeScope
     .defineMetricName(METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT)
-    .defineQuery(() => ({
-        measures: ['onlineTime'] as const,
-        dimensions: ['agentId'] as const,
-    }))
+    .defineQuery(({ ctx }) => {
+        const query = {
+            measures: ['onlineTime'] as const,
+            dimensions: ['agentId'] as const,
+        }
+        if (ctx.sortDirection) {
+            return {
+                ...query,
+                order: [['onlineTime', ctx.sortDirection]] as const,
+            }
+        }
+        return query
+    })
 
 export const onlineTimePerAgentQueryV2Factory = (ctx: Context) =>
     onlineTimePerAgent.build(ctx)

@@ -46,10 +46,19 @@ export const medianResolutionTimePerAgent = resolutionTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT,
     )
-    .defineQuery(() => ({
-        measures: ['medianResolutionTime'] as const,
-        dimensions: ['agentId'] as const,
-    }))
+    .defineQuery(({ ctx }) => {
+        const query = {
+            measures: ['medianResolutionTime'] as const,
+            dimensions: ['agentId'] as const,
+        }
+        if (ctx.sortDirection) {
+            return {
+                ...query,
+                order: [['medianResolutionTime', ctx.sortDirection]] as const,
+            }
+        }
+        return query
+    })
 
 export const medianResolutionTimePerAgentQueryV2Factory = (ctx: Context) =>
     medianResolutionTimePerAgent.build(ctx)
