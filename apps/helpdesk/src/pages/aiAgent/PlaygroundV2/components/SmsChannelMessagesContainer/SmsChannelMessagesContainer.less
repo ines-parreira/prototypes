@@ -1,0 +1,64 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 546px;
+        display: flex;
+        max-width: 292.148px;
+        height: 546px;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 24px;
+        border: 2.93px solid var(--Content-content-neutral-secondary, #5c6370);
+        background: var(--neutral-grey-0);
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        background-color: var(--neutral-grey-0);
+        z-index: 1;
+        padding: 17px 24px;
+        gap: var(--spacing-xs);
+
+        .statusBar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+
+            .component-badge-tag-semibold();
+        }
+
+        .statusIcons {
+            display: flex;
+            flex-direction: row;
+            gap: var(--spacing-xxxs);
+        }
+
+        .storeTitle {
+            display: flex;
+            justify-content: center;
+            .caption-semibold();
+        }
+
+        .batteryIcon {
+            width: 20px;
+        }
+
+        .wifiIcon {
+            width: 15px;
+        }
+    }
+
+    .messagesContainer {
+        padding: 0 24px;
+    }
+}
