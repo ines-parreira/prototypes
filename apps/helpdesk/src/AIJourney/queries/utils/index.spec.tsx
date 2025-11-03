@@ -55,7 +55,13 @@ describe('AIJourney Utils', () => {
                 ]
                 const result = aiJourneyKeys.journeys(integrationId, types)
 
-                expect(result).toEqual(['journeys', 123, types])
+                expect(result).toEqual([
+                    'journeys',
+                    123,
+                    {
+                        types: ['cart_abandoned', 'session_abandoned'],
+                    },
+                ])
             })
 
             it('should return correct query key for journeys with single type', () => {
@@ -63,7 +69,13 @@ describe('AIJourney Utils', () => {
                 const types = [JourneyTypeEnum.CartAbandoned]
                 const result = aiJourneyKeys.journeys(integrationId, types)
 
-                expect(result).toEqual(['journeys', 456, types])
+                expect(result).toEqual([
+                    'journeys',
+                    456,
+                    {
+                        types: ['cart_abandoned'],
+                    },
+                ])
             })
 
             it('should return correct query key for journeys with empty types array', () => {
@@ -71,7 +83,7 @@ describe('AIJourney Utils', () => {
                 const types: JourneyTypeEnum[] = []
                 const result = aiJourneyKeys.journeys(integrationId, types)
 
-                expect(result).toEqual(['journeys', 789, types])
+                expect(result).toEqual(['journeys', 789, { types: [] }])
             })
         })
 
@@ -137,7 +149,7 @@ describe('AIJourney Utils', () => {
             expect(Array.isArray(journeysKey)).toBe(true)
             expect(Array.isArray(configKey)).toBe(true)
 
-            expect(journeysKey.length).toBe(3)
+            expect(journeysKey.length).toBe(2)
             expect(configKey.length).toBe(2)
 
             expect(typeof journeysKey[0]).toBe('string')
