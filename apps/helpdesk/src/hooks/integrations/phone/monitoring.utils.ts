@@ -32,8 +32,8 @@ export function getCallMonitorability(
             isMonitorable: false,
             reason:
                 voiceCall.direction === 'inbound'
-                    ? MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS
-                    : MONITORING_RESTRICTION_REASONS.NOT_YET_CONNECTED,
+                    ? MONITORING_RESTRICTION_REASONS.CALL_NOT_IN_PROGRESS
+                    : MONITORING_RESTRICTION_REASONS.CALL_NOT_YET_CONNECTED,
         }
     }
 
@@ -47,7 +47,7 @@ export function getCallMonitorability(
     if (isCallAnsweredByExternalNumber(voiceCall)) {
         return {
             isMonitorable: false,
-            reason: MONITORING_RESTRICTION_REASONS.ANSWERED_BY_EXTERNAL_NUMBER,
+            reason: MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER,
         }
     }
 
@@ -68,7 +68,7 @@ export function getCallMonitorability(
     if (isCallBeingMonitored(voiceCall)) {
         return {
             isMonitorable: false,
-            reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORED,
+            reason: MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL,
         }
     }
 
@@ -143,4 +143,37 @@ export function getMonitoringParameters(
           }
 
     return { callSidToMonitor, monitoringExtraParams }
+}
+
+export function getMonitoringRestrictionReason(
+    errorCode: string,
+    voiceCallDirection: VoiceCallDirection,
+) {
+    switch (errorCode) {
+        case 'NOT_ALLOWED':
+            return MONITORING_RESTRICTION_REASONS.NOT_ALLOWED
+        case 'CALL_COMPLETED':
+            return MONITORING_RESTRICTION_REASONS.CALL_COMPLETED
+        case 'CALL_NOT_IN_PROGRESS':
+            if (voiceCallDirection === VoiceCallDirection.Outbound) {
+                return MONITORING_RESTRICTION_REASONS.CALL_NOT_YET_CONNECTED
+            }
+            return MONITORING_RESTRICTION_REASONS.CALL_NOT_IN_PROGRESS
+        case 'TRANSFERRING_TO_QUEUE':
+            return MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE
+        case 'HANDLING_CALL':
+            return MONITORING_RESTRICTION_REASONS.HANDLING_CALL
+        case 'ADMIN_HANDLING_CALL':
+            return MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN
+        case 'ALREADY_MONITORING_CALL':
+            return MONITORING_RESTRICTION_REASONS.ALREADY_MONITORING_CALL
+        case 'AGENT_BUSY':
+            return MONITORING_RESTRICTION_REASONS.AGENT_BUSY
+        case 'OTHER_AGENT_MONITORING_CALL':
+            return MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL
+        case 'CALL_FORWARDED_TO_EXTERNAL_NUMBER':
+            return MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER
+        default:
+            return MONITORING_RESTRICTION_REASONS.GENERIC
+    }
 }

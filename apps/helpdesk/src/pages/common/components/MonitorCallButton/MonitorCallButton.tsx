@@ -23,7 +23,9 @@ export default function MonitorCallButton({
 }: MonitorCallButtonProps) {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
-    const { makeMonitoringCall } = useMonitoringCall()
+    const { makeMonitoringCall } = useMonitoringCall(
+        voiceCallToMonitor.direction,
+    )
 
     if (isCallBeingMonitored(voiceCallToMonitor, agentId)) {
         return <span>Listening...</span>

@@ -1,12 +1,18 @@
 import { useCallback } from 'react'
 
+import { VoiceCallDirection } from '@gorgias/helpdesk-types'
+
 import { PhoneCallDirection, TwilioSocketEventType } from 'business/twilio'
+import { getMonitoringRestrictionReason } from 'hooks/integrations/phone/monitoring.utils'
 import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useVoiceDevice from './useVoiceDevice'
 
@@ -17,7 +23,7 @@ export type ExtraMonitoringParams = {
     inCallAgentId: number | null
 }
 
-export function useMonitoringCall() {
+export function useMonitoringCall(voiceCallDirection: VoiceCallDirection) {
     const dispatch = useAppDispatch()
     const { device, actions } = useVoiceDevice()
 
@@ -57,11 +63,26 @@ export function useMonitoringCall() {
                 data: gatherCallContext(call),
             })
 
-            handleCallEvents(call, dispatch, actions)
+            handleCallEvents(call, dispatch, actions, (message) => {
+                if (
+                    message.type ===
+                    TwilioMessageType.MonitoringValidationFailed
+                ) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: getMonitoringRestrictionReason(
+                                message.data.error_code,
+                                voiceCallDirection,
+                            ),
+                        }),
+                    )
+                }
+            })
 
             actions.setCall(call)
         },
-        [device, dispatch, actions],
+        [device, dispatch, actions, voiceCallDirection],
     )
 
     return { makeMonitoringCall }

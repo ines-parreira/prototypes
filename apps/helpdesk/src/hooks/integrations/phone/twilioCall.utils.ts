@@ -10,6 +10,7 @@ import {
     disconnectCall,
 } from 'hooks/integrations/phone/api'
 import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { TwilioMessage } from 'models/voiceCall/twilioMessageTypes'
 import { ListVoiceCallsParams } from 'models/voiceCall/types'
 import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
@@ -26,6 +27,7 @@ export function handleCallEvents(
     call: Call,
     dispatch: StoreDispatch,
     actions: VoiceDeviceActions,
+    onMessageReceived?: (twilioMessage: TwilioMessage) => void,
 ) {
     call.on('accept', () => {
         twilioCallUtils.sendTwilioSocketEvent({
@@ -136,6 +138,13 @@ export function handleCallEvents(
 
         actions.setWarning(null)
     })
+
+    if (onMessageReceived) {
+        call.on('messageReceived', (message) => {
+            const twilioMessage = message.content as TwilioMessage
+            onMessageReceived(twilioMessage)
+        })
+    }
 }
 
 export function logCallEnd(call: Call) {

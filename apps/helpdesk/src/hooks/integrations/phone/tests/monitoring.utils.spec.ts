@@ -14,6 +14,7 @@ import {
     extractMonitoringCallParams,
     getCallMonitorability,
     getMonitoringParameters,
+    getMonitoringRestrictionReason,
 } from '../monitoring.utils'
 
 describe('monitoring.utils', () => {
@@ -80,7 +81,7 @@ describe('monitoring.utils', () => {
 
             expect(result).toEqual({
                 isMonitorable: false,
-                reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORED,
+                reason: MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL,
             })
         })
 
@@ -96,7 +97,7 @@ describe('monitoring.utils', () => {
 
             expect(result).toEqual({
                 isMonitorable: false,
-                reason: MONITORING_RESTRICTION_REASONS.ANSWERED_BY_EXTERNAL_NUMBER,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER,
             })
         })
 
@@ -129,7 +130,7 @@ describe('monitoring.utils', () => {
 
             expect(result).toEqual({
                 isMonitorable: false,
-                reason: MONITORING_RESTRICTION_REASONS.NOT_IN_PROGRESS,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_NOT_IN_PROGRESS,
             })
         })
 
@@ -145,7 +146,7 @@ describe('monitoring.utils', () => {
 
             expect(result).toEqual({
                 isMonitorable: false,
-                reason: MONITORING_RESTRICTION_REASONS.NOT_YET_CONNECTED,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_NOT_YET_CONNECTED,
             })
         })
 
@@ -416,5 +417,81 @@ describe('monitoring.utils', () => {
                 })
             })
         })
+    })
+
+    describe('getMonitoringRestrictionReason', () => {
+        it.each([
+            {
+                errorCode: 'NOT_ALLOWED',
+                reason: MONITORING_RESTRICTION_REASONS.NOT_ALLOWED,
+            },
+            {
+                errorCode: 'CALL_COMPLETED',
+                reason: MONITORING_RESTRICTION_REASONS.CALL_COMPLETED,
+            },
+            {
+                errorCode: 'TRANSFERRING_TO_QUEUE',
+                reason: MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE,
+            },
+            {
+                errorCode: 'HANDLING_CALL',
+                reason: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
+            },
+            {
+                errorCode: 'ADMIN_HANDLING_CALL',
+                reason: MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN,
+            },
+            {
+                errorCode: 'ALREADY_MONITORING_CALL',
+                reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORING_CALL,
+            },
+            {
+                errorCode: 'AGENT_BUSY',
+                reason: MONITORING_RESTRICTION_REASONS.AGENT_BUSY,
+            },
+            {
+                errorCode: 'OTHER_AGENT_MONITORING_CALL',
+                reason: MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL,
+            },
+            {
+                errorCode: 'CALL_FORWARDED_TO_EXTERNAL_NUMBER',
+                reason: MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER,
+            },
+            {
+                errorCode: 'GENERIC_ERROR',
+                reason: MONITORING_RESTRICTION_REASONS.GENERIC,
+            },
+        ])(
+            'should return reason based on error code',
+            ({ errorCode, reason }) => {
+                expect(
+                    getMonitoringRestrictionReason(
+                        errorCode,
+                        VoiceCallDirection.Inbound,
+                    ),
+                ).toBe(reason)
+            },
+        )
+
+        it.each([
+            {
+                voiceCallDirection: VoiceCallDirection.Inbound,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_NOT_IN_PROGRESS,
+            },
+            {
+                voiceCallDirection: VoiceCallDirection.Outbound,
+                reason: MONITORING_RESTRICTION_REASONS.CALL_NOT_YET_CONNECTED,
+            },
+        ])(
+            'should return voice call direction-related reason based on error code',
+            ({ voiceCallDirection, reason }) => {
+                expect(
+                    getMonitoringRestrictionReason(
+                        'CALL_NOT_IN_PROGRESS',
+                        voiceCallDirection,
+                    ),
+                ).toBe(reason)
+            },
+        )
     })
 })

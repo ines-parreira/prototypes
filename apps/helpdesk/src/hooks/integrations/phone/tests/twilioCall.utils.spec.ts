@@ -200,6 +200,32 @@ describe('handleCallEvents', () => {
             expect(actions.setWarning).toHaveBeenCalledWith(null)
         })
     })
+
+    describe('should handle messageReceived event', () => {
+        const call: EventEmitter = new EventEmitter()
+
+        it('should call onMessageReceived callback when provided', () => {
+            const onMessageReceived = jest.fn()
+
+            handleCallEvents(call as Call, dispatch, actions, onMessageReceived)
+
+            call.emit('messageReceived', {
+                content: {
+                    type: 'event-happened',
+                    data: {
+                        key: 'value',
+                    },
+                },
+            })
+
+            expect(onMessageReceived).toHaveBeenCalledWith({
+                type: 'event-happened',
+                data: {
+                    key: 'value',
+                },
+            })
+        })
+    })
 })
 
 describe('logCallEnd', () => {

@@ -142,6 +142,9 @@ describe('MonitorCallButton', () => {
 
             await user.click(screen.getByRole('button', { name: 'Listen' }))
 
+            expect(useMonitoringCallMock).toHaveBeenCalledWith(
+                voiceCall.direction,
+            )
             expect(getMonitoringParametersMock).toHaveBeenCalledWith(voiceCall)
             expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
                 mockParams.callSidToMonitor,
