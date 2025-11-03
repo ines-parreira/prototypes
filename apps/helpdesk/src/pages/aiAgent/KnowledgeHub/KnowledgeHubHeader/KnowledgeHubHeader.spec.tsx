@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import { GroupedKnowledgeItem, KnowledgeType } from '../types'
 import {
     KnowledgeHubHeader,
     KnowledgeHubHeaderProps,
@@ -118,11 +119,12 @@ describe('KnowledgeHubHeader', () => {
         })
     })
 
-    describe('when data.type is "store-website"', () => {
+    describe('when data.type is Domain', () => {
         const storeWebsiteData = {
-            type: 'store-website' as const,
-            name: 'My Store Website',
-            lastSyncedDate: '2024-01-15T10:30:00Z',
+            type: KnowledgeType.Domain,
+            title: 'My Store Website',
+            lastUpdatedAt: '2024-01-15T10:30:00Z',
+            id: 'store-123',
         }
 
         it('renders back button linking to knowledge hub', () => {
@@ -133,10 +135,10 @@ describe('KnowledgeHubHeader', () => {
             expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
-        it('renders data name as title', () => {
+        it('renders data title', () => {
             renderComponent({ data: storeWebsiteData })
 
-            expect(screen.getByText(storeWebsiteData.name)).toBeInTheDocument()
+            expect(screen.getByText(storeWebsiteData.title)).toBeInTheDocument()
         })
 
         it('renders last synced date when provided', () => {
@@ -148,9 +150,10 @@ describe('KnowledgeHubHeader', () => {
         it('does not render last synced date when not provided', () => {
             renderComponent({
                 data: {
-                    type: 'store-website',
-                    name: 'My Store Website',
-                },
+                    type: KnowledgeType.Domain,
+                    title: 'My Store Website',
+                    id: 'store-123',
+                } as GroupedKnowledgeItem,
             })
 
             expect(screen.queryByText(/last synced/i)).not.toBeInTheDocument()
@@ -203,12 +206,12 @@ describe('KnowledgeHubHeader', () => {
         })
     })
 
-    describe('when data.type is "urls"', () => {
+    describe('when data.type is URL', () => {
         const urlsData = {
-            type: 'urls' as const,
-            name: 'My URL Collection',
-            lastSyncedDate: '2024-01-15T10:30:00Z',
-            id: 123,
+            type: KnowledgeType.URL,
+            title: 'My URL Collection',
+            lastUpdatedAt: '2024-01-15T10:30:00Z',
+            id: '123',
         }
 
         it('renders back button linking to knowledge hub', () => {
@@ -219,10 +222,10 @@ describe('KnowledgeHubHeader', () => {
             expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
-        it('renders data name as title', () => {
+        it('renders data title', () => {
             renderComponent({ data: urlsData })
 
-            expect(screen.getByText(urlsData.name)).toBeInTheDocument()
+            expect(screen.getByText(urlsData.title)).toBeInTheDocument()
         })
 
         it('renders last synced date when provided', () => {
@@ -287,11 +290,12 @@ describe('KnowledgeHubHeader', () => {
         })
     })
 
-    describe('when data.type is "documents"', () => {
+    describe('when data.type is Document', () => {
         const documentsData = {
-            type: 'documents' as const,
-            name: 'My Document',
-            id: 456,
+            type: KnowledgeType.Document,
+            title: 'My Document',
+            lastUpdatedAt: '2024-01-15T10:30:00Z',
+            id: '456',
         }
 
         it('renders back button linking to knowledge hub', () => {
@@ -302,15 +306,19 @@ describe('KnowledgeHubHeader', () => {
             expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
-        it('renders data name as title', () => {
+        it('renders data title', () => {
             renderComponent({ data: documentsData })
 
-            expect(screen.getByText(documentsData.name)).toBeInTheDocument()
+            expect(screen.getByText(documentsData.title)).toBeInTheDocument()
         })
 
-        it('does not render last synced date', () => {
+        it('does not render last synced date when not provided', () => {
             renderComponent({
-                data: documentsData,
+                data: {
+                    type: KnowledgeType.Document,
+                    title: 'My Document',
+                    id: '456',
+                } as GroupedKnowledgeItem,
             })
 
             expect(screen.queryByText(/last synced/i)).not.toBeInTheDocument()

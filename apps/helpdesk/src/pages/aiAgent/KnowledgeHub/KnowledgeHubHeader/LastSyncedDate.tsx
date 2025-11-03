@@ -1,22 +1,22 @@
 import { getFormattedDate } from 'utils/date'
 
-import { KnowledgeHubHeaderData } from './KnowledgeHubHeader'
+import { GroupedKnowledgeItem } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 
 type LastSyncedDateProps = {
-    data: KnowledgeHubHeaderData | null
+    data: GroupedKnowledgeItem | null
 }
 
 export const LastSyncedDate = ({ data }: LastSyncedDateProps) => {
     if (!data) {
         return null
     }
-    if (!data.lastSyncedDate) {
+    if (!data.lastUpdatedAt) {
         return null
     }
 
-    const formattedDate = getFormattedDate(data.lastSyncedDate)
+    const formattedDate = getFormattedDate(data.lastUpdatedAt)
 
     return (
         <span className={css.lastSyncedText}>Last synced {formattedDate}</span>

@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 
 import { Icon } from '@gorgias/axiom'
 
-import { KnowledgeHubHeaderData } from './KnowledgeHubHeader'
+import { GroupedKnowledgeItem } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 
 type BackButtonProps = {
     knowledgeRoute: string
-    data: KnowledgeHubHeaderData | null
+    data: GroupedKnowledgeItem | null
 }
 
 export const BackButton = ({ knowledgeRoute, data }: BackButtonProps) => {

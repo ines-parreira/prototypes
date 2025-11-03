@@ -1,0 +1,83 @@
+@import '~@gorgias/axiom/tokens/typography.css';
+
+:local {
+    .tableContainer {
+        margin-top: var(--spacing-md);
+        button[slot='button'][aria-label='Items per page'] {
+            color: var(--color-neutral-700) !important;
+
+            p,
+            span,
+            div {
+                color: var(--color-neutral-700) !important;
+            }
+        }
+
+        // Force table to use full width
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        // Column widths - checkbox column
+        table th:nth-child(1),
+        table td:nth-child(1) {
+            width: 40px;
+            padding-left: var(--spacing-lg);
+        }
+
+        // Title column - takes remaining space
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: auto;
+        }
+
+        // Last Updated column
+        table th:nth-child(3),
+        table td:nth-child(3) {
+            width: 130px;
+        }
+
+        // In Use by AI Agent column
+        table th:nth-child(4),
+        table td:nth-child(4) {
+            width: 150px;
+        }
+    }
+
+    .tableToolbars {
+        margin-left: var(--spacing-lg);
+    }
+
+    .source {
+        display: flex;
+        color: var(--content-neutral-tertiary);
+        gap: var(--spacing-xxxxs);
+    }
+
+    .pagination {
+        margin-top: var(--spacing-md);
+        margin-right: var(--spacing-md);
+    }
+
+    .highlight {
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .titleCell {
+        cursor: pointer;
+    }
+
+    .quantity {
+        display: flex;
+        min-width: 18px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+
+        color: var(--content-neutral-tertiary);
+        font-size: 14px;
+        font-weight: 400;
+    }
+}

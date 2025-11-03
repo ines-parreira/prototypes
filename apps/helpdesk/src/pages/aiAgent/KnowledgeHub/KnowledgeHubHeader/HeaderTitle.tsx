@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 
-import { KnowledgeHubHeaderData } from './KnowledgeHubHeader'
+import { GroupedKnowledgeItem } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 
 type HeaderTitleProps = {
-    data: KnowledgeHubHeaderData | null
+    data: GroupedKnowledgeItem | null
     knowledgeRoute: string
 }
 
@@ -22,7 +22,7 @@ export const HeaderTitle = ({ data, knowledgeRoute }: HeaderTitleProps) => {
 
     return (
         <div className={css.title}>
-            <span className={css.titleText}>{data.name}</span>
+            <span className={css.titleText}>{data.title}</span>
         </div>
     )
 }

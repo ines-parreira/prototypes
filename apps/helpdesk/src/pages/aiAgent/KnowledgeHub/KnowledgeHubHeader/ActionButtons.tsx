@@ -2,12 +2,12 @@ import classNames from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
 
-import { KnowledgeHubHeaderData } from './KnowledgeHubHeader'
+import { GroupedKnowledgeItem, KnowledgeType } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 
 type HeaderActionsProps = {
-    data: KnowledgeHubHeaderData | null
+    data: GroupedKnowledgeItem | null
     onAddKnowledge?: () => void
     onTest?: () => void
     onSync?: () => void
@@ -53,7 +53,7 @@ export const HeaderActions = ({
     }
 
     switch (data.type) {
-        case 'store-website':
+        case KnowledgeType.Domain:
             return (
                 <button
                     className={classNames(css.button, css.secondaryButton)}
@@ -65,7 +65,7 @@ export const HeaderActions = ({
                     <span>Sync store website</span>
                 </button>
             )
-        case 'urls':
+        case KnowledgeType.URL:
             return (
                 <>
                     <button
@@ -91,7 +91,7 @@ export const HeaderActions = ({
                     </button>
                 </>
             )
-        case 'documents':
+        case KnowledgeType.Document:
             return (
                 <button
                     className={classNames(

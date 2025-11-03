@@ -1,0 +1,42 @@
+import { IconName } from '@gorgias/axiom'
+
+export enum KnowledgeType {
+    Document = 'document',
+    FAQ = 'faq',
+    Guidance = 'guidance',
+    URL = 'url',
+    Domain = 'domain',
+}
+
+export enum KnowledgeVisibility {
+    UNLISTED = 'unlisted',
+    PUBLIC = 'public',
+}
+
+export type KnowledgeItem = {
+    type: KnowledgeType
+    title: string
+    lastUpdatedAt: string
+    inUseByAI?: KnowledgeVisibility
+    source?: string
+    id: string
+}
+
+export type GroupedKnowledgeItem = KnowledgeItem & {
+    isGrouped?: boolean
+    itemCount?: number
+}
+
+export const typeConfig: Record<
+    KnowledgeType,
+    { icon: IconName; label: string }
+> = {
+    [KnowledgeType.Document]: {
+        icon: 'paperclip-attachment',
+        label: 'Document',
+    },
+    [KnowledgeType.FAQ]: { icon: 'file-document', label: 'FAQ' },
+    [KnowledgeType.Guidance]: { icon: 'nav-map', label: 'Guide' },
+    [KnowledgeType.URL]: { icon: 'link-horizontal', label: 'URL' },
+    [KnowledgeType.Domain]: { icon: 'nav-globe', label: 'Domain' },
+}

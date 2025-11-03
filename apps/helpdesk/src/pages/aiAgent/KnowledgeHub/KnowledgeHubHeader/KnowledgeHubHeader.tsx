@@ -1,5 +1,6 @@
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import { GroupedKnowledgeItem } from '../types'
 import { HeaderActions } from './ActionButtons'
 import { BackButton } from './BackButton'
 import { HeaderTitle } from './HeaderTitle'
@@ -7,15 +8,8 @@ import { LastSyncedDate } from './LastSyncedDate'
 
 import css from './KnowledgeHubHeader.less'
 
-export type KnowledgeHubHeaderData = {
-    name: string
-    lastSyncedDate?: string
-    id?: string | number
-    type: 'store-website' | 'urls' | 'documents'
-}
-
 export type KnowledgeHubHeaderProps = {
-    data: KnowledgeHubHeaderData | null
+    data: GroupedKnowledgeItem | null
     shopName: string
     onAddKnowledge?: () => void
     onTest?: () => void

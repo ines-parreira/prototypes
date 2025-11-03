@@ -3,6 +3,7 @@ import React, { ComponentProps } from 'react'
 import { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { KnowledgeType } from '../types'
 import { KnowledgeHubHeader } from './KnowledgeHubHeader'
 
 const meta: Meta<typeof KnowledgeHubHeader> = {
@@ -59,9 +60,9 @@ export const StoreWebsite: Story = Template.bind({})
 StoreWebsite.args = {
     shopName: 'my-store',
     data: {
-        type: 'store-website',
-        name: 'My Shopify Store',
-        lastSyncedDate: '2025-01-15T10:30:00Z',
+        type: KnowledgeType.Domain,
+        title: 'My Shopify Store',
+        lastUpdatedAt: '2025-01-15T10:30:00Z',
         id: 'store-123',
     },
     onSync: () => {},
@@ -72,9 +73,9 @@ export const StoreWebsiteDisabled: Story = Template.bind({})
 StoreWebsiteDisabled.args = {
     shopName: 'my-store',
     data: {
-        type: 'store-website',
-        name: 'My Shopify Store',
-        lastSyncedDate: '2025-01-15T10:30:00Z',
+        type: KnowledgeType.Domain,
+        title: 'My Shopify Store',
+        lastUpdatedAt: '2025-01-15T10:30:00Z',
         id: 'store-123',
     },
     onSync: () => {},
@@ -86,9 +87,9 @@ export const URLs: Story = Template.bind({})
 URLs.args = {
     shopName: 'my-store',
     data: {
-        type: 'urls',
-        name: 'https://example.com/documentation',
-        lastSyncedDate: '2025-01-20T14:45:00Z',
+        type: KnowledgeType.URL,
+        title: 'https://example.com/documentation',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
     onSync: () => {},
@@ -100,9 +101,9 @@ export const URLsDisabled: Story = Template.bind({})
 URLsDisabled.args = {
     shopName: 'my-store',
     data: {
-        type: 'urls',
-        name: 'https://example.com/documentation',
-        lastSyncedDate: '2025-01-20T14:45:00Z',
+        type: KnowledgeType.URL,
+        title: 'https://example.com/documentation',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
     onSync: () => {},
@@ -116,9 +117,9 @@ export const URLsSyncDisabled: Story = Template.bind({})
 URLsSyncDisabled.args = {
     shopName: 'my-store',
     data: {
-        type: 'urls',
-        name: 'https://example.com/documentation',
-        lastSyncedDate: '2025-01-20T14:45:00Z',
+        type: KnowledgeType.URL,
+        title: 'https://example.com/documentation',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
     onSync: () => {},
@@ -131,9 +132,9 @@ export const URLsLongURL: Story = Template.bind({})
 URLsLongURL.args = {
     shopName: 'my-store',
     data: {
-        type: 'urls',
-        name: 'https://very-long-domain-name.example.com/path/to/documentation/with/many/segments',
-        lastSyncedDate: '2025-01-20T14:45:00Z',
+        type: KnowledgeType.URL,
+        title: 'https://very-long-domain-name.example.com/path/to/documentation/with/many/segments',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-789',
     },
     onSync: () => {},
@@ -145,8 +146,9 @@ export const Documents: Story = Template.bind({})
 Documents.args = {
     shopName: 'my-store',
     data: {
-        type: 'documents',
-        name: 'Product Manual.pdf',
+        type: KnowledgeType.Document,
+        title: 'Product Manual.pdf',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'doc-789',
     },
     onDelete: () => {},
@@ -157,8 +159,9 @@ export const DocumentsDisabled: Story = Template.bind({})
 DocumentsDisabled.args = {
     shopName: 'my-store',
     data: {
-        type: 'documents',
-        name: 'Product Manual.pdf',
+        type: KnowledgeType.Document,
+        title: 'Product Manual.pdf',
+        lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'doc-789',
     },
     onDelete: () => {},
