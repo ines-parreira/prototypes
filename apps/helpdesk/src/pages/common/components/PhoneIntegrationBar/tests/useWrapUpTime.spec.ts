@@ -8,6 +8,7 @@ import {
     getAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-client'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { useNotify } from 'hooks/useNotify'
 import { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
@@ -18,6 +19,7 @@ import useWrapUpTime from '../useWrapUpTime'
 
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('hooks/useNotify')
+jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('services/socketManager', () => ({
     registerReceivedEvents: jest.fn(),
     unregisterReceivedEvents: jest.fn(),
@@ -49,6 +51,7 @@ const endWrapUpTimeMock = assumeMock(endWrapUpTime)
 const getAgentWrapUpCallStatusMock = assumeMock(getAgentWrapUpCallStatus)
 const useNotifyMock = assumeMock(useNotify)
 const useIntervalMock = assumeMock(useInterval)
+const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
 describe('useWrapUpTime', () => {
     const mockVoiceCall: Partial<VoiceCall> = {
@@ -64,6 +67,12 @@ describe('useWrapUpTime', () => {
 
         useNotifyMock.mockReturnValue({
             error: mockErrorNotify,
+        } as any)
+
+        useVoiceDeviceMock.mockReturnValue({
+            call: null,
+            device: null,
+            actions: {},
         } as any)
 
         endWrapUpTimeMock.mockResolvedValue({
@@ -300,6 +309,107 @@ describe('useWrapUpTime', () => {
                 integration_id: 1,
                 external_id: 'test-call-sid',
             })
+        })
+    })
+
+    describe('call interaction', () => {
+        it('should clear wrap up state when a new call starts', () => {
+            const mockCall = { sid: 'CA123' } as any
+
+            const { result, rerender } = renderHookWithQueryClientProvider(() =>
+                useWrapUpTime(),
+            )
+
+            const registeredEvent =
+                // @ts-ignore
+                socketManager.registerReceivedEvents.mock.calls[0][0][0]
+            const onReceiveHandler = registeredEvent.onReceive
+
+            // Set wrap up state
+            act(() => {
+                onReceiveHandler({
+                    event: {
+                        expiration_datetime: '2023-01-01T12:08:00Z',
+                    },
+                    voice_call: mockVoiceCall,
+                })
+            })
+
+            expect(result.current.isWrappingUp).toBe(true)
+            expect(result.current.voiceCall).toEqual(mockVoiceCall)
+
+            // Mock a new call starting
+            useVoiceDeviceMock.mockReturnValue({
+                call: mockCall,
+                device: null,
+                actions: {},
+            } as any)
+
+            rerender()
+
+            // Wrap up should be cleared
+            expect(result.current.isWrappingUp).toBe(false)
+            expect(result.current.timeLeft).toBe(null)
+            expect(result.current.voiceCall).toBe(null)
+        })
+
+        it('should not clear wrap up state if no call is active', () => {
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useWrapUpTime(),
+            )
+
+            const registeredEvent =
+                // @ts-ignore
+                socketManager.registerReceivedEvents.mock.calls[0][0][0]
+            const onReceiveHandler = registeredEvent.onReceive
+
+            // Set wrap up state
+            act(() => {
+                onReceiveHandler({
+                    event: {
+                        expiration_datetime: '2023-01-01T12:08:00Z',
+                    },
+                    voice_call: mockVoiceCall,
+                })
+            })
+
+            expect(result.current.isWrappingUp).toBe(true)
+
+            // Ensure call remains null (no call starting)
+            useVoiceDeviceMock.mockReturnValue({
+                call: null,
+                device: null,
+                actions: {},
+            } as any)
+
+            // Wrap up should remain active
+            expect(result.current.isWrappingUp).toBe(true)
+            expect(result.current.voiceCall).toEqual(mockVoiceCall)
+        })
+
+        it('should not affect state if wrap up is not active', () => {
+            const mockCall = { sid: 'CA123' } as any
+
+            const { result, rerender } = renderHookWithQueryClientProvider(() =>
+                useWrapUpTime(),
+            )
+
+            // No wrap up active initially
+            expect(result.current.isWrappingUp).toBe(false)
+
+            // Mock a call starting
+            useVoiceDeviceMock.mockReturnValue({
+                call: mockCall,
+                device: null,
+                actions: {},
+            } as any)
+
+            rerender()
+
+            // State should remain unchanged (no wrap up to clear)
+            expect(result.current.isWrappingUp).toBe(false)
+            expect(result.current.timeLeft).toBe(null)
+            expect(result.current.voiceCall).toBe(null)
         })
     })
 })

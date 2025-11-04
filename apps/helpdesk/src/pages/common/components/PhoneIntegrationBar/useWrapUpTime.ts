@@ -8,6 +8,7 @@ import {
     useGetAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-queries'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { useNotify } from 'hooks/useNotify'
 import { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
@@ -18,6 +19,7 @@ import {
 } from 'services/socketManager/types'
 
 export default function useWrapUpTime() {
+    const { call } = useVoiceDevice()
     const [wrapUpState, setWrapUpState] = useState<{
         wrapUpEndTimestamp: string | null
         voiceCall: Pick<
@@ -37,13 +39,13 @@ export default function useWrapUpTime() {
         },
     })
 
-    const clearWrapUpTime = () => {
+    const clearWrapUpTime = useCallback(() => {
         setWrapUpState({
             wrapUpEndTimestamp: null,
             voiceCall: null,
         })
         setTimeLeft(null)
-    }
+    }, [])
 
     const endWrapUpTimeMutation = useEndWrapUpTime({
         mutation: {
@@ -130,6 +132,13 @@ export default function useWrapUpTime() {
             })
         }
     }, [agentCallStatus])
+
+    // Clear wrap up state when a new call starts
+    useEffect(() => {
+        if (call && wrapUpState.wrapUpEndTimestamp) {
+            clearWrapUpTime()
+        }
+    }, [call, wrapUpState.wrapUpEndTimestamp, clearWrapUpTime])
 
     return {
         isWrappingUp: !!wrapUpState.wrapUpEndTimestamp,
