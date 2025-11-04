@@ -12,12 +12,15 @@ import {
     Playground,
 } from 'AIJourney/pages'
 import {
+    CampaignProvider,
     IntegrationsProvider,
     JourneyProvider,
     TokenProvider,
     useIntegrations,
 } from 'AIJourney/providers'
 import App from 'pages/App'
+
+import { Campaigns } from '../pages/Campaigns/Campaigns'
 
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
@@ -90,6 +93,15 @@ function AiJourneyBaseRoutes() {
                                 path={`${path}/:shopName/analytics`}
                                 exact
                                 render={() => <Analytics />}
+                            />
+                            <Route
+                                path={`${path}/:shopName/campaigns`}
+                                exact
+                                render={() => (
+                                    <CampaignProvider>
+                                        <Campaigns />
+                                    </CampaignProvider>
+                                )}
                             />
                             <Route render={() => <LandingPage />} />
                         </Switch>

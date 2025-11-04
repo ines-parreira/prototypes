@@ -6,4 +6,8 @@ export {
     JourneyProvider,
     useJourneyContext,
 } from './JourneyProvider/JourneyProvider'
+export {
+    CampaignProvider,
+    useCampaignContext,
+} from './CampaignProvider/CampaignProvider'
 export { TokenProvider, useAccessToken } from './TokenProvider/TokenProvider'

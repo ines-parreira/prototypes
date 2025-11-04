@@ -26,6 +26,10 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneyPlaygroundEnabled,
     )
 
+    const isAiJourneyCampaignsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignsEnabled,
+    )
+
     const { journeys, currentJourney } = useJourneyContext()
 
     const history = useHistory()
@@ -108,6 +112,15 @@ export const AiJourneyNavbar = () => {
                     >
                         {hasJourney ? 'Overview' : 'Setup'}
                     </Navigation.SectionItem>
+                    {isAiJourneyCampaignsEnabled && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/campaigns`}
+                        >
+                            Campaigns
+                        </Navigation.SectionItem>
+                    )}
                     {shouldAccessPlayground && (
                         <Navigation.SectionItem
                             as={NavLink}

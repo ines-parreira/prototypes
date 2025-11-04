@@ -45,6 +45,7 @@ export enum FeatureFlagKey {
     AiAgentSmsChannel = 'ai-agent-sms-channel',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
+    AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
     AiJourneyAnalyticsEnabled = 'ai-journey-analytics-enabled',
     AiJourneySessionAbandonedEnabled = 'ai-journey-session-abandoned-enabled',
