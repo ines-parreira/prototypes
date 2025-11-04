@@ -392,12 +392,11 @@ export function YourProfileView({
 
                             <Avatar
                                 name={formValues.name}
-                                size="xl"
+                                size="xxl"
                                 url={
                                     formValues.meta.profile_picture_url ??
                                     undefined
                                 }
-                                className={settingsCss.mb16}
                             />
 
                             <FileField
