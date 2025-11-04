@@ -6,7 +6,7 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
     class="actionButtons"
   >
     <div
-      class="ui-buttongroup-group-fd03"
+      class="ui-multibutton-group-3397"
       style="display: flex;"
     >
       <button

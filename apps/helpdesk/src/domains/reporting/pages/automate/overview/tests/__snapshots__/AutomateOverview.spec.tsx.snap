@@ -177,7 +177,7 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     class="wrapper"
                   >
                     <div
-                      class="ui-buttongroup-group-fd03"
+                      class="ui-multibutton-group-3397"
                       style="display: flex;"
                     >
                       <button
@@ -883,7 +883,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     class="wrapper"
                   >
                     <div
-                      class="ui-buttongroup-group-fd03"
+                      class="ui-multibutton-group-3397"
                       style="display: flex;"
                     >
                       <button
@@ -1589,7 +1589,7 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     class="wrapper"
                   >
                     <div
-                      class="ui-buttongroup-group-fd03"
+                      class="ui-multibutton-group-3397"
                       style="display: flex;"
                     >
                       <button
@@ -2295,7 +2295,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     class="wrapper"
                   >
                     <div
-                      class="ui-buttongroup-group-fd03"
+                      class="ui-multibutton-group-3397"
                       style="display: flex;"
                     >
                       <button
@@ -3001,7 +3001,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                     class="wrapper"
                   >
                     <div
-                      class="ui-buttongroup-group-fd03"
+                      class="ui-multibutton-group-3397"
                       style="display: flex;"
                     >
                       <button

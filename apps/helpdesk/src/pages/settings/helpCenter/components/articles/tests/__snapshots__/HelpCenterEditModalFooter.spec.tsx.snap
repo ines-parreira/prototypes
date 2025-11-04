@@ -16,7 +16,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           id="article-save-button-wrapper"
         >
           <div
-            class="ui-buttongroup-group-fd03"
+            class="ui-multibutton-group-3397"
             style="display: flex;"
           >
             <button

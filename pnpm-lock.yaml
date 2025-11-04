@@ -11,8 +11,8 @@ catalogs:
       version: 0.1.14
   axiom:
     '@gorgias/axiom':
-      specifier: 0.101.1
-      version: 0.101.1
+      specifier: 0.102.1
+      version: 0.102.1
     '@gorgias/design-tokens':
       specifier: 0.11.1
       version: 0.11.1
@@ -392,7 +392,7 @@ importers:
         version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.101.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.102.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -1431,7 +1431,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.101.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.102.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.1
@@ -1669,7 +1669,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.101.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.102.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       react-is:
         specifier: catalog:react
         version: 18.2.0
@@ -1894,7 +1894,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.101.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.102.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.65
@@ -3409,8 +3409,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.101.1':
-    resolution: {integrity: sha512-PbGutqmNm8g7iFwVPT2b+Jg2rUZncuB7YSPJ370Js312l39HbWFTd5HAWMDYWvRUs9X1qTZKR7pgZVBMAZC0hw==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.101.1/9f4a04b200088203c625a679655341db22e4b700}
+  '@gorgias/axiom@0.102.1':
+    resolution: {integrity: sha512-wfJPFveT0YD1tktvHQslc6lW4CkrzuooIR68JQPKrvqWuEql5dMnY5CNdv/wfTazjfKKnQwOS5lTxqQ0xq5xsw==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.102.1/95438da14a9323b75815d133eaf398df8cfcf5dd}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -15067,7 +15067,7 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.101.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.102.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.11.1

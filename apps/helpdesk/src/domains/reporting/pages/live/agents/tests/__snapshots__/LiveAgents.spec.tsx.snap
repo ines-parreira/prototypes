@@ -535,7 +535,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
       >
         <div>
           <div
-            class="ui-buttongroup-group-fd03"
+            class="ui-multibutton-group-3397"
             style="display: flex;"
           >
             <button

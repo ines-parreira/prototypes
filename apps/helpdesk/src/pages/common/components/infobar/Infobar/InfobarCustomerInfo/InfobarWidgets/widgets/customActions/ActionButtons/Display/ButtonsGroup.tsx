@@ -3,7 +3,7 @@ import React, { ComponentProps, memo, useRef } from 'react'
 import classnames from 'classnames'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
-import { ButtonGroup } from '@gorgias/axiom'
+import { MultiButton } from '@gorgias/axiom'
 
 import { ContentType } from 'models/api/types'
 import { Source } from 'models/widget/types'
@@ -45,7 +45,7 @@ function ButtonsGroup({ buttons, source }: Props) {
     return (
         <div ref={containerRef}>
             <div className={classnames(css.actionButtons)}>
-                <ButtonGroup>
+                <MultiButton>
                     {displayedButtons.map((button, index) => {
                         return (
                             <TemplatedButton
@@ -74,7 +74,7 @@ function ButtonsGroup({ buttons, source }: Props) {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     )}
-                </ButtonGroup>
+                </MultiButton>
             </div>
         </div>
     )

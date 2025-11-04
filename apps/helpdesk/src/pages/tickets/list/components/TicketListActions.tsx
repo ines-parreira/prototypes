@@ -14,8 +14,8 @@ import {
 
 import {
     LegacyButton as Button,
-    ButtonGroup,
     LegacyIconButton as IconButton,
+    MultiButton,
 } from '@gorgias/axiom'
 import { JobType } from '@gorgias/helpdesk-queries'
 
@@ -348,7 +348,7 @@ export const TicketListActions = ({
     return (
         <div className={css.wrapper}>
             <UncontrolledButtonDropdown>
-                <ButtonGroup>
+                <MultiButton>
                     <Button
                         intent="secondary"
                         onClick={() => bulkUpdate('status', 'closed')}
@@ -367,7 +367,7 @@ export const TicketListActions = ({
                             className={css.arrow}
                         />
                     </DropdownToggle>
-                </ButtonGroup>
+                </MultiButton>
                 <DropdownMenu right>
                     <DropdownItem header>SET STATUS</DropdownItem>
                     <DropdownItem
@@ -384,7 +384,7 @@ export const TicketListActions = ({
                 toggle={toggleAgentsDropdown}
                 a11y={false}
             >
-                <ButtonGroup>
+                <MultiButton>
                     <Button
                         intent="secondary"
                         size="small"
@@ -408,7 +408,7 @@ export const TicketListActions = ({
                             className={css.arrow}
                         />
                     </DropdownToggle>
-                </ButtonGroup>
+                </MultiButton>
                 <DropdownMenu right className={css['assignee-dropdown-list']}>
                     <DropdownItem header className="mb-2">
                         ASSIGN TO:

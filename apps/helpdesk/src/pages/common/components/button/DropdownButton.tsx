@@ -2,7 +2,7 @@ import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button, ButtonGroup } from '@gorgias/axiom'
+import { LegacyButton as Button, MultiButton } from '@gorgias/axiom'
 
 import IconButton from './IconButton'
 
@@ -33,7 +33,7 @@ const DropdownButton = (
 ) => {
     return (
         <div className={classnames(className, css.wrapper)} ref={ref}>
-            <ButtonGroup>
+            <MultiButton>
                 <Button
                     className={classnames(css.mainAction, css[size || ''])}
                     fillStyle={fillStyle}
@@ -55,7 +55,7 @@ const DropdownButton = (
                 >
                     {customIcon || 'arrow_drop_down'}
                 </IconButton>
-            </ButtonGroup>
+            </MultiButton>
         </div>
     )
 }

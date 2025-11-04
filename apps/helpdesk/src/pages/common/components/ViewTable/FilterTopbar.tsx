@@ -33,7 +33,7 @@ import {
 
 import {
     LegacyButton as Button,
-    ButtonGroup,
+    MultiButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -472,7 +472,7 @@ export const FilterTopbar = ({
                                             toggleDropdownOpen(!isDropdownOpen)
                                         }}
                                     >
-                                        <ButtonGroup>
+                                        <MultiButton>
                                             <ConfirmationPopover
                                                 buttonProps={{
                                                     type: 'submit',
@@ -548,7 +548,7 @@ export const FilterTopbar = ({
                                                     view before saving it.
                                                 </Tooltip>
                                             )}
-                                        </ButtonGroup>
+                                        </MultiButton>
                                         <DropdownToggle tag="span" />
                                         <DropdownMenu right>
                                             <DropdownItem

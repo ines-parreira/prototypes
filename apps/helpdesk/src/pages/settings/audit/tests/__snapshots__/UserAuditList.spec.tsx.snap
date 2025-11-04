@@ -453,7 +453,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
       class="navigation"
     >
       <div
-        class="ui-buttongroup-group-fd03"
+        class="ui-multibutton-group-3397"
         style="display: flex;"
       >
         <button

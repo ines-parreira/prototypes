@@ -8,7 +8,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { ButtonGroup } from '@gorgias/axiom'
+import { MultiButton } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
@@ -43,7 +43,7 @@ function ActionButtonsGroup({ actions, payload }: Props) {
     const dropdownButtons = actions.slice(NB_ACTIONS_DISPLAYED)
     return (
         <div className={css.container}>
-            <ButtonGroup>
+            <MultiButton>
                 {buttons.map((action) => {
                     return (
                         <ActionButton
@@ -106,7 +106,7 @@ function ActionButtonsGroup({ actions, payload }: Props) {
                         </DropdownMenu>
                     </Dropdown>
                 )}
-            </ButtonGroup>
+            </MultiButton>
         </div>
     )
 }

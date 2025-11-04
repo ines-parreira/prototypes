@@ -2,7 +2,7 @@ import { ComponentProps, useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { LegacyButton as Button, ButtonGroup } from '@gorgias/axiom'
+import { LegacyButton as Button, MultiButton } from '@gorgias/axiom'
 
 import Wizard, { WizardContext } from './Wizard'
 import WizardProgress from './WizardProgress'
@@ -58,7 +58,7 @@ const Template: StoryObj<TemplateProps> = {
                             <>
                                 <h3>Step 2</h3>
 
-                                <ButtonGroup>
+                                <MultiButton>
                                     <Button
                                         intent="secondary"
                                         onClick={() =>
@@ -79,7 +79,7 @@ const Template: StoryObj<TemplateProps> = {
                                     >
                                         Next step
                                     </Button>
-                                </ButtonGroup>
+                                </MultiButton>
 
                                 <label
                                     style={{ display: 'block', marginTop: 8 }}
@@ -104,7 +104,7 @@ const Template: StoryObj<TemplateProps> = {
                             <>
                                 <h3>Step 2.5</h3>
 
-                                <ButtonGroup>
+                                <MultiButton>
                                     <Button
                                         intent="secondary"
                                         onClick={() =>
@@ -125,7 +125,7 @@ const Template: StoryObj<TemplateProps> = {
                                     >
                                         Next step
                                     </Button>
-                                </ButtonGroup>
+                                </MultiButton>
                             </>
                         )}
                     </WizardContext.Consumer>

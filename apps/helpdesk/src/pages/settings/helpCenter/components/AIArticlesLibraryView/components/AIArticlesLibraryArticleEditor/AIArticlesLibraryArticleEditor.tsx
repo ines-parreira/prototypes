@@ -9,7 +9,7 @@ import {
 
 import {
     LegacyButton as Button,
-    ButtonGroup,
+    MultiButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -245,7 +245,7 @@ const ArticleEditor: React.FC<Props> = ({
                     <footer className={css.footer}>
                         <div className={css.actions}>
                             <UncontrolledDropdown id="article-save-button-wrapper">
-                                <ButtonGroup>
+                                <MultiButton>
                                     <Button
                                         id="save-changes-button"
                                         data-testid="save-changes-button"
@@ -272,7 +272,7 @@ const ArticleEditor: React.FC<Props> = ({
                                             </IconButton>
                                         </DropdownToggle>
                                     )}
-                                </ButtonGroup>
+                                </MultiButton>
                                 <DropdownMenu right style={{ width: '100%' }}>
                                     <DropdownItem
                                         onClick={() =>

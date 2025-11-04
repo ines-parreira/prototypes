@@ -6,7 +6,7 @@ exports[`<AfterTitle/> should match snapshot 1`] = `
     class="container"
   >
     <div
-      class="ui-buttongroup-group-fd03"
+      class="ui-multibutton-group-3397"
       style="display: flex;"
     >
       <button

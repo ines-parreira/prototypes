@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon } from '@gorgias/axiom'
+import { Button, Icon, MultiButton } from '@gorgias/axiom'
 
 import { KnowledgeType, typeConfig } from '../types'
 
@@ -24,7 +24,7 @@ export const DocumentFilters = ({
 
     return (
         <div className={css.container}>
-            <ButtonGroup>
+            <MultiButton>
                 {filters.map((filter) => {
                     const isSelected = filter.type === selectedFilter
                     return (
@@ -43,7 +43,7 @@ export const DocumentFilters = ({
                         </Button>
                     )
                 })}
-            </ButtonGroup>
+            </MultiButton>
         </div>
     )
 }

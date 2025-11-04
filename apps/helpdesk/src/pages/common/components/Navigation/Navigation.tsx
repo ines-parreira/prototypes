@@ -1,4 +1,4 @@
-import { ButtonGroup } from '@gorgias/axiom'
+import { MultiButton } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -23,7 +23,7 @@ export default function Navigation({
 
     return (
         <div className={className}>
-            <ButtonGroup>
+            <MultiButton>
                 <IconButton
                     id="prev-btn"
                     intent="secondary"
@@ -40,7 +40,7 @@ export default function Navigation({
                 >
                     keyboard_arrow_right
                 </IconButton>
-            </ButtonGroup>
+            </MultiButton>
         </div>
     )
 }

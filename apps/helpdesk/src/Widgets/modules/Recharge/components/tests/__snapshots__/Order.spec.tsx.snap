@@ -6,7 +6,7 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
     class="container"
   >
     <div
-      class="ui-buttongroup-group-fd03"
+      class="ui-multibutton-group-3397"
       style="display: flex;"
     >
       <button
@@ -54,7 +54,7 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
     class="container"
   >
     <div
-      class="ui-buttongroup-group-fd03"
+      class="ui-multibutton-group-3397"
       style="display: flex;"
     >
       <button

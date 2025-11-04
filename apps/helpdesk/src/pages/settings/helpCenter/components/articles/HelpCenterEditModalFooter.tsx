@@ -10,7 +10,7 @@ import {
 
 import {
     LegacyButton as Button,
-    ButtonGroup,
+    MultiButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -76,7 +76,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     const buttonsForModified = (mode: ArticleModeModified) => (
         <UncontrolledDropdown id="article-save-button-wrapper">
-            <ButtonGroup>
+            <MultiButton>
                 <Button
                     isDisabled={canManageArticle ? !canSave : true}
                     onClick={() => mode.onSave(true)}
@@ -90,7 +90,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
                 )}
-            </ButtonGroup>
+            </MultiButton>
             {requiredFields.length >= 1 && (
                 <Tooltip
                     disabled={canManageArticle ? canSave : true}
@@ -114,7 +114,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
     const buttonsForNew = (mode: ArticleModeNew) => (
         <UncontrolledDropdown id="article-save-button-wrapper">
-            <ButtonGroup>
+            <MultiButton>
                 <Button
                     onClick={() => mode.onCreate(true)}
                     isDisabled={canManageArticle ? !canSave : true}
@@ -127,7 +127,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
                 )}
-            </ButtonGroup>
+            </MultiButton>
 
             {requiredFields.length >= 1 && (
                 <Tooltip
