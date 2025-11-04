@@ -9,18 +9,16 @@ import {
 } from 'react'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import {
     InboundSettings,
-    PlaygroundChannels,
     PlaygroundModes,
 } from 'pages/aiAgent/PlaygroundV2/types'
 
 export const DEFAULT_STATE: InboundSettings & {
     mode: PlaygroundModes
-    channel: PlaygroundChannels
 } = {
     mode: 'inbound' as const,
-    channel: 'chat' as const,
     chatAvailability: 'online' as const,
     selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
     areActionsEnabled: false,
@@ -28,7 +26,6 @@ export const DEFAULT_STATE: InboundSettings & {
 
 type SettingsState = {
     mode: PlaygroundModes
-    channel: PlaygroundChannels
 } & InboundSettings
 
 type SettingsContextValue = {
@@ -55,6 +52,7 @@ type SettingsProviderProps = {
 }
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
+    const core = useCoreContext()
     const [localSettings, setLocalSettings] = useState<Partial<SettingsState>>(
         {},
     )
@@ -70,21 +68,18 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
         setLocalSettings({})
     }, [])
 
-    useEffect(() => {
-        if (settingsState.mode === 'outbound') {
-            setLocalSettings((prev) => ({
-                ...prev,
-                channel: 'sms',
-            }))
-        }
-    }, [settingsState.mode])
-
     const setSettings = useCallback((newState: Partial<SettingsState>) => {
         setLocalSettings((prev) => ({
             ...prev,
             ...newState,
         }))
     }, [])
+
+    useEffect(() => {
+        if (settingsState.mode === 'outbound') {
+            core.onChannelChange('sms')
+        }
+    }, [settingsState.mode, core])
 
     const value = useMemo(
         () => ({

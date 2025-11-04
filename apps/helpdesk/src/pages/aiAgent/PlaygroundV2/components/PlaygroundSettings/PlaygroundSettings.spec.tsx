@@ -11,6 +11,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { AIJourneyProvider } from '../../contexts/AIJourneyContext'
+import { CoreProvider } from '../../contexts/CoreContext'
 import { SettingsProvider } from '../../contexts/SettingsContext'
 import { PlaygroundSettings } from './PlaygroundSettings'
 
@@ -97,6 +98,34 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
+    useTestSession: () => ({
+        testSessionId: 'test-session-id',
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
+    usePlaygroundPolling: () => ({
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: () => ({
+        baseUrl: 'http://test.com',
+    }),
+}))
+
+jest.mock('core/flags/hooks/useFlag', () => ({
+    __esModule: true,
+    default: jest.fn(() => true),
+}))
+
 jest.mock('@gorgias/axiom', () => ({
     Button: ({ children, onClick, icon, ...props }: any) => (
         <button onClick={onClick} {...props}>
@@ -156,9 +185,11 @@ const renderComponent = () => {
         <Provider store={mockStore({})}>
             <QueryClientProvider client={queryClient}>
                 <AIJourneyProvider shopName="test-shop">
-                    <SettingsProvider>
-                        <PlaygroundSettings />
-                    </SettingsProvider>
+                    <CoreProvider>
+                        <SettingsProvider>
+                            <PlaygroundSettings />
+                        </SettingsProvider>
+                    </CoreProvider>
                 </AIJourneyProvider>
             </QueryClientProvider>
         </Provider>,
@@ -479,6 +510,28 @@ describe('PlaygroundSettings', () => {
                 expect(
                     screen.getByTestId('chat-availability-selection'),
                 ).toBeInTheDocument()
+            })
+        })
+
+        it('should automatically change channel to sms when switching to outbound mode', async () => {
+            renderComponent()
+
+            const channelSelect = screen.getByLabelText('Channel')
+            expect(channelSelect).toHaveValue('chat')
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('AI Journey Settings'),
+                ).toBeInTheDocument()
+            })
+
+            await act(() => userEvent.click(screen.getByText('Inbound')))
+
+            await waitFor(() => {
+                const updatedChannelSelect = screen.getByLabelText('Channel')
+                expect(updatedChannelSelect).toHaveValue('sms')
             })
         })
     })

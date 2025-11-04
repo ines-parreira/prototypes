@@ -6,6 +6,7 @@ import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourn
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
 import { PlaygroundSegmentControl } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSegmentControl/PlaygroundSegmentControl'
 import { TargetSelection } from 'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import {
     PlaygroundChannelAvailability,
@@ -39,11 +40,12 @@ const SEGMENTS: { value: 'inbound' | 'outbound'; label: string }[] = [
 const InboundSettings: React.FC = () => {
     const {
         setSettings,
-        channel,
         chatAvailability,
         selectedCustomer,
         areActionsEnabled,
     } = useSettingsContext()
+
+    const { channel, onChannelChange } = useCoreContext()
 
     const selectedOption = useMemo(
         () => CHANNEL_OPTIONS.find((option) => option.id === channel),
@@ -52,11 +54,9 @@ const InboundSettings: React.FC = () => {
 
     const handleChannelUpdate = useCallback(
         (value: { id: PlaygroundChannels }) => {
-            setSettings({
-                channel: value.id,
-            })
+            onChannelChange(value.id)
         },
-        [setSettings],
+        [onChannelChange],
     )
 
     const handleChatAvailabilityUpdate = useCallback(

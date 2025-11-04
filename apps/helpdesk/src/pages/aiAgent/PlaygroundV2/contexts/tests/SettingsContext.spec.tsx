@@ -2,13 +2,51 @@ import { ReactNode } from 'react'
 
 import { act, renderHook } from '@testing-library/react'
 
+import { CoreProvider, useCoreContext } from '../CoreContext'
 import {
     DEFAULT_STATE,
     SettingsProvider,
     useSettingsContext,
 } from '../SettingsContext'
 
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
+    useTestSession: () => ({
+        testSessionId: 'test-session-id',
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
+    usePlaygroundPolling: () => ({
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: () => ({
+        baseUrl: 'http://test.com',
+    }),
+}))
+
+jest.mock('core/flags/hooks/useFlag', () => ({
+    __esModule: true,
+    default: jest.fn(() => true),
+}))
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+    <CoreProvider>
+        <SettingsProvider>{children}</SettingsProvider>
+    </CoreProvider>
+)
+
 describe('SettingsContext', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
     describe('useSettingsContext', () => {
         it('should throw error when used outside provider', () => {
             const consoleErrorSpy = jest
@@ -26,9 +64,7 @@ describe('SettingsContext', () => {
 
         it('should return context value with default state when used inside provider', () => {
             const { result } = renderHook(() => useSettingsContext(), {
-                wrapper: ({ children }: { children: ReactNode }) => (
-                    <SettingsProvider>{children}</SettingsProvider>
-                ),
+                wrapper,
             })
 
             expect(result.current).toMatchObject(DEFAULT_STATE)
@@ -38,51 +74,42 @@ describe('SettingsContext', () => {
     describe('SettingsProvider', () => {
         it('should update settings', () => {
             const { result } = renderHook(() => useSettingsContext(), {
-                wrapper: ({ children }: { children: ReactNode }) => (
-                    <SettingsProvider>{children}</SettingsProvider>
-                ),
+                wrapper,
             })
 
             expect([
                 result.current.mode,
-                result.current.channel,
                 result.current.chatAvailability,
-            ]).toEqual(['inbound', 'chat', 'online'])
+            ]).toEqual(['inbound', 'online'])
 
             act(() => {
                 result.current.setSettings({
-                    channel: 'email',
                     chatAvailability: 'offline',
                 })
             })
 
             expect([
                 result.current.mode,
-                result.current.channel,
                 result.current.chatAvailability,
-            ]).toEqual(['inbound', 'email', 'offline'])
+            ]).toEqual(['inbound', 'offline'])
         })
 
         it('should reset settings to default values', () => {
             const { result } = renderHook(() => useSettingsContext(), {
-                wrapper: ({ children }: { children: ReactNode }) => (
-                    <SettingsProvider>{children}</SettingsProvider>
-                ),
+                wrapper,
             })
 
             act(() => {
                 result.current.setSettings({
                     mode: 'outbound',
-                    channel: 'sms',
                     chatAvailability: 'offline',
                 })
             })
 
             expect([
                 result.current.mode,
-                result.current.channel,
                 result.current.chatAvailability,
-            ]).toEqual(['outbound', 'sms', 'offline'])
+            ]).toEqual(['outbound', 'offline'])
 
             act(() => {
                 result.current.resetSettings()
@@ -91,33 +118,12 @@ describe('SettingsContext', () => {
             expect(result.current).toMatchObject(DEFAULT_STATE)
         })
 
-        it('should automatically set channel to sms when mode is set to outbound', async () => {
-            const { result } = renderHook(() => useSettingsContext(), {
-                wrapper: ({ children }: { children: ReactNode }) => (
-                    <SettingsProvider>{children}</SettingsProvider>
-                ),
-            })
-
-            expect(result.current.channel).toBe('chat')
-
-            act(() => {
-                result.current.setSettings({
-                    mode: 'outbound',
-                })
-            })
-
-            expect(result.current.channel).toBe('sms')
-        })
-
         it('should update partial settings without affecting other values', () => {
             const { result } = renderHook(() => useSettingsContext(), {
-                wrapper: ({ children }: { children: ReactNode }) => (
-                    <SettingsProvider>{children}</SettingsProvider>
-                ),
+                wrapper,
             })
 
             const initialMode = result.current.mode
-            const initialChannel = result.current.channel
 
             act(() => {
                 result.current.setSettings({
@@ -127,7 +133,28 @@ describe('SettingsContext', () => {
 
             expect(result.current.chatAvailability).toBe('offline')
             expect(result.current.mode).toBe(initialMode)
-            expect(result.current.channel).toBe(initialChannel)
+        })
+
+        it('should automatically change channel to sms when mode is set to outbound', () => {
+            const { result } = renderHook(
+                () => ({
+                    settings: useSettingsContext(),
+                    core: useCoreContext(),
+                }),
+                { wrapper },
+            )
+
+            expect(result.current.settings.mode).toBe('inbound')
+            expect(result.current.core.channel).toBe('chat')
+
+            act(() => {
+                result.current.settings.setSettings({
+                    mode: 'outbound',
+                })
+            })
+
+            expect(result.current.settings.mode).toBe('outbound')
+            expect(result.current.core.channel).toBe('sms')
         })
     })
 })
