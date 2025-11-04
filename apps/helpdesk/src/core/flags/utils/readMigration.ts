@@ -1,5 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
+import { reportError } from 'utils/errors'
 import { getLDClient } from 'utils/launchDarkly'
 
 /**
@@ -10,6 +11,13 @@ import { getLDClient } from 'utils/launchDarkly'
  * - complete: run only new implementation
  */
 export type MigrationStage = 'off' | 'shadow' | 'live' | 'complete'
+
+const ALLOWED_VALUES: Set<MigrationStage> = new Set([
+    'off',
+    'shadow',
+    'live',
+    'complete',
+])
 
 /**
  * @param flag - The feature flag to check from the FeatureFlagKey enum
@@ -22,7 +30,13 @@ export async function getMigrationStage(
 ): Promise<MigrationStage> {
     const client = getLDClient()
     await client.waitForInitialization(3)
-    return client.variation(flag, defaultValue) || defaultValue
+    const value = client.variation(flag, defaultValue) || defaultValue
+
+    if (!ALLOWED_VALUES.has(value)) {
+        reportError('Unknown migration stage: ' + value)
+        return defaultValue
+    }
+    return value
 }
 
 /**
@@ -38,7 +52,7 @@ export async function getMigrationStage(
  * @param defaultValue - The default value to return if the feature flag is not set, defaults to OFF
  * @returns The return value of the authoritative branch ("old" in off/shadow, "new" in live/complete)
  */
-export default async function readMigration<T>(
+export async function readMigration<T>(
     flag: FeatureFlagKey,
     v1: () => Promise<T>,
     v2: () => Promise<T>,
@@ -67,3 +81,5 @@ export default async function readMigration<T>(
     if (authoritative.status === 'rejected') throw authoritative.reason
     return authoritative.value
 }
+
+export default readMigration

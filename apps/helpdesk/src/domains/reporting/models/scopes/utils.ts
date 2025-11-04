@@ -519,7 +519,9 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                     },
                 },
             )
+            return false
         }
+        return true
     } catch (error: Error | unknown) {
         reportError(error, {
             tags: { team: SentryTeam.CRM_REPORTING },
@@ -527,5 +529,6 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                 message: 'Error comparing reporting queries in New Stats API',
             },
         })
+        return false
     }
 }

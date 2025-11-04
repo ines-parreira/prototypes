@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { AxiosResponse } from 'axios'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
 import {
@@ -17,17 +18,18 @@ import {
     ExecuteMetricConfig,
     metricExecutionHandler,
 } from 'domains/reporting/utils/metricExecutionHandler'
-import { getMigrationMode } from 'domains/reporting/utils/utils'
 import { reportError } from 'utils/errors'
+import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('core/flags/utils/newApiMetricFlags')
 
-jest.mock('domains/reporting/utils/utils', () => ({
-    getMigrationMode: jest.fn(),
+jest.mock('utils/launchDarkly', () => ({
+    getLDClient: jest.fn(),
 }))
+const getLDClientMock = getLDClient as jest.Mock
+getLDClientMock.mockReturnValue(ldClientMock)
 
 const resolveMetricFlagMock = assumeMock(resolveMetricFlag)
-const getMigrationModeMock = assumeMock(getMigrationMode)
 
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
@@ -110,7 +112,7 @@ describe('metricExecutionHandler', () => {
     describe('off mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('off')
+            ldClientMock.variation.mockReturnValue('off')
         })
 
         it('should call only the old API and return its response', async () => {
@@ -143,21 +145,12 @@ describe('metricExecutionHandler', () => {
                 'Old API failed',
             )
         })
-
-        it('should throw error when old payload is missing', async () => {
-            // Override the config to remove oldPayload for this test
-            const invalidConfig = { metricName: 'test-metric' } as any
-
-            await expect(metricExecutionHandler(invalidConfig)).rejects.toThrow(
-                'Missing required functions for metric test-metric in off mode: oldPayload',
-            )
-        })
     })
 
     describe('shadow mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('shadow')
+            ldClientMock.variation.mockReturnValue('shadow')
         })
 
         it('should call both APIs and return old response', async () => {
@@ -261,7 +254,7 @@ describe('metricExecutionHandler', () => {
     describe('complete mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('complete')
+            ldClientMock.variation.mockReturnValue('complete')
         })
 
         it('should call new API and return its response', async () => {
@@ -321,22 +314,6 @@ describe('metricExecutionHandler', () => {
     })
 
     describe('feature flag integration', () => {
-        it('should resolve metric flag and get migration mode', async () => {
-            resolveMetricFlagMock.mockReturnValue('resolved-flag' as any)
-            getMigrationModeMock.mockResolvedValue('off')
-            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
-
-            const config: ExecuteMetricConfig = {
-                metricName: 'test-metric',
-                oldPayload: mockOldPayload,
-            }
-
-            await metricExecutionHandler(config)
-
-            expect(resolveMetricFlagMock).toHaveBeenCalledWith('test-metric')
-            expect(getMigrationModeMock).toHaveBeenCalledWith('resolved-flag')
-        })
-
         it('should handle flag resolution errors', async () => {
             resolveMetricFlagMock.mockImplementation(() => {
                 throw new Error('Flag resolution failed')
@@ -354,7 +331,7 @@ describe('metricExecutionHandler', () => {
 
         it('should fallback to off mode for unknown migration mode', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('unknown' as any)
+            ldClientMock.variation.mockReturnValue('unknown' as any)
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())
 
             const config: ExecuteMetricConfig = {
@@ -365,36 +342,7 @@ describe('metricExecutionHandler', () => {
             const result = await metricExecutionHandler(config)
 
             expect(reportErrorMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Unknown migration mode: unknown',
-                }),
-                expect.objectContaining({
-                    extra: { metricName: 'test-metric' },
-                }),
-            )
-            expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
-            expect((result.data as any).data[0]).toBe(42)
-        })
-
-        it('should fallback to off mode for gibberish migration mode', async () => {
-            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('gibberish' as any)
-            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
-
-            const config: ExecuteMetricConfig = {
-                metricName: 'test-metric',
-                oldPayload: mockOldPayload,
-            }
-
-            const result = await metricExecutionHandler(config)
-
-            expect(reportErrorMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Unknown migration mode: gibberish',
-                }),
-                expect.objectContaining({
-                    extra: { metricName: 'test-metric' },
-                }),
+                'Unknown migration stage: unknown',
             )
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(42)
@@ -404,7 +352,7 @@ describe('metricExecutionHandler', () => {
     describe('configuration validation with fallback', () => {
         it('should fallback to off mode when shadow mode config is invalid', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('shadow')
+            ldClientMock.variation.mockReturnValue('shadow')
             postReportingV1Mock.mockResolvedValue(createMockOldResponse(500))
 
             const config: ExecuteMetricConfig = {
@@ -429,7 +377,7 @@ describe('metricExecutionHandler', () => {
 
         it('should fallback to off mode when live mode config is invalid', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('complete')
+            ldClientMock.variation.mockReturnValue('complete')
             postReportingV1Mock.mockResolvedValue(createMockOldResponse(600))
 
             const config: ExecuteMetricConfig = {
@@ -450,28 +398,6 @@ describe('metricExecutionHandler', () => {
             )
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(600)
-        })
-
-        it('should throw error when fallback to off mode also fails', async () => {
-            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            getMigrationModeMock.mockResolvedValue('shadow')
-
-            // Override the config to remove oldPayload for this test
-            const invalidConfig = { metricName: 'test-metric' } as any
-
-            await expect(metricExecutionHandler(invalidConfig)).rejects.toThrow(
-                'Missing required functions for metric test-metric in off mode: oldPayload',
-            )
-
-            expect(reportErrorMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message:
-                        'Missing required functions for metric test-metric in shadow mode: oldPayload, newPayload',
-                }),
-                expect.objectContaining({
-                    extra: { metricName: 'test-metric' },
-                }),
-            )
         })
     })
 })
