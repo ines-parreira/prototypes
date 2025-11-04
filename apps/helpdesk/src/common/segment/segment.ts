@@ -1,10 +1,10 @@
 /// <reference types="@types/segment-analytics" />
+import { isDevelopment } from '@repo/utils'
 import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
 
 import { User } from 'config/types/user'
 import { devLog } from 'utils'
-import { isDevelopment } from 'utils/environment'
 
 import { SegmentEvent } from './types'
 

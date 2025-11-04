@@ -1,4 +1,4 @@
-import { isProduction, isStaging } from 'utils/environment'
+import { isProduction, isStaging } from '@repo/utils'
 
 const CONVERT_BUNDLE_PRODUCTION_URL =
     process.env.CONVERT_BUNDLE_PRODUCTION_URL ??

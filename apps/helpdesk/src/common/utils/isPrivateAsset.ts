@@ -1,4 +1,4 @@
-import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
+import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
 const privateBuckets: Record<GorgiasUIEnv, string> = {
     [GorgiasUIEnv.Development]: '//uploads.gorgi.us',

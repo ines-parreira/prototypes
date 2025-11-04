@@ -2,7 +2,7 @@ import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { aiJourneyKeys } from './index'
 
-jest.mock('utils/environment', () => ({
+jest.mock('@repo/utils', () => ({
     isProduction: jest.fn(),
     isStaging: jest.fn(),
 }))

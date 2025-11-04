@@ -1,3 +1,4 @@
+import * as envUtils from '@repo/utils'
 import { waitFor } from '@testing-library/react'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
@@ -36,7 +37,6 @@ import { VoiceDeviceActions } from 'pages/integrations/integration/components/vo
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
-import * as envUtils from 'utils/environment'
 import { reportError } from 'utils/errors'
 import { getLDClient } from 'utils/launchDarkly'
 

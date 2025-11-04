@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 
+import { isProduction } from '@repo/utils'
+
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { isProduction } from 'utils/environment'
 
 // PROD: https://zapier.com/editor/313708537/published
 // DEV: https://zapier.com/editor/313712767/published

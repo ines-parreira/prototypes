@@ -1,3 +1,4 @@
+import { isDevelopment } from '@repo/utils'
 import copy from 'copy-to-clipboard'
 
 import {
@@ -17,7 +18,6 @@ import { StoreIntegration } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { StoreDispatch } from 'state/types'
-import { isDevelopment } from 'utils/environment'
 import { reportError } from 'utils/errors'
 
 import {

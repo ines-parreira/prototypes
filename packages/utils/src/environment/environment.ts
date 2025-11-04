@@ -1,4 +1,4 @@
-import { isValueOfStringEnum } from 'utils/types'
+import { isValueOfStringEnum } from './utils'
 
 export enum GorgiasUIEnv {
     Production = 'production',

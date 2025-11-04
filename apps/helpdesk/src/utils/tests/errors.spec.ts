@@ -4,13 +4,13 @@ import {
     mockProductionEnvironment,
     mockStagingEnvironment,
 } from '@repo/testing'
+import { GorgiasUIEnv } from '@repo/utils'
 import { captureException, init, setTag, setUser } from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import { ScopeContext } from '@sentry/types'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { GorgiasUIEnv } from 'utils/environment'
 import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,

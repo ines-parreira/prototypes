@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { isProduction } from '@repo/utils'
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import configureStore from 'redux-mock-store'
 import { createBaseUrl } from 'models/aiAgent/resources/message-processing'
 import { IntegrationType } from 'models/integration/constants'
 import { HttpIntegration } from 'models/integration/types'
-import { isProduction } from 'utils/environment'
 
 import { useAiAgentHttpIntegration } from '../useAiAgentHttpIntegration'
 
@@ -18,7 +18,7 @@ jest.mock('models/aiAgent/resources/message-processing', () => ({
     createBaseUrl: jest.fn(() => 'https://aiagent.gorgias.help'),
 }))
 
-jest.mock('utils/environment', () => ({
+jest.mock('@repo/utils', () => ({
     isProduction: jest.fn(() => false),
     GorgiasUIEnv: {
         Development: 'development',

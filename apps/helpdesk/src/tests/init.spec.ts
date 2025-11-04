@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import * as envUtils from '@repo/utils'
 import { fromJS } from 'immutable'
 import { initApp } from 'init'
 
@@ -6,7 +7,6 @@ import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
-import * as envUtils from 'utils/environment'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'
@@ -33,7 +33,7 @@ jest.mock('utils/errors')
 jest.mock('utils/launchDarkly')
 jest.mock('utils/hotjar')
 
-jest.mock('utils/environment')
+jest.mock('@repo/utils')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 const getEnvironmentMock = assumeMock(envUtils.getEnvironment)
 const isDevelopmentMock = assumeMock(envUtils.isDevelopment)

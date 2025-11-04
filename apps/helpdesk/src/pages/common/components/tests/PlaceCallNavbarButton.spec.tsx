@@ -22,8 +22,10 @@ import * as platform from 'utils/platform'
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     useConditionalShortcuts: jest.fn(),
 }))
+
 jest.mock('utils/device')
 jest.mock('../DeactivatedViewIcon', () => ({ tooltipText }: any) => (
     <div>{tooltipText}</div>

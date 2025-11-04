@@ -1,4 +1,4 @@
-import { isProduction } from '../../../../../../../utils/environment'
+import { isProduction } from '@repo/utils'
 
 import css from '../../CustomDomain.less'
 

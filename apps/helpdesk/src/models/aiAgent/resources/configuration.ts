@@ -1,8 +1,8 @@
+import { isProduction, isStaging } from '@repo/utils'
 import axios, { AxiosError } from 'axios'
 
 import { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
-import { isProduction, isStaging } from 'utils/environment'
 
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {

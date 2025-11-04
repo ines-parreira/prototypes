@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { envVars, NodeEnv } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
@@ -22,7 +23,6 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
 import { RootState } from 'state/types'
-import { envVars, NodeEnv } from 'utils/environment'
 import { getLDClient, LDContext } from 'utils/launchDarkly'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

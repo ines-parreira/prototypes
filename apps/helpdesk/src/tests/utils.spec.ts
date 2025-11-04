@@ -1,4 +1,6 @@
 import { mockProductionEnvironment } from '@repo/testing'
+import * as envUtils from '@repo/utils'
+import { isDevelopment, isProduction, isStaging } from '@repo/utils'
 import * as esprima from 'esprima'
 import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
@@ -22,11 +24,9 @@ import { Account } from 'state/currentAccount/types'
 import * as utils from 'utils'
 import { assertUnreachable, getCode } from 'utils'
 import { getDateAndTimeFormat } from 'utils/datetime'
-import * as envUtils from 'utils/environment'
-import { isDevelopment, isProduction, isStaging } from 'utils/environment'
 
 jest.mock('common/utils')
-jest.mock('utils/environment')
+jest.mock('@repo/utils')
 const isPrivateAssetMock = isPrivateAsset as jest.Mock
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 

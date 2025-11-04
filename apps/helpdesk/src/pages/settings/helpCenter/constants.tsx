@@ -1,3 +1,5 @@
+import { isProduction, isStaging } from '@repo/utils'
+
 import { Language } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 
@@ -7,7 +9,6 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
-import { isProduction, isStaging } from '../../../utils/environment'
 import { HelpCenterTheme } from './types'
 import { HelpCenterLayout } from './types/layout.enum'
 import { emojiRegex } from './utils/emojiRegex'

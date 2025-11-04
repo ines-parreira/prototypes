@@ -1,9 +1,9 @@
-import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
+import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
 import isPrivateAsset from '../isPrivateAsset'
 
-jest.mock('utils/environment', () => {
-    const actual = jest.requireActual('utils/environment')
+jest.mock('@repo/utils', () => {
+    const actual = jest.requireActual('@repo/utils')
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return { ...actual, getEnvironment: jest.fn() }

@@ -12,10 +12,10 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
 import { history } from '@repo/routing'
+import { envVars } from '@repo/utils'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { envVars } from 'utils/environment'
 
 import { mockQueryClient } from './reactQueryTestingUtils'
 

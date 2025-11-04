@@ -16,6 +16,8 @@ import moment from 'moment-timezone'
 
 import './polyfills'
 
+import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
+
 import { logEvent, SegmentEvent } from 'common/segment'
 import { store } from 'common/store'
 import { EditableUserProfile } from 'config/types/user'
@@ -29,12 +31,6 @@ import { notify } from 'state/notifications/actions'
 import { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
-import {
-    envVars,
-    getEnvironment,
-    isProduction,
-    isStaging,
-} from 'utils/environment'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
 import { initLaunchDarkly } from 'utils/launchDarkly'

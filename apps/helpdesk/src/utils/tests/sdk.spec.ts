@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { isProduction, isStaging } from '@repo/utils'
 import { setupServer } from 'msw/node'
 
 import { getAbTest } from '@gorgias/convert-client'
@@ -10,13 +11,12 @@ import { mockListTicketsHandler } from '@gorgias/helpdesk-mocks'
 import { findFeedback } from '@gorgias/knowledge-service-client'
 import { mockFindFeedbackHandler } from '@gorgias/knowledge-service-mocks'
 
-import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import { initSDKs } from '../sdk'
 
 jest.mock('utils/gorgiasAppsAuth')
-jest.mock('utils/environment')
+jest.mock('@repo/utils')
 
 const interceptorMock = assumeMock(gorgiasAppsAuthInterceptor)
 const isProductionMock = assumeMock(isProduction)

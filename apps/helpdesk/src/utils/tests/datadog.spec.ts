@@ -1,5 +1,6 @@
 import { datadogLogs } from '@datadog/browser-logs'
 import { datadogRum } from '@datadog/browser-rum'
+import { GorgiasUIEnv } from '@repo/utils'
 
 import {
     DATADOG_CLIENT_TOKEN,
@@ -20,7 +21,6 @@ import {
     initDatadogRum,
     InitDatadogRumOptions,
 } from 'utils/datadog'
-import { GorgiasUIEnv } from 'utils/environment'
 
 jest.mock('@datadog/browser-logs')
 jest.mock('@datadog/browser-rum')

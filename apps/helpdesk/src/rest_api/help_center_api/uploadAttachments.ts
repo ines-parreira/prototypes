@@ -1,9 +1,9 @@
+import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 import { v4 as uuidv4 } from 'uuid'
 
 import { GenericAttachment } from 'common/types'
 import { Components } from 'rest_api/help_center_api/client.generated'
 
-import { getEnvironment, GorgiasUIEnv } from '../../utils/environment'
 import { getHelpCenterClient } from './index'
 
 type ChannelInfo = Components.Schemas.UploadAttachmentDto['channel']

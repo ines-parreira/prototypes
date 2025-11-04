@@ -1,4 +1,4 @@
-import { getHelpCenterAuthApiBaseUrl } from 'utils/environment'
+import { getHelpCenterAuthApiBaseUrl } from '@repo/utils'
 
 import { helpCenterAPI, HelpCenterClient } from './help_center_api/client'
 

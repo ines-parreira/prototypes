@@ -1,6 +1,7 @@
+import { envVars, NodeEnv } from '@repo/utils'
+
 import { AlertBannerTypes } from 'AlertBanners'
 import { IntegrationType } from 'models/integration/types'
-import { envVars, NodeEnv } from 'utils/environment'
 
 import { IncidentImpact } from './types'
 

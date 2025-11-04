@@ -44,6 +44,7 @@
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
+        "process": "catalog:bundler",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",

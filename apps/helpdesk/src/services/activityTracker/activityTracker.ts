@@ -1,8 +1,8 @@
+import { isDevelopment } from '@repo/utils'
 import { AxiosError } from 'axios'
 
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
 
-import { isDevelopment } from 'utils/environment'
 import { reportError } from 'utils/errors'
 import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 

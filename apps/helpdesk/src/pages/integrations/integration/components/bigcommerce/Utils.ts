@@ -1,4 +1,4 @@
-import { isProduction, isStaging } from '../../../../../utils/environment'
+import { isProduction, isStaging } from '@repo/utils'
 
 export function getConnectUrl() {
     const BIGCOMMERCE_MARKETPLACE_BASE_URL =

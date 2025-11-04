@@ -2,7 +2,7 @@ import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgent
 
 import { generateUniqueId, optimisticallyUpdateFeedback } from '../utils'
 
-jest.mock('utils/environment', () => ({
+jest.mock('@repo/utils', () => ({
     isProduction: jest.fn(),
     isStaging: jest.fn(),
 }))

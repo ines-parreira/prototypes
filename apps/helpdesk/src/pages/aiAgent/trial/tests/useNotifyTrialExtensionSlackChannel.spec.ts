@@ -22,7 +22,7 @@ jest.mock('models/api/resources', () => ({
 
 const mockPost = jest.mocked(client.post)
 
-jest.mock('utils/environment', () => ({
+jest.mock('@repo/utils', () => ({
     isProduction: jest.fn().mockReturnValue(false),
 }))
 

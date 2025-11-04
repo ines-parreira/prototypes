@@ -1,6 +1,6 @@
+import { isProduction, isStaging } from '@repo/utils'
 import axios from 'axios'
 
-import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import {

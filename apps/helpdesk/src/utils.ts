@@ -4,6 +4,7 @@ import {
     TouchEvent as TouchEventReact,
 } from 'react'
 
+import { envVars, isProduction, isStaging } from '@repo/utils'
 import crypto from 'crypto'
 import { EditorState, Modifier } from 'draft-js'
 import escodegen from 'escodegen'
@@ -50,7 +51,6 @@ import {
 import { RootState } from './state/types'
 import { ViewsState } from './state/views/types'
 import { NonEmptyArray, Schemas } from './types'
-import { envVars, isProduction, isStaging } from './utils/environment'
 import { sanitizeHtmlDefault } from './utils/html'
 import { linkify } from './utils/linkify'
 

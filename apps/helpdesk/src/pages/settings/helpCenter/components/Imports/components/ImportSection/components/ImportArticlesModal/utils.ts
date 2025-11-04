@@ -1,4 +1,4 @@
-import { isDevelopment } from 'utils/environment'
+import { isDevelopment } from '@repo/utils'
 
 import { HELP_CENTER_BASE_PATH } from '../../../../../../constants'
 

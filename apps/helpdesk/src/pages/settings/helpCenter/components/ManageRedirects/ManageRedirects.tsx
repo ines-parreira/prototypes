@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
 
+import { isProduction, isStaging } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 
-import { isProduction, isStaging } from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {

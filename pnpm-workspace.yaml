@@ -94,6 +94,8 @@ catalogs:
     'swc_mut_cjs_exports': '^10.7.0'
     'vitest': '^3'
     'msw': '^2.1.15'
+  bundler:
+    'process': '^0.11.10'
   typescript:
     'typescript': '5.3.3'
   prettier:

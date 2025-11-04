@@ -1,6 +1,5 @@
+import { envVars, NodeEnv } from '@repo/utils'
 import { Store } from 'redux'
-
-import { envVars, NodeEnv } from 'utils/environment'
 
 import { InitialRootState } from '../types'
 
