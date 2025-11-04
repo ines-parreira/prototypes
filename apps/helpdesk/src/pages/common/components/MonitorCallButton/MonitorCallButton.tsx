@@ -1,12 +1,17 @@
-import { useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import { getMonitoringParameters } from 'hooks/integrations/phone/monitoring.utils'
+import {
+    getMonitoringParameters,
+    getMonitoringRestrictionReason,
+} from 'hooks/integrations/phone/monitoring.utils'
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
-import { VoiceCall } from 'models/voiceCall/types'
-import { isCallBeingMonitored } from 'models/voiceCall/utils'
+import { useNotify } from 'hooks/useNotify'
+import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
+import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
+import MonitoringCallSwitchModal from 'pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal'
 
 type MonitorCallButtonProps = {
     voiceCallToMonitor: VoiceCall | VoiceCallSummary
@@ -22,9 +27,21 @@ export default function MonitorCallButton({
     reason,
 }: MonitorCallButtonProps) {
     const buttonRef = useRef<HTMLButtonElement>(null)
+    const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
+    const notify = useNotify()
 
-    const { makeMonitoringCall } = useMonitoringCall(
-        voiceCallToMonitor.direction,
+    const { prepareMonitoringCall, makeMonitoringCall } = useMonitoringCall()
+
+    const showMonitoringError = useCallback(
+        (errorCode: MonitoringErrorCode) => {
+            notify.error(
+                getMonitoringRestrictionReason(
+                    errorCode,
+                    voiceCallToMonitor.direction,
+                ),
+            )
+        },
+        [notify, voiceCallToMonitor.direction],
     )
 
     if (isCallBeingMonitored(voiceCallToMonitor, agentId)) {
@@ -34,6 +51,55 @@ export default function MonitorCallButton({
     const { callSidToMonitor, monitoringExtraParams } =
         getMonitoringParameters(voiceCallToMonitor)
 
+    const handleListenPress = async () => {
+        const result = await prepareMonitoringCall(callSidToMonitor)
+
+        if (result.readyForMonitoring) {
+            makeMonitoringCall(
+                callSidToMonitor,
+                agentId,
+                monitoringExtraParams,
+                showMonitoringError,
+            )
+            return
+        }
+
+        if (
+            result.errorType === 'error_code' &&
+            result.errorCode === MonitoringErrorCode.ALREADY_MONITORING_CALL
+        ) {
+            setIsSwitchModalOpen(true)
+            return
+        }
+
+        if (result.errorType === 'error_code') {
+            showMonitoringError(result.errorCode)
+        } else if (result.errorType === 'error_message') {
+            notify.error(result.errorMessage)
+        }
+    }
+
+    const handleConfirmSwitch = async () => {
+        setIsSwitchModalOpen(false)
+        const result = await prepareMonitoringCall(callSidToMonitor, true)
+
+        if (result.readyForMonitoring) {
+            makeMonitoringCall(
+                callSidToMonitor,
+                agentId,
+                monitoringExtraParams,
+                showMonitoringError,
+            )
+            return
+        }
+
+        if (result.errorType === 'error_code') {
+            showMonitoringError(result.errorCode)
+        } else if (result.errorType === 'error_message') {
+            notify.error(result.errorMessage)
+        }
+    }
+
     return (
         <>
             <Button
@@ -42,17 +108,17 @@ export default function MonitorCallButton({
                 size="sm"
                 leadingSlot="headset_mic"
                 isDisabled={!isMonitorable}
-                onClick={() =>
-                    makeMonitoringCall(
-                        callSidToMonitor,
-                        agentId,
-                        monitoringExtraParams,
-                    )
-                }
+                onPress={handleListenPress}
             >
                 Listen
             </Button>
             {reason && <Tooltip target={buttonRef}>{reason}</Tooltip>}
+            <MonitoringCallSwitchModal
+                isOpen={isSwitchModalOpen}
+                onClose={() => setIsSwitchModalOpen(false)}
+                onConfirm={handleConfirmSwitch}
+                newMonitoredAgentId={getInCallAgentId(voiceCallToMonitor)}
+            />
         </>
     )
 }

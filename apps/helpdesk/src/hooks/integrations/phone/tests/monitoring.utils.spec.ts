@@ -6,7 +6,7 @@ import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 import { User, UserRole } from 'config/types/user'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
-import { VoiceCall } from 'models/voiceCall/types'
+import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
 import {
@@ -422,43 +422,44 @@ describe('monitoring.utils', () => {
     describe('getMonitoringRestrictionReason', () => {
         it.each([
             {
-                errorCode: 'NOT_ALLOWED',
+                errorCode: MonitoringErrorCode.NOT_ALLOWED,
                 reason: MONITORING_RESTRICTION_REASONS.NOT_ALLOWED,
             },
             {
-                errorCode: 'CALL_COMPLETED',
+                errorCode: MonitoringErrorCode.CALL_COMPLETED,
                 reason: MONITORING_RESTRICTION_REASONS.CALL_COMPLETED,
             },
             {
-                errorCode: 'TRANSFERRING_TO_QUEUE',
+                errorCode: MonitoringErrorCode.TRANSFERRING_TO_QUEUE,
                 reason: MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE,
             },
             {
-                errorCode: 'HANDLING_CALL',
+                errorCode: MonitoringErrorCode.HANDLING_CALL,
                 reason: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
             },
             {
-                errorCode: 'ADMIN_HANDLING_CALL',
+                errorCode: MonitoringErrorCode.ADMIN_HANDLING_CALL,
                 reason: MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN,
             },
             {
-                errorCode: 'ALREADY_MONITORING_CALL',
+                errorCode: MonitoringErrorCode.ALREADY_MONITORING_CALL,
                 reason: MONITORING_RESTRICTION_REASONS.ALREADY_MONITORING_CALL,
             },
             {
-                errorCode: 'AGENT_BUSY',
+                errorCode: MonitoringErrorCode.AGENT_BUSY,
                 reason: MONITORING_RESTRICTION_REASONS.AGENT_BUSY,
             },
             {
-                errorCode: 'OTHER_AGENT_MONITORING_CALL',
+                errorCode: MonitoringErrorCode.OTHER_AGENT_MONITORING_CALL,
                 reason: MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL,
             },
             {
-                errorCode: 'CALL_FORWARDED_TO_EXTERNAL_NUMBER',
+                errorCode:
+                    MonitoringErrorCode.CALL_FORWARDED_TO_EXTERNAL_NUMBER,
                 reason: MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER,
             },
             {
-                errorCode: 'GENERIC_ERROR',
+                errorCode: 'GENERIC_ERROR' as MonitoringErrorCode,
                 reason: MONITORING_RESTRICTION_REASONS.GENERIC,
             },
         ])(
@@ -487,7 +488,7 @@ describe('monitoring.utils', () => {
             ({ voiceCallDirection, reason }) => {
                 expect(
                     getMonitoringRestrictionReason(
-                        'CALL_NOT_IN_PROGRESS',
+                        MonitoringErrorCode.CALL_NOT_IN_PROGRESS,
                         voiceCallDirection,
                     ),
                 ).toBe(reason)

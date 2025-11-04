@@ -816,6 +816,18 @@ describe('voice call utils', () => {
                 } as VoiceCall,
                 inCallAgentId: null,
             },
+            {
+                voiceCall: {
+                    agentId: 55,
+                } as VoiceCallSummary,
+                inCallAgentId: 55,
+            },
+            {
+                voiceCall: {
+                    agentId: null,
+                } as VoiceCallSummary,
+                inCallAgentId: null,
+            },
         ])('should return correct agent id', ({ voiceCall, inCallAgentId }) => {
             const result = getInCallAgentId(voiceCall)
 

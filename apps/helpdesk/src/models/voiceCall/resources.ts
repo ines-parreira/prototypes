@@ -70,9 +70,7 @@ export const searchVoiceCalls = async ({
                 withHighlights,
             }),
         },
-        {
-            ...(cancelToken ? { cancelToken } : {}),
-        },
+        cancelToken ? { cancelToken } : {},
     )
 }
 

@@ -1,20 +1,27 @@
 import { useCallback } from 'react'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-types'
+import { usePrepareCallMonitoring } from '@gorgias/helpdesk-queries'
 
 import { PhoneCallDirection, TwilioSocketEventType } from 'business/twilio'
-import { getMonitoringRestrictionReason } from 'hooks/integrations/phone/monitoring.utils'
 import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { isGorgiasApiError } from 'models/api/types'
+import {
+    MONITORING_GENERIC_ERROR,
+    MONITORING_SWITCH_ERROR,
+} from 'models/voiceCall/constants'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { MonitoringErrorCode } from 'models/voiceCall/types'
 
 import useVoiceDevice from './useVoiceDevice'
+
+type PrepareMonitoringErrorData = {
+    error_code: MonitoringErrorCode
+}
 
 export type ExtraMonitoringParams = {
     integrationId: number | null
@@ -23,15 +30,73 @@ export type ExtraMonitoringParams = {
     inCallAgentId: number | null
 }
 
-export function useMonitoringCall(voiceCallDirection: VoiceCallDirection) {
+type PrepareMonitoringResult =
+    | { readyForMonitoring: true }
+    | {
+          readyForMonitoring: false
+          errorType: 'error_code'
+          errorCode: MonitoringErrorCode
+      }
+    | {
+          readyForMonitoring: false
+          errorType: 'error_message'
+          errorMessage: string
+      }
+
+export function useMonitoringCall() {
     const dispatch = useAppDispatch()
     const { device, actions } = useVoiceDevice()
+    const { mutateAsync: prepareCallMonitoringMutation } =
+        usePrepareCallMonitoring()
+
+    const prepareMonitoringCall = useCallback(
+        async (
+            callSidToMonitor: string,
+            endExisting: boolean = false,
+        ): Promise<PrepareMonitoringResult> => {
+            try {
+                const result = await prepareCallMonitoringMutation({
+                    data: {
+                        main_call_sid: callSidToMonitor,
+                        end_existing: endExisting,
+                    },
+                })
+                if (endExisting && !result.data.has_ended_existing) {
+                    return {
+                        readyForMonitoring: false,
+                        errorType: 'error_message',
+                        errorMessage: MONITORING_SWITCH_ERROR,
+                    }
+                }
+                return { readyForMonitoring: true }
+            } catch (error) {
+                if (isGorgiasApiError(error)) {
+                    const errorData = error.response.data.error
+                        .data as PrepareMonitoringErrorData
+                    return {
+                        readyForMonitoring: false,
+                        errorType: 'error_code',
+                        errorCode: errorData.error_code,
+                    }
+                }
+                return {
+                    readyForMonitoring: false,
+                    errorType: 'error_message',
+                    errorMessage: MONITORING_GENERIC_ERROR,
+                }
+            }
+        },
+        [prepareCallMonitoringMutation],
+    )
 
     const makeMonitoringCall = useCallback(
         async (
             callSidToMonitor: string,
             agentId: number,
             extraMonitoringParams: ExtraMonitoringParams,
+            onMonitoringValidationFailed: (
+                errorCode: MonitoringErrorCode,
+            ) => void,
         ) => {
             const params: Record<string, string> = {
                 Direction: PhoneCallDirection.OutboundDial,
@@ -68,22 +133,14 @@ export function useMonitoringCall(voiceCallDirection: VoiceCallDirection) {
                     message.type ===
                     TwilioMessageType.MonitoringValidationFailed
                 ) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: getMonitoringRestrictionReason(
-                                message.data.error_code,
-                                voiceCallDirection,
-                            ),
-                        }),
-                    )
+                    onMonitoringValidationFailed(message.data.error_code)
                 }
             })
 
             actions.setCall(call)
         },
-        [device, dispatch, actions, voiceCallDirection],
+        [device, dispatch, actions],
     )
 
-    return { makeMonitoringCall }
+    return { prepareMonitoringCall, makeMonitoringCall }
 }

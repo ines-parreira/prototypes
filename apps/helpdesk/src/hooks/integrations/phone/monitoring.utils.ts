@@ -6,7 +6,7 @@ import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 import { User, UserRole } from 'config/types/user'
 import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
-import { VoiceCall } from 'models/voiceCall/types'
+import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
 import {
     isCallAnsweredByExternalNumber,
     isCallBeingMonitored,
@@ -146,32 +146,32 @@ export function getMonitoringParameters(
 }
 
 export function getMonitoringRestrictionReason(
-    errorCode: string,
+    errorCode: MonitoringErrorCode,
     voiceCallDirection: VoiceCallDirection,
 ) {
     switch (errorCode) {
-        case 'NOT_ALLOWED':
+        case MonitoringErrorCode.NOT_ALLOWED:
             return MONITORING_RESTRICTION_REASONS.NOT_ALLOWED
-        case 'CALL_COMPLETED':
+        case MonitoringErrorCode.CALL_COMPLETED:
             return MONITORING_RESTRICTION_REASONS.CALL_COMPLETED
-        case 'CALL_NOT_IN_PROGRESS':
+        case MonitoringErrorCode.CALL_NOT_IN_PROGRESS:
             if (voiceCallDirection === VoiceCallDirection.Outbound) {
                 return MONITORING_RESTRICTION_REASONS.CALL_NOT_YET_CONNECTED
             }
             return MONITORING_RESTRICTION_REASONS.CALL_NOT_IN_PROGRESS
-        case 'TRANSFERRING_TO_QUEUE':
+        case MonitoringErrorCode.TRANSFERRING_TO_QUEUE:
             return MONITORING_RESTRICTION_REASONS.TRANSFERRING_TO_QUEUE
-        case 'HANDLING_CALL':
+        case MonitoringErrorCode.HANDLING_CALL:
             return MONITORING_RESTRICTION_REASONS.HANDLING_CALL
-        case 'ADMIN_HANDLING_CALL':
+        case MonitoringErrorCode.ADMIN_HANDLING_CALL:
             return MONITORING_RESTRICTION_REASONS.CALL_HANDLED_BY_ADMIN
-        case 'ALREADY_MONITORING_CALL':
+        case MonitoringErrorCode.ALREADY_MONITORING_CALL:
             return MONITORING_RESTRICTION_REASONS.ALREADY_MONITORING_CALL
-        case 'AGENT_BUSY':
+        case MonitoringErrorCode.AGENT_BUSY:
             return MONITORING_RESTRICTION_REASONS.AGENT_BUSY
-        case 'OTHER_AGENT_MONITORING_CALL':
+        case MonitoringErrorCode.OTHER_AGENT_MONITORING_CALL:
             return MONITORING_RESTRICTION_REASONS.OTHER_AGENT_MONITORING_CALL
-        case 'CALL_FORWARDED_TO_EXTERNAL_NUMBER':
+        case MonitoringErrorCode.CALL_FORWARDED_TO_EXTERNAL_NUMBER:
             return MONITORING_RESTRICTION_REASONS.CALL_ANSWERED_BY_EXTERNAL_NUMBER
         default:
             return MONITORING_RESTRICTION_REASONS.GENERIC

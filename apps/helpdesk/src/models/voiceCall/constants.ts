@@ -16,3 +16,8 @@ export const MONITORING_RESTRICTION_REASONS = {
     AGENT_BUSY: 'You cannot monitor a call while handling another.',
     GENERIC: 'You cannot monitor this call.',
 }
+
+export const MONITORING_GENERIC_ERROR =
+    'Something went wrong while starting the monitoring. Try again later.'
+export const MONITORING_SWITCH_ERROR =
+    'Something went wrong while handling the switch. Try again later.'

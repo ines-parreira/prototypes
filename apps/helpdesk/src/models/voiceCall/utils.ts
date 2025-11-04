@@ -319,7 +319,12 @@ export const isCallInProgress = (
     return false
 }
 
-export const getInCallAgentId = (voiceCall: VoiceCall): number | null => {
+export const getInCallAgentId = (
+    voiceCall: VoiceCall | VoiceCallSummary,
+): number | null => {
+    if ('agentId' in voiceCall) {
+        return voiceCall.agentId
+    }
     return (
         voiceCall.last_answered_by_agent_id ??
         voiceCall.initiated_by_agent_id ??
