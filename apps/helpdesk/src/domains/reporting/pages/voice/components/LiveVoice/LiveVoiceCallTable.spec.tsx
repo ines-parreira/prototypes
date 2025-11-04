@@ -29,7 +29,17 @@ const renderComponent = () => {
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent',
 )
-jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
+jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => {
+    const actual = jest.requireActual(
+        'domains/reporting/pages/voice/components/LiveVoice/utils',
+    )
+    return {
+        ...actual,
+        filterLiveCallsByStatus: jest.fn(),
+        formatVoiceCallsData: jest.fn(),
+        orderLiveVoiceCallsByOngoingTime: jest.fn(),
+    }
+})
 jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 

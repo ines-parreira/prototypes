@@ -13,6 +13,7 @@ import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
     liveVoiceCallTableColumns,
+    liveVoiceCallTableColumnsWithMonitor,
     orderLiveVoiceCallsByOngoingTime,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
@@ -71,7 +72,7 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
     const currentUser = useAppSelector(getCurrentUser)
     const columns =
         isCallListeningEnabled && canMonitorCall(currentUser)
-            ? [...liveVoiceCallTableColumns, VoiceCallTableColumn.Monitor]
+            ? liveVoiceCallTableColumnsWithMonitor
             : liveVoiceCallTableColumns
 
     return (

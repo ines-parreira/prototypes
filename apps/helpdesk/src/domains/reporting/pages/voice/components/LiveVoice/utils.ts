@@ -33,6 +33,16 @@ export const liveVoiceCallTableColumns: VoiceCallTableColumn[] = [
     VoiceCallTableColumn.Ticket,
 ]
 
+export const liveVoiceCallTableColumnsWithMonitor: VoiceCallTableColumn[] = [
+    VoiceCallTableColumn.Activity,
+    VoiceCallTableColumn.LiveStatus,
+    VoiceCallTableColumn.OngoingTime,
+    VoiceCallTableColumn.Integration,
+    VoiceCallTableColumn.Queue,
+    VoiceCallTableColumn.Monitor,
+    VoiceCallTableColumn.Ticket,
+]
+
 export const isAgentBusy = (agent: LiveCallQueueAgent): boolean => {
     return !!agent.call_statuses?.length
 }
