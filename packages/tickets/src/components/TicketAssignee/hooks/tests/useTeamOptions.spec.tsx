@@ -2,7 +2,11 @@ import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockListTeamsHandler, mockTeam } from '@gorgias/helpdesk-mocks'
+import {
+    mockListTeamsHandler,
+    mockTeam,
+    mockTicketTeam,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import { NO_TEAM_OPTION, useTeamOptions } from '../useTeamOptions'
@@ -63,7 +67,7 @@ describe('useTeamOptions', () => {
 
     it('should include "No team" section when a team is selected', async () => {
         const { result } = renderHook(() =>
-            useTeamOptions({ currentTeam: team1 }),
+            useTeamOptions({ currentTeam: mockTicketTeam(team1) }),
         )
 
         await waitFor(() => {
@@ -87,7 +91,7 @@ describe('useTeamOptions', () => {
 
     it('should exclude "No team" section when searching', async () => {
         const { result } = renderHook(() =>
-            useTeamOptions({ currentTeam: team1 }),
+            useTeamOptions({ currentTeam: mockTicketTeam(team1) }),
         )
 
         await waitFor(() => {

@@ -6,6 +6,7 @@ import {
     mockListTeamsHandler,
     mockTeam,
     mockTicket,
+    mockTicketTeam,
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 
@@ -33,11 +34,7 @@ const mockUpdateTicket = mockUpdateTicketHandler(async () => {
     return HttpResponse.json(
         mockTicket({
             id: ticketId,
-            assignee_team: {
-                id: 1,
-                name: 'Support',
-                decoration: { emoji: '🛠️' },
-            },
+            assignee_team: mockTicketTeam(team1),
         }),
     )
 })
@@ -81,12 +78,41 @@ describe('TeamAssignee', () => {
     })
 
     it('should render with current team name when team is assigned', async () => {
-        render(<TeamAssignee ticketId={ticketId} currentTeam={team1} />)
+        render(
+            <TeamAssignee
+                ticketId={ticketId}
+                currentTeam={mockTicketTeam(team1)}
+            />,
+        )
 
         await waitUntilLoaded()
 
         const supportTexts = screen.getAllByText('Support')
         expect(supportTexts.length).toBeGreaterThan(0)
+    })
+
+    it('should render and include current team in options when not in loaded teams list', async () => {
+        const notLoadedTeam = mockTicketTeam({
+            id: 123,
+            name: 'Random Team',
+            decoration: { emoji: '🔥' },
+        })
+        const notLoadedTicketTeam = mockTicketTeam(notLoadedTeam)
+
+        const { user } = render(
+            <TeamAssignee
+                ticketId={ticketId}
+                currentTeam={notLoadedTicketTeam}
+            />,
+        )
+
+        const select = await waitUntilLoaded()
+        await user.click(select)
+
+        await waitFor(() => {
+            const randomTeamTexts = screen.getAllByText('Random Team')
+            expect(randomTeamTexts.length).toBe(3)
+        })
     })
 
     it('should be disabled while loading', () => {
@@ -125,7 +151,10 @@ describe('TeamAssignee', () => {
             mockUpdateTicket.waitForRequest(server)
 
         const { user } = render(
-            <TeamAssignee ticketId={ticketId} currentTeam={team1} />,
+            <TeamAssignee
+                ticketId={ticketId}
+                currentTeam={mockTicketTeam(team1)}
+            />,
         )
 
         const select = await waitUntilLoaded()
@@ -155,11 +184,7 @@ describe('TeamAssignee', () => {
                                 HttpResponse.json(
                                     mockTicket({
                                         id: ticketId,
-                                        assignee_team: {
-                                            id: 1,
-                                            name: 'Support',
-                                            decoration: { emoji: '🛠️' },
-                                        },
+                                        assignee_team: mockTicketTeam(team1),
                                     }),
                                 ),
                             ),

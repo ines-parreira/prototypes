@@ -57,14 +57,30 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
         [users, currentUserId],
     )
 
-    const otherUsersOptions = useMemo(
-        () =>
-            otherUsers.map((user) => ({
+    const otherUsersOptions = useMemo(() => {
+        let isCurrentAssigneeLoaded = false
+        const options = otherUsers.map((user) => {
+            if (user.id === currentAssignee?.id) {
+                isCurrentAssigneeLoaded = true
+            }
+            return {
                 id: user.id,
                 label: user.name,
-            })),
-        [otherUsers],
-    )
+            }
+        })
+
+        if (
+            currentAssignee &&
+            !isCurrentAssigneeLoaded &&
+            currentAssignee.id !== currentUserId
+        ) {
+            options.push({
+                id: currentAssignee?.id,
+                label: currentAssignee?.name,
+            })
+        }
+        return options
+    }, [otherUsers, currentAssignee, currentUserId])
 
     const usersMap = useMemo(() => {
         const map = new Map(otherUsers.map((user) => [user.id, user]))

@@ -11,7 +11,7 @@ import {
     Select,
     Tag,
 } from '@gorgias/axiom'
-import { Team } from '@gorgias/helpdesk-queries'
+import { TicketTeam } from '@gorgias/helpdesk-queries'
 
 import {
     NO_TEAM_OPTION,
@@ -25,7 +25,7 @@ import css from './SelectStyles.less'
 
 type Props = {
     ticketId: number
-    currentTeam: Team | null
+    currentTeam: TicketTeam | null
 }
 
 export function TeamAssignee({ ticketId, currentTeam }: Props) {

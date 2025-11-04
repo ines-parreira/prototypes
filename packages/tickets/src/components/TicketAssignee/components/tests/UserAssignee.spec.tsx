@@ -50,11 +50,7 @@ const mockUpdateTicket = mockUpdateTicketHandler(async () => {
     return HttpResponse.json(
         mockTicket({
             id: ticketId,
-            assignee_user: mockTicketUser({
-                id: 1,
-                name: 'Current User',
-                email: 'current@example.com',
-            }),
+            assignee_user: currentTicketAssignee,
         }),
     )
 })
@@ -144,10 +140,33 @@ describe('UserAssignee', () => {
         const select = await waitUntilLoaded()
         await user.click(select)
 
-        // Should show "Unassigned" option first
         await waitFor(() => {
             const options = screen.getAllByRole('option')
             expect(options[0]).toHaveTextContent('Unassigned')
+        })
+    })
+
+    it('should render and include current assignee in options when not in loaded users list', async () => {
+        const notLoadedUser = mockTicketUser({
+            id: 123,
+            name: 'Random User',
+            email: 'random@example.com',
+        })
+        const notLoadedAssignee = mockTicketUser(notLoadedUser)
+
+        const { user } = render(
+            <UserAssignee
+                ticketId={ticketId}
+                currentAssignee={notLoadedAssignee}
+            />,
+        )
+
+        const select = await waitUntilLoaded()
+        await user.click(select)
+
+        await waitFor(() => {
+            const randomUserTexts = screen.getAllByText('Random User')
+            expect(randomUserTexts.length).toBe(3)
         })
     })
 
@@ -230,11 +249,7 @@ describe('UserAssignee', () => {
                                 HttpResponse.json(
                                     mockTicket({
                                         id: ticketId,
-                                        assignee_user: mockTicketUser({
-                                            id: 1,
-                                            name: 'Current User',
-                                            email: 'current@example.com',
-                                        }),
+                                        assignee_user: currentTicketAssignee,
                                     }),
                                 ),
                             ),

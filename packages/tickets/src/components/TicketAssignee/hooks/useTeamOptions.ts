@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Team } from '@gorgias/helpdesk-queries'
+import { TicketTeam } from '@gorgias/helpdesk-queries'
 
 import { useListTeamsSearch } from './useListTeamsSearch'
 
@@ -34,7 +34,7 @@ export type TeamSection = {
 }
 
 type UseTeamOptionsParams = {
-    currentTeam?: Team | null
+    currentTeam?: TicketTeam | null
 }
 
 export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
@@ -49,12 +49,27 @@ export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
         const sections: TeamSection[] = []
 
         if (teams.length > 0) {
-            sections.push({
-                ...SECTION_DETAILS.TEAMS,
-                items: teams.map((team) => ({
+            let isCurrentTeamLoaded = false
+            const items = teams.map((team) => {
+                if (team.id === currentTeam?.id) {
+                    isCurrentTeamLoaded = true
+                }
+                return {
                     id: team.id,
                     label: team.name,
-                })),
+                }
+            })
+
+            if (currentTeam && !isCurrentTeamLoaded) {
+                items.push({
+                    id: currentTeam.id,
+                    label: currentTeam.name,
+                })
+            }
+
+            sections.push({
+                ...SECTION_DETAILS.TEAMS,
+                items,
             })
         }
 

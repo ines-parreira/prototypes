@@ -5,9 +5,9 @@ import { setupServer } from 'msw/node'
 import {
     mockGetCurrentUserHandler,
     mockListUsersHandler,
+    mockTicketUser,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import { TicketUser } from '@gorgias/helpdesk-queries'
 
 import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import { NO_USER_OPTION, useUserOptions } from '../useUserOptions'
@@ -79,7 +79,7 @@ describe('useUserOptions', () => {
 
     it('should include "Unassigned" section when a user is assigned', async () => {
         const { result } = renderHook(() =>
-            useUserOptions({ currentAssignee: user2 as TicketUser }),
+            useUserOptions({ currentAssignee: mockTicketUser(user2) }),
         )
 
         await waitFor(() => {
