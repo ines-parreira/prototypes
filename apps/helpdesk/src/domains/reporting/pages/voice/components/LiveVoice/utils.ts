@@ -288,7 +288,7 @@ export const mapBusyAgentStatus = (
 
     if (lastCall?.status === 'monitoring') {
         return {
-            description: 'Busy (Monitoring)',
+            description: 'Monitoring',
             isDescriptionTimestamp: false,
         }
     }

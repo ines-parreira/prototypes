@@ -562,7 +562,7 @@ describe('utils', () => {
             })
         })
 
-        it('should return "Busy (Monitoring)" description for Monitoring status', () => {
+        it('should return "Monitoring" description for Monitoring status', () => {
             const agent: LiveCallQueueAgent = {
                 id: 1,
                 name: 'Agent 1',
@@ -578,7 +578,7 @@ describe('utils', () => {
             const result = mapBusyAgentStatus(agent)
 
             expect(result).toEqual({
-                description: 'Busy (Monitoring)',
+                description: 'Monitoring',
                 isDescriptionTimestamp: false,
             })
         })
