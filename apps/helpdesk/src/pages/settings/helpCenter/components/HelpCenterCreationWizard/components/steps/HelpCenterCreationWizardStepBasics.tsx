@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
 import {

@@ -55,7 +55,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -85,7 +85,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-2"
         >
           <input
@@ -111,7 +111,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-4"
         >
           <input
@@ -137,7 +137,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-6"
         >
           <input
@@ -162,7 +162,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-8"
         >
           <input
@@ -187,7 +187,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-10"
         >
           <input
@@ -212,7 +212,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-12"
         >
           <input
@@ -237,7 +237,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-14"
         >
           <input
@@ -262,7 +262,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-16"
         >
           <input
@@ -287,7 +287,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-18"
         >
           <input
@@ -312,7 +312,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-20"
         >
           <input
@@ -337,7 +337,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-22"
         >
           <input
@@ -362,7 +362,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-24"
         >
           <input
@@ -386,7 +386,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-26"
         >
           <input
@@ -411,7 +411,7 @@ exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integratio
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-28"
         >
           <input

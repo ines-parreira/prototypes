@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { CheckBoxField } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { FormField, FormSubmitButton } from 'core/forms'

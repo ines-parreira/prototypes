@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
 
-import { CheckBoxField, CheckBoxFieldProps } from '@gorgias/axiom'
+import {
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyCheckBoxFieldProps as CheckBoxFieldProps,
+} from '@gorgias/axiom'
 import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType, EnqueueStep } from '@gorgias/helpdesk-types'
 import { validateVoiceCallbackRequests } from '@gorgias/helpdesk-validators'

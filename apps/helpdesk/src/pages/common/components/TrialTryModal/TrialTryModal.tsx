@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import {
     LegacyButton as Button,
-    CheckBoxField,
+    LegacyCheckBoxField as CheckBoxField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

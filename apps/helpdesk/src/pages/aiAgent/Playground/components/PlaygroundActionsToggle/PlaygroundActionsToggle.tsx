@@ -1,6 +1,9 @@
 import React from 'react'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'

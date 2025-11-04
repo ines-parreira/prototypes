@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 import moment from 'moment'
 
-import { Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import {
     useClosedTicketsTrend,

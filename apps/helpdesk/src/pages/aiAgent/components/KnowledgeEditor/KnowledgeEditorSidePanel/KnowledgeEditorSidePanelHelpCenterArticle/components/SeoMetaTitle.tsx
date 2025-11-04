@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { NewCheckBoxField, TextField } from '@gorgias/axiom'
+import { CheckBoxField, TextField } from '@gorgias/axiom'
 
 import { useCheckboxControlledField } from '../hooks/useCheckboxControlledField'
 
@@ -49,7 +49,7 @@ export const SeoMetaTitle = ({
             })}
         >
             <div className={css.seoField__checkbox}>
-                <NewCheckBoxField
+                <CheckBoxField
                     value={isChecked}
                     onChange={onCheckboxChange}
                     label="Use current title as meta title"

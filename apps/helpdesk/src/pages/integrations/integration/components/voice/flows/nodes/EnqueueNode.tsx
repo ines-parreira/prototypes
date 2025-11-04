@@ -1,4 +1,7 @@
-import { CheckBoxField, CheckBoxFieldProps } from '@gorgias/axiom'
+import {
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyCheckBoxFieldProps as CheckBoxFieldProps,
+} from '@gorgias/axiom'
 import { CustomRecordingType, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { FormField, useFormContext, useWatch } from 'core/forms'

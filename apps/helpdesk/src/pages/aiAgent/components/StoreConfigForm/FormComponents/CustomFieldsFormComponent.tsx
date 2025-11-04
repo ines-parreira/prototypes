@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'

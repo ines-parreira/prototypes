@@ -1,4 +1,8 @@
-import { Banner, CheckBoxField, ToggleField } from '@gorgias/axiom'
+import {
+    Banner,
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 import {
     CustomRecordingType,
     UpdateAllPhoneIntegrationSettings,

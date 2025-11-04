@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 import {
     CreateCustomFieldCondition,
     CustomFieldCondition,

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { fromJS } from 'immutable'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { AircallIntegration } from 'models/integration/types'

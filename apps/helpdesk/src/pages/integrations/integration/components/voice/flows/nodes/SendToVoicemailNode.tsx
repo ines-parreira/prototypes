@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Banner, CheckBoxField } from '@gorgias/axiom'
+import { Banner, LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
 import {
     CustomRecordingType,

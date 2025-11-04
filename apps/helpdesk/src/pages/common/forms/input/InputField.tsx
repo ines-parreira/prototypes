@@ -2,7 +2,7 @@ import { ComponentProps, createContext, forwardRef, ReactNode } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import Caption from 'pages/common/forms/Caption/Caption'
 

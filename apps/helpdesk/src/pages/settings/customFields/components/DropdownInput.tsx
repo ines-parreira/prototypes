@@ -4,7 +4,7 @@ import uniqueId from 'lodash/uniqueId'
 
 import {
     LegacyButton as Button,
-    Label,
+    LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { CreateCustomField } from '@gorgias/helpdesk-types'

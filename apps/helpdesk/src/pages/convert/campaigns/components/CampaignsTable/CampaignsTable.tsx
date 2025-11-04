@@ -13,7 +13,11 @@ import classnames from 'classnames'
 import { Map } from 'immutable'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Badge, ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import {
     getGorgiasChatLanguageByCode,

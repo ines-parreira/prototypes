@@ -10,7 +10,7 @@ import React, {
 import classnames from 'classnames'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

@@ -3,7 +3,13 @@ import { useMemo, useState } from 'react'
 import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Badge, Banner, Box, CheckBoxField, Skeleton } from '@gorgias/axiom'
+import {
+    Badge,
+    Banner,
+    Box,
+    LegacyCheckBoxField as CheckBoxField,
+    Skeleton,
+} from '@gorgias/axiom'
 import {
     ListIntegrationsForBusinessHoursOrderBy,
     useListIntegrationsForBusinessHours,

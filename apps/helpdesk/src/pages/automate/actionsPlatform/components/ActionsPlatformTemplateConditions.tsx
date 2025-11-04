@@ -1,6 +1,6 @@
 import _noop from 'lodash/noop'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ConditionsBranchBody } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import { buildConditionSchemaByVariableType } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'

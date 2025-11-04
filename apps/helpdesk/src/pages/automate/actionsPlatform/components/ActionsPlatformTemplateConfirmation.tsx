@@ -3,7 +3,11 @@ import { useCallback, useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 
-import { Banner, LegacyButton as Button, CheckBoxField } from '@gorgias/axiom'
+import {
+    Banner,
+    LegacyButton as Button,
+    LegacyCheckBoxField as CheckBoxField,
+} from '@gorgias/axiom'
 
 import {
     isReusableLLMPromptCallNodeType,

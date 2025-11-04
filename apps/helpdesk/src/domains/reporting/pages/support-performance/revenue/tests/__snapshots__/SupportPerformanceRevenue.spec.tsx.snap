@@ -81,7 +81,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="wrapperItem"
                 >
                   <label
-                    class="ui-label-label-3864 label labelItem"
+                    class="ui-label-label-a11c label labelItem"
                     for="checkbox-1"
                   >
                     <input
@@ -146,7 +146,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="checkbox"
                 >
                   <label
-                    class="ui-label-label-3864 label quickSelectionOption"
+                    class="ui-label-label-a11c label quickSelectionOption"
                     for="checkbox-3"
                   >
                     <input
@@ -176,7 +176,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   class="wrapperItem"
                 >
                   <label
-                    class="ui-label-label-3864 label labelItem"
+                    class="ui-label-label-a11c label labelItem"
                     for="checkbox-4"
                   >
                     <input

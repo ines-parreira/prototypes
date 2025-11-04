@@ -5,7 +5,7 @@ import { useUpdateEffect } from '@repo/hooks'
 import { produce } from 'immer'
 import moment, { Moment } from 'moment-timezone'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { Caption } from 'gorgias-design-system/Input/Caption'
 import useAppSelector from 'hooks/useAppSelector'

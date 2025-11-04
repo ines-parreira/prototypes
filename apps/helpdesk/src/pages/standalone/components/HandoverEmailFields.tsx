@@ -2,7 +2,7 @@ import { FC, useRef } from 'react'
 
 import { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
 import InputField from 'pages/common/forms/input/InputField'

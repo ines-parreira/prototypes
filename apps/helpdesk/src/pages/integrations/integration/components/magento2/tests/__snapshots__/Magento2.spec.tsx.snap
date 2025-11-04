@@ -391,13 +391,13 @@ exports[`<Magento2/> Integration should render 1`] = `
           class=""
         >
           <label
-            class="ui-label-label-3864 mb-2"
+            class="ui-label-label-a11c mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -635,12 +635,12 @@ exports[`<Magento2/> New should render 1`] = `
           Step 2
         </h2>
         <label
-          class="ui-label-label-3864"
+          class="ui-label-label-a11c"
         >
           How do you want to connect this app?
           <abbr
             aria-label="required"
-            class="ui-label-abbr-3864"
+            class="ui-label-abbr-a11c"
             title="required"
           >
             *
@@ -658,7 +658,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="radio-button-oneStepConnect"
               >
                 <input
@@ -682,7 +682,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="radio-button-magento-manual-connect3"
               >
                 <input
@@ -700,13 +700,13 @@ exports[`<Magento2/> New should render 1`] = `
           class=""
         >
           <label
-            class="ui-label-label-3864 mb-2"
+            class="ui-label-label-a11c mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *

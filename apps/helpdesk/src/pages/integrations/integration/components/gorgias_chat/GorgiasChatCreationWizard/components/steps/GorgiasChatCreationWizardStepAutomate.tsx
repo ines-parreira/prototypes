@@ -3,7 +3,11 @@ import React, { useMemo, useState } from 'react'
 import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 
-import { LegacyButton as Button, Label, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

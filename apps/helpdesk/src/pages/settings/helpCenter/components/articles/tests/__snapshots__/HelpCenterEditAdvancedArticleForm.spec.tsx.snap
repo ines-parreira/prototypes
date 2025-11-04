@@ -9,13 +9,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       class="mb16 titleInput"
     >
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-1"
       >
         Title
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -43,7 +43,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         class="categorySelect"
       >
         <label
-          class="ui-label-label-3864"
+          class="ui-label-label-a11c"
         >
           Category
         </label>
@@ -102,7 +102,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="ui-label-label-3864"
+          class="ui-label-label-a11c"
         >
           Visibility status
         </label>
@@ -265,7 +265,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       class="mb16"
     >
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="textarea-3"
       >
         Excerpt
@@ -318,7 +318,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="ui-label-label-3864 label"
+          class="ui-label-label-a11c label"
           for="checkbox-4"
         >
           <input
@@ -364,7 +364,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="ui-label-label-3864 label"
+          class="ui-label-label-a11c label"
           for="checkbox-5"
         >
           <input

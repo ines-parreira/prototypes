@@ -28,7 +28,7 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
     >
       <label
         aria-checked="false"
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="toggle-button-1"
         role="switch"
       >
@@ -47,7 +47,7 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
     </div>
     <div>
       <label
-        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
         for="textarea-2"
       >
         Card description

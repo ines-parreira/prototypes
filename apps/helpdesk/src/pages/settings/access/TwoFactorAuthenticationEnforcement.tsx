@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import moment, { Moment } from 'moment'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'

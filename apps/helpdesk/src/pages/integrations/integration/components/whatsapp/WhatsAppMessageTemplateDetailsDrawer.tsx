@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { ReactCountryFlag } from 'react-country-flag'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'

@@ -1,6 +1,9 @@
 import cn from 'classnames'
 
-import { LoadingSpinner, ToggleField } from '@gorgias/axiom'
+import {
+    LoadingSpinner,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'

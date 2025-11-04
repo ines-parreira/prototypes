@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

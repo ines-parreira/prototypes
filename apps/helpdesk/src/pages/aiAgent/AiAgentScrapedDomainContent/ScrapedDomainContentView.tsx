@@ -3,7 +3,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

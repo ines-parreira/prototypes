@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 import { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'

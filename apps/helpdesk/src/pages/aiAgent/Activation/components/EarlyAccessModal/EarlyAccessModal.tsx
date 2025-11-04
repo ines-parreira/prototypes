@@ -2,7 +2,11 @@ import { useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, CheckBoxField, Skeleton } from '@gorgias/axiom'
+import {
+    Badge,
+    LegacyCheckBoxField as CheckBoxField,
+    Skeleton,
+} from '@gorgias/axiom'
 
 import { AutomatePlan, HelpdeskPlan, Plan } from 'models/billing/types'
 import { getPlanPriceFormatted } from 'models/billing/utils'

@@ -80,7 +80,7 @@ exports[`TextArea should render the textarea with label 1`] = `
   class="class-for-wrapper"
 >
   <label
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="textarea-4"
   >
     Label of textarea

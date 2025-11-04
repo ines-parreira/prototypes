@@ -1,4 +1,4 @@
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { ExtraHTMLDto } from 'models/helpCenter/types'
 

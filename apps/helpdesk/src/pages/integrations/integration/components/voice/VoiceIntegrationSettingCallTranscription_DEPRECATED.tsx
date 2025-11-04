@@ -1,4 +1,4 @@
-import { Banner, ToggleField } from '@gorgias/axiom'
+import { Banner, LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { FormField } from 'core/forms'
 

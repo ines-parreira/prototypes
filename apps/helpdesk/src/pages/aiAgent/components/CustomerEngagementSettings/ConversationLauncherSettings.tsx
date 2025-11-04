@@ -6,7 +6,11 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button, CheckBoxField, Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyLabel as Label,
+} from '@gorgias/axiom'
 
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'

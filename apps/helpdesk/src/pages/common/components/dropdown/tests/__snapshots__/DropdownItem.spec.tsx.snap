@@ -22,7 +22,7 @@ exports[`<DropdownItem /> should render when selected and multiple selection is 
     class="checkbox"
   >
     <label
-      class="ui-label-label-3864 label"
+      class="ui-label-label-a11c label"
       for="checkbox-1"
     >
       <input

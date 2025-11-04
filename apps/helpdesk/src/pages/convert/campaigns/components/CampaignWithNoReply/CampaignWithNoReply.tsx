@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import css from './CampaignWithNoReply.less'
 

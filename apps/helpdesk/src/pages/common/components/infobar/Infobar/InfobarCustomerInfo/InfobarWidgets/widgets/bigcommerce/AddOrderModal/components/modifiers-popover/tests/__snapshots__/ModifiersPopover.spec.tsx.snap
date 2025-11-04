@@ -45,12 +45,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Test Radio Buttons
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -83,7 +83,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
         >
           <div>
             <label
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="164"
             >
               <input
@@ -95,7 +95,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
               Include Insurance?
               <abbr
                 aria-label="required"
-                class="ui-label-abbr-3864"
+                class="ui-label-abbr-a11c"
                 title="required"
               >
                 *
@@ -112,12 +112,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Colors
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -149,12 +149,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Rectangles
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -186,7 +186,7 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Just a drodown
           </label>
@@ -216,12 +216,12 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             test5
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -327,12 +327,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Test Radio Buttons
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -363,7 +363,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
         >
           <div>
             <label
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="164"
             >
               <input
@@ -375,7 +375,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
               Include Insurance?
               <abbr
                 aria-label="required"
-                class="ui-label-abbr-3864"
+                class="ui-label-abbr-a11c"
                 title="required"
               >
                 *
@@ -387,12 +387,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Colors
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -422,12 +422,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Rectangles
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -457,7 +457,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             Just a drodown
           </label>
@@ -485,12 +485,12 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
           class="inputContainer"
         >
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
           >
             test5
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *

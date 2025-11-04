@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import cn from 'classnames'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
-    ToggleField,
+    LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

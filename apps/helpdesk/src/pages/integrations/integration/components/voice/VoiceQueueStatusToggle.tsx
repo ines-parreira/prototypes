@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import {
     LegacyButton as Button,
-    ToggleField,
+    LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'

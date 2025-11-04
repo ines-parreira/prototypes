@@ -19,8 +19,8 @@ import {
 
 import {
     LegacyButton as Button,
-    Label,
-    ToggleField,
+    LegacyLabel as Label,
+    LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

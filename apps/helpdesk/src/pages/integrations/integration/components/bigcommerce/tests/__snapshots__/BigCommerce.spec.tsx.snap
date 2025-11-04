@@ -370,7 +370,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
         </div>
         <form>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 mb-2"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c mb-2"
             for="disabled-store-field"
           >
             Store domain

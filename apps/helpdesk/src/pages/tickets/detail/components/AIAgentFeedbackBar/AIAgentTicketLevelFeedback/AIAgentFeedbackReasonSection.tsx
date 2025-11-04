@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
-import { Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'

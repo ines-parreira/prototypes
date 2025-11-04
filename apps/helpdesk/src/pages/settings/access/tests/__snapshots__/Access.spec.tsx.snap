@@ -39,7 +39,7 @@ exports[`<Access/> should render properly 1`] = `
             >
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -71,7 +71,7 @@ exports[`<Access/> should render properly 1`] = `
           >
             <label
               aria-checked="false"
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="toggle-button-2"
               role="switch"
             >
@@ -128,7 +128,7 @@ exports[`<Access/> should render properly 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-4"
                 role="switch"
               >
@@ -150,13 +150,13 @@ exports[`<Access/> should render properly 1`] = `
             class="mb-10"
           >
             <label
-              class="ui-label-label-3864 mb-2"
+              class="ui-label-label-a11c mb-2"
               for="approved-email-domains"
             >
               Approved email domains
               <abbr
                 aria-label="required"
-                class="ui-label-abbr-3864"
+                class="ui-label-abbr-a11c"
                 title="required"
               >
                 *
@@ -203,7 +203,7 @@ exports[`<Access/> should render properly 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="twoFAEnforcementToggle"
                 role="switch"
               >
@@ -273,7 +273,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             >
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-6"
                 role="switch"
               >
@@ -305,7 +305,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
           >
             <label
               aria-checked="false"
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="toggle-button-7"
               role="switch"
             >
@@ -362,7 +362,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-9"
                 role="switch"
               >
@@ -385,13 +385,13 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             class="mb-10"
           >
             <label
-              class="ui-label-label-3864 mb-2"
+              class="ui-label-label-a11c mb-2"
               for="approved-email-domains"
             >
               Approved email domains
               <abbr
                 aria-label="required"
-                class="ui-label-abbr-3864"
+                class="ui-label-abbr-a11c"
                 title="required"
               >
                 *
@@ -440,7 +440,7 @@ gorgias.io
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="twoFAEnforcementToggle"
                 role="switch"
               >
@@ -510,7 +510,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             >
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-21"
                 role="switch"
               >
@@ -542,7 +542,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
           >
             <label
               aria-checked="false"
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="toggle-button-22"
               role="switch"
             >
@@ -599,7 +599,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="toggle-button-24"
                 role="switch"
               >
@@ -622,13 +622,13 @@ exports[`<Access/> should show an error and block submit when using a generic do
             class="mb-10"
           >
             <label
-              class="ui-label-label-3864 mb-2"
+              class="ui-label-label-a11c mb-2"
               for="approved-email-domains"
             >
               Approved email domains
               <abbr
                 aria-label="required"
-                class="ui-label-abbr-3864"
+                class="ui-label-abbr-a11c"
                 title="required"
               >
                 *
@@ -676,7 +676,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="twoFAEnforcementToggle"
                 role="switch"
               >

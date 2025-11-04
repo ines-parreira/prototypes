@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

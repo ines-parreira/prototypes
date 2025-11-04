@@ -93,7 +93,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   class="checkbox"
                 >
                   <label
-                    class="ui-label-label-3864 label quickSelectionOption"
+                    class="ui-label-label-a11c label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input
@@ -130,7 +130,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     class="wrapperItem"
                   >
                     <label
-                      class="ui-label-label-3864 label labelItem"
+                      class="ui-label-label-a11c label labelItem"
                       for="checkbox-2"
                     >
                       <input
@@ -150,7 +150,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     class="wrapperItem"
                   >
                     <label
-                      class="ui-label-label-3864 label labelItem"
+                      class="ui-label-label-a11c label labelItem"
                       for="checkbox-4"
                     >
                       <input
@@ -170,7 +170,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     class="wrapperItem"
                   >
                     <label
-                      class="ui-label-label-3864 label labelItem"
+                      class="ui-label-label-a11c label labelItem"
                       for="checkbox-6"
                     >
                       <input
@@ -190,7 +190,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     class="wrapperItem"
                   >
                     <label
-                      class="ui-label-label-3864 label labelItem"
+                      class="ui-label-label-a11c label labelItem"
                       for="checkbox-8"
                     >
                       <input
@@ -221,7 +221,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   class="wrapperItem"
                 >
                   <label
-                    class="ui-label-label-3864 label labelItem"
+                    class="ui-label-label-a11c label labelItem"
                     for="checkbox-10"
                   >
                     <input
@@ -242,7 +242,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   class="wrapperItem"
                 >
                   <label
-                    class="ui-label-label-3864 label labelItem"
+                    class="ui-label-label-a11c label labelItem"
                     for="checkbox-12"
                   >
                     <input

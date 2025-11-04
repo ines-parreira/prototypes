@@ -5,7 +5,7 @@ exports[`<CountryInput/> should render 1`] = `
   class="wrapper"
 >
   <label
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
   >
     Country
   </label>

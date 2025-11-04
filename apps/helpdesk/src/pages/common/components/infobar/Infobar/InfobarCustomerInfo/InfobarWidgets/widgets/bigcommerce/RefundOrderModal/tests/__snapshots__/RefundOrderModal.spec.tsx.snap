@@ -62,7 +62,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="radio-button-Entire order"
                 >
                   <input
@@ -86,7 +86,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="radio-button-Manual amount"
                 >
                   <input
@@ -133,7 +133,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               Other
             </p>
             <label
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="refundReason"
             >
               Reason for refund
@@ -158,7 +158,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               </div>
             </div>
             <label
-              class="ui-label-label-3864 label smallSpacingMarginTop"
+              class="ui-label-label-a11c label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -367,7 +367,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                  class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                   for="radio-button-Entire order"
                 >
                   <input
@@ -392,7 +392,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                  class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                   for="radio-button-Manual amount"
                 >
                   <input
@@ -500,7 +500,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               Other
             </p>
             <label
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="refundReason"
             >
               Reason for refund
@@ -526,7 +526,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               </div>
             </div>
             <label
-              class="ui-label-label-3864 label smallSpacingMarginTop"
+              class="ui-label-label-a11c label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -659,7 +659,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="radio-button-Entire order"
                 >
                   <input
@@ -683,7 +683,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="radio-button-Manual amount"
                 >
                   <input
@@ -730,7 +730,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               Other
             </p>
             <label
-              class="ui-label-label-3864 label"
+              class="ui-label-label-a11c label"
               for="refundReason"
             >
               Reason for refund
@@ -755,7 +755,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               </div>
             </div>
             <label
-              class="ui-label-label-3864 label smallSpacingMarginTop"
+              class="ui-label-label-a11c label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status

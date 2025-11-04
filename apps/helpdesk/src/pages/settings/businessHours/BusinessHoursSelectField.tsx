@@ -2,7 +2,11 @@ import { useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { LegacyButton as Button, Label, Skeleton } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    Skeleton,
+} from '@gorgias/axiom'
 import {
     BusinessHours,
     BusinessHoursConfig,

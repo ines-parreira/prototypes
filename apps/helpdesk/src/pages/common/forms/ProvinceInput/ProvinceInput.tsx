@@ -8,7 +8,7 @@ import React, {
 
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { states } from 'fixtures/states'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

@@ -2,7 +2,10 @@ import React from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { Label, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyLabel as Label,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 

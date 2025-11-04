@@ -993,7 +993,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               class="input"
             >
               <label
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="checkbox-9"
               >
                 <input
@@ -1010,7 +1010,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               class="input"
             >
               <label
-                class="ui-label-label-3864 label"
+                class="ui-label-label-a11c label"
                 for="checkbox-10"
               >
                 <input

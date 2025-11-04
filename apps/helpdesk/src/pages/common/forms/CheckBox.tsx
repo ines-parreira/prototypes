@@ -11,7 +11,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import Caption from './Caption/Caption'
 

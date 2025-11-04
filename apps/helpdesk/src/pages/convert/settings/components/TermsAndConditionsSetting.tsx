@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { mapIntegrationLanguagesToLanguagePicker } from 'config/integrations/gorgias_chat'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'

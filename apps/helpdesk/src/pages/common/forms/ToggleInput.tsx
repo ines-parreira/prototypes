@@ -9,7 +9,7 @@ import React, {
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Label, LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLabel as Label, LoadingSpinner } from '@gorgias/axiom'
 
 import Caption from './Caption/Caption'
 

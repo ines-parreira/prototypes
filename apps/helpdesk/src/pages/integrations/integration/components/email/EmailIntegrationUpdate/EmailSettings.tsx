@@ -5,7 +5,10 @@ import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { Form, FormGroup } from 'reactstrap'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS } from 'constants/integration'

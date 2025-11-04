@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { Badge, BadgeIcon, Label } from '@gorgias/axiom'
+import { Badge, BadgeIcon, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'

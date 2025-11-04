@@ -2,7 +2,12 @@ import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge, BadgeIcon, Label, Skeleton } from '@gorgias/axiom'
+import {
+    Badge,
+    BadgeIcon,
+    LegacyLabel as Label,
+    Skeleton,
+} from '@gorgias/axiom'
 
 import { SegmentEvent } from 'common/segment'
 import { logEventWithSampling } from 'common/segment/segment'

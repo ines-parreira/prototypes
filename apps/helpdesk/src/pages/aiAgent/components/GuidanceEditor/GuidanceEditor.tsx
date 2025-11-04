@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { EditorState } from 'draft-js'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'

@@ -4,7 +4,7 @@ import { useAsyncFn, usePrevious, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -43,13 +43,13 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           class="mbS"
         >
           <label
-            class="ui-label-label-3864 mbXs"
+            class="ui-label-label-a11c mbXs"
             for="name"
           >
             Contact form name
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -75,13 +75,13 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
         </section>
         <section>
           <label
-            class="ui-label-label-3864 mbXs"
+            class="ui-label-label-a11c mbXs"
             for="locale-select"
           >
             Select default language
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -237,7 +237,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="mb40"
           >
             <label
-              class="ui-label-label-3864 mbXxs"
+              class="ui-label-label-a11c mbXxs"
               for="store-select"
             >
               Connect a store

@@ -1,7 +1,11 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button, Label, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 

@@ -8,7 +8,10 @@ import React, {
 
 import { Link, useHistory, useParams } from 'react-router-dom'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 import { DateAndTimeFormatting } from 'constants/datetime'

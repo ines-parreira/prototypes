@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import classNames from 'classnames'
 import { ReactCountryFlag } from 'react-country-flag'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { supportedLanguages } from 'pages/automate/workflows/models/workflowConfiguration.types'

@@ -17,7 +17,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-company"
           >
             <input
@@ -44,7 +44,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-personal"
           >
             <input
@@ -64,13 +64,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-13"
       >
         Business name
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -96,13 +96,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-15"
       >
         Address
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -135,13 +135,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-17"
           >
             City
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -171,13 +171,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-19"
           >
             State/Province/Region
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -211,13 +211,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-21"
           >
             Postal Code
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -247,13 +247,13 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c label"
             for="input-text-23"
           >
             Country
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -297,7 +297,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-company"
           >
             <input
@@ -323,7 +323,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-personal"
           >
             <input
@@ -344,13 +344,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-25"
       >
         Name
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -376,13 +376,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-27"
       >
         Address
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -415,13 +415,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-29"
           >
             City
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -451,13 +451,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-31"
           >
             State/Province/Region
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -491,13 +491,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-33"
           >
             Postal Code
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -527,13 +527,13 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c label"
             for="input-text-35"
           >
             Country
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -577,7 +577,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-company"
           >
             <input
@@ -603,7 +603,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-personal"
           >
             <input
@@ -623,13 +623,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-37"
       >
         Business name
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -655,13 +655,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-39"
       >
         Address
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -701,13 +701,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-41"
           >
             City
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -737,13 +737,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-43"
           >
             State/Province/Region
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -777,13 +777,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-45"
           >
             Postal Code
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -813,13 +813,13 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c label"
             for="input-text-47"
           >
             Country
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -863,7 +863,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-company"
           >
             <input
@@ -889,7 +889,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="radio-button-personal"
           >
             <input
@@ -909,13 +909,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-1"
       >
         Business name
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -941,13 +941,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
   >
     <div>
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="input-text-3"
       >
         Address
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -980,13 +980,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-5"
           >
             City
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -1016,13 +1016,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-7"
           >
             State/Province/Region
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -1056,13 +1056,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="input-text-9"
           >
             Postal Code
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *
@@ -1092,13 +1092,13 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c label"
             for="input-text-11"
           >
             Country
             <abbr
               aria-label="required"
-              class="ui-label-abbr-3864"
+              class="ui-label-abbr-a11c"
               title="required"
             >
               *

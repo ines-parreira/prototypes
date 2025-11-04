@@ -120,7 +120,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                     >
                       <div>
                         <label
-                          class="ui-label-label-3864 label align-items-start"
+                          class="ui-label-label-a11c label align-items-start"
                           for="checkbox-1"
                         >
                           <input

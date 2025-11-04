@@ -1,4 +1,4 @@
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import {
     ReportIssueCaseReason,

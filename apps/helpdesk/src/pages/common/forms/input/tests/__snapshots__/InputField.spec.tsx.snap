@@ -27,7 +27,7 @@ exports[`<InputField /> should display a caption 1`] = `
 exports[`<InputField /> should display a label 1`] = `
 <div>
   <label
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="input-text-3"
   >
     Label

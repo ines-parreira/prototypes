@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import _debounce from 'lodash/debounce'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'

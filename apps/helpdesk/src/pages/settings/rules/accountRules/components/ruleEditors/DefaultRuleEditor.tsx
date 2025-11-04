@@ -18,7 +18,7 @@ import _getIn from 'lodash/get'
 import moment from 'moment'
 import { FormGroup, Label } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'

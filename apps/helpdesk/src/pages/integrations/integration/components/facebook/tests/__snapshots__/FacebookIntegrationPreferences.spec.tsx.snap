@@ -84,16 +84,16 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           <div>
             <label
               aria-checked="false"
-              class="ui-label-label-3864 ui-togglefield-label-52f1"
+              class="ui-label-label-a11c ui-togglefield-label-9b7c"
               role="switch"
             >
               <input
-                class="ui-togglefield-input-52f1"
+                class="ui-togglefield-input-9b7c"
                 disabled=""
                 type="checkbox"
               />
               <div
-                class="ui-togglefield-slider-52f1"
+                class="ui-togglefield-slider-9b7c"
               />
               <div />
             </label>
@@ -132,7 +132,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                 for="reply-shortly"
               >
                 <input
@@ -150,7 +150,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                 for="reply-in-minutes"
               >
                 <input
@@ -167,7 +167,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                 for="reply-in-hours"
               >
                 <input
@@ -184,7 +184,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               class="option"
             >
               <label
-                class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                 for="reply-in-day"
               >
                 <input

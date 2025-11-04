@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 

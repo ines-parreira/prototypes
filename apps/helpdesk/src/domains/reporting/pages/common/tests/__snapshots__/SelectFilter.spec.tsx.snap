@@ -43,7 +43,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-9"
         >
           <input
@@ -63,7 +63,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-11"
         >
           <input
@@ -83,7 +83,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-13"
         >
           <input
@@ -145,7 +145,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-15"
         >
           <input
@@ -174,7 +174,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-16"
         >
           <input
@@ -199,7 +199,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-18"
         >
           <input
@@ -224,7 +224,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-20"
         >
           <input
@@ -291,7 +291,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-2"
         >
           <input
@@ -320,7 +320,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-3"
         >
           <input
@@ -340,7 +340,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-5"
         >
           <input
@@ -360,7 +360,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-7"
         >
           <input
@@ -422,7 +422,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-22"
         >
           <input
@@ -452,7 +452,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-23"
         >
           <input
@@ -473,7 +473,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-25"
         >
           <input
@@ -494,7 +494,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-27"
         >
           <input
@@ -556,7 +556,7 @@ exports[`<SelectFilter /> should render the component without any item 1`] = `
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -626,7 +626,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="checkbox"
       >
         <label
-          class="ui-label-label-3864 label quickSelectionOption"
+          class="ui-label-label-a11c label quickSelectionOption"
           for="checkbox-63"
         >
           <input
@@ -655,7 +655,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-64"
         >
           <input
@@ -675,7 +675,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-66"
         >
           <input
@@ -695,7 +695,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-68"
         >
           <input
@@ -715,7 +715,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-70"
         >
           <input
@@ -735,7 +735,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-72"
         >
           <input
@@ -755,7 +755,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
         class="wrapperItem"
       >
         <label
-          class="ui-label-label-3864 label labelItem"
+          class="ui-label-label-a11c label labelItem"
           for="checkbox-74"
         >
           <input

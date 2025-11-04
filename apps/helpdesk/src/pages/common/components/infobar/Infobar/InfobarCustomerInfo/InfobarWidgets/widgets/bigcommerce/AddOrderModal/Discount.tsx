@@ -2,7 +2,11 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button, Label, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    LoadingSpinner,
+} from '@gorgias/axiom'
 
 import {
     BigCommerceActionType,

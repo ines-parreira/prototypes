@@ -74,17 +74,17 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 <label
                   aria-checked="false"
                   aria-label="Enable quick replies"
-                  class="ui-label-label-3864 ui-togglefield-label-52f1"
+                  class="ui-label-label-a11c ui-togglefield-label-9b7c"
                   role="switch"
                 >
                   <input
                     aria-label="Enable quick replies"
-                    class="ui-togglefield-input-52f1"
+                    class="ui-togglefield-input-9b7c"
                     disabled=""
                     type="checkbox"
                   />
                   <div
-                    class="ui-togglefield-slider-52f1"
+                    class="ui-togglefield-slider-9b7c"
                   />
                   <div />
                 </label>
@@ -519,17 +519,17 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 <label
                   aria-checked="true"
                   aria-label="Enable quick replies"
-                  class="ui-label-label-3864 ui-togglefield-label-52f1"
+                  class="ui-label-label-a11c ui-togglefield-label-9b7c"
                   role="switch"
                 >
                   <input
                     aria-label="Enable quick replies"
-                    class="ui-togglefield-input-52f1"
+                    class="ui-togglefield-input-9b7c"
                     disabled=""
                     type="checkbox"
                   />
                   <div
-                    class="ui-togglefield-slider-52f1"
+                    class="ui-togglefield-slider-9b7c"
                   />
                   <div />
                 </label>

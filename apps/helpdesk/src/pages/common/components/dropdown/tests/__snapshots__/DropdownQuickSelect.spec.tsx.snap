@@ -11,7 +11,7 @@ exports[`<DropdownQuickSelect /> should render 1`] = `
     class="checkbox"
   >
     <label
-      class="ui-label-label-3864 label"
+      class="ui-label-label-a11c label"
       for="checkbox-1"
     >
       <input

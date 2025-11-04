@@ -1,4 +1,4 @@
-import { CheckBoxField } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 
 import css from './AddMissingKnowledgeCheckbox.less'
 

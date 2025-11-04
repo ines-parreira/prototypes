@@ -6,7 +6,7 @@ import React, {
     useRef,
 } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import Caption from '../forms/Caption/Caption'
 import { RadioFieldOption } from '../forms/RadioFieldSet'

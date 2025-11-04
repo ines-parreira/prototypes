@@ -366,7 +366,7 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial state 1`] = `
                 class="isDisabled"
               >
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="checkbox-1"
                 >
                   <input
@@ -430,7 +430,7 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial state 1`] = `
                 class="isDisabled"
               >
                 <label
-                  class="ui-label-label-3864 label"
+                  class="ui-label-label-a11c label"
                   for="checkbox-2"
                 >
                   <input

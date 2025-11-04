@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

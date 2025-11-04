@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { CheckBoxField, Label } from '@gorgias/axiom'
+import {
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyLabel as Label,
+} from '@gorgias/axiom'
 
 import {
     INITIAL_FORM_VALUES,

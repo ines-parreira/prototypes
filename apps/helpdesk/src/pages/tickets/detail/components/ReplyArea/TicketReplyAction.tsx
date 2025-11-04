@@ -5,7 +5,7 @@ import { fromJS, List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { withAppNode, WithAppNodeProps } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'

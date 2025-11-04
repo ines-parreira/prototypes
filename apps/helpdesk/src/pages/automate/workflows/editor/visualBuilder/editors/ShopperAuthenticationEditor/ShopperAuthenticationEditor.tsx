@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
 import InputField from 'gorgias-design-system/Input/TextField'

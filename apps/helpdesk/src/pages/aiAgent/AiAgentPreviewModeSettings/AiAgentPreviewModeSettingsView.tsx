@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'

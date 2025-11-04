@@ -7,8 +7,8 @@ import { Col, Row } from 'reactstrap'
 
 import {
     LegacyButton as Button,
-    CheckBoxField,
-    Label,
+    LegacyCheckBoxField as CheckBoxField,
+    LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

@@ -4,7 +4,7 @@ exports[`ToggleInput should render caption 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="toggle-button-8"
     role="switch"
   >
@@ -33,7 +33,7 @@ exports[`ToggleInput should render label 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="toggle-button-7"
     role="switch"
   >
@@ -57,7 +57,7 @@ exports[`ToggleInput should render the button disabled, and have onClick disable
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 ui-label-isdisabled-3864 label disabledLabel"
+    class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
     for="toggle-button-5"
     role="switch"
   >
@@ -80,7 +80,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 ui-label-isdisabled-3864 label loadingLabel disabledLabel"
+    class="ui-label-label-a11c ui-label-isdisabled-a11c label loadingLabel disabledLabel"
     for="toggle-button-6"
     role="switch"
   >
@@ -131,7 +131,7 @@ exports[`ToggleInput should render the button loading, and have onClick disabled
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 label loadingLabel"
+    class="ui-label-label-a11c label loadingLabel"
     for="toggle-button-4"
     role="switch"
   >
@@ -182,7 +182,7 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="toggle-button-1"
     role="switch"
   >
@@ -205,7 +205,7 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
 <div>
   <label
     aria-checked="false"
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="toggle-button-3"
     role="switch"
   >

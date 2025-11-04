@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-client'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'

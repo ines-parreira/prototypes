@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import _uniq from 'lodash/uniq'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import _ from 'lodash'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { logEvent, SegmentEvent } from 'common/segment'

@@ -28,7 +28,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
         >
           <label
             aria-checked="false"
-            class="ui-label-label-3864 label"
+            class="ui-label-label-a11c label"
             for="toggle-button-1"
             role="switch"
           >
@@ -151,7 +151,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
             <label
               aria-checked="false"
               aria-label="Enable chat contact card"
-              class="ui-label-label-3864 ui-label-isdisabled-3864 label disabledLabel"
+              class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
               for="toggle-button-2"
               role="switch"
             >
@@ -178,7 +178,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
           </div>
           <div>
             <label
-              class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+              class="ui-label-label-a11c ui-label-isdisabled-a11c label"
               for="textarea-3"
             >
               Card description
@@ -348,7 +348,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
         >
           <label
             aria-checked="false"
-            class="ui-label-label-3864 ui-label-isdisabled-3864 label disabledLabel"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
             for="toggle-button-4"
             role="switch"
           >
@@ -409,7 +409,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
             <label
               aria-checked="false"
               aria-label="Enable chat contact card"
-              class="ui-label-label-3864 ui-label-isdisabled-3864 label disabledLabel"
+              class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
               for="toggle-button-5"
               role="switch"
             >
@@ -436,7 +436,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
           </div>
           <div>
             <label
-              class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+              class="ui-label-label-a11c ui-label-isdisabled-a11c label"
               for="textarea-6"
             >
               Card description

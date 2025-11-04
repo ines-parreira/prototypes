@@ -4,9 +4,9 @@ import { useDebouncedCallback, useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
 import {
-    CheckBoxField,
+    LegacyCheckBoxField as CheckBoxField,
     LegacyIconButton as IconButton,
-    Label,
+    LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { FindFeedbackObjectType } from '@gorgias/knowledge-service-types'

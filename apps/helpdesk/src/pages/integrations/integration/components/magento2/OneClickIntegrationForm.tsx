@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from 'react'
 import { fromJS, Map } from 'immutable'
 import { Form } from 'reactstrap'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

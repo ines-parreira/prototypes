@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import {
     VoiceMessage as ApiVoiceMessage,

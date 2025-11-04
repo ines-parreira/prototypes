@@ -20,7 +20,7 @@ exports[`<Create/> should render a create view 1`] = `
           class="mb-4"
         >
           <label
-            class="ui-label-label-3864 mb-2"
+            class="ui-label-label-a11c mb-2"
             for="store-field"
           >
             Store name

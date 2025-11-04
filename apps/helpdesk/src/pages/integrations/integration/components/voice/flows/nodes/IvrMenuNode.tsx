@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Banner, Label } from '@gorgias/axiom'
+import { Banner, LegacyLabel as Label } from '@gorgias/axiom'
 import { CustomRecordingType, IvrMenuStep } from '@gorgias/helpdesk-types'
 import {
     validateBranchOptions,

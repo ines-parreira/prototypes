@@ -10,7 +10,7 @@ import React, {
 
 import { useEffectOnce } from '@repo/hooks'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'

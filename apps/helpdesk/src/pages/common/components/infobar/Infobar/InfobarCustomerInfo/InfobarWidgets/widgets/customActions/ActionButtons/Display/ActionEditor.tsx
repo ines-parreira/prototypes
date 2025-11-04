@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback } from 'react'
 
 import { get as _get } from 'lodash'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import {

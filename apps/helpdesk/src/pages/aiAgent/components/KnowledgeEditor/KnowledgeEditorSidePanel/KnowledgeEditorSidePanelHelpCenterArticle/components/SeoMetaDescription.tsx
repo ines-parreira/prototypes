@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import classNames from 'classnames'
 
-import { NewCheckBoxField } from '@gorgias/axiom'
+import { CheckBoxField } from '@gorgias/axiom'
 
 import TextArea from 'pages/common/forms/TextArea'
 
@@ -45,7 +45,7 @@ export const SeoMetaDescription = ({
     return (
         <div className={classNames(css.seoField, css['seoField--description'])}>
             <div className={css.seoField__checkbox}>
-                <NewCheckBoxField
+                <CheckBoxField
                     value={isChecked}
                     onChange={onCheckboxChange}
                     label="Use as meta description"

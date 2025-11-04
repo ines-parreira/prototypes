@@ -2,7 +2,10 @@ import React, { useCallback } from 'react'
 
 import classNames from 'classnames'
 
-import { CheckBoxField, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyCheckBoxField as CheckBoxField,
+    LoadingSpinner,
+} from '@gorgias/axiom'
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { Form } from 'core/forms'

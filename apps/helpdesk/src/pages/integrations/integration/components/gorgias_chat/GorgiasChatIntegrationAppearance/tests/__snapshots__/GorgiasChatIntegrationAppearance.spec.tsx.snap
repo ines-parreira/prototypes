@@ -67,7 +67,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-ecommerce-platforms"
                       >
                         <input
@@ -95,7 +95,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-any-other-website"
                       >
                         <input
@@ -115,12 +115,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <label
-                  class="ui-label-label-3864"
+                  class="ui-label-label-a11c"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="ui-label-abbr-3864"
+                    class="ui-label-abbr-a11c"
                     title="required"
                   >
                     *
@@ -472,7 +472,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-3"
                   >
                     <input
@@ -708,18 +708,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -1738,7 +1738,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-12"
                   >
                     <input
@@ -2043,7 +2043,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -2060,7 +2060,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -2076,7 +2076,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -2092,7 +2092,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -2118,7 +2118,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -2135,7 +2135,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -2151,7 +2151,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -2189,18 +2189,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -3238,7 +3238,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-6"
                   >
                     <input
@@ -3543,7 +3543,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -3560,7 +3560,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -3576,7 +3576,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -3592,7 +3592,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -3618,7 +3618,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -3635,7 +3635,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -3651,7 +3651,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -3689,18 +3689,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -4708,7 +4708,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-18"
                   >
                     <input
@@ -5013,7 +5013,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -5030,7 +5030,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -5046,7 +5046,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -5062,7 +5062,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -5088,7 +5088,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -5105,7 +5105,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -5121,7 +5121,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -5159,18 +5159,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -6178,7 +6178,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-30"
                   >
                     <input
@@ -6483,7 +6483,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -6500,7 +6500,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -6516,7 +6516,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -6532,7 +6532,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -6558,7 +6558,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -6575,7 +6575,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -6591,7 +6591,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -6629,18 +6629,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -7648,7 +7648,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-24"
                   >
                     <input
@@ -7953,7 +7953,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -7970,7 +7970,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -7986,7 +7986,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -8002,7 +8002,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -8028,7 +8028,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -8045,7 +8045,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -8061,7 +8061,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -8099,18 +8099,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -8835,7 +8835,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-ecommerce-platforms"
                       >
                         <input
@@ -8863,7 +8863,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-any-other-website"
                       >
                         <input
@@ -8883,12 +8883,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   </div>
                 </div>
                 <label
-                  class="ui-label-label-3864"
+                  class="ui-label-label-a11c"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="ui-label-abbr-3864"
+                    class="ui-label-abbr-a11c"
                     title="required"
                   >
                     *
@@ -9220,7 +9220,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-45"
                   >
                     <input
@@ -9456,18 +9456,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -10486,7 +10486,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-48"
                   >
                     <input
@@ -10791,7 +10791,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -10808,7 +10808,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -10824,7 +10824,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -10840,7 +10840,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -10866,7 +10866,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -10883,7 +10883,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -10899,7 +10899,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -10937,18 +10937,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -12345,7 +12345,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -12362,7 +12362,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -12378,7 +12378,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -12394,7 +12394,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -12420,7 +12420,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -12437,7 +12437,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -12453,7 +12453,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -13158,7 +13158,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-ecommerce-platforms"
                       >
                         <input
@@ -13186,7 +13186,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <div>
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="radio-button-any-other-website"
                       >
                         <input
@@ -13206,12 +13206,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <label
-                  class="ui-label-label-3864"
+                  class="ui-label-label-a11c"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="ui-label-abbr-3864"
+                    class="ui-label-abbr-a11c"
                     title="required"
                   >
                     *
@@ -13593,7 +13593,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-36"
                   >
                     <input
@@ -13829,18 +13829,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>
@@ -14859,7 +14859,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="ui-label-label-3864 label"
+                    class="ui-label-label-a11c label"
                     for="checkbox-39"
                   >
                     <input
@@ -15164,7 +15164,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-name"
                       >
                         <input
@@ -15181,7 +15181,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-first-last-name-initial"
                       >
                         <input
@@ -15197,7 +15197,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-agent-fullname"
                       >
                         <input
@@ -15213,7 +15213,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-name-type-field-chat-title"
                       >
                         <input
@@ -15239,7 +15239,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-picture"
                       >
                         <input
@@ -15256,7 +15256,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 label"
+                        class="ui-label-label-a11c label"
                         for="avatar-image-type-field-agent-initials"
                       >
                         <input
@@ -15272,7 +15272,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
                         for="avatar-image-type-field-company-logo"
                       >
                         <input
@@ -15310,18 +15310,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="ui-label-label-3864 ui-togglefield-label-52f1"
+                    class="ui-label-label-a11c ui-togglefield-label-9b7c"
                     role="switch"
                   >
                     <input
                       checked=""
-                      class="ui-togglefield-input-52f1"
+                      class="ui-togglefield-input-9b7c"
                       disabled=""
                       name="show-bot-toggle"
                       type="checkbox"
                     />
                     <div
-                      class="ui-togglefield-slider-52f1"
+                      class="ui-togglefield-slider-9b7c"
                     />
                     <div>
                       <b>

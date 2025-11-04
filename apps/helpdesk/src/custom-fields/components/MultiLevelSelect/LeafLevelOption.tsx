@@ -1,4 +1,4 @@
-import { CheckBoxField } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { CustomFieldPrediction, CustomFieldValue } from 'custom-fields/types'

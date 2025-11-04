@@ -2,7 +2,10 @@ import { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LegacyIconButton as IconButton, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'

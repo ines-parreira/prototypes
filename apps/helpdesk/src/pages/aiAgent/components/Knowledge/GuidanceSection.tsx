@@ -1,6 +1,9 @@
 import { history } from '@repo/routing'
 
-import { LegacyIconButton as IconButton, Label } from '@gorgias/axiom'
+import {
+    LegacyIconButton as IconButton,
+    LegacyLabel as Label,
+} from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'

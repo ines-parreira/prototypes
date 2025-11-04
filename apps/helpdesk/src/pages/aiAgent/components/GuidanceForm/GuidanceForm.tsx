@@ -4,7 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
 
-import { LegacyButton as Button, ToggleField } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'

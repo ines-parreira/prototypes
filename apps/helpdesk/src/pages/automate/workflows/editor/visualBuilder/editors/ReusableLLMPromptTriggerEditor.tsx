@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

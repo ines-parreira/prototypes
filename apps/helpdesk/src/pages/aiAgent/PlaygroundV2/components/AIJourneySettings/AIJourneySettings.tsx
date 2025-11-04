@@ -5,9 +5,9 @@ import {
     Button,
     ListItem,
     LoadingSpinner,
-    NewToggleField,
     SelectField,
     TextField,
+    ToggleField,
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -192,7 +192,7 @@ export const AIJourneySettings: React.FC = () => {
                 )}
             </SelectField>
             <div className={css.toggleFieldsContainer}>
-                <NewToggleField
+                <ToggleField
                     value={includeProductImage}
                     label="Include product image in first message"
                     onChange={(value) => {
@@ -201,7 +201,7 @@ export const AIJourneySettings: React.FC = () => {
                         })
                     }}
                 />
-                <NewToggleField
+                <ToggleField
                     value={includeDiscountCode}
                     label="Include discount code"
                     onChange={(value) => {

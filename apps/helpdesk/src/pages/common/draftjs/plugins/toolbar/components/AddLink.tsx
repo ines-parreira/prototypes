@@ -5,7 +5,7 @@ import { EditorState, Modifier } from 'draft-js'
 import ReactPlayer from 'react-player'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'

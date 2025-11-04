@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { CancelSubscriptionNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

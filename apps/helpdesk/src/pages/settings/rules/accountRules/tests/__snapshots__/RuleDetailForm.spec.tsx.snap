@@ -284,17 +284,17 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div />
               </label>
@@ -647,17 +647,17 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div />
               </label>
@@ -996,17 +996,17 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div />
               </label>

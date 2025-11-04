@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 import {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,

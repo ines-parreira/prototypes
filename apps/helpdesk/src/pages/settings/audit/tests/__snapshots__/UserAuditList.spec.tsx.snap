@@ -58,7 +58,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="ui-label-label-3864 label labelItem"
+                  class="ui-label-label-a11c label labelItem"
                   for="checkbox-28"
                 >
                   <input
@@ -78,7 +78,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="ui-label-label-3864 label labelItem"
+                  class="ui-label-label-a11c label labelItem"
                   for="checkbox-30"
                 >
                   <input
@@ -98,7 +98,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="ui-label-label-3864 label labelItem"
+                  class="ui-label-label-a11c label labelItem"
                   for="checkbox-32"
                 >
                   <input
@@ -157,7 +157,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="checkbox"
               >
                 <label
-                  class="ui-label-label-3864 label quickSelectionOption"
+                  class="ui-label-label-a11c label quickSelectionOption"
                   for="checkbox-34"
                 >
                   <input
@@ -186,7 +186,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="ui-label-label-3864 label labelItem"
+                  class="ui-label-label-a11c label labelItem"
                   for="checkbox-35"
                 >
                   <input

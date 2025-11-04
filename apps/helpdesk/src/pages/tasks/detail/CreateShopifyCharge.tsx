@@ -3,7 +3,7 @@ import React, { FormEvent, useState } from 'react'
 import { AxiosError } from 'axios'
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'

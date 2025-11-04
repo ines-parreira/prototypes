@@ -22,13 +22,13 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
     class="wrapper"
   >
     <label
-      class="ui-label-label-3864 label"
+      class="ui-label-label-a11c label"
       for="name"
     >
       Rule name
       <abbr
         aria-label="required"
-        class="ui-label-abbr-3864"
+        class="ui-label-abbr-a11c"
         title="required"
       >
         *

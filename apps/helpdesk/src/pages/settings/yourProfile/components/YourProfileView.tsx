@@ -12,9 +12,9 @@ import { Form, FormGroup, FormText } from 'reactstrap'
 import {
     Avatar,
     LegacyButton as Button,
-    Label,
+    LegacyLabel as Label,
     LegacySelectField as SelectField,
-    ToggleField,
+    LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'

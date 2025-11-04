@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import _clone from 'lodash/clone'
 import { Col, FormGroup, Row } from 'reactstrap'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'

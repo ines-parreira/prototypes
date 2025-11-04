@@ -266,17 +266,17 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div />
               </label>
@@ -626,17 +626,17 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div />
               </label>

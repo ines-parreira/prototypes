@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { Handle, NodeProps, Position } from '@xyflow/react'
 import classNames from 'classnames'
 
-import { Badge, Label } from '@gorgias/axiom'
+import { Badge, LegacyLabel as Label } from '@gorgias/axiom'
 
 import {
     useVisualBuilderNodeProps,

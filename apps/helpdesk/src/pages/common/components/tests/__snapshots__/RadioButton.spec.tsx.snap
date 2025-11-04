@@ -3,7 +3,7 @@
 exports[`<RadioButton /> should render a disabled RadioField 1`] = `
 <div>
   <label
-    class="ui-label-label-3864 ui-label-isdisabled-3864 label"
+    class="ui-label-label-a11c ui-label-isdisabled-a11c label"
     for="japanese"
   >
     <input
@@ -20,7 +20,7 @@ exports[`<RadioButton /> should render a disabled RadioField 1`] = `
 exports[`<RadioButton /> should render an enabled Radio field 1`] = `
 <div>
   <label
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="japanese"
   >
     <input
@@ -36,7 +36,7 @@ exports[`<RadioButton /> should render an enabled Radio field 1`] = `
 exports[`<RadioButton /> should render captions under radio button 1`] = `
 <div>
   <label
-    class="ui-label-label-3864 label"
+    class="ui-label-label-a11c label"
     for="japanese"
   >
     <input

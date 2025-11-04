@@ -3,7 +3,10 @@ import { ReactNode, RefObject } from 'react'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 

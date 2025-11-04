@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import { fromJS } from 'immutable'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import {

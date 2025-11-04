@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'

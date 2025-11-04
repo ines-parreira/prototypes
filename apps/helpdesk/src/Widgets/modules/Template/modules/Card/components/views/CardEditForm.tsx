@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef, useState } from 'react'
 
-import { LegacyButton as Button, Label } from '@gorgias/axiom'
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import CheckBox from 'pages/common/forms/CheckBox'

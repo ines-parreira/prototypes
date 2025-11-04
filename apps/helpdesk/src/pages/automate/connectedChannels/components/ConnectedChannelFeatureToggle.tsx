@@ -2,7 +2,10 @@ import { ReactNode } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { ToggleField, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyToggleField as ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import css from './ConnectedChannelFeatureToggle.less'
 

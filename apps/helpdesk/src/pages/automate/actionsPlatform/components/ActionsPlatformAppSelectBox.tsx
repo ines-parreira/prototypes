@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

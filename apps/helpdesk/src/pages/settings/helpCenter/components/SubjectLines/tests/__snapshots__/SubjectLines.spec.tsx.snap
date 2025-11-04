@@ -19,7 +19,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
       class="checkbox"
     >
       <label
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="checkbox-1"
       >
         <input

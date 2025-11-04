@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ContactFormIntegration } from 'models/contactForm/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

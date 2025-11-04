@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { BigCommerceProductSelectModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

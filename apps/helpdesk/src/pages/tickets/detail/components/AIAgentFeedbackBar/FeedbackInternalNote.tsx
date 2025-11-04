@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import TextArea from 'gorgias-design-system/Input/TextArea'
 import useAppSelector from 'hooks/useAppSelector'

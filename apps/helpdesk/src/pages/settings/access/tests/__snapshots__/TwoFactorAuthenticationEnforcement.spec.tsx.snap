@@ -21,7 +21,7 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
     <div>
       <label
         aria-checked="true"
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="twoFAEnforcementToggle"
         role="switch"
       >
@@ -43,13 +43,13 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
       class="mt-3"
     >
       <label
-        class="ui-label-label-3864 mb-2"
+        class="ui-label-label-a11c mb-2"
         for="twoFAEnforcementDatetime"
       >
         Enforcement time
         <abbr
           aria-label="required"
-          class="ui-label-abbr-3864"
+          class="ui-label-abbr-a11c"
           title="required"
         >
           *
@@ -99,7 +99,7 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
     <div>
       <label
         aria-checked="false"
-        class="ui-label-label-3864 label"
+        class="ui-label-label-a11c label"
         for="twoFAEnforcementToggle"
         role="switch"
       >

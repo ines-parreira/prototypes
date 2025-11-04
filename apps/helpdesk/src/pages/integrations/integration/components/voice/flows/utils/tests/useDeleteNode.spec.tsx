@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { act, renderHook, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { CheckBoxField } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import {
     mockEnqueueStep,
     mockIvrMenuStep,

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
-import { Label, LegacyTextField as TextField } from '@gorgias/axiom'
+import {
+    LegacyLabel as Label,
+    LegacyTextField as TextField,
+} from '@gorgias/axiom'
 
 import { TimeFrameSelector } from './TimeFrameSelector'
 

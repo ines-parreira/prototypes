@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-import { Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'

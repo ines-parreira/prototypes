@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { useHistory, useParams } from 'react-router'
 
-import { Banner, LegacyButton as Button, ToggleField } from '@gorgias/axiom'
+import {
+    Banner,
+    LegacyButton as Button,
+    LegacyToggleField as ToggleField,
+} from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'

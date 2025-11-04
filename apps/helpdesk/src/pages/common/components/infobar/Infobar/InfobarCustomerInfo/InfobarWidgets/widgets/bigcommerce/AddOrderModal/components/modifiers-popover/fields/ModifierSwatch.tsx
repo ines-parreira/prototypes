@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { BigCommerceProductSwatchModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

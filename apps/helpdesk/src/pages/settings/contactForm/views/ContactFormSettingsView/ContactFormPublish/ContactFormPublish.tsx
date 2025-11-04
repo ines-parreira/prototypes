@@ -8,7 +8,7 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 
-import { Label } from '@gorgias/axiom'
+import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import BackLink from 'pages/common/components/BackLink'

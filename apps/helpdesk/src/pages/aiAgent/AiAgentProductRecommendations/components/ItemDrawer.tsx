@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import {
     LegacyButton as Button,
-    CheckBoxField,
+    LegacyCheckBoxField as CheckBoxField,
     ColorType,
     LegacyIconButton as IconButton,
     LoadingSpinner,

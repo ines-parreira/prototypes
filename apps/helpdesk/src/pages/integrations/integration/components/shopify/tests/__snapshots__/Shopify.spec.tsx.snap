@@ -442,7 +442,7 @@ exports[`<Shopify/> Integration should render 1`] = `
         </div>
         <form>
           <label
-            class="ui-label-label-3864 ui-label-isdisabled-3864 mb-2"
+            class="ui-label-label-a11c ui-label-isdisabled-a11c mb-2"
             for="disabled-store-field"
           >
             Store name
@@ -475,18 +475,18 @@ exports[`<Shopify/> Integration should render 1`] = `
             <div>
               <label
                 aria-checked="true"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
                   checked=""
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   name="sync_customer_notes"
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div>
                   Synchronize customer notes between Gorgias and Shopify
@@ -507,17 +507,17 @@ exports[`<Shopify/> Integration should render 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="ui-label-label-3864 ui-togglefield-label-52f1"
+                class="ui-label-label-a11c ui-togglefield-label-9b7c"
                 role="switch"
               >
                 <input
-                  class="ui-togglefield-input-52f1"
+                  class="ui-togglefield-input-9b7c"
                   disabled=""
                   name="default_address_phone_matching_enabled"
                   type="checkbox"
                 />
                 <div
-                  class="ui-togglefield-slider-52f1"
+                  class="ui-togglefield-slider-9b7c"
                 />
                 <div>
                   Match customer by Shopify default address phone number

@@ -2,7 +2,7 @@ import { KeyboardEvent, useCallback, useState } from 'react'
 
 import { Button } from 'reactstrap'
 
-import { ToggleField } from '@gorgias/axiom'
+import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
