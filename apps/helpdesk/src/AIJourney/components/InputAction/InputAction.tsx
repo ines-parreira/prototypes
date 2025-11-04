@@ -1,6 +1,7 @@
 import { ChangeEvent, useRef, useState } from 'react'
 
 import classNames from 'classnames'
+import { AsYouType } from 'libphonenumber-js'
 
 import { isValidPhoneNumber } from 'AIJourney/utils'
 import playIcon from 'assets/img/ai-journey/play.svg'
@@ -13,19 +14,6 @@ type InputActionProps = {
     onActionClick?: () => Promise<void>
 }
 
-const createUnderscores = (count: number): string => {
-    return '_'.repeat(count)
-}
-
-const getCursorPosition = (digits: string) => {
-    const length = digits.length
-
-    if (length === 0) return 1 // After opening parenthesis
-    if (length <= 3) return length + 1 // Within area code, after last digit
-    if (length <= 6) return length + 3 // After ") " and within exchange
-    return length + 4 // After ") " and "-"
-}
-
 export const InputAction = ({
     value,
     onChange = () => {},
@@ -34,43 +22,48 @@ export const InputAction = ({
     const [isSending, setIsSending] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null)
 
-    const placeholder = '(___) ___-____'
+    const placeholder = '+1 555 555 5555'
 
     const isValid = isValidPhoneNumber(value)
 
-    const formatPhoneNumber = (value: string) => {
-        const digits = value.replace(/\D/g, '')
-
-        if (digits.length <= 3) {
-            return `(${digits}${createUnderscores(3 - digits.length)}) ___-____`
-        } else if (digits.length <= 6) {
-            return `(${digits.slice(0, 3)}) ${digits.slice(3)}${createUnderscores(3 - digits.slice(3).length)}-____`
-        }
-        return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}${createUnderscores(4 - digits.slice(6, 10).length)}`
+    const cleanPhoneNumber = (input: string): string => {
+        return input.replaceAll(/[^\d+]/g, '')
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const input = e.target
-        const inputValue = input.value
+        const inputValue = e.target.value
+        const cursorPosition = e.target.selectionStart || 0
 
-        // Extract digits from the input
-        let digits = inputValue.replace(/\D/g, '')
-
-        // Handle US phone numbers with country code prefix
-        // Remove leading 1 if we have exactly 11 digits (US/Canada format)
-        if (digits.length === 11 && digits.startsWith('1')) {
-            digits = digits.substring(1)
-        }
-
-        // Limit to 10 digits max
-        if (digits.length > 10) {
+        if (!inputValue) {
+            onChange('')
             return
         }
 
-        const formattedValue = formatPhoneNumber(digits)
+        const cleanedValue = cleanPhoneNumber(inputValue)
+        const formatter = new AsYouType()
+        const formattedValue = formatter.input(cleanedValue)
+
         onChange(formattedValue)
 
-        const newCursorPosition = getCursorPosition(digits)
+        const charsBeforeCursor = inputValue.slice(0, cursorPosition)
+        const digitsBeforeCursor = cleanPhoneNumber(charsBeforeCursor).length
+
+        let newCursorPosition = 0
+        let digitCount = 0
+
+        for (let i = 0; i < formattedValue.length; i++) {
+            if (/[\d+]/.test(formattedValue[i])) {
+                digitCount++
+                if (digitCount === digitsBeforeCursor) {
+                    newCursorPosition = i + 1
+                    break
+                }
+            }
+        }
+
+        if (digitCount < digitsBeforeCursor) {
+            newCursorPosition = formattedValue.length
+        }
 
         setTimeout(() => {
             if (inputRef.current) {
@@ -82,23 +75,15 @@ export const InputAction = ({
         }, 0)
     }
 
-    const handleOnBlur = (e: ChangeEvent<HTMLInputElement>) => {
-        const input = e.target
-        let digits = input.value.replace(/\D/g, '')
+    const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        e.preventDefault()
+        const pastedText = e.clipboardData.getData('text')
 
-        // Handle US phone numbers with country code prefix
-        // Remove leading 1 if we have exactly 11 digits (US/Canada format)
-        if (digits.length === 11 && digits.startsWith('1')) {
-            digits = digits.substring(1)
-        }
+        const cleanedValue = cleanPhoneNumber(pastedText)
+        const formatter = new AsYouType()
+        const formattedValue = formatter.input(cleanedValue)
 
-        // Remove leading zeros
-        const cleanedDigits = digits.replace(/^0+(?=\d)/, '')
-
-        if (cleanedDigits !== digits) {
-            const formattedValue = formatPhoneNumber(cleanedDigits)
-            onChange(formattedValue)
-        }
+        onChange(formattedValue)
     }
 
     const handleActionClick = async () => {
@@ -126,16 +111,11 @@ export const InputAction = ({
                 ref={inputRef}
                 className={css.input}
                 type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
+                inputMode="tel"
                 value={value}
                 placeholder={placeholder}
                 onChange={handleChange}
-                onBlur={handleOnBlur}
-                onKeyDown={(evt) =>
-                    ['e', 'E', '+', '-'].includes(evt.key) &&
-                    evt.preventDefault()
-                }
+                onPaste={handlePaste}
             />
             <button
                 className={actionClass}

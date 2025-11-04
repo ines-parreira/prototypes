@@ -561,11 +561,11 @@ describe('<Setup />', () => {
             })
 
             await waitFor(() => {
-                expect(screen.getByText('555-123-4567')).toBeInTheDocument()
+                expect(screen.getByText('+1 555-123-4567')).toBeInTheDocument()
             })
 
             await act(async () => {
-                await user.click(screen.getByText('555-123-4567'))
+                await user.click(screen.getByText('+1 555-123-4567'))
             })
 
             // Verify a phone number was selected (dropdown no longer shows "Select")

@@ -53,10 +53,7 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className={selectedOptionClass}>
-                    {selectedOption?.phone_number_friendly.replace(
-                        /^[^\s]+\s/,
-                        '',
-                    ) || 'Select'}
+                    {selectedOption?.phone_number_friendly || 'Select'}
                 </span>
                 <i className="material-icons-outlined">keyboard_arrow_down</i>
             </div>
@@ -68,12 +65,7 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                             key={index}
                             onClick={() => handleOptionChange(option)}
                         >
-                            <span>
-                                {option.phone_number_friendly.replace(
-                                    /^[^\s]+\s/,
-                                    '',
-                                )}
-                            </span>
+                            <span>{option.phone_number_friendly}</span>
                             {option.integrations[0].id ===
                                 selectedOption?.integrations[0].id && (
                                 <img src={selectedIcon} alt="icon" />

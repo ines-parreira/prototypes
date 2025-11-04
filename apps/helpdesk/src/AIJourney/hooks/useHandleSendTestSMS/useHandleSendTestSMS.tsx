@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { parsePhoneNumberWithError } from 'libphonenumber-js'
+
 import { JourneyApiDTO } from '@gorgias/convert-client'
 import { Integration } from '@gorgias/helpdesk-types'
 
@@ -55,9 +57,22 @@ export const useHandleSendTestSMS = ({
             const { shop_domain: shopDomain } = currentIntegration.meta
             const { handle } = selectedProduct
 
+            let phoneNumber: string
+            try {
+                const parsed = parsePhoneNumberWithError(testSmsNumber)
+                phoneNumber = parsed.number
+            } catch {
+                void dispatch(
+                    notify({
+                        message: 'Invalid phone number format',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                return
+            }
+
             await testSms.mutateAsync({
-                // TODO use generic phone number formatting
-                phoneNumber: `+1${testSmsNumber.replace(/\D/g, '')}`,
+                phoneNumber,
                 journeyId: currentJourney.id,
                 product: {
                     product_id: String(selectedProduct.id),

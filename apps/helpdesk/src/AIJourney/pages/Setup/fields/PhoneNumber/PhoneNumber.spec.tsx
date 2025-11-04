@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
@@ -32,6 +32,7 @@ describe('<PhoneNumberField />', () => {
     })
 
     it('calls onChange when a dropdown option is selected', async () => {
+        const user = userEvent.setup()
         const onChange = jest.fn()
         render(
             <PhoneNumberField
@@ -39,8 +40,10 @@ describe('<PhoneNumberField />', () => {
                 onChange={onChange}
             />,
         )
-        await userEvent.click(screen.getByText('Select'))
-        await userEvent.click(screen.getByText('555-987-6543'))
+        await act(async () => {
+            await user.click(screen.getByText('Select'))
+            await user.click(screen.getByText('+1 555-987-6543'))
+        })
         expect(onChange).toHaveBeenCalledWith(mockPhoneNumbers[2])
     })
 })

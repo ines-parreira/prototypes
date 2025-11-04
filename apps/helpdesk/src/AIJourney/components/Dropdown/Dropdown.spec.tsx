@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
@@ -22,19 +22,17 @@ describe('<Dropdown />', () => {
             />,
         )
 
-        const option = screen.getAllByText('555-111-2222')
-        expect(option).toHaveLength(2) // option in the list and in the selected state
+        const option = screen.getAllByText('+1 555-111-2222')
+        expect(option).toHaveLength(2)
     })
 
     it('shows options when clicked', async () => {
         render(<Dropdown options={mockPhoneNumbersArray} />)
         const trigger = screen.getByRole('group')
-        await userEvent.click(trigger)
+        await act(() => userEvent.click(trigger))
         mockPhoneNumbersArray.forEach((option) => {
             expect(
-                screen.getByText(
-                    option.phone_number_friendly.replace(/^[^\s]+\s/, ''),
-                ),
+                screen.getByText(option.phone_number_friendly),
             ).toBeInTheDocument()
         })
     })
@@ -43,8 +41,10 @@ describe('<Dropdown />', () => {
         const onChange = jest.fn()
         render(<Dropdown options={mockPhoneNumbersArray} onChange={onChange} />)
         const trigger = screen.getByRole('group')
-        await userEvent.click(trigger)
-        await userEvent.click(screen.getByText('555-111-2222'))
+        await act(async () => {
+            await userEvent.click(trigger)
+            await userEvent.click(screen.getByText('+1 555-111-2222'))
+        })
         expect(onChange).toHaveBeenCalledWith(mockPhoneNumbersArray[2])
     })
 
@@ -53,9 +53,9 @@ describe('<Dropdown />', () => {
         const trigger = screen.getByRole('group')
         expect(screen.queryByRole('listbox')).not.toHaveClass('--open')
 
-        await userEvent.click(trigger)
-        expect(screen.getByText('555-111-2222')).toBeVisible()
-        await userEvent.click(screen.getByText('555-111-2222'))
+        await act(() => userEvent.click(trigger))
+        expect(screen.getByText('+1 555-111-2222')).toBeVisible()
+        await act(() => userEvent.click(screen.getByText('+1 555-111-2222')))
 
         expect(screen.queryByRole('listbox')).not.toHaveClass('--open')
     })

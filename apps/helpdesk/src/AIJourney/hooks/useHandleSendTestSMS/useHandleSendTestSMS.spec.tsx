@@ -66,7 +66,7 @@ const mockIntegration = {
 const hookParameters = {
     currentJourney: mockJourney,
     selectedProduct: mockProduct,
-    testSmsNumber: '5551234567',
+    testSmsNumber: '+15551234567',
     currentIntegration: mockIntegration,
     delaySendingSMSms: 100,
 }
@@ -303,14 +303,14 @@ describe('useHandleSendTestSMS', () => {
             )
         })
 
-        it('should format phone number by removing non-digit characters', async () => {
+        it('should parse formatted international phone numbers', async () => {
             mockTestSms.mockResolvedValue(undefined)
 
             const { result } = renderHook(
                 () =>
                     useHandleSendTestSMS({
                         ...hookParameters,
-                        testSmsNumber: '(555) 123-4567',
+                        testSmsNumber: '+1 (555) 123-4567',
                     }),
                 {
                     wrapper: ({ children }) => (
@@ -368,7 +368,7 @@ describe('useHandleSendTestSMS', () => {
                     useHandleSendTestSMS({
                         currentJourney: mockJourney,
                         selectedProduct: mockProduct,
-                        testSmsNumber: '5551234567',
+                        testSmsNumber: '+15551234567',
                         currentIntegration: mockIntegration,
                     }),
                 {

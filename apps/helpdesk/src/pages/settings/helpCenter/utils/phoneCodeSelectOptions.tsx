@@ -54,19 +54,19 @@ export const getCountryCallingCodeFixed = (
     // Source: https://en.wikipedia.org/wiki/List_of_country_calling_codes
     switch (countryCode as string) {
         case 'AQ':
-            return '672'
+            return '672' as CountryCallingCode
         case 'PN':
-            return '64'
+            return '64' as CountryCallingCode
         case 'BV':
-            return '47'
+            return '47' as CountryCallingCode
         case 'TF':
-            return '262'
+            return '262' as CountryCallingCode
         case 'HM':
-            return '672'
+            return '672' as CountryCallingCode
         case 'GS':
-            return '500'
+            return '500' as CountryCallingCode
         case 'UM':
-            return '1'
+            return '1' as CountryCallingCode
         default:
             // Fallback to `libphonenumber-js` for the rest.
             return getCountryCallingCode(countryCode)

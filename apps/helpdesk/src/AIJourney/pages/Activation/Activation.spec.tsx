@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -111,6 +111,7 @@ describe('<Activation />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        localStorage.clear()
 
         const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
         const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
@@ -189,6 +190,7 @@ describe('<Activation />', () => {
     })
 
     it('should redirect from Activation to performance on continue', async () => {
+        const user = userEvent.setup()
         mockUseJourneyContext.mockReturnValue({
             currentJourney: {
                 id: 'journey-123',
@@ -229,15 +231,13 @@ describe('<Activation />', () => {
 
         const input = screen.getByRole('textbox')
         await act(async () => {
-            await userEvent.type(input, '1234567890')
+            await user.type(input, '1234567890')
         })
 
         const button = screen.getByTestId('ai-journey-button')
         expect(button).toBeEnabled()
 
-        await act(async () => {
-            await userEvent.click(button)
-        })
+        await act(() => user.click(button))
 
         await waitFor(
             () => {
@@ -333,6 +333,7 @@ describe('<Activation />', () => {
         })
 
         it('should call handleTestSms when Send SMS button is clicked', async () => {
+            const user = userEvent.setup()
             mockUseJourneyContext.mockReturnValue({
                 currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
@@ -368,13 +369,17 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
 
             await act(async () => {
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
+                await user.type(input, '+12015550123')
             })
+
+            await waitFor(() => {
+                expect(screen.getByText('Send SMS')).toBeEnabled()
+            })
+
+            const button = screen.getByText('Send SMS')
+            await act(() => user.click(button))
 
             await waitFor(() => {
                 expect(mockHandleTestSms).toHaveBeenCalledTimes(1)
@@ -382,6 +387,7 @@ describe('<Activation />', () => {
         })
 
         it('should auto-select the first product when products are loaded', async () => {
+            const user = userEvent.setup()
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
@@ -397,13 +403,17 @@ describe('<Activation />', () => {
             })
 
             const input = screen.getByRole('textbox')
-            const button = screen.getByText('Send SMS')
 
             await act(async () => {
-                await userEvent.type(input, '1234567890')
-                expect(button).toBeEnabled()
-                await userEvent.click(button)
+                await user.type(input, '+12015550123')
             })
+
+            await waitFor(() => {
+                expect(screen.getByText('Send SMS')).toBeEnabled()
+            })
+
+            const button = screen.getByText('Send SMS')
+            await act(() => user.click(button))
 
             await waitFor(() => {
                 expect(mockHandleTestSms).toHaveBeenCalledTimes(1)
