@@ -4,6 +4,7 @@ import {
     formatMetricTrend,
     formatMetricValue,
     getTrendColorFromValue,
+    renderTickLabelAsNumber,
 } from './helpers'
 
 describe('formatMetricValue', () => {
@@ -256,4 +257,16 @@ describe('formatDuration', () => {
             expect(formatDuration(duration, precision)).toBe(expected)
         },
     )
+})
+
+describe('renderTickLabelAsNumber', () => {
+    it.each([
+        [50, '50'],
+        [-50, '-50'],
+        [0, '0'],
+        [10_000, '10K'],
+        ['rainbow', 'rainbow'],
+    ])('should format %s as %s', (value, expected) => {
+        expect(renderTickLabelAsNumber(value)).toEqual(expected)
+    })
 })

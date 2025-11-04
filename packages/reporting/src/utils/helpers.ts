@@ -286,10 +286,21 @@ const formatMetricValue = (
     return metricToDecimal(value)
 }
 
+const renderTickLabelAsNumber = (value: string | number) => {
+    if (typeof value === 'number') {
+        return new Intl.NumberFormat('en-US', {
+            notation: 'compact',
+            compactDisplay: 'short',
+        }).format(value)
+    }
+    return value
+}
+
 export {
     getTrendColorFromValue,
     getTrendIconFromSign,
     formatMetricValue,
     formatMetricTrend,
     formatDuration,
+    renderTickLabelAsNumber,
 }

@@ -1,7 +1,7 @@
 import {
     CartesianGrid,
     Line,
-    LineChart as LineChatRecharts,
+    LineChart as LineChartRecharts,
     Tooltip,
     XAxis,
     YAxis,
@@ -10,6 +10,8 @@ import {
 import { Skeleton } from '@gorgias/axiom'
 
 import { TwoDimensionalDataItem } from '../../types'
+import { renderTickLabelAsNumber } from '../../utils/helpers'
+import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
 import { toLineChartData } from './utils'
 
 type LineChartProps = {
@@ -17,12 +19,14 @@ type LineChartProps = {
     isLoading?: boolean
     skeletonHeight?: number
     isCurvedLine?: boolean
+    renderYTickLabel?: (value: number | string) => string
 }
 export const LineChart = ({
     data,
     isCurvedLine = true,
     isLoading = false,
     skeletonHeight = 250,
+    renderYTickLabel = renderTickLabelAsNumber,
 }: LineChartProps) => {
     if (isLoading) {
         return <Skeleton height={skeletonHeight} />
@@ -31,7 +35,7 @@ export const LineChart = ({
     const transformedData = toLineChartData(data)
 
     return (
-        <LineChatRecharts
+        <LineChartRecharts
             style={{
                 width: '100%',
                 height: '100%',
@@ -41,8 +45,16 @@ export const LineChart = ({
         >
             <CartesianGrid strokeDasharray="1.5 3" vertical={false} />
             <XAxis dataKey="name" interval="preserveStartEnd" />
-            <YAxis width="auto" />
-            <Tooltip />
+            <YAxis width="auto" tickFormatter={renderYTickLabel} />
+            <Tooltip
+                cursor={{
+                    strokeDasharray: '1.5 3',
+                    strokeWidth: '1px',
+                    stroke: '#1E242E',
+                }}
+                content={ChartTooltip}
+                formatter={renderYTickLabel}
+            />
             {data.map((series) => (
                 <Line
                     key={series.label}
@@ -52,6 +64,6 @@ export const LineChart = ({
                     color="#0D6CF2"
                 />
             ))}
-        </LineChatRecharts>
+        </LineChartRecharts>
     )
 }
