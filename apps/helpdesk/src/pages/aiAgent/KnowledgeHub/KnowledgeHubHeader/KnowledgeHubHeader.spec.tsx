@@ -18,6 +18,7 @@ describe('KnowledgeHubHeader', () => {
     const defaultProps: KnowledgeHubHeaderProps = {
         data: null,
         shopName: 'test-shop',
+        onBack: jest.fn(),
     }
 
     const mockRoutes = {
@@ -132,7 +133,6 @@ describe('KnowledgeHubHeader', () => {
 
             const backButton = screen.getByLabelText(/back to knowledge hub/i)
             expect(backButton).toBeInTheDocument()
-            expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
         it('renders data title', () => {
@@ -219,7 +219,6 @@ describe('KnowledgeHubHeader', () => {
 
             const backButton = screen.getByLabelText(/back to knowledge hub/i)
             expect(backButton).toBeInTheDocument()
-            expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
         it('renders data title', () => {
@@ -303,7 +302,6 @@ describe('KnowledgeHubHeader', () => {
 
             const backButton = screen.getByLabelText(/back to knowledge hub/i)
             expect(backButton).toBeInTheDocument()
-            expect(backButton).toHaveAttribute('to', mockRoutes.knowledge)
         })
 
         it('renders data title', () => {

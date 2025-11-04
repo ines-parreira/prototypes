@@ -4,6 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
+import { DocumentFilters } from './DocumentFilters/DocumentFilters'
 import { KnowledgeHubHeader } from './KnowledgeHubHeader/KnowledgeHubHeader'
 import { KnowledgeHubTable } from './Table/KnowledgeHubTable'
 import {
@@ -165,6 +166,7 @@ const mockedTableData: KnowledgeItem[] = [
         title: 'Release Notes v2.0',
         lastUpdatedAt: '2024-05-18',
         inUseByAI: KnowledgeVisibility.PUBLIC,
+        source: 'axiom.pdf',
         id: '20',
     },
     {
@@ -172,6 +174,7 @@ const mockedTableData: KnowledgeItem[] = [
         title: 'Performance Optimization Guide',
         lastUpdatedAt: '2024-05-20',
         inUseByAI: KnowledgeVisibility.UNLISTED,
+        source: 'axiom1.pdf',
         id: '21',
     },
     {
@@ -216,6 +219,9 @@ const mockedTableData: KnowledgeItem[] = [
 export const KnowledgeHubContainer = () => {
     const [selectedFolder, setSelectedFolder] =
         useState<GroupedKnowledgeItem | null>(null)
+    const [selectedFilter, setSelectedFilter] = useState<KnowledgeType | null>(
+        null,
+    )
     const allShopifyIntegrations = useAppSelector(
         getShopifyIntegrationsSortedByName,
     )
@@ -226,13 +232,26 @@ export const KnowledgeHubContainer = () => {
         setSelectedFolder(data)
     }
 
+    const handleBack = () => {
+        setSelectedFolder(null)
+    }
+
     return (
         <div className={css.container}>
-            <KnowledgeHubHeader shopName={shopName} data={selectedFolder} />
+            <KnowledgeHubHeader
+                shopName={shopName}
+                data={selectedFolder}
+                onBack={handleBack}
+            />
+            <DocumentFilters
+                selectedFilter={selectedFilter}
+                onFilterChange={setSelectedFilter}
+            />
             <KnowledgeHubTable
                 data={mockedTableData}
                 onRowClick={onClick}
                 selectedFolder={selectedFolder}
+                selectedTypeFilter={selectedFilter}
             />
         </div>
     )

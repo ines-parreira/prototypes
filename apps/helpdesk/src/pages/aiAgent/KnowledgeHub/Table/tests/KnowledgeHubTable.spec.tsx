@@ -109,4 +109,138 @@ describe('KnowledgeHubTable', () => {
             expect(checkbox).toBeDisabled()
         })
     })
+
+    describe('type filtering', () => {
+        it('filters data by selected type filter and shows grouped row', () => {
+            renderComponent({ selectedTypeFilter: KnowledgeType.FAQ })
+
+            expect(screen.getByText('docs.example.com')).toBeInTheDocument()
+
+            const groupRow = screen.getByText('docs.example.com').closest('tr')
+            expect(groupRow).toHaveTextContent('1')
+        })
+
+        it('shows all items when type filter is null', () => {
+            renderComponent({ selectedTypeFilter: null })
+
+            expect(screen.getByText('docs.example.com')).toBeInTheDocument()
+
+            const groupRow = screen.getByText('docs.example.com').closest('tr')
+            expect(groupRow).toHaveTextContent('2')
+        })
+
+        it('filters multiple items of the same type across different sources', () => {
+            const dataWithMultipleDocs = [
+                ...mockData,
+                {
+                    type: KnowledgeType.Document,
+                    title: 'User Guide',
+                    lastUpdatedAt: '2024-01-25T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'guides.example.com',
+                    id: '5',
+                },
+            ]
+
+            renderComponent({
+                data: dataWithMultipleDocs,
+                selectedTypeFilter: KnowledgeType.Document,
+            })
+
+            expect(screen.getByText('docs.example.com')).toBeInTheDocument()
+            expect(screen.getByText('guides.example.com')).toBeInTheDocument()
+
+            const groupRow1 = screen.getByText('docs.example.com').closest('tr')
+            expect(groupRow1).toHaveTextContent('1')
+
+            const groupRow2 = screen
+                .getByText('guides.example.com')
+                .closest('tr')
+            expect(groupRow2).toHaveTextContent('1')
+        })
+
+        it('shows empty state when filter matches no items', () => {
+            const dataWithoutGuidance = mockData.filter(
+                (item) => item.type !== KnowledgeType.Guidance,
+            )
+
+            renderComponent({
+                data: dataWithoutGuidance,
+                selectedTypeFilter: KnowledgeType.Guidance,
+            })
+
+            expect(screen.getByText('0 items')).toBeInTheDocument()
+        })
+
+        it('filters grouped data correctly when multiple types share same source', () => {
+            const dataWithSameSourceDifferentTypes = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Doc 1',
+                    lastUpdatedAt: '2024-01-15T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'same-source.com',
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'FAQ 1',
+                    lastUpdatedAt: '2024-01-10T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'same-source.com',
+                    id: '2',
+                },
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Guide 1',
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'same-source.com',
+                    id: '3',
+                },
+            ]
+
+            renderComponent({
+                data: dataWithSameSourceDifferentTypes,
+                selectedTypeFilter: KnowledgeType.Document,
+            })
+
+            const groupRow = screen.getByText('same-source.com').closest('tr')
+            expect(groupRow).toHaveTextContent('1')
+        })
+
+        it('correctly filters items without source', () => {
+            const dataWithItemsWithoutSource = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Guidance 1',
+                    lastUpdatedAt: '2024-01-15T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'FAQ 1',
+                    lastUpdatedAt: '2024-01-10T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '2',
+                },
+            ]
+
+            renderComponent({
+                data: dataWithItemsWithoutSource,
+                selectedTypeFilter: KnowledgeType.Guidance,
+            })
+
+            expect(screen.getByText('Guidance 1')).toBeInTheDocument()
+            expect(screen.queryByText('FAQ 1')).not.toBeInTheDocument()
+        })
+
+        it('respects type filter when displaying item counts', () => {
+            renderComponent({ selectedTypeFilter: KnowledgeType.Document })
+
+            const itemCountText = screen.getByText('1 item')
+            expect(itemCountText).toBeInTheDocument()
+        })
+    })
 })

@@ -11,6 +11,7 @@ import css from './KnowledgeHubHeader.less'
 export type KnowledgeHubHeaderProps = {
     data: GroupedKnowledgeItem | null
     shopName: string
+    onBack: () => void
     onAddKnowledge?: () => void
     onTest?: () => void
     onSync?: () => void
@@ -24,6 +25,7 @@ export type KnowledgeHubHeaderProps = {
 export const KnowledgeHubHeader = ({
     shopName,
     data,
+    onBack,
     onAddKnowledge,
     onTest,
     onSync,
@@ -38,7 +40,7 @@ export const KnowledgeHubHeader = ({
     return (
         <div className={css.header}>
             <div className={css.leftSection}>
-                <BackButton knowledgeRoute={routes.knowledge} data={data} />
+                <BackButton data={data} onBack={onBack} />
             </div>
             <div className={css.middleSection}>
                 <HeaderTitle data={data} knowledgeRoute={routes.knowledge} />

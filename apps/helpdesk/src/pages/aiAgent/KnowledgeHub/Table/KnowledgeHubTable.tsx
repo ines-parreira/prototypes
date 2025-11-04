@@ -9,7 +9,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import { GroupedKnowledgeItem, KnowledgeItem } from '../types'
+import { GroupedKnowledgeItem, KnowledgeItem, KnowledgeType } from '../types'
 import { AddFilterButton, FilterOption } from './AddFilterButton'
 import { getColumns } from './columns'
 import { ItemCount } from './ItemCount'
@@ -32,6 +32,7 @@ type KnowledgeHubTableProps = {
     isLoading?: boolean
     onRowClick: (data: GroupedKnowledgeItem) => void
     selectedFolder: GroupedKnowledgeItem | null
+    selectedTypeFilter?: KnowledgeType | null
 }
 
 export const KnowledgeHubTable = ({
@@ -39,24 +40,33 @@ export const KnowledgeHubTable = ({
     isLoading = false,
     onRowClick,
     selectedFolder,
+    selectedTypeFilter = null,
 }: KnowledgeHubTableProps) => {
     const [searchTerm, setSearchTerm] = useState('')
 
     const isSearchActive = Boolean(searchTerm)
 
     const filteredData = useMemo(() => {
-        if (!searchTerm) {
-            return data
+        let filtered = data
+
+        if (selectedTypeFilter) {
+            filtered = filtered.filter(
+                (item) => item.type === selectedTypeFilter,
+            )
         }
 
-        return data.filter((item) => {
+        if (!searchTerm) {
+            return filtered
+        }
+
+        return filtered.filter((item) => {
             const searchLower = searchTerm.toLowerCase()
             return (
                 item.title.toLowerCase().includes(searchLower) ||
                 item.source?.toLowerCase().includes(searchLower)
             )
         })
-    }, [data, searchTerm])
+    }, [data, searchTerm, selectedTypeFilter])
 
     const displayData = useMemo(() => {
         const shouldGroupData = isSearchActive || Boolean(selectedFolder)

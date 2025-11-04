@@ -33,10 +33,13 @@ export const typeConfig: Record<
 > = {
     [KnowledgeType.Document]: {
         icon: 'paperclip-attachment',
-        label: 'Document',
+        label: 'Documents',
     },
-    [KnowledgeType.FAQ]: { icon: 'file-document', label: 'FAQ' },
-    [KnowledgeType.Guidance]: { icon: 'nav-map', label: 'Guide' },
-    [KnowledgeType.URL]: { icon: 'link-horizontal', label: 'URL' },
-    [KnowledgeType.Domain]: { icon: 'nav-globe', label: 'Domain' },
+    [KnowledgeType.FAQ]: {
+        icon: 'file-document',
+        label: 'Help Center articles',
+    },
+    [KnowledgeType.Guidance]: { icon: 'nav-map', label: 'Guidance' },
+    [KnowledgeType.URL]: { icon: 'link-horizontal', label: 'URLs' },
+    [KnowledgeType.Domain]: { icon: 'nav-globe', label: 'Store website' },
 }

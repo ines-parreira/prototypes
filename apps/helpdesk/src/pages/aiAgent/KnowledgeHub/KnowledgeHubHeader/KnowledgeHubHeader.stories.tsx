@@ -19,6 +19,7 @@ const meta: Meta<typeof KnowledgeHubHeader> = {
     argTypes: {
         shopName: { control: 'text' },
         data: { control: 'object' },
+        onBack: { action: 'onBack' },
         onAddKnowledge: { action: 'onAddKnowledge' },
         onTest: { action: 'onTest' },
         onSync: { action: 'onSync' },
@@ -51,6 +52,7 @@ export const DefaultListView: Story = Template.bind({})
 DefaultListView.args = {
     data: null,
     shopName: 'my-store',
+    onBack: () => {},
     onTest: () => {},
     onAddKnowledge: () => {},
 }
@@ -65,6 +67,7 @@ StoreWebsite.args = {
         lastUpdatedAt: '2025-01-15T10:30:00Z',
         id: 'store-123',
     },
+    onBack: () => {},
     onSync: () => {},
 }
 StoreWebsite.storyName = 'Type: Store Website'
@@ -78,6 +81,7 @@ StoreWebsiteDisabled.args = {
         lastUpdatedAt: '2025-01-15T10:30:00Z',
         id: 'store-123',
     },
+    onBack: () => {},
     onSync: () => {},
     isSyncButtonDisabled: true,
 }
@@ -92,6 +96,7 @@ URLs.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
+    onBack: () => {},
     onSync: () => {},
     onDelete: () => {},
 }
@@ -106,6 +111,7 @@ URLsDisabled.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
+    onBack: () => {},
     onSync: () => {},
     onDelete: () => {},
     isSyncButtonDisabled: true,
@@ -122,6 +128,7 @@ URLsSyncDisabled.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-456',
     },
+    onBack: () => {},
     onSync: () => {},
     onDelete: () => {},
     isSyncButtonDisabled: true,
@@ -137,6 +144,7 @@ URLsLongURL.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'url-789',
     },
+    onBack: () => {},
     onSync: () => {},
     onDelete: () => {},
 }
@@ -151,6 +159,7 @@ Documents.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'doc-789',
     },
+    onBack: () => {},
     onDelete: () => {},
 }
 Documents.storyName = 'Type: Documents'
@@ -164,6 +173,7 @@ DocumentsDisabled.args = {
         lastUpdatedAt: '2025-01-20T14:45:00Z',
         id: 'doc-789',
     },
+    onBack: () => {},
     onDelete: () => {},
     isDeleteButtonDisabled: true,
 }
