@@ -653,7 +653,15 @@ describe('PlaygroundInputSection', () => {
 
         describe('when standalone feature flag is enabled', () => {
             beforeEach(() => {
-                mockUseFlag.mockReturnValue(true)
+                mockUseFlag.mockImplementation((flag: string) => {
+                    if (
+                        flag ===
+                        'linear.project_standalone-handover-capabilities'
+                    ) {
+                        return true
+                    }
+                    return false
+                })
             })
 
             it('should only show chat channel option', () => {

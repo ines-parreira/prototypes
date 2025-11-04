@@ -8,6 +8,7 @@ import {
     useState,
 } from 'react'
 
+import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import {
     InboundSettings,
     PlaygroundChannels,
@@ -21,7 +22,7 @@ export const DEFAULT_STATE: InboundSettings & {
     mode: 'inbound' as const,
     channel: 'chat' as const,
     chatAvailability: 'online' as const,
-    selectedCustomer: null,
+    selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
     areActionsEnabled: false,
 }
 

@@ -205,7 +205,7 @@ export const AIJourneyProvider = ({
             shopifyIntegration,
             journeys: journeys || [],
             shopName,
-            isLoadingJourneys: areJourneysLoading,
+            isLoadingJourneys: shopifyIntegration ? areJourneysLoading : false,
             aiJourneySettings,
             setAIJourneySettings,
             resetAIJourneySettings,

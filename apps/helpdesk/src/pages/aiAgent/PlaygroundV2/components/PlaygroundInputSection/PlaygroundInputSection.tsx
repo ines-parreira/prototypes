@@ -270,42 +270,53 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
 
     const isFormDisabled = isDisabled || isMessageSending
 
+    const shouldRenderSettingsPanel = useFlag(
+        FeatureFlagKey.AiJourneyPlayground,
+        false,
+    )
+
     return (
         <div className={css.container}>
-            <div
-                className={classnames(css.section, css.topSection, {
-                    [css.disabled]: !isInitialMessage,
-                })}
-            >
-                <div className={css.segmentControl}>
-                    <PlaygroundSegmentControl
-                        selectedValue={channel}
-                        onValueChange={handleChannelChange}
-                        isDisabled={!isInitialMessage}
-                        segments={
-                            isStandalone
-                                ? STANDALONE_CHANNEL_SEGMENTS
-                                : CHANNEL_SEGMENTS
-                        }
-                    />
-                    {channel === 'chat' && (
-                        <PlaygroundSegmentControl
-                            selectedValue={channelAvailability}
-                            onValueChange={handleChannelAvailabilityChange}
+            {!shouldRenderSettingsPanel && (
+                <>
+                    <div
+                        className={classnames(css.section, css.topSection, {
+                            [css.disabled]: !isInitialMessage,
+                        })}
+                    >
+                        <div className={css.segmentControl}>
+                            <PlaygroundSegmentControl
+                                selectedValue={channel}
+                                onValueChange={handleChannelChange}
+                                isDisabled={!isInitialMessage}
+                                segments={
+                                    isStandalone
+                                        ? STANDALONE_CHANNEL_SEGMENTS
+                                        : CHANNEL_SEGMENTS
+                                }
+                            />
+                            {channel === 'chat' && (
+                                <PlaygroundSegmentControl
+                                    selectedValue={channelAvailability}
+                                    onValueChange={
+                                        handleChannelAvailabilityChange
+                                    }
+                                    isDisabled={!isInitialMessage}
+                                    segments={CHAT_AVAILABILITY_SEGMENTS}
+                                />
+                            )}
+                        </div>
+                        <PlaygroundCustomerSelection
+                            customer={formValues.customer}
+                            onCustomerChange={handleCustomerChange}
+                            onTicketChange={handleTicketChange}
                             isDisabled={!isInitialMessage}
-                            segments={CHAT_AVAILABILITY_SEGMENTS}
+                            senderType={senderSelectedOption}
+                            onSenderTypeChange={setSenderSelectedOption}
                         />
-                    )}
-                </div>
-                <PlaygroundCustomerSelection
-                    customer={formValues.customer}
-                    onCustomerChange={handleCustomerChange}
-                    onTicketChange={handleTicketChange}
-                    isDisabled={!isInitialMessage}
-                    senderType={senderSelectedOption}
-                    onSenderTypeChange={setSenderSelectedOption}
-                />
-            </div>
+                    </div>
+                </>
+            )}
             {channel === 'email' && (
                 <div
                     className={classnames(css.section, {
