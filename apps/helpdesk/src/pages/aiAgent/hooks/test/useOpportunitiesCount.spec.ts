@@ -1,5 +1,7 @@
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
+import { useFlag } from 'core/flags'
+import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 
 import { useOpportunitiesCount } from '../useOpportunitiesCount'
@@ -8,33 +10,40 @@ jest.mock(
     'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary',
 )
 
-jest.mock(
-    'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities',
-    () => ({
-        useKnowledgeServiceOpportunities: jest.fn(() => ({
-            opportunities: [],
-            isLoading: false,
-            totalCount: 0,
-        })),
-    }),
-)
+jest.mock('pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities')
 
 jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
     useShopIntegrationId: jest.fn(() => undefined),
 }))
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(() => false),
-}))
+jest.mock('core/flags')
 
-const mockUseHelpCenterAIArticlesLibrary =
-    useHelpCenterAIArticlesLibrary as jest.MockedFunction<
-        typeof useHelpCenterAIArticlesLibrary
-    >
+const mockUseHelpCenterAIArticlesLibrary = assumeMock(
+    useHelpCenterAIArticlesLibrary,
+)
+
+const mockUseKnowledgeServiceOpportunities = assumeMock(
+    useKnowledgeServiceOpportunities,
+)
+
+const mockUseFlag = assumeMock(useFlag)
 
 describe('useOpportunitiesCount', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseFlag.mockReturnValue(false)
+
+        mockUseKnowledgeServiceOpportunities.mockReturnValue({
+            opportunities: [],
+            isLoading: false,
+            totalCount: 0,
+            isFetchingNextPage: false,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+            preloadNextPage: jest.fn(),
+            refetch: jest.fn(),
+        })
     })
 
     it('should return count of 0 when there are no articles', () => {
@@ -299,5 +308,109 @@ describe('useOpportunitiesCount', () => {
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.count).toBe(1)
+    })
+
+    describe('useKnowledgeService feature flag enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should return totalCount from knowledge service when feature flag is enabled', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [],
+                isLoading: false,
+                totalCount: 5,
+                isFetchingNextPage: false,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                preloadNextPage: jest.fn(),
+                refetch: jest.fn(),
+            })
+
+            mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
+                articles: [],
+                isLoading: false,
+                markArticleAsReviewed: jest.fn(),
+            } as any)
+
+            const { result } = renderHook(() =>
+                useOpportunitiesCount(1, 'en-US', 'test-shop'),
+            )
+
+            expect(result.current.count).toBe(5)
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        it('should return loading state from knowledge service when feature flag is enabled', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [],
+                isLoading: true,
+                totalCount: 0,
+                isFetchingNextPage: false,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                preloadNextPage: jest.fn(),
+                refetch: jest.fn(),
+            })
+
+            mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
+                articles: [],
+                isLoading: false,
+                markArticleAsReviewed: jest.fn(),
+            } as any)
+
+            const { result } = renderHook(() =>
+                useOpportunitiesCount(1, 'en-US', 'test-shop'),
+            )
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('should handle undefined totalCount from knowledge service', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [],
+                isLoading: false,
+                totalCount: undefined as any,
+                isFetchingNextPage: false,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                preloadNextPage: jest.fn(),
+                refetch: jest.fn(),
+            })
+
+            mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
+                articles: [],
+                isLoading: false,
+                markArticleAsReviewed: jest.fn(),
+            } as any)
+
+            const { result } = renderHook(() =>
+                useOpportunitiesCount(1, 'en-US', 'test-shop'),
+            )
+
+            expect(result.current.count).toBeUndefined()
+        })
+    })
+
+    it('should return 0 when helpCenterId is 0', () => {
+        mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
+            articles: [
+                {
+                    id: '1',
+                    title: 'Article 1',
+                    content: 'Content 1',
+                    article_key: 'key1',
+                    article_template_key: 'template1',
+                },
+            ] as any,
+            isLoading: false,
+            markArticleAsReviewed: jest.fn(),
+        } as any)
+
+        const { result } = renderHook(() =>
+            useOpportunitiesCount(0, 'en-US', 'test-shop'),
+        )
+
+        expect(result.current.count).toBe(0)
     })
 })

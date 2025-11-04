@@ -256,6 +256,12 @@ export const useGetAIArticlesByHelpCenterAndStore = <
 ) => {
     const { client } = useHelpCenterApi()
 
+    const baseEnabled =
+        !!client &&
+        locale === 'en-US' &&
+        storeIntegrationId !== null &&
+        helpCenterId !== null
+
     return useQuery({
         queryKey: aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
         queryFn: async () => {
@@ -267,12 +273,8 @@ export const useGetAIArticlesByHelpCenterAndStore = <
                 store_integration_id: storeIntegrationId,
             })
         },
-        enabled:
-            !!client &&
-            locale === 'en-US' &&
-            storeIntegrationId !== null &&
-            helpCenterId !== null,
         ...overrides,
+        enabled: baseEnabled && (overrides?.enabled ?? true),
     })
 }
 

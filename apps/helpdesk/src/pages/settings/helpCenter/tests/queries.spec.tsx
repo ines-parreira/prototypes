@@ -500,6 +500,43 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             )
         })
     })
+
+    it('disables query when override enabled is false even if base conditions are true', async () => {
+        const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
+
+        const { result } = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenterAndStore(
+                    helpCenterId,
+                    storeIntegrationId,
+                    locale,
+                    { enabled: false },
+                ),
+            {
+                wrapper,
+            },
+        )
+
+        expect(
+            getAIGeneratedArticlesByHelpCenterAndStore,
+        ).toHaveBeenCalledTimes(0)
+
+        expect(result.current.data).toBeUndefined()
+
+        expect(useQuerySpy).toHaveBeenCalledTimes(1)
+
+        expect(useQuerySpy.mock.calls[0][0]).toEqual({
+            enabled: false,
+            queryFn: expect.any(Function),
+            queryKey: [
+                'aiArticle',
+                'list',
+                helpCenterId,
+                'store',
+                storeIntegrationId,
+            ],
+        })
+    })
 })
 
 describe('useUpsertArticleTemplateReview', () => {
