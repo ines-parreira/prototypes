@@ -2,14 +2,15 @@ import {
     Box,
     LegacyIconButton as IconButton,
     ListItem,
+    MultiSelectField,
     SelectField,
+    TextField,
 } from '@gorgias/axiom'
 import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 
 import { FormField, useWatch } from 'core/forms'
-import InputField from 'pages/common/forms/input/InputField'
 
-import css from './IvrMenuActionsFieldItem.less'
+const DROPDOWN_WIDTH = '160px'
 
 type CustomerLookupActionsFieldItemProps = {
     stepName: string
@@ -55,8 +56,10 @@ export function CustomerLookupActionsFieldItem({
 
     const availableOptions = stringFieldValueOptions.filter(
         (option) =>
-            !branchOptions.some(
-                (branchOption) => branchOption.field_value === option,
+            !branchOptions.some((branchOption) =>
+                typeof branchOption.field_value === 'string'
+                    ? branchOption.field_value === option
+                    : branchOption.field_value.includes(option),
             ),
     )
 
@@ -64,52 +67,62 @@ export function CustomerLookupActionsFieldItem({
         <Box gap="xs" alignItems="flex-end" width="100%">
             {fieldValueName && branchNameFieldName ? (
                 <>
+                    <Box w={DROPDOWN_WIDTH} flexShrink={0}>
+                        <FormField
+                            field={MultiSelectField<Option>}
+                            placeholder="Select value"
+                            name={fieldValueName}
+                            items={stringFieldValueOptions.map((option) =>
+                                transformFieldValueOption(
+                                    option,
+                                    fieldValueOptions,
+                                ),
+                            )}
+                            outputTransform={(options: Option[]) =>
+                                options.map((option) => option.id)
+                            }
+                            inputTransform={(value: string | string[]) => {
+                                const arrValue =
+                                    typeof value === 'string' ? [value] : value
+
+                                return arrValue.map((option) =>
+                                    transformFieldValueOption(
+                                        option,
+                                        fieldValueOptions,
+                                    ),
+                                )
+                            }}
+                        >
+                            {(option: { id: string; name: string }) => (
+                                <ListItem
+                                    label={option.name}
+                                    isDisabled={
+                                        !availableOptions.includes(option.id)
+                                    }
+                                />
+                            )}
+                        </FormField>
+                    </Box>
                     <FormField
-                        field={SelectField<Option>}
-                        placeholder="Select value"
-                        name={fieldValueName}
-                        items={stringFieldValueOptions.map((option) =>
-                            transformFieldValueOption(
-                                option,
-                                fieldValueOptions,
-                            ),
-                        )}
-                        outputTransform={(option) => option.id}
-                        inputTransform={(option: string) =>
-                            transformFieldValueOption(option, fieldValueOptions)
-                        }
-                    >
-                        {(option: { id: string; name: string }) => (
-                            <ListItem
-                                label={option.name}
-                                isDisabled={
-                                    !availableOptions.includes(option.id)
-                                }
-                            />
-                        )}
-                    </FormField>
-                    <FormField
+                        field={TextField}
                         name={branchNameFieldName}
-                        className={css.branchName}
                         placeholder="Branch name"
                     />
                 </>
             ) : (
                 <>
-                    <SelectField
-                        value={otherOption}
-                        items={[otherOption]}
-                        isDisabled
-                    >
-                        {(option: { id: string; name: string }) => (
-                            <ListItem label={option.name} />
-                        )}
-                    </SelectField>
-                    <InputField
-                        placeholder="Branch name"
-                        className={css.branchName}
-                        isDisabled
-                    />
+                    <Box w={DROPDOWN_WIDTH} flexShrink={0}>
+                        <SelectField
+                            value={otherOption}
+                            items={[otherOption]}
+                            isDisabled
+                        >
+                            {(option: { id: string; name: string }) => (
+                                <ListItem label={option.name} />
+                            )}
+                        </SelectField>
+                    </Box>
+                    <TextField placeholder="Branch name" isDisabled />
                 </>
             )}
 

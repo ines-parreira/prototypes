@@ -1,25 +1,35 @@
 import { render, screen } from '@testing-library/react'
 
+import { mockCustomerFieldsConditionalStep } from '@gorgias/helpdesk-mocks'
+import { CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
+
 import { Form } from 'core/forms'
-import { Flow, FlowProvider, Node } from 'core/ui/flows'
+import { Flow, FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
+import { VoiceFlowNode } from '../../types'
 import { CustomerLookupOptionNode } from '../CustomerLookupOptionNode'
 
-const nodes: Node<Record<string, unknown>>[] = [
+const firstStep = mockCustomerFieldsConditionalStep({
+    id: '1',
+    name: 'Customer lookup',
+    step_type: VoiceFlowNodeType.CustomerLookup,
+    branch_options: [
+        {
+            field_value: ['field value'],
+            branch_name: 'branch name',
+            next_step_id: '2',
+        },
+    ],
+    default_next_step_id: '2',
+})
+
+const nodes: VoiceFlowNode[] = [
     {
         id: '1',
         position: { x: 0, y: 0 },
-        data: {
-            branch_options: [
-                {
-                    field_value: 'field value',
-                    branch_name: 'branch name',
-                    next_step_id: '2',
-                },
-            ],
-            default_next_step_id: '2',
-        },
+        type: VoiceFlowNodeType.CustomerLookup,
+        data: firstStep,
     },
     {
         id: '2',
@@ -28,6 +38,7 @@ const nodes: Node<Record<string, unknown>>[] = [
         data: {
             parentId: '1',
             isDefaultOption: true,
+            optionIndex: 0,
             next_step_id: '2',
         },
     },
@@ -43,17 +54,9 @@ const nodes: Node<Record<string, unknown>>[] = [
     },
 ]
 
-const formDefaultValues = {
+const formDefaultValues: { steps: CallRoutingFlowSteps } = {
     steps: {
-        '1': {
-            branch_options: [
-                {
-                    field_value: 'field value',
-                    branch_name: 'branch name',
-                    next_step_id: '2',
-                },
-            ],
-        },
+        [firstStep.id]: firstStep,
     },
 }
 
@@ -85,9 +88,10 @@ describe('CustomerLookupOptionNode', () => {
         renderComponent({
             steps: {
                 '1': {
+                    ...firstStep,
                     branch_options: [
                         {
-                            field_value: 'field value',
+                            field_value: ['field value'],
                             branch_name: '',
                             next_step_id: '2',
                         },
@@ -103,9 +107,10 @@ describe('CustomerLookupOptionNode', () => {
         renderComponent({
             steps: {
                 '1': {
+                    ...firstStep,
                     branch_options: [
                         {
-                            field_value: 'True',
+                            field_value: ['True'],
                             branch_name: '',
                             next_step_id: '2',
                         },
@@ -120,9 +125,10 @@ describe('CustomerLookupOptionNode', () => {
         renderComponent({
             steps: {
                 '1': {
+                    ...firstStep,
                     branch_options: [
                         {
-                            field_value: 'False',
+                            field_value: ['False'],
                             branch_name: '',
                             next_step_id: '2',
                         },
@@ -137,8 +143,9 @@ describe('CustomerLookupOptionNode', () => {
         renderComponent({
             steps: {
                 '1': {
+                    ...firstStep,
                     branch_options: [
-                        { field_value: '', branch_name: '', next_step_id: '2' },
+                        { field_value: [], branch_name: '', next_step_id: '2' },
                     ],
                 },
             },
@@ -146,4 +153,70 @@ describe('CustomerLookupOptionNode', () => {
 
         expect(screen.getByText('1')).toBeInTheDocument()
     })
+
+    it('should render the node with multiple field values joined by comma', () => {
+        renderComponent({
+            steps: {
+                '1': {
+                    ...firstStep,
+                    branch_options: [
+                        {
+                            field_value: ['value1', 'value2', 'value3'],
+                            branch_name: '',
+                            next_step_id: '2',
+                        },
+                    ],
+                },
+            },
+        })
+
+        expect(screen.getByText('value1, value2, value3')).toBeInTheDocument()
+    })
+
+    it('should render the node with multiple field values including boolean transformations', () => {
+        renderComponent({
+            steps: {
+                '1': {
+                    ...firstStep,
+                    branch_options: [
+                        {
+                            field_value: ['True', 'False'],
+                            branch_name: '',
+                            next_step_id: '2',
+                        },
+                    ],
+                },
+            },
+        })
+
+        expect(screen.getByText('Yes, No')).toBeInTheDocument()
+    })
+
+    it.each([
+        ['value', 'value'],
+        ['True', 'Yes'],
+        ['False', 'No'],
+        [[], 1],
+        ['', 1],
+    ])(
+        'should render the label correctly even when the field value is a string or boolean or empty',
+        (fieldValue, expectedLabel) => {
+            renderComponent({
+                steps: {
+                    '1': {
+                        ...firstStep,
+                        branch_options: [
+                            {
+                                field_value: fieldValue,
+                                branch_name: undefined,
+                                next_step_id: '2',
+                            },
+                        ],
+                    },
+                },
+            })
+
+            expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+        },
+    )
 })

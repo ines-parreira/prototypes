@@ -21,13 +21,34 @@ export function CustomerLookupOptionNode(props: CustomerLookupOptionNodeProps) {
                 label={
                     data.isDefaultOption
                         ? 'Other'
-                        : option?.branch_name ||
-                          `${transformFieldValue(option?.field_value)}` ||
-                          `${(data?.optionIndex ?? 0) + 1}`
+                        : getOptionLabel(option, data.optionIndex)
                 }
             />
         </NodeWrapper>
     )
+}
+
+const getOptionLabel = (
+    option: CustomerFieldBranchOption | undefined,
+    optionIndex: number | null,
+): string => {
+    const optionIndexLabel = `${(optionIndex ?? 0) + 1}`
+
+    if (!option) {
+        return optionIndexLabel
+    }
+
+    if (option.branch_name) {
+        return option.branch_name
+    }
+
+    if (Array.isArray(option.field_value)) {
+        return option.field_value.length > 0
+            ? option.field_value.map(transformFieldValue).join(', ')
+            : optionIndexLabel
+    }
+
+    return transformFieldValue(option.field_value) || optionIndexLabel
 }
 
 const transformFieldValue = (

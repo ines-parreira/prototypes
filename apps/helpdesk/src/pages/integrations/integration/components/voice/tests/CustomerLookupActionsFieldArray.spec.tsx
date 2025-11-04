@@ -18,6 +18,8 @@ import { FlowProvider } from 'core/ui/flows'
 
 import { CustomerLookupActionsFieldArray } from '../CustomerLookupActionsFieldArray'
 
+import 'tests/__mocks__/intersectionObserverMock'
+
 const useDeleteNodeMock = {
     removeUnlinkedSteps: jest.fn(),
 }
@@ -45,13 +47,13 @@ const defaultProps = {
 
 const branchOptions = [
     mockCustomerFieldBranchOption({
-        field_value: 'vip',
+        field_value: ['vip'],
     }),
     mockCustomerFieldBranchOption({
-        field_value: 'problematic',
+        field_value: ['problematic'],
     }),
     mockCustomerFieldBranchOption({
-        field_value: 'something else',
+        field_value: ['something else'],
     }),
 ]
 
@@ -116,6 +118,23 @@ describe('CustomerLookupActionsFieldArray', () => {
         await waitFor(() => {
             expect(defaultProps.onAddOption).toHaveBeenCalled()
         })
+    })
+
+    it('should not render add option button when the form already has the max number of options', () => {
+        renderComponent(defaultProps, {
+            steps: {
+                customerLookup: {
+                    custom_field_id: 1,
+                    branch_options: [
+                        ...branchOptions,
+                        mockCustomerFieldBranchOption({
+                            field_value: ['option4'],
+                        }),
+                    ],
+                },
+            },
+        })
+        expect(screen.queryByText('Add option')).not.toBeInTheDocument()
     })
 
     it('should call onRemoveOption when remove button is clicked', async () => {
@@ -237,7 +256,7 @@ describe('CustomerLookupActionsFieldArray', () => {
                     branch_options: [
                         ...branchOptions,
                         mockCustomerFieldBranchOption({
-                            field_value: 'option4',
+                            field_value: ['option4'],
                         }),
                     ],
                 },

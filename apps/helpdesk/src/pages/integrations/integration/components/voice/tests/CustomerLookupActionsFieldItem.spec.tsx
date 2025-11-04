@@ -3,6 +3,8 @@ import { ComponentProps } from 'react'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
+import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
+
 import { Form } from 'core/forms'
 
 import { CustomerLookupActionsFieldItem } from '../CustomerLookupActionsFieldItem'
@@ -19,9 +21,9 @@ const defaultValues = {
     stepName: {
         branch_options: [
             {
-                field_value: 'found',
+                field_value: ['found'],
                 branch_name: 'Customer found',
-            },
+            } as CustomerFieldBranchOption,
         ],
     },
 }
@@ -104,7 +106,7 @@ describe('CustomerLookupActionsFieldItem', () => {
             {
                 stepName: {
                     branch_options: [
-                        { field_value: 'option1', branch_name: '' },
+                        { field_value: [], branch_name: '', next_step_id: '1' },
                     ],
                 },
             },
@@ -119,5 +121,25 @@ describe('CustomerLookupActionsFieldItem', () => {
 
         expect(screen.getByText('Yes')).toBeInTheDocument()
         expect(screen.getByText('No')).toBeInTheDocument()
+    })
+
+    it('should also work with string field values', () => {
+        renderComponent(
+            { ...defaultProps, fieldValueOptions: ['option1', 'option2'] },
+            {
+                stepName: {
+                    branch_options: [
+                        {
+                            field_value: 'blabla',
+                            branch_name: '',
+                            next_step_id: '1',
+                        },
+                    ],
+                },
+            },
+        )
+
+        expect(screen.getByText('option1')).toBeInTheDocument()
+        expect(screen.getByText('option2')).toBeInTheDocument()
     })
 })

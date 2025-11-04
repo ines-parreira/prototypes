@@ -1,7 +1,11 @@
 import { Box, Button, Icon } from '@gorgias/axiom'
-import { CustomerFieldBranchOption, CustomField } from '@gorgias/helpdesk-types'
+import {
+    CustomerFieldBranchOption,
+    CustomerFieldsConditionalStep,
+    CustomField,
+} from '@gorgias/helpdesk-types'
 
-import { useFieldArray } from 'core/forms'
+import { useFieldArray, useWatch } from 'core/forms'
 
 import { CustomerLookupActionsFieldItem } from './CustomerLookupActionsFieldItem'
 import { useDeleteNode } from './flows/utils/useDeleteNode'
@@ -23,12 +27,13 @@ export function CustomerLookupActionsFieldArray({
         name: `${stepName}.branch_options`,
     })
     const { removeUnlinkedSteps } = useDeleteNode()
+    const step: CustomerFieldsConditionalStep = useWatch({ name: stepName })
 
     const handleAddOption = () => {
         const newOption: CustomerFieldBranchOption = {
-            field_value: '',
+            field_value: [],
             branch_name: '',
-            next_step_id: branchNextId!,
+            next_step_id: branchNextId,
         }
         append(newOption)
         onAddOption?.()
@@ -44,6 +49,14 @@ export function CustomerLookupActionsFieldArray({
     if (!inputSettings || !('choices' in inputSettings)) {
         return null
     }
+
+    const selectedChoicesLength = step.branch_options.reduce(
+        (acc, option) =>
+            Array.isArray(option.field_value)
+                ? acc + Math.max(option.field_value.length, 1)
+                : acc + 1,
+        0,
+    )
 
     return (
         <Box flexDirection="column" alignItems="flex-start" gap="sm">
@@ -66,7 +79,7 @@ export function CustomerLookupActionsFieldArray({
                 stepName={`${stepName}.default_branch_name`}
             />
             {inputSettings.choices &&
-                fields.length < inputSettings.choices.length && (
+                selectedChoicesLength < inputSettings.choices.length && (
                     <Button
                         variant="secondary"
                         onClick={handleAddOption}
