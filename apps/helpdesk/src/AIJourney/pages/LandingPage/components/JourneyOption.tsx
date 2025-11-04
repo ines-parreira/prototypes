@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 import { motion } from 'framer-motion'
 
 import { FieldPresentation } from 'AIJourney/components'
@@ -19,6 +21,8 @@ export const JourneyOption = ({
     selected,
     value,
 }: JourneyOptionProps) => {
+    const uniqueId = useId()
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -26,9 +30,10 @@ export const JourneyOption = ({
             transition={{ duration: 1, delay: 0.8 }}
             className={css.infoText}
         >
-            <div className={css.onboardingJourneyOption}>
+            <label htmlFor={uniqueId} className={css.onboardingJourneyOption}>
                 <div className={css.headerInfo}>
                     <input
+                        id={uniqueId}
                         type="radio"
                         name="journey-option"
                         value={value}
@@ -37,7 +42,7 @@ export const JourneyOption = ({
                     />
                     <FieldPresentation name={name} description={description} />
                 </div>
-            </div>
+            </label>
         </motion.div>
     )
 }
