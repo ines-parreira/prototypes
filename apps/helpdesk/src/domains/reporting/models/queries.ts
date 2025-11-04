@@ -2,7 +2,7 @@ import { Query, useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 
 import { appQueryClient } from 'api/queryClient'
-import { doNotRetry40xAnd5xxErrors } from 'api/utils'
+import { reportingRetryDelayHandler, reportingRetryHandler } from 'api/utils'
 import {
     postEnrichedReporting,
     postReportingV1,
@@ -23,7 +23,8 @@ const stopOnError = (query: Pick<Query, 'state'>) =>
 const defaultOptions = {
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
-    retry: doNotRetry40xAnd5xxErrors,
+    retry: reportingRetryHandler,
+    retryDelay: reportingRetryDelayHandler,
     refetchOnWindowFocus: stopOnError,
     retryOnMount: false,
     refetchOnMount: stopOnError,
