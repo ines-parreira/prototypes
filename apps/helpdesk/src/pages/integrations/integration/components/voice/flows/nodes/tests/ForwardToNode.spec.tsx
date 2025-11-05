@@ -20,6 +20,7 @@ import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { ForwardToNode } from '../ForwardToNode'
 
 const defaultHandler = mockListPhoneNumbersHandler(async () =>
@@ -80,14 +81,17 @@ const renderComponent = (
         })
 
     const props = {
+        id: mockStep.id,
         data: mockStep,
     } as ComponentProps<typeof ForwardToNode>
 
     return renderWithQueryClientProvider(
         <FlowProvider>
-            <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                <ForwardToNode {...props} />
-            </Form>
+            <VoiceFlowProvider selectedNode={mockStep.id}>
+                <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
+                    <ForwardToNode {...props} />
+                </Form>
+            </VoiceFlowProvider>
         </FlowProvider>,
     )
 }

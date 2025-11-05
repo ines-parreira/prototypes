@@ -19,6 +19,7 @@ import { useDeleteNode } from 'pages/integrations/integration/components/voice/f
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import * as utils from '../../utils'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { DEPRECATED_EnqueueNode as EnqueueNode } from '../DEPRECATED_EnqueueNode'
 
 jest.mock(
@@ -72,14 +73,17 @@ describe('DEPRECATED_EnqueueNode', () => {
             })
 
         const props = {
+            id: mockStep.id,
             data: mockStep,
         } as ComponentProps<typeof EnqueueNode>
 
         return renderWithStoreAndQueryClientProvider(
             <FlowProvider>
-                <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                    <EnqueueNode {...props} />
-                </Form>
+                <VoiceFlowProvider selectedNode={mockStep.id}>
+                    <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
+                        <EnqueueNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
             </FlowProvider>,
         )
     }

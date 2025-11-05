@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import React, { ComponentProps } from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -28,6 +28,7 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 
 import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { CustomerLookupNode } from '../CustomerLookupNode'
 
 const mockCustomFields: CustomField[] = [
@@ -145,11 +146,13 @@ const renderComponent = (
     return renderWithStoreAndQueryClientProvider(
         <FlowProvider>
             <Form defaultValues={formDefaultValues} onValidSubmit={jest.fn()}>
-                <Flow
-                    {...flowDefaultProps}
-                    nodesDraggable={false}
-                    panOnDrag={false}
-                />
+                <VoiceFlowProvider selectedNode={customerLookupStep.id}>
+                    <Flow
+                        {...flowDefaultProps}
+                        nodesDraggable={false}
+                        panOnDrag={false}
+                    />
+                </VoiceFlowProvider>
             </Form>
         </FlowProvider>,
         {},

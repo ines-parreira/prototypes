@@ -1,7 +1,6 @@
 import { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import {
     mockCallRoutingFlow,
@@ -9,29 +8,13 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { PlayMessageStep } from '@gorgias/helpdesk-types'
 
+import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowFormValues } from '../../types'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { PlayMessageNode } from '../PlayMessageNode'
-
-const TestWrapper = ({
-    children,
-    defaultValues,
-}: {
-    children: React.ReactNode
-    defaultValues: VoiceFlowFormValues
-}) => {
-    const methods = useForm<VoiceFlowFormValues>({
-        defaultValues,
-    })
-
-    return (
-        <FlowProvider>
-            <FormProvider {...methods}>{children}</FormProvider>
-        </FlowProvider>
-    )
-}
 
 describe('PlayMessageNode', () => {
     const renderComponent = (
@@ -39,13 +22,18 @@ describe('PlayMessageNode', () => {
         mockStep: PlayMessageStep,
     ) => {
         const props = {
+            id: mockStep.id,
             data: mockStep,
         } as ComponentProps<typeof PlayMessageNode>
 
         return renderWithStoreAndQueryClientProvider(
-            <TestWrapper defaultValues={mockFlow}>
-                <PlayMessageNode {...props} />
-            </TestWrapper>,
+            <FlowProvider>
+                <VoiceFlowProvider selectedNode={mockStep.id}>
+                    <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
+                        <PlayMessageNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
+            </FlowProvider>,
         )
     }
 

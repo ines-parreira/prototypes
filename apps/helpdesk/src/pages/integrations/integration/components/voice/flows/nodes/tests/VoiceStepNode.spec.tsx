@@ -53,13 +53,9 @@ describe('VoiceStepNode', () => {
     it('renders with basic props', () => {
         renderComponent(defaultProps)
 
-        expect(screen.getAllByText('Test Title')).toHaveLength(2) // drawer and card
+        expect(screen.getByText('Test Title')).toBeInTheDocument()
         expect(screen.getByText('Test Description')).toBeInTheDocument()
         expect(screen.getByText('Test Icon')).toBeInTheDocument()
-        expect(screen.getByText('Test Content')).toBeInTheDocument()
-        // expect(
-        //     screen.getByText('Learn more about Call Flows'),
-        // ).toBeInTheDocument()
 
         expect(screen.queryByRole('img', { name: 'octagon-error' })).toBeNull()
     })
@@ -135,6 +131,11 @@ describe('VoiceStepNode', () => {
                 expect(stepCardWrapper?.firstElementChild).toHaveClass(
                     'selected',
                 )
+
+                expect(screen.getByText('Test Content')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Learn more about Call Flows'),
+                ).toBeInTheDocument()
             })
         })
 

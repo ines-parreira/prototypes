@@ -107,7 +107,6 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(mockDefaultFlowData)
 
         await waitFor(() => {
-            expect(screen.getByLabelText('Business hours')).toBeChecked()
             expect(
                 screen.getByText('Inside business hours'),
             ).toBeInTheDocument()
@@ -144,7 +143,6 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(mockFlowData)
 
         await waitFor(() => {
-            expect(screen.getByLabelText('Custom hours')).toBeChecked()
             expect(screen.getByText('Inside custom hours')).toBeInTheDocument()
             expect(screen.getByText('Outside custom hours')).toBeInTheDocument()
         })

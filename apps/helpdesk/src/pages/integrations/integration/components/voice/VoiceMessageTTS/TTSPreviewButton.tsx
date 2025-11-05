@@ -68,7 +68,7 @@ const TTSPreviewButton = ({
     const { icon, label } = useMemo(() => {
         if (audioState === AudioState.LOADING) {
             return {
-                icon: <></>,
+                icon: undefined,
                 label: 'Loading',
             }
         }

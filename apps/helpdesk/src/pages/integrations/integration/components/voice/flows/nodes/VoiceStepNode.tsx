@@ -94,37 +94,39 @@ export function VoiceStepNode({
                     </StepCard>
                 </div>
             </NodeWrapper>
-            <Drawer
-                className={css.drawer}
-                fullscreen={false}
-                aria-label={title}
-                open={selected}
-                portalRootId="app-root"
-                isLoading={false}
-                withFooter={false}
-                showBackdrop={false}
-                containerZIndices={[10, 10]}
-            >
-                <Drawer.Header className={css.drawerHeader}>
-                    <span>{title}</span>
-                    <Drawer.HeaderActions
-                        onClose={handleDrawerClose}
-                        closeButtonId="close-button"
-                        className={css.headerActions}
-                    ></Drawer.HeaderActions>
-                </Drawer.Header>
+            {selected && ( // Render Drawer only when selected to improve performance, not only hide it
+                <Drawer
+                    className={css.drawer}
+                    fullscreen={false}
+                    aria-label={title}
+                    open={selected}
+                    portalRootId="app-root"
+                    isLoading={false}
+                    withFooter={false}
+                    showBackdrop={false}
+                    containerZIndices={[10, 10]}
+                >
+                    <Drawer.Header className={css.drawerHeader}>
+                        <span>{title}</span>
+                        <Drawer.HeaderActions
+                            onClose={handleDrawerClose}
+                            closeButtonId="close-button"
+                            className={css.headerActions}
+                        ></Drawer.HeaderActions>
+                    </Drawer.Header>
 
-                <Drawer.Content>
-                    <div className={css.learnMoreLink}>
-                        <LearnMoreLink url="https://docs.gorgias.com/en-US/manage-gorgias-call-flows-and-ivr-menus-296981">
-                            Learn more about Call Flows
-                        </LearnMoreLink>
-                    </div>
-                    <div className={css.drawerForm} ref={drawerRef}>
-                        {children}
-                    </div>
-                </Drawer.Content>
-            </Drawer>
+                    <Drawer.Content>
+                        <div className={css.learnMoreLink}>
+                            <LearnMoreLink url="https://docs.gorgias.com/en-US/manage-gorgias-call-flows-and-ivr-menus-296981">
+                                Learn more about Call Flows
+                            </LearnMoreLink>
+                        </div>
+                        <div className={css.drawerForm} ref={drawerRef}>
+                            {children}
+                        </div>
+                    </Drawer.Content>
+                </Drawer>
+            )}
         </>
     )
 }

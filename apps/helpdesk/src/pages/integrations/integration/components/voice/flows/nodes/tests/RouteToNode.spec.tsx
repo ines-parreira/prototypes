@@ -20,6 +20,7 @@ import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { RouteToNode } from '../RouteToNode'
 
 jest.mock(
@@ -52,14 +53,17 @@ const renderComponent = (
         })
 
     const props = {
+        id: mockStep.id,
         data: mockStep,
     } as ComponentProps<typeof RouteToNode>
 
     return renderWithStoreAndQueryClientAndRouter(
         <FlowProvider>
-            <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                <RouteToNode {...props} />
-            </Form>
+            <VoiceFlowProvider selectedNode={mockStep.id}>
+                <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
+                    <RouteToNode {...props} />
+                </Form>
+            </VoiceFlowProvider>
         </FlowProvider>,
         {},
         {

@@ -12,6 +12,7 @@ import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { SendToVoicemailNode } from '../SendToVoicemailNode'
 
 describe('SendToVoicemailNode', () => {
@@ -20,14 +21,17 @@ describe('SendToVoicemailNode', () => {
         mockStep: SendToVoicemailStep,
     ) => {
         const props = {
+            id: mockStep.id,
             data: mockStep,
         } as ComponentProps<typeof SendToVoicemailNode>
 
         return renderWithStoreAndQueryClientProvider(
             <FlowProvider>
-                <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                    <SendToVoicemailNode {...props} />
-                </Form>
+                <VoiceFlowProvider selectedNode={mockStep.id}>
+                    <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
+                        <SendToVoicemailNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
             </FlowProvider>,
         )
     }

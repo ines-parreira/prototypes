@@ -22,6 +22,7 @@ import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowFormValues } from '../../types'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { TimeSplitConditionalNode } from '../TimeSplitConditionalNode'
 
 // Mock business hours data
@@ -92,14 +93,20 @@ describe('TimeSplitConditionalNode', () => {
         mockFlowData: VoiceFlowFormValues,
     ) => {
         const props = {
+            id: mockStep.id,
             data: mockStep,
         } as ComponentProps<typeof TimeSplitConditionalNode>
 
         return renderWithStoreAndQueryClientProvider(
             <FlowProvider>
-                <Form defaultValues={mockFlowData} onValidSubmit={jest.fn()}>
-                    <TimeSplitConditionalNode {...props} />
-                </Form>
+                <VoiceFlowProvider selectedNode={mockStep.id}>
+                    <Form
+                        defaultValues={mockFlowData}
+                        onValidSubmit={jest.fn()}
+                    >
+                        <TimeSplitConditionalNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
             </FlowProvider>,
         )
     }

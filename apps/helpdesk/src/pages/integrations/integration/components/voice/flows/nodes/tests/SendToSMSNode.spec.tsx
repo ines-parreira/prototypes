@@ -17,6 +17,7 @@ import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowFormValues } from '../../types'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { SendToSMSNode } from '../SendToSMSNode'
 
 const server = setupServer()
@@ -86,14 +87,17 @@ describe('SendToSMSNode', () => {
         }
 
         const props = {
+            id: step.id,
             data: step,
         } as ComponentProps<typeof SendToSMSNode>
 
         return renderWithStoreAndQueryClientProvider(
             <FlowProvider>
-                <Form defaultValues={flowData} onValidSubmit={jest.fn()}>
-                    <SendToSMSNode {...props} />
-                </Form>
+                <VoiceFlowProvider selectedNode={step.id}>
+                    <Form defaultValues={flowData} onValidSubmit={jest.fn()}>
+                        <SendToSMSNode {...props} />
+                    </Form>
+                </VoiceFlowProvider>
             </FlowProvider>,
             {
                 entities: {

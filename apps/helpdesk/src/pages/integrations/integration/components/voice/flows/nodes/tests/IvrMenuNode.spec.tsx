@@ -16,6 +16,7 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import { VoiceFlowNodeType } from '../../constants'
 import { VoiceFlowNode } from '../../types'
 import { createIvrOptionNode } from '../../utils'
+import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { IvrMenuNode } from '../IvrMenuNode'
 
 const mockUpdateNodes = jest.fn()
@@ -113,13 +114,18 @@ const renderComponent = (
 ) => {
     return renderWithStoreAndQueryClientProvider(
         <FlowProvider>
-            <Form defaultValues={formDefaultValues} onValidSubmit={jest.fn()}>
-                <Flow
-                    {...flowDefaultProps}
-                    nodesDraggable={false}
-                    panOnDrag={false}
-                />
-            </Form>
+            <VoiceFlowProvider selectedNode={ivrMenuStep.id}>
+                <Form
+                    defaultValues={formDefaultValues}
+                    onValidSubmit={jest.fn()}
+                >
+                    <Flow
+                        {...flowDefaultProps}
+                        nodesDraggable={false}
+                        panOnDrag={false}
+                    />
+                </Form>
+            </VoiceFlowProvider>
         </FlowProvider>,
         {},
     )
@@ -275,7 +281,7 @@ describe('IvrMenuNode', () => {
         })
     })
 
-    it('should display info banner when nested ivr menu is detected', () => {
+    it('should display info banner when nested ivr menu is detected', async () => {
         const parentIvrMenuStep = mockIvrMenuStep({
             id: 'parent-ivr',
             branch_options: [
@@ -331,12 +337,19 @@ describe('IvrMenuNode', () => {
                 [VoiceFlowNodeType.IvrMenu]: IvrMenuNode,
             },
         }
+        const user = userEvent.setup()
 
         renderComponent(flowProps, nestedIvrFormValues)
 
-        expect(
-            screen.getByText(/This menu is a nested IVR/),
-        ).toBeInTheDocument()
+        await act(async () => {
+            await user.click(screen.getAllByText('IVR Menu')[1])
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/This menu is a nested IVR/),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should not render node when form value does not exist', () => {
