@@ -1339,7 +1339,7 @@ describe('<Routes/>', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/ai-journey/shopify-store/performance',
+                    '/app/ai-journey/shopify-store',
                 )
             })
         })

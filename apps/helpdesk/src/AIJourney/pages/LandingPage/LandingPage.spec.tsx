@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
@@ -128,19 +129,25 @@ describe('<LandingPage />', () => {
         })
     })
 
-    it('should redirect to performance page when AI Journey is already active', async () => {
+    it('should redirect to performance page when there are journeys (active or not)', async () => {
         mockUseJourneyContext.mockReturnValue({
-            journeyData: {
-                id: 'journey-123',
-                type: 'cart_abandoned',
-                configuration: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '(415)-111-111',
-                    sms_sender_integration_id: 1,
+            journeys: [
+                {
+                    id: 'journey-1',
+                    state: JourneyStatusEnum.Draft,
+                    type: 'cart_abandoned',
                 },
-            },
+                {
+                    id: 'journey-2',
+                    state: JourneyStatusEnum.Active,
+                    type: 'session_abandoned',
+                },
+                {
+                    id: 'journey-3',
+                    state: JourneyStatusEnum.Draft,
+                    type: 'cart_abandoned',
+                },
+            ],
             currentIntegration: { id: 1, name: 'shopify-store' },
             shopName: 'shopify-store',
             isLoading: false,
@@ -164,6 +171,35 @@ describe('<LandingPage />', () => {
 
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should not redirect to performance page when there are no journeys', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeys: [],
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(mockHistoryPush).toHaveBeenCalledTimes(0)
         })
     })
 })

@@ -41,16 +41,13 @@ export const LandingPage = () => {
         },
     ]
 
-    const { journeyData, isLoading } = useJourneyContext()
-
-    const shouldAccessOnboarding: boolean =
-        !journeyData || journeyData?.state === 'draft'
+    const { journeys, isLoading } = useJourneyContext()
 
     useEffect(() => {
-        if (!shouldAccessOnboarding) {
+        if (journeys?.length) {
             history.push(`/app/ai-journey/${shopName}/performance`)
         }
-    }, [shouldAccessOnboarding, history, shopName])
+    }, [journeys, history, shopName])
 
     const handleContinue = () => {
         const journeyTypeToRedirect = isSessionAbandonedEnabled
