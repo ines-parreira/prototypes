@@ -81,9 +81,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     const createNewJourney = useCreateNewJourney()
 
-    const [campaignTitleValue, setCampaignTitleValue] = useState<string>(
-        journeyData?.campaign?.title ?? '',
-    )
+    const [campaignTitleValue, setCampaignTitleValue] = useState<
+        string | undefined
+    >(journeyData?.campaign?.title)
 
     const [numberOfMessageValue, setNumberOfMessageValue] = useState<number>(
         (journeyParams?.max_follow_up_messages ?? 0) + 1,
@@ -127,7 +127,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     useEffect(() => {
         if (journeyData) {
-            setCampaignTitleValue(journeyData?.campaign?.title ?? '')
+            setCampaignTitleValue(journeyData?.campaign?.title)
         }
     }, [journeyData])
 
@@ -173,9 +173,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     store_integration_id: currentIntegration.id,
                     store_name: currentIntegration.name,
                     type: JOURNEY_TYPE_MAP_FROM_URL[journeyType],
-                    campaign: {
-                        title: campaignTitleValue,
-                    },
+                    campaign: campaignTitleValue
+                        ? {
+                              title: campaignTitleValue,
+                          }
+                        : undefined,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
@@ -217,7 +219,6 @@ export const Setup = ({ journeyType }: SetupProps) => {
             ? discountCodeThreshold
             : undefined,
         includeImage: isImageEnabled,
-        campaignTitle: campaignTitleValue,
     })
 
     const handleContinue = async () => {
@@ -227,6 +228,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     journeyMessageInstructions:
                         journeyData.message_instructions,
                     journeyState: journeyData.state,
+                    campaignTitle: campaignTitleValue,
                 })
                 setIsVisible(false)
                 history.push(

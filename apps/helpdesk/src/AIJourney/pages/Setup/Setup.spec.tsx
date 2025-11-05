@@ -591,9 +591,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
                         type: 'cart_abandoned',
-                        campaign: {
-                            title: '',
-                        },
                     },
                     journeyConfigs: {
                         discount_code_message_threshold: 1,
@@ -744,9 +741,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
-                    campaign: {
-                        title: '',
-                    },
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -878,9 +872,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
-                    campaign: {
-                        title: '',
-                    },
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -953,9 +944,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
-                    campaign: {
-                        title: '',
-                    },
                 },
                 journeyConfigs: {
                     discount_code_message_threshold: undefined,
@@ -1078,6 +1066,67 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
                     '/app/ai-journey/shopify-store/campaign/test/campaign-journey-123',
+                )
+            })
+        })
+
+        it('should display existing campaign title when editing campaign journey', async () => {
+            // Mock context for campaign journey with existing data
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-edit-123',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'test name',
+                    },
+                    configuration: {
+                        max_follow_up_messages: 0,
+                        offer_discount: false,
+                        max_discount_percent: 0,
+                        sms_sender_number: '+1 555-123-4567',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            // Verify that the campaign title is pre-filled with existing value
+            const campaignInput = screen.getByPlaceholderText('Campaign name')
+            expect(campaignInput).toHaveValue('test name')
+
+            // Click continue button to trigger update
+            const button = screen.getByTestId('ai-journey-button')
+            expect(button).toBeEnabled()
+
+            await act(async () => {
+                await userEvent.click(button)
+            })
+
+            // Verify handleUpdate was called for existing journey
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+            })
+
+            // Verify navigation to test page with existing campaign journey ID
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/shopify-store/campaign/test/campaign-journey-edit-123',
                 )
             })
         })

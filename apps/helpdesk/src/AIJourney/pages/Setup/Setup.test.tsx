@@ -474,9 +474,6 @@ describe('Setup', () => {
                         store_integration_id: 100,
                         store_name: 'Test Store',
                         type: 'cart_abandoned',
-                        campaign: {
-                            title: '',
-                        },
                     },
                     journeyConfigs: {
                         max_follow_up_messages: 4,

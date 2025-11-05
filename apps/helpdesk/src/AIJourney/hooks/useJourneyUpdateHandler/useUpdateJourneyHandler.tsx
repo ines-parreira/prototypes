@@ -20,7 +20,6 @@ type UseJourneyActionsParams = {
     phoneNumberValue?: NewPhoneNumber
     discountCodeThresholdValue?: number
     includeImage?: boolean
-    campaignTitle?: string
 }
 
 export const useJourneyUpdateHandler = ({
@@ -32,7 +31,6 @@ export const useJourneyUpdateHandler = ({
     phoneNumberValue,
     discountCodeThresholdValue,
     includeImage,
-    campaignTitle,
 }: UseJourneyActionsParams) => {
     const queryClient = useQueryClient()
 
@@ -43,9 +41,11 @@ export const useJourneyUpdateHandler = ({
         async ({
             journeyState,
             journeyMessageInstructions,
+            campaignTitle,
         }: {
             journeyState: JourneyStatusEnum
             journeyMessageInstructions?: string | null
+            campaignTitle?: string
         }) => {
             try {
                 if (!integrationId || !journey?.id) {
@@ -115,7 +115,6 @@ export const useJourneyUpdateHandler = ({
             phoneNumberValue,
             discountCodeThresholdValue,
             includeImage,
-            campaignTitle,
             updateJourney,
             dispatch,
             queryClient,
