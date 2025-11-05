@@ -1,5 +1,4 @@
 import { JourneyTypeEnum } from '@gorgias/convert-client'
-import { Customer } from '@gorgias/helpdesk-types'
 
 import { Product } from 'constants/integrations/types/shopify'
 
@@ -40,7 +39,7 @@ export type PlaygroundModes = 'inbound' | 'outbound'
 
 export type InboundSettings = {
     chatAvailability: PlaygroundChannelAvailability
-    selectedCustomer: Customer | null
+    selectedCustomer: PlaygroundCustomer
     areActionsEnabled: boolean
 }
 

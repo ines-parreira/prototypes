@@ -12,6 +12,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { AIJourneyProvider } from '../../contexts/AIJourneyContext'
 import { CoreProvider } from '../../contexts/CoreContext'
+import { EventsProvider } from '../../contexts/EventsContext'
 import { SettingsProvider } from '../../contexts/SettingsContext'
 import { PlaygroundSettings } from './PlaygroundSettings'
 
@@ -126,9 +127,28 @@ jest.mock('core/flags/hooks/useFlag', () => ({
     default: jest.fn(() => true),
 }))
 
+const mockUseSettingsChanged = jest.fn()
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged', () => ({
+    useSettingsChanged: () => mockUseSettingsChanged(),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/contexts/MessagesContext', () => ({
+    useMessagesContext: () => ({
+        messages: [],
+        onMessageSend: jest.fn(),
+        isMessageSending: false,
+        onNewConversation: jest.fn(),
+        isWaitingResponse: false,
+        draftMessage: '',
+        draftSubject: '',
+        setDraftMessage: jest.fn(),
+        setDraftSubject: jest.fn(),
+    }),
+}))
+
 jest.mock('@gorgias/axiom', () => ({
-    Button: ({ children, onClick, icon, ...props }: any) => (
-        <button onClick={onClick} {...props}>
+    Button: ({ children, onClick, icon, isDisabled, ...props }: any) => (
+        <button onClick={onClick} disabled={isDisabled} {...props}>
             {icon && <span data-icon={icon} />}
             {children}
         </button>
@@ -175,6 +195,27 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
         'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
     ),
     AIJourneyProvider: ({ children }: any) => <div>{children}</div>,
+    useAIJourneyContext: () => ({
+        shopifyIntegration: undefined,
+        journeys: [],
+        shopName: 'test-shop',
+        isLoadingJourneys: false,
+        aiJourneySettings: {
+            journeyType: 'cart-abandoned',
+            selectedProduct: null,
+            totalFollowUp: 1,
+            includeProductImage: true,
+            includeDiscountCode: true,
+            discountCodeValue: 10,
+            discountCodeMessageIdx: 1,
+            outboundMessageInstructions: '',
+        },
+        setAIJourneySettings: jest.fn(),
+        resetAIJourneySettings: jest.fn(),
+        saveAIJourneySettings: jest.fn(),
+        isLoadingJourneyData: false,
+        isSavingJourneyData: false,
+    }),
 }))
 
 const queryClient = mockQueryClient()
@@ -186,9 +227,11 @@ const renderComponent = () => {
             <QueryClientProvider client={queryClient}>
                 <AIJourneyProvider shopName="test-shop">
                     <CoreProvider>
-                        <SettingsProvider>
-                            <PlaygroundSettings />
-                        </SettingsProvider>
+                        <EventsProvider>
+                            <SettingsProvider>
+                                <PlaygroundSettings />
+                            </SettingsProvider>
+                        </EventsProvider>
                     </CoreProvider>
                 </AIJourneyProvider>
             </QueryClientProvider>
@@ -199,6 +242,12 @@ const renderComponent = () => {
 describe('PlaygroundSettings', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseSettingsChanged.mockReturnValue({
+            hasChanged: false,
+            hasInboundChanged: false,
+            hasOutboundChanged: false,
+            resetInitialState: jest.fn(),
+        })
     })
 
     describe('Header', () => {
@@ -417,6 +466,48 @@ describe('PlaygroundSettings', () => {
             expect(
                 screen.getByRole('button', { name: /apply/i }),
             ).toBeInTheDocument()
+        })
+
+        it('should have apply button disabled when no changes are made', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: false,
+                hasInboundChanged: false,
+                hasOutboundChanged: false,
+                resetInitialState: jest.fn(),
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', { name: /apply/i })
+            expect(applyButton).toBeDisabled()
+        })
+
+        it('should have apply button enabled when inbound settings change', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: true,
+                hasOutboundChanged: false,
+                resetInitialState: jest.fn(),
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', { name: /apply/i })
+            expect(applyButton).not.toBeDisabled()
+        })
+
+        it('should have apply button enabled when outbound settings change', async () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: false,
+                hasOutboundChanged: true,
+                resetInitialState: jest.fn(),
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', { name: /apply/i })
+            expect(applyButton).not.toBeDisabled()
         })
     })
 

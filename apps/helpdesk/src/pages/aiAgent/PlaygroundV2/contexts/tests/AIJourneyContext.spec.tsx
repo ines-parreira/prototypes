@@ -24,6 +24,10 @@ jest.mock('AIJourney/queries', () => ({
     useUpdateJourney: jest.fn(),
 }))
 
+jest.mock('AIJourney/providers', () => ({
+    TokenProvider: ({ children }: any) => <div>{children}</div>,
+}))
+
 jest.mock('hooks/useAppSelector')
 
 const mockUseJourneys = useJourneys as jest.Mock

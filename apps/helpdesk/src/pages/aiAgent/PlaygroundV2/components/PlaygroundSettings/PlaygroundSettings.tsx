@@ -6,12 +6,17 @@ import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourn
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
 import { PlaygroundSegmentControl } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSegmentControl/PlaygroundSegmentControl'
 import { TargetSelection } from 'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection'
+import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
+import { useSettingsChanged } from 'pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundCustomer,
+    PlaygroundEvent,
 } from 'pages/aiAgent/PlaygroundV2/types'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
@@ -45,6 +50,8 @@ const InboundSettings: React.FC = () => {
         areActionsEnabled,
     } = useSettingsContext()
 
+    const { setDraftMessage, setDraftSubject } = useMessagesContext()
+
     const { channel, onChannelChange } = useCoreContext()
 
     const selectedOption = useMemo(
@@ -69,12 +76,26 @@ const InboundSettings: React.FC = () => {
     )
 
     const handleUpdateCustomer = useCallback(
-        ({ customer }: { customer: PlaygroundCustomer }) => {
+        ({
+            customer,
+            subject,
+            message,
+        }: {
+            customer: PlaygroundCustomer
+            subject?: string
+            message?: string
+        }) => {
             setSettings({
                 selectedCustomer: customer,
             })
+            if (subject) {
+                setDraftSubject(subject)
+            }
+            if (message) {
+                setDraftMessage(message)
+            }
         },
-        [setSettings],
+        [setSettings, setDraftMessage, setDraftSubject],
     )
 
     const handleUpdateActions = useCallback(
@@ -139,9 +160,28 @@ const SettingsHeader = () => {
 }
 
 const SettingsFooter = () => {
+    const { hasChanged, resetInitialState } = useSettingsChanged()
+    const { mode } = useSettingsContext()
+    const { saveAIJourneySettings, isSavingJourneyData } = useAIJourneyContext()
+    const { emit } = useEvents()
+
+    const handleApply = useCallback(async () => {
+        if (mode === 'outbound') {
+            await saveAIJourneySettings()
+        }
+        emit(PlaygroundEvent.RESET_CONVERSATION)
+        resetInitialState()
+    }, [mode, saveAIJourneySettings, resetInitialState, emit])
+
     return (
         <div className={css.settingsFooter}>
-            <Button>Apply</Button>
+            <Button
+                isDisabled={!hasChanged}
+                onClick={handleApply}
+                isLoading={isSavingJourneyData}
+            >
+                {mode === 'inbound' ? 'Apply' : 'Save and Apply'}
+            </Button>
         </div>
     )
 }

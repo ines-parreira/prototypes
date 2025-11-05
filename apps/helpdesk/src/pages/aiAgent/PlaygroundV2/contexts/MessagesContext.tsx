@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
 import {
     PlaygroundMessage,
@@ -6,8 +6,7 @@ import {
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
 import { usePlaygroundMessages } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundMessages'
-
-import { PlaygroundCustomer } from '../types'
+import { PlaygroundCustomer } from 'pages/aiAgent/PlaygroundV2/types'
 
 type MessagesContextValue = {
     messages: PlaygroundMessage[]
@@ -18,6 +17,10 @@ type MessagesContextValue = {
     isMessageSending: boolean
     onNewConversation: () => void
     isWaitingResponse: boolean
+    draftMessage: string
+    draftSubject: string
+    setDraftMessage: (message: string) => void
+    setDraftSubject: (subject: string) => void
 }
 
 const MessagesContext = createContext<MessagesContextValue | undefined>(
@@ -39,10 +42,24 @@ type MessagesProviderProps = {
 }
 
 export const MessagesProvider = ({ children }: MessagesProviderProps) => {
+    const [draftMessage, setDraftMessage] = useState('')
+    const [draftSubject, setDraftSubject] = useState('')
+
     const messageState = usePlaygroundMessages()
 
+    const value = useMemo(
+        () => ({
+            ...messageState,
+            draftMessage,
+            draftSubject,
+            setDraftMessage,
+            setDraftSubject,
+        }),
+        [messageState, draftMessage, draftSubject],
+    )
+
     return (
-        <MessagesContext.Provider value={messageState}>
+        <MessagesContext.Provider value={value}>
             {children}
         </MessagesContext.Provider>
     )

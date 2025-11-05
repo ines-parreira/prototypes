@@ -1,22 +1,17 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
-import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
-import { PlaygroundFormValues } from '../types'
+import { useMessagesContext } from '../contexts/MessagesContext'
+import { useSettingsContext } from '../contexts/SettingsContext'
+import { PlaygroundCustomer, PlaygroundFormValues } from '../types'
 
 export type { PlaygroundFormValues }
-
-const INITIAL_FORM_VALUES: PlaygroundFormValues = {
-    message: '',
-    subject: '',
-    customer: DEFAULT_PLAYGROUND_CUSTOMER,
-}
 
 export const usePlaygroundForm = ({
     shopName,
@@ -29,8 +24,18 @@ export const usePlaygroundForm = ({
     helpCenterId: number | null
     guidanceHelpCenterId: number | null
 }) => {
-    const [formValues, setFormValues] =
-        useState<PlaygroundFormValues>(INITIAL_FORM_VALUES)
+    const { draftMessage, draftSubject, setDraftMessage, setDraftSubject } =
+        useMessagesContext()
+    const { selectedCustomer, setSettings } = useSettingsContext()
+
+    const formValues = useMemo<PlaygroundFormValues>(
+        () => ({
+            message: draftMessage,
+            subject: draftSubject,
+            customer: selectedCustomer,
+        }),
+        [draftMessage, draftSubject, selectedCustomer],
+    )
 
     const { sourceItems } = usePublicResources({
         helpCenterId: snippetHelpCenterId,
@@ -64,22 +69,12 @@ export const usePlaygroundForm = ({
         helpCenterId === null &&
         guidanceUsed.length === 0
 
-    const validateFormValues = (formValues: PlaygroundFormValues) => {
-        const formValuesValidity: Record<string, boolean> = {
-            message: formValues.message.length > 0,
-        }
-
-        return Object.values(formValuesValidity).every(Boolean)
-    }
-
-    const isFormValid = useMemo(
-        () => validateFormValues(formValues),
-        [formValues],
-    )
+    const isFormValid = useMemo(() => draftMessage.length > 0, [draftMessage])
 
     const clearForm = useCallback(() => {
-        setFormValues(INITIAL_FORM_VALUES)
-    }, [])
+        setDraftMessage('')
+        setDraftSubject('')
+    }, [setDraftMessage, setDraftSubject])
     const isDisabled = useMemo(
         () => isPendingResources || isKnowledgeBaseEmpty || !isFormValid,
         [isFormValid, isKnowledgeBaseEmpty, isPendingResources],
@@ -108,12 +103,15 @@ export const usePlaygroundForm = ({
             key: Key,
             value: PlaygroundFormValues[Key],
         ) => {
-            setFormValues((preFormValues: PlaygroundFormValues) => ({
-                ...preFormValues,
-                [key]: value,
-            }))
+            if (key === 'message') {
+                setDraftMessage(value as string)
+            } else if (key === 'subject') {
+                setDraftSubject(value as string)
+            } else if (key === 'customer') {
+                setSettings({ selectedCustomer: value as PlaygroundCustomer })
+            }
         },
-        [],
+        [setDraftMessage, setDraftSubject, setSettings],
     )
 
     return {

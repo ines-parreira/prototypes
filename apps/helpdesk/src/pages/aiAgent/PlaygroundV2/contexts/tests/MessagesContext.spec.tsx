@@ -138,6 +138,10 @@ describe('MessagesContext', () => {
                 isMessageSending: false,
                 onNewConversation: mockOnNewConversation,
                 isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: expect.any(Function),
+                setDraftSubject: expect.any(Function),
             })
         })
 
