@@ -64,7 +64,6 @@ const mockUseGetStoresConfigurationForAccount =
 
 const TestComponent = () => {
     const {
-        currentJourney,
         journeyData,
         currentIntegration,
         shopName,
@@ -83,7 +82,7 @@ const TestComponent = () => {
             <div data-testid="currentIntegration">
                 {currentIntegration?.name}
             </div>
-            <div data-testid="journey">{currentJourney?.id}</div>
+            <div data-testid="journey">{journeyData?.id}</div>
             <div data-testid="journeyConfiguration">
                 {journeyData?.configuration?.max_follow_up_messages}
             </div>
@@ -142,6 +141,7 @@ describe('<JourneyProvider />', () => {
         })
         mockUseJourneyData.mockReturnValue({
             data: {
+                id: 'journey-1',
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -268,7 +268,8 @@ describe('<JourneyProvider />', () => {
         it('should extract session-abandoned from URL path', () => {
             useParamsMock.mockReturnValue({ shopName: 'test-shop' })
             useLocationMock.mockReturnValue({
-                pathname: '/app/ai-journey/test-shop/session-abandoned/test',
+                pathname:
+                    '/app/ai-journey/test-shop/session-abandoned/test/journey-456',
             } as Location)
 
             mockUseIntegrations.mockReturnValue({

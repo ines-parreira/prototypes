@@ -11,16 +11,14 @@ import {
     Performance,
     Playground,
 } from 'AIJourney/pages'
+import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import {
-    CampaignProvider,
     IntegrationsProvider,
     JourneyProvider,
     TokenProvider,
     useIntegrations,
 } from 'AIJourney/providers'
 import App from 'pages/App'
-
-import { Campaigns } from '../pages/Campaigns/Campaigns'
 
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
@@ -57,26 +55,23 @@ function AiJourneyBaseRoutes() {
                             {AI_JOURNEY_ONBOARDING_STEPS.map(
                                 ({ journeyType, steps }) =>
                                     steps.map(
-                                        ({ stepName, component }: any) => {
-                                            return (
-                                                <Route
-                                                    path={`${path}/:shopName/${journeyType}/${stepName}`}
-                                                    exact
-                                                    render={() => (
-                                                        <AiJourneyOnboarding
-                                                            journeyType={
-                                                                journeyType
-                                                            }
-                                                            step={stepName}
-                                                            stepComponent={
-                                                                component
-                                                            }
-                                                        />
-                                                    )}
-                                                    key={`${journeyType}-journey-${stepName}`}
-                                                />
-                                            )
-                                        },
+                                        ({ stepName, component }: any) => (
+                                            <Route
+                                                path={`${path}/:shopName/${journeyType}/${stepName}`}
+                                                render={() => (
+                                                    <AiJourneyOnboarding
+                                                        journeyType={
+                                                            journeyType
+                                                        }
+                                                        step={stepName}
+                                                        stepComponent={
+                                                            component
+                                                        }
+                                                    />
+                                                )}
+                                                key={`${journeyType}-journey-${stepName}`}
+                                            />
+                                        ),
                                     ),
                             )}
                             <Route
@@ -97,11 +92,7 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName/campaigns`}
                                 exact
-                                render={() => (
-                                    <CampaignProvider>
-                                        <Campaigns />
-                                    </CampaignProvider>
-                                )}
+                                render={() => <Campaigns />}
                             />
                             <Route render={() => <LandingPage />} />
                         </Switch>

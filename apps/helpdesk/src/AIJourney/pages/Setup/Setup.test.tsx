@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
@@ -141,11 +142,9 @@ const mockPhoneNumbers: NewPhoneNumber[] = [
 ]
 
 const mockJourneyContext = {
-    currentJourney: {
+    journeyData: {
         id: 'journey-123',
         state: 'active',
-    },
-    journeyData: {
         configuration: {
             max_follow_up_messages: 2,
             offer_discount: true,
@@ -241,7 +240,7 @@ describe('Setup', () => {
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <Router history={history}>
-                        <Setup />
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </Router>
                 </QueryClientProvider>
             </Provider>,
@@ -413,7 +412,7 @@ describe('Setup', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/ai-journey/test-shop/cart-abandoned/test',
+                    '/app/ai-journey/test-shop/cart-abandoned/test/journey-123',
                 )
             })
         })
@@ -441,14 +440,30 @@ describe('Setup', () => {
             // Mock context without existing journey
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                currentJourney: null,
+                journeyData: null,
             } as any)
         })
 
         it('should call createNewJourney when no journey exists', async () => {
-            mockCreateJourneyMutate.mockResolvedValue({})
+            mockCreateJourneyMutate.mockResolvedValue({ id: 'new-journey-123' })
 
             renderSetup()
+
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
+
+            // Select messages
+            const messagesInput = screen.getByTestId('messages-input')
+            fireEvent.click(messagesInput)
+
+            // Enable discount
+            const discountToggle = screen.getByTestId('discount-toggle')
+            fireEvent.click(discountToggle)
+
+            // Set discount value
+            const discountInput = screen.getByTestId('discount-input')
+            fireEvent.change(discountInput, { target: { value: '15' } })
 
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
@@ -459,9 +474,12 @@ describe('Setup', () => {
                         store_integration_id: 100,
                         store_name: 'Test Store',
                         type: 'cart_abandoned',
+                        campaign: {
+                            title: '',
+                        },
                     },
                     journeyConfigs: {
-                        max_follow_up_messages: 2,
+                        max_follow_up_messages: 4,
                         offer_discount: true,
                         max_discount_percent: 15,
                         sms_sender_integration_id: 123,
@@ -477,6 +495,10 @@ describe('Setup', () => {
             mockCreateJourneyMutate.mockRejectedValue(error)
 
             renderSetup()
+
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
 
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
@@ -496,11 +518,15 @@ describe('Setup', () => {
             // Mock context without integration
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                currentJourney: null,
+                journeyData: null,
                 currentIntegration: null,
             } as any)
 
             renderSetup()
+
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
 
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
@@ -521,7 +547,7 @@ describe('Setup', () => {
             // Mock context with integration without name
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                currentJourney: null,
+                journeyData: null,
                 currentIntegration: {
                     id: 100,
                     name: undefined,
@@ -529,6 +555,10 @@ describe('Setup', () => {
             } as any)
 
             renderSetup()
+
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
 
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
@@ -549,7 +579,7 @@ describe('Setup', () => {
             // Mock context with integration without id
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                currentJourney: null,
+                journeyData: null,
                 currentIntegration: {
                     id: undefined,
                     name: 'Test Store',
@@ -557,6 +587,10 @@ describe('Setup', () => {
             } as any)
 
             renderSetup()
+
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
 
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
@@ -606,7 +640,9 @@ describe('Setup', () => {
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <Router history={history}>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </Router>
                     </QueryClientProvider>
                 </Provider>,
@@ -684,19 +720,18 @@ describe('Setup', () => {
         it('should handle creation with disabled discount', async () => {
             mockUseJourneyContext.mockReturnValue({
                 ...mockJourneyContext,
-                currentJourney: null,
-                journeyData: {
-                    configuration: {
-                        ...mockJourneyContext.journeyData!.configuration,
-                        offer_discount: false,
-                    },
-                },
+                journeyData: null, // No journey data - we're creating
             } as any)
 
-            mockCreateJourneyMutate.mockResolvedValue({})
+            mockCreateJourneyMutate.mockResolvedValue({ id: 'new-journey-123' })
 
             renderSetup()
 
+            // Select a phone number first
+            const phoneSelect = screen.getByTestId('phone-number-select')
+            fireEvent.click(phoneSelect)
+
+            // Don't enable discount (it's already disabled by default)
             const continueButton = screen.getByTestId('continue-button')
             fireEvent.click(continueButton)
 
@@ -705,6 +740,7 @@ describe('Setup', () => {
                     expect.objectContaining({
                         journeyConfigs: expect.objectContaining({
                             discount_code_message_threshold: undefined,
+                            offer_discount: false,
                         }),
                     }),
                 )

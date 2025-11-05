@@ -8,7 +8,7 @@ import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { TotalConversationsCard } from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'
-import { JOURNEY_TYPES_MAP_TO_STRING } from 'AIJourney/constants'
+import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
 import { useJourneyUpdateHandler, useKpisPerJourney } from 'AIJourney/hooks'
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
@@ -137,7 +137,7 @@ export const AnalyticsCard = ({
 
     const shouldRenderMoreOptions = shopName && journeyType
 
-    const formattedJourneyType = JOURNEY_TYPES_MAP_TO_STRING[journey.type]
+    const formattedJourneyType = JOURNEY_TYPE_MAP_TO_STRING[journey.type]
 
     const cardContent = () => {
         if (isLoadingMetrics) {
@@ -167,6 +167,7 @@ export const AnalyticsCard = ({
                             shopName={shopName}
                             journeyState={journeyState}
                             journeyType={journeyType}
+                            journeyId={journey.id}
                             handleChangeStatus={handleUpdateJourneyState}
                         />
                     )}

@@ -12,7 +12,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 type useHandleSendTestSMSProps = {
-    currentJourney: JourneyApiDTO | undefined
+    journeyData: JourneyApiDTO | undefined
     selectedProduct: Product | null
     testSmsNumber: string | undefined
     currentIntegration?: Integration
@@ -20,7 +20,7 @@ type useHandleSendTestSMSProps = {
 }
 
 export const useHandleSendTestSMS = ({
-    currentJourney,
+    journeyData,
     selectedProduct,
     testSmsNumber,
     currentIntegration,
@@ -41,13 +41,13 @@ export const useHandleSendTestSMS = ({
                 )
                 return
             } else if (
-                !currentJourney?.id ||
+                !journeyData?.id ||
                 !testSmsNumber ||
                 !currentIntegration
             ) {
                 void dispatch(
                     notify({
-                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${currentJourney?.id}, integrationId: ${currentIntegration?.id}`,
+                        message: `Missing information: test number: ${testSmsNumber}, journeyID: ${journeyData?.id}, integrationId: ${currentIntegration?.id}`,
                         status: NotificationStatus.Error,
                     }),
                 )
@@ -73,7 +73,7 @@ export const useHandleSendTestSMS = ({
 
             await testSms.mutateAsync({
                 phoneNumber,
-                journeyId: currentJourney.id,
+                journeyId: journeyData.id,
                 product: {
                     product_id: String(selectedProduct.id),
                     variant_id: String(selectedProduct.variants[0].id),
@@ -104,7 +104,7 @@ export const useHandleSendTestSMS = ({
         }
     }, [
         currentIntegration,
-        currentJourney,
+        journeyData,
         delaySendingSMSms,
         dispatch,
         testSms,

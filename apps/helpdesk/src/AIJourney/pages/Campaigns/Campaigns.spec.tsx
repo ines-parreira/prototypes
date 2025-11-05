@@ -5,23 +5,30 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { CampaignProvider, IntegrationsProvider } from 'AIJourney/providers'
+import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 
 import { Campaigns } from './Campaigns'
 
-jest.mock('AIJourney/providers/CampaignProvider/CampaignProvider', () => ({
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
-        'AIJourney/providers/CampaignProvider/CampaignProvider',
+        'AIJourney/providers/JourneyProvider/JourneyProvider',
     ),
-    useCampaignContext: jest.fn(),
+    useJourneyContext: jest.fn(),
 }))
 
-const mockUseCampaignContext =
-    require('AIJourney/providers/CampaignProvider/CampaignProvider')
-        .useCampaignContext as jest.Mock
+const mockUseJourneyContext =
+    require('AIJourney/providers/JourneyProvider/JourneyProvider')
+        .useJourneyContext as jest.Mock
+
+jest.mock('AIJourney/queries', () => ({
+    ...jest.requireActual('AIJourney/queries'),
+    useJourneys: jest.fn(),
+}))
+
+const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 
 describe('<Campaigns />', () => {
     const mockStore = configureMockStore([thunk])({
@@ -31,22 +38,21 @@ describe('<Campaigns />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseCampaignContext.mockReturnValue({
-            campaigns: [
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1, name: 'Test Integration' },
+        })
+
+        mockUseJourneys.mockImplementation(() => ({
+            data: [
                 { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
                 {
                     id: '2',
                     campaign: { title: 'Campaign 2', state: 'inactive' },
                 },
             ],
-            currentIntegration: { id: 1, name: 'Test Integration' },
-            shopName: 'test-shop',
+            isError: false,
             isLoading: false,
-            storeConfiguration: {
-                storeName: 'test-shop',
-                monitoredSmsIntegrations: [1, 2],
-            },
-        })
+        }))
     })
 
     it('should render the campaigns page', () => {
@@ -54,9 +60,9 @@ describe('<Campaigns />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <CampaignProvider>
+                        <JourneyProvider>
                             <Campaigns />
-                        </CampaignProvider>
+                        </JourneyProvider>
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -72,9 +78,9 @@ describe('<Campaigns />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <CampaignProvider>
+                        <JourneyProvider>
                             <Campaigns />
-                        </CampaignProvider>
+                        </JourneyProvider>
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -87,24 +93,19 @@ describe('<Campaigns />', () => {
     })
 
     it('should render empty state when no campaigns', () => {
-        mockUseCampaignContext.mockReturnValue({
-            campaigns: [],
-            currentIntegration: { id: 1, name: 'Test Integration' },
-            shopName: 'test-shop',
+        mockUseJourneys.mockImplementation(() => ({
+            data: [],
+            isError: false,
             isLoading: false,
-            storeConfiguration: {
-                storeName: 'test-shop',
-                monitoredSmsIntegrations: [1, 2],
-            },
-        })
+        }))
 
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <CampaignProvider>
+                        <JourneyProvider>
                             <Campaigns />
-                        </CampaignProvider>
+                        </JourneyProvider>
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,

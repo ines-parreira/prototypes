@@ -28,7 +28,6 @@ export const Test = () => {
     const history = useHistory()
 
     const {
-        currentJourney,
         journeyData,
         journeyType,
         currentIntegration,
@@ -38,7 +37,7 @@ export const Test = () => {
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
-        useState<string>(currentJourney?.message_instructions || '')
+        useState<string>(journeyData?.message_instructions || '')
 
     const integrationId = currentIntegration?.id
 
@@ -57,7 +56,7 @@ export const Test = () => {
 
     const { handleGenerateMessages, playgroundMessages, isGeneratingMessages } =
         useGeneratePlaygroundMessage({
-            journey: currentJourney,
+            journey: journeyData,
             currentIntegration,
             journeyParams,
             journeyType,
@@ -68,14 +67,14 @@ export const Test = () => {
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        journey: currentJourney,
+        journey: journeyData,
     })
 
     useEffect(() => {
-        if (currentJourney?.message_instructions) {
-            setJourneyMessageInstructions(currentJourney.message_instructions)
+        if (journeyData?.message_instructions) {
+            setJourneyMessageInstructions(journeyData.message_instructions)
         }
-    }, [currentJourney])
+    }, [journeyData])
 
     useEffect(() => {
         if (productList.length > 0 && !selectedProduct) {
@@ -85,10 +84,12 @@ export const Test = () => {
 
     const handleContinue = async () => {
         await handleUpdate({
-            journeyState: currentJourney?.state || 'draft',
+            journeyState: journeyData?.state || 'draft',
             journeyMessageInstructions,
         })
-        history.push(`/app/ai-journey/${shopName}/${journeyType}/activate`)
+        history.push(
+            `/app/ai-journey/${shopName}/${journeyType}/activate/${journeyData?.id}`,
+        )
     }
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
@@ -97,17 +98,34 @@ export const Test = () => {
         return <LoadingSpinner />
     }
 
+    if (!journeyData) {
+        return (
+            <div className={css.container}>
+                <p>Page not found.</p>
+            </div>
+        )
+    }
+
     const textContent = {
         [JOURNEY_TYPES.CART_ABANDONMENT]: {
             name: 'Preview your abandoned cart messages',
             description:
                 'See the messages your customers would receive if they left something in their cart.',
         },
-
         [JOURNEY_TYPES.SESSION_ABANDONMENT]: {
             name: 'Preview your abandoned browse messages',
             description:
                 'See the messages your customers would receive if they leave the product page without adding anything to their cart.',
+        },
+        [JOURNEY_TYPES.CAMPAIGN]: {
+            name: 'Preview your campaign messages',
+            description:
+                'See the messages your customers would receive if they are part of this campaign.',
+        },
+        [JOURNEY_TYPES.WIN_BACK]: {
+            name: 'Preview your win-back messages',
+            description:
+                'See the messages your customers would receive if they bought something from your store but haven’t returned in a while.',
         },
     }
 
@@ -160,7 +178,7 @@ export const Test = () => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/setup`}
+                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/setup/${journeyData.id}`}
                     label="Return"
                 />
                 <Button

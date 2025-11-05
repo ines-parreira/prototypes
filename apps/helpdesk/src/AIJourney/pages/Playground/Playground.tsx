@@ -7,7 +7,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import css from './Playground.less'
 
 export const Playground = () => {
-    const { currentJourney, isLoading } = useJourneyContext()
+    const { journeyData, isLoading } = useJourneyContext()
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -22,7 +22,7 @@ export const Playground = () => {
             {!isLoading && (
                 <>
                     <span>AI Journey Playground placeholder</span>
-                    {`JourneyID: ${currentJourney?.id}`}
+                    {`JourneyID: ${journeyData?.id}`}
                 </>
             )}
         </motion.div>

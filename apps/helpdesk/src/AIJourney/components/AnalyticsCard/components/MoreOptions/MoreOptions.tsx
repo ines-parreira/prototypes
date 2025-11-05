@@ -11,11 +11,13 @@ import css from './MoreOptions.less'
 
 export const MoreOptions = ({
     shopName,
+    journeyId,
     journeyState,
     journeyType,
     handleChangeStatus,
 }: {
     shopName: string
+    journeyId: string
     journeyState: JourneyStatusEnum
     journeyType: JourneyTypeEnum
     handleChangeStatus: () => void
@@ -108,7 +110,7 @@ export const MoreOptions = ({
                         <Link
                             className={css.option}
                             key={index}
-                            to={`/app/ai-journey/${shopName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/${path}`}
+                            to={`/app/ai-journey/${shopName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/${path}/${journeyId}`}
                         >
                             <i className="material-icons-outlined">{icon}</i>
                             {label}

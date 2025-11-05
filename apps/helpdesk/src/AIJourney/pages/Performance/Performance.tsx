@@ -10,7 +10,6 @@ import {
     JourneyPlaceholder,
     Selector,
 } from 'AIJourney/components'
-import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
@@ -91,12 +90,8 @@ export const Performance = () => {
 
     const [filter, setFilter] = useState('All')
 
-    const {
-        journeys,
-        currentIntegration,
-        isLoadingJourneys,
-        isLoadingJourneyData,
-    } = useJourneyContext()
+    const { journeys, currentIntegration, isLoadingJourneys } =
+        useJourneyContext()
 
     const visibleJourneys = journeys?.filter((journey) => {
         if (!isSessionAbandonedEnabled)
@@ -118,10 +113,6 @@ export const Performance = () => {
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
-
-    const abandonedCartJourney = visibleJourneys?.find(
-        (journey) => journey.type === JOURNEY_TYPES.CART_ABANDONMENT,
-    )
 
     const filters = useFilters()
 
@@ -237,11 +228,7 @@ export const Performance = () => {
                     formattedTotalConversationsSent,
                 )}
                 metrics={metrics}
-                isLoading={
-                    isLoadingJourneyData ||
-                    isLoadingJourneys ||
-                    isLoadingMetrics
-                }
+                isLoading={isLoadingJourneys || isLoadingMetrics}
             />
             <div className={css.header}>
                 <div>
@@ -267,7 +254,7 @@ export const Performance = () => {
                         }}
                         integrationId={integrationId}
                         journey={journey}
-                        key={abandonedCartJourney?.id}
+                        key={journey.id}
                     />
                 ))}
                 {filteredInactiveJourneys.map(

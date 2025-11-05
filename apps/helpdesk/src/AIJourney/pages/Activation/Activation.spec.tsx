@@ -118,8 +118,8 @@ describe('<Activation />', () => {
 
         // Default mock for useJourneyContext
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: {
+                id: 'journey-123',
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -192,12 +192,10 @@ describe('<Activation />', () => {
     it('should redirect from Activation to performance on continue', async () => {
         const user = userEvent.setup()
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: {
+            journeyData: {
                 id: 'journey-123',
                 type: 'cart_abandoned',
                 message_instructions: 'test message instructions',
-            },
-            journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -274,7 +272,7 @@ describe('<Activation />', () => {
         expect(returnButton).toBeEnabled()
         expect(returnButton).toHaveAttribute(
             'href',
-            '/app/ai-journey/shopify-store/cart-abandoned/test',
+            '/app/ai-journey/shopify-store/cart-abandoned/test/journey-123',
         )
     })
 
@@ -335,8 +333,9 @@ describe('<Activation />', () => {
         it('should call handleTestSms when Send SMS button is clicked', async () => {
             const user = userEvent.setup()
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
+                    id: 'journey-123',
+                    type: 'cart_abandoned',
                     configuration: {
                         max_follow_up_messages: 3,
                         offer_discount: true,

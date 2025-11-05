@@ -41,10 +41,10 @@ export const LandingPage = () => {
         },
     ]
 
-    const { currentJourney, isLoading } = useJourneyContext()
+    const { journeyData, isLoading } = useJourneyContext()
 
     const shouldAccessOnboarding: boolean =
-        !currentJourney || currentJourney?.state === 'draft'
+        !journeyData || journeyData?.state === 'draft'
 
     useEffect(() => {
         if (!shouldAccessOnboarding) {

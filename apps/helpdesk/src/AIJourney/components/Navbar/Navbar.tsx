@@ -30,7 +30,7 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneyCampaignsEnabled,
     )
 
-    const { journeys, currentJourney } = useJourneyContext()
+    const { journeys, journeyData } = useJourneyContext()
 
     const history = useHistory()
 
@@ -43,8 +43,8 @@ export const AiJourneyNavbar = () => {
     }, [journeys])
 
     const isJourneyDraft = useMemo(
-        () => hasJourney && currentJourney?.state === JourneyStatusEnum.Draft,
-        [currentJourney, hasJourney],
+        () => hasJourney && journeyData?.state === JourneyStatusEnum.Draft,
+        [journeyData, hasJourney],
     )
 
     const hasValidJourney = useMemo(

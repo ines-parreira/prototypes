@@ -37,7 +37,7 @@ export const Activation = () => {
     )
 
     const {
-        currentJourney,
+        journeyData,
         currentIntegration,
         shopName,
         journeyType,
@@ -72,11 +72,11 @@ export const Activation = () => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        journey: currentJourney,
+        journey: journeyData,
     })
 
     const { handleTestSms } = useHandleSendTestSMS({
-        currentJourney,
+        journeyData,
         selectedProduct,
         testSmsNumber,
         currentIntegration,
@@ -86,8 +86,7 @@ export const Activation = () => {
         try {
             await handleUpdate({
                 journeyState: JourneyStatusEnum.Active,
-                journeyMessageInstructions:
-                    currentJourney?.message_instructions,
+                journeyMessageInstructions: journeyData?.message_instructions,
             })
             setIsVisible(false)
             setTimeout(() => {
@@ -117,10 +116,26 @@ export const Activation = () => {
             name: 'Select an abandoned product',
             description: `Customer ${customerName} has abandoned a page with the following product`,
         },
+        [JOURNEY_TYPES.WIN_BACK]: {
+            name: 'Select a product to feature',
+            description: `Customer ${customerName} has not purchased in a while. Feature this product to entice them back.`,
+        },
+        [JOURNEY_TYPES.CAMPAIGN]: {
+            name: 'Select a product to feature',
+            description: `Customer ${customerName} is part of this campaign. Feature this product in the message.`,
+        },
     }
 
     if (isLoading) {
         return <LoadingSpinner />
+    }
+
+    if (!journeyData) {
+        return (
+            <div className={css.container}>
+                <p>Page not found.</p>
+            </div>
+        )
     }
 
     return (
@@ -148,7 +163,7 @@ export const Activation = () => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/test`}
+                    redirectLink={`/app/ai-journey/${shopName}/${journeyType}/test/${journeyData.id}`}
                     label="Return"
                 />
                 <Button

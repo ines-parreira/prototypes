@@ -1,14 +1,23 @@
 import { Box, Card, Heading } from '@gorgias/axiom'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { useCampaignContext } from 'AIJourney/providers'
-
-import CampaignsTable from '../../components/CampaignsTable/CampaignsTable'
-import { columns } from '../../components/CampaignsTable/Columns'
+import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
+import { columns } from 'AIJourney/components/CampaignsTable/Columns'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useJourneys } from 'AIJourney/queries'
 
 import css from './Campaigns.less'
 
 export const Campaigns = () => {
-    const { isLoading, campaigns } = useCampaignContext()
+    const { currentIntegration, isLoadingIntegrations } = useJourneyContext()
+
+    const { data: campaigns, isLoading: isLoadingCampaigns } = useJourneys(
+        currentIntegration?.id,
+        [JourneyTypeEnum.Campaign],
+        {
+            enabled: !!currentIntegration?.id,
+        },
+    )
 
     return (
         <Box m="md" flexDirection="column" className={css.container}>
@@ -17,7 +26,7 @@ export const Campaigns = () => {
                 <CampaignsTable
                     columns={columns}
                     data={campaigns || []}
-                    isLoading={isLoading}
+                    isLoading={isLoadingIntegrations || isLoadingCampaigns}
                 />
             </Card>
         </Box>

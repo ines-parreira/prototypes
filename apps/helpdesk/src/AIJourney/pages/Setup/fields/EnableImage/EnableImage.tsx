@@ -7,7 +7,7 @@ import css from './EnableImage.less'
 
 interface EnableImageFieldProps {
     isEnabled?: boolean
-    journeyType: string
+    journeyType: JOURNEY_TYPES
     onChange?: () => void
 }
 
@@ -20,7 +20,7 @@ export const EnableImageField = ({
         onChange?.()
     }, [onChange])
 
-    const fieldDescription = {
+    const fieldDescription: Partial<Record<JOURNEY_TYPES, string>> = {
         [JOURNEY_TYPES.CART_ABANDONMENT]:
             'Show the shopper an image of the items left in their cart in the first message.',
         [JOURNEY_TYPES.SESSION_ABANDONMENT]:

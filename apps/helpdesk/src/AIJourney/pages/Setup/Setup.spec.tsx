@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
@@ -82,7 +83,7 @@ jest.mock('hooks/useAllIntegrations', () => ({
     isLoading: false,
 })
 
-describe('<Setup />', () => {
+describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
     const mockHandleUpdate = jest.fn()
 
     beforeEach(() => {
@@ -96,7 +97,6 @@ describe('<Setup />', () => {
 
         // Default mock for useJourneyContext
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: undefined,
             shopName: 'shopify-store',
@@ -148,7 +148,6 @@ describe('<Setup />', () => {
 
     it('should redirect from conversation setup to landing page on return', async () => {
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -171,7 +170,7 @@ describe('<Setup />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <Setup />
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -188,7 +187,6 @@ describe('<Setup />', () => {
 
     it('should update state when journeyParams is fetched', async () => {
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -210,7 +208,7 @@ describe('<Setup />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <Setup />
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -233,7 +231,6 @@ describe('<Setup />', () => {
     it('should reset the discount threshold message when total of message is changed', async () => {
         // Mock no existing journey configuration so the component starts with defaults
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: { id: 1, name: 'shopify-store' },
             shopName: 'shopify-store',
@@ -248,7 +245,7 @@ describe('<Setup />', () => {
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
                     <IntegrationsProvider>
-                        <Setup />
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </IntegrationsProvider>
                 </QueryClientProvider>
             </Provider>,
@@ -344,7 +341,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -377,7 +376,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -420,13 +421,11 @@ describe('<Setup />', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: {
+                journeyData: {
                     id: 'journey-123',
                     type: 'cart_abandoned',
                     state: 'active',
                     message_instructions: 'My custom instructions',
-                },
-                journeyData: {
                     configuration: {
                         max_follow_up_messages: 2,
                         offer_discount: true,
@@ -448,7 +447,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -489,7 +490,6 @@ describe('<Setup />', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
                 journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
@@ -511,7 +511,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -589,6 +591,9 @@ describe('<Setup />', () => {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
                         type: 'cart_abandoned',
+                        campaign: {
+                            title: '',
+                        },
                     },
                     journeyConfigs: {
                         discount_code_message_threshold: 1,
@@ -623,8 +628,9 @@ describe('<Setup />', () => {
 
             // Default mock for useJourneyContext in handleContinue tests
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
                 journeyData: {
+                    id: 'journey-123',
+                    type: 'cart_abandoned',
                     configuration: {
                         max_follow_up_messages: 3,
                         offer_discount: true,
@@ -663,17 +669,7 @@ describe('<Setup />', () => {
         it('should navigate to test page after successful journey creation', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                        discount_code_message_threshold: 2,
-                    },
-                },
+                journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
@@ -683,7 +679,9 @@ describe('<Setup />', () => {
                 },
             })
 
-            const mockMutateAsync = jest.fn()
+            const mockMutateAsync = jest
+                .fn()
+                .mockResolvedValue({ id: 'new-journey-123' })
             mockUseCreateNewJourney.mockImplementation(() => ({
                 mutateAsync: mockMutateAsync,
                 isError: false,
@@ -694,12 +692,43 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
             )
             const user = userEvent.setup()
+
+            // Select a phone number
+            await act(async () => {
+                await user.click(screen.getByText('Select'))
+            })
+            await act(async () => {
+                await user.click(screen.getByText('+1 555-123-4567'))
+            })
+
+            // Select number of messages
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: '4' })[0],
+                )
+            })
+
+            // Enable discount and set value
+            await act(async () => {
+                await user.click(screen.getByRole('checkbox'))
+                const discountInput = screen.getByRole('spinbutton')
+                await user.type(discountInput, '20')
+            })
+
+            // Select discount message threshold
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: '2' })[1],
+                )
+            })
 
             const button = screen.getByTestId('ai-journey-button')
             await act(async () => {
@@ -715,6 +744,9 @@ describe('<Setup />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: {
+                        title: '',
+                    },
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -728,7 +760,7 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/cart-abandoned/test',
+                    '/app/ai-journey/shopify-store/cart-abandoned/test/new-journey-123',
                 )
             })
 
@@ -742,7 +774,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -760,7 +794,7 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/cart-abandoned/test',
+                    '/app/ai-journey/shopify-store/cart-abandoned/test/journey-123',
                 )
             })
         })
@@ -768,17 +802,7 @@ describe('<Setup />', () => {
         it('should call handleCreate when no existing journey exists', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                        discount_code_message_threshold: 2,
-                    },
-                },
+                journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
@@ -788,7 +812,9 @@ describe('<Setup />', () => {
                 },
             })
 
-            const mockMutateAsync = jest.fn()
+            const mockMutateAsync = jest
+                .fn()
+                .mockResolvedValue({ id: 'new-journey-123' })
             mockUseCreateNewJourney.mockImplementation(() => ({
                 mutateAsync: mockMutateAsync,
                 isError: false,
@@ -799,15 +825,48 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
             )
 
+            const user = userEvent.setup()
+
+            // Select a phone number
+            await act(async () => {
+                await user.click(screen.getByText('Select'))
+            })
+            await act(async () => {
+                await user.click(screen.getByText('+1 555-123-4567'))
+            })
+
+            // Select number of messages
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: '4' })[0],
+                )
+            })
+
+            // Enable discount and set value
+            await act(async () => {
+                await user.click(screen.getByRole('checkbox'))
+                const discountInput = screen.getByRole('spinbutton')
+                await user.type(discountInput, '20')
+            })
+
+            // Select discount message threshold
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: '2' })[1],
+                )
+            })
+
             const button = screen.getByTestId('ai-journey-button')
             await act(async () => {
-                await userEvent.click(button)
+                await user.click(button)
             })
 
             await waitFor(() => {
@@ -819,6 +878,9 @@ describe('<Setup />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: {
+                        title: '',
+                    },
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -834,17 +896,7 @@ describe('<Setup />', () => {
         it('should call handleCreate without discount_code_message_threshold when no existing journey exists and discount disabled', async () => {
             // Override the default to have no existing journey
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                        discount_code_message_threshold: 2,
-                    },
-                },
+                journeyData: undefined,
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,
@@ -854,7 +906,9 @@ describe('<Setup />', () => {
                 },
             })
 
-            const mockMutateAsync = jest.fn()
+            const mockMutateAsync = jest
+                .fn()
+                .mockResolvedValue({ id: 'new-journey-123' })
             mockUseCreateNewJourney.mockImplementation(() => ({
                 mutateAsync: mockMutateAsync,
                 isError: false,
@@ -865,15 +919,29 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
             )
 
+            const user = userEvent.setup()
+
+            // Select a phone number (required)
             await act(async () => {
-                await userEvent.click(screen.getByRole('checkbox'))
-                await userEvent.click(screen.getByTestId('ai-journey-button'))
+                await user.click(screen.getByText('Select'))
+            })
+            await act(async () => {
+                await user.click(screen.getByText('+1 555-123-4567'))
+            })
+
+            // Don't enable discount (it's already disabled by default)
+            // Just click continue
+            const button = screen.getByTestId('ai-journey-button')
+            await act(async () => {
+                await user.click(button)
             })
 
             await waitFor(() => {
@@ -885,12 +953,15 @@ describe('<Setup />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: {
+                        title: '',
+                    },
                 },
                 journeyConfigs: {
                     discount_code_message_threshold: undefined,
-                    max_follow_up_messages: 3,
+                    max_follow_up_messages: 0,
                     offer_discount: false,
-                    max_discount_percent: 20,
+                    max_discount_percent: 0,
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
                 },
@@ -904,7 +975,9 @@ describe('<Setup />', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
                         <IntegrationsProvider>
-                            <Setup />
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,
@@ -918,6 +991,94 @@ describe('<Setup />', () => {
 
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+            })
+        })
+    })
+
+    describe('Campaign journey type', () => {
+        it('should create journey with campaign type and title', async () => {
+            // Mock context for campaign journey with no existing data
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            const mockMutateAsync = jest
+                .fn()
+                .mockResolvedValue({ id: 'campaign-journey-123' })
+            mockUseCreateNewJourney.mockImplementation(() => ({
+                mutateAsync: mockMutateAsync,
+                isError: false,
+                isLoading: false,
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const user = userEvent.setup()
+
+            // Type campaign title
+            const campaignInput = screen.getByPlaceholderText('Campaign name')
+            await act(async () => {
+                await user.type(campaignInput, 'Summer Sale Campaign')
+            })
+
+            // Select a phone number
+            await act(async () => {
+                await user.click(screen.getByText('Select'))
+            })
+            await act(async () => {
+                await user.click(screen.getByText('+1 555-123-4567'))
+            })
+
+            // Click continue button
+            const button = screen.getByTestId('ai-journey-button')
+            await act(async () => {
+                await user.click(button)
+            })
+
+            // Verify the journey was created with campaign type and title
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                params: {
+                    store_integration_id: 1,
+                    store_name: 'shopify-store',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'Summer Sale Campaign',
+                    },
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 0,
+                    offer_discount: false,
+                    max_discount_percent: 0,
+                    sms_sender_integration_id: 1,
+                    sms_sender_number: '+15551234567',
+                    discount_code_message_threshold: undefined,
+                },
+            })
+
+            // Verify navigation to test page with campaign journey
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/shopify-store/campaign/test/campaign-journey-123',
+                )
             })
         })
     })

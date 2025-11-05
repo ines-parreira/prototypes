@@ -1,6 +1,6 @@
-import { Heading, Text } from '@gorgias/axiom'
+import { Button, Heading, Text } from '@gorgias/axiom'
 
-import { Button } from 'AIJourney/components'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 
 import styles from './EmptyCampaignsState.less'
 
@@ -11,7 +11,13 @@ export default function EmptyCampaignsState() {
             <Text as="p" align="center">
                 Start reaching your customers today
             </Text>
-            <Button label="Create campaign" />
+            <Button
+                as="a"
+                href={`${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`}
+                target="_self"
+            >
+                Create campaign
+            </Button>
         </div>
     )
 }

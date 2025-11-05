@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import {
     Box,
+    Button,
     ColumnDef,
     HeaderRowGroup,
     TableBodyContent,
@@ -11,7 +12,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import { Button } from 'AIJourney/components'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
@@ -91,7 +92,15 @@ export default function CampaignsTable<TData, TValue>({
                         'totalCount',
                         {
                             key: 'create',
-                            content: <Button label="Create campaign" />,
+                            content: (
+                                <Button
+                                    as="a"
+                                    href={`${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`}
+                                    target="_self"
+                                >
+                                    Create campaign
+                                </Button>
+                            ),
                         },
                     ]}
                 />

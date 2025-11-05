@@ -21,14 +21,14 @@ import { useIntegrations } from '../IntegrationsProvider/IntegrationsProvider'
 
 type JourneyContextType = {
     journeys: JourneyApiDTO[] | undefined
-    currentJourney: JourneyApiDTO | undefined
     journeyData: JourneyDetailApiDTO | undefined
     currentIntegration: Integration | undefined
     shopName: string
     isLoading: boolean
     isLoadingJourneys: boolean
     isLoadingJourneyData: boolean
-    journeyType: string
+    isLoadingIntegrations: boolean
+    journeyType: JOURNEY_TYPES
     storeConfiguration: StoreConfiguration | undefined
 }
 
@@ -44,8 +44,8 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
 
     const match = useMemo(
         () =>
-            matchPath<{ journeyType: string }>(pathname, {
-                path: `/app/ai-journey/:shopName/:journeyType`,
+            matchPath<{ journeyType: string; journeyId?: string }>(pathname, {
+                path: `/app/ai-journey/:shopName/:journeyType/:step/:journeyId?`,
             }),
         [pathname],
     )
@@ -65,11 +65,18 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
     const journeyType = useMemo(() => {
         const journeyTypeParam = match?.params.journeyType
         const availableJourneys = Object.values(JOURNEY_TYPES)
-        if (journeyTypeParam && availableJourneys.includes(journeyTypeParam))
-            return journeyTypeParam
+        if (
+            journeyTypeParam &&
+            availableJourneys.includes(journeyTypeParam as JOURNEY_TYPES)
+        )
+            return journeyTypeParam as JOURNEY_TYPES
 
         return JOURNEY_TYPES.CART_ABANDONMENT
     }, [match?.params.journeyType])
+
+    const journeyId = useMemo(() => {
+        return match?.params.journeyId
+    }, [match?.params.journeyId])
 
     const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
         integrationId,
@@ -77,10 +84,6 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         {
             enabled: !!integrationId,
         },
-    )
-    const currentJourney = useMemo(
-        () => journeys?.find((j) => j.type === journeyType?.replace('-', '_')),
-        [journeys, journeyType],
     )
 
     const { isLoading: isStoreConfigurationLoading, data: storeConfiguration } =
@@ -102,19 +105,18 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         )
 
     const { data: journeyData, isLoading: isLoadingJourneyData } =
-        useJourneyData(currentJourney?.id, {
-            enabled: currentJourney && !!integrationId && !!currentJourney?.id,
+        useJourneyData(journeyId, {
+            enabled: !!integrationId && !!journeyId,
         })
 
     const isLoading =
         isLoadingIntegrations ||
         isLoadingJourneys ||
         isStoreConfigurationLoading ||
-        (!!currentJourney?.id && isLoadingJourneyData)
+        (!!journeyId && isLoadingJourneyData)
 
     const contextValue = useMemo(
         () => ({
-            currentJourney,
             journeys,
             journeyData,
             currentIntegration,
@@ -122,11 +124,11 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
+            isLoadingIntegrations,
             journeyType,
             storeConfiguration,
         }),
         [
-            currentJourney,
             journeys,
             journeyData,
             currentIntegration,
@@ -134,6 +136,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
+            isLoadingIntegrations,
             journeyType,
             storeConfiguration,
         ],

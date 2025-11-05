@@ -32,9 +32,8 @@ describe('<Playground />', () => {
         jest.clearAllMocks()
 
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: { type: 'cart_abandoned', id: 'journey-123' },
             journeyData: {
-                id: '01JZAKJ16K3TG5G3HJ9BNAP327',
+                id: 'journey-123',
                 type: 'cart_abandoned',
                 account_id: 6069,
                 store_integration_id: 286584,
@@ -78,7 +77,7 @@ describe('<Playground />', () => {
 
     it('should not render journey id when not available', () => {
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
+            journeyData: undefined,
             isLoading: false,
         })
 
@@ -103,7 +102,6 @@ describe('<Playground />', () => {
 
     it('should render loading state', () => {
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: undefined,
             currentIntegration: undefined,
             shopName: 'shopify-store',

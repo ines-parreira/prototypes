@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { MoreOptions } from './MoreOptions'
 
 describe('<MoreOptions />', () => {
+    const journeyId = '01K97DJ47XV30PCZNFJBDFX5YV'
     const shopName = 'test-shop'
     const journeyType = 'cart_abandoned'
     const mockHandleChangeStatus = jest.fn()
@@ -12,6 +13,7 @@ describe('<MoreOptions />', () => {
         render(
             <MemoryRouter>
                 <MoreOptions
+                    journeyId={journeyId}
                     journeyState={journeyState}
                     shopName={shopName}
                     journeyType={journeyType}
@@ -50,7 +52,7 @@ describe('<MoreOptions />', () => {
         const editLink = screen.getByText('Test').closest('a')
         expect(editLink).toHaveAttribute(
             'to',
-            `/app/ai-journey/${shopName}/${journeyType.replace('_', '-')}/test`,
+            `/app/ai-journey/${shopName}/${journeyType.replace('_', '-')}/test/${journeyId}`,
         )
     })
 

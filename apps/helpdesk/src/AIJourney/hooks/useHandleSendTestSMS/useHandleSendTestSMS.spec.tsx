@@ -64,7 +64,7 @@ const mockIntegration = {
 }
 
 const hookParameters = {
-    currentJourney: mockJourney,
+    journeyData: mockJourney,
     selectedProduct: mockProduct,
     testSmsNumber: '+15551234567',
     currentIntegration: mockIntegration,
@@ -126,7 +126,7 @@ describe('useHandleSendTestSMS', () => {
                 () =>
                     useHandleSendTestSMS({
                         ...hookParameters,
-                        currentJourney: undefined,
+                        journeyData: undefined,
                     }),
                 {
                     wrapper: ({ children }) => (
@@ -153,7 +153,7 @@ describe('useHandleSendTestSMS', () => {
                 () =>
                     useHandleSendTestSMS({
                         ...hookParameters,
-                        currentJourney: {
+                        journeyData: {
                             ...mockJourney,
                             id: undefined,
                         } as unknown as typeof mockJourney,
@@ -366,7 +366,7 @@ describe('useHandleSendTestSMS', () => {
             const { result } = renderHook(
                 () =>
                     useHandleSendTestSMS({
-                        currentJourney: mockJourney,
+                        journeyData: mockJourney,
                         selectedProduct: mockProduct,
                         testSmsNumber: '+15551234567',
                         currentIntegration: mockIntegration,

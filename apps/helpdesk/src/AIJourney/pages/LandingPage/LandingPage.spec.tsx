@@ -130,8 +130,9 @@ describe('<LandingPage />', () => {
 
     it('should redirect to performance page when AI Journey is already active', async () => {
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: { id: 'journey-123', type: 'cart_abandoned' },
             journeyData: {
+                id: 'journey-123',
+                type: 'cart_abandoned',
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,

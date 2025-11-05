@@ -114,7 +114,6 @@ describe('<Performance />', () => {
         }))
 
         mockUseJourneyContext.mockReturnValue({
-            currentJourney: undefined,
             journeyData: {
                 configuration: {
                     max_follow_up_messages: 3,
@@ -409,7 +408,6 @@ describe('<Performance />', () => {
             })
 
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: undefined,
                 journeyData: {
                     configuration: {
                         max_follow_up_messages: 3,

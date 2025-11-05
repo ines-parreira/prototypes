@@ -8,7 +8,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import css from './Analytics.less'
 
 export const Analytics = () => {
-    const { currentJourney, isLoading } = useJourneyContext()
+    const { journeyData, isLoading } = useJourneyContext()
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -23,7 +23,7 @@ export const Analytics = () => {
             {!isLoading && (
                 <>
                     <PerformanceBadge />
-                    {`JourneyID: ${currentJourney?.id}`}
+                    {`JourneyID: ${journeyData?.id}`}
                 </>
             )}
         </motion.div>

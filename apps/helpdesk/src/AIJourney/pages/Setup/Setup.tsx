@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
-import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components'
+import { JOURNEY_TYPE_MAP_FROM_URL, JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
@@ -25,24 +25,44 @@ import {
     MessageWithDiscountCodeField,
     PhoneNumberField,
 } from './fields'
+import { CampaignTitle } from './fields/CampaignTitle/CampaignTitle'
 
 import css from './Setup.less'
 
-export const Setup = () => {
+const Fields = {
+    CampaignTitle: 'campaign_title',
+    FollowUps: 'followups',
+    SendImage: 'send_image',
+}
+
+type Fields = (typeof Fields)[keyof typeof Fields]
+
+export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
+    [JOURNEY_TYPES.SESSION_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
+    [JOURNEY_TYPES.CART_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
+    [JOURNEY_TYPES.WIN_BACK]: [Fields.FollowUps, Fields.SendImage],
+    [JOURNEY_TYPES.CAMPAIGN]: [Fields.CampaignTitle],
+}
+
+type SetupProps = {
+    journeyType: JOURNEY_TYPES
+}
+
+export const Setup = ({ journeyType }: SetupProps) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
 
     const {
-        currentJourney,
         journeyData,
         currentIntegration,
         shopName,
         isLoading: isLoadingJourneyData,
-        journeyType,
         storeConfiguration,
     } = useJourneyContext()
+
+    const fields = JOURNEY_TYPES_TO_FIELDS[journeyType]
 
     const integrationId = currentIntegration?.id
 
@@ -60,6 +80,10 @@ export const Setup = () => {
     )
 
     const createNewJourney = useCreateNewJourney()
+
+    const [campaignTitleValue, setCampaignTitleValue] = useState<string>(
+        journeyData?.campaign?.title ?? '',
+    )
 
     const [numberOfMessageValue, setNumberOfMessageValue] = useState<number>(
         (journeyParams?.max_follow_up_messages ?? 0) + 1,
@@ -90,13 +114,26 @@ export const Setup = () => {
             setDiscountValue(
                 journeyParams.max_discount_percent?.toString() || '',
             )
-            setPhoneNumberValue(currentPhoneNumber)
             setDiscountCodeThreshold(
                 journeyParams.discount_code_message_threshold ?? 1,
             )
             setIsImageEnabled(journeyParams.include_image || false)
         }
-    }, [journeyParams, currentPhoneNumber])
+    }, [journeyParams])
+
+    useEffect(() => {
+        setPhoneNumberValue(currentPhoneNumber)
+    }, [currentPhoneNumber])
+
+    useEffect(() => {
+        if (journeyData) {
+            setCampaignTitleValue(journeyData?.campaign?.title ?? '')
+        }
+    }, [journeyData])
+
+    const handleCampaignTitleChange = (newValue: string) => {
+        setCampaignTitleValue(newValue)
+    }
 
     const handleDiscountToggle = () => {
         setIsDiscountEnabled((prev: boolean) => !prev)
@@ -131,13 +168,14 @@ export const Setup = () => {
                 )
             }
 
-            const formattedJourneyType = journeyType.replace('-', '_')
-
-            await createNewJourney.mutateAsync({
+            return await createNewJourney.mutateAsync({
                 params: {
                     store_integration_id: currentIntegration.id,
                     store_name: currentIntegration.name,
-                    type: formattedJourneyType as JourneyTypeEnum,
+                    type: JOURNEY_TYPE_MAP_FROM_URL[journeyType],
+                    campaign: {
+                        title: campaignTitleValue,
+                    },
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
@@ -170,7 +208,7 @@ export const Setup = () => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        journey: currentJourney,
+        journey: journeyData,
         followUpValue: numberOfMessageValue - 1,
         isDiscountEnabled,
         discountValue,
@@ -179,21 +217,28 @@ export const Setup = () => {
             ? discountCodeThreshold
             : undefined,
         includeImage: isImageEnabled,
+        campaignTitle: campaignTitleValue,
     })
 
     const handleContinue = async () => {
         try {
-            if (currentJourney) {
+            if (journeyData) {
                 await handleUpdate({
                     journeyMessageInstructions:
-                        currentJourney.message_instructions,
-                    journeyState: currentJourney.state,
+                        journeyData.message_instructions,
+                    journeyState: journeyData.state,
                 })
+                setIsVisible(false)
+                history.push(
+                    `/app/ai-journey/${shopName}/${journeyType}/test/${journeyData.id}`,
+                )
             } else {
-                await handleCreate()
+                const createdJourney = await handleCreate()
+                setIsVisible(false)
+                history.push(
+                    `/app/ai-journey/${shopName}/${journeyType}/test/${createdJourney.id}`,
+                )
             }
-            setIsVisible(false)
-            history.push(`/app/ai-journey/${shopName}/${journeyType}/test`)
         } catch {
             return // Error handling is done in the handleUpdate and handleCreate functions
         }
@@ -222,16 +267,24 @@ export const Setup = () => {
             animate={{ opacity: isVisible ? 1 : 0 }}
             transition={{ duration: 0.5 }}
         >
+            {fields.includes(Fields.CampaignTitle) && (
+                <CampaignTitle
+                    value={campaignTitleValue}
+                    onChange={handleCampaignTitleChange}
+                />
+            )}
             <PhoneNumberField
                 options={marketingCapabilityPhoneNumbers}
                 value={phoneNumberValue}
                 onChange={handlePhoneNumberChange}
             />
-            <MessagesToSendField
-                value={numberOfMessageValue}
-                onChange={handleNumberOfMessageChange}
-            />
-            {smsImagesEnabled && (
+            {fields.includes(Fields.FollowUps) && (
+                <MessagesToSendField
+                    value={numberOfMessageValue}
+                    onChange={handleNumberOfMessageChange}
+                />
+            )}
+            {fields.includes(Fields.SendImage) && smsImagesEnabled && (
                 <EnableImageField
                     isEnabled={isImageEnabled}
                     journeyType={journeyType}
@@ -252,13 +305,14 @@ export const Setup = () => {
                 />
             )}
 
-            {showMessageWithDiscountCode && (
-                <MessageWithDiscountCodeField
-                    value={discountCodeThreshold}
-                    numberOfMessages={numberOfMessageValue}
-                    onChange={setDiscountCodeThreshold}
-                />
-            )}
+            {fields.includes(Fields.FollowUps) &&
+                showMessageWithDiscountCode && (
+                    <MessageWithDiscountCodeField
+                        value={discountCodeThreshold}
+                        numberOfMessages={numberOfMessageValue}
+                        onChange={setDiscountCodeThreshold}
+                    />
+                )}
 
             <div className={css.buttonsContainer}>
                 <Button

@@ -84,6 +84,7 @@ describe('<Test />', () => {
         mockUseJourneyContext.mockImplementation(() => ({
             journey: null,
             journeyData: {
+                id: 'journey-123',
                 configuration: {
                     max_follow_up_messages: 3,
                     offer_discount: true,
@@ -176,7 +177,7 @@ describe('<Test />', () => {
         const linkElement = screen.getByRole('link', { name: 'Return' })
         expect(linkElement).toHaveAttribute(
             'href',
-            '/app/ai-journey/shopify-store/cart-abandoned/setup',
+            '/app/ai-journey/shopify-store/cart-abandoned/setup/journey-123',
         ) // return button should have correct link
 
         const button = screen.getByTestId('ai-journey-button')
@@ -186,7 +187,7 @@ describe('<Test />', () => {
 
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledWith(
-                '/app/ai-journey/shopify-store/cart-abandoned/activate',
+                '/app/ai-journey/shopify-store/cart-abandoned/activate/journey-123',
             )
         })
     })
@@ -220,8 +221,7 @@ describe('<Test />', () => {
 
         act(() => {
             mockUseJourneyContext.mockReturnValue({
-                currentJourney: { message_instructions: newInstructions },
-                journeyData: null,
+                journeyData: { message_instructions: newInstructions },
                 currentIntegration: { id: 1, name: 'shopify-store' },
                 shopName: 'shopify-store',
                 isLoading: false,

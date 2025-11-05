@@ -95,8 +95,9 @@ describe('<AiJourneyNavbar />', () => {
     ]
 
     const mockJourneyContext = {
-        currentJourney: { type: 'cart_abandoned', id: 'journey-123' },
         journeyData: {
+            type: 'cart_abandoned',
+            id: 'journey-123',
             configuration: {
                 max_follow_up_messages: 3,
                 offer_discount: true,
@@ -185,7 +186,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when no journey exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: undefined,
+                journeyData: undefined,
                 journeys: [],
             }
 
@@ -206,7 +207,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when journey exists without id', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: { type: 'cart_abandoned', id: undefined },
+                journeyData: { type: 'cart_abandoned', id: undefined },
                 journeys: [],
             }
 
@@ -225,7 +226,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when journey is in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -247,7 +248,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render analytics section when feature flag is disabled', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -279,7 +280,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should render analytics section when journey exists and is not in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'paused',
@@ -314,7 +315,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when no journey exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: undefined,
+                journeyData: undefined,
                 journeys: [],
             }
 
@@ -333,7 +334,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when journey exists without id', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: { type: 'cart_abandoned', id: undefined },
+                journeyData: { type: 'cart_abandoned', id: undefined },
                 journeys: [],
             }
 
@@ -352,7 +353,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when journey is in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -374,7 +375,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when journey is in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -405,7 +406,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should not render playground section when feature flag is disabled', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'draft',
@@ -437,7 +438,7 @@ describe('<AiJourneyNavbar />', () => {
         it('should render playground section when journey exists and is not in draft state', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                currentJourney: {
+                journeyData: {
                     type: 'cart_abandoned',
                     id: 'journey-id',
                     state: 'paused',
