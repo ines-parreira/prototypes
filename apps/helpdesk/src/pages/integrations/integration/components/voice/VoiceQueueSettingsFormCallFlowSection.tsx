@@ -170,7 +170,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                         <div>
                             <Label htmlFor="wait_time">
                                 <span>Wait time</span>
-                                <HintTooltip title="The maximum time in seconds we wait before sending the call to voicemail." />
+                                <HintTooltip title="The maximum time in seconds we wait before sending the call to the next step in your routing." />
                             </Label>
                             <FormField
                                 field={TextField}
