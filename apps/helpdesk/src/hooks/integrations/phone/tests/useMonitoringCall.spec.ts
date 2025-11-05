@@ -334,5 +334,43 @@ describe('useMonitoringCall', () => {
             expect(handleCallEvents).not.toHaveBeenCalled()
             expect(actionsMock.setCall).not.toHaveBeenCalled()
         })
+
+        it('should disconnect existing monitoring call before making new one in same tab', async () => {
+            const existingCallMock = {
+                disconnect: jest.fn(),
+                customParameters: new Map([['is_monitoring', 'true']]),
+            }
+
+            useVoiceDeviceMock.mockReturnValue({
+                device: deviceMock,
+                call: existingCallMock,
+                actions: actionsMock,
+            } as any)
+
+            const { result } = renderWithProviders(() => useMonitoringCall())
+            const onMonitoringValidationFailed = jest.fn()
+
+            await act(async () => {
+                await result.current.makeMonitoringCall(
+                    'CA123456',
+                    789,
+                    {
+                        integrationId: 123,
+                        customerId: 456,
+                        customerPhoneNumber: '+1234567890',
+                        inCallAgentId: 999,
+                    },
+                    onMonitoringValidationFailed,
+                )
+            })
+
+            expect(existingCallMock.disconnect).toHaveBeenCalled()
+            expect(deviceMock.connect).toHaveBeenCalledWith({
+                params: expect.objectContaining({
+                    is_monitoring: 'true',
+                    main_call_sid: 'CA123456',
+                }),
+            })
+        })
     })
 })

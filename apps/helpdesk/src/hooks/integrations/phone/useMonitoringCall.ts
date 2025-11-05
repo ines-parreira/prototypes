@@ -45,7 +45,7 @@ type PrepareMonitoringResult =
 
 export function useMonitoringCall() {
     const dispatch = useAppDispatch()
-    const { device, actions } = useVoiceDevice()
+    const { device, call: currentCall, actions } = useVoiceDevice()
     const { mutateAsync: prepareCallMonitoringMutation } =
         usePrepareCallMonitoring()
 
@@ -98,6 +98,15 @@ export function useMonitoringCall() {
                 errorCode: MonitoringErrorCode,
             ) => void,
         ) => {
+            // this is necessary to avoid race conditions when switching call from the same tab
+            // sometimes the frontend stars the monitoring call before the backend hangs up the previous one
+            if (
+                currentCall &&
+                currentCall.customParameters.get('is_monitoring') === 'true'
+            ) {
+                currentCall.disconnect()
+            }
+
             const params: Record<string, string> = {
                 Direction: PhoneCallDirection.OutboundDial,
 
@@ -139,7 +148,7 @@ export function useMonitoringCall() {
 
             actions.setCall(call)
         },
-        [device, dispatch, actions],
+        [device, currentCall, dispatch, actions],
     )
 
     return { prepareMonitoringCall, makeMonitoringCall }
