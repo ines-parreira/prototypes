@@ -100,6 +100,7 @@ describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
     const mockedServer = new MockAdapter(client)
     const integrationId = 1
+    const otherIntegrationId = 2
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
@@ -120,13 +121,24 @@ describe('<OngoingPhoneCall/>', () => {
             },
         },
     }
+    const otherIntegration = {
+        id: otherIntegrationId,
+        name: 'My other phone integration',
+        meta: {
+            emoji: '❤️',
+            preferences: {
+                record_inbound_calls: true,
+                record_outbound_calls: false,
+            },
+        },
+    }
 
     beforeEach(() => {
         mockedServer.reset()
 
         store = mockStore({
             integrations: fromJS({
-                integrations: [integration],
+                integrations: [integration, otherIntegration],
             }),
         })
     })
@@ -449,6 +461,48 @@ describe('<OngoingPhoneCall/>', () => {
             expect(screen.getByText(expectedIcon)).toBeInTheDocument()
         },
     )
+
+    it('should display recording correctly with no routing via', () => {
+        const mockMutate = jest.fn()
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: mockMutate,
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        call.customParameters.set('integration_id', integrationId.toString())
+        // @ts-ignore
+        call.customParameters.set('routing_via_integration_id', null)
+
+        render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>,
+        )
+
+        // we're not recording, getting settings from integration_id
+        expect(screen.getByText('fiber_manual_record')).toBeInTheDocument()
+    })
+
+    it('should display recording correctly on route to internal', () => {
+        const mockMutate = jest.fn()
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: mockMutate,
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        call.customParameters.set('integration_id', integrationId.toString())
+        call.customParameters.set(
+            'routing_via_integration_id',
+            otherIntegrationId.toString(),
+        )
+
+        render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>,
+        )
+
+        // we're recording, getting settings from otherIntegration
+        expect(screen.getByText('stop_circle')).toBeInTheDocument()
+    })
 
     it('should display notification and resume transfer buttons on transfer failure', async () => {
         mockUsePutCallParticipantOnHold.mockReturnValue({

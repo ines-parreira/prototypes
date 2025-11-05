@@ -55,6 +55,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 export function OngoingPhoneCall({
     call,
     integration,
+    routingViaIntegration,
     notify,
 }: Props): JSX.Element {
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
@@ -148,13 +149,22 @@ export function OngoingPhoneCall({
         const direction = getCallDirection(call)
         const isInbound = direction === Call.CallDirection.Incoming
         const isOutbound = direction === Call.CallDirection.Outgoing
+        const currentIntegration = routingViaIntegration || integration
 
         const isInboundAndRecordingEnabled =
             isInbound &&
-            integration.getIn(['meta', 'preferences', 'record_inbound_calls'])
+            currentIntegration.getIn([
+                'meta',
+                'preferences',
+                'record_inbound_calls',
+            ])
         const isOutboundAndRecordingEnabled =
             isOutbound &&
-            integration.getIn(['meta', 'preferences', 'record_outbound_calls'])
+            currentIntegration.getIn([
+                'meta',
+                'preferences',
+                'record_outbound_calls',
+            ])
 
         if (isInboundAndRecordingEnabled || isOutboundAndRecordingEnabled) {
             setIsRecording(true)
@@ -361,11 +371,23 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         ownProps.call.customParameters.get('integration_id') as string,
     )
 
+    const routingViaIntegrationId = parseInt(
+        ownProps.call.customParameters.get(
+            'routing_via_integration_id',
+        ) as string,
+    )
+
     const integration =
         integrationsSelectors.getIntegrationById(integrationId)(state)
+    const routingViaIntegration = routingViaIntegrationId
+        ? integrationsSelectors.getIntegrationById(routingViaIntegrationId)(
+              state,
+          )
+        : null
 
     return {
         integration,
+        routingViaIntegration,
     }
 }
 const mapDispatchToProps = {
