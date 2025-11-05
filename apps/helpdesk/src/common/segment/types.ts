@@ -263,6 +263,7 @@ export enum SegmentEvent {
     InTicketSuggestionForDemoDismissed = 'in-ticket-suggestion-for-demo-dismissed',
     InTicketSuggestionForDemoRequested = 'in-ticket-suggestion-for-demo-requested',
     InTicketSuggestionForDemoViewed = 'in-ticket-suggestion-for-demo-viewed',
+    InstagramHandleClicked = 'ig-handle-clicked',
     MacroAppliedSearchbar = 'macro-applied-searchbar',
     MacroDefaultMacroToSearch = 'macro-default-macro-to-search',
     MacrosExportClicked = 'macros-export-clicked',

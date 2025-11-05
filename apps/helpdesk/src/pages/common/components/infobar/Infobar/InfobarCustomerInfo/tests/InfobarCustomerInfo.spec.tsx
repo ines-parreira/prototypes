@@ -1,12 +1,15 @@
 import React, { ComponentProps } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -20,6 +23,9 @@ import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
     Avatar: () => <div>New Avatar</div>,
@@ -71,6 +77,7 @@ describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
         jest.resetAllMocks()
+        window.open = jest.fn()
     })
 
     it('should not render because there is no passed customer', () => {
@@ -401,12 +408,32 @@ describe('<InfobarCustomerInfo/>', () => {
 
         const igLink = screen.getByRole('link', { name: /@test_user/ })
         expect(igLink).toBeInTheDocument()
-        expect(igLink).toHaveAttribute(
-            'href',
-            'https://www.instagram.com/test_user',
+        expect(igLink).toHaveAttribute('href', '/#')
+    })
+
+    it('should log segment event and open Instagram profile in new window when clicking Instagram handle', async () => {
+        const user = userEvent.setup()
+        const customerWithIg = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [{ type: 'instagram' }],
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
         )
-        expect(igLink).toHaveAttribute('target', '_blank')
-        expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+        const igLink = screen.getByRole('link', { name: /@test_user/ })
+        await user.click(igLink)
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.InstagramHandleClicked,
+        )
+        expect(window.open).toHaveBeenCalledWith(
+            'https://www.instagram.com/test_user',
+            '_blank',
+            'noopener noreferrer',
+        )
     })
 
     it('should not render Instagram profile link when customer has no Instagram channel', () => {

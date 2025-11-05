@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import Clipboard from 'clipboard'
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { Box, Button, Separator } from '@gorgias/axiom'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -247,10 +248,23 @@ const InfobarCustomerInfo = ({
     }
 
     let lastSeenOnChat
+
     if (chatIntegrationData) {
         lastSeenOnChat = chatIntegrationData.get(
             'chat_recent_activity_timestamp',
         )
+    }
+
+    const handleIgHandleClick = (e: MouseEvent) => {
+        e.preventDefault()
+
+        logEvent(SegmentEvent.InstagramHandleClicked)
+
+        const igProfileUrl = encodeURI(
+            `https://www.instagram.com/${getDisplayName(customer)}`,
+        )
+
+        window.open(igProfileUrl, '_blank', 'noopener noreferrer')
     }
 
     return (
@@ -309,11 +323,9 @@ const InfobarCustomerInfo = ({
                                 className={css.igIcon}
                             />
                             <a
-                                href={encodeURI(
-                                    `https://www.instagram.com/${getDisplayName(customer)}`,
-                                )}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                href="/#"
+                                className={css.igHandle}
+                                onClick={handleIgHandleClick}
                             >
                                 @{getDisplayName(customer) as ReactNode}
                             </a>
