@@ -12,6 +12,7 @@ export const KnowledgeEditorTopBarTitle = ({ title, onChangeTitle }: Props) =>
         <input
             type="text"
             name="title"
+            aria-label="title"
             placeholder="Title"
             value={title}
             className={classNames(css.title, css.editableTitle)}

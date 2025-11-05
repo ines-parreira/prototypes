@@ -9,13 +9,11 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
         const onDelete = jest.fn()
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={false}
-                mode={{
-                    mode: 'read',
-                    onEdit,
-                    onCopy,
-                    onDelete,
-                }}
+                disabled={false}
+                mode="read"
+                onEdit={onEdit}
+                onCopy={onCopy}
+                onDelete={onDelete}
             />,
         )
 
@@ -39,16 +37,14 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
 
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={false}
-                mode={{
-                    mode: 'edit',
-                    onSave,
-                    onCancel,
-                }}
+                disabled={false}
+                mode="edit"
+                onSave={onSave}
+                onCancel={onCancel}
             />,
         )
 
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+        fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
 
         expect(onCancel).toHaveBeenCalled()
 
@@ -63,16 +59,14 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
 
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={false}
-                mode={{
-                    mode: 'create',
-                    onCreate,
-                    onCancel,
-                }}
+                disabled={false}
+                mode="create"
+                onCreate={onCreate}
+                onCancel={onCancel}
             />,
         )
 
-        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+        fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
 
         expect(onCancel).toHaveBeenCalled()
 
@@ -84,13 +78,11 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
     it('renders disabled', () => {
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={true}
-                mode={{
-                    mode: 'read',
-                    onEdit: jest.fn(),
-                    onCopy: jest.fn(),
-                    onDelete: jest.fn(),
-                }}
+                disabled={true}
+                mode="read"
+                onEdit={jest.fn()}
+                onCopy={jest.fn()}
+                onDelete={jest.fn()}
             />,
         )
 
@@ -103,20 +95,24 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
     it('renders edit mode disabled', () => {
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={true}
-                mode={{ mode: 'edit', onSave: jest.fn(), onCancel: jest.fn() }}
+                disabled={true}
+                mode="edit"
+                onSave={jest.fn()}
+                onCancel={jest.fn()}
             />,
         )
 
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'cancel' })).toBeDisabled()
         expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
     })
 
     it('renders edit mode disabled when onSave is undefined', () => {
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={false}
-                mode={{ mode: 'edit', onSave: undefined, onCancel: jest.fn() }}
+                disabled={false}
+                mode="edit"
+                onSave={undefined}
+                onCancel={jest.fn()}
             />,
         )
 
@@ -126,12 +122,10 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
     it('renders create mode disabled when onCreate is undefined', () => {
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={false}
-                mode={{
-                    mode: 'create',
-                    onCreate: undefined,
-                    onCancel: jest.fn(),
-                }}
+                disabled={false}
+                mode="create"
+                onCreate={undefined}
+                onCancel={jest.fn()}
             />,
         )
 
@@ -141,16 +135,14 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
     it('renders create mode disabled', () => {
         render(
             <KnowledgeEditorTopBarGuidanceControls
-                isUpdating={true}
-                mode={{
-                    mode: 'create',
-                    onCreate: jest.fn(),
-                    onCancel: jest.fn(),
-                }}
+                disabled={true}
+                mode="create"
+                onCreate={jest.fn()}
+                onCancel={jest.fn()}
             />,
         )
 
-        expect(screen.getByRole('button', { name: 'Cancel' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'cancel' })).toBeDisabled()
         expect(screen.getByRole('button', { name: 'Create' })).toBeDisabled()
     })
 })

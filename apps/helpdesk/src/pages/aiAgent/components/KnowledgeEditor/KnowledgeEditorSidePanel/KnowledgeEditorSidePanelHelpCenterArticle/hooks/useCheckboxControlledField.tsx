@@ -43,16 +43,20 @@ export function useCheckboxControlledField({
 
     const handleChange = (value: string) => {
         setInputValue(value)
-        if (hasError && value.trim()) setHasError(false)
+
+        if (value.trim()) {
+            if (hasError) {
+                setHasError(false)
+            }
+            onCommit?.(value)
+        }
     }
 
     const handleBlur = () => {
         if (!isChecked) {
             if (!inputValue.trim()) {
                 setHasError(true)
-                return
             }
-            onCommit?.(inputValue)
         }
     }
 

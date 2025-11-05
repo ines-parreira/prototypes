@@ -487,7 +487,7 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+        const cancelButton = screen.getByRole('button', { name: 'cancel' })
         act(() => {
             fireEvent.click(cancelButton)
         })

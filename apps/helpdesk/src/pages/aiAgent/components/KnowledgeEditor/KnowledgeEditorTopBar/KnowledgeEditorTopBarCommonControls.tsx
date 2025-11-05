@@ -6,7 +6,7 @@ import css from './KnowledgeEditorTopBarControls.less'
 
 export const EditIconButton = (props: {
     onEdit: () => void
-    disabled: boolean
+    disabled?: boolean
 }) => (
     <button
         className={classNames(css.icon, css.secondaryButton)}
@@ -20,7 +20,7 @@ export const EditIconButton = (props: {
 
 export const DeleteIconButton = (props: {
     onDelete: () => void
-    disabled: boolean
+    disabled?: boolean
 }) => (
     <button
         className={classNames(css.icon, css.secondaryButton)}
@@ -34,11 +34,12 @@ export const DeleteIconButton = (props: {
 
 export const CancelButton = (props: {
     onCancel: () => void
-    disabled: boolean
+    disabled?: boolean
 }) => (
     <button
         className={classNames(css.button, css.ghostButton)}
         onClick={props.onCancel}
+        aria-label="cancel"
         disabled={props.disabled}
     >
         Cancel
@@ -47,7 +48,7 @@ export const CancelButton = (props: {
 
 export const CopyIconButton = (props: {
     onCopy: () => void
-    disabled: boolean
+    disabled?: boolean
 }) => (
     <button
         className={classNames(css.icon, css.secondaryButton)}
@@ -61,7 +62,7 @@ export const CopyIconButton = (props: {
 
 export const TestButton = (props: {
     onTest: () => void
-    disabled: boolean
+    disabled?: boolean
 }) => (
     <button
         className={classNames(css.button, css.secondaryButton)}

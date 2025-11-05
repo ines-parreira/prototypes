@@ -69,7 +69,7 @@ describe('KnowledgeEditorGuidanceView', () => {
 
         expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: 'Cancel' }),
+            screen.getByRole('button', { name: 'cancel' }),
         ).toBeInTheDocument()
     })
 
@@ -91,7 +91,7 @@ describe('KnowledgeEditorGuidanceView', () => {
             screen.getByRole('button', { name: 'Create' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: 'Cancel' }),
+            screen.getByRole('button', { name: 'cancel' }),
         ).toBeInTheDocument()
     })
 
@@ -186,7 +186,7 @@ describe('KnowledgeEditorGuidanceView', () => {
         )
 
         act(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
+            fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
         })
 
         expect(onClose).toHaveBeenCalledTimes(1)

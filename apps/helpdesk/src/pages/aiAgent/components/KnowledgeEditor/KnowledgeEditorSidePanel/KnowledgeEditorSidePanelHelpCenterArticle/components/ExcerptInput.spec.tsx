@@ -92,61 +92,10 @@ describe('ExcerptInput', () => {
             await user.type(textarea, 'New excerpt content')
 
             expect(textarea).toHaveValue('New excerpt content')
-        })
 
-        it('should not call onChangeExcerpt during typing', async () => {
-            const user = userEvent.setup()
-            const onChangeExcerpt = jest.fn()
-            render(
-                <ExcerptInput
-                    {...defaultProps}
-                    onChangeExcerpt={onChangeExcerpt}
-                />,
+            expect(defaultProps.onChangeExcerpt).toHaveBeenLastCalledWith(
+                'New excerpt content',
             )
-
-            const textarea = screen.getByRole('textbox')
-
-            await user.type(textarea, ' Additional text')
-
-            expect(onChangeExcerpt).not.toHaveBeenCalled()
-        })
-
-        it('should call onChangeExcerpt on blur with updated value', async () => {
-            const user = userEvent.setup()
-            const onChangeExcerpt = jest.fn()
-            render(
-                <ExcerptInput
-                    {...defaultProps}
-                    onChangeExcerpt={onChangeExcerpt}
-                />,
-            )
-
-            const textarea = screen.getByRole('textbox')
-
-            await user.clear(textarea)
-            await user.type(textarea, 'Updated excerpt')
-            await user.tab()
-
-            expect(onChangeExcerpt).toHaveBeenCalledWith('Updated excerpt')
-        })
-
-        it('should call onChangeExcerpt once per blur event', async () => {
-            const user = userEvent.setup()
-            const onChangeExcerpt = jest.fn()
-            render(
-                <ExcerptInput
-                    {...defaultProps}
-                    onChangeExcerpt={onChangeExcerpt}
-                />,
-            )
-
-            const textarea = screen.getByRole('textbox')
-
-            await user.clear(textarea)
-            await user.type(textarea, 'New content')
-            await user.tab()
-
-            expect(onChangeExcerpt).toHaveBeenCalledTimes(1)
         })
 
         it('should not call onChangeExcerpt when disabled', async () => {
@@ -157,32 +106,6 @@ describe('ExcerptInput', () => {
             await user.tab()
 
             expect(onChangeExcerpt).not.toHaveBeenCalled()
-        })
-
-        it('should allow multiple edits and blur events', async () => {
-            const user = userEvent.setup()
-            const onChangeExcerpt = jest.fn()
-            render(
-                <ExcerptInput
-                    {...defaultProps}
-                    onChangeExcerpt={onChangeExcerpt}
-                />,
-            )
-
-            const textarea = screen.getByRole('textbox')
-
-            await user.clear(textarea)
-            await user.type(textarea, 'First edit')
-            await user.tab()
-
-            expect(onChangeExcerpt).toHaveBeenCalledWith('First edit')
-
-            await user.clear(textarea)
-            await user.type(textarea, 'Second edit')
-            await user.tab()
-
-            expect(onChangeExcerpt).toHaveBeenCalledWith('Second edit')
-            expect(onChangeExcerpt).toHaveBeenCalledTimes(2)
         })
     })
 })

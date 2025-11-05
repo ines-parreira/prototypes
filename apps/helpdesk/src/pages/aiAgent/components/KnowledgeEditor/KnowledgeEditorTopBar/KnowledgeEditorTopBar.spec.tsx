@@ -12,7 +12,7 @@ describe('KnowledgeEditorTopBar', () => {
 
         render(
             <KnowledgeEditorTopBar
-                isUpdating={false}
+                disabled={false}
                 title="Guidance"
                 isFullscreen={false}
                 onToggleFullscreen={jest.fn()}
@@ -52,7 +52,7 @@ describe('KnowledgeEditorTopBar', () => {
     it('renders disabled when updating', () => {
         render(
             <KnowledgeEditorTopBar
-                isUpdating={true}
+                disabled={true}
                 title="Guidance"
                 isFullscreen={false}
                 onToggleFullscreen={jest.fn()}
@@ -71,7 +71,7 @@ describe('KnowledgeEditorTopBar', () => {
     it('disables navigation buttons when not provided', () => {
         render(
             <KnowledgeEditorTopBar
-                isUpdating={false}
+                disabled={false}
                 title="Guidance"
                 isFullscreen={false}
                 onToggleFullscreen={jest.fn()}

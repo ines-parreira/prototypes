@@ -4,7 +4,10 @@ import { Meta, StoryFn, StoryObj } from '@storybook/react'
 
 import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
 import { KnowledgeEditorTopBarGuidanceControls } from './KnowledgeEditorTopBarGuidanceControls'
-import { KnowledgeEditorTopBarHelpCenterArticlesControls } from './KnowledgeEditorTopBarHelpCenterArticlesControls'
+import {
+    ArticleModes,
+    KnowledgeEditorTopBarHelpCenterArticlesControls,
+} from './KnowledgeEditorTopBarHelpCenterArticlesControls'
 import { KnowledgeEditorTopBarSnippetControls } from './KnowledgeEditorTopBarSnippetControls'
 
 const meta: Meta<typeof KnowledgeEditorTopBar> = {
@@ -55,13 +58,11 @@ ForGuidanceRead.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
-            isUpdating={false}
-            mode={{
-                mode: 'read',
-                onCopy: () => {},
-                onEdit: () => {},
-                onDelete: () => {},
-            }}
+            disabled={false}
+            mode="read"
+            onCopy={() => {}}
+            onEdit={() => {}}
+            onDelete={() => {}}
         />
     ),
 }
@@ -72,12 +73,10 @@ ForGuidanceEdit.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
-            isUpdating={false}
-            mode={{
-                mode: 'edit',
-                onSave: undefined,
-                onCancel: () => {},
-            }}
+            disabled={false}
+            mode="edit"
+            onSave={undefined}
+            onCancel={() => {}}
         />
     ),
 }
@@ -88,12 +87,10 @@ ForGuidanceCreate.args = {
     title: 'Guidance',
     children: (
         <KnowledgeEditorTopBarGuidanceControls
-            isUpdating={false}
-            mode={{
-                mode: 'create',
-                onCancel: () => {},
-                onCreate: () => {},
-            }}
+            disabled={false}
+            mode="create"
+            onCancel={() => {}}
+            onCreate={() => {}}
         />
     ),
 }
@@ -103,12 +100,11 @@ ForHelpCenterArticleRead.args = {
     title: 'Some help center article',
     children: (
         <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={{
-                mode: 'read',
-                onEdit: () => {},
-                onDelete: () => {},
-                onTest: () => {},
-            }}
+            mode={ArticleModes.READ}
+            onEdit={() => {}}
+            onDelete={() => {}}
+            onTest={() => {}}
+            disabled={false}
         />
     ),
 }
@@ -119,12 +115,11 @@ ForHelpCenterArticleEditDraft.args = {
     onChangeTitle: () => {},
     children: (
         <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={{
-                mode: 'editDraft',
-                onCancel: () => {},
-                onSaveDraft: () => {},
-                onSaveAndPublish: () => {},
-            }}
+            mode={ArticleModes.EDIT_DRAFT}
+            onCancel={() => {}}
+            onSaveDraft={() => {}}
+            onSaveAndPublish={() => {}}
+            disabled={false}
         />
     ),
 }
@@ -135,11 +130,10 @@ ForHelpCenterArticleEditPublished.args = {
     onChangeTitle: () => {},
     children: (
         <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={{
-                mode: 'editPublished',
-                onCancel: () => {},
-                onSaveAndPublish: () => {},
-            }}
+            mode={ArticleModes.EDIT_PUBLISHED}
+            onCancel={() => {}}
+            onSaveAndPublish={() => {}}
+            disabled={false}
         />
     ),
 }
@@ -151,12 +145,11 @@ ForHelpCenterArticleEditDraftWithDisabledButtons.args = {
     onChangeTitle: () => {},
     children: (
         <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={{
-                mode: 'editDraft',
-                onCancel: () => {},
-                onSaveDraft: undefined,
-                onSaveAndPublish: undefined,
-            }}
+            mode={ArticleModes.EDIT_DRAFT}
+            onCancel={() => {}}
+            onSaveDraft={undefined}
+            onSaveAndPublish={undefined}
+            disabled={false}
         />
     ),
 }

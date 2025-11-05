@@ -10,7 +10,6 @@ import { Skeleton } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LocaleCode } from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { replaceUploadUrls } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
@@ -28,7 +27,7 @@ import { Editor } from './types'
 
 import css from './HelpCenterEditor.less'
 
-type Props = {
+export type Props = {
     articleId?: number
     locale: LocaleCode
     value?: string
@@ -36,6 +35,7 @@ type Props = {
     useXSLayout?: boolean
     onChange: (value: string, charCount?: number) => void
     onEditorReady?: (content: string) => void
+    setIsEditorCodeViewActive?: (active: boolean) => void
 }
 
 type FroalaEditorInstance = FroalaEditorComponentType & {
@@ -50,10 +50,11 @@ const HelpCenterEditor = ({
     useXSLayout = false,
     onChange,
     onEditorReady,
+    setIsEditorCodeViewActive,
 }: Props) => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
-    const { setIsEditorCodeViewActive } = useEditionManager()
+
     const nrOfFileAttachments = useRef(0)
     const editorOnRemoveAttachmentHandler = useRef<EventListener>()
     const [isEditorInitialized, setIsEditorInitialized] = useState(false)
@@ -71,7 +72,7 @@ const HelpCenterEditor = ({
     }
 
     useEffect(() => {
-        setIsEditorCodeViewActive(false)
+        setIsEditorCodeViewActive?.(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -261,7 +262,7 @@ const HelpCenterEditor = ({
 
                             if (!editor) return
 
-                            setIsEditorCodeViewActive(
+                            setIsEditorCodeViewActive?.(
                                 editor.codeView.isActive(),
                             )
                         },

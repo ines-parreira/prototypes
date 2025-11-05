@@ -178,11 +178,11 @@ export const KnowledgeEditorGuidanceView = ({
                 onClose={onClose}
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
-                isUpdating={isGuidanceArticleUpdating}
+                disabled={isGuidanceArticleUpdating}
             >
                 <KnowledgeEditorTopBarGuidanceControls
-                    mode={mode}
-                    isUpdating={isGuidanceArticleUpdating}
+                    {...mode}
+                    disabled={isGuidanceArticleUpdating}
                 />
             </KnowledgeEditorTopBar>
 

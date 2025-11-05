@@ -70,6 +70,7 @@ export const SeoMetaTitle = ({
                             css.seoField__control,
                             css['seoField__control--text'],
                         )}
+                        aria-label="Meta title"
                     />
 
                     <span className={css.caption}>

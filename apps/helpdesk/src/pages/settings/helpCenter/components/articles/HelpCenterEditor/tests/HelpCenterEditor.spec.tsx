@@ -7,16 +7,11 @@ import { mockStore } from 'utils/testing'
 import HelpCenterEditor from '../HelpCenterEditor'
 
 const mockUseCurrentHelpCenter = jest.fn()
-const mockUseEditionManager = jest.fn()
 const mockUseAppDispatch = jest.fn()
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
     default: () => mockUseCurrentHelpCenter(),
-}))
-
-jest.mock('pages/settings/helpCenter/providers/EditionManagerContext', () => ({
-    useEditionManager: () => mockUseEditionManager(),
 }))
 
 jest.mock('hooks/useAppDispatch', () => ({
@@ -51,6 +46,7 @@ describe('HelpCenterEditor', () => {
         locale: 'en-US' as const,
         value: 'Test content',
         onChange: jest.fn(),
+        setIsEditorCodeViewActive: jest.fn(),
     }
 
     const renderComponent = (props = {}) => {
@@ -77,9 +73,6 @@ describe('HelpCenterEditor', () => {
         mockUseCurrentHelpCenter.mockReturnValue({
             id: 1,
             layout: 'normal',
-        })
-        mockUseEditionManager.mockReturnValue({
-            setIsEditorCodeViewActive: jest.fn(),
         })
         mockUseAppDispatch.mockReturnValue(mockDispatch)
     })

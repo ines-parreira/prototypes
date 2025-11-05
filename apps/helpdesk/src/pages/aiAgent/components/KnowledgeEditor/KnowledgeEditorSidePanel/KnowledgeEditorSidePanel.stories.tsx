@@ -155,18 +155,6 @@ ForHelpCenterArticle.args = {
                         articleUrl:
                             'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
                     }}
-                    impact={{
-                        successRate: 0.28,
-                        csat: 3.2,
-                        gmvInfluenced: { value: 1200, currency: 'USD' },
-                    }}
-                    relatedTickets={relatedTickets}
-                    engagement={{
-                        views: 1208,
-                        rating: 0.58,
-                        reactions: { positive: 871, negative: 635 },
-                        reportUrl: 'https://gorgias.gorgias.com/app/views',
-                    }}
                     settings={{
                         category: {
                             categoryId: null,
@@ -183,8 +171,6 @@ ForHelpCenterArticle.args = {
                         visibility: {
                             visibilityStatus: 'PUBLIC',
                             onChangeVisibility: () => {},
-                            showNotification: false,
-                            setShowNotification: () => {},
                             isParentUnlisted: false,
                         },
                         slug: {
@@ -225,9 +211,6 @@ ForHelpCenterNewArticle.args = {
             return (
                 <KnowledgeEditorSidePanelHelpCenterArticle
                     details={{}}
-                    impact={{}}
-                    relatedTickets={{}}
-                    engagement={{}}
                     settings={{
                         category: {
                             categoryId: null,
@@ -244,8 +227,6 @@ ForHelpCenterNewArticle.args = {
                         visibility: {
                             visibilityStatus: 'PUBLIC',
                             onChangeVisibility: () => {},
-                            showNotification: false,
-                            setShowNotification: () => {},
                             isParentUnlisted: false,
                         },
                         slug: {
@@ -439,18 +420,6 @@ ForHelpCenterArticleWithAutoSaveSaved.args = {
                         articleUrl:
                             'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
                     }}
-                    impact={{
-                        successRate: 0.28,
-                        csat: 3.2,
-                        gmvInfluenced: { value: 1200, currency: 'USD' },
-                    }}
-                    relatedTickets={relatedTickets}
-                    engagement={{
-                        views: 1208,
-                        rating: 0.58,
-                        reactions: { positive: 871, negative: 635 },
-                        reportUrl: 'https://gorgias.gorgias.com/app/views',
-                    }}
                     settings={{
                         category: {
                             categoryId: null,
@@ -467,8 +436,6 @@ ForHelpCenterArticleWithAutoSaveSaved.args = {
                         visibility: {
                             visibilityStatus: 'PUBLIC',
                             onChangeVisibility: () => {},
-                            showNotification: false,
-                            setShowNotification: () => {},
                             isParentUnlisted: false,
                         },
                         slug: {
@@ -524,18 +491,6 @@ ForHelpCenterArticleWithAutoSaveSaving.args = {
                         articleUrl:
                             'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
                     }}
-                    impact={{
-                        successRate: 0.28,
-                        csat: 3.2,
-                        gmvInfluenced: { value: 1200, currency: 'USD' },
-                    }}
-                    relatedTickets={relatedTickets}
-                    engagement={{
-                        views: 1208,
-                        rating: 0.58,
-                        reactions: { positive: 871, negative: 635 },
-                        reportUrl: 'https://gorgias.gorgias.com/app/views',
-                    }}
                     settings={{
                         category: {
                             categoryId: null,
@@ -552,8 +507,6 @@ ForHelpCenterArticleWithAutoSaveSaving.args = {
                         visibility: {
                             visibilityStatus: 'PUBLIC',
                             onChangeVisibility: () => {},
-                            showNotification: false,
-                            setShowNotification: () => {},
                             isParentUnlisted: false,
                         },
                         slug: {
@@ -608,18 +561,6 @@ ForHelpCenterArticleWithAutoSaveStale.args = {
                         articleUrl:
                             'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
                     }}
-                    impact={{
-                        successRate: 0.28,
-                        csat: 3.2,
-                        gmvInfluenced: { value: 1200, currency: 'USD' },
-                    }}
-                    relatedTickets={relatedTickets}
-                    engagement={{
-                        views: 1208,
-                        rating: 0.58,
-                        reactions: { positive: 871, negative: 635 },
-                        reportUrl: 'https://gorgias.gorgias.com/app/views',
-                    }}
                     settings={{
                         category: {
                             categoryId: null,
@@ -636,8 +577,6 @@ ForHelpCenterArticleWithAutoSaveStale.args = {
                         visibility: {
                             visibilityStatus: 'PUBLIC',
                             onChangeVisibility: () => {},
-                            showNotification: false,
-                            setShowNotification: () => {},
                             isParentUnlisted: false,
                         },
                         slug: {

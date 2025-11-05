@@ -8,6 +8,7 @@ describe('SlugInput', () => {
         slug: 'returns',
         onChangeSlug: jest.fn(),
         articleId: 12345,
+        isDisabled: false,
     }
 
     beforeEach(() => {
@@ -65,46 +66,9 @@ describe('SlugInput', () => {
             await user.type(input, 'new-slug')
 
             expect(input).toHaveValue('new-slug')
-        })
-
-        it('should not call onChangeSlug during typing', async () => {
-            const user = userEvent.setup()
-            const onChangeSlug = jest.fn()
-            render(<SlugInput {...defaultProps} onChangeSlug={onChangeSlug} />)
-
-            const input = screen.getByRole('textbox')
-
-            await user.type(input, '-updated')
-
-            expect(onChangeSlug).not.toHaveBeenCalled()
-        })
-
-        it('should call onChangeSlug on blur with valid value', async () => {
-            const user = userEvent.setup()
-            const onChangeSlug = jest.fn()
-            render(<SlugInput {...defaultProps} onChangeSlug={onChangeSlug} />)
-
-            const input = screen.getByRole('textbox')
-
-            await user.clear(input)
-            await user.type(input, 'updated-slug')
-            await user.tab()
-
-            expect(onChangeSlug).toHaveBeenCalledWith('updated-slug')
-        })
-
-        it('should call onChangeSlug once per blur event', async () => {
-            const user = userEvent.setup()
-            const onChangeSlug = jest.fn()
-            render(<SlugInput {...defaultProps} onChangeSlug={onChangeSlug} />)
-
-            const input = screen.getByRole('textbox')
-
-            await user.clear(input)
-            await user.type(input, 'new-slug')
-            await user.tab()
-
-            expect(onChangeSlug).toHaveBeenCalledTimes(1)
+            expect(defaultProps.onChangeSlug).toHaveBeenLastCalledWith(
+                'new-slug',
+            )
         })
     })
 

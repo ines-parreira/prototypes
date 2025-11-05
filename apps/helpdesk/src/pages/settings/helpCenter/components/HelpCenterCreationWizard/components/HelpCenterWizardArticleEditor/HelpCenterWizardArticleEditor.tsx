@@ -13,6 +13,7 @@ import {
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 
 import { CloseModal } from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
@@ -37,6 +38,8 @@ const ArticleEditor: React.FC<Props> = ({
     onEditorReady,
     onEditorSave,
 }) => {
+    const { setIsEditorCodeViewActive } = useEditionManager()
+
     const [title, setTitle] = useState<string>()
     const [content, setContent] = useState<string>()
     const [count, setCount] = useState<number>()
@@ -137,6 +140,7 @@ const ArticleEditor: React.FC<Props> = ({
                         value={content}
                         onChange={handleContentChange}
                         onEditorReady={onEditorReady}
+                        setIsEditorCodeViewActive={setIsEditorCodeViewActive}
                     />
                     <footer className={css.footer}>
                         <div className={css.actions}>

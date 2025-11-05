@@ -108,6 +108,7 @@ const HelpCenterArticleModalBasicViewContent = ({
         setSelectedArticle,
         isFullscreenEditModal,
         setIsFullscreenEditModal,
+        setIsEditorCodeViewActive,
     } = useEditionManager()
 
     const { lastUpdate, lastUpdateDetailed } = useMemo(() => {
@@ -229,6 +230,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 onChange={onArticleContentEdit}
                 onEditorReady={onEditorReady}
                 useXSLayout={isXSLayout}
+                setIsEditorCodeViewActive={setIsEditorCodeViewActive}
             />
             <HelpCenterEditModalFooter
                 rating={

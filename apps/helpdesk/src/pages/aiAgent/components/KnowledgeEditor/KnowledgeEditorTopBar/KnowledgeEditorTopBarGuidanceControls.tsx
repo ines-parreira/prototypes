@@ -26,14 +26,9 @@ export type GuidanceMode =
           onCancel: () => void
       }
 
-type Props = {
-    mode: GuidanceMode
-    isUpdating: boolean
-}
+type Props = GuidanceMode & { disabled?: boolean }
 
-const ReadControls = (
-    props: Extract<GuidanceMode, { mode: 'read' }> & { disabled: boolean },
-) => (
+const ReadControls = (props: Extract<Props, { mode: 'read' }>) => (
     <>
         <EditIconButton onEdit={props.onEdit} disabled={props.disabled} />
         {/* TODO: add copy button back in when implemented */}
@@ -42,9 +37,7 @@ const ReadControls = (
     </>
 )
 
-const EditControls = (
-    props: Extract<GuidanceMode, { mode: 'edit' }> & { disabled: boolean },
-) => (
+const EditControls = (props: Extract<Props, { mode: 'edit' }>) => (
     <>
         <CancelButton onCancel={props.onCancel} disabled={props.disabled} />
 
@@ -58,9 +51,7 @@ const EditControls = (
     </>
 )
 
-const CreateControls = (
-    props: Extract<GuidanceMode, { mode: 'create' }> & { disabled: boolean },
-) => (
+const CreateControls = (props: Extract<Props, { mode: 'create' }>) => (
     <>
         <CancelButton onCancel={props.onCancel} disabled={props.disabled} />
 
@@ -75,10 +66,10 @@ const CreateControls = (
 )
 
 export const KnowledgeEditorTopBarGuidanceControls = (props: Props) =>
-    props.mode.mode === 'read' ? (
-        <ReadControls {...props.mode} disabled={props.isUpdating} />
-    ) : props.mode.mode === 'edit' ? (
-        <EditControls {...props.mode} disabled={props.isUpdating} />
+    props.mode === 'read' ? (
+        <ReadControls {...props} />
+    ) : props.mode === 'edit' ? (
+        <EditControls {...props} />
     ) : (
-        <CreateControls {...props.mode} disabled={props.isUpdating} />
+        <CreateControls {...props} />
     )

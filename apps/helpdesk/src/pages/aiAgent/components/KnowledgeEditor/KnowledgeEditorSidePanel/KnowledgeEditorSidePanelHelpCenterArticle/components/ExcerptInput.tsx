@@ -18,11 +18,8 @@ export const ExcerptInput = ({
 
     const handleChange = (value: string) => {
         setInputValue(value)
-    }
-
-    const handleBlur = () => {
         if (onChangeExcerpt) {
-            onChangeExcerpt(inputValue)
+            onChangeExcerpt(value)
         }
     }
 
@@ -31,7 +28,6 @@ export const ExcerptInput = ({
             <TextArea
                 value={inputValue}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 rows={4}
                 name="excerpt"
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}

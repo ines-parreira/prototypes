@@ -23,6 +23,7 @@ import {
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { getCategories } from 'state/entities/helpCenter/categories'
@@ -68,6 +69,7 @@ const ArticleEditor: React.FC<Props> = ({
     )
     const categories = useAppSelector(getCategories)
     const locales = useSupportedLocales()
+    const { setIsEditorCodeViewActive } = useEditionManager()
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null,
@@ -241,6 +243,7 @@ const ArticleEditor: React.FC<Props> = ({
                         locale={locale}
                         value={content}
                         onChange={handleContentChange}
+                        setIsEditorCodeViewActive={setIsEditorCodeViewActive}
                     />
                     <footer className={css.footer}>
                         <div className={css.actions}>

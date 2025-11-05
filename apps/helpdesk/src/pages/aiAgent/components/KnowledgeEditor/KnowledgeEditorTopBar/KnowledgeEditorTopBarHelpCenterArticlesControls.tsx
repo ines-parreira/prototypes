@@ -9,47 +9,60 @@ import {
 
 import css from './KnowledgeEditorTopBarControls.less'
 
-type ArticleMode =
+export enum ArticleModes {
+    READ = 'read',
+    EDIT_DRAFT = 'editDraft',
+    EDIT_PUBLISHED = 'editPublished',
+}
+
+export type ArticleMode =
     | {
-          mode: 'read'
+          mode: ArticleModes.READ
           onEdit: () => void
           onDelete: () => void
           onTest: () => void
       }
     | {
-          mode: 'editDraft'
+          mode: ArticleModes.EDIT_DRAFT
           onCancel: () => void
           onSaveDraft?: () => void
           onSaveAndPublish?: () => void
       }
     | {
-          mode: 'editPublished'
+          mode: ArticleModes.EDIT_PUBLISHED
           onCancel: () => void
           onSaveAndPublish?: () => void
       }
 
-type Props = {
-    mode: ArticleMode
-}
+type Props = ArticleMode & { disabled?: boolean }
 
-const ReadControls = (props: Extract<ArticleMode, { mode: 'read' }>) => (
+const ReadControls = (props: Extract<Props, { mode: ArticleModes.READ }>) => (
     <>
-        <EditIconButton onEdit={props.onEdit} disabled={false} />
-        <DeleteIconButton onDelete={props.onDelete} disabled={false} />
-        <TestButton onTest={props.onTest} disabled={false} />
+        <EditIconButton
+            onEdit={props.onEdit}
+            disabled={props.disabled ?? false}
+        />
+        <DeleteIconButton
+            onDelete={props.onDelete}
+            disabled={props.disabled ?? false}
+        />
+        <TestButton onTest={props.onTest} disabled={props.disabled ?? false} />
     </>
 )
 
 const EditDraftControls = (
-    props: Extract<ArticleMode, { mode: 'editDraft' }>,
+    props: Extract<Props, { mode: ArticleModes.EDIT_DRAFT }>,
 ) => (
     <>
-        <CancelButton onCancel={props.onCancel} disabled={false} />
+        <CancelButton
+            onCancel={props.onCancel}
+            disabled={props.disabled ?? false}
+        />
 
         <button
             className={classNames(css.button, css.secondaryButton)}
             onClick={props.onSaveDraft}
-            disabled={props.onSaveDraft === undefined}
+            disabled={props.onSaveDraft === undefined || props.disabled}
         >
             Save draft
         </button>
@@ -57,7 +70,7 @@ const EditDraftControls = (
         <button
             className={classNames(css.button, css.primaryButton)}
             onClick={props.onSaveAndPublish}
-            disabled={props.onSaveAndPublish === undefined}
+            disabled={props.onSaveAndPublish === undefined || props.disabled}
         >
             Save & publish
         </button>
@@ -65,15 +78,18 @@ const EditDraftControls = (
 )
 
 const EditPublishedControls = (
-    props: Extract<ArticleMode, { mode: 'editPublished' }>,
+    props: Extract<Props, { mode: ArticleModes.EDIT_PUBLISHED }>,
 ) => (
     <>
-        <CancelButton onCancel={props.onCancel} disabled={false} />
+        <CancelButton
+            onCancel={props.onCancel}
+            disabled={props.disabled ?? false}
+        />
 
         <button
             className={classNames(css.button, css.primaryButton)}
             onClick={props.onSaveAndPublish}
-            disabled={props.onSaveAndPublish === undefined}
+            disabled={props.onSaveAndPublish === undefined || props.disabled}
         >
             Save & publish
         </button>
@@ -83,10 +99,10 @@ const EditPublishedControls = (
 export const KnowledgeEditorTopBarHelpCenterArticlesControls = (
     props: Props,
 ) =>
-    props.mode.mode === 'read' ? (
-        <ReadControls {...props.mode} />
-    ) : props.mode.mode === 'editDraft' ? (
-        <EditDraftControls {...props.mode} />
+    props.mode === ArticleModes.READ ? (
+        <ReadControls {...props} />
+    ) : props.mode === ArticleModes.EDIT_DRAFT ? (
+        <EditDraftControls {...props} />
     ) : (
-        <EditPublishedControls {...props.mode} />
+        <EditPublishedControls {...props} />
     )

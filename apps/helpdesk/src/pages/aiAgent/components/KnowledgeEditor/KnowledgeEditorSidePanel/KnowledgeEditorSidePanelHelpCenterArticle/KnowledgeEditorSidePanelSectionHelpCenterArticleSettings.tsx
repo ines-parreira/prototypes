@@ -41,12 +41,10 @@ export type Props = {
     visibility: {
         visibilityStatus: VisibilityStatus
         onChangeVisibility: (status: VisibilityStatus) => void
-        showNotification: boolean
-        setShowNotification: (showNotification: boolean) => void
         isParentUnlisted: boolean
     }
 
-    slug: {
+    slug?: {
         slug: string
         onChangeSlug: (slug: string) => void
         articleId: number
@@ -138,8 +136,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                         <SelectVisibilityStatus
                             onChange={visibility.onChangeVisibility}
                             status={visibility.visibilityStatus}
-                            showNotification={visibility.showNotification}
-                            setShowNotification={visibility.setShowNotification}
+                            showNotification={false}
+                            setShowNotification={() => {}}
                             isParentUnlisted={visibility.isParentUnlisted}
                             type="article"
                             className={css.visibilitySelect}
@@ -148,7 +146,13 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                 </div>
 
                 <div className={css.setting}>
-                    <SlugInput {...slug} />
+                    {slug && (
+                        <SlugInput
+                            slug={slug.slug}
+                            onChangeSlug={slug.onChangeSlug}
+                            articleId={slug.articleId}
+                        />
+                    )}
 
                     <SeoMetaTitle
                         title={title}

@@ -29,17 +29,18 @@ export const SlugInput = ({
 
     const handleChange = (value: string) => {
         setInputValue(value)
-        if (hasError && value.trim()) {
-            setHasError(false)
+        if (value.trim()) {
+            if (hasError) {
+                setHasError(false)
+            }
+            onChangeSlug(value)
         }
     }
 
     const handleBlur = () => {
         if (!inputValue.trim()) {
             setHasError(true)
-            return
         }
-        onChangeSlug(inputValue)
     }
 
     return (
@@ -59,6 +60,7 @@ export const SlugInput = ({
                         className={css.slugInput}
                         error={hasError ? 'This field is required' : undefined}
                         isRequired
+                        aria-label="Slug"
                         trailingSlot={
                             <div className={css.trailingSlot}>
                                 <span>-{articleId.toString()}</span>

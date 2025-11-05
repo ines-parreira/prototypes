@@ -24,7 +24,17 @@ type Props = {
     isDetailsView: boolean
     onToggleDetailsView: () => void
 
-    isUpdating: boolean
+    disabled?: boolean
+}
+
+export const defaultProps: Props = {
+    title: 'Help Center article',
+    isFullscreen: false,
+    onToggleFullscreen: () => {},
+    onClose: () => {},
+    isDetailsView: true,
+    onToggleDetailsView: () => {},
+    disabled: true,
 }
 
 export const KnowledgeEditorTopBar = (props: Props) => {
@@ -38,10 +48,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                             controlsCss.ghostButton,
                         )}
                         onClick={props.onClickPrevious}
-                        disabled={
-                            props.onClickPrevious === undefined ||
-                            props.isUpdating
-                        }
+                        disabled={props.disabled}
                         aria-label="previous"
                     >
                         <Icon name="arrow-chevron-left" />
@@ -54,9 +61,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                             controlsCss.ghostButton,
                         )}
                         onClick={props.onClickNext}
-                        disabled={
-                            props.onClickNext === undefined || props.isUpdating
-                        }
+                        disabled={props.disabled}
                         aria-label="next"
                     >
                         <Icon name="arrow-chevron-right" />
@@ -64,10 +69,17 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 )}
             </div>
 
-            <div className={css.title}>
+            <div
+                className={classNames(
+                    css.title,
+                    props.onChangeTitle && !props.disabled
+                        ? css.editableTitle
+                        : undefined,
+                )}
+            >
                 <KnowledgeEditorTopBarTitle
                     onChangeTitle={
-                        props.isUpdating ? undefined : props.onChangeTitle
+                        props.disabled ? undefined : props.onChangeTitle
                     }
                     title={props.title}
                 />
@@ -90,7 +102,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     aria-label={
                         props.isFullscreen ? 'leave fullscreen' : 'fullscreen'
                     }
-                    disabled={props.isUpdating}
+                    disabled={props.disabled}
                 >
                     <Icon
                         name={
@@ -106,7 +118,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
                     onClick={props.onClose}
                     aria-label="close"
-                    disabled={props.isUpdating}
+                    disabled={props.disabled}
                 >
                     <Icon name="close" />
                 </button>
@@ -122,7 +134,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                             ? 'collapse side panel'
                             : 'expand side panel'
                     }
-                    disabled={props.isUpdating}
+                    disabled={props.disabled}
                 >
                     <Icon
                         name={

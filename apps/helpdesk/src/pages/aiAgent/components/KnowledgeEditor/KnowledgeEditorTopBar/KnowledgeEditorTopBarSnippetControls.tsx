@@ -9,6 +9,7 @@ import css from './KnowledgeEditorTopBarControls.less'
 type Props = {
     onTest: () => void
 }
+
 export const KnowledgeEditorTopBarSnippetControls = (props: Props) => (
     <>
         <button

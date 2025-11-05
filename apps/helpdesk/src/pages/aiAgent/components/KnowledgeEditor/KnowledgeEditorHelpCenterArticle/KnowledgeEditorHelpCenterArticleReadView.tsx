@@ -4,7 +4,7 @@ import htmlToReact from 'html-react-parser'
 
 import { Heading } from '@gorgias/axiom'
 
-import css from './KnowledgeEditorHelpCenterArticleView.less'
+import css from './KnowledgeEditorHelpCenterArticleReadView.less'
 
 type Props = {
     content: string
