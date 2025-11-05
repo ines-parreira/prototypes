@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Product } from 'constants/integrations/types/shopify'
 import { useListProducts } from 'models/integration/queries'
@@ -8,10 +8,18 @@ type useAIJourneyProductListParams = {
     integrationId?: number
 }
 
+const MINIMUM_PRODUCT_COUNT = 5
+
 export const useAIJourneyProductList = ({
     integrationId,
 }: useAIJourneyProductListParams) => {
-    const { data: paginatedProductItems, isLoading } = useListProducts(
+    const {
+        data: paginatedProductItems,
+        isLoading,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useListProducts(
         integrationId ?? 0,
         !!integrationId,
         { limit: 50 },
@@ -27,11 +35,26 @@ export const useAIJourneyProductList = ({
             .filter((item) => item.data.status === 'active')
             .filter((item) => !!item.data.image && !!item.data.title)
             .map((item) => item.data)
-            .splice(0, 5)
+            .slice(0, MINIMUM_PRODUCT_COUNT)
     }, [productItemsData])
+
+    useEffect(() => {
+        const needsMoreProducts = productList.length < MINIMUM_PRODUCT_COUNT
+        const canFetchMore = hasNextPage && !isLoading && !isFetchingNextPage
+
+        if (needsMoreProducts && canFetchMore) {
+            fetchNextPage()
+        }
+    }, [
+        productList.length,
+        isLoading,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+    ])
 
     return {
         productList,
-        isLoading,
+        isLoading: isLoading || isFetchingNextPage,
     }
 }
