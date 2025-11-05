@@ -16,6 +16,11 @@ export type OneDimensionalDataItem = {
     value: number
 }
 
+/**
+ * @deprecated Use TwoDimensionalDataItem from @repo/reporting instead
+ * @date 2025-11-04
+ * @type reporting-ui-kit
+ */
 export type TwoDimensionalDataItem = {
     label: string
     tooltip?: string

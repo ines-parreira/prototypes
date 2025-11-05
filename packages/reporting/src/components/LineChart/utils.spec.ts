@@ -1,5 +1,5 @@
 import { TwoDimensionalDataItem } from '../../types'
-import { toLineChartData } from './utils'
+import { toChartData } from './utils'
 
 describe('utils', () => {
     describe('toLineChartData', () => {
@@ -73,7 +73,7 @@ describe('utils', () => {
                 },
             ]
 
-            const result = toLineChartData(data)
+            const result = toChartData(data)
             expect(result).toEqual([
                 {
                     name: 'Page A',

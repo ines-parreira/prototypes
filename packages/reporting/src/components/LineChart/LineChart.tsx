@@ -12,7 +12,7 @@ import { Skeleton } from '@gorgias/axiom'
 import { TwoDimensionalDataItem } from '../../types'
 import { renderTickLabelAsNumber } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
-import { toLineChartData } from './utils'
+import { toChartData } from './utils'
 
 type LineChartProps = {
     data: TwoDimensionalDataItem[]
@@ -32,7 +32,7 @@ export const LineChart = ({
         return <Skeleton height={skeletonHeight} />
     }
 
-    const transformedData = toLineChartData(data)
+    const transformedData = toChartData(data)
 
     return (
         <LineChartRecharts

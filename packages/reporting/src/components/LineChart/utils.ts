@@ -1,6 +1,6 @@
 import { TwoDimensionalDataItem } from '../../types'
 
-export const toLineChartData = (data: TwoDimensionalDataItem[]) => {
+export const toChartData = (data: TwoDimensionalDataItem[]) => {
     const pointsMap = new Map<string, Record<string, string | number>>()
 
     for (const series of data) {
