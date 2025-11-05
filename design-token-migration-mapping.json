@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 3,
-    "totalFilesAffected": 25,
+    "totalCommits": 17,
+    "totalFilesAffected": 253,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -19,17 +19,116 @@
       "title": "feat(tokens): Migrate design tokens for ticket detail and infobar components",
       "date": "2025-08-08",
       "filesAffected": 10
+    },
+    "b44fe22b6f17268c589ff33e1c7a91549c287350": {
+      "title": "refactor(tokens): Migrate background tokens - batch 1",
+      "date": "2025-08-29",
+      "filesAffected": 5
+    },
+    "47c2691a0b": {
+      "title": "refactor(tokens): Migrate background tokens - batch 2",
+      "date": "2025-08-29",
+      "filesAffected": 6
+    },
+    "a4301619aa": {
+      "title": "refactor(tokens): Migrate background tokens - batch 3",
+      "date": "2025-08-29",
+      "filesAffected": 8
+    },
+    "e54f76fbf23aaccab8cb3f94d779bad02e31530a": {
+      "title": "refactor(tokens): Migrate background tokens - batches 4-5",
+      "date": "2025-08-29",
+      "filesAffected": 12
+    },
+    "977bb6323330220c1b156b8efa1d3b4e7e5cf358": {
+      "title": "refactor(tokens): Migrate background tokens - batch 6",
+      "date": "2025-08-29",
+      "filesAffected": 8
+    },
+    "60054736e22777ab3ad187ec6649a048dc3d715b": {
+      "title": "refactor(tokens): Migrate background tokens - batches 8-10",
+      "date": "2025-08-29",
+      "filesAffected": 24
+    },
+    "bcf919bfd1fddfc1ae5dcd3caf3ae28a9e0583a7": {
+      "title": "refactor(tokens): Migrate background tokens - batches 11-12",
+      "date": "2025-09-03",
+      "filesAffected": 20
+    },
+    "5f281e8be5e15c04d080af6bb57756b0f5976823": {
+      "title": "refactor(tokens): Migrate background tokens - batches 13-14",
+      "date": "2025-08-29",
+      "filesAffected": 25
+    },
+    "a48b8493858f37e1b906467d99f387690abf76ad": {
+      "title": "refactor(tokens): Migrate background tokens - batch 17",
+      "date": "2025-08-29",
+      "filesAffected": 26
+    },
+    "1487c34184e02893d9533b93bec6d44886b88d8e": {
+      "title": "refactor(axiom): Migrate background tokens - batch 18",
+      "date": "2025-09-05",
+      "filesAffected": 20
+    },
+    "fa03deb72895893a0e4f243aa371effe62cfb1ab": {
+      "title": "refactor(tokens): Migrate background tokens - batch 19",
+      "date": "2025-09-05",
+      "filesAffected": 24
+    },
+    "2fbb04ffaceaa0cd156803814b3c469d84af16be": {
+      "title": "refactor(tokens): Migrate background tokens - batch 20",
+      "date": "2025-09-05",
+      "filesAffected": 14
+    },
+    "6b41dfa4716351e58371dac51a0a6410ec6643db": {
+      "title": "refactor(tokens): Migrate background tokens - batch 21",
+      "date": "2025-09-05",
+      "filesAffected": 21
+    },
+    "d530e7d32e7f44f88bc48f2df6a508f37723080f": {
+      "title": "refactor(tokens): Migrate background tokens - batch 22",
+      "date": "2025-09-05",
+      "filesAffected": 13
     }
   },
   "tokenMappings": {
     "backgroundColors": {
-      "--neutral-grey-0": "--elevation-neutral-default",
-      "--neutral-grey-1": ["--elevation-neutral-mid", "--elevation-neutral-bg"],
+      "--neutral-grey-0": [
+        "--elevation-neutral-default",
+        "--elevation-overlay-default"
+      ],
+      "--neutral-grey-1": [
+        "--elevation-neutral-mid",
+        "--elevation-neutral-bg",
+        "--surface-neutral-secondary",
+        "--elevation-surface-primary",
+        "--elevation-overlay-hover"
+      ],
+      "--neutral-grey-2": [
+        "--elevation-neutral-mid",
+        "--surface-neutral-tertiary",
+        "--elevation-surface-secondary",
+        "--hover-default"
+      ],
+      "--neutral-grey-3": [
+        "--surface-neutral-secondary",
+        "--surface-neutral-tertiary"
+      ],
+      "--neutral-grey-4": [
+        "--surface-neutral-primary"
+      ],
       "--navigation-background": "--elevation-neutral-bg"
     },
     "textColors": {
       "--neutral-grey-6": "--content-neutral-default",
-      "--neutral-grey-5": "--content-neutral-default",
+      "--neutral-grey-5": [
+        "--content-neutral-default",
+        "--content-neutral-tertiary"
+      ],
+      "--neutral-grey-4": [
+        "--content-neutral-secondary",
+        "--content-neutral-default"
+      ],
       "--navigation-text-item": "--content-neutral-default",
       "--navigation-title-item": "--content-neutral-default"
     },
@@ -39,13 +138,51 @@
       "--navigation-border": "--border-neutral-default"
     },
     "accentColors": {
-      "--main-primary": "--surface-additional-blue",
-      "--main-primary-0": "--elevation-neutral-bg",
-      "--feedback-error": "--static-error"
+      "--main-primary": [
+        "--surface-additional-blue",
+        "--elevation-accent-default",
+        "--navigation-selected"
+      ],
+      "--main-primary-0": [
+        "--elevation-neutral-bg",
+        "--surface-success-primary"
+      ],
+      "--main-primary-4": [
+        "--content-additional-blue",
+        "--surface-success-secondary"
+      ],
+      "--main-latte": "--surface-brand-secondary",
+      "--feedback-error": [
+        "--static-error",
+        "--content-error-primary",
+        "--surface-error-primary"
+      ],
+      "--feedback-warning": "--elevation-status-warning-default",
+      "--feedback-success": "--elevation-status-success-default",
+      "--accessory-blue-1": [
+        "--surface-additional-blue",
+        "--content-additional-blue"
+      ],
+      "--accessory-green-1": "--elevation-status-success-subtle",
+      "--accessory-orange-1": "--elevation-status-warning-subtle",
+      "--accessory-red-1": [
+        "--elevation-status-error-subtle",
+        "--surface-error-primary"
+      ],
+      "--accessory-magenta-1": "--surface-additional-fuchsia",
+      "--accessory-magenta-2": "--surface-additional-purple",
+      "--ultraLightBlue": "--surface-additional-blue"
+    },
+    "hoverAndInteractionStates": {
+      "--neutral-grey-1": "--hover-default",
+      "--neutral-grey-2": "--hover-default"
     },
     "specialCases": {
       "--neutral-grey-4": {
-        "note": "Some instances remain unchanged for specific secondary text, others migrate to --content-neutral-default"
+        "note": "Context-dependent: migrates to --content-neutral-secondary for text, --surface-neutral-primary for backgrounds, or --content-neutral-default for active text"
+      },
+      "--neutral-grey-2": {
+        "note": "Context-dependent: migrates to --elevation-surface-secondary for overlays, --hover-default for hover states, or --border-neutral-default for borders"
       }
     }
   },
@@ -223,12 +360,458 @@
         "context": "Error color",
         "files": ["Infobar.less"]
       }
+    ],
+    "commit_e54f76fbf2_batches_4_5": [
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Background color for containers and hover states",
+        "files": [
+          "WhatsAppMessageTemplateNavigator.less",
+          "SatisfactionSurvey.less",
+          "TicketAssignee.less",
+          "AIAgentUsedData.less",
+          "AiAgentReasoning.less",
+          "CollapsedSourceActions.less",
+          "Container.less",
+          "DropdownOptionButton.less",
+          "DropdownOptionItem.less",
+          "IntentsFeedbackDropdown.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-warning",
+        "newToken": "--elevation-status-warning-default",
+        "context": "Warning background color",
+        "files": ["SatisfactionSurvey.less"]
+      }
+    ],
+    "commit_977bb63233_batch_6": [
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-surface-primary",
+        "context": "Surface backgrounds",
+        "files": [
+          "AIAgentTicketLevelFeedback.less",
+          "Deprecated_MultiLevelSelect.less",
+          "KnowledgeSourceSideBar.less",
+          "Event.less",
+          "FacebookCarousel.less",
+          "DiscountOfferTicketAttachment.less",
+          "ComplexActionPreview.less",
+          "SimpleActionPreview.less"
+        ]
+      }
+    ],
+    "commit_bcf919bfd1_batches_11_12": [
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-overlay-default",
+        "context": "Overlay and modal backgrounds",
+        "files": [
+          "SearchResults.less",
+          "SearchResultsArticleRow.less",
+          "NoResult.less",
+          "SelectVisibilityStatus.less",
+          "ArticleLanguageSelect.less",
+          "CloseModal.less",
+          "HelpCenterEditAdvancedArticleForm.less",
+          "CreateImportModal.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--elevation-surface-secondary",
+        "context": "Secondary surface backgrounds",
+        "files": [
+          "Badge.less",
+          "SubscriptionModal.less",
+          "SummaryFooter.less"
+        ]
+      },
+      {
+        "legacyToken": "--accessory-green-1",
+        "newToken": "--elevation-status-success-subtle",
+        "context": "Success badge background",
+        "files": ["Badge.less"]
+      },
+      {
+        "legacyToken": "--accessory-orange-1",
+        "newToken": "--elevation-status-warning-subtle",
+        "context": "Warning badge background",
+        "files": ["Badge.less"]
+      },
+      {
+        "legacyToken": "--accessory-red-1",
+        "newToken": "--elevation-status-error-subtle",
+        "context": "Error badge background",
+        "files": ["Badge.less"]
+      }
+    ],
+    "commit_1487c34184_batch_18": [
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Base neutral backgrounds",
+        "files": [
+          "Footer.less",
+          "MoreOptions.less",
+          "Dropdown.less",
+          "InputAction.less",
+          "JourneyPlaceholder.less",
+          "PercentageInput.less",
+          "ProductDropdown.less",
+          "AlertBanner.less",
+          "json-tree.less",
+          "navbar.less",
+          "colors.less",
+          "dropdown.less",
+          "forms.less",
+          "table.less",
+          "util.less",
+          "Feed.less",
+          "Toast.less",
+          "Popover.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--surface-neutral-tertiary",
+        "context": "Tertiary surface backgrounds",
+        "files": [
+          "navbar.less",
+          "dropdown.less",
+          "forms.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--hover-default",
+        "context": "Hover states",
+        "files": [
+          "dropdown.less",
+          "forms.less"
+        ]
+      }
+    ],
+    "commit_2fbb04ffac_batch_20": [
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Base neutral backgrounds",
+        "files": [
+          "CommentHighlightsCarousel.less",
+          "ScoredSurveysTable.less",
+          "MetricTip.less",
+          "ProductImage.less",
+          "ProductInsightsCellContent.less",
+          "VoiceAgentsTable.less",
+          "VoiceCallFilter.less",
+          "VoiceCallTable.less",
+          "ActivationManageButton.less",
+          "AiAgentActivationModal.less",
+          "ActionTemplatesView.less",
+          "CreateActionView.less",
+          "ActionEventRow.less",
+          "ActionEventsHeader.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--surface-neutral-secondary",
+        "context": "Secondary surface backgrounds",
+        "files": [
+          "CommentHighlightsCarousel.less",
+          "VoiceAgentsTable.less",
+          "VoiceCallTable.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--surface-neutral-tertiary",
+        "context": "Tertiary surface and hover backgrounds",
+        "files": [
+          "ScoredSurveysTable.less",
+          "VoiceCallTable.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-latte",
+        "newToken": "--surface-brand-secondary",
+        "context": "Brand accent backgrounds",
+        "files": ["MetricTip.less"]
+      },
+      {
+        "legacyToken": "--main-primary-4",
+        "newToken": "--surface-success-secondary",
+        "context": "Success surface backgrounds",
+        "files": ["ProductImage.less"]
+      }
     ]
   },
   "implementationNotes": {
     "backwardCompatibility": "Legacy tokens are marked with '// legacy' comments",
-    "newTokenStructure": "New axiom tokens are defined in '.axiom' CSS selector blocks",
+    "newTokenStructure": "New axiom tokens are defined in '.axiom :local' CSS selector blocks",
     "semanticNaming": "Migration moves from color-based naming to semantic meaning (elevation, content, surface, etc.)",
-    "transitionStrategy": "Maintains both token systems during migration period"
+    "transitionStrategy": "Maintains both token systems during migration period",
+    "migrationPattern": "Each file maintains 1-1 correspondence between legacy and axiom tokens, ensuring visual parity during transition",
+    "contextAwareness": "Same legacy token can map to different axiom tokens based on context (background vs border vs text)",
+    "batchStrategy": "Migration performed in batches focusing primarily on background/background-color tokens first"
+  },
+  "keyTokenCategories": {
+    "elevation": {
+      "description": "Tokens for layering and z-axis depth",
+      "examples": [
+        "--elevation-neutral-default",
+        "--elevation-neutral-mid",
+        "--elevation-overlay-default",
+        "--elevation-surface-primary",
+        "--elevation-surface-secondary",
+        "--elevation-status-success-subtle",
+        "--elevation-status-warning-subtle",
+        "--elevation-status-error-subtle"
+      ]
+    },
+    "surface": {
+      "description": "Tokens for surface backgrounds and fills",
+      "examples": [
+        "--surface-neutral-primary",
+        "--surface-neutral-secondary",
+        "--surface-neutral-tertiary",
+        "--surface-additional-blue",
+        "--surface-brand-secondary",
+        "--surface-success-primary",
+        "--surface-error-primary"
+      ]
+    },
+    "content": {
+      "description": "Tokens for text and content colors",
+      "examples": [
+        "--content-neutral-default",
+        "--content-neutral-secondary",
+        "--content-neutral-tertiary",
+        "--content-additional-blue",
+        "--content-error-primary",
+        "--content-success-primary"
+      ]
+    },
+    "border": {
+      "description": "Tokens for borders and dividers",
+      "examples": [
+        "--border-neutral-default"
+      ]
+    },
+    "interaction": {
+      "description": "Tokens for hover and interaction states",
+      "examples": [
+        "--hover-default",
+        "--navigation-selected"
+      ]
+    },
+    "static": {
+      "description": "Tokens for static, unchanging colors",
+      "examples": [
+        "--static-error",
+        "--static-warning"
+      ]
+    }
+  },
+  "migrationProgress": {
+    "totalCommits": 17,
+    "totalFiles": 253,
+    "dateRange": "2025-08-05 to 2025-09-05",
+    "primaryFocus": "Background and background-color token migrations",
+    "completionPhases": [
+      "Phase 1: Initial navigation and ticket-related pages (commits 1-3)",
+      "Phase 2: Background tokens - batches 1-6 (August 29)",
+      "Phase 3: Background tokens - batches 8-14 (August 29 - September 3)",
+      "Phase 4: Background tokens - batches 17-22 (August 29 - September 5)"
+    ],
+    "semanticShift": "Moved from 10+ legacy color tokens to 30+ semantic axiom tokens with clear purpose"
+  },
+  "tokenValidation": {
+    "validationDate": "2025-11-04",
+    "status": "NEEDS CORRECTION",
+    "description": "Cross-referenced with @gorgias/axiom/dist/tokens/colors/semantic/*.css to identify invalid token references",
+    "invalidTokens": [
+      {
+        "invalidToken": "--elevation-overlay-default",
+        "issue": "Token does not exist in axiom design system",
+        "suggestedReplacement": "--elevation-neutral-default or --elevation-neutral-high",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Multiple modal and overlay components"
+      },
+      {
+        "invalidToken": "--elevation-overlay-hover",
+        "issue": "Token does not exist in axiom design system",
+        "suggestedReplacement": "--hover-default",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Hover states in overlays"
+      },
+      {
+        "invalidToken": "--elevation-surface-primary",
+        "issue": "Token does not exist in axiom design system",
+        "suggestedReplacement": "--surface-neutral-primary",
+        "usedInCommits": ["977bb63233", "bcf919bfd1"],
+        "affectedFiles": "Primary surface backgrounds"
+      },
+      {
+        "invalidToken": "--elevation-surface-secondary",
+        "issue": "Token does not exist in axiom design system",
+        "suggestedReplacement": "--surface-neutral-secondary",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Secondary surface backgrounds"
+      },
+      {
+        "invalidToken": "--elevation-accent-default",
+        "issue": "Token does not exist in axiom design system",
+        "suggestedReplacement": "--surface-accent-default",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Accent color surfaces"
+      },
+      {
+        "invalidToken": "--elevation-status-success-subtle",
+        "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
+        "suggestedReplacement": "--surface-success-primary",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Success state badges"
+      },
+      {
+        "invalidToken": "--elevation-status-warning-subtle",
+        "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
+        "suggestedReplacement": "--surface-warning-primary",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Warning state badges"
+      },
+      {
+        "invalidToken": "--elevation-status-error-subtle",
+        "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
+        "suggestedReplacement": "--surface-error-primary",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Error state badges"
+      },
+      {
+        "invalidToken": "--elevation-status-warning-default",
+        "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
+        "suggestedReplacement": "--surface-warning-primary or --static-warning",
+        "usedInCommits": ["e54f76fbf2"],
+        "affectedFiles": "Warning backgrounds"
+      },
+      {
+        "invalidToken": "--elevation-status-success-default",
+        "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
+        "suggestedReplacement": "--surface-success-primary or --static-success",
+        "usedInCommits": ["bcf919bfd1"],
+        "affectedFiles": "Success backgrounds"
+      },
+      {
+        "invalidToken": "--navigation-selected",
+        "issue": "Token does not exist in axiom design system; navigation-specific tokens don't exist",
+        "suggestedReplacement": "--surface-accent-default or --content-accent-default",
+        "usedInCommits": ["1487c34184"],
+        "affectedFiles": "Navigation selected states"
+      },
+      {
+        "invalidToken": "--surface-brand-secondary",
+        "issue": "Token does not exist in axiom design system; brand tokens don't exist",
+        "suggestedReplacement": "--surface-additional-yellow or --surface-neutral-secondary",
+        "usedInCommits": ["2fbb04ffac"],
+        "affectedFiles": "Brand-related surfaces"
+      },
+      {
+        "invalidToken": "--surface-success-secondary",
+        "issue": "Token does not exist in axiom design system; only surface-success-primary exists",
+        "suggestedReplacement": "--surface-success-primary or --surface-neutral-secondary",
+        "usedInCommits": ["2fbb04ffac"],
+        "affectedFiles": "Secondary success surfaces"
+      }
+    ],
+    "availableAxiomTokens": {
+      "elevation": [
+        "--elevation-neutral-bg",
+        "--elevation-neutral-default",
+        "--elevation-neutral-high",
+        "--elevation-neutral-mid"
+      ],
+      "surface": [
+        "--surface-accent-default",
+        "--surface-additional-blue",
+        "--surface-additional-fuchsia",
+        "--surface-additional-purple",
+        "--surface-additional-teal",
+        "--surface-additional-yellow",
+        "--surface-button-secondary",
+        "--surface-destructive-primary",
+        "--surface-error-primary",
+        "--surface-inverted-default",
+        "--surface-neutral-primary",
+        "--surface-neutral-secondary",
+        "--surface-neutral-tertiary",
+        "--surface-success-primary",
+        "--surface-warning-primary"
+      ],
+      "content": [
+        "--content-accent-default",
+        "--content-additional-blue",
+        "--content-additional-coral",
+        "--content-additional-fuchsia",
+        "--content-additional-purple",
+        "--content-additional-teal",
+        "--content-additional-yellow",
+        "--content-error-primary",
+        "--content-inverted-default",
+        "--content-neutral-default",
+        "--content-neutral-secondary",
+        "--content-neutral-tertiary",
+        "--content-selected-accent",
+        "--content-success-primary",
+        "--content-warning-primary"
+      ],
+      "border": [
+        "--border-accent-default",
+        "--border-additional-blue",
+        "--border-additional-fuchsia",
+        "--border-additional-purple",
+        "--border-additional-teal",
+        "--border-additional-yellow",
+        "--border-error-primary",
+        "--border-neutral-default",
+        "--border-neutral-secondary",
+        "--border-neutral-tertiary",
+        "--border-success-primary",
+        "--border-warning-primary"
+      ],
+      "interaction": [
+        "--hover-default",
+        "--hover-input",
+        "--inverted-hover",
+        "--inverted-pressed-default",
+        "--pressed-default"
+      ],
+      "static": [
+        "--static-additional-blue",
+        "--static-additional-coral",
+        "--static-additional-fuchsia",
+        "--static-additional-purple",
+        "--static-additional-teal",
+        "--static-additional-yellow",
+        "--static-default-black",
+        "--static-default-white",
+        "--static-error",
+        "--static-secondary",
+        "--static-success",
+        "--static-tertiary",
+        "--static-warning"
+      ]
+    },
+    "actionRequired": {
+      "priority": "HIGH",
+      "tasks": [
+        "Review all files affected by invalid tokens in commits: bcf919bfd1, e54f76fbf2, 977bb63233, 1487c34184, 2fbb04ffac",
+        "Replace invalid tokens with suggested valid alternatives",
+        "Test visual parity after token replacement",
+        "Update this mapping file after corrections are applied"
+      ]
+    }
   }
 }
