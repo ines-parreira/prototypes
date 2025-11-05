@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { Box, Label } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import {
     VoiceMessage as ApiVoiceMessage,
@@ -20,6 +20,7 @@ import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import { VoiceMessage } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import Caption from 'pages/common/forms/Caption/Caption'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -40,6 +41,8 @@ type Props = {
     customRecordingType: CustomRecordingType
     label?: string
     name?: string
+    caption?: ReactNode
+    noneValueAlertBanner?: ReactNode
 }
 
 const LABELS = {
@@ -57,6 +60,8 @@ const VoiceMessageField = ({
     isDisabled = false,
     customRecordingType,
     label,
+    caption,
+    noneValueAlertBanner,
 }: Props): JSX.Element => {
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
@@ -139,7 +144,14 @@ const VoiceMessageField = ({
     return (
         <div>
             <div className={css.dropdownSelect}>
-                {label && <Label className={css.label}>{label}</Label>}
+                <Box flexDirection="column">
+                    {label && <Label>{label}</Label>}
+                    {caption && (
+                        <Caption className={css.complianceCaption}>
+                            {caption}
+                        </Caption>
+                    )}
+                </Box>
                 <SelectInputBox
                     floating={floatingRef}
                     label={LABELS[value.voice_message_type]}
@@ -209,6 +221,10 @@ const VoiceMessageField = ({
                     )}
                 </>
             )}
+            {value.voice_message_type === VoiceMessageType.None &&
+                noneValueAlertBanner && (
+                    <Box marginTop="sm">{noneValueAlertBanner}</Box>
+                )}
         </div>
     )
 }

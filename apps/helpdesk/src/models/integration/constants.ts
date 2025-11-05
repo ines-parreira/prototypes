@@ -137,7 +137,7 @@ export const DEPRECATED_DEFAULT_RECORDING_NOTIFICATION = {
 export const DEFAULT_RECORDING_NOTIFICATION = {
     voice_message_type: VoiceMessageType.TextToSpeech,
     text_to_speech_content:
-        'This call may be recorded for notetaking, training, or record-keeping purposes.',
+        'This call is being recorded for notetaking, training, or record-keeping purposes.',
 }
 export const RECORDING_NOTIFICATION_MAX_DURATION = 1 * 60
 

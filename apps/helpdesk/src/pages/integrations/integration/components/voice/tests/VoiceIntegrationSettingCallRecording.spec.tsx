@@ -1,128 +1,131 @@
-import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
-import { useFormContext } from 'react-hook-form'
+import { screen } from '@testing-library/react'
 
-import { FormField } from 'core/forms'
-import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
+import { Form } from 'core/forms'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallRecording_DEPRECATED from '../VoiceIntegrationSettingCallRecording_DEPRECATED'
+import TextToSpeechContext from '../VoiceMessageTTS/TextToSpeechContext'
 
-jest.mock('core/forms')
-const FormFieldMock = assumeMock(FormField)
-
-const watchMock = jest.fn()
-const mockUseFormContextReturnValue = {
-    watch: watchMock,
-} as unknown as ReturnType<typeof useFormContext>
-
-jest.mock('react-hook-form')
-const useFormContextMock = assumeMock(useFormContext)
+const defaultPreferences = {
+    record_inbound_calls: false,
+    record_outbound_calls: false,
+}
 
 describe('VoiceIntegrationSettingCallRecording_DEPRECATED', () => {
-    const renderComponent = () =>
-        render(<VoiceIntegrationSettingCallRecording_DEPRECATED />)
-
-    beforeEach(() => {
-        FormFieldMock.mockImplementation(({ children, label }: any) => (
-            <div>
-                <div>{label}</div>
-                <div>{children}</div>
-            </div>
-        ))
-        useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-    })
+    const renderComponent = (preferences = defaultPreferences) =>
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={{
+                    meta: {
+                        preferences,
+                        recording_notification: {},
+                    },
+                }}
+                onValidSubmit={jest.fn()}
+            >
+                <TextToSpeechContext.Provider value={{ integrationId: 123 }}>
+                    <VoiceIntegrationSettingCallRecording_DEPRECATED />
+                </TextToSpeechContext.Provider>
+            </Form>,
+        )
 
     it('renders with toggles on', () => {
-        watchMock.mockReturnValue([true, true] as any)
-
-        const { getByText } = renderComponent()
+        const { getByText } = renderComponent({
+            record_outbound_calls: true,
+            record_inbound_calls: true,
+        })
         expect(getByText('Outbound calls')).toBeInTheDocument()
         expect(getByText('Inbound calls')).toBeInTheDocument()
-        expect(getByText('Call recording notification')).toBeInTheDocument()
 
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.preferences.record_outbound_calls',
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Outbound calls',
             }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.preferences.record_inbound_calls',
+        ).toBeChecked()
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Inbound calls',
             }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.recording_notification',
-                shouldUpload: true,
-                radioButtonId: 'call_recording_notification',
-                maxRecordingDuration: RECORDING_NOTIFICATION_MAX_DURATION,
-            }),
-            {},
-        )
+        ).toBeChecked()
     })
 
     it('renders with toggles off', () => {
-        watchMock.mockReturnValue([false, false] as any)
-
         const { queryByText } = renderComponent()
         expect(queryByText('Outbound calls')).toBeInTheDocument()
         expect(queryByText('Inbound calls')).toBeInTheDocument()
-        expect(queryByText('Call recording notification')).toBeNull()
+
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Outbound calls',
+            }),
+        ).not.toBeChecked()
+        expect(
+            screen.getByRole('checkbox', {
+                name: 'Inbound calls',
+            }),
+        ).not.toBeChecked()
     })
 })
 
 describe('VoiceIntegrationSettingCallRecording', () => {
-    const renderComponent = () =>
-        render(<VoiceIntegrationSettingCallRecording integrationId={1234} />)
-
-    beforeEach(() => {
-        FormFieldMock.mockImplementation(({ children, label }: any) => (
-            <div>
-                <div>{label}</div>
-                <div>{children}</div>
-            </div>
-        ))
-        useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-    })
+    const renderComponent = (preferences = defaultPreferences) =>
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={{
+                    meta: {
+                        preferences,
+                        recording_notification: {},
+                    },
+                }}
+                onValidSubmit={jest.fn()}
+            >
+                <TextToSpeechContext.Provider value={{ integrationId: 123 }}>
+                    <VoiceIntegrationSettingCallRecording integrationId={123} />
+                </TextToSpeechContext.Provider>
+            </Form>,
+        )
 
     it('renders with toggles on', () => {
-        watchMock.mockReturnValue([true, true] as any)
+        renderComponent({
+            record_outbound_calls: true,
+            record_inbound_calls: true,
+        })
+        expect(screen.getByText('Outbound calls')).toBeInTheDocument()
+        expect(screen.getByText('Inbound calls')).toBeInTheDocument()
+        expect(
+            screen.getByText('Call recording notification'),
+        ).toBeInTheDocument()
 
-        const { getByText } = renderComponent()
-        expect(getByText('Outbound calls')).toBeInTheDocument()
-        expect(getByText('Inbound calls')).toBeInTheDocument()
-        expect(getByText('Call recording notification')).toBeInTheDocument()
+        expect(screen.getAllByRole('checkbox')[0]).toBeChecked()
+        expect(screen.getAllByRole('checkbox')[1]).toBeChecked()
 
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.preferences.record_outbound_calls',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.preferences.record_inbound_calls',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.recording_notification',
-                maxRecordingDuration: RECORDING_NOTIFICATION_MAX_DURATION,
-            }),
-            {},
-        )
+        expect(
+            screen.getByText(
+                /We recommend you include the call recording notification in your welcome message/,
+            ),
+        ).toBeInTheDocument()
     })
 
     it('renders with toggles off', () => {
-        watchMock.mockReturnValue([false, false] as any)
+        renderComponent({
+            record_outbound_calls: false,
+            record_inbound_calls: false,
+        })
+        expect(screen.getByText('Outbound calls')).toBeInTheDocument()
+        expect(screen.getByText('Inbound calls')).toBeInTheDocument()
 
-        const { queryByText } = renderComponent()
-        expect(queryByText('Outbound calls')).toBeInTheDocument()
-        expect(queryByText('Inbound calls')).toBeInTheDocument()
-        expect(queryByText('Call recording notification')).toBeNull()
+        expect(
+            screen.queryByText('Call recording notification'),
+        ).not.toBeInTheDocument()
+
+        expect(screen.getAllByRole('checkbox')[0]).not.toBeChecked()
+        expect(screen.getAllByRole('checkbox')[1]).not.toBeChecked()
+
+        expect(
+            screen.queryByText(
+                /We recommend you include the call recording notification in your welcome message/,
+            ),
+        ).not.toBeInTheDocument()
     })
 })

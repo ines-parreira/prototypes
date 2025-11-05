@@ -401,6 +401,37 @@ describe('VoiceMessageField', () => {
             ).not.toBeInTheDocument()
             expect(screen.queryByText('Upload File')).not.toBeInTheDocument()
         })
+
+        it('should display none value alert banner when none value alert banner is provided', () => {
+            const noneMessage: VoiceMessage = {
+                voice_message_type: VoiceMessageType.None,
+            }
+
+            renderComponent(noneMessage, {
+                allowNone: true,
+                noneValueAlertBanner: 'Test alert banner',
+            })
+
+            expect(screen.getByText('Test alert banner')).toBeInTheDocument()
+        })
+
+        it('should not display none value alert banner when none value alert banner is provided and voice message type is not None', () => {
+            renderComponent(defaultMessage, {
+                noneValueAlertBanner: 'Test alert banner',
+            })
+
+            expect(
+                screen.queryByText('Test alert banner'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Caption', () => {
+        it('should display caption when provided', () => {
+            renderComponent(defaultMessage, { caption: 'Test caption' })
+
+            expect(screen.getByText('Test caption')).toBeInTheDocument()
+        })
     })
 
     describe('Option switching', () => {

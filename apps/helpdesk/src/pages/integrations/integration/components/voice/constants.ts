@@ -56,3 +56,6 @@ export const DEFAULT_QUEUE_VALUES: UpdateVoiceQueue | CreateVoiceQueue = {
     is_wrap_up_time_enabled: false,
     wrap_up_time: 30,
 }
+
+export const CALL_RECORDING_NOTIFICATION_LEARN_MORE_URL =
+    'https://docs.gorgias.com/en-US/call-recording-296968'
