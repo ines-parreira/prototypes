@@ -1,10 +1,6 @@
 import { AxiosResponse, isAxiosError } from 'axios'
 
-import {
-    BuiltQuery,
-    QueryFor,
-    ScopeMeta,
-} from 'domains/reporting/models/scopes/scope'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     Cube,
     EnrichmentFields,
@@ -26,13 +22,6 @@ type APIReportingQuery = Omit<ReportingQuery, 'metricName'>
 type ReportingQueryParams = {
     query: APIReportingQuery[]
     metric_name: string
-}
-
-type APIReportingV2Query = Omit<QueryFor<ScopeMeta>, 'metricName'>
-
-type ReportingV2QueryParams = {
-    query: APIReportingV2Query
-    metric_name?: string
 }
 
 type ReportingEnrichedQueryParams = {
@@ -88,14 +77,6 @@ const post =
         })
     }
 
-const postV2 =
-    (path: string) =>
-    async <TData>(payload: ReportingV2QueryParams) => {
-        return await client.post<ReportingResponse<TData>>(path, payload, {
-            validateStatus,
-        })
-    }
-
 const enrichedPost =
     (path: string) =>
     async <TData>(payload: ReportingEnrichedQueryParams) => {
@@ -125,17 +106,29 @@ export const postReportingV1 = <TData, TCube extends Cube = Cube>(
 export const postReportingV2 = <TData, TMeta extends ScopeMeta = ScopeMeta>(
     query: BuiltQuery<TMeta>,
 ): Promise<AxiosResponse<ReportingResponse<TData>>> => {
-    const { metricName, ...baseQuery } = query
+    const { metricName, limit, ...baseQuery } = query
 
-    return postV2(REPORTING_STATS_ENDPOINT)<TData>({
-        query: baseQuery as APIReportingV2Query,
-        metric_name: metricName!,
-    }).catch(
-        getReportQueryErrorHandler({
-            query: JSON.stringify(baseQuery),
-            metricName: metricName!,
-        }),
-    )
+    const searchParams = new URLSearchParams({
+        metric_name: metricName,
+        ...(limit ? { limit: limit.toString() } : {}),
+    })
+
+    return client
+        .post<ReportingResponse<TData>>(
+            `${REPORTING_STATS_ENDPOINT}?${searchParams.toString()}`,
+            {
+                query: baseQuery,
+            },
+            {
+                validateStatus,
+            },
+        )
+        .catch(
+            getReportQueryErrorHandler({
+                query: JSON.stringify(baseQuery),
+                metricName: metricName!,
+            }),
+        )
 }
 
 export const postReportingV2Query = <
@@ -147,12 +140,13 @@ export const postReportingV2Query = <
     const { metricName, limit, ...baseQuery } = query
 
     const searchParams = new URLSearchParams({
-        limit: limit?.toString() || '',
+        metric_name: metricName,
+        ...(limit ? { limit: limit.toString() } : {}),
     })
 
     return client
         .post<ReportingQuery<TCube>>(
-            `${REPORTING_STATS_QUERY_ENDPOINT}${limit ? `?${searchParams.toString()}` : ''}`,
+            `${REPORTING_STATS_QUERY_ENDPOINT}?${searchParams.toString()}`,
             {
                 query: baseQuery,
             },
