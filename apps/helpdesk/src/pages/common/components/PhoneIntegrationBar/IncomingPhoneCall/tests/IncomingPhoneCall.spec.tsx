@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, screen } from '@testing-library/react'
 import { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import { History } from 'history'
@@ -16,6 +16,7 @@ import client from 'models/api/resources'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
 import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../../constants'
@@ -46,7 +47,7 @@ describe('<IncomingPhoneCall />', () => {
         thunk,
     ])
     const renderComponent = (props: ComponentProps<typeof IncomingPhoneCall>) =>
-        render(
+        renderWithQueryClientProvider(
             <Router history={history}>
                 <Provider store={mockStore(state)}>
                     <IncomingPhoneCall {...props} />

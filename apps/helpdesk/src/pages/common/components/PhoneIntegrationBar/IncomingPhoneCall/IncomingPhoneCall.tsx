@@ -15,11 +15,13 @@ import useMicrophonePermissions from 'pages/integrations/integration/components/
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../constants'
 import { useConnectionParameters } from '../hooks'
+import PhoneBarCallerDetailsContainer from '../PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
+import QueueName from '../QueueName/QueueName'
 
 import css from './IncomingPhoneCall.less'
 
@@ -31,6 +33,10 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
     const { permissionDenied } = useMicrophonePermissions(1000)
+
+    const queueId = call.customParameters.get('queue_id')
+        ? parseInt(call.customParameters.get('queue_id') as string)
+        : null
 
     const {
         integrationId,
@@ -67,11 +73,12 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
             )}
             <PhoneBarContainer onClick={openTicket} isHighlighted>
                 <PhoneBarInnerContent>
-                    <div className={css.callerDetailsContainer}>
+                    <PhoneBarCallerDetailsContainer>
                         <PhoneIntegrationName
                             integrationId={integrationId}
                             primary
                         />
+                        <QueueName queueId={queueId} primary />
                         <div className={css.callerDetails}>
                             {transferFromAgentId && (
                                 <>
@@ -88,7 +95,7 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                                 phoneNumber={customerPhoneNumber}
                             />
                         </div>
-                    </div>
+                    </PhoneBarCallerDetailsContainer>
                     <div>
                         <Button
                             aria-label="Accept phone call"

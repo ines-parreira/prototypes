@@ -39,6 +39,7 @@ import { RootState } from 'state/types'
 
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
+import QueueName from '../QueueName/QueueName'
 import CallTransferDropdown from './CallTransferDropdown/CallTransferDropdown'
 import IconButtonTooltip from './IconButtonTooltip'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
@@ -68,6 +69,9 @@ export function OngoingPhoneCall({
         null,
     )
     const [isRecording, setIsRecording] = useState(false)
+    const queueId = call.customParameters.get('queue_id')
+        ? parseInt(call.customParameters.get('queue_id') as string)
+        : null
 
     const { mutate: changeHoldState } = usePutCallParticipantOnHold({
         mutation: {
@@ -177,6 +181,7 @@ export function OngoingPhoneCall({
             <PhoneBarInnerContent>
                 <PhoneBarCallerDetailsContainer>
                     <PhoneIntegrationName integrationId={integrationId} />
+                    <QueueName queueId={queueId} />
                     {transferringTo ? (
                         <TransferTargetLabel transferringTo={transferringTo} />
                     ) : (
