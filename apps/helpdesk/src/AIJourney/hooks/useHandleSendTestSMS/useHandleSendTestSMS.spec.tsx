@@ -361,6 +361,7 @@ describe('useHandleSendTestSMS', () => {
         })
 
         it('should use default delay of 10000ms when not specified', async () => {
+            jest.useFakeTimers()
             mockTestSms.mockResolvedValue(undefined)
 
             const { result } = renderHook(
@@ -378,9 +379,13 @@ describe('useHandleSendTestSMS', () => {
                 },
             )
 
+            const handleTestSmsPromise = result.current.handleTestSms()
+
             await act(async () => {
-                await result.current.handleTestSms()
+                await jest.advanceTimersByTimeAsync(10000)
             })
+
+            await handleTestSmsPromise
 
             expect(mockDispatch).toHaveBeenCalledWith(
                 notify({
@@ -388,6 +393,8 @@ describe('useHandleSendTestSMS', () => {
                     status: NotificationStatus.Success,
                 }),
             )
-        }, 15000)
+
+            jest.useRealTimers()
+        })
     })
 })
