@@ -1,14 +1,12 @@
 import { Button } from '@gorgias/axiom'
 
-export default function ImportAction() {
+interface ImportActionProps {
+    onImportClick: () => void
+}
+
+export default function ImportAction({ onImportClick }: ImportActionProps) {
     return (
-        <Button
-            size="sm"
-            onClick={() => {
-                confirm(`TODO`)
-            }}
-            leadingSlot="add-plus"
-        >
+        <Button size="sm" onClick={onImportClick} leadingSlot="add-plus">
             Import
         </Button>
     )

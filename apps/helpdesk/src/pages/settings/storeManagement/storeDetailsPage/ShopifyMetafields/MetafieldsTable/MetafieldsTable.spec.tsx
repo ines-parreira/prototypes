@@ -302,4 +302,47 @@ describe('MetafieldsTable', () => {
             isVisible: false,
         })
     })
+
+    it('should open import modal when import button is clicked', async () => {
+        render(<MetafieldsTable columns={columns} data={mockFields} />, {
+            wrapper,
+        })
+
+        const importButton = screen.getByRole('button', { name: /import/i })
+        await act(async () => {
+            await userEvent.click(importButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Import Shopify metafields to Gorgias'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should close import modal when close is triggered', async () => {
+        render(<MetafieldsTable columns={columns} data={mockFields} />, {
+            wrapper,
+        })
+
+        const importButton = screen.getByRole('button', { name: /import/i })
+        await act(async () => {
+            await userEvent.click(importButton)
+        })
+
+        await waitFor(() => {
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+        })
+
+        const dialog = screen.getByRole('dialog')
+        const buttons = within(dialog).getAllByRole('button')
+        const closeButton = buttons[0]
+
+        await userEvent.click(closeButton)
+
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        })
+    })
 })

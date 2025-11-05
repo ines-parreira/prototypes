@@ -4,16 +4,9 @@ import userEvent from '@testing-library/user-event'
 import ImportAction from './ImportAction'
 
 describe('ImportAction', () => {
-    beforeEach(() => {
-        jest.spyOn(window, 'confirm').mockImplementation(() => true)
-    })
-
-    afterEach(() => {
-        jest.restoreAllMocks()
-    })
-
     it('should render Import button', () => {
-        render(<ImportAction />)
+        const onImportClick = jest.fn()
+        render(<ImportAction onImportClick={onImportClick} />)
 
         expect(
             screen.getByRole('button', { name: /import/i }),
@@ -21,9 +14,9 @@ describe('ImportAction', () => {
         expect(screen.getByText('Import')).toBeInTheDocument()
     })
 
-    it('should call confirm when button is clicked', async () => {
-        const confirmSpy = jest.spyOn(window, 'confirm')
-        render(<ImportAction />)
+    it('should call onImportClick when button is clicked', async () => {
+        const onImportClick = jest.fn()
+        render(<ImportAction onImportClick={onImportClick} />)
 
         const button = screen.getByRole('button', { name: /import/i })
 
@@ -31,6 +24,6 @@ describe('ImportAction', () => {
             await userEvent.click(button)
         })
 
-        expect(confirmSpy).toHaveBeenCalledWith('TODO')
+        expect(onImportClick).toHaveBeenCalledTimes(1)
     })
 })

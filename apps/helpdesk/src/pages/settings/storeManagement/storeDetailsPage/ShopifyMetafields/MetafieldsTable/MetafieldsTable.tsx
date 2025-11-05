@@ -14,6 +14,7 @@ import {
 import EmptyMetafieldsState from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
+import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
 import ImportAction from './ImportAction'
 import { MetafieldsTableMeta } from './types'
@@ -35,6 +36,7 @@ export default function MetafieldsTable<TData, TValue>({
     const [selectedMetafieldId, setSelectedMetafieldId] = useState<
         string | null
     >(null)
+    const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
 
     const { mutate: toggleVisibility } = useToggleMetafieldVisibility()
     const { mutate: deleteMetafield } = useDeleteMetafield()
@@ -58,6 +60,14 @@ export default function MetafieldsTable<TData, TValue>({
 
     const handleVisibilityToggle = (id: string, isVisible: boolean) => {
         toggleVisibility({ id, isVisible: !isVisible })
+    }
+
+    const handleOpenCategoriesModal = () => {
+        setIsCategoriesModalOpen(true)
+    }
+
+    const handleCloseCategoriesModal = () => {
+        setIsCategoriesModalOpen(false)
     }
 
     const table = useTable({
@@ -94,7 +104,11 @@ export default function MetafieldsTable<TData, TValue>({
                         'totalCount',
                         {
                             key: 'import',
-                            content: <ImportAction />,
+                            content: (
+                                <ImportAction
+                                    onImportClick={handleOpenCategoriesModal}
+                                />
+                            ),
                         },
                     ]}
                 />
@@ -123,6 +137,10 @@ export default function MetafieldsTable<TData, TValue>({
                 isOpen={isRemoveModalOpen}
                 onClose={handleCloseRemoveModal}
                 onConfirm={handleConfirmRemove}
+            />
+            <ImportMetafieldFlow
+                isOpen={isCategoriesModalOpen}
+                onClose={handleCloseCategoriesModal}
             />
         </>
     )
