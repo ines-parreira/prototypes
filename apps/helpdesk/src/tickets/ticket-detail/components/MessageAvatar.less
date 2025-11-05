@@ -2,7 +2,7 @@
     .avatar {
         flex-shrink: 0;
         background-color: var(--main-secondary); // legacy
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
     }
 
     .image {
@@ -19,13 +19,14 @@
 
     .aiIcon {
         font-size: 24px !important;
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
     }
 }
 
 .axiom :local {
     .avatar {
         background-color: var(--static-additional-blue);
+        color: var(--static-white);
     }
 
     .image {
@@ -33,6 +34,10 @@
     }
 
     .ai {
-        background-color: var(--surface-brand-secondary);
+        background-color: var(--surface-accent-default);
+    }
+
+    .aiIcon {
+        color: var(--content-accent-default);
     }
 }

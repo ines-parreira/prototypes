@@ -71,7 +71,7 @@
     }
 
     .failed {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .whiteSpace {
@@ -79,7 +79,7 @@
     }
 
     .disclaimerTruncatedMessage {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         margin-top: var(--layout-spacing-xs);
 
@@ -93,5 +93,15 @@
             .caption-regular();
             margin-bottom: 0;
         }
+    }
+}
+
+.axiom :local {
+    .failed {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .disclaimerTruncatedMessage {
+        color: var(--content-neutral-secondary);
     }
 }

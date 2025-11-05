@@ -10,7 +10,7 @@
     }
 
     .noResults {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .logo {
@@ -25,6 +25,10 @@
 }
 
 .axiom :local {
+    .noResults {
+        color: var(--content-neutral-tertiary);
+    }
+
     .logo {
         background-color: var(--content-neutral-tertiary);
     }

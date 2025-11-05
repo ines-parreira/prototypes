@@ -21,7 +21,7 @@
 
     .noTags {
         flex-grow: 1;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .assignee {
@@ -34,7 +34,7 @@
 
     .channelIcon.channelIcon {
         display: block;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 26px;
     }
 
@@ -63,7 +63,7 @@
 
     .ticketId {
         margin: 0;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 12px;
         line-height: var(--layout-spacing-s);
     }
@@ -76,5 +76,17 @@
 .axiom :local {
     .container {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .noTags {
+        color: var(--content-neutral-secondary);
+    }
+
+    .channelIcon.channelIcon {
+        color: var(--content-neutral-default);
+    }
+
+    .ticketId {
+        color: var(--content-neutral-secondary);
     }
 }

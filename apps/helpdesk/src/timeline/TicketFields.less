@@ -5,7 +5,7 @@
         display: flex;
         height: 21px;
         overflow: hidden;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         &.autoHeight {
             height: auto;
         }
@@ -24,7 +24,7 @@
     }
 
     .fieldValue {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         &.bold {
             margin-left: var(--layout-spacing-xs);
             .body-semibold();
@@ -40,11 +40,29 @@
         padding: 0;
         margin: 0;
         .caption-regular();
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .tooltipValue {
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         .caption-semibold();
+    }
+}
+
+.axiom :local {
+    .ticketFields {
+        color: var(--content-neutral-secondary);
+    }
+
+    .fieldValue {
+        color: var(--content-neutral-default);
+    }
+
+    .tooltipContent {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .tooltipValue {
+        color: var(--static-white);
     }
 }

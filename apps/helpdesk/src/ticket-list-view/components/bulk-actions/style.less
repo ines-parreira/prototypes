@@ -5,7 +5,7 @@
     }
 
     .delete {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .button.button.button {
@@ -14,7 +14,7 @@
 
         &.isOpen {
             background-color: var(--neutral-grey-3); // legacy
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -47,9 +47,14 @@
 }
 
 .axiom :local {
+    .delete {
+        color: var(--static-error);
+    }
+
     .button.button.button {
         &.isOpen {
             background-color: var(--surface-neutral-secondary);
+            color: var(--content-neutral-default);
         }
     }
 }

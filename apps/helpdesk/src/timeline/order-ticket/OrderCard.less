@@ -40,7 +40,7 @@
         justify-content: flex-start;
         align-items: stretch;
         flex: 1 1 auto;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         overflow: hidden;
     }
 
@@ -67,7 +67,7 @@
     }
 
     .subject {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .body-semibold();
         overflow: hidden;
         text-overflow: ellipsis;
@@ -76,7 +76,7 @@
 
     .separator {
         margin: 0 var(--layout-spacing-xxs);
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .orderTicketFields {
@@ -93,5 +93,17 @@
     .card {
         border-color: var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
+    }
+
+    .subject {
+        color: var(--content-neutral-default);
+    }
+
+    .separator {
+        color: var(--border-neutral-default);
     }
 }

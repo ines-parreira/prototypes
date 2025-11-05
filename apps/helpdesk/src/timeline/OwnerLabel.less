@@ -8,23 +8,23 @@
         .icon {
             flex-shrink: 0;
             font-size: 16px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         .teamIcon {
             flex-shrink: 0;
             width: 16px;
             height: 16px;
-            background-color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-4); // legacy
             -webkit-mask-image: url('assets/img/icons/team-circle.svg');
             mask-image: url('assets/img/icons/team-circle.svg');
         }
     }
 
     .warning {
-        color: var(--feedback-warning-4);
+        color: var(--feedback-warning-4); // legacy
         .icon {
-            color: var(--feedback-warning-3);
+            color: var(--feedback-warning-3); // legacy
         }
     }
 
@@ -32,5 +32,24 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+}
+
+.axiom :local {
+    .owner {
+        .icon {
+            color: var(--content-neutral-secondary);
+        }
+
+        .teamIcon {
+            background-color: var(--content-neutral-secondary);
+        }
+    }
+
+    .warning {
+        color: var(--static-warning);
+        .icon {
+            color: var(--static-warning);
+        }
     }
 }

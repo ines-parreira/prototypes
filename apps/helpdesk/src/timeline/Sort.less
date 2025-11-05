@@ -32,7 +32,7 @@
         box-sizing: border-box;
         padding: calc(var(--layout-spacing-xs) - 1px);
         .body-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         border: 1px solid var(--neutral-grey-0); // legacy
         border-radius: 4px;
         cursor: pointer;
@@ -69,6 +69,7 @@
 
 .axiom :local {
     .sortItem {
+        color: var(--content-neutral-default);
         border-color: var(--border-neutral-default);
 
         &:hover {

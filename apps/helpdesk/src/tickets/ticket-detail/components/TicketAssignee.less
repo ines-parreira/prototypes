@@ -15,8 +15,8 @@
         align-items: center;
         flex-shrink: 0;
         height: 24px;
-        background-color: var(--main-secondary);
-        color: var(--neutral-grey-0);
+        background-color: var(--main-secondary); // legacy
+        color: var(--neutral-grey-0); // legacy
     }
 
     .image {
@@ -32,5 +32,12 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+    }
+}
+
+.axiom :local {
+    .avatar {
+        background-color: var(--static-additional-blue);
+        color: var(--static-white);
     }
 }

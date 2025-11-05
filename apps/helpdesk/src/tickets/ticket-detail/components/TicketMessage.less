@@ -22,7 +22,7 @@
 
     .ai {
         &:hover {
-            background: var(--accessory-magenta-1);
+            background: var(--accessory-magenta-1); // legacy
         }
     }
 
@@ -32,8 +32,8 @@
             var(--accessory-orange-1-s),
             var(--accessory-orange-1-l),
             0.6
-        );
-        box-shadow: inset 5px 0 0 0 var(--accessory-orange-2);
+        ); // legacy
+        box-shadow: inset 5px 0 0 0 var(--accessory-orange-2); // legacy
 
         &:hover {
             background: hsla(
@@ -41,7 +41,7 @@
                 var(--accessory-orange-1-s),
                 var(--accessory-orange-1-l),
                 0.85
-            );
+            ); // legacy
         }
     }
 
@@ -81,6 +81,21 @@
     .container {
         &:hover {
             background-color: var(--hover-default);
+        }
+    }
+
+    .ai {
+        &:hover {
+            background: var(--surface-accent-secondary);
+        }
+    }
+
+    .internal {
+        background: var(--surface-additional-orange);
+        box-shadow: inset 5px 0 0 0 var(--border-additional-orange);
+
+        &:hover {
+            background: var(--surface-additional-orange);
         }
     }
 }

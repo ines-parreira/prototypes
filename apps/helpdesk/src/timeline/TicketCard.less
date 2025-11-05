@@ -21,7 +21,7 @@
         &:hover:not(.highlight) {
             box-shadow: @hover-shadow;
             & .subject {
-                color: var(--main-primary-3);
+                color: var(--main-primary-3); // legacy
             }
         }
 
@@ -37,7 +37,7 @@
         justify-content: flex-start;
         align-items: stretch;
         flex: 1 1 auto;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         overflow: hidden;
     }
 
@@ -64,7 +64,7 @@
     }
 
     .subject {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .body-semibold();
         overflow: hidden;
         text-overflow: ellipsis;
@@ -89,12 +89,12 @@
         justify-content: flex-start;
         align-items: center;
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .separator {
         margin: 0 var(--layout-spacing-xxs);
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .metaText {
@@ -108,5 +108,27 @@
     .card {
         border-color: var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
+
+        &:hover:not(.highlight) {
+            & .subject {
+                color: var(--content-accent-default);
+            }
+        }
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
+    }
+
+    .subject {
+        color: var(--content-neutral-default);
+    }
+
+    .meta {
+        color: var(--content-neutral-secondary);
+    }
+
+    .separator {
+        color: var(--border-neutral-default);
     }
 }
