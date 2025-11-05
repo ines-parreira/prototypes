@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     AIJourneyMetric,
@@ -14,13 +15,9 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
-
-import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useClickThroughRate = (
     integrationId: string,
@@ -86,7 +83,7 @@ export const useClickThroughRate = (
         })
     }, [totalUniqClicks, totalContactsEnrolled])
 
-    const { data: clicksTimeSeries, isFetching: isFetchingClicksSeries } =
+    const { data: clicksTimeSeriesData, isFetching: isFetchingClicksSeries } =
         useTimeSeries(
             aiJourneyUniqClicksTimeSeriesQuery(
                 filters,
@@ -98,7 +95,7 @@ export const useClickThroughRate = (
         )
 
     const {
-        data: conversationsTimeSeries,
+        data: conversationsTimeSeriesData,
         isFetching: isFetchingConversationsSeries,
     } = useTimeSeries(
         aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery(
@@ -110,31 +107,16 @@ export const useClickThroughRate = (
         ),
     )
 
-    const clicksTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                clicksTimeSeries,
-            ),
-        [clicksTimeSeries],
-    )
-
-    const conversationsTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                conversationsTimeSeries,
-            ),
-        [conversationsTimeSeries],
-    )
-
     const clickThroughRateTimeSeries = useMemo(() => {
-        if (!clicksTimeSeriesData || !conversationsTimeSeriesData) {
+        if (
+            !clicksTimeSeriesData?.length ||
+            !conversationsTimeSeriesData?.length
+        ) {
             return []
         }
 
-        return clicksTimeSeriesData.map((clicksData, index) => {
-            const conversationsData = conversationsTimeSeriesData[index]
+        return clicksTimeSeriesData[0].map((clicksData, index) => {
+            const conversationsData = conversationsTimeSeriesData[0][index]
             return {
                 dateTime: clicksData.dateTime,
                 value: calculateRatiusToPercentage({

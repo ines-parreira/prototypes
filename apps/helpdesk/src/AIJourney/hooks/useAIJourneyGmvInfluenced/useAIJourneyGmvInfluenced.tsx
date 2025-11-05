@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     aiJourneyGmvInfluencedQueryFactory,
@@ -7,13 +6,9 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
-
-import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyGmvInfluenced = (
     integrationId: string,
@@ -42,25 +37,22 @@ export const useAIJourneyGmvInfluenced = (
         ),
     )
 
-    const { data: timeSeries, isFetching: isFetchingSeries } = useTimeSeries(
-        aiJourneyGmvInfluencedTimeSeriesQuery(
-            integrationId,
-            filters,
-            userTimezone,
-            granularity,
-            journeyId,
-        ),
-    )
-    const gmvInfluencedTimeSeriesData = useMemo(
-        () => getStatsByMeasure(AiSalesAgentOrdersMeasure.GmvUsd, timeSeries),
-        [timeSeries],
-    )
+    const { data: gmvInfluencedTimeSeriesData, isFetching: isFetchingSeries } =
+        useTimeSeries(
+            aiJourneyGmvInfluencedTimeSeriesQuery(
+                integrationId,
+                filters,
+                userTimezone,
+                granularity,
+                journeyId,
+            ),
+        )
 
     return {
         label: 'Total Revenue',
         value: tendData?.value || 0,
         prevValue: tendData?.prevValue,
-        series: gmvInfluencedTimeSeriesData,
+        series: gmvInfluencedTimeSeriesData?.[0] ?? [],
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
         currency,

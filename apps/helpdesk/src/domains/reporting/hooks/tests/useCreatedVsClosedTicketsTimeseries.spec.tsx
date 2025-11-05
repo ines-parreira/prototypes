@@ -1,7 +1,6 @@
 import React, { ComponentType } from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -10,7 +9,7 @@ import {
     useTicketsCreatedTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import { useCreatedVsClosedTicketsTimeSeries } from 'domains/reporting/hooks/useCreatedVsClosedTicketsTimeSeries'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatTimeSeriesData } from 'domains/reporting/pages/common/utils'
@@ -78,12 +77,12 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
             data: mockClosedData,
             isLoading: false,
             isError: false,
-        } as UseQueryResult<TimeSeriesDataItem[][]>)
+        } as TimeSeriesResult)
         mockedUseTicketsCreatedTimeSeries.mockReturnValue({
             data: mockCreatedData,
             isLoading: false,
             isError: false,
-        } as UseQueryResult<TimeSeriesDataItem[][]>)
+        } as TimeSeriesResult)
         mockedFormatTimeSeriesData.mockReturnValue(mockTimeSeriesData)
         mockedPeriodAndAggregationWindowToReportingGranularity.mockReturnValue(
             mockGranularity,

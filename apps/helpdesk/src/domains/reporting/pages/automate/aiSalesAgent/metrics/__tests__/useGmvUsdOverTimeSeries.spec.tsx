@@ -32,7 +32,7 @@ const useTimeSeriesMock = assumeMock(useTimeSeries)
 
 describe('gmvInfluenceOverTimeSeries', () => {
     const defaultData = {
-        isLoading: false,
+        isFetching: false,
         isError: false,
         data: [
             [

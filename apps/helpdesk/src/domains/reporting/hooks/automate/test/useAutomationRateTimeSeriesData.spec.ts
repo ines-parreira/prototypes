@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
 import { getMockData } from 'domains/reporting/hooks/automate/test/useAutomationDataset.spec'
@@ -13,7 +12,7 @@ import {
     fetchAutomationRateTimeSeriesData,
     useAutomationRateTimeSeriesData,
 } from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -87,13 +86,13 @@ describe('useAutomationRateTimeSeriesData', () => {
                 isFetched: true,
                 isFetching: false,
                 isError: false,
-            } as UseQueryResult<TimeSeriesDataItem[][]>)
+            } as TimeSeriesResult)
             useBillableTicketDatasetTimeSeriesMock.mockReturnValue({
                 data: billableTicketDatasetTimeSeries,
                 isFetched: true,
                 isFetching: false,
                 isError: false,
-            } as UseQueryResult<TimeSeriesDataItem[][]>)
+            } as TimeSeriesResult)
         })
 
         it('should fetch and format data with a hook', () => {
@@ -114,11 +113,11 @@ describe('useAutomationRateTimeSeriesData', () => {
 
         it('should return loading state', () => {
             useAutomationDatasetTimeSeriesMock.mockReturnValue({
-                data: undefined,
+                data: [[]],
                 isFetched: false,
                 isFetching: true,
                 isError: false,
-            } as UseQueryResult<TimeSeriesDataItem[][]>)
+            } as unknown as TimeSeriesResult)
 
             const { result } = renderHook(() =>
                 useAutomationRateTimeSeriesData(
@@ -178,8 +177,8 @@ describe('useAutomationRateTimeSeriesData', () => {
         })
 
         it('should return no data when none received', async () => {
-            fetchAutomationDatasetTimeSeriesMock.mockResolvedValue([])
-            fetchBillableTicketDatasetTimeSeriesMock.mockResolvedValue([])
+            fetchAutomationDatasetTimeSeriesMock.mockResolvedValue([[]])
+            fetchBillableTicketDatasetTimeSeriesMock.mockResolvedValue([[]])
             const result = await fetchAutomationRateTimeSeriesData(
                 statsFilters,
                 timezone,

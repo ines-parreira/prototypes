@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     aiJourneyTotalContactsActiveQueryFactory,
@@ -7,12 +6,8 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-
-import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useTotalContactsActive = (
     integrationId: string,
@@ -40,7 +35,10 @@ export const useTotalContactsActive = (
         ),
     )
 
-    const { data: timeSeries, isFetching: isFetchingSeries } = useTimeSeries(
+    const {
+        data: totalContactsActiveTimeSeriesData,
+        isFetching: isFetchingSeries,
+    } = useTimeSeries(
         aiJourneyTotalContactsActiveTimeSeriesQuery(
             integrationId,
             filters,
@@ -50,20 +48,11 @@ export const useTotalContactsActive = (
         ),
     )
 
-    const totalContactsActiveTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                timeSeries,
-            ),
-        [timeSeries],
-    )
-
     return {
         label: 'Total Active Contacts',
         value: trendData?.value || 0,
         prevValue: trendData?.prevValue || 0,
-        series: totalContactsActiveTimeSeriesData,
+        series: totalContactsActiveTimeSeriesData[0],
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
         isLoading: isFetchingTrend || isFetchingSeries,

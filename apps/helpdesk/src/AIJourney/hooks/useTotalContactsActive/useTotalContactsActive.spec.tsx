@@ -96,7 +96,7 @@ describe('useTotalContactsActive', () => {
             const measures = args.measures[0]
             if (measures === AiSalesAgentConversationsMeasure.Count) {
                 return {
-                    data: undefined,
+                    data: [[]],
                     isFetching: true,
                 }
             }

@@ -8,10 +8,7 @@ import {
     useBillableTicketDatasetTimeSeries,
 } from 'domains/reporting/hooks/automate/timeSeries'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { getAutomateStatsByMeasure } from 'domains/reporting/hooks/automate/utils'
 import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
-import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'pages/automate/automate-metrics/constants'
@@ -37,38 +34,30 @@ export const useAutomationRateTimeSeriesData = (
         granularity,
     )
 
-    const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
-        AutomationDatasetMeasure.AutomatedInteractions,
-        allAutomatedInteractionsData.data,
-    )
+    const allAutomatedInteractionsSeries = allAutomatedInteractionsData.data[0]
 
     const allAutomatedInteractionsByAutoRespondersSeries =
-        getAutomateStatsByMeasure(
-            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-            allAutomatedInteractionsData.data,
-        )
+        allAutomatedInteractionsData.data[1]
+
     const billableTicketData = useBillableTicketDatasetTimeSeries(
         filters,
         timezone,
         granularity,
         aiAgentUserId,
     )
-    const billableTicketCountsSeries = getAutomateStatsByMeasure(
-        BillableTicketDatasetMeasure.BillableTicketCount,
-        billableTicketData.data,
-    )
-    const filteredAutomatedInteractionsSeries = getAutomateStatsByMeasure(
-        AutomationDatasetMeasure.AutomatedInteractions,
-        filteredAutomatedInteractionsData.data,
-    )
+
+    const billableTicketCountsSeries = billableTicketData.data[0]
+    const filteredAutomatedInteractionsSeries =
+        filteredAutomatedInteractionsData.data[0]
+
     const automationRates: TimeSeriesDataItem[] = useMemo(() => {
         const rates: TimeSeriesDataItem[] = []
         if (
             filteredAutomatedInteractionsData.isFetched &&
             billableTicketData.isFetched &&
             allAutomatedInteractionsData.isFetched &&
-            filteredAutomatedInteractionsSeries?.length &&
-            billableTicketCountsSeries?.length
+            filteredAutomatedInteractionsSeries.length &&
+            billableTicketCountsSeries.length
         ) {
             filteredAutomatedInteractionsSeries?.forEach(
                 (timeSeries, index) => {
@@ -85,8 +74,9 @@ export const useAutomationRateTimeSeriesData = (
                         dateTime: timeSeries.dateTime,
                         value: automationRateUnfilteredDenominator({
                             filteredAutomatedInteractions,
-                            allAutomatedInteractions,
-                            allAutomatedInteractionsByAutoResponders,
+                            allAutomatedInteractions: allAutomatedInteractions,
+                            allAutomatedInteractionsByAutoResponders:
+                                allAutomatedInteractionsByAutoResponders,
                             billableTicketsCount: billableTicketCount,
                         }),
                         label: AUTOMATION_RATE_LABEL,
@@ -147,31 +137,21 @@ export const fetchAutomationRateTimeSeriesData = async (
             allAutomatedInteractionsData,
             billableTicketData,
         ]) => {
-            const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
-                AutomationDatasetMeasure.AutomatedInteractions,
-                allAutomatedInteractionsData,
-            )
+            const allAutomatedInteractionsSeries =
+                allAutomatedInteractionsData[0]
 
             const allAutomatedInteractionsByAutoRespondersSeries =
-                getAutomateStatsByMeasure(
-                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-                    allAutomatedInteractionsData,
-                )
+                allAutomatedInteractionsData[1]
 
-            const billableTicketCountsSeries = getAutomateStatsByMeasure(
-                BillableTicketDatasetMeasure.BillableTicketCount,
-                billableTicketData,
-            )
+            const billableTicketCountsSeries = billableTicketData[0]
+
             const filteredAutomatedInteractionsSeries =
-                getAutomateStatsByMeasure(
-                    AutomationDatasetMeasure.AutomatedInteractions,
-                    filteredAutomatedInteractionsData,
-                )
+                filteredAutomatedInteractionsData[0]
 
             const automationRates: TimeSeriesDataItem[] = []
             if (
-                filteredAutomatedInteractionsSeries?.length &&
-                billableTicketCountsSeries?.length
+                filteredAutomatedInteractionsSeries.length &&
+                billableTicketCountsSeries.length
             ) {
                 filteredAutomatedInteractionsSeries?.forEach(
                     (timeSeries, index) => {

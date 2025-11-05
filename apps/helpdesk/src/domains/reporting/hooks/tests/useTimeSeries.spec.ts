@@ -87,6 +87,14 @@ describe('useTimeSeries', () => {
         query: defaultQuery,
     }
 
+    beforeEach(() => {
+        usePostReportingV2Mock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        } as any)
+    })
+
     const expectedTimeSeriesResult = [
         [
             {
@@ -516,8 +524,9 @@ describe('useTimeSeries', () => {
         ]
 
         usePostReportingV2Mock.mockReturnValueOnce({
-            ...defaultResult,
             data: singleDataPoint,
+            isFetching: false,
+            isError: false,
         } as any)
 
         const { result } = renderHook(() =>

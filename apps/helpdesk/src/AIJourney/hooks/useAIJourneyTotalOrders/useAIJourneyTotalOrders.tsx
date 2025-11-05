@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
     AIJourneyMetric,
@@ -11,9 +9,7 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
@@ -44,7 +40,10 @@ export const useAIJourneyTotalOrders = (
         ),
     )
 
-    const { data: timeSeries, isFetching: isFetchingSeries } = useTimeSeries(
+    const {
+        data: totalNumberOfOrderTimeSeriesData,
+        isFetching: isFetchingSeries,
+    } = useTimeSeries(
         aiJourneyTotalNumberOfOrderTimeSeriesQuery(
             integrationId,
             filters,
@@ -53,16 +52,12 @@ export const useAIJourneyTotalOrders = (
             journeyId,
         ),
     )
-    const totalNumberOfOrderTimeSeriesData = useMemo(
-        () => getStatsByMeasure(AiSalesAgentOrdersMeasure.Count, timeSeries),
-        [timeSeries],
-    )
 
     return {
         label: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
         value: trendData?.value || 0,
         prevValue: trendData?.prevValue || 0,
-        series: totalNumberOfOrderTimeSeriesData,
+        series: totalNumberOfOrderTimeSeriesData?.[0] ?? [],
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
         isLoading: isFetchingTred || isFetchingSeries,

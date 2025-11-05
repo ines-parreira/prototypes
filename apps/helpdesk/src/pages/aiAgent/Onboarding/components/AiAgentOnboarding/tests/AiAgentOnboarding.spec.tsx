@@ -11,6 +11,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
+import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
+import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -69,10 +71,21 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
 
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend',
+)
+const useAverageOrdersPerDayTrendMock = assumeMock(useAverageOrdersPerDayTrend)
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
+
+useAverageOrdersPerDayTrendMock.mockReturnValue({
+    data: undefined,
+    isFetching: false,
+    isError: false,
+} as unknown as TimeSeriesResult)
+
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockUseShopifyIntegrationAndScope =

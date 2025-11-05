@@ -14,9 +14,7 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
@@ -87,7 +85,7 @@ export const useAIJourneyResponseRate = (
     }, [repliedMessagesData, totalContactsEnrolled])
 
     const {
-        data: repliedMessagesTimeSeries,
+        data: ordersTimeSeriesData,
         isFetching: isFetchingRepliedMessagesSeries,
     } = useTimeSeries(
         aiJourneyRepliedMessagesTimeSeriesQuery(
@@ -100,7 +98,7 @@ export const useAIJourneyResponseRate = (
     )
 
     const {
-        data: conversationsTimeSeries,
+        data: conversationsTimeSeriesData,
         isFetching: isFetchingConversationsSeries,
     } = useTimeSeries(
         aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery(
@@ -112,31 +110,16 @@ export const useAIJourneyResponseRate = (
         ),
     )
 
-    const ordersTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                repliedMessagesTimeSeries,
-            ),
-        [repliedMessagesTimeSeries],
-    )
-
-    const conversationsTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                conversationsTimeSeries,
-            ),
-        [conversationsTimeSeries],
-    )
-
     const conversionRateTimeSeries = useMemo(() => {
-        if (!ordersTimeSeriesData || !conversationsTimeSeriesData) {
+        if (
+            !ordersTimeSeriesData?.length ||
+            !conversationsTimeSeriesData?.length
+        ) {
             return []
         }
 
-        return ordersTimeSeriesData.map((ordersData, index) => {
-            const conversationsData = conversationsTimeSeriesData[index]
+        return ordersTimeSeriesData[0].map((ordersData, index) => {
+            const conversationsData = conversationsTimeSeriesData[0][index]
             return {
                 ...ordersData,
                 value: calculateRatiusToPercentage({

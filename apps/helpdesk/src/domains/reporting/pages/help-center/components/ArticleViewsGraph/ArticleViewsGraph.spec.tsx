@@ -1,14 +1,11 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { CoreScaleOptions, Scale } from 'chart.js'
 import moment from 'moment'
 
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import ArticleViewsGraph, {
     renderXTickLabel,
@@ -27,7 +24,7 @@ const mockUseArticleViewTimeSeries = jest.mocked(useArticleViewTimeSeries)
 const defaultArticleViewTimeSeriesResponse = {
     data: undefined,
     isFetching: false,
-} as UseQueryResult<TimeSeriesDataItem[][]>
+} as unknown as TimeSeriesResult
 
 const renderComponent = () => {
     return render(<ArticleViewsGraph />)

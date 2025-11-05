@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
@@ -10,13 +11,8 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-
-import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyConversionRate = (
     integrationId: string,
@@ -79,7 +75,7 @@ export const useAIJourneyConversionRate = (
         })
     }, [totalOrdersData, totalContactsEnrolled])
 
-    const { data: ordersTimeSeries, isFetching: isFetchingOrdersSeries } =
+    const { data: ordersTimeSeriesData, isFetching: isFetchingOrdersSeries } =
         useTimeSeries(
             aiJourneyTotalNumberOfOrderTimeSeriesQuery(
                 integrationId,
@@ -91,7 +87,7 @@ export const useAIJourneyConversionRate = (
         )
 
     const {
-        data: conversationsTimeSeries,
+        data: conversationsTimeSeriesData,
         isFetching: isFetchingConversationsSeries,
     } = useTimeSeries(
         aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery(
@@ -103,31 +99,16 @@ export const useAIJourneyConversionRate = (
         ),
     )
 
-    const ordersTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentOrdersMeasure.Count,
-                ordersTimeSeries,
-            ),
-        [ordersTimeSeries],
-    )
-
-    const conversationsTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                conversationsTimeSeries,
-            ),
-        [conversationsTimeSeries],
-    )
-
     const conversionRateTimeSeries = useMemo(() => {
-        if (!ordersTimeSeriesData || !conversationsTimeSeriesData) {
+        if (
+            !ordersTimeSeriesData?.length ||
+            !conversationsTimeSeriesData?.length
+        ) {
             return []
         }
 
-        return ordersTimeSeriesData.map((ordersData, index) => {
-            const conversationsData = conversationsTimeSeriesData[index]
+        return ordersTimeSeriesData[0].map((ordersData, index) => {
+            const conversationsData = conversationsTimeSeriesData[0][index]
             return {
                 ...ordersData,
                 value: calculateRatiusToPercentage({

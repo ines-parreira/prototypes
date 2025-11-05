@@ -49,6 +49,7 @@ export type TimeSeriesDataItem = {
     dateTime: string
     value: number
     label?: string
+    rawData?: any
     [key: string]: any
 }
 
@@ -56,6 +57,13 @@ export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
     percentage: number
     decile: number
     totalsDecile: number
+}
+
+export type TimeSeriesResult = Omit<
+    UseQueryResult<TimeSeriesDataItem[][]>,
+    'data'
+> & {
+    data: TimeSeriesDataItem[][]
 }
 
 const select =
@@ -123,28 +131,59 @@ const selectPerDimension =
         return objectMap(_groupBy(escapedResponse, dimension), select(query))
     }
 
+const selectTimeSeriesByMeasures = <TCube extends Cubes>(
+    query: TimeSeriesQuery<TCube>,
+    result: DataResponse,
+): TimeSeriesDataItem[][] => {
+    let matchingArray: TimeSeriesDataItem[][] = []
+
+    const dataItems = select<TCube>(query)(result.data.data)
+
+    query.measures.forEach((measure, index) => {
+        const dataItem = dataItems.find((arr) =>
+            arr.some((item) => item.label === measure),
+        )
+        if (dataItem) {
+            matchingArray[index] = dataItem
+        }
+    })
+
+    return matchingArray
+}
+
+/**
+ * @param query - The query to use
+ * @param queryV2 - The query to use for the v2 API
+ * @returns Returns an array of timeSeries for each measure in the query, preserving the same order as the measures appear in the query.
+ * @description This hook is used to fetch time series data from the reporting API V1 if QueryV2 is not provided, otherwise it uses the v2 API.
+ */
 export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     query: TimeSeriesQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
-) {
-    return usePostReportingV2<
+): TimeSeriesResult {
+    const result = usePostReportingV2<
         Record<string, string>[],
         TimeSeriesDataItem[][],
         TCube,
         TMeta
     >([query], queryV2, {
-        select: (res) => select<TCube>(query)(res.data.data),
+        select: (res) => selectTimeSeriesByMeasures<TCube>(query, res),
     })
+
+    return {
+        ...result,
+        data: result.data ?? [[]],
+    }
 }
 
 export async function fetchTimeSeries<TCube extends Cubes>(
     query: TimeSeriesQuery<TCube>,
-) {
+): Promise<TimeSeriesDataItem[][]> {
     return fetchPostReporting<
         Record<string, string>[],
         TimeSeriesDataItem[][],
         TCube
-    >([query], {}).then((res) => select<TCube>(query)(res.data.data))
+    >([query], {}).then((res) => selectTimeSeriesByMeasures<TCube>(query, res))
 }
 
 export function useTimeSeriesPerDimension<

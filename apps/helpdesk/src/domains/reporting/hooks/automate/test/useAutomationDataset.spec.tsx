@@ -30,7 +30,10 @@ import {
     useAutomateMetricsTrend,
 } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import {
+    TimeSeriesDataItem,
+    TimeSeriesResult,
+} from 'domains/reporting/hooks/useTimeSeries'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
@@ -154,7 +157,7 @@ describe('useAutomationDatasetV2', () => {
                 ),
             ],
             isFetched: true,
-        } as UseQueryResult<TimeSeriesDataItem[][]>)
+        } as TimeSeriesResult)
         useBillableTicketDatasetTimeSeriesMock.mockReturnValue({
             data: [
                 getMockData(
@@ -163,7 +166,7 @@ describe('useAutomationDatasetV2', () => {
                 ),
             ],
             isFetched: true,
-        } as UseQueryResult<TimeSeriesDataItem[][]>)
+        } as TimeSeriesResult)
 
         useAutomationDatasetByEventTypeTimeSeriesMock.mockReturnValue({
             data: automatedInteractionsDataByEventType,

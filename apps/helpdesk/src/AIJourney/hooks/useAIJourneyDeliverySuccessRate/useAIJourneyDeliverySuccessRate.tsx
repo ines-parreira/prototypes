@@ -10,9 +10,7 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getStatsByMeasure } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
@@ -90,7 +88,7 @@ export const useAIJourneyDeliverySuccessRate = (
     }, [failedMessagesData, totalContactsEnrolled])
 
     const {
-        data: failedMessagesTimeSeries,
+        data: failedMessagesTimeSeriesData,
         isFetching: isFetchingFailedMessagesSeries,
     } = useTimeSeries(
         aiJourneyFailedMessagesTimeSeriesQuery(
@@ -103,7 +101,7 @@ export const useAIJourneyDeliverySuccessRate = (
     )
 
     const {
-        data: conversationsTimeSeries,
+        data: conversationsTimeSeriesData,
         isFetching: isFetchingConversationsSeries,
     } = useTimeSeries(
         aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery(
@@ -115,31 +113,13 @@ export const useAIJourneyDeliverySuccessRate = (
         ),
     )
 
-    const failedMessagesTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.AiJourneyTotalFailedMessages,
-                failedMessagesTimeSeries,
-            ),
-        [failedMessagesTimeSeries],
-    )
-
-    const conversationsTimeSeriesData = useMemo(
-        () =>
-            getStatsByMeasure(
-                AiSalesAgentConversationsMeasure.Count,
-                conversationsTimeSeries,
-            ),
-        [conversationsTimeSeries],
-    )
-
     const deliverySuccessRateTimeSeries = useMemo(() => {
         if (!failedMessagesTimeSeriesData || !conversationsTimeSeriesData) {
             return []
         }
 
-        return failedMessagesTimeSeriesData.map((failedData, index) => {
-            const conversationsData = conversationsTimeSeriesData[index]
+        return failedMessagesTimeSeriesData[0].map((failedData, index) => {
+            const conversationsData = conversationsTimeSeriesData[0][index]
             const total = conversationsData?.value
             const failed = failedData.value
             if (!total || !failed) {

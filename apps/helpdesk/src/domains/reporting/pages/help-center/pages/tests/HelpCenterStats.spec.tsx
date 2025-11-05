@@ -1,14 +1,13 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { logEvent, SegmentEvent } from 'common/segment'
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -150,7 +149,7 @@ describe('<HelpCenterStats />', () => {
         mockUseArticleViewTimeSeries.mockReturnValue({
             data: [],
             isLoading: false,
-        } as unknown as UseQueryResult<TimeSeriesDataItem[][]>)
+        } as unknown as TimeSeriesResult)
         useHelpCenterAIArticlesLibraryMock.mockReturnValue({
             hasNewArticles: false,
         } as any)

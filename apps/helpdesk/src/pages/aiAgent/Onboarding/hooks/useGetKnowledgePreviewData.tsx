@@ -72,7 +72,7 @@ const useProcessedAverageOrdersPerDayTrend = (
         if (data === undefined) return undefined
         const averageOrdersPerDay = [
             {
-                values: data[0].map((item) => ({
+                values: data[0]?.map((item) => ({
                     x: new Date(item.dateTime).toLocaleDateString('en', {
                         day: 'numeric',
                         month: 'short',

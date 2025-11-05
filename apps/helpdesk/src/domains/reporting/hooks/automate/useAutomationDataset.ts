@@ -2,6 +2,7 @@ import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automa
 import {
     fetchAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetByEventTypeTimeSeries,
+    useAutomationDatasetTimeSeries,
 } from 'domains/reporting/hooks/automate/timeSeries'
 import {
     AutomateTrendMetrics,
@@ -14,10 +15,7 @@ import {
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
-import {
-    fetchFilteredAutomatedInteractionsSeries,
-    useFilteredAutomatedInteractionsSeries,
-} from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionsSeries'
+import { fetchFilteredAutomatedInteractionsSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionsSeries'
 import { automateInteractionsByEventTypeToTimeSeries } from 'domains/reporting/hooks/automate/utils'
 import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -34,8 +32,12 @@ export const useAutomateMetricsTimeSeries = (
             timezone,
             granularity,
         )
-    const filteredAutomatedInteractionsSeries =
-        useFilteredAutomatedInteractionsSeries(filters, timezone, granularity)
+
+    const filteredAutomatedInteractionsSeries = useAutomationDatasetTimeSeries(
+        filters,
+        timezone,
+        granularity,
+    )
 
     const automationRates = useAutomationRateTimeSeriesData(
         filters,
