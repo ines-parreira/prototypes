@@ -1376,10 +1376,10 @@ describe('utils', () => {
             )
         })
 
-        it('should handle order differences in id', () => {
+        it('should handle order differences when desc is false and V2 asc is true', () => {
             const v1Query = {
                 ...baseV1Query,
-                order: [{ id: 'tickets.test', asc: false }],
+                order: [{ id: 'tickets.count', desc: false }],
             } as any
             const v2Query = {
                 ...baseV2Query,
@@ -1390,10 +1390,27 @@ describe('utils', () => {
 
             compareAndReportQueries('tickets' as any, v1Query, v2Query)
 
+            expect(consoleSpy).not.toHaveBeenCalled()
+        })
+
+        it('should handle order differences when desc is false and V2 desc is true', () => {
+            const v1Query = {
+                ...baseV1Query,
+                order: [{ id: 'tickets.count', desc: false }],
+            } as any
+            const v2Query = {
+                ...baseV2Query,
+                order: [['tickets.count', 'desc']],
+            } as any
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+            compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 [
-                    'order: [{\"id\":\"tickets.test\",\"asc\":false}] (V1) !== [[\"tickets.count\",\"asc\"]] (V2)',
+                    'order: [{\"id\":\"tickets.count\",\"desc\":false}] (V1) !== [[\"tickets.count\",\"desc\"]] (V2)',
                 ],
             )
         })

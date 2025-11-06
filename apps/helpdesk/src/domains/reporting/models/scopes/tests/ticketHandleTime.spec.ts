@@ -86,7 +86,7 @@ describe('ticketHandleTimeScope', () => {
 
             expect(actual).toEqual({
                 ...expected,
-                order: [['avgHandleTime', 'asc']],
+                order: [['handleTime', 'asc']],
             })
         })
     })

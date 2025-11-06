@@ -1,7 +1,4 @@
-import {
-    OrderDirection,
-    ReportingStatsOperatorsEnum,
-} from '@gorgias/helpdesk-types'
+import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
@@ -473,15 +470,26 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
             { id: '', desc: false, asc: false },
         ]
         const v2Order: NewOrder[] = (v2query.order as any) || [['', '']]
+
         if (
-            v1Order[0].id !== v2Order[0][0] ||
-            (v2Order[0][1] &&
-                v1Order[0] &&
-                v1Order[0][v2Order[0][1] as OrderDirection] !== true)
+            v1Order[0] &&
+            v2Order[0] &&
+            v1Order[0].id !== '' &&
+            v2Order[0][0] !== ''
         ) {
-            differences.push(
-                `order: ${JSON.stringify(v1query.order)} (V1) !== ${JSON.stringify(v2query.order)} (V2)`,
-            )
+            const isCorrectDescending =
+                v1Order[0].desc === true && v2Order[0][1] === 'desc'
+            const isCorrectAscending =
+                v1Order[0].desc === false && v2Order[0][1] === 'asc'
+
+            if (
+                v1Order[0].id !== v2Order[0][0] ||
+                (!isCorrectDescending && !isCorrectAscending)
+            ) {
+                differences.push(
+                    `order: ${JSON.stringify(v1query.order)} (V1) !== ${JSON.stringify(v2query.order)} (V2)`,
+                )
+            }
         }
 
         compareArrays(
