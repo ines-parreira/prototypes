@@ -17,6 +17,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import { TicketMessage } from 'models/ticket/types'
+import {
+    coerceResourceType,
+    parseReasoningResources,
+} from 'pages/aiAgent/utils/reasoningResources'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -26,8 +30,7 @@ import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { RootState, StoreDispatch } from 'state/types'
 
-import { AiAgentReasoning, parseReasoningResources } from '../AiAgentReasoning'
-import { coerceResourceType } from '../utils'
+import { AiAgentReasoning } from '../AiAgentReasoning'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),

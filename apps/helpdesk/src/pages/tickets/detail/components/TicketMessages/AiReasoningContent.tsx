@@ -4,13 +4,13 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import { coerceResourceType } from 'pages/aiAgent/utils/reasoningResources'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'
-import { coerceResourceType } from './utils'
 
 import knowledgeSourceIconCss from '../AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 import css from './AiAgentReasoning.less'
