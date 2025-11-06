@@ -10,17 +10,22 @@ import {
     TicketMessageTranslation,
 } from '@gorgias/helpdesk-types'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { getTicket } from 'state/ticket/selectors'
 import {
     DisplayedContent,
     FetchingState,
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
-import type { ExtractEvent } from '../types'
+import { KeyPrefixes } from '../constants'
+import type { ExtractEvent, TicketTranslationsQueryKeyParams } from '../types'
 
 type CachedData = HttpResponse<ListTicketMessageTranslations200> | undefined
 
 export function useTicketMessageTranslationCompleteEventHandler() {
+    const ticket = useAppSelector(getTicket)
+
     const queryClient = useQueryClient()
     const {
         setTicketMessageTranslationDisplay,
@@ -94,9 +99,42 @@ export function useTicketMessageTranslationCompleteEventHandler() {
                     fetchingState: FetchingState.Completed,
                 },
             ])
+
+            const ticketFirstMessageId = ticket?.messages[0]?.id
+            if (ticketFirstMessageId !== ticket_message_id) {
+                return
+            }
+
+            const queryCache = queryClient.getQueryCache()
+            const ticketTranslationsKeys = queryCache.findAll({
+                queryKey: KeyPrefixes.ticketTranslations,
+            })
+            const ticketTranslationsKeysToUpdate =
+                ticketTranslationsKeys.filter((query) => {
+                    const queryParams = query
+                        .queryKey[2] as TicketTranslationsQueryKeyParams
+
+                    if (!Array.isArray(queryParams.queryParams.ticket_ids)) {
+                        return false
+                    }
+
+                    return queryParams.queryParams.ticket_ids.some(
+                        (id) => id === ticket_id,
+                    )
+                })
+
+            const keysToInvalidate = ticketTranslationsKeysToUpdate.map(
+                (query) => query.queryKey,
+            )
+            for (const key of keysToInvalidate) {
+                queryClient.invalidateQueries({
+                    queryKey: key,
+                })
+            }
         },
         [
             queryClient,
+            ticket?.messages,
             setTicketMessageTranslationDisplay,
             getTicketMessageTranslationDisplay,
         ],

@@ -2,6 +2,10 @@ import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { Language } from '@gorgias/helpdesk-types'
@@ -28,6 +32,8 @@ const queryClient = new QueryClient({
     },
 })
 
+const mockStore = configureMockStore([thunk])
+
 // Mock context value
 const mockSetTicketMessageTranslationDisplay = jest.fn()
 const mockGetTicketMessageTranslationDisplay = jest.fn(() => ({
@@ -44,15 +50,33 @@ const mockContextValue = {
     setAllTicketMessagesToTranslated: jest.fn(),
 }
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <TicketMessagesTranslationDisplayContext.Provider
-            value={mockContextValue}
-        >
-            {children}
-        </TicketMessagesTranslationDisplayContext.Provider>
-    </QueryClientProvider>
-)
+const mockTicket = fromJS({
+    id: 123,
+    messages: [
+        { id: 456, body_text: 'First message' },
+        { id: 789, body_text: 'Second message' },
+    ],
+})
+
+const createWrapper = (ticketData = mockTicket) => {
+    const store = mockStore({
+        ticket: ticketData,
+    })
+
+    return ({ children }: { children: React.ReactNode }) => (
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <TicketMessagesTranslationDisplayContext.Provider
+                    value={mockContextValue}
+                >
+                    {children}
+                </TicketMessagesTranslationDisplayContext.Provider>
+            </QueryClientProvider>
+        </Provider>
+    )
+}
+
+const wrapper = createWrapper()
 
 describe('useTicketMessageTranslationCompleteEventHandler', () => {
     beforeEach(() => {
@@ -254,13 +278,11 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
             })
         })
 
-        it('should create new data structure when no existing data', () => {
+        it('should create new data structure when no existing data or empty array', () => {
             const queryKey = queryKeys.tickets.listTicketMessageTranslations({
                 language: Language.Fr,
                 ticket_id: 123,
             })
-
-            // No existing data in cache
 
             const { result } = renderHook(
                 () => useTicketMessageTranslationCompleteEventHandler(),
@@ -302,31 +324,59 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 ],
             )
         })
+    })
 
-        it('should handle empty data array', () => {
-            const queryKey = queryKeys.tickets.listTicketMessageTranslations({
-                language: Language.Fr,
-                ticket_id: 123,
-            })
-
-            const existingData = {
-                status: 200,
-                statusText: 'OK',
-                config: {},
-                headers: {},
+    describe('ticket translations invalidation', () => {
+        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+            {
+                id: 'test-event-1',
+                dataschema:
+                    '//helpdesk/ticket-message-translation.completed/1.0.0',
                 data: {
-                    uri: '',
-                    object: 'list',
-                    data: [], // Empty data array
-                    meta: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                        total_resources: 0,
-                    },
+                    id: 'translation-1',
+                    ticket_id: 123,
+                    ticket_message_id: 456,
+                    language: Language.Fr,
+                    account_id: 1,
+                    completed_datetime: '2023-01-01T00:00:00Z',
+                    requested_datetime: '2023-01-01T00:00:00Z',
+                    stripped_html: '<p>Translated content</p>',
+                    stripped_text: 'Translated content',
                 },
+                type: 'ticket-message-translation.completed',
+                source: 'helpdesk',
+                subject: 'message-456',
             }
 
-            queryClient.setQueryData(queryKey, existingData)
+        it('should invalidate ticket translations queries when first message is translated', () => {
+            const ticketTranslationsKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [123, 456],
+                    },
+                },
+            ]
+
+            queryClient.setQueryData(ticketTranslationsKey, {
+                status: 200,
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            language: Language.Fr,
+                            subject: 'Ticket subject',
+                        },
+                    ],
+                },
+            })
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
 
             const { result } = renderHook(
                 () => useTicketMessageTranslationCompleteEventHandler(),
@@ -339,17 +389,173 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 )
             })
 
-            const updatedData = queryClient.getQueryData(queryKey)
-            expect(updatedData).toEqual({
-                ...existingData,
-                data: {
-                    ...existingData.data,
-                    data: [mockEvent.data],
-                },
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: ticketTranslationsKey,
             })
+
+            invalidateQueriesSpy.mockRestore()
         })
 
-        it('should update display state correctly', () => {
+        it('should not invalidate queries when non-first message is translated', () => {
+            const nonFirstMessageEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+                {
+                    ...mockEvent,
+                    data: {
+                        ...mockEvent.data,
+                        ticket_message_id: 789,
+                    },
+                }
+
+            const ticketTranslationsKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [123, 456],
+                    },
+                },
+            ]
+
+            queryClient.setQueryData(ticketTranslationsKey, {
+                status: 200,
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            language: Language.Fr,
+                            subject: 'Ticket subject',
+                        },
+                    ],
+                },
+            })
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            const { result } = renderHook(
+                () => useTicketMessageTranslationCompleteEventHandler(),
+                { wrapper },
+            )
+
+            act(() => {
+                result.current.handleTicketMessageTranslationCompleted(
+                    nonFirstMessageEvent,
+                )
+            })
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+
+            invalidateQueriesSpy.mockRestore()
+        })
+
+        it('should not invalidate queries when ticket has no messages', () => {
+            const emptyTicketWrapper = createWrapper(
+                fromJS({
+                    id: 123,
+                    messages: [],
+                }),
+            )
+
+            const ticketTranslationsKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [123],
+                    },
+                },
+            ]
+
+            queryClient.setQueryData(ticketTranslationsKey, {
+                status: 200,
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            language: Language.Fr,
+                            subject: 'Ticket subject',
+                        },
+                    ],
+                },
+            })
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            const { result } = renderHook(
+                () => useTicketMessageTranslationCompleteEventHandler(),
+                { wrapper: emptyTicketWrapper },
+            )
+
+            act(() => {
+                result.current.handleTicketMessageTranslationCompleted(
+                    mockEvent,
+                )
+            })
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+
+            invalidateQueriesSpy.mockRestore()
+        })
+
+        it('should filter queries correctly by ticket_id and array validation', () => {
+            const relevantKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [123, 456],
+                    },
+                },
+            ]
+
+            const irrelevantKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [999, 888],
+                    },
+                },
+            ]
+
+            const invalidKey = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: 123,
+                    },
+                },
+            ]
+
+            queryClient.setQueryData(relevantKey, {
+                status: 200,
+                data: { data: [] },
+            })
+            queryClient.setQueryData(irrelevantKey, {
+                status: 200,
+                data: { data: [] },
+            })
+            queryClient.setQueryData(invalidKey, {
+                status: 200,
+                data: { data: [] },
+            })
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
             const { result } = renderHook(
                 () => useTicketMessageTranslationCompleteEventHandler(),
                 { wrapper },
@@ -361,35 +567,55 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 )
             })
 
-            expect(
-                mockSetTicketMessageTranslationDisplay,
-            ).toHaveBeenCalledTimes(1)
-            expect(mockSetTicketMessageTranslationDisplay).toHaveBeenCalledWith(
-                [
-                    {
-                        messageId: 456,
-                        display: DisplayedContent.Translated,
-                        fetchingState: FetchingState.Completed,
-                        hasRegeneratedOnce: false,
-                    },
-                ],
-            )
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: relevantKey,
+            })
+            expect(invalidateQueriesSpy).not.toHaveBeenCalledWith({
+                queryKey: irrelevantKey,
+            })
+            expect(invalidateQueriesSpy).not.toHaveBeenCalledWith({
+                queryKey: invalidKey,
+            })
+
+            invalidateQueriesSpy.mockRestore()
         })
 
-        it('should handle different languages', () => {
-            const spanishEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+        it('should invalidate multiple matching queries', () => {
+            const key1 = [
+                'tickets',
+                'listTicketTranslations',
                 {
-                    ...mockEvent,
-                    data: {
-                        ...mockEvent.data,
-                        language: Language.Es,
+                    queryParams: {
+                        language: Language.Fr,
+                        ticket_ids: [123],
                     },
-                }
+                },
+            ]
 
-            const queryKey = queryKeys.tickets.listTicketMessageTranslations({
-                language: Language.Es,
-                ticket_id: 123,
+            const key2 = [
+                'tickets',
+                'listTicketTranslations',
+                {
+                    queryParams: {
+                        language: Language.En,
+                        ticket_ids: [123, 456],
+                    },
+                },
+            ]
+
+            queryClient.setQueryData(key1, {
+                status: 200,
+                data: { data: [] },
             })
+            queryClient.setQueryData(key2, {
+                status: 200,
+                data: { data: [] },
+            })
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
 
             const { result } = renderHook(
                 () => useTicketMessageTranslationCompleteEventHandler(),
@@ -398,84 +624,19 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
 
             act(() => {
                 result.current.handleTicketMessageTranslationCompleted(
-                    spanishEvent,
+                    mockEvent,
                 )
             })
 
-            const updatedData = queryClient.getQueryData(queryKey)
-            expect(updatedData).toEqual({
-                status: 200,
-                statusText: 'OK',
-                config: {},
-                headers: {},
-                data: {
-                    uri: '',
-                    object: 'list',
-                    data: [spanishEvent.data],
-                    meta: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                        total_resources: 0,
-                    },
-                },
+            expect(invalidateQueriesSpy).toHaveBeenCalledTimes(2)
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: key1,
             })
-        })
-
-        it('should handle different ticket IDs', () => {
-            const differentTicketEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
-                {
-                    ...mockEvent,
-                    data: {
-                        ...mockEvent.data,
-                        ticket_id: 999,
-                        ticket_message_id: 777,
-                    },
-                }
-
-            const queryKey = queryKeys.tickets.listTicketMessageTranslations({
-                language: Language.Fr,
-                ticket_id: 999,
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: key2,
             })
 
-            const { result } = renderHook(
-                () => useTicketMessageTranslationCompleteEventHandler(),
-                { wrapper },
-            )
-
-            act(() => {
-                result.current.handleTicketMessageTranslationCompleted(
-                    differentTicketEvent,
-                )
-            })
-
-            const updatedData = queryClient.getQueryData(queryKey)
-            expect(updatedData).toEqual({
-                status: 200,
-                statusText: 'OK',
-                config: {},
-                headers: {},
-                data: {
-                    uri: '',
-                    object: 'list',
-                    data: [differentTicketEvent.data],
-                    meta: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                        total_resources: 0,
-                    },
-                },
-            })
-
-            expect(mockSetTicketMessageTranslationDisplay).toHaveBeenCalledWith(
-                [
-                    {
-                        messageId: 777,
-                        display: DisplayedContent.Translated,
-                        fetchingState: FetchingState.Completed,
-                        hasRegeneratedOnce: false,
-                    },
-                ],
-            )
+            invalidateQueriesSpy.mockRestore()
         })
     })
 })
