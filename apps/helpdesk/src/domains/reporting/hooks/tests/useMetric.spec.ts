@@ -2,7 +2,13 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
+import {
+    fetchMetric,
+    selectMeasure,
+    useMetric,
+} from 'domains/reporting/hooks/useMetric'
+import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketMessagesCube,
     TicketMessagesMeasure,
@@ -219,6 +225,25 @@ describe('Metric', () => {
             await fetchMetric(defaultQuery)
 
             expect(fetchPostReportingMock).toHaveBeenCalledWith([defaultQuery])
+        })
+    })
+
+    describe('selectMeasure', () => {
+        const ticketCount = 100
+        const data = {
+            data: { data: [{ [TicketMeasure.TicketCount]: ticketCount }] },
+        } as any
+
+        it('should return the measure value', () => {
+            expect(selectMeasure(TicketMeasure.TicketCount, data)).toEqual(
+                ticketCount,
+            )
+        })
+
+        it('should return null for the missing measure', () => {
+            expect(
+                selectMeasure(HelpdeskMessageMeasure.TicketCount, data),
+            ).toEqual(null)
         })
     })
 })

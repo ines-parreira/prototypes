@@ -1,11 +1,8 @@
 import { Metric } from 'domains/reporting/hooks/metrics'
-import {
-    QueryReturnType,
-    selectMeasure,
-} from 'domains/reporting/hooks/useMetricTrend'
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
+    UsePostReportingQueryData,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { ReportingQuery } from 'domains/reporting/models/types'
@@ -13,6 +10,18 @@ import { ReportingQuery } from 'domains/reporting/models/types'
 import { BuiltQuery, ScopeMeta } from '../models/scopes/scope'
 
 export type MetricFetch = (...arg: any) => Promise<Metric>
+
+export type QueryReturnType<Measure extends Cubes['measures']> = [
+    Record<Measure, string | null>,
+]
+
+export const selectMeasure = <Measure extends Cubes['measures']>(
+    measure: Measure,
+    data: UsePostReportingQueryData<QueryReturnType<Measure>>,
+) => {
+    const dataMeasure = data.data.data?.[0]?.[measure] || null
+    return dataMeasure !== null ? parseFloat(dataMeasure) : null
+}
 
 export function useMetric<
     TCube extends Cubes = Cubes,

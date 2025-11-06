@@ -115,7 +115,7 @@ describe('DiscountCodesAverageValueTrend', () => {
     })
     describe('fetchDiscountCodesAverageValueTrend', () => {
         it('should return the correct data when the query resolves', async () => {
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [
@@ -123,7 +123,7 @@ describe('DiscountCodesAverageValueTrend', () => {
                     ],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [
@@ -148,7 +148,7 @@ describe('DiscountCodesAverageValueTrend', () => {
         })
 
         it('should return correct data if clickhouse returns null', async () => {
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [
@@ -156,7 +156,7 @@ describe('DiscountCodesAverageValueTrend', () => {
                     ],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [

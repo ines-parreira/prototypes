@@ -108,13 +108,13 @@ describe('gmvInfluencedRateTrend', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<typeof fetchGmvInfluencedTrendInUSD>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24 }],

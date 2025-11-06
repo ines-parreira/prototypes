@@ -81,13 +81,13 @@ describe('totalProductRecommendations', () => {
 
     describe('fetchTotalProductRecommendations', () => {
         it('should return the correct data when the query resolves', async () => {
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentConversationsMeasure.Count]: 101.2 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentConversationsMeasure.Count]: 50.4 }],

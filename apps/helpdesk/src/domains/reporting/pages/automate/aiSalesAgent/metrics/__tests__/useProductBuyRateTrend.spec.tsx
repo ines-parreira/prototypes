@@ -111,13 +111,13 @@ describe('productBuyRateTrend', () => {
                     prevValue: 3,
                 },
             } as unknown as ReturnType<typeof fetchTotalProductRecommendations>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.Count]: 3 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.Count]: 6 }],

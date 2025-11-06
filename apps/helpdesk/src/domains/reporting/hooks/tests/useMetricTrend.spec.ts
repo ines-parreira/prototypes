@@ -4,13 +4,8 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
-    selectMeasure,
 } from 'domains/reporting/hooks/useMetricTrend'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
+import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     fetchPostReporting,
@@ -247,28 +242,15 @@ describe('useMetricTrend', () => {
             prevValue: 21,
         })
     })
-
-    describe('selectMeasure', () => {
-        const ticketCount = 100
-        const data = {
-            data: { data: [{ [TicketMeasure.TicketCount]: ticketCount }] },
-        } as any
-
-        it('should return the measure value', () => {
-            expect(selectMeasure(TicketMeasure.TicketCount, data)).toEqual(
-                ticketCount,
-            )
-        })
-
-        it('should return null for the missing measure', () => {
-            expect(
-                selectMeasure(HelpdeskMessageMeasure.TicketCount, data),
-            ).toEqual(null)
-        })
-    })
 })
 
 describe('fetchMetricTrend', () => {
+    const defaultReporting = {
+        isFetching: false,
+        isError: false,
+        data: [],
+    } as UseQueryResult
+
     beforeEach(() => {
         fetchPostReportingMock.mockResolvedValue({
             data: defaultReporting,
@@ -293,7 +275,7 @@ describe('fetchMetricTrend', () => {
             data: defaultReporting,
         } as any)
         fetchPostReportingMock.mockResolvedValueOnce({
-            data: undefined,
+            data: { data: undefined },
         } as any)
 
         const result = await fetchMetricTrend(defaultQuery, defaultQuery)

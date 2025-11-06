@@ -80,13 +80,13 @@ describe('DiscountCodesAppliedTrend', () => {
     })
     describe('fetchDiscountCodesAppliedTrend', () => {
         it('should return the correct data when the query resolves', async () => {
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.Count]: 32 }],
                 },
             } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockReturnValueOnce({
+            fetchPostReportingMock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.Count]: 24 }],
