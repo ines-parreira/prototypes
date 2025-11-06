@@ -2,13 +2,13 @@
     .dropdownItem {
         display: flex;
         align-items: stretch;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 7px;
         font-size: 12px;
     }
 
     .disabled {
-        background: var(--neutral-grey-0) !important;
+        background: var(--neutral-grey-0) !important; // legacy
 
         &:focus {
             outline: none;
@@ -16,7 +16,7 @@
 
         * {
             cursor: not-allowed;
-            color: var(--neutral-grey-3) !important;
+            color: var(--neutral-grey-3) !important; // legacy
         }
 
         img {
@@ -41,13 +41,35 @@
     }
 
     .description {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         line-height: 16px;
     }
 
     .forwardIcon {
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .dropdownItem {
+        color: var(--content-neutral-default);
+    }
+
+    .disabled {
+        background: var(--elevation-neutral-default) !important;
+
+        * {
+            color: var(--border-neutral-default) !important;
+        }
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .forwardIcon {
+        color: var(--content-neutral-secondary);
     }
 }

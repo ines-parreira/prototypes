@@ -7,12 +7,12 @@
         gap: var(--layout-spacing-s);
         align-items: center;
         background-color: var(--neutral-grey-1); // legacy
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .titleIcon {
         font-size: 20px !important;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .title {
@@ -20,7 +20,7 @@
         gap: var(--layout-spacing-xs);
         font-size: 15px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         flex-shrink: 0;
     }
 
@@ -69,6 +69,15 @@
 
 .axiom :local {
     .container {
-        background-color: var(--elevation-neutral-mid);
+        background-color: var(--elevation-neutral-bg);
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .titleIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
     }
 }

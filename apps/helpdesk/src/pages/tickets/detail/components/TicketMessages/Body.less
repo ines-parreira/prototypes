@@ -1,9 +1,9 @@
 :local .component {
     font-size: 1em;
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy
 
     &.hasError div {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     [style*='fixed'] {
@@ -56,6 +56,16 @@
 
         .order-list__item td img {
             max-width: unset;
+        }
+    }
+}
+
+.axiom :local {
+    .component {
+        color: var(--content-neutral-default);
+
+        &.hasError div {
+            color: var(--content-neutral-secondary);
         }
     }
 }

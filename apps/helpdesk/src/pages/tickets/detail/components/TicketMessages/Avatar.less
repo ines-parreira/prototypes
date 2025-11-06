@@ -4,8 +4,8 @@
             143deg,
             #fff -15.08%,
             var(--neutral-grey-3, #ddd) 103.97%
-        );
-        color: var(--neutral-grey-4);
+        ); // legacy
+        color: var(--neutral-grey-4); // legacy
     }
 
     .isAgent {
@@ -41,5 +41,16 @@
 .dark :local {
     .isAIAgent {
         color: var(--accessory-magenta-1);
+    }
+}
+
+.axiom :local {
+    .avatar {
+        background: linear-gradient(
+            143deg,
+            #fff -15.08%,
+            var(--border-neutral-default, #ddd) 103.97%
+        );
+        color: var(--content-neutral-secondary);
     }
 }

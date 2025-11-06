@@ -2,11 +2,11 @@
     .source {
         transition: all 0.2s linear;
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: flex;
 
         &:hover {
-            color: var(--purple);
+            color: var(--purple); // legacy
         }
     }
 
@@ -25,6 +25,16 @@
         a {
             color: #fff;
             text-decoration: underline !important;
+        }
+    }
+}
+
+.axiom :local {
+    .source {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--content-accent-default);
         }
     }
 }

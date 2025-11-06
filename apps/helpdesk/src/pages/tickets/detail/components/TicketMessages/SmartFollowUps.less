@@ -12,15 +12,17 @@
         padding: 0 var(--layout-spacing-xs) 0 6px;
         border: 1px solid var(--border-neutral-secondary);
         border-radius: 6px;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         text-align: center;
 
         color: var(--content-neutral-secondary);
         .caption-semibold();
         letter-spacing: 0.12px;
     }
+}
 
-    .topSpacing {
-        margin-top: 12px;
+.axiom :local {
+    .pill {
+        background: var(--elevation-neutral-default);
     }
 }

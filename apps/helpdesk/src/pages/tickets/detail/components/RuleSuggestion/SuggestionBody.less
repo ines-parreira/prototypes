@@ -5,7 +5,7 @@
 
     .content {
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .text {
@@ -23,7 +23,11 @@
 }
 
 .axiom :local {
+    .content {
+        border: 1px solid var(--border-neutral-default);
+    }
+
     .text {
-        background-color: var(--elevation-overlay-default);
+        background-color: var(--elevation-neutral-default);
     }
 }

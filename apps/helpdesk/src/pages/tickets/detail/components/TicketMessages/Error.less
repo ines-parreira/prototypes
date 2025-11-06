@@ -15,7 +15,7 @@
 
     .toggleActions {
         display: none;
-        color: var(--main-primary) !important;
+        color: var(--main-primary) !important; // legacy
         cursor: pointer;
     }
 
@@ -51,5 +51,11 @@
         &:not(:last-of-type) {
             margin-bottom: 10px;
         }
+    }
+}
+
+.axiom :local {
+    .toggleActions {
+        color: var(--content-accent-default) !important;
     }
 }

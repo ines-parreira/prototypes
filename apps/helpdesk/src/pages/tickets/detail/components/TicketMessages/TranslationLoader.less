@@ -10,7 +10,15 @@
 
         .loadingText {
             .component-button-small();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .translationLoader {
+        .loadingText {
+            color: var(--content-neutral-secondary);
         }
     }
 }

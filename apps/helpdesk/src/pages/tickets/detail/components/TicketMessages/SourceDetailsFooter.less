@@ -2,11 +2,17 @@
     .wrapper {
         font-size: 12px;
         font-weight: 500;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: flex;
         flex-grow: 1;
         justify-content: flex-end;
         padding-bottom: var(--layout-spacing-xxs);
         transition: padding 0.16s ease-out;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        color: var(--content-neutral-secondary);
     }
 }

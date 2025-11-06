@@ -2,7 +2,7 @@
 
 :local {
     .component {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         .body-regular();
         padding: 12px 24px;
         display: flex;
@@ -36,6 +36,12 @@
             animation: bounce 1s ease infinite 0.2s;
             -webkit-animation: bounce 1s ease infinite 0.2s;
         }
+    }
+}
+
+.axiom :local {
+    .component {
+        color: var(--content-neutral-secondary);
     }
 }
 

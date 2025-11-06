@@ -7,7 +7,7 @@
         align-items: flex-start;
         gap: var(--layout-spacing-xs);
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-4);
+        border: 1px solid var(--neutral-grey-4); // legacy
         justify-content: center;
         flex: 1 0 0;
         margin-top: var(--layout-spacing-xs);
@@ -25,9 +25,19 @@
     }
 
     .summaryTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         font-weight: 600;
         line-height: 20px;
+    }
+}
+
+.axiom :local {
+    .summaryContainer {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .summaryTitle {
+        color: var(--content-neutral-default);
     }
 }

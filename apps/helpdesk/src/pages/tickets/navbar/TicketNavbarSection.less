@@ -36,7 +36,7 @@
 
     .editSectionIcon {
         border: none;
-        color: var(--navigation-text-item) !important;
+        color: var(--navigation-text-item) !important; // legacy
         font-size: 14px;
         line-height: 20px;
         padding: 3px 6px;
@@ -46,16 +46,18 @@
 
         &:hover,
         &:focus {
-            color: var(--navbar-block-toggle-hover-color) !important;
-            background-color: var(--navbar-block-toggle-hover-background-color);
+            color: var(--navbar-block-toggle-hover-color) !important; // legacy
+            background-color: var(
+                --navbar-block-toggle-hover-background-color
+            ); // legacy
             box-shadow: unset;
         }
 
         &:active {
             background-color: var(
                 --navbar-block-toggle-active-background-color
-            ) !important;
-            color: var(--neutral-grey-0);
+            ) !important; // legacy
+            color: var(--neutral-grey-0); // legacy
         }
 
         & > i {
@@ -76,7 +78,7 @@
         }
 
         &.red {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -101,6 +103,29 @@
             .editSectionIcon {
                 opacity: 1;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .editSectionIcon {
+        color: var(--content-neutral-default) !important;
+
+        &:hover,
+        &:focus {
+            color: var(--content-neutral-default) !important;
+            background-color: var(--hover-default);
+        }
+
+        &:active {
+            background-color: var(--surface-neutral-tertiary) !important;
+            color: var(--static-white);
+        }
+    }
+
+    .action {
+        &.red {
+            color: var(--content-error-primary);
         }
     }
 }

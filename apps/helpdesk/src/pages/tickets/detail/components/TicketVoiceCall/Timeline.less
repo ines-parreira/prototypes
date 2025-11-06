@@ -2,7 +2,7 @@
     .container {
         position: relative;
         padding: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         width: min(100%, 456px);
 
@@ -28,11 +28,11 @@
                 border-radius: 50%;
                 width: 7px;
                 height: 7px;
-                background-color: var(--neutral-grey-4);
+                background-color: var(--neutral-grey-4); // legacy
             }
 
             .line {
-                background-color: var(--neutral-grey-4);
+                background-color: var(--neutral-grey-4); // legacy
                 width: 1px;
                 flex: 1;
             }
@@ -41,5 +41,21 @@
 
     .fullWidth {
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+
+        .separator {
+            .dot {
+                background-color: var(--content-neutral-secondary);
+            }
+
+            .line {
+                background-color: var(--content-neutral-secondary);
+            }
+        }
     }
 }

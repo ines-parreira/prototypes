@@ -1,6 +1,6 @@
 :local {
     .pageReactionBadge {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .totalReactionsBadge {
@@ -11,7 +11,7 @@
     }
 
     .reactionText {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .reactionIcon {
@@ -33,7 +33,7 @@
 
     .groupedReactions {
         margin-right: -4px;
-        border: 2px solid var(--neutral-grey-0);
+        border: 2px solid var(--neutral-grey-0); // legacy
         border-radius: 50%;
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
@@ -57,5 +57,19 @@
 
     .totalReactionsBadge:hover .slide {
         opacity: 1;
+    }
+}
+
+.axiom :local {
+    .pageReactionBadge {
+        color: var(--content-accent-default);
+    }
+
+    .reactionText {
+        color: var(--content-neutral-secondary);
+    }
+
+    .groupedReactions {
+        border: 2px solid var(--elevation-neutral-default);
     }
 }

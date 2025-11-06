@@ -5,7 +5,7 @@
         @padding-sides: 38px;
 
         overflow: hidden;
-        background-color: var(--feedback-warning-1);
+        background-color: var(--feedback-warning-1); // legacy
         box-shadow: inset 0 3px 2px
             hsl(
                 var(--feedback-warning-1-h),
@@ -16,7 +16,7 @@
         padding: 6px @padding-sides;
         transition: all 0.1s linear;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
 
         &.hidden {
@@ -85,6 +85,11 @@
 }
 
 .axiom :local {
+    .viewersBanner {
+        background-color: var(--surface-warning-subtle);
+        color: var(--content-neutral-default);
+    }
+
     .headerContainer {
         background-color: var(--elevation-neutral-default);
         box-shadow: none;

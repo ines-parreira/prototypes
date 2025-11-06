@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 17,
-    "totalFilesAffected": 253,
+    "totalCommits": 19,
+    "totalFilesAffected": 312,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -12,7 +12,7 @@
     },
     "515c9b3f4e26f5c0bcfca3a2541d12141e277dff": {
       "title": "feat(tokens): Start the token migration",
-      "date": "2025-08-05", 
+      "date": "2025-08-05",
       "filesAffected": 11
     },
     "35b6d6b0e7bed4f21af15b5bafa93ef5911eba70": {
@@ -89,6 +89,16 @@
       "title": "refactor(tokens): Migrate background tokens - batch 22",
       "date": "2025-09-05",
       "filesAffected": 13
+    },
+    "0dcdff9c8b6a63dc2ccafe6b1281e0093aed0a28": {
+      "title": "chore(tokens): Migrate color tokens in ticket-related pages (batch 1)",
+      "date": "2025-11-05",
+      "filesAffected": 20
+    },
+    "67b1ae216236f49b7eb4e24a32c59b49e1d5d0aa": {
+      "title": "chore(tokens): Migrate color tokens in ticket-related pages (batch 2)",
+      "date": "2025-11-05",
+      "filesAffected": 39
     }
   },
   "tokenMappings": {
@@ -117,7 +127,8 @@
       "--neutral-grey-4": [
         "--surface-neutral-primary"
       ],
-      "--navigation-background": "--elevation-neutral-bg"
+      "--navigation-background": "--elevation-neutral-bg",
+      "--main-primary-0": "--surface-accent-subtle"
     },
     "textColors": {
       "--neutral-grey-6": "--content-neutral-default",
@@ -130,12 +141,34 @@
         "--content-neutral-default"
       ],
       "--navigation-text-item": "--content-neutral-default",
-      "--navigation-title-item": "--content-neutral-default"
+      "--navigation-title-item": "--content-neutral-default",
+      "--main-primary": [
+        "--content-accent-default",
+        "--surface-accent-default"
+      ],
+      "--main-primary-2": "--surface-accent-default",
+      "--purple": "--content-accent-default",
+      "--feedback-error": [
+        "--content-error-primary",
+        "--surface-error-primary"
+      ],
+      "--feedback-warning": [
+        "--content-warning-default",
+        "--surface-warning-primary"
+      ],
+      "--feedback-warning-1": "--surface-warning-subtle",
+      "--success-green": "--content-positive-default",
+      "--navigation-background-accent": "--hover-default",
+      "--navbar-link-hover-background-color": "--surface-neutral-tertiary",
+      "--navbar-block-toggle-hover-color": "--content-neutral-default",
+      "--navbar-block-toggle-active-background-color": "--surface-neutral-tertiary",
+      "--navbar-block-toggle-active-color": "--content-neutral-default"
     },
     "borderColors": {
       "--neutral-grey-2": "--border-neutral-default",
       "--neutral-grey-3": "--border-neutral-default",
-      "--navigation-border": "--border-neutral-default"
+      "--navigation-border": "--border-neutral-default",
+      "--neutral-grey-4": "--border-neutral-default"
     },
     "accentColors": {
       "--main-primary": [
@@ -192,73 +225,108 @@
         "legacyToken": "--neutral-grey-1",
         "newToken": "--elevation-neutral-default",
         "context": "Background color",
-        "files": ["AppNode.less"]
+        "files": [
+          "AppNode.less"
+        ]
       },
       {
-        "legacyToken": "--neutral-grey-6", 
+        "legacyToken": "--neutral-grey-6",
         "newToken": "--content-neutral-default",
         "context": "Text/content color",
-        "files": ["AppNode.less", "Content.less", "EditableTitle.less", "Ticket.less"]
+        "files": [
+          "AppNode.less",
+          "Content.less",
+          "EditableTitle.less",
+          "Ticket.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-2",
-        "newToken": "--border-neutral-default", 
+        "newToken": "--border-neutral-default",
         "context": "Border color",
-        "files": ["Editor.less", "TicketSubmitButtons.less"]
+        "files": [
+          "Editor.less",
+          "TicketSubmitButtons.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-0",
         "newToken": "--elevation-neutral-default",
-        "context": "Background color", 
-        "files": ["TicketHeader.less", "TicketHeaderWrapper.less", "Content.less", "TicketView.less", "TicketListView.less"]
+        "context": "Background color",
+        "files": [
+          "TicketHeader.less",
+          "TicketHeaderWrapper.less",
+          "Content.less",
+          "TicketView.less",
+          "TicketListView.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-1",
         "newToken": "--elevation-neutral-mid",
         "context": "Background color",
-        "files": ["TicketSubmitButtons.less", "SatisfactionSurvey.less", "Editor.less"]
+        "files": [
+          "TicketSubmitButtons.less",
+          "SatisfactionSurvey.less",
+          "Editor.less"
+        ]
       },
       {
-        "legacyToken": "--neutral-grey-1", 
+        "legacyToken": "--neutral-grey-1",
         "newToken": "--elevation-neutral-bg",
         "context": "Background/hover color",
-        "files": ["Ticket.less", "TicketEmptyPanel.less"]
+        "files": [
+          "Ticket.less",
+          "TicketEmptyPanel.less"
+        ]
       },
       {
         "legacyToken": "--main-primary-0",
         "newToken": "--elevation-neutral-bg",
         "context": "Active background",
-        "files": ["Ticket.less"]
+        "files": [
+          "Ticket.less"
+        ]
       },
       {
         "legacyToken": "--main-primary",
-        "newToken": "--surface-additional-blue", 
+        "newToken": "--surface-additional-blue",
         "context": "Active border/accent",
-        "files": ["Ticket.less"]
+        "files": [
+          "Ticket.less"
+        ]
       },
       {
         "legacyToken": "--feedback-error",
         "newToken": "--static-error",
         "context": "Error color",
-        "files": ["Ticket.less"]
+        "files": [
+          "Ticket.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-5",
         "newToken": "--content-neutral-default",
-        "context": "Secondary text color", 
-        "files": ["Ticket.less"]
+        "context": "Secondary text color",
+        "files": [
+          "Ticket.less"
+        ]
       },
       {
         "legacyToken": "--navigation-title-item",
         "newToken": "--elevation-neutral-bg",
         "context": "Navigation item color",
-        "files": ["Toggle.less"]
+        "files": [
+          "Toggle.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-3",
         "newToken": "--border-neutral-default",
         "context": "Border color",
-        "files": ["TicketListView.less"]
+        "files": [
+          "TicketListView.less"
+        ]
       }
     ],
     "commit_515c9b3f4e": [
@@ -266,37 +334,59 @@
         "legacyToken": "--navigation-background",
         "newToken": "--elevation-neutral-bg",
         "context": "Navigation background",
-        "files": ["GlobalNavigation.less", "Navbar.less", "App.less"]
+        "files": [
+          "GlobalNavigation.less",
+          "Navbar.less",
+          "App.less"
+        ]
       },
       {
         "legacyToken": "--navigation-text-item",
         "newToken": "--content-neutral-default",
-        "context": "Navigation text", 
-        "files": ["GlobalNavigation.less", "GlobalNavigationItem.less", "NavigationSectionItem.less", "NavigationSectionTrigger.less", "Navbar.less"]
+        "context": "Navigation text",
+        "files": [
+          "GlobalNavigation.less",
+          "GlobalNavigationItem.less",
+          "NavigationSectionItem.less",
+          "NavigationSectionTrigger.less",
+          "Navbar.less"
+        ]
       },
       {
         "legacyToken": "--navigation-title-item",
         "newToken": "--content-neutral-default",
         "context": "Navigation title",
-        "files": ["GlobalNavigationItem.less"]
+        "files": [
+          "GlobalNavigationItem.less"
+        ]
       },
       {
         "legacyToken": "--navigation-border",
         "newToken": "--border-neutral-default",
         "context": "Navigation border",
-        "files": ["GlobalNavigation.less", "Navbar.less"]
+        "files": [
+          "GlobalNavigation.less",
+          "Navbar.less"
+        ]
       },
       {
-        "legacyToken": "--neutral-grey-0", 
+        "legacyToken": "--neutral-grey-0",
         "newToken": "--elevation-neutral-default",
         "context": "Background color",
-        "files": ["App.less", "SecondaryNavbar.less", "MacrosSettingsTable.less"]
+        "files": [
+          "App.less",
+          "SecondaryNavbar.less",
+          "MacrosSettingsTable.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-3",
         "newToken": "--border-neutral-default",
-        "context": "Border color", 
-        "files": ["SecondaryNavbar.less", "MacrosSettingsTable.less"]
+        "context": "Border color",
+        "files": [
+          "SecondaryNavbar.less",
+          "MacrosSettingsTable.less"
+        ]
       }
     ],
     "commit_35b6d6b0e7": [
@@ -304,61 +394,100 @@
         "legacyToken": "--neutral-grey-1",
         "newToken": "--elevation-neutral-mid",
         "context": "Background/hover color",
-        "files": ["view-table.less", "FilterTopbar.less", "Infobar.less", "TicketInfobarContainer.less"]
+        "files": [
+          "view-table.less",
+          "FilterTopbar.less",
+          "Infobar.less",
+          "TicketInfobarContainer.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-3",
-        "newToken": "--border-neutral-default", 
+        "newToken": "--border-neutral-default",
         "context": "Border color",
-        "files": ["view-table.less", "Table.less", "Infobar.less"]
+        "files": [
+          "view-table.less",
+          "Table.less",
+          "Infobar.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-4",
         "newToken": "--content-neutral-default",
         "context": "Active text",
-        "files": ["view-table.less"]
+        "files": [
+          "view-table.less"
+        ]
       },
       {
         "legacyToken": "--main-primary",
         "newToken": "--surface-additional-blue",
         "context": "Primary accent",
-        "files": ["view-table.less", "Table.less", "TicketInfobarContainer.less"]
+        "files": [
+          "view-table.less",
+          "Table.less",
+          "TicketInfobarContainer.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-5",
-        "newToken": "--content-neutral-default", 
+        "newToken": "--content-neutral-default",
         "context": "Text color",
-        "files": ["AutoQA.less", "FilterTopbar.less"]
+        "files": [
+          "AutoQA.less",
+          "FilterTopbar.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-6",
         "newToken": "--content-neutral-default",
         "context": "Primary text",
-        "files": ["FilterTopbar.less", "Header.less", "Infobar.less", "InfobarCustomerInfo.less", "TicketInfobarContainer.less"]
+        "files": [
+          "FilterTopbar.less",
+          "Header.less",
+          "Infobar.less",
+          "InfobarCustomerInfo.less",
+          "TicketInfobarContainer.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-0",
         "newToken": "--elevation-neutral-default",
         "context": "Background color",
-        "files": ["Table.less", "ViewTableHeaderContainer.less", "Infobar.less", "InfobarCustomerInfo.less", "TicketFeedback.less", "TicketInfobarContainer.less"]
+        "files": [
+          "Table.less",
+          "ViewTableHeaderContainer.less",
+          "Infobar.less",
+          "InfobarCustomerInfo.less",
+          "TicketFeedback.less",
+          "TicketInfobarContainer.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-2",
         "newToken": "--elevation-neutral-mid",
         "context": "Background color",
-        "files": ["Infobar.less"]
+        "files": [
+          "Infobar.less"
+        ]
       },
       {
         "legacyToken": "--neutral-grey-2",
         "newToken": "--border-neutral-default",
-        "context": "Border/separator color", 
-        "files": ["Infobar.less", "InfobarCustomerInfo.less", "TicketInfobarContainer.less"]
+        "context": "Border/separator color",
+        "files": [
+          "Infobar.less",
+          "InfobarCustomerInfo.less",
+          "TicketInfobarContainer.less"
+        ]
       },
       {
         "legacyToken": "--feedback-error",
         "newToken": "--static-error",
         "context": "Error color",
-        "files": ["Infobar.less"]
+        "files": [
+          "Infobar.less"
+        ]
       }
     ],
     "commit_e54f76fbf2_batches_4_5": [
@@ -383,7 +512,9 @@
         "legacyToken": "--feedback-warning",
         "newToken": "--elevation-status-warning-default",
         "context": "Warning background color",
-        "files": ["SatisfactionSurvey.less"]
+        "files": [
+          "SatisfactionSurvey.less"
+        ]
       }
     ],
     "commit_977bb63233_batch_6": [
@@ -433,19 +564,25 @@
         "legacyToken": "--accessory-green-1",
         "newToken": "--elevation-status-success-subtle",
         "context": "Success badge background",
-        "files": ["Badge.less"]
+        "files": [
+          "Badge.less"
+        ]
       },
       {
         "legacyToken": "--accessory-orange-1",
         "newToken": "--elevation-status-warning-subtle",
         "context": "Warning badge background",
-        "files": ["Badge.less"]
+        "files": [
+          "Badge.less"
+        ]
       },
       {
         "legacyToken": "--accessory-red-1",
         "newToken": "--elevation-status-error-subtle",
         "context": "Error badge background",
-        "files": ["Badge.less"]
+        "files": [
+          "Badge.less"
+        ]
       }
     ],
     "commit_1487c34184_batch_18": [
@@ -539,13 +676,346 @@
         "legacyToken": "--main-latte",
         "newToken": "--surface-brand-secondary",
         "context": "Brand accent backgrounds",
-        "files": ["MetricTip.less"]
+        "files": [
+          "MetricTip.less"
+        ]
       },
       {
         "legacyToken": "--main-primary-4",
         "newToken": "--surface-success-secondary",
         "context": "Success surface backgrounds",
-        "files": ["ProductImage.less"]
+        "files": [
+          "ProductImage.less"
+        ]
+      }
+    ],
+    "commit_0dcdff9c8b_batch_1": [
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background colors for base surfaces",
+        "files": [
+          "Ticket.less",
+          "TicketListView.less",
+          "TicketDetail.less",
+          "TicketMessage.less",
+          "MessageContent.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-bg",
+        "context": "Secondary background colors",
+        "files": [
+          "TicketListInfo.less",
+          "TicketCard.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--border-neutral-default",
+        "context": "Border colors",
+        "files": [
+          "Ticket.less",
+          "TicketHeader.less",
+          "MessageHeader.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Borders and dividers",
+        "files": [
+          "Ticket.less",
+          "TicketCard.less",
+          "TicketFields.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "TicketCard.less",
+          "TicketFields.less",
+          "MessageHeader.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "TicketMessage.less",
+          "OwnerLabel.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-6",
+        "newToken": "--content-neutral-default",
+        "context": "Primary text colors",
+        "files": [
+          "Ticket.less",
+          "MessageContent.less",
+          "TicketHeader.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--content-accent-default",
+        "context": "Accent colors for interactive elements",
+        "files": [
+          "Ticket.less",
+          "SourceBadge.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-error",
+        "newToken": "--content-error-primary",
+        "context": "Error state colors",
+        "files": [
+          "TicketAssignee.less"
+        ]
+      }
+    ],
+    "commit_67b1ae2162_batch_2": [
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background colors for cards, modals, and base surfaces",
+        "files": [
+          "SuggestionBody.less",
+          "CollapsedAction.less",
+          "SmartFollowUps.less",
+          "IntentsFeedbackDropdown.less",
+          "TranslationsDropdown.less",
+          "CollapsedSourceActions.less",
+          "TicketView.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-bg",
+        "context": "Secondary background colors and timeline backgrounds",
+        "files": [
+          "SatisfactionSurvey.less",
+          "AIAgentUsedData.less",
+          "TicketView.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Mid-level elevation backgrounds",
+        "files": [
+          "TicketView.less",
+          "SourceActionsHeader.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--surface-neutral-tertiary",
+        "context": "Tertiary surfaces and hover states",
+        "files": [
+          "TagDropdown.less",
+          "IntentsFeedbackDropdown.less",
+          "TranslationsDropdown.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--hover-default",
+        "context": "Hover states for interactive elements",
+        "files": [
+          "DropdownOptionItem.less",
+          "TranslationsDropdown.less",
+          "IntentsFeedbackDropdown.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Borders and dividers",
+        "files": [
+          "SuggestionBody.less",
+          "SatisfactionSurvey.less",
+          "Timeline.less",
+          "IntentsFeedbackDropdown.less",
+          "CollapsedSourceActions.less",
+          "SourceActionsHeader.less",
+          "TicketView.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text and icon colors",
+        "files": [
+          "Body.less",
+          "CollapsedAction.less",
+          "DropdownOptionItem.less",
+          "Source.less",
+          "SourceActionsFooter.less",
+          "SourceDetailsFooter.less",
+          "TranscriptionData.less",
+          "TypingActivity.less",
+          "SectionFormModal.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "SuggestionHeader.less",
+          "Content.less",
+          "TranslationsDropdown.less",
+          "IntentsFeedbackDropdown.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-6",
+        "newToken": "--content-neutral-default",
+        "context": "Primary text colors",
+        "files": [
+          "InTicketSuggestionContainer.less",
+          "TagDropdown.less",
+          "TicketSnooze.less",
+          "Body.less",
+          "CollapsedAction.less",
+          "DropdownOptionItem.less",
+          "IntentsFeedbackDropdown.less",
+          "TranslationsDropdown.less",
+          "TicketPriorityDropdown.less",
+          "TicketVoiceCallSummary.less",
+          "TranscriptionData.less",
+          "TicketNavbarBlock.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--content-accent-default",
+        "context": "Accent colors for links, buttons, and interactive elements",
+        "files": [
+          "InTicketSuggestion.less",
+          "MetaRepliedByLabel.less",
+          "MetaRepliedToLabel.less",
+          "SourceActionsFooter.less",
+          "CollapsibleDetails.less",
+          "TranscriptionData.less",
+          "TicketNavbarDropTarget.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--surface-accent-default",
+        "context": "Accent background colors",
+        "files": [
+          "InTicketSuggestionContainer.less",
+          "TicketNavbarDropTarget.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary-2",
+        "newToken": "--surface-accent-default",
+        "context": "Secondary accent colors",
+        "files": [
+          "TranscriptionData.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-error",
+        "newToken": "--content-error-primary",
+        "context": "Error state text colors",
+        "files": [
+          "Error.less",
+          "TranslationLimit.less",
+          "ActiveIntentItem.less",
+          "TicketNavbarSection.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-warning",
+        "newToken": "--surface-warning-primary",
+        "context": "Warning background colors",
+        "files": [
+          "SatisfactionSurvey.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-warning",
+        "newToken": "--content-warning-default",
+        "context": "Warning text colors",
+        "files": [
+          "SatisfactionSurvey.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-warning-1",
+        "newToken": "--surface-warning-subtle",
+        "context": "Subtle warning backgrounds",
+        "files": [
+          "TicketHeaderWrapper.less"
+        ]
+      },
+      {
+        "legacyToken": "--purple",
+        "newToken": "--content-accent-default",
+        "context": "Purple accent colors",
+        "files": [
+          "Source.less"
+        ]
+      },
+      {
+        "legacyToken": "--navigation-background-accent",
+        "newToken": "--hover-default",
+        "context": "Navigation hover backgrounds",
+        "files": [
+          "TicketNavbarBlock.less"
+        ]
+      },
+      {
+        "legacyToken": "--navigation-text-item",
+        "newToken": "--content-neutral-default",
+        "context": "Navigation text colors",
+        "files": [
+          "TicketNavbarBlock.less",
+          "TicketNavbarSection.less"
+        ]
+      },
+      {
+        "legacyToken": "--navbar-link-hover-background-color",
+        "newToken": "--surface-neutral-tertiary",
+        "context": "Navigation link hover backgrounds",
+        "files": [
+          "TicketNavbarBlock.less"
+        ]
+      },
+      {
+        "legacyToken": "--navbar-block-toggle-active-background-color",
+        "newToken": "--surface-neutral-tertiary",
+        "context": "Navigation toggle active backgrounds",
+        "files": [
+          "TicketNavbarBlock.less",
+          "TicketNavbarSection.less"
+        ]
+      },
+      {
+        "legacyToken": "--navbar-block-toggle-hover-color",
+        "newToken": "--content-neutral-default",
+        "context": "Navigation toggle hover text colors",
+        "files": [
+          "TicketNavbarBlock.less",
+          "TicketNavbarSection.less"
+        ]
+      },
+      {
+        "legacyToken": "--navbar-block-toggle-active-color",
+        "newToken": "--content-neutral-default",
+        "context": "Navigation toggle active text colors",
+        "files": [
+          "TicketNavbarBlock.less"
+        ]
       }
     ]
   },
@@ -617,15 +1087,16 @@
     }
   },
   "migrationProgress": {
-    "totalCommits": 17,
-    "totalFiles": 253,
-    "dateRange": "2025-08-05 to 2025-09-05",
+    "totalCommits": 19,
+    "totalFiles": 312,
+    "dateRange": "2025-08-05 to 2025-11-05",
     "primaryFocus": "Background and background-color token migrations",
     "completionPhases": [
       "Phase 1: Initial navigation and ticket-related pages (commits 1-3)",
       "Phase 2: Background tokens - batches 1-6 (August 29)",
       "Phase 3: Background tokens - batches 8-14 (August 29 - September 3)",
-      "Phase 4: Background tokens - batches 17-22 (August 29 - September 5)"
+      "Phase 4: Background tokens - batches 17-22 (August 29 - September 5)",
+      "Phase 5: Color tokens in ticket-related pages (November 5)"
     ],
     "semanticShift": "Moved from 10+ legacy color tokens to 30+ semantic axiom tokens with clear purpose"
   },
@@ -638,91 +1109,118 @@
         "invalidToken": "--elevation-overlay-default",
         "issue": "Token does not exist in axiom design system",
         "suggestedReplacement": "--elevation-neutral-default or --elevation-neutral-high",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Multiple modal and overlay components"
       },
       {
         "invalidToken": "--elevation-overlay-hover",
         "issue": "Token does not exist in axiom design system",
         "suggestedReplacement": "--hover-default",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Hover states in overlays"
       },
       {
         "invalidToken": "--elevation-surface-primary",
         "issue": "Token does not exist in axiom design system",
         "suggestedReplacement": "--surface-neutral-primary",
-        "usedInCommits": ["977bb63233", "bcf919bfd1"],
+        "usedInCommits": [
+          "977bb63233",
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Primary surface backgrounds"
       },
       {
         "invalidToken": "--elevation-surface-secondary",
         "issue": "Token does not exist in axiom design system",
         "suggestedReplacement": "--surface-neutral-secondary",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Secondary surface backgrounds"
       },
       {
         "invalidToken": "--elevation-accent-default",
         "issue": "Token does not exist in axiom design system",
         "suggestedReplacement": "--surface-accent-default",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Accent color surfaces"
       },
       {
         "invalidToken": "--elevation-status-success-subtle",
         "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
         "suggestedReplacement": "--surface-success-primary",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Success state badges"
       },
       {
         "invalidToken": "--elevation-status-warning-subtle",
         "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
         "suggestedReplacement": "--surface-warning-primary",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Warning state badges"
       },
       {
         "invalidToken": "--elevation-status-error-subtle",
         "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
         "suggestedReplacement": "--surface-error-primary",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Error state badges"
       },
       {
         "invalidToken": "--elevation-status-warning-default",
         "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
         "suggestedReplacement": "--surface-warning-primary or --static-warning",
-        "usedInCommits": ["e54f76fbf2"],
+        "usedInCommits": [
+          "e54f76fbf2"
+        ],
         "affectedFiles": "Warning backgrounds"
       },
       {
         "invalidToken": "--elevation-status-success-default",
         "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
         "suggestedReplacement": "--surface-success-primary or --static-success",
-        "usedInCommits": ["bcf919bfd1"],
+        "usedInCommits": [
+          "bcf919bfd1"
+        ],
         "affectedFiles": "Success backgrounds"
       },
       {
         "invalidToken": "--navigation-selected",
         "issue": "Token does not exist in axiom design system; navigation-specific tokens don't exist",
         "suggestedReplacement": "--surface-accent-default or --content-accent-default",
-        "usedInCommits": ["1487c34184"],
+        "usedInCommits": [
+          "1487c34184"
+        ],
         "affectedFiles": "Navigation selected states"
       },
       {
         "invalidToken": "--surface-brand-secondary",
         "issue": "Token does not exist in axiom design system; brand tokens don't exist",
         "suggestedReplacement": "--surface-additional-yellow or --surface-neutral-secondary",
-        "usedInCommits": ["2fbb04ffac"],
+        "usedInCommits": [
+          "2fbb04ffac"
+        ],
         "affectedFiles": "Brand-related surfaces"
       },
       {
         "invalidToken": "--surface-success-secondary",
         "issue": "Token does not exist in axiom design system; only surface-success-primary exists",
         "suggestedReplacement": "--surface-success-primary or --surface-neutral-secondary",
-        "usedInCommits": ["2fbb04ffac"],
+        "usedInCommits": [
+          "2fbb04ffac"
+        ],
         "affectedFiles": "Secondary success surfaces"
       }
     ],

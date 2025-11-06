@@ -3,7 +3,7 @@
         font-weight: 400;
         font-size: 12px;
         letter-spacing: normal;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -19,7 +19,7 @@
         font-weight: 500;
         font-size: 14px;
         padding: 8px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .dropdownItemLabel {
@@ -37,12 +37,24 @@
     }
 
     .disabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 }
 
 .axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .dropdownItemWrapper {
+        color: var(--content-neutral-default);
+    }
+
     .hoverable:hover {
         background-color: var(--hover-default);
+    }
+
+    .disabled {
+        color: var(--content-neutral-secondary);
     }
 }

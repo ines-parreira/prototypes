@@ -39,7 +39,7 @@
             padding: var(--layout-spacing-xs);
             min-width: 240px;
             border-radius: 8px;
-            border: 1px solid var(--neutral-grey-0);
+            border: 1px solid var(--neutral-grey-0); // legacy
             background-color: var(--neutral-grey-0); // legacy
         }
 
@@ -73,7 +73,7 @@
             padding: var(--layout-spacing-xs) var(--layout-spacing-s);
             box-sizing: border-box;
             padding: var(--layout-spacing-xs);
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             border-radius: 8px;
             cursor: pointer;
             overflow: hidden;
@@ -111,21 +111,27 @@
 }
 
 .axiom :local {
-    .dropdown {
-        .dropdownToggle {
-            background-color: transparent;
-            color: var(--content-neutral-default);
+    .dropdownToggle {
+        color: var(--content-neutral-secondary) !important;
 
-            &:hover {
-                background-color: var(--hover-default);
-            }
+        &:hover {
+            background-color: var(--hover-default);
         }
 
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .dropdown {
         .menuWrapper {
+            border: 1px solid var(--border-neutral-default);
             background-color: var(--elevation-neutral-default);
         }
 
         .translationsItem {
+            color: var(--content-neutral-default);
+
             &:hover {
                 background-color: var(--hover-default);
             }

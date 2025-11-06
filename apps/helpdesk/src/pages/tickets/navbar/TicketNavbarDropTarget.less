@@ -6,7 +6,7 @@
 
     .indicator {
         height: 2px;
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
         left: 19px;
         right: 19px;
         position: absolute;
@@ -18,5 +18,11 @@
 
     .isDown {
         bottom: -1px;
+    }
+}
+
+.axiom :local {
+    .indicator {
+        background-color: var(--surface-accent-default);
     }
 }

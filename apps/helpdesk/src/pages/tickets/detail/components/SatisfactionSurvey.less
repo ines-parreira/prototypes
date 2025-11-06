@@ -13,7 +13,7 @@
         left: 0;
         top: 0;
         height: 100%;
-        border-left: 1px solid var(--neutral-grey-3);
+        border-left: 1px solid var(--neutral-grey-3); // legacy
     }
 
     &.last::before {
@@ -33,7 +33,7 @@
         border-radius: 50%;
         background-color: var(--feedback-warning); // legacy
         font-size: 14px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
 
         i {
             font-size: 14px;
@@ -49,13 +49,13 @@
         display: flex;
         align-items: flex-start;
         gap: 8px;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: 4px;
         background-color: var(--neutral-grey-1); // legacy
         padding: 12px;
         & > i {
             font-size: 20px;
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
         }
         .body_text {
             font-size: 14px;
@@ -99,11 +99,23 @@
 }
 
 .axiom :local {
+    .component {
+        &::before {
+            border-left: 1px solid var(--border-neutral-default);
+        }
+    }
+
     .icon {
-        background-color: var(--elevation-status-warning-default);
+        background-color: var(--surface-warning-primary);
+        color: var(--static-white);
     }
 
     .body_text_container {
-        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-bg);
+
+        & > i {
+            color: var(--content-warning-default);
+        }
     }
 }

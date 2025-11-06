@@ -1,6 +1,6 @@
 :local {
     .wrapper {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-right: 5px;
 
         &.hasMessageTranslation {
@@ -17,7 +17,7 @@
         }
 
         .menu {
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             background: var(--neutral-grey-0); // legacy
             box-shadow: 0 2px 4px
                 hsla(
@@ -64,7 +64,7 @@
         }
 
         .caret {
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
             height: 100%;
             padding-left: 7px;
             line-height: 24px;
@@ -73,11 +73,11 @@
 
     .header {
         background: var(--neutral-grey-2); // legacy
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         border-top-right-radius: 8px;
         border-top-left-radius: 8px;
         box-sizing: border-box;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         font-weight: 600;
         padding: 12px;
@@ -102,17 +102,20 @@
     }
 
     .info {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
 
         &:hover {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 }
 
 .axiom :local {
     .wrapper {
+        color: var(--content-neutral-default);
+
         .menu {
+            border: 1px solid var(--border-neutral-default);
             background: var(--elevation-neutral-default);
 
             &.hasMessageTranslation {
@@ -129,9 +132,23 @@
                 }
             }
         }
+
+        .caret {
+            border-left: 1px solid var(--border-neutral-default);
+        }
     }
 
     .header {
-        background: var(--elevation-neutral-mid);
+        background: var(--surface-neutral-tertiary);
+        border-bottom: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-secondary);
+    }
+
+    .info {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

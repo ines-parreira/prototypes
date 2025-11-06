@@ -7,10 +7,16 @@
         justify-content: center;
         gap: var(--layout-spacing-xxs);
         padding: 0px var(--layout-spacing-xs);
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
 
         .translationLimitText {
             .component-button-small();
         }
+    }
+}
+
+.axiom :local {
+    .translationLimit {
+        color: var(--content-error-primary);
     }
 }
