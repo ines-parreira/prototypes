@@ -42,10 +42,14 @@ export const useJourneyUpdateHandler = ({
             journeyState,
             journeyMessageInstructions,
             campaignTitle,
+            includedAudienceListIds,
+            excludedAudienceListIds,
         }: {
             journeyState: JourneyStatusEnum
             journeyMessageInstructions?: string | null
             campaignTitle?: string
+            includedAudienceListIds?: string[]
+            excludedAudienceListIds?: string[]
         }) => {
             try {
                 if (!integrationId || !journey?.id) {
@@ -81,6 +85,8 @@ export const useJourneyUpdateHandler = ({
                     params: {
                         state: journeyState,
                         message_instructions: journeyMessageInstructions,
+                        included_audience_list_ids: includedAudienceListIds,
+                        excluded_audience_list_ids: excludedAudienceListIds,
                         campaign: campaignTitle
                             ? {
                                   title: campaignTitle,

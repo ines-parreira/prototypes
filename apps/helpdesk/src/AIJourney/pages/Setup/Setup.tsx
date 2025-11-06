@@ -25,6 +25,7 @@ import {
     MessageWithDiscountCodeField,
     PhoneNumberField,
 } from './fields'
+import { AudienceSelect } from './fields/AudienceSelect/AudienceSelect'
 import { CampaignTitle } from './fields/CampaignTitle/CampaignTitle'
 
 import css from './Setup.less'
@@ -33,6 +34,8 @@ const Fields = {
     CampaignTitle: 'campaign_title',
     FollowUps: 'followups',
     SendImage: 'send_image',
+    IncludeAudience: 'include_audience',
+    ExcludeAudience: 'exclude_audience',
 }
 
 type Fields = (typeof Fields)[keyof typeof Fields]
@@ -41,7 +44,11 @@ export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
     [JOURNEY_TYPES.SESSION_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
     [JOURNEY_TYPES.CART_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
     [JOURNEY_TYPES.WIN_BACK]: [Fields.FollowUps, Fields.SendImage],
-    [JOURNEY_TYPES.CAMPAIGN]: [Fields.CampaignTitle],
+    [JOURNEY_TYPES.CAMPAIGN]: [
+        Fields.CampaignTitle,
+        Fields.IncludeAudience,
+        Fields.ExcludeAudience,
+    ],
 }
 
 type SetupProps = {
@@ -105,6 +112,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
         journeyParams?.include_image || false,
     )
 
+    const [includedAudienceListIds, setIncludedAudienceListIds] = useState<
+        string[] | undefined
+    >()
+    const [excludedAudienceListIds, setExcludedAudienceListIds] = useState<
+        string[] | undefined
+    >()
+
     useEffect(() => {
         if (journeyParams) {
             const numberOfMessages =
@@ -128,6 +142,12 @@ export const Setup = ({ journeyType }: SetupProps) => {
     useEffect(() => {
         if (journeyData) {
             setCampaignTitleValue(journeyData?.campaign?.title)
+            setIncludedAudienceListIds(
+                journeyData.included_audience_list_ids ?? undefined,
+            )
+            setExcludedAudienceListIds(
+                journeyData.excluded_audience_list_ids ?? undefined,
+            )
         }
     }, [journeyData])
 
@@ -160,6 +180,14 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setIsImageEnabled((prev: boolean) => !prev)
     }
 
+    const handleIncludedAudienceListIds = (newValue: string[]) => {
+        setIncludedAudienceListIds(newValue)
+    }
+
+    const handleExcludedAudienceListIds = (newValue: string[]) => {
+        setExcludedAudienceListIds(newValue)
+    }
+
     const handleCreate = async () => {
         try {
             if (!integrationId || !currentIntegration?.name) {
@@ -178,6 +206,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                               title: campaignTitleValue,
                           }
                         : undefined,
+                    included_audience_list_ids: includedAudienceListIds,
+                    excluded_audience_list_ids: excludedAudienceListIds,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
@@ -229,6 +259,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                         journeyData.message_instructions,
                     journeyState: journeyData.state,
                     campaignTitle: campaignTitleValue,
+                    includedAudienceListIds: includedAudienceListIds,
+                    excludedAudienceListIds: excludedAudienceListIds,
                 })
                 setIsVisible(false)
                 history.push(
@@ -315,6 +347,22 @@ export const Setup = ({ journeyType }: SetupProps) => {
                         onChange={setDiscountCodeThreshold}
                     />
                 )}
+
+            {fields.includes(Fields.IncludeAudience) && (
+                <AudienceSelect
+                    name="Audience to include"
+                    value={includedAudienceListIds ?? []}
+                    onChange={handleIncludedAudienceListIds}
+                />
+            )}
+
+            {fields.includes(Fields.ExcludeAudience) && (
+                <AudienceSelect
+                    name="Audience to exclude"
+                    value={excludedAudienceListIds ?? []}
+                    onChange={handleExcludedAudienceListIds}
+                />
+            )}
 
             <div className={css.buttonsContainer}>
                 <Button
