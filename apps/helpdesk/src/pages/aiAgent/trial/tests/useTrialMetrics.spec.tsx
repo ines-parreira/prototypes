@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import moment from 'moment'
 import { Provider } from 'react-redux'
 import { Store } from 'redux'
 
@@ -459,6 +460,49 @@ describe('useTrialMetrics', () => {
             await waitFor(() => {
                 expect(result.current.automationRate).toBeUndefined()
             })
+        })
+
+        it('should use fallback period (start of day to end of day) when trialStartDate is not available', async () => {
+            const storeActivationsWithoutTrialStartDate = {
+                'store-1': {
+                    name: 'store-1',
+                    configuration: {
+                        sales: {
+                            trial: undefined,
+                        },
+                    },
+                },
+            }
+
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: storeActivationsWithoutTrialStartDate,
+                isFetchLoading: false,
+            } as any)
+
+            mockUseAiAgentAutomationRate.mockReturnValue({
+                value: 0,
+                prevValue: 0,
+                isLoading: false,
+            })
+
+            renderHookWithWrapper(TrialType.AiAgent, 'store-1')
+
+            await waitFor(() => {
+                expect(mockUseAiAgentAutomationRate).toHaveBeenCalled()
+            })
+
+            const callArgs = mockUseAiAgentAutomationRate.mock.calls[0]
+            const filters = callArgs[0]
+
+            expect(filters.period).toBeDefined()
+            expect(filters.period.start_datetime).toBeDefined()
+            expect(filters.period.end_datetime).toBeDefined()
+
+            const startMoment = moment(filters.period.start_datetime)
+            const endMoment = moment(filters.period.end_datetime)
+
+            expect(startMoment.isValid()).toBe(true)
+            expect(endMoment.isValid()).toBe(true)
         })
 
         it('should handle loading state for automation rate', async () => {

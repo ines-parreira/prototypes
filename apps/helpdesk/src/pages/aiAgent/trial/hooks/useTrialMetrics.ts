@@ -166,8 +166,20 @@ export const useTrialMetrics = (
         return trialConfig?.startDatetime || null
     }, [storeActivations, shopName, trialType])
 
-    const automationRateFilters = useMemo((): StatsFilters | null => {
-        if (!trialStartDate) return null
+    const automationRateFilters = useMemo((): StatsFilters => {
+        if (!trialStartDate) {
+            /**
+             * If the trial start date is not available, we will fallback to the start of the day and end of the day
+             * Period is required in useAiAgentAutomationRate hook
+             * If there is no trial start date, trial metrics won't be presented to the user in UI - modals containing trial metrics won't be shown
+             */
+            return {
+                period: {
+                    start_datetime: moment().startOf('day').format(),
+                    end_datetime: moment().endOf('day').format(),
+                },
+            }
+        }
 
         return {
             period: {
@@ -178,9 +190,7 @@ export const useTrialMetrics = (
     }, [trialStartDate])
 
     const automationRateData = useAiAgentAutomationRate(
-        automationRateFilters || {
-            period: { start_datetime: '', end_datetime: '' },
-        },
+        automationRateFilters,
         timezone,
         undefined,
     )
