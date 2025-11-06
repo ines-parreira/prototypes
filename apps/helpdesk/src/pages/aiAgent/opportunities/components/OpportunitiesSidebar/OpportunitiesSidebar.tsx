@@ -1,7 +1,10 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import { Virtuoso } from 'react-virtuoso'
 
+import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
+import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
+import { checkAndTriggerAutoFetch } from '../../utils/autoFetchScrollChecker'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
@@ -19,7 +22,7 @@ interface OpportunitiesSidebarProps {
     }) => void
     hasNextPage?: boolean
     isFetchingNextPage?: boolean
-    onLoadMore?: () => void
+    onEndReached?: () => void
 }
 
 export const OpportunitiesSidebar = ({
@@ -30,8 +33,15 @@ export const OpportunitiesSidebar = ({
     onOpportunityViewed,
     hasNextPage = false,
     isFetchingNextPage = false,
-    onLoadMore,
+    onEndReached,
 }: OpportunitiesSidebarProps) => {
+    const virtuosoContainerRef = useRef<HTMLDivElement>(null)
+    const onEndReachedRef = useRef(onEndReached)
+
+    useEffect(() => {
+        onEndReachedRef.current = onEndReached
+    }, [onEndReached])
+
     useEffect(() => {
         if (opportunities.length > 0 && !selectedOpportunity) {
             const initialOpportunity = opportunities[0]
@@ -48,23 +58,95 @@ export const OpportunitiesSidebar = ({
         selectedOpportunity,
     ])
 
-    const handleSelectCard = (opportunityId: string) => {
-        const opportunity = opportunities.find(
-            (opp) => opp.id === opportunityId,
-        )
-        if (opportunity) {
-            onSelectOpportunity(opportunity)
-            onOpportunityViewed?.({
-                opportunityId: opportunity.id,
-                opportunityType: opportunity.type,
-            })
+    // we need this in case the first page is fully rendered and the content is not scrollable yet
+    // the virtuoso component does not trigger the endReached event in this case
+    useEffect(() => {
+        if (
+            !isLoading &&
+            !isFetchingNextPage &&
+            hasNextPage &&
+            onEndReachedRef.current &&
+            virtuosoContainerRef.current
+        ) {
+            const timeoutId = setTimeout(() => {
+                const threshold = OPPORTUNITY_CARD_HEIGHT * 2
+                checkAndTriggerAutoFetch(
+                    virtuosoContainerRef.current,
+                    threshold,
+                    hasNextPage,
+                    isFetchingNextPage,
+                    onEndReachedRef.current,
+                )
+            }, 100)
+            return () => clearTimeout(timeoutId)
         }
-    }
+    }, [opportunities.length, isLoading, isFetchingNextPage, hasNextPage])
+
+    const handleSelectCard = useCallback(
+        (opportunityId: string) => {
+            const opportunity = opportunities.find(
+                (opp) => opp.id === opportunityId,
+            )
+            if (opportunity) {
+                onSelectOpportunity(opportunity)
+                onOpportunityViewed?.({
+                    opportunityId: opportunity.id,
+                    opportunityType: opportunity.type,
+                })
+            }
+        },
+        [opportunities, onSelectOpportunity, onOpportunityViewed],
+    )
 
     const itemCount = isLoading ? 0 : opportunities.length
     const itemCountText = itemCount === 1 ? '1 item' : `${itemCount} items`
 
     const showEmptyState = !isLoading && opportunities.length === 0
+
+    const renderOpportunityCard = useCallback(
+        (_index: number, opportunity: Opportunity) => {
+            return (
+                <OpportunityCard
+                    title={opportunity.title}
+                    type={opportunity.type}
+                    ticketCount={opportunity.ticketCount}
+                    selected={selectedOpportunity?.id === opportunity.id}
+                    onSelect={() => handleSelectCard(opportunity.id)}
+                />
+            )
+        },
+        [selectedOpportunity?.id, handleSelectCard],
+    )
+
+    const handleEndReached = useCallback(() => {
+        if (hasNextPage && onEndReached) {
+            onEndReached()
+        }
+    }, [hasNextPage, onEndReached])
+
+    const renderFooter = useCallback(() => {
+        if (isFetchingNextPage) {
+            return (
+                <>
+                    {Array.from({ length: OPPORTUNITIES_PAGE_SIZE }).map(
+                        (_, index) => (
+                            <OpportunityCardSkeleton
+                                key={`skeleton-${index}`}
+                            />
+                        ),
+                    )}
+                </>
+            )
+        }
+        return null
+    }, [isFetchingNextPage])
+
+    const virtuosoComponents = useMemo(
+        () => ({
+            Footer: renderFooter,
+        }),
+        [renderFooter],
+    )
 
     return (
         <div className={css.sidebar}>
@@ -83,55 +165,42 @@ export const OpportunitiesSidebar = ({
                 ) : (
                     <>
                         <div className={css.itemCount}>{itemCountText}</div>
-                        <div className={css.cardsContainer}>
-                            {isLoading ? (
-                                <>
-                                    <OpportunityCardSkeleton />
-                                    <OpportunityCardSkeleton />
-                                    <OpportunityCardSkeleton />
-                                </>
-                            ) : (
-                                <>
-                                    {opportunities.map((opportunity) => (
-                                        <OpportunityCard
-                                            key={opportunity.id}
-                                            title={opportunity.title}
-                                            type={opportunity.type}
-                                            ticketCount={
-                                                opportunity.ticketCount
-                                            }
-                                            selected={
-                                                selectedOpportunity?.id ===
-                                                opportunity.id
-                                            }
-                                            onSelect={() =>
-                                                handleSelectCard(opportunity.id)
-                                            }
-                                        />
-                                    ))}
-                                    {hasNextPage && onLoadMore && (
-                                        <div className={css.loadMoreContainer}>
-                                            <Button
-                                                intent="secondary"
-                                                fillStyle="ghost"
-                                                onClick={onLoadMore}
-                                                isLoading={isFetchingNextPage}
-                                                className={css.loadMoreButton}
-                                            >
-                                                {isFetchingNextPage
-                                                    ? 'Loading...'
-                                                    : 'Load More'}
-                                            </Button>
-                                        </div>
-                                    )}
-                                    {isFetchingNextPage && !hasNextPage && (
-                                        <div className={css.loadMoreContainer}>
-                                            <LoadingSpinner size="small" />
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
+                        {isLoading ? (
+                            <div className={css.cardsContainer}>
+                                {Array.from({
+                                    length: OPPORTUNITIES_PAGE_SIZE,
+                                }).map((_, index) => (
+                                    <OpportunityCardSkeleton
+                                        key={`loading-skeleton-${index}`}
+                                        cardContainerClassName={
+                                            index === 0 &&
+                                            opportunities.length === 0
+                                                ? css.skeletonCard
+                                                : undefined
+                                        }
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div
+                                className={css.virtuosoContainer}
+                                ref={virtuosoContainerRef}
+                            >
+                                <Virtuoso
+                                    data={opportunities}
+                                    itemContent={renderOpportunityCard}
+                                    computeItemKey={(_index, opportunity) =>
+                                        opportunity.id
+                                    }
+                                    endReached={handleEndReached}
+                                    atBottomThreshold={
+                                        OPPORTUNITY_CARD_HEIGHT * 2
+                                    }
+                                    fixedItemHeight={OPPORTUNITY_CARD_HEIGHT}
+                                    components={virtuosoComponents}
+                                />
+                            </div>
+                        )}
                     </>
                 )}
             </div>

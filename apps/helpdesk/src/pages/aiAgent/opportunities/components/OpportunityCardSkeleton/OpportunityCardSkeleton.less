@@ -1,32 +1,36 @@
 :local {
     .card {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
         padding: var(--layout-spacing-s);
-        align-items: center;
-        flex-shrink: 0;
         border-radius: var(--layout-spacing-xs);
         border: 1px solid transparent;
         background: var(--neutral-grey-0);
+        gap: var(--layout-spacing-xxs);
     }
 
     .header {
         display: flex;
+        flex: 1;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         margin-bottom: 4px;
+        div {
+            border-radius: 4px;
+        }
     }
 
     .infoSection {
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: var(--layout-spacing-xxs);
         width: 100%;
-
-        .title {
-            display: flex;
-            align-items: flex-end;
+        div {
+            width: 100% !important;
         }
     }
 }

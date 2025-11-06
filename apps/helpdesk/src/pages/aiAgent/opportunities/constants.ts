@@ -1,0 +1,1 @@
+export const OPPORTUNITY_CARD_HEIGHT = 72

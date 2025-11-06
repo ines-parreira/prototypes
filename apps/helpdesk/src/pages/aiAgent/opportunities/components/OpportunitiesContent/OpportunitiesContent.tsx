@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import {
     LegacyButton as Button,
-    LoadingSpinner,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -35,6 +34,7 @@ import {
     useProcessOpportunity,
 } from '../../hooks/useProcessOpportunity'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import { OpportunitiesContentSkeleton } from '../OpportunitiesContentSkeleton/OpportunitiesContentSkeleton'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
@@ -380,9 +380,7 @@ export const OpportunitiesContent = ({
             </div>
             <div className={css.contentBody}>
                 {isLoadingOpportunityDetails ? (
-                    <div className={css.loadingContainer}>
-                        <LoadingSpinner />
-                    </div>
+                    <OpportunitiesContentSkeleton />
                 ) : selectedOpportunity ? (
                     <div className={css.opportunityDetails}>
                         <OpportunityDetailsCard

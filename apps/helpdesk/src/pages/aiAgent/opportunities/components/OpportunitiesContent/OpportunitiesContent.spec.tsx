@@ -1044,7 +1044,7 @@ describe('OpportunitiesContent', () => {
     })
 
     describe('Loading states', () => {
-        it('should show loading spinner when isLoadingOpportunityDetails is true', () => {
+        it('should show skeleton loader when isLoadingOpportunityDetails is true', () => {
             const selectedOpportunity: Opportunity = {
                 id: '1',
                 title: 'Test opportunity',
@@ -1053,13 +1053,16 @@ describe('OpportunitiesContent', () => {
                 key: 'ai_1',
             }
 
-            renderComponent({
+            const { container } = renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
                 isLoadingOpportunityDetails: true,
             })
 
             expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+
+            const skeletons = container.querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBeGreaterThan(0)
         })
     })
 })

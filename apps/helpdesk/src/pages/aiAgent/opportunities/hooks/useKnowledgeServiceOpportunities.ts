@@ -8,7 +8,7 @@ import {
 import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 import { mapKnowledgeServiceOpportunities } from '../utils/mapKnowledgeServiceOpportunities'
 
-const OPPORTUNITIES_PAGE_SIZE = 20
+export const OPPORTUNITIES_PAGE_SIZE = 20
 
 interface PaginatedPage {
     opportunities: Opportunity[]

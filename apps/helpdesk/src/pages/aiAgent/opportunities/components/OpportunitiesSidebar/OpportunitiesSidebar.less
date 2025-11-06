@@ -3,6 +3,12 @@
 @import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
+    .skeletonCard {
+        border-radius: var(--layout-spacing-xs);
+        border: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-1);
+    }
+
     .sidebar {
         display: flex;
         width: 300px;
@@ -60,12 +66,12 @@
 
     .containerContent {
         flex: 1;
-        min-height: 0; // Critical for allowing scroll
+        min-height: 0;
         width: 100%;
-        padding: var(--layout-spacing-xs);
-        overflow-y: auto;
-        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
         background: var(--neutral-grey-0) !important;
+        overflow: hidden;
     }
 
     .emptyState {
@@ -76,28 +82,39 @@
     .itemCount {
         .caption-regular();
         color: var(--neutral-grey-6);
-        padding: var(--layout-spacing-s);
+        padding-left: var(--layout-spacing-s);
+        padding-right: 10px;
         padding-top: var(--layout-spacing-xs);
-        padding-left: var(--layout-spacing-xs);
+        padding-bottom: var(--layout-spacing-xs);
         margin: 0;
+        line-height: 44px;
     }
 
     .cardsContainer {
         display: flex;
         flex-direction: column;
         width: 100%;
+        padding: var(--layout-spacing-xs);
+        padding-top: 0;
     }
 
-    .loadMoreContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: var(--layout-spacing-s);
-        width: 100%;
-    }
+    .virtuosoContainer {
+        flex: 1;
+        min-height: 0;
+        padding-left: var(--layout-spacing-xs);
+        padding-right: var(--layout-spacing-xs);
 
-    .loadMoreButton {
-        width: 100%;
-        max-width: 200px;
+        :global([data-virtuoso-scroller]) {
+            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
+            scrollbar-width: thin;
+
+            &::-webkit-scrollbar-thumb {
+                visibility: initial;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: var(--neutral-grey-0);
+            }
+        }
     }
 }

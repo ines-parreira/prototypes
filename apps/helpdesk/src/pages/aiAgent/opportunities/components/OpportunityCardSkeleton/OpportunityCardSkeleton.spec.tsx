@@ -74,4 +74,21 @@ describe('OpportunityCardSkeleton', () => {
         expect(header?.parentElement).toBe(card)
         expect(infoSection?.parentElement).toBe(card)
     })
+
+    it('should apply custom cardContainerClassName when provided', () => {
+        const customClass = 'custom-skeleton-class'
+        const { container } = render(
+            <OpportunityCardSkeleton cardContainerClassName={customClass} />,
+        )
+
+        const card = container.firstChild as HTMLElement
+        expect(card).toHaveClass(customClass)
+    })
+
+    it('should not apply additional class when cardContainerClassName is not provided', () => {
+        const { container } = render(<OpportunityCardSkeleton />)
+
+        const card = container.firstChild as HTMLElement
+        expect(card.className).not.toContain('undefined')
+    })
 })

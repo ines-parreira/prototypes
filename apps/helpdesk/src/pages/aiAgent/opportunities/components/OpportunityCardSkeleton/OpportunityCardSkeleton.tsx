@@ -1,16 +1,24 @@
+import cn from 'classnames'
+
 import { Skeleton } from '@gorgias/axiom'
 
 import css from './OpportunityCardSkeleton.less'
 
-export const OpportunityCardSkeleton = () => {
+export type OpportunityCardSkeletonProps = {
+    cardContainerClassName?: string
+}
+
+export const OpportunityCardSkeleton = ({
+    cardContainerClassName,
+}: OpportunityCardSkeletonProps) => {
     return (
-        <div className={css.card}>
+        <div className={cn(css.card, cardContainerClassName)}>
             <div className={css.header}>
-                <Skeleton width={180} height={16} />
+                <Skeleton width={20} height={20} />
             </div>
             <div className={css.infoSection}>
-                <Skeleton width={18} height={18} circle />
-                <Skeleton width={120} height={14} />
+                <Skeleton height={20} />
+                <Skeleton height={16} />
             </div>
         </div>
     )

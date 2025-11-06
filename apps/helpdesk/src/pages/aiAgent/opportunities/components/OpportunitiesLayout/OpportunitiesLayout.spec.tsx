@@ -680,7 +680,7 @@ describe('OpportunitiesLayout', () => {
                 expect.objectContaining({
                     hasNextPage: true,
                     isFetchingNextPage: false,
-                    onLoadMore: expect.any(Function),
+                    onEndReached: expect.any(Function),
                 }),
                 expect.anything(),
             )
@@ -699,7 +699,7 @@ describe('OpportunitiesLayout', () => {
                 expect.objectContaining({
                     hasNextPage: false,
                     isFetchingNextPage: false,
-                    onLoadMore: undefined,
+                    onEndReached: undefined,
                 }),
                 expect.anything(),
             )

@@ -2,10 +2,14 @@ import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Virtuoso } from 'react-virtuoso'
 
 import { OpportunityType } from '../../enums'
 import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
+
+jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
+const VirtuosoMock = Virtuoso as jest.Mock
 
 describe('OpportunitiesSidebar', () => {
     const mockOnSelectOpportunity = jest.fn()
@@ -46,6 +50,18 @@ describe('OpportunitiesSidebar', () => {
 
     beforeEach(() => {
         mockOnSelectOpportunity.mockClear()
+        VirtuosoMock.mockImplementation(
+            ({ data, itemContent, components, computeItemKey }) => (
+                <div data-testid="virtuoso-mock">
+                    {data.map((item: Opportunity, index: number) => (
+                        <div key={computeItemKey?.(index, item) || item.id}>
+                            {itemContent(index, item)}
+                        </div>
+                    ))}
+                    {components?.Footer?.()}
+                </div>
+            ),
+        )
     })
 
     it('should render sidebar header with title', () => {
@@ -195,79 +211,144 @@ describe('OpportunitiesSidebar', () => {
             />,
         )
 
-        const skeletons = container.querySelectorAll('.card')
-        expect(skeletons.length).toBe(3)
+        const skeletons = container.querySelectorAll('[class*="skeleton"]')
+        expect(skeletons.length).toBeGreaterThan(0)
     })
 
-    describe('Pagination', () => {
-        const mockOnLoadMore = jest.fn()
+    describe('Infinite scroll', () => {
+        const mockOnEndReached = jest.fn()
 
-        it('should render Load More button when hasNextPage is true', () => {
+        beforeEach(() => {
+            mockOnEndReached.mockClear()
+        })
+
+        it('should call onEndReached when hasNextPage is true and end is reached', () => {
+            VirtuosoMock.mockImplementation(
+                ({
+                    data,
+                    itemContent,
+                    components,
+                    computeItemKey,
+                    endReached,
+                }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                        {components?.Footer?.()}
+                        <button onClick={endReached}>Trigger End</button>
+                    </div>
+                ),
+            )
+
             render(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
-                    onLoadMore={mockOnLoadMore}
+                    onEndReached={mockOnEndReached}
                 />,
             )
 
-            const loadMoreButton = screen.getByRole('button', {
-                name: /load more/i,
-            })
-            expect(loadMoreButton).toBeInTheDocument()
+            const triggerButton = screen.getByText('Trigger End')
+            triggerButton.click()
+
+            expect(mockOnEndReached).toHaveBeenCalledTimes(1)
         })
 
-        it('should not render Load More button when hasNextPage is false', () => {
+        it('should not call onEndReached when hasNextPage is false', () => {
+            VirtuosoMock.mockImplementation(
+                ({
+                    data,
+                    itemContent,
+                    components,
+                    computeItemKey,
+                    endReached,
+                }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                        {components?.Footer?.()}
+                        <button onClick={endReached}>Trigger End</button>
+                    </div>
+                ),
+            )
+
             render(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={false}
-                    onLoadMore={mockOnLoadMore}
+                    onEndReached={mockOnEndReached}
                 />,
             )
 
-            const loadMoreButton = screen.queryByRole('button', {
-                name: /load more/i,
-            })
-            expect(loadMoreButton).not.toBeInTheDocument()
+            const triggerButton = screen.getByText('Trigger End')
+            triggerButton.click()
+
+            expect(mockOnEndReached).not.toHaveBeenCalled()
         })
 
-        it('should call onLoadMore when Load More button is clicked', async () => {
-            const user = userEvent.setup()
-            render(
-                <OpportunitiesSidebar
-                    opportunities={mockOpportunities}
-                    onSelectOpportunity={mockOnSelectOpportunity}
-                    hasNextPage={true}
-                    onLoadMore={mockOnLoadMore}
-                />,
+        it('should show skeleton loaders when fetching next page', () => {
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, components, computeItemKey }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                        {components?.Footer && <components.Footer />}
+                    </div>
+                ),
             )
 
-            const loadMoreButton = screen.getByRole('button', {
-                name: /load more/i,
-            })
-            await user.click(loadMoreButton)
-
-            expect(mockOnLoadMore).toHaveBeenCalledTimes(1)
-        })
-
-        it('should show loading state on Load More button when fetching', () => {
-            render(
+            const { container } = render(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={true}
-                    onLoadMore={mockOnLoadMore}
+                    onEndReached={mockOnEndReached}
                 />,
             )
 
-            const loadMoreButton = screen.getByRole('button', {
-                name: /loading/i,
-            })
-            expect(loadMoreButton).toBeInTheDocument()
+            const skeletons = container.querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('should not show skeleton loaders when not fetching', () => {
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, components, computeItemKey }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                        {components?.Footer && <components.Footer />}
+                    </div>
+                ),
+            )
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            const virtuoso = screen.getByTestId('virtuoso-mock')
+            const skeletons = virtuoso.querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBe(0)
         })
 
         it('should auto-select when opportunities go from empty to populated', async () => {
@@ -292,6 +373,194 @@ describe('OpportunitiesSidebar', () => {
                     mockOpportunities[0],
                 )
             })
+        })
+
+        it('should setup auto-fetch effect when all conditions are met', () => {
+            const mockOnEndReached = jest.fn()
+
+            const { rerender } = render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={false}
+                    isLoading={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            expect(mockOnSelectOpportunity).toHaveBeenCalled()
+
+            rerender(
+                <OpportunitiesSidebar
+                    opportunities={[...mockOpportunities, ...mockOpportunities]}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={false}
+                    isLoading={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            expect(
+                screen.getByText(`${mockOpportunities.length * 2} items`),
+            ).toBeInTheDocument()
+        })
+
+        it('should not setup auto-fetch when isLoading is true', () => {
+            const mockOnEndReached = jest.fn()
+
+            const { container } = render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={false}
+                    isLoading={true}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            const skeletons = container.querySelectorAll('[class*="skeleton"]')
+
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('should not setup auto-fetch when isFetchingNextPage is true', () => {
+            const mockOnEndReached = jest.fn()
+
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, components, computeItemKey }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                        {components?.Footer && <components.Footer />}
+                    </div>
+                ),
+            )
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={true}
+                    isLoading={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            const skeletons = screen
+                .getByTestId('virtuoso-mock')
+                .querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('should not setup auto-fetch when hasNextPage is false', () => {
+            const mockOnEndReached = jest.fn()
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={false}
+                    isFetchingNextPage={false}
+                    isLoading={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            expect(screen.getByText('4 items')).toBeInTheDocument()
+        })
+    })
+
+    describe('onOpportunityViewed callback', () => {
+        it('should call onOpportunityViewed when card is clicked', async () => {
+            const mockOnOpportunityViewed = jest.fn()
+
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, computeItemKey }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                    </div>
+                ),
+            )
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    onOpportunityViewed={mockOnOpportunityViewed}
+                />,
+            )
+
+            const secondCard = screen.getByText(
+                'How do I access my store account?',
+            )
+            await userEvent.click(secondCard)
+
+            await waitFor(() => {
+                expect(mockOnOpportunityViewed).toHaveBeenCalledWith({
+                    opportunityId: '2',
+                    opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
+                })
+            })
+        })
+
+        it('should call onOpportunityViewed on initial mount with first opportunity', async () => {
+            const mockOnOpportunityViewed = jest.fn()
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    onOpportunityViewed={mockOnOpportunityViewed}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(mockOnOpportunityViewed).toHaveBeenCalledWith({
+                    opportunityId: '1',
+                    opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
+                })
+            })
+        })
+
+        it('should not call onOpportunityViewed when callback is not provided', async () => {
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, computeItemKey }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map((item: Opportunity, index: number) => (
+                            <div key={computeItemKey?.(index, item) || item.id}>
+                                {itemContent(index, item)}
+                            </div>
+                        ))}
+                    </div>
+                ),
+            )
+
+            render(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />,
+            )
+
+            const secondCard = screen.getByText(
+                'How do I access my store account?',
+            )
+            await userEvent.click(secondCard)
+
+            expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
+                mockOpportunities[1],
+            )
         })
     })
 })

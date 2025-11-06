@@ -181,7 +181,9 @@ export const OpportunitiesLayout = () => {
                     isFetchingNextPage={
                         useKnowledgeService ? isFetchingNextPage : false
                     }
-                    onLoadMore={useKnowledgeService ? fetchNextPage : undefined}
+                    onEndReached={
+                        useKnowledgeService ? fetchNextPage : undefined
+                    }
                 />
                 <OpportunitiesContent
                     key={selectedOpportunity?.key}
