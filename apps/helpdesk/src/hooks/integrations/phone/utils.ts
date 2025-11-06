@@ -167,7 +167,7 @@ export function handleDeviceEvents(
                 break
 
             default:
-                reportError(error)
+                reportVoiceError(error)
                 break
         }
     })
@@ -236,9 +236,7 @@ export async function disconnectDevice(
 
         device.removeAllListeners()
     } catch (error) {
-        if (error instanceof Error) {
-            reportError(error)
-        }
+        reportVoiceError(error)
     } finally {
         actions.setDevice(null)
     }
@@ -280,4 +278,20 @@ export function isRecoverableError(error: Error): boolean {
     }
 
     return true
+}
+
+const reportVoiceError = (error: unknown) => {
+    const ignoredTwilioErrors = [
+        TwilioErrorCode.AuthorizationAccessTokenExpired,
+        TwilioErrorCode.AuthorizationAccessTokenInvalid,
+    ]
+
+    if (
+        error instanceof TwilioError.TwilioError &&
+        ignoredTwilioErrors.includes(error.code)
+    ) {
+        return
+    }
+
+    reportError(error)
 }

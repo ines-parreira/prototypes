@@ -213,12 +213,16 @@ describe('connectDevice', () => {
 })
 
 describe('disconnectDevice', () => {
-    const device = {
-        disconnectAll: jest.fn(),
-        unregister: jest.fn(),
-        destroy: jest.fn(),
-        removeAllListeners: jest.fn(),
-    } as unknown as Device
+    let device: Device
+
+    beforeEach(() => {
+        device = {
+            disconnectAll: jest.fn(),
+            unregister: jest.fn(),
+            destroy: jest.fn(),
+            removeAllListeners: jest.fn(),
+        } as unknown as Device
+    })
 
     it('should disconnect, unregister, destroy device and remove listeners', async () => {
         void disconnectDevice(
@@ -235,6 +239,47 @@ describe('disconnectDevice', () => {
             expect(device.destroy).toHaveBeenCalledTimes(1)
             expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
             expect(actions.setDevice).toHaveBeenCalledWith(null)
+        })
+    })
+
+    it('should report general error', async () => {
+        const error = new Error('General error')
+        device.removeAllListeners = jest.fn(() => {
+            throw error
+        })
+        void disconnectDevice(device, actions)
+
+        await waitFor(() => {
+            expect(reportError).toHaveBeenCalledWith(error)
+        })
+    })
+
+    it('should report non-ignored twilio error', async () => {
+        const error = new TwilioError.TwilioError('some error', {
+            code: TwilioErrorCode.GeneralUnknown,
+        })
+        device.removeAllListeners = jest.fn(() => {
+            throw error
+        })
+        void disconnectDevice(device, actions)
+        await waitFor(() => {
+            expect(reportError).toHaveBeenCalledWith(error)
+        })
+    })
+
+    it.each([
+        TwilioErrorCode.AuthorizationAccessTokenExpired,
+        TwilioErrorCode.AuthorizationAccessTokenInvalid,
+    ])('should not report error for %s', async (code) => {
+        const error = new TwilioError.TwilioError('some error')
+        error.code = code
+        device.removeAllListeners = jest.fn(() => {
+            throw error
+        })
+        void disconnectDevice(device, actions)
+
+        await waitFor(() => {
+            expect(reportError).not.toHaveBeenCalledWith(error)
         })
     })
 
