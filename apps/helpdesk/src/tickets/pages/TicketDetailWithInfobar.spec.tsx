@@ -30,6 +30,7 @@ const useFlagMock = jest.mocked(useFlag)
 
 jest.mock('core/layout/panels', () => ({
     Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
+    Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
 jest.mock(
@@ -64,6 +65,11 @@ jest.mock(
 
 jest.mock('tickets/navigation', () => ({
     InfobarNavigationPanel: () => <div>InfobarNavigationPanel</div>,
+}))
+
+jest.mock('pages/tickets/detail/TicketInfobarContainer', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>TicketInfobarContainer</div>),
 }))
 
 jest.mock('tickets/ticket-detail', () => ({
@@ -195,7 +201,9 @@ describe('TicketDetailWithInfobar', () => {
         it('should render the ticket infobar if the flag is enabled and it is expanded', () => {
             useFlagMock.mockReturnValue(true)
             render(<TicketDetailWithInfobar />)
-            expect(screen.getByText('Ticket Infobar Panel')).toBeInTheDocument()
+            expect(
+                screen.getByText('TicketInfobarContainer'),
+            ).toBeInTheDocument()
         })
 
         it('should not render the ticket infobar if the flag is enabled but it is not expanded', () => {
