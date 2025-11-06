@@ -152,4 +152,19 @@ describe('VoiceCallSubjectLabel', () => {
             expect(useCustomerDetailsSpy).not.toHaveBeenCalled()
         })
     })
+
+    describe('IVR Menu Option type', () => {
+        it('should render IVR menu type', () => {
+            render(
+                <VoiceCallSubjectLabel
+                    subject={{
+                        type: VoiceCallSubjectType.IvrMenuOption,
+                        digit: '2',
+                    }}
+                />,
+            )
+
+            expect(screen.getByText('IVR Option 2')).toBeInTheDocument()
+        })
+    })
 })

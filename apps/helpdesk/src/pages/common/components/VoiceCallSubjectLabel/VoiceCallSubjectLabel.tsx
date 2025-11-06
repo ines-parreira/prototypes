@@ -8,27 +8,36 @@ type VoiceCallSubjectLabelProps = {
 }
 
 const VoiceCallSubjectLabel = ({ subject }: VoiceCallSubjectLabelProps) => {
-    if (subject.type === VoiceCallSubjectType.Agent) {
-        return <VoiceCallAgentLabel agentId={subject.id} semibold />
-    }
-    if (subject.type === VoiceCallSubjectType.External) {
-        if (!subject.customer) {
-            return <span className="body-semibold">{subject.value}</span>
-        }
-        return (
-            <VoiceCallCustomerLabel
-                customerId={subject.customer.id}
-                customerName={subject.customer.name}
-                phoneNumber={subject.value}
-                showBothNameAndPhone
-            />
-        )
-    }
-    if (subject.type === VoiceCallSubjectType.Queue) {
-        return <VoiceCallQueueLabel queueId={subject.id} />
-    }
+    switch (subject.type) {
+        case VoiceCallSubjectType.Agent:
+            return <VoiceCallAgentLabel agentId={subject.id} semibold />
 
-    return <span className="body-semibold">Unknown</span>
+        case VoiceCallSubjectType.External:
+            if (!subject.customer) {
+                return <span className="body-semibold">{subject.value}</span>
+            }
+            return (
+                <VoiceCallCustomerLabel
+                    customerId={subject.customer.id}
+                    customerName={subject.customer.name}
+                    phoneNumber={subject.value}
+                    showBothNameAndPhone
+                />
+            )
+
+        case VoiceCallSubjectType.Queue:
+            return <VoiceCallQueueLabel queueId={subject.id} />
+
+        case VoiceCallSubjectType.IvrMenuOption:
+            return (
+                <span className={'body-semibold'}>
+                    IVR Option {subject.digit}
+                </span>
+            )
+
+        default:
+            return <span className="body-semibold">Unknown</span>
+    }
 }
 
 export default VoiceCallSubjectLabel

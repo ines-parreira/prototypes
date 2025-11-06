@@ -19,4 +19,6 @@ export enum PhoneIntegrationEvent {
     PhoneCallTransferFailed = 'phone-call-transfer-failed',
     EndingTriggered = 'call-ending-triggered',
     Enqueued = 'phone-call-enqueued',
+    Dequeued = 'phone-call-dequeued',
+    IvrOptionSelected = 'ivr-option-selected',
 }

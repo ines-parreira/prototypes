@@ -279,6 +279,7 @@ export enum VoiceCallSubjectType {
     Agent = 'agent',
     External = 'external',
     Queue = 'queue',
+    IvrMenuOption = 'ivr-menu-option',
 }
 
 export type VoiceCallSubject =
@@ -288,4 +289,8 @@ export type VoiceCallSubject =
           type: VoiceCallSubjectType.External
           value: string
           customer?: { id: number; name?: string } | null
+      }
+    | {
+          type: VoiceCallSubjectType.IvrMenuOption
+          digit: string
       }

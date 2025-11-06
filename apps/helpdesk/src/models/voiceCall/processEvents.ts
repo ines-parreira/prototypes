@@ -9,6 +9,8 @@ export type ProcessedEvent = {
     actor?: VoiceCallSubject | null
     target?: VoiceCallSubject | null
     showTransferPrefix?: boolean
+    connector?: string
+    extra?: string
 }
 
 const getAgentSubjectFromUserId = (
@@ -258,6 +260,44 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
                         target: getExternalSubject(event),
                     })
                 }
+                break
+            case PhoneIntegrationEvent.Enqueued:
+                result.push({
+                    datetime: event.created_datetime,
+                    action: 'added to queue',
+                    target: {
+                        type: VoiceCallSubjectType.Queue,
+                        id: event.meta.queue_id as number,
+                    },
+                    connector: ' ',
+                })
+                break
+            case PhoneIntegrationEvent.Dequeued:
+                result.push({
+                    datetime: event.created_datetime,
+                    action: 'removed from queue',
+                    target: {
+                        type: VoiceCallSubjectType.Queue,
+                        id: event.meta.queue_id as number,
+                    },
+                    connector: ' ',
+                    extra: (event.meta.dequeued_reason as string).replaceAll(
+                        '_',
+                        ' ',
+                    ),
+                })
+                break
+            case PhoneIntegrationEvent.IvrOptionSelected:
+                result.push({
+                    datetime: event.created_datetime,
+                    action: 'selected',
+                    connector: ' ',
+                    target: {
+                        type: VoiceCallSubjectType.IvrMenuOption,
+                        digit: event.meta.digit_pressed as string,
+                    },
+                    extra: event.meta.selected_branch_option_name as string,
+                })
                 break
         }
     }

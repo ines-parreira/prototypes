@@ -917,6 +917,115 @@ describe('processEvents', () => {
             },
         ] as ProcessedEvent[])
     })
+
+    it('should process queue events with queue target', () => {
+        const mockEvents: VoiceCallEvent[] = [
+            {
+                id: 1,
+                type: PhoneIntegrationEvent.Enqueued,
+                account_id: 100,
+                call_id: 200,
+                user_id: null,
+                customer_id: 300,
+                created_datetime: '2024-01-15T10:30:00Z',
+                meta: {
+                    queue_id: 42,
+                },
+            },
+            {
+                id: 1,
+                type: PhoneIntegrationEvent.Dequeued,
+                account_id: 100,
+                call_id: 200,
+                user_id: null,
+                customer_id: 300,
+                created_datetime: '2024-01-15T10:35:00Z',
+                meta: {
+                    queue_id: 42,
+                    dequeued_reason: 'call_timeout',
+                },
+            },
+        ]
+
+        const result = processEvents(mockEvents)
+
+        expect(result).toEqual([
+            {
+                datetime: '2024-01-15T10:30:00Z',
+                action: 'added to queue',
+                target: {
+                    type: VoiceCallSubjectType.Queue,
+                    id: 42,
+                },
+                connector: ' ',
+            },
+            {
+                datetime: '2024-01-15T10:35:00Z',
+                action: 'removed from queue',
+                target: {
+                    type: VoiceCallSubjectType.Queue,
+                    id: 42,
+                },
+                connector: ' ',
+                extra: 'call timeout',
+            },
+        ])
+    })
+
+    it('should process IVR option selected events', () => {
+        const mockEvents: VoiceCallEvent[] = [
+            {
+                id: 1,
+                type: PhoneIntegrationEvent.IvrOptionSelected,
+                account_id: 100,
+                call_id: 200,
+                user_id: null,
+                customer_id: 300,
+                created_datetime: '2024-01-15T10:32:00Z',
+                meta: {
+                    digit_pressed: '1',
+                    selected_branch_option_name: 'Sales Department',
+                },
+            },
+            {
+                id: 2,
+                type: PhoneIntegrationEvent.IvrOptionSelected,
+                account_id: 100,
+                call_id: 200,
+                user_id: null,
+                customer_id: 300,
+                created_datetime: '2024-01-15T10:33:00Z',
+                meta: {
+                    digit_pressed: '3',
+                },
+            },
+        ]
+
+        const result = processEvents(mockEvents)
+
+        expect(result).toEqual([
+            {
+                datetime: '2024-01-15T10:32:00Z',
+                action: 'selected',
+                connector: ' ',
+                target: {
+                    type: VoiceCallSubjectType.IvrMenuOption,
+                    digit: '1',
+                },
+                extra: 'Sales Department',
+            },
+            {
+                datetime: '2024-01-15T10:33:00Z',
+                action: 'selected',
+                connector: ' ',
+                target: {
+                    type: VoiceCallSubjectType.IvrMenuOption,
+                    digit: '3',
+                },
+                extra: undefined,
+            },
+        ])
+    })
 })
 
 describe('hasFlowEndEvent', () => {
