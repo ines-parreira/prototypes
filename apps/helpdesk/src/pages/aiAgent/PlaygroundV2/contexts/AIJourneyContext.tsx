@@ -3,6 +3,7 @@ import {
     ReactNode,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from 'react'
@@ -13,12 +14,14 @@ import {
     JourneyTypeEnum,
 } from '@gorgias/convert-client'
 
+import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { TokenProvider } from 'AIJourney/providers'
 import {
     useJourneyData,
     useJourneys,
     useUpdateJourney,
 } from 'AIJourney/queries'
+import { Product } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
@@ -70,7 +73,9 @@ function parseJourneyConfig(
 }
 
 type AIJourneyContextValue = {
-    shopifyIntegration: number | undefined
+    shopifyIntegration:
+        | ReturnType<typeof getShopifyIntegrationsSortedByName>[number]
+        | undefined
     journeys: JourneyApiDTO[]
     shopName: string
     isLoadingJourneys: boolean
@@ -80,6 +85,12 @@ type AIJourneyContextValue = {
     saveAIJourneySettings: () => Promise<void>
     isLoadingJourneyData: boolean
     isSavingJourneyData: boolean
+    followUpMessagesSent: number
+    setFollowUpMessagesSent: React.Dispatch<React.SetStateAction<number>>
+    currentJourney: JourneyApiDTO | undefined
+    journeyConfiguration: JourneyConfigurationApiDTO | undefined
+    productList: Product[]
+    isLoadingProducts: boolean
 }
 
 const AIJourneyContext = createContext<AIJourneyContextValue | undefined>(
@@ -113,21 +124,53 @@ const WrappedAIJourneyProvider = ({
         () =>
             shopifyIntegrations.find(
                 (integration) => integration.name === shopName,
-            )?.id,
+            ),
         [shopifyIntegrations, shopName],
     )
 
     const { data: journeys, isLoading: areJourneysLoading } = useJourneys(
-        shopifyIntegration,
+        shopifyIntegration?.id,
         [JourneyTypeEnum.CartAbandoned, JourneyTypeEnum.SessionAbandoned],
         {
-            enabled: !!shopifyIntegration,
+            enabled: !!shopifyIntegration?.id,
         },
     )
 
     const [localSettings, setLocalSettings] = useState<
         Partial<AIJourneySettings>
     >({})
+
+    const { productList, isLoading: isLoadingProducts } =
+        useAIJourneyProductList({
+            integrationId: shopifyIntegration?.id,
+        })
+
+    useEffect(() => {
+        if (
+            journeys &&
+            journeys.length > 0 &&
+            !localSettings.journeyType &&
+            !areJourneysLoading
+        ) {
+            setLocalSettings((prev) => ({
+                ...prev,
+                journeyType: journeys[0].type,
+            }))
+        }
+    }, [journeys, localSettings.journeyType, areJourneysLoading])
+
+    useEffect(() => {
+        if (
+            productList.length > 0 &&
+            !localSettings.selectedProduct &&
+            !isLoadingProducts
+        ) {
+            setLocalSettings((prev) => ({
+                ...prev,
+                selectedProduct: productList[0],
+            }))
+        }
+    }, [productList, localSettings.selectedProduct, isLoadingProducts])
 
     const currentJourney = useMemo(
         () =>
@@ -144,7 +187,9 @@ const WrappedAIJourneyProvider = ({
                 currentJourney && !!shopifyIntegration && !!currentJourney?.id,
         })
 
-    const journeyConfiguration = useMemo(() => {
+    const [followUpMessagesSent, setFollowUpMessagesSent] = useState<number>(0)
+
+    const parsedJourneySettings = useMemo(() => {
         if (!journeyData) {
             return {}
         }
@@ -161,13 +206,17 @@ const WrappedAIJourneyProvider = ({
         }
     }, [journeyData])
 
+    const journeyConfiguration = useMemo(() => {
+        return journeyData?.configuration
+    }, [journeyData])
+
     const aiJourneySettings = useMemo<AIJourneySettings>(() => {
         return {
             ...AI_JOURNEY_DEFAULT_STATE,
-            ...journeyConfiguration,
+            ...parsedJourneySettings,
             ...localSettings,
         }
-    }, [journeyConfiguration, localSettings])
+    }, [parsedJourneySettings, localSettings])
 
     const { mutateAsync, isLoading: isSavingJourneyData } = useUpdateJourney()
 
@@ -206,13 +255,21 @@ const WrappedAIJourneyProvider = ({
             shopifyIntegration,
             journeys: journeys || [],
             shopName,
-            isLoadingJourneys: shopifyIntegration ? areJourneysLoading : false,
+            isLoadingJourneys: shopifyIntegration?.id
+                ? areJourneysLoading
+                : false,
             aiJourneySettings,
             setAIJourneySettings,
             resetAIJourneySettings,
             saveAIJourneySettings,
             isLoadingJourneyData,
             isSavingJourneyData,
+            followUpMessagesSent,
+            setFollowUpMessagesSent,
+            currentJourney,
+            journeyConfiguration,
+            productList,
+            isLoadingProducts,
         }),
         [
             shopifyIntegration,
@@ -225,6 +282,12 @@ const WrappedAIJourneyProvider = ({
             saveAIJourneySettings,
             isLoadingJourneyData,
             isSavingJourneyData,
+            followUpMessagesSent,
+            setFollowUpMessagesSent,
+            currentJourney,
+            journeyConfiguration,
+            productList,
+            isLoadingProducts,
         ],
     )
 

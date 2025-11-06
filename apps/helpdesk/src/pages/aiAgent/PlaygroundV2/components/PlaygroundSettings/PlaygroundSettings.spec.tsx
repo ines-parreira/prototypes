@@ -7,10 +7,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { AIJourneyProvider } from '../../contexts/AIJourneyContext'
+import { ConfigurationProvider } from '../../contexts/ConfigurationContext'
 import { CoreProvider } from '../../contexts/CoreContext'
 import { EventsProvider } from '../../contexts/EventsContext'
 import { SettingsProvider } from '../../contexts/SettingsContext'
@@ -119,7 +121,30 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
     useAiAgentHttpIntegration: () => ({
         baseUrl: 'http://test.com',
+        httpIntegrationId: 789,
     }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useShopNameResolution', () => ({
+    useShopNameResolution: jest.fn((shopName?: string) => ({
+        resolvedShopName: shopName || 'test-shop',
+    })),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundResources', () => ({
+    usePlaygroundResources: jest.fn(() => ({
+        storeConfiguration: getStoreConfigurationFixture({
+            storeName: 'test-store',
+            monitoredChatIntegrations: [456],
+        }),
+        accountConfiguration: {
+            httpIntegration: { id: 999 },
+            gorgiasDomain: 'test-domain.gorgias.com',
+            accountId: 123,
+        },
+        snippetHelpCenterId: 456,
+        isLoading: false,
+    })),
 }))
 
 jest.mock('core/flags/hooks/useFlag', () => ({
@@ -225,15 +250,17 @@ const renderComponent = () => {
     return render(
         <Provider store={mockStore({})}>
             <QueryClientProvider client={queryClient}>
-                <AIJourneyProvider shopName="test-shop">
-                    <CoreProvider>
-                        <EventsProvider>
-                            <SettingsProvider>
-                                <PlaygroundSettings />
-                            </SettingsProvider>
-                        </EventsProvider>
-                    </CoreProvider>
-                </AIJourneyProvider>
+                <ConfigurationProvider>
+                    <AIJourneyProvider shopName="test-shop">
+                        <CoreProvider>
+                            <EventsProvider>
+                                <SettingsProvider>
+                                    <PlaygroundSettings />
+                                </SettingsProvider>
+                            </EventsProvider>
+                        </CoreProvider>
+                    </AIJourneyProvider>
+                </ConfigurationProvider>
             </QueryClientProvider>
         </Provider>,
     )

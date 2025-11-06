@@ -11,6 +11,7 @@ import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
+import { useAiJourneyMessages } from 'pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages'
 import { useSettingsChanged } from 'pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged'
 import {
     PlaygroundChannelAvailability,
@@ -163,6 +164,7 @@ const SettingsFooter = () => {
     const { hasChanged, resetInitialState } = useSettingsChanged()
     const { mode } = useSettingsContext()
     const { saveAIJourneySettings, isSavingJourneyData } = useAIJourneyContext()
+    const { triggerMessage } = useAiJourneyMessages()
     const { emit } = useEvents()
 
     const handleApply = useCallback(async () => {
@@ -173,6 +175,8 @@ const SettingsFooter = () => {
         resetInitialState()
     }, [mode, saveAIJourneySettings, resetInitialState, emit])
 
+    const { isPolling } = useCoreContext()
+
     return (
         <div className={css.settingsFooter}>
             <Button
@@ -182,6 +186,15 @@ const SettingsFooter = () => {
             >
                 {mode === 'inbound' ? 'Apply' : 'Save and Apply'}
             </Button>
+            {mode === 'outbound' && (
+                <Button
+                    isDisabled={isPolling}
+                    variant="secondary"
+                    onClick={triggerMessage}
+                >
+                    Generate follow up
+                </Button>
+            )}
         </div>
     )
 }

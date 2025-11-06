@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import {
     Banner,
@@ -11,7 +11,6 @@ import {
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import TextArea from 'pages/common/forms/TextArea'
 
@@ -37,12 +36,12 @@ const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4, 5].map(
 
 export const AIJourneySettings: React.FC = () => {
     const {
-        shopifyIntegration,
         journeys,
         shopName,
         isLoadingJourneys,
         aiJourneySettings,
         setAIJourneySettings,
+        productList,
     } = useAIJourneyContext()
 
     const {
@@ -56,10 +55,6 @@ export const AIJourneySettings: React.FC = () => {
         discountCodeValue,
     } = aiJourneySettings
 
-    const products = useAIJourneyProductList({
-        integrationId: shopifyIntegration,
-    })
-
     const journeyOptions = useMemo(() => {
         return journeys.map((journey) => ({
             id: journey.type,
@@ -70,13 +65,13 @@ export const AIJourneySettings: React.FC = () => {
     const aiJourneyStoreUrl = `/app/ai-journey/${shopName}`
 
     const productOptions = useMemo(() => {
-        return products.productList.map((product) => ({
+        return productList.map((product) => ({
             id: product.id,
             label: product.title,
             img: product.image?.src,
             alt: product.image?.alt,
         }))
-    }, [products.productList])
+    }, [productList])
 
     const selectedJourneyOption = useMemo(() => {
         return journeyOptions.find((option) => option.id === journeyType)
@@ -89,19 +84,9 @@ export const AIJourneySettings: React.FC = () => {
     }, [productOptions, selectedProduct])
 
     const getProductById = useCallback(
-        (id: number) =>
-            products.productList.find((product) => product.id === id),
-        [products.productList],
+        (id: number) => productList.find((product) => product.id === id),
+        [productList],
     )
-
-    useEffect(() => {
-        if (productOptions.length > 0 && !selectedProduct) {
-            const product = getProductById(productOptions[0].id) ?? null
-            setAIJourneySettings({
-                selectedProduct: product,
-            })
-        }
-    }, [productOptions, getProductById, selectedProduct, setAIJourneySettings])
 
     if (isLoadingJourneys) {
         return <LoadingSpinner />

@@ -5,7 +5,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { Product } from 'constants/integrations/types/shopify'
 import { shopifyProductResult } from 'fixtures/shopify'
 
@@ -15,16 +14,11 @@ import {
 } from '../../contexts/AIJourneyContext'
 import { AIJourneySettings } from './AIJourneySettings'
 
-jest.mock('AIJourney/hooks', () => ({
-    useAIJourneyProductList: jest.fn(),
-}))
-
 jest.mock('../../contexts/AIJourneyContext', () => ({
     ...jest.requireActual('../../contexts/AIJourneyContext'),
     useAIJourneyContext: jest.fn(),
 }))
 
-const mockUseAIJourneyProductList = assumeMock(useAIJourneyProductList)
 const mockUseAIJourneyContext = assumeMock(useAIJourneyContext)
 
 const mockProducts = shopifyProductResult().map(
@@ -60,6 +54,33 @@ const renderComponent = (
     return render(<AIJourneySettings {...props} />)
 }
 
+const mockShopifyIntegration = {
+    id: 123,
+    name: 'test-shop',
+} as any
+
+const createMockAIJourneyContextValue = (
+    overrides?: Partial<ReturnType<typeof useAIJourneyContext>>,
+): ReturnType<typeof useAIJourneyContext> => ({
+    shopifyIntegration: mockShopifyIntegration,
+    shopName: 'test-shop',
+    journeys: mockJourneys,
+    isLoadingJourneys: false,
+    aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
+    setAIJourneySettings: jest.fn(),
+    resetAIJourneySettings: jest.fn(),
+    saveAIJourneySettings: jest.fn(),
+    isLoadingJourneyData: false,
+    isSavingJourneyData: false,
+    productList: mockProducts,
+    isLoadingProducts: false,
+    followUpMessagesSent: 0,
+    setFollowUpMessagesSent: jest.fn(),
+    currentJourney: undefined,
+    journeyConfiguration: undefined,
+    ...overrides,
+})
+
 describe('AIJourneySettings', () => {
     let mockSetAIJourneySettings: jest.Mock
 
@@ -68,23 +89,11 @@ describe('AIJourneySettings', () => {
 
         mockSetAIJourneySettings = jest.fn()
 
-        mockUseAIJourneyContext.mockReturnValue({
-            shopifyIntegration: 123,
-            shopName: 'test-shop',
-            journeys: mockJourneys,
-            isLoadingJourneys: false,
-            aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
-            setAIJourneySettings: mockSetAIJourneySettings,
-            resetAIJourneySettings: jest.fn(),
-            saveAIJourneySettings: jest.fn(),
-            isLoadingJourneyData: false,
-            isSavingJourneyData: false,
-        })
-
-        mockUseAIJourneyProductList.mockReturnValue({
-            productList: mockProducts,
-            isLoading: false,
-        })
+        mockUseAIJourneyContext.mockReturnValue(
+            createMockAIJourneyContextValue({
+                setAIJourneySettings: mockSetAIJourneySettings,
+            }),
+        )
     })
 
     describe('Journey selection', () => {
@@ -127,13 +136,11 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
         })
 
-        it('should auto-select first product when available', async () => {
+        it('should not auto-select product (handled by context)', async () => {
             renderComponent()
 
-            await waitFor(() => {
-                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    selectedProduct: mockProducts[0],
-                })
+            expect(mockSetAIJourneySettings).not.toHaveBeenCalledWith({
+                selectedProduct: expect.anything(),
             })
         })
 
@@ -154,10 +161,12 @@ describe('AIJourneySettings', () => {
                 },
             ]
 
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: mockProductsMultiple,
-                isLoading: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                    productList: mockProductsMultiple,
+                }),
+            )
 
             renderComponent()
 
@@ -362,10 +371,12 @@ describe('AIJourneySettings', () => {
 
     describe('Product loading states', () => {
         it('should handle loading products', () => {
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [],
-                isLoading: true,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    productList: [],
+                    isLoadingProducts: true,
+                }),
+            )
 
             renderComponent()
 
@@ -373,10 +384,11 @@ describe('AIJourneySettings', () => {
         })
 
         it('should handle empty product list', () => {
-            mockUseAIJourneyProductList.mockReturnValue({
-                productList: [],
-                isLoading: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    productList: [],
+                }),
+            )
 
             renderComponent()
 
@@ -386,18 +398,13 @@ describe('AIJourneySettings', () => {
 
     describe('Journey loading states', () => {
         it('should display loading spinner while journeys are loading', () => {
-            mockUseAIJourneyContext.mockReturnValue({
-                shopifyIntegration: 123,
-                shopName: 'test-shop',
-                journeys: [],
-                isLoadingJourneys: true,
-                aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
-                setAIJourneySettings: jest.fn(),
-                resetAIJourneySettings: jest.fn(),
-                saveAIJourneySettings: jest.fn(),
-                isLoadingJourneyData: false,
-                isSavingJourneyData: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    journeys: [],
+                    isLoadingJourneys: true,
+                    productList: [],
+                }),
+            )
 
             renderComponent()
 
@@ -410,18 +417,12 @@ describe('AIJourneySettings', () => {
 
     describe('No journeys configured', () => {
         it('should display banner when no journeys are available', () => {
-            mockUseAIJourneyContext.mockReturnValue({
-                shopifyIntegration: 123,
-                shopName: 'test-shop',
-                journeys: [],
-                isLoadingJourneys: false,
-                aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
-                setAIJourneySettings: jest.fn(),
-                resetAIJourneySettings: jest.fn(),
-                saveAIJourneySettings: jest.fn(),
-                isLoadingJourneyData: false,
-                isSavingJourneyData: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    journeys: [],
+                    productList: [],
+                }),
+            )
 
             renderComponent()
 
@@ -434,18 +435,12 @@ describe('AIJourneySettings', () => {
         })
 
         it('should display link to configure journeys', () => {
-            mockUseAIJourneyContext.mockReturnValue({
-                shopifyIntegration: 123,
-                shopName: 'test-shop',
-                journeys: [],
-                isLoadingJourneys: false,
-                aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
-                setAIJourneySettings: jest.fn(),
-                resetAIJourneySettings: jest.fn(),
-                saveAIJourneySettings: jest.fn(),
-                isLoadingJourneyData: false,
-                isSavingJourneyData: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    journeys: [],
+                    productList: [],
+                }),
+            )
 
             renderComponent()
 
@@ -460,18 +455,12 @@ describe('AIJourneySettings', () => {
         })
 
         it('should not display form fields when no journeys are available', () => {
-            mockUseAIJourneyContext.mockReturnValue({
-                shopifyIntegration: 123,
-                shopName: 'test-shop',
-                journeys: [],
-                isLoadingJourneys: false,
-                aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
-                setAIJourneySettings: jest.fn(),
-                resetAIJourneySettings: jest.fn(),
-                saveAIJourneySettings: jest.fn(),
-                isLoadingJourneyData: false,
-                isSavingJourneyData: false,
-            })
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    journeys: [],
+                    productList: [],
+                }),
+            )
 
             renderComponent()
 

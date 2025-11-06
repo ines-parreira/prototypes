@@ -1,0 +1,155 @@
+import { useCallback } from 'react'
+
+import {
+    JourneyConfigurationApiDTO,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
+
+import { Product } from 'constants/integrations/types/shopify'
+import { useTriggerAIJourney } from 'models/aiAgent/queries'
+import { CreateAIJourneyPlaygroundOptions } from 'models/aiAgent/resources/ai-journey'
+import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
+import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
+
+type CreateAIJourneyPayloadParams = {
+    accountId: number
+    storeIntegrationId: number
+    storeName: string
+    journeyId: string
+    journeyType: JourneyTypeEnum
+    sessionId: string
+    followUpMessagesSent: number
+    aiJourneySettings: AIJourneySettings
+    journeyConfiguration: JourneyConfigurationApiDTO | undefined
+    shopDomain: string | undefined
+    selectedProduct: Product | null
+}
+
+const createAIJourneyPayload: (
+    params: CreateAIJourneyPayloadParams,
+) => CreateAIJourneyPlaygroundOptions = ({
+    accountId,
+    storeIntegrationId,
+    storeName,
+    journeyId,
+    journeyType,
+    sessionId,
+    followUpMessagesSent,
+    aiJourneySettings,
+    journeyConfiguration,
+    shopDomain,
+    selectedProduct,
+}) => {
+    const payload: CreateAIJourneyPlaygroundOptions = {
+        accountId,
+        storeIntegrationId,
+        storeName,
+        storeType: 'shopify' as const,
+        journeyId,
+        journeyMessageInstructions:
+            aiJourneySettings.outboundMessageInstructions,
+        journeyType,
+        followUpAttempt: followUpMessagesSent,
+        testModeSessionId: sessionId,
+        settings: {
+            maxFollowUpMessages: aiJourneySettings.totalFollowUp,
+            smsSenderNumber: journeyConfiguration?.sms_sender_number ?? null,
+            smsSenderIntegrationId:
+                journeyConfiguration?.sms_sender_integration_id ?? null,
+            offerDiscount: aiJourneySettings.includeDiscountCode,
+            maxDiscountPercent: aiJourneySettings.discountCodeValue,
+            discountCodeMessageThreshold:
+                aiJourneySettings.discountCodeMessageIdx,
+        },
+    }
+
+    if (selectedProduct) {
+        payload.cart = {
+            lineItems: [
+                {
+                    variantId: String(
+                        selectedProduct.variants[0]?.id || 'variant-1',
+                    ),
+                    productId: String(selectedProduct.id),
+                    quantity: 1,
+                    linePrice: Number(
+                        selectedProduct.variants[0]?.price || 99.99,
+                    ),
+                },
+            ],
+        }
+
+        if (shopDomain) {
+            payload.page = {
+                url: `https://${shopDomain}/products/${selectedProduct.handle}`,
+                productId: String(selectedProduct.id),
+            }
+        }
+    }
+
+    return payload
+}
+
+export const useAiJourneyMessages = () => {
+    const {
+        aiJourneySettings,
+        shopifyIntegration,
+        shopName,
+        followUpMessagesSent,
+        setFollowUpMessagesSent,
+        currentJourney,
+        journeyConfiguration,
+    } = useAIJourneyContext()
+    const { accountId } = useConfigurationContext()
+    const { createTestSession, testSessionId, startPolling } = useCoreContext()
+    const { mutateAsync } = useTriggerAIJourney()
+
+    const triggerMessage = useCallback(async () => {
+        if (!currentJourney || !shopifyIntegration) {
+            throw new Error('Missing journey or integration configuration')
+        }
+
+        const sessionId = testSessionId ?? (await createTestSession())
+
+        const shopDomain = shopifyIntegration.meta?.shop_domain ?? undefined
+        const selectedProduct = aiJourneySettings.selectedProduct
+
+        const payload = createAIJourneyPayload({
+            accountId,
+            storeIntegrationId: shopifyIntegration.id,
+            storeName: shopName,
+            journeyId: currentJourney.id,
+            journeyType: currentJourney.type,
+            sessionId,
+            followUpMessagesSent,
+            aiJourneySettings,
+            journeyConfiguration,
+            shopDomain,
+            selectedProduct,
+        })
+
+        await mutateAsync([payload])
+
+        startPolling()
+        setFollowUpMessagesSent((prev) => prev + 1)
+    }, [
+        startPolling,
+        currentJourney,
+        shopifyIntegration,
+        testSessionId,
+        createTestSession,
+        mutateAsync,
+        accountId,
+        shopName,
+        aiJourneySettings,
+        followUpMessagesSent,
+        journeyConfiguration,
+        setFollowUpMessagesSent,
+    ])
+
+    return {
+        triggerMessage,
+    }
+}

@@ -24,12 +24,8 @@ export const useTestSession = (
         const data = await createTestSessionAsync([baseUrl, payload])
         const testSessionId = data?.testModeSession.id
 
-        if (testSessionId) {
-            setTestSessionId(testSessionId)
-            return testSessionId
-        }
-
-        return null
+        setTestSessionId(testSessionId)
+        return testSessionId
     }, [createTestSessionAsync, payload, baseUrl])
 
     useEffect(() => {

@@ -13,7 +13,7 @@ type CoreContextValue = {
     isTestSessionLoading: boolean
     // TODO: Refactor to make function indempotent
     // getOrCreateTestSession: () => Promise<string>
-    createTestSession: () => Promise<string | null>
+    createTestSession: () => Promise<string>
     testSessionLogs?: GetTestSessionLogsResponse
     isPolling: boolean
     startPolling: () => void

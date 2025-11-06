@@ -24,6 +24,14 @@ jest.mock('AIJourney/queries', () => ({
     useUpdateJourney: jest.fn(),
 }))
 
+jest.mock('AIJourney/hooks', () => ({
+    useAIJourneyProductList: jest.fn(() => ({
+        productList: [],
+        isLoading: false,
+        error: null,
+    })),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     TokenProvider: ({ children }: any) => <div>{children}</div>,
 }))
@@ -129,7 +137,10 @@ describe('AIJourneyContext', () => {
             })
 
             expect(result.current).toBeDefined()
-            expect(result.current.shopifyIntegration).toBe(123)
+            expect(result.current.shopifyIntegration).toEqual({
+                id: 123,
+                name: 'test-shop',
+            })
             expect(result.current.shopName).toBe('test-shop')
         })
     })
@@ -140,7 +151,10 @@ describe('AIJourneyContext', () => {
                 wrapper: createWrapper('test-shop'),
             })
 
-            expect(result.current.shopifyIntegration).toBe(123)
+            expect(result.current.shopifyIntegration).toEqual({
+                id: 123,
+                name: 'test-shop',
+            })
         })
 
         it('should return undefined shopifyIntegration when shop not found', () => {
@@ -186,13 +200,19 @@ describe('AIJourneyContext', () => {
         })
 
         it('should provide default AI journey settings', () => {
+            mockUseJourneyData.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
             const { result } = renderHook(() => useAIJourneyContext(), {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.aiJourneySettings).toEqual(
-                AI_JOURNEY_DEFAULT_STATE,
-            )
+            expect(result.current.aiJourneySettings).toEqual({
+                ...AI_JOURNEY_DEFAULT_STATE,
+                journeyType: 'cart_abandoned',
+            })
         })
 
         it('should merge journey configuration with default settings', () => {
@@ -258,6 +278,11 @@ describe('AIJourneyContext', () => {
             })
 
             it('should merge multiple settings updates', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: undefined,
+                    isLoading: false,
+                })
+
                 const { result } = renderHook(() => useAIJourneyContext(), {
                     wrapper: createWrapper(),
                 })
@@ -277,6 +302,7 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.aiJourneySettings).toEqual({
                     ...AI_JOURNEY_DEFAULT_STATE,
+                    journeyType: 'cart_abandoned',
                     totalFollowUp: 3,
                     includeProductImage: false,
                     discountCodeValue: 25,
@@ -302,6 +328,11 @@ describe('AIJourneyContext', () => {
 
         describe('resetAIJourneySettings', () => {
             it('should reset settings to defaults', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: undefined,
+                    isLoading: false,
+                })
+
                 const { result } = renderHook(() => useAIJourneyContext(), {
                     wrapper: createWrapper(),
                 })
@@ -319,9 +350,10 @@ describe('AIJourneyContext', () => {
                     result.current.resetAIJourneySettings()
                 })
 
-                expect(result.current.aiJourneySettings).toEqual(
-                    AI_JOURNEY_DEFAULT_STATE,
-                )
+                expect(result.current.aiJourneySettings).toEqual({
+                    ...AI_JOURNEY_DEFAULT_STATE,
+                    journeyType: 'cart_abandoned',
+                })
             })
 
             it('should preserve journey configuration after reset', () => {
@@ -443,6 +475,17 @@ describe('AIJourneyContext', () => {
         })
 
         describe('journey selection', () => {
+            it('should automatically set journeyType to first journey when journeys load', () => {
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.aiJourneySettings.journeyType).toBe(
+                    'cart_abandoned',
+                )
+                expect(result.current.currentJourney).toEqual(mockJourneys[0])
+            })
+
             it('should select correct journey based on journey type', () => {
                 let capturedJourneyId: any
                 let capturedOptions: any

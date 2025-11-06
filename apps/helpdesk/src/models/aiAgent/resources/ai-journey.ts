@@ -3,7 +3,7 @@ import { JourneyTypeEnum } from '@gorgias/convert-client'
 import { TriggerAIJourneyPayload, TriggerAIJourneyResponse } from '../types'
 import { apiClient } from './message-processing'
 
-type CreateAIJourneyPlaygroundOptions = {
+export type CreateAIJourneyPlaygroundOptions = {
     // Required fields
     accountId: number
     storeIntegrationId: number

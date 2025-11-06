@@ -18,6 +18,11 @@ type NormalizedOutboundState = Omit<AIJourneySettings, 'selectedProduct'> & {
     selectedProductId: number | null
 }
 
+type NormalizedOutboundStateForComparison = Omit<
+    NormalizedOutboundState,
+    'journeyType'
+>
+
 type InitialState = {
     inbound: NormalizedInboundState
     outbound: NormalizedOutboundState
@@ -90,6 +95,20 @@ export const useSettingsChanged = () => {
         }
     }, [currentInboundState, currentOutboundState])
 
+    useEffect(() => {
+        if (
+            initialStateRef.current &&
+            initialStateRef.current.outbound.journeyType !==
+                currentOutboundState.journeyType
+        ) {
+            initialStateRef.current = {
+                ...initialStateRef.current,
+                outbound: { ...currentOutboundState },
+            }
+            forceUpdate((n) => n + 1)
+        }
+    }, [currentOutboundState])
+
     const hasInboundChanged = useMemo(() => {
         if (!initialStateRef.current) return false
 
@@ -103,9 +122,16 @@ export const useSettingsChanged = () => {
     const hasOutboundChanged = useMemo(() => {
         if (!initialStateRef.current) return false
 
+        const { journeyType: __initialJourneyType, ...initialOutboundState } =
+            initialStateRef.current.outbound
+        const {
+            journeyType: __currentJourneyType,
+            ...currentOutboundStateWithoutJourneyType
+        } = currentOutboundState
+
         return !shallowEqual(
-            initialStateRef.current.outbound,
-            currentOutboundState,
+            initialOutboundState as NormalizedOutboundStateForComparison,
+            currentOutboundStateWithoutJourneyType as NormalizedOutboundStateForComparison,
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentOutboundState, updated])
