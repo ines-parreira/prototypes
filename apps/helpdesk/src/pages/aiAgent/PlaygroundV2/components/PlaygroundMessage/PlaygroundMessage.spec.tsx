@@ -48,14 +48,15 @@ describe('PlaygroundMessage', () => {
         renderComponent({ message: playgroundErrorMessageFixture })
         expect(
             screen.getByText(playgroundErrorMessageFixture.content as string),
-        ).toBeInTheDocument
+        ).toBeInTheDocument()
         expect(screen.getByRole('alert')).toBeInTheDocument()
     })
 
     it('should render message', () => {
         renderComponent({ message: playgroundMessageFixture })
-        expect(screen.getByText(playgroundMessageFixture.content))
-            .toBeInTheDocument
+        expect(
+            screen.getByText(playgroundMessageFixture.content),
+        ).toBeInTheDocument()
     })
 
     it('should render AI Agent internal note', () => {
@@ -73,6 +74,24 @@ describe('PlaygroundMessage', () => {
         expect(screen.getByTitle('chat channel')).toBeInTheDocument()
         expect(screen.getByText('forum')).toBeInTheDocument()
         expect(screen.queryByText('Dark Roast')).not.toBeInTheDocument()
+    })
+
+    it('should render email icon when channel is email', () => {
+        renderComponent({
+            channel: 'email',
+            message: { ...playgroundMessageFixture, sender: AI_AGENT },
+        })
+        expect(screen.getByTitle('email channel')).toBeInTheDocument()
+        expect(screen.getByText('mail')).toBeInTheDocument()
+    })
+
+    it('should render sms icon when channel is sms', () => {
+        renderComponent({
+            channel: 'sms',
+            message: { ...playgroundMessageFixture, sender: AI_AGENT },
+        })
+        expect(screen.getByTitle('sms channel')).toBeInTheDocument()
+        expect(screen.getByText('sms')).toBeInTheDocument()
     })
 
     it('should render products carousel when message contains attachments', () => {
