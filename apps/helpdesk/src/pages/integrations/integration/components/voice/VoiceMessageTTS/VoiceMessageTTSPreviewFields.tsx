@@ -3,6 +3,7 @@ import { ListItem, SelectField } from '@gorgias/axiom'
 import { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { GENDER_OPTIONS, LANGUAGE_OPTIONS } from './constants'
+import { useTextToSpeechContext } from './TextToSpeechContext'
 import VoiceMessageTTSPreviewButton from './VoiceMessageTTSPreviewButton'
 
 import css from './VoiceMessageTTSPreviewFields.less'
@@ -18,6 +19,9 @@ const VoiceMessageTTSPreviewFields = ({
     value,
     onChange,
 }: Props): JSX.Element => {
+    const { setLastSelectedLanguage, setLastSelectedGender } =
+        useTextToSpeechContext()
+
     const languageOption =
         LANGUAGE_OPTIONS.find((option) => option.id === value.language) ||
         LANGUAGE_OPTIONS[0]
@@ -38,6 +42,7 @@ const VoiceMessageTTSPreviewFields = ({
                             language: option.id,
                             text_to_speech_recording_file_path: null,
                         })
+                        setLastSelectedLanguage(option.id)
                     }}
                     placeholder={'Select language'}
                 >
@@ -57,6 +62,7 @@ const VoiceMessageTTSPreviewFields = ({
                             gender: option.id,
                             text_to_speech_recording_file_path: null,
                         })
+                        setLastSelectedGender(option.id)
                     }}
                     placeholder={'Select gender'}
                 >

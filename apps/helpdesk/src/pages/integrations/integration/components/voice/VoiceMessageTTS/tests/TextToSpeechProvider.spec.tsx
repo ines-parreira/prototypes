@@ -14,6 +14,7 @@ import { useChannel } from '@gorgias/realtime'
 import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 
+import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from '../constants'
 import { useTextToSpeechContext } from '../TextToSpeechContext'
 import TextToSpeechProvider from '../TextToSpeechProvider'
 
@@ -73,6 +74,34 @@ describe('TextToSpeechProvider', () => {
             })
 
             expect(result.current.integrationId).toBe(mockIntegrationId)
+            expect(result.current.lastSelectedLanguage).toBe(
+                DEFAULT_TTS_LANGUAGE,
+            )
+            expect(result.current.lastSelectedGender).toBe(DEFAULT_TTS_GENDER)
+            expect(result.current.setLastSelectedLanguage).toBeDefined()
+            expect(result.current.setLastSelectedGender).toBeDefined()
+        })
+
+        it('should update lastSelectedLanguage when setLastSelectedLanguage is called', () => {
+            const { result } = renderHook(() => useTextToSpeechContext(), {
+                wrapper: createWrapper(),
+            })
+
+            act(() => {
+                result.current.setLastSelectedLanguage(VoiceLanguage.FrFr)
+            })
+        })
+
+        it('should update lastSelectedGender when setLastSelectedGender is called', () => {
+            const { result } = renderHook(() => useTextToSpeechContext(), {
+                wrapper: createWrapper(),
+            })
+
+            act(() => {
+                result.current.setLastSelectedGender(VoiceGender.Male)
+            })
+
+            expect(result.current.lastSelectedGender).toBe(VoiceGender.Male)
         })
     })
 

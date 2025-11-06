@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
+import { useTextToSpeechContext } from '../../VoiceMessageTTS/TextToSpeechContext'
 import { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import { VoiceFlowFormValues, VoiceFlowNode, VoiceFlowNodeData } from '../types'
@@ -18,6 +19,8 @@ export const useAddNode = (source: string, target: string) => {
     const { watch, setValue } = useFormContext<VoiceFlowFormValues>()
     const { getNode, getNodes } = useVoiceFlow()
     const { setSelectedNode } = useVoiceFlowContext()
+    const { lastSelectedLanguage, lastSelectedGender } =
+        useTextToSpeechContext()
     const updateNodes = useUpdateNodes()
 
     const sourceNode = getNode(source)
@@ -58,6 +61,10 @@ export const useAddNode = (source: string, target: string) => {
         const newNodeData = generateNodeData(
             nodeType,
             getFormTargetStepId(targetNode, getNode),
+            {
+                language: lastSelectedLanguage,
+                gender: lastSelectedGender,
+            },
         )
         if (!newNodeData) return
 

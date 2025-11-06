@@ -1,8 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
 import { DomainEvent } from '@gorgias/events'
+import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,6 +11,7 @@ import { useNotify } from 'hooks/useNotify'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
+import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
 import TextToSpeechContext from './TextToSpeechContext'
 
 export default function TextToSpeechProvider({
@@ -22,6 +24,10 @@ export default function TextToSpeechProvider({
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
     const notify = useNotify()
+    const [lastSelectedLanguage, setLastSelectedLanguage] =
+        useState<VoiceLanguage>(DEFAULT_TTS_LANGUAGE)
+    const [lastSelectedGender, setLastSelectedGender] =
+        useState<VoiceGender>(DEFAULT_TTS_GENDER)
 
     const { watch, setValue } = useFormContext()
 
@@ -78,7 +84,15 @@ export default function TextToSpeechProvider({
     })
 
     return (
-        <TextToSpeechContext.Provider value={{ integrationId }}>
+        <TextToSpeechContext.Provider
+            value={{
+                integrationId,
+                lastSelectedLanguage,
+                setLastSelectedLanguage,
+                lastSelectedGender,
+                setLastSelectedGender,
+            }}
+        >
             {children}
         </TextToSpeechContext.Provider>
     )

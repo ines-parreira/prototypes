@@ -6,9 +6,13 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
+import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
 
+import TextToSpeechContext, {
+    TextToSpeechContext as TextToSpeechContextType,
+} from '../../../VoiceMessageTTS/TextToSpeechContext'
 import { VoiceFlowNodeType } from '../../constants'
 import {
     IntermediaryNode,
@@ -94,6 +98,10 @@ describe('useAddNode', () => {
     })
 
     const mockSetValue = jest.fn()
+    const mockTTSContext = {
+        lastSelectedLanguage: VoiceLanguage.FrFr,
+        lastSelectedGender: VoiceGender.Male,
+    } as TextToSpeechContextType
 
     const Wrapper = ({ children }: { children: ReactNode }) => {
         const methods = useForm<VoiceFlowFormValues>({
@@ -105,7 +113,9 @@ describe('useAddNode', () => {
             <FlowProvider
                 defaultNodes={[mockIncomingNode, mockSourceNode, mockEndNode]}
             >
-                <FormProvider {...methods}>{children}</FormProvider>
+                <TextToSpeechContext.Provider value={mockTTSContext}>
+                    <FormProvider {...methods}>{children}</FormProvider>
+                </TextToSpeechContext.Provider>
             </FlowProvider>
         )
     }
@@ -162,6 +172,10 @@ describe('useAddNode', () => {
                         name: 'Play message',
                         step_type: VoiceFlowNodeType.PlayMessage,
                         next_step_id: null,
+                        message: expect.objectContaining({
+                            language: mockTTSContext.lastSelectedLanguage,
+                            gender: mockTTSContext.lastSelectedGender,
+                        }),
                     }),
                     { shouldDirty: true },
                 )
@@ -247,7 +261,9 @@ describe('useAddNode', () => {
                         mockEndNode,
                     ]}
                 >
-                    <FormProvider {...methods}>{children}</FormProvider>
+                    <TextToSpeechContext.Provider value={mockTTSContext}>
+                        <FormProvider {...methods}>{children}</FormProvider>
+                    </TextToSpeechContext.Provider>
                 </FlowProvider>
             )
         }
@@ -268,7 +284,9 @@ describe('useAddNode', () => {
                     <FlowProvider
                         defaultNodes={[mockIncomingNode, mockEndNode]}
                     >
-                        <FormProvider {...methods}>{children}</FormProvider>
+                        <TextToSpeechContext.Provider value={mockTTSContext}>
+                            <FormProvider {...methods}>{children}</FormProvider>
+                        </TextToSpeechContext.Provider>
                     </FlowProvider>
                 )
             }

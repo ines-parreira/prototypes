@@ -14,6 +14,8 @@ import {
     TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
     VoiceCallbackRequests,
+    VoiceGender,
+    VoiceLanguage,
 } from '@gorgias/helpdesk-types'
 
 import { ConvergencePoint } from 'core/ui/flows/types'
@@ -23,10 +25,6 @@ import {
 } from 'core/ui/flows/utils'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
-import {
-    DEFAULT_TTS_GENDER,
-    DEFAULT_TTS_LANGUAGE,
-} from '../VoiceMessageTTS/constants'
 import {
     END_CALL_NODE,
     INCOMING_CALL_NODE,
@@ -564,9 +562,15 @@ export function getEdgeProps(
     }
 }
 
+type DefaultSelections = {
+    language: VoiceLanguage
+    gender: VoiceGender
+}
+
 export const generateNodeData = (
     type: VoiceFlowNodeType,
     next_step_id: string | null,
+    defaultSelections: DefaultSelections,
 ): VoiceFlowNodeData | null => {
     switch (type) {
         case VoiceFlowNodeType.TimeSplitConditional:
@@ -607,8 +611,8 @@ export const generateNodeData = (
                 message: {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: '',
-                    language: DEFAULT_TTS_LANGUAGE,
-                    gender: DEFAULT_TTS_GENDER,
+                    language: defaultSelections.language,
+                    gender: defaultSelections.gender,
                 },
             }
             return ivrMenu
@@ -620,8 +624,8 @@ export const generateNodeData = (
                 message: {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: '',
-                    language: DEFAULT_TTS_LANGUAGE,
-                    gender: DEFAULT_TTS_GENDER,
+                    language: defaultSelections.language,
+                    gender: defaultSelections.gender,
                 },
                 next_step_id: next_step_id!,
             }
@@ -635,8 +639,8 @@ export const generateNodeData = (
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         "Hello! Unfortunately, we aren't able to take your call right now. Please call us back later or leave a message. Thank you!",
-                    language: DEFAULT_TTS_LANGUAGE,
-                    gender: DEFAULT_TTS_GENDER,
+                    language: defaultSelections.language,
+                    gender: defaultSelections.gender,
                 },
                 allow_to_leave_voicemail: true,
                 next_step_id: null,
@@ -651,8 +655,8 @@ export const generateNodeData = (
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         "Thank you for contacting us! We're moving to text messaging now, you’ll receive our message shortly.",
-                    language: DEFAULT_TTS_LANGUAGE,
-                    gender: DEFAULT_TTS_GENDER,
+                    language: defaultSelections.language,
+                    gender: defaultSelections.gender,
                 },
                 sms_content:
                     "Hello! We're following up on your call. How can we assist you today?",

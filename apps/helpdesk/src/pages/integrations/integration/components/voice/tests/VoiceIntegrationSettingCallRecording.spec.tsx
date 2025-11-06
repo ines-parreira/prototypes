@@ -5,7 +5,9 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallRecording_DEPRECATED from '../VoiceIntegrationSettingCallRecording_DEPRECATED'
-import TextToSpeechContext from '../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext, {
+    TextToSpeechContext as TextToSpeechContextType,
+} from '../VoiceMessageTTS/TextToSpeechContext'
 
 const defaultPreferences = {
     record_inbound_calls: false,
@@ -24,7 +26,9 @@ describe('VoiceIntegrationSettingCallRecording_DEPRECATED', () => {
                 }}
                 onValidSubmit={jest.fn()}
             >
-                <TextToSpeechContext.Provider value={{ integrationId: 123 }}>
+                <TextToSpeechContext.Provider
+                    value={{ integrationId: 123 } as TextToSpeechContextType}
+                >
                     <VoiceIntegrationSettingCallRecording_DEPRECATED />
                 </TextToSpeechContext.Provider>
             </Form>,
@@ -80,7 +84,9 @@ describe('VoiceIntegrationSettingCallRecording', () => {
                 }}
                 onValidSubmit={jest.fn()}
             >
-                <TextToSpeechContext.Provider value={{ integrationId: 123 }}>
+                <TextToSpeechContext.Provider
+                    value={{ integrationId: 123 } as TextToSpeechContextType}
+                >
                     <VoiceIntegrationSettingCallRecording integrationId={123} />
                 </TextToSpeechContext.Provider>
             </Form>,

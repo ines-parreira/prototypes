@@ -20,10 +20,16 @@ import {
     PlayMessageStep,
     TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
+    VoiceGender,
+    VoiceLanguage,
 } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
+import {
+    DEFAULT_TTS_GENDER,
+    DEFAULT_TTS_LANGUAGE,
+} from '../../VoiceMessageTTS/constants'
 import {
     END_CALL_NODE,
     INCOMING_CALL_NODE,
@@ -1333,10 +1339,16 @@ describe('utils', () => {
     })
 
     describe('generateNodeData', () => {
+        const defaultSelections = {
+            language: DEFAULT_TTS_LANGUAGE,
+            gender: DEFAULT_TTS_GENDER,
+        }
+
         it('should generate TimeSplitConditional node data', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.TimeSplitConditional,
                 'next-step-id',
+                defaultSelections,
             )
 
             expect(nodeData).toMatchObject({
@@ -1353,6 +1365,7 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.CustomerLookup,
                 'next-step-id',
+                defaultSelections,
             )
 
             expect(nodeData).toMatchObject({
@@ -1368,6 +1381,10 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.IvrMenu,
                 'next-step-id',
+                {
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
+                },
             )
 
             expect(nodeData).toMatchObject({
@@ -1386,6 +1403,8 @@ describe('utils', () => {
                 message: {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: '',
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
                 },
             })
         })
@@ -1394,6 +1413,10 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.PlayMessage,
                 'next-step-id',
+                {
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
+                },
             )
 
             expect(nodeData).toMatchObject({
@@ -1401,6 +1424,8 @@ describe('utils', () => {
                 step_type: VoiceFlowNodeType.PlayMessage,
                 message: {
                     voice_message_type: 'text_to_speech',
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
                 },
                 next_step_id: 'next-step-id',
             })
@@ -1411,6 +1436,10 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.SendToVoicemail,
                 'testing-id',
+                {
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
+                },
             )
 
             expect(nodeData).toMatchObject({
@@ -1419,6 +1448,8 @@ describe('utils', () => {
                 voicemail: {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content: expect.any(String),
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
                 },
                 allow_to_leave_voicemail: true,
                 next_step_id: null,
@@ -1430,6 +1461,10 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.SendToSMS,
                 'testing-id',
+                {
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
+                },
             )
 
             expect(nodeData).toMatchObject({
@@ -1439,6 +1474,8 @@ describe('utils', () => {
                     voice_message_type: 'text_to_speech',
                     text_to_speech_content:
                         "Thank you for contacting us! We're moving to text messaging now, you’ll receive our message shortly.",
+                    language: VoiceLanguage.DeDe,
+                    gender: VoiceGender.Male,
                 },
                 sms_content:
                     "Hello! We're following up on your call. How can we assist you today?",
@@ -1451,6 +1488,7 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.Enqueue,
                 'testing-id',
+                defaultSelections,
             )
 
             expect(nodeData).toMatchObject({
@@ -1467,6 +1505,7 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.ForwardToExternalNumber,
                 'testing-id',
+                defaultSelections,
             )
 
             expect(nodeData).toMatchObject({
@@ -1482,6 +1521,7 @@ describe('utils', () => {
             const nodeData = generateNodeData(
                 VoiceFlowNodeType.IvrOption,
                 'next-step-id',
+                defaultSelections,
             )
 
             expect(nodeData).toBeNull()
