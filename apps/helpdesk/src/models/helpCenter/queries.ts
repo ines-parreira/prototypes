@@ -37,6 +37,7 @@ import {
     getHelpCenterList,
     getIngestedResource,
     getIngestionLogs,
+    getKnowledgeHubArticles,
     getKnowledgeStatus,
     listIngestedResources,
     startArticleIngestion,
@@ -46,6 +47,7 @@ import {
     updateHelpCenter,
     updateIngestedResource,
 } from './resources'
+import { KnowledgeHubArticlesQueryParams } from './types'
 
 const STALE_TIME = 10 * 60 * 1000
 const CACHE_TIME = 10 * 60 * 1000 // 10 minutes
@@ -146,6 +148,11 @@ export const helpCenterKeys = {
         ].filter(Boolean),
     knowledgeStatus: () =>
         [...helpCenterKeys.all(), 'knowledge-status'].filter(Boolean),
+    knowledgeHubArticles: (queryParams: KnowledgeHubArticlesQueryParams) => [
+        ...helpCenterKeys.all(),
+        'knowledge-hub-articles',
+        queryParams,
+    ],
     articleTranslations: (
         helpCenterId: number,
         articleId: number,
@@ -1095,6 +1102,25 @@ export const useGetKnowledgeStatus = (
     return useQuery({
         queryFn: async () => getKnowledgeStatus(helpCenterClient),
         queryKey: helpCenterKeys.knowledgeStatus(),
+        staleTime: STALE_TIME,
+        ...overrides,
+        enabled:
+            Boolean(helpCenterClient) &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetKnowledgeHubArticles = (
+    queryParams: KnowledgeHubArticlesQueryParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getKnowledgeHubArticles>>
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () =>
+            getKnowledgeHubArticles(helpCenterClient, queryParams),
+        queryKey: helpCenterKeys.knowledgeHubArticles(queryParams),
         staleTime: STALE_TIME,
         ...overrides,
         enabled:

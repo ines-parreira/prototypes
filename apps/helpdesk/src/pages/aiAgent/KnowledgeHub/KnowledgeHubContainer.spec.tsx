@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 
 import { KnowledgeHubContainer } from './KnowledgeHubContainer'
@@ -9,6 +10,15 @@ import { KnowledgeHubHeader } from './KnowledgeHubHeader/KnowledgeHubHeader'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(),
+}))
+jest.mock('models/helpCenter/queries', () => ({
+    useGetKnowledgeHubArticles: jest.fn(() => ({
+        data: { articles: [] },
+        isLoading: false,
+    })),
+}))
 jest.mock('./KnowledgeHubHeader/KnowledgeHubHeader', () => ({
     KnowledgeHubHeader: jest.fn(({ type, shopName }) => (
         <div data-testid="knowledge-hub-header">
@@ -21,6 +31,8 @@ jest.mock('./KnowledgeHubHeader/KnowledgeHubHeader', () => ({
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
 const mockKnowledgeHubHeader = KnowledgeHubHeader as jest.Mock
+const mockUseAiAgentStoreConfigurationContext =
+    useAiAgentStoreConfigurationContext as jest.Mock
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -44,6 +56,23 @@ describe('KnowledgeHubContainer', () => {
         jest.clearAllMocks()
         delete (window as any).location
         window.location = { href: 'http://localhost/app' } as Location
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountId') {
+                return 123
+            }
+            return []
+        })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                guidanceHelpCenterId: 1,
+                snippetHelpCenterId: 2,
+                helpCenterId: 3,
+            },
+            isLoading: false,
+            updateStoreConfiguration: jest.fn(),
+            createStoreConfiguration: jest.fn(),
+            isPendingCreateOrUpdate: false,
+        })
     })
 
     afterEach(() => {

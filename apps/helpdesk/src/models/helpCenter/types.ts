@@ -258,3 +258,36 @@ export type AIArticleToggleOption = {
 export type AILibraryArticleItem = AIArticle & {
     isNew: boolean
 }
+
+// KNOWLEDGE HUB
+
+export enum KnowledgeHubArticleSourceType {
+    GuidanceHelpCenter = 'guidance-helpcenter',
+    FaqHelpCenter = 'faq-helpcenter',
+    StoreDomain = 'store-domain',
+    Url = 'url',
+    Document = 'document',
+}
+
+export type KnowledgeHubArticle = {
+    id: number
+    title: string
+    source: string
+    localeCode: LocaleCode
+    visibilityStatus: VisibilityStatus
+    shopName: string | null
+    createdDatetime: string
+    updatedDatetime: string
+    type: KnowledgeHubArticleSourceType
+}
+
+export type KnowledgeHubArticlesResponse = {
+    articles: KnowledgeHubArticle[]
+}
+
+export type KnowledgeHubArticlesQueryParams = {
+    account_id: number
+    guidance_help_center_id?: number | null
+    snippet_help_center_id?: number | null
+    faq_help_center_id?: number | null
+}

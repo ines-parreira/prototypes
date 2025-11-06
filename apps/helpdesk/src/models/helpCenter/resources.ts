@@ -3,6 +3,11 @@ import axios from 'axios'
 import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { Paths } from 'rest_api/help_center_api/client.generated'
 
+import {
+    KnowledgeHubArticlesQueryParams,
+    KnowledgeHubArticlesResponse,
+} from './types'
+
 export const getHelpCenterArticles = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.ListArticles.PathParameters,
@@ -341,5 +346,21 @@ export const getKnowledgeStatus = async (
 ) => {
     if (!client) return null
     const response = await client.getKnowledgeStatus()
+    return response.data
+}
+
+export const getKnowledgeHubArticles = async (
+    client: HelpCenterClient | undefined,
+    queryParams: KnowledgeHubArticlesQueryParams,
+) => {
+    if (!client) return null
+
+    const response = await client.get<KnowledgeHubArticlesResponse>(
+        '/api/help-center/help-centers/knowledge-hub-articles',
+        {
+            params: queryParams,
+        },
+    )
+
     return response.data
 }
