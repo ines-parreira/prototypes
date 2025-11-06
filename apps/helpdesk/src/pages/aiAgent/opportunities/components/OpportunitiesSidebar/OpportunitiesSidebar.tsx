@@ -23,6 +23,8 @@ interface OpportunitiesSidebarProps {
     hasNextPage?: boolean
     isFetchingNextPage?: boolean
     onEndReached?: () => void
+    totalCount?: number
+    totalPending?: number
 }
 
 export const OpportunitiesSidebar = ({
@@ -34,6 +36,8 @@ export const OpportunitiesSidebar = ({
     hasNextPage = false,
     isFetchingNextPage = false,
     onEndReached,
+    totalCount,
+    totalPending,
 }: OpportunitiesSidebarProps) => {
     const virtuosoContainerRef = useRef<HTMLDivElement>(null)
     const onEndReachedRef = useRef(onEndReached)
@@ -101,7 +105,19 @@ export const OpportunitiesSidebar = ({
     const itemCount = isLoading ? 0 : opportunities.length
     const itemCountText = itemCount === 1 ? '1 item' : `${itemCount} items`
 
-    const showEmptyState = !isLoading && opportunities.length === 0
+    const showNoOpportunitiesYet =
+        !isLoading && totalCount !== undefined && totalCount === 0
+    const showAllOpportunitiesReviewed =
+        !isLoading &&
+        totalCount !== undefined &&
+        totalPending !== undefined &&
+        totalCount > 0 &&
+        totalPending === 0
+    const showLegacyEmptyState =
+        !isLoading &&
+        totalCount === undefined &&
+        totalPending === undefined &&
+        opportunities.length === 0
 
     const renderOpportunityCard = useCallback(
         (_index: number, opportunity: Opportunity) => {
@@ -154,7 +170,25 @@ export const OpportunitiesSidebar = ({
                 <h3 className={css.title}>Opportunities</h3>
             </div>
             <div className={css.containerContent}>
-                {showEmptyState ? (
+                {showNoOpportunitiesYet ? (
+                    <div className={css.emptyState}>
+                        <h3 className={css.title}>No opportunities yet</h3>
+                        <p className={css.description}>
+                            AI Agent will start finding opportunities to improve
+                            as it learns from conversations with your customers
+                        </p>
+                    </div>
+                ) : showAllOpportunitiesReviewed ? (
+                    <div className={css.emptyState}>
+                        <h3 className={css.title}>
+                            You&apos;ve reviewed all opportunities
+                        </h3>
+                        <p className={css.description}>
+                            Check back soon for new opportunities to improve AI
+                            Agent&apos;s knowledge and performance
+                        </p>
+                    </div>
+                ) : showLegacyEmptyState ? (
                     <div className={css.emptyState}>
                         <h3 className={css.title}>No opportunities yet</h3>
                         <p className={css.description}>

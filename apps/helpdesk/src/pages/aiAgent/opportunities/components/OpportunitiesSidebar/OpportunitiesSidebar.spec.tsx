@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Virtuoso } from 'react-virtuoso'
 
@@ -153,7 +153,7 @@ describe('OpportunitiesSidebar', () => {
             .closest('div[class*="card"]')
 
         if (secondCard) {
-            await user.click(secondCard)
+            await act(() => user.click(secondCard))
         }
 
         await waitFor(() => {
@@ -183,7 +183,7 @@ describe('OpportunitiesSidebar', () => {
         expect(firstCard).toHaveClass('cardSelected')
     })
 
-    it('should show empty state when no opportunities', () => {
+    it('should show empty state when no opportunities (legacy flow)', () => {
         render(
             <OpportunitiesSidebar
                 opportunities={[]}
@@ -198,6 +198,48 @@ describe('OpportunitiesSidebar', () => {
 
         const description = screen.getByText(
             'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
+        )
+        expect(description).toBeInTheDocument()
+    })
+
+    it('should show "No opportunities yet" empty state when totalCount is 0', () => {
+        render(
+            <OpportunitiesSidebar
+                opportunities={[]}
+                onSelectOpportunity={mockOnSelectOpportunity}
+                totalCount={0}
+                totalPending={0}
+            />,
+        )
+
+        const emptyTitle = screen.getByRole('heading', {
+            name: 'No opportunities yet',
+        })
+        expect(emptyTitle).toBeInTheDocument()
+
+        const description = screen.getByText(
+            'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
+        )
+        expect(description).toBeInTheDocument()
+    })
+
+    it('should show "All opportunities reviewed" empty state when totalCount > 0 and totalPending is 0', () => {
+        render(
+            <OpportunitiesSidebar
+                opportunities={[]}
+                onSelectOpportunity={mockOnSelectOpportunity}
+                totalCount={10}
+                totalPending={0}
+            />,
+        )
+
+        const emptyTitle = screen.getByRole('heading', {
+            name: /You've reviewed all opportunities/i,
+        })
+        expect(emptyTitle).toBeInTheDocument()
+
+        const description = screen.getByText(
+            /Check back soon for new opportunities to improve AI Agent's knowledge and performance/i,
         )
         expect(description).toBeInTheDocument()
     })
@@ -391,9 +433,43 @@ describe('OpportunitiesSidebar', () => {
 
             expect(mockOnSelectOpportunity).toHaveBeenCalled()
 
+            const additionalOpportunities: Opportunity[] = [
+                {
+                    id: '5',
+                    key: 'ai_5',
+                    title: 'Additional opportunity 1',
+                    content: 'Content for additional opportunity 1',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                },
+                {
+                    id: '6',
+                    key: 'ai_6',
+                    title: 'Additional opportunity 2',
+                    content: 'Content for additional opportunity 2',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                },
+                {
+                    id: '7',
+                    key: 'ai_7',
+                    title: 'Additional opportunity 3',
+                    content: 'Content for additional opportunity 3',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                },
+                {
+                    id: '8',
+                    key: 'ai_8',
+                    title: 'Additional opportunity 4',
+                    content: 'Content for additional opportunity 4',
+                    type: OpportunityType.RESOLVE_CONFLICT,
+                },
+            ]
+
             rerender(
                 <OpportunitiesSidebar
-                    opportunities={[...mockOpportunities, ...mockOpportunities]}
+                    opportunities={[
+                        ...mockOpportunities,
+                        ...additionalOpportunities,
+                    ]}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={false}
@@ -504,7 +580,7 @@ describe('OpportunitiesSidebar', () => {
             const secondCard = screen.getByText(
                 'How do I access my store account?',
             )
-            await userEvent.click(secondCard)
+            await act(() => userEvent.click(secondCard))
 
             await waitFor(() => {
                 expect(mockOnOpportunityViewed).toHaveBeenCalledWith({
@@ -556,7 +632,7 @@ describe('OpportunitiesSidebar', () => {
             const secondCard = screen.getByText(
                 'How do I access my store account?',
             )
-            await userEvent.click(secondCard)
+            await act(() => userEvent.click(secondCard))
 
             expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
                 mockOpportunities[1],

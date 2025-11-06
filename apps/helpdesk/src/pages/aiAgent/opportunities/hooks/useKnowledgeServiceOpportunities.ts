@@ -15,6 +15,7 @@ interface PaginatedPage {
     nextCursor: string | null
     prevCursor: string | null
     total: number
+    totalPending: number
 }
 
 export const useKnowledgeServiceOpportunities = (
@@ -68,6 +69,7 @@ export const useKnowledgeServiceOpportunities = (
             nextCursor: paginatedData.metadata.next_cursor,
             prevCursor: paginatedData.metadata.prev_cursor,
             total: paginatedData.metadata.total,
+            totalPending: paginatedData.metadata.total_pending,
         }
 
         setPages((prevPages) => {
@@ -96,6 +98,7 @@ export const useKnowledgeServiceOpportunities = (
     }, [pages])
 
     const totalCount = pages[0]?.total
+    const totalPending = pages[0]?.totalPending
     const hasNextPage =
         pages.length > 0 && pages[pages.length - 1]?.nextCursor !== null
     const isFetchingNextPage = isLoadingMore
@@ -128,6 +131,7 @@ export const useKnowledgeServiceOpportunities = (
         fetchNextPage,
         preloadNextPage,
         totalCount,
+        totalPending,
         refetch: refetchFromStart,
     }
 }

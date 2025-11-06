@@ -31,6 +31,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -94,6 +95,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: 'cursor-2',
                 prev_cursor: null,
                 total: 2,
+                total_pending: 2,
             },
         }
 
@@ -145,6 +147,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -180,6 +183,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -215,6 +219,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -241,6 +246,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -276,6 +282,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -311,6 +318,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -346,6 +354,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -381,6 +390,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -396,6 +406,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 0,
+                total_pending: 0,
             },
         }
 
@@ -431,6 +442,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -468,6 +480,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 
@@ -511,6 +524,7 @@ describe('mapKnowledgeServiceOpportunities', () => {
                 next_cursor: null,
                 prev_cursor: null,
                 total: 1,
+                total_pending: 1,
             },
         }
 

@@ -78,6 +78,7 @@ export const OpportunitiesLayout = () => {
         fetchNextPage,
         preloadNextPage,
         totalCount,
+        totalPending,
         refetch: refetchOpportunities,
     } = useKnowledgeServiceOpportunities(shopIntegrationId, useKnowledgeService)
 
@@ -183,6 +184,10 @@ export const OpportunitiesLayout = () => {
                     }
                     onEndReached={
                         useKnowledgeService ? fetchNextPage : undefined
+                    }
+                    totalCount={useKnowledgeService ? totalCount : undefined}
+                    totalPending={
+                        useKnowledgeService ? totalPending : undefined
                     }
                 />
                 <OpportunitiesContent

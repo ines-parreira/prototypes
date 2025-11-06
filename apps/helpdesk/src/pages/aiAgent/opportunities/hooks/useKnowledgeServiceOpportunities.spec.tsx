@@ -97,6 +97,7 @@ describe('useKnowledgeServiceOpportunities', () => {
             next_cursor: 'cursor-page-2',
             prev_cursor: null,
             total: 50,
+            total_pending: 25,
         },
     }
 

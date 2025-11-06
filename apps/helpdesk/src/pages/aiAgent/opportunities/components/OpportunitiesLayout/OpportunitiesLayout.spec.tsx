@@ -235,6 +235,7 @@ describe('OpportunitiesLayout', () => {
             fetchNextPage: jest.fn(),
             preloadNextPage: jest.fn(),
             totalCount: 0,
+            totalPending: 0,
             refetch: jest.fn(),
         })
         mockUseSelectedOpportunity.mockImplementation(() => ({
@@ -655,6 +656,7 @@ describe('OpportunitiesLayout', () => {
                 fetchNextPage: jest.fn(),
                 preloadNextPage: jest.fn(),
                 totalCount: 50,
+                totalPending: 50,
                 refetch: jest.fn(),
             })
         })
