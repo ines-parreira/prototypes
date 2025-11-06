@@ -23,7 +23,11 @@ import {
 } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
+import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import {
+    AIJourneySettings,
+    PlaygroundEvent,
+} from 'pages/aiAgent/PlaygroundV2/types'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
@@ -249,6 +253,12 @@ const WrappedAIJourneyProvider = ({
         },
         [],
     )
+
+    const { on } = useEvents()
+
+    on(PlaygroundEvent.RESET_CONVERSATION, () => {
+        setFollowUpMessagesSent(0)
+    })
 
     const contextValue = useMemo(
         () => ({

@@ -12,11 +12,13 @@ import {
     useUpdateJourney,
 } from '../../../../../AIJourney/queries'
 import useAppSelector from '../../../../../hooks/useAppSelector'
+import { PlaygroundEvent } from '../../types'
 import {
     AI_JOURNEY_DEFAULT_STATE,
     AIJourneyProvider,
     useAIJourneyContext,
 } from '../AIJourneyContext'
+import { useEvents } from '../EventsContext'
 
 jest.mock('AIJourney/queries', () => ({
     useJourneyData: jest.fn(),
@@ -38,10 +40,15 @@ jest.mock('AIJourney/providers', () => ({
 
 jest.mock('hooks/useAppSelector')
 
+jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
+    useEvents: jest.fn(),
+}))
+
 const mockUseJourneys = useJourneys as jest.Mock
 const mockUseJourneyData = useJourneyData as jest.Mock
 const mockUseUpdateJourney = useUpdateJourney as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseEvents = useEvents as jest.Mock
 
 const mockShopifyIntegrations = [
     { id: 123, name: 'test-shop' },
@@ -75,6 +82,8 @@ const mockJourneyData = {
 describe('AIJourneyContext', () => {
     let queryClient: QueryClient
     const mockStoreCreator = configureMockStore([thunk])
+    let mockEventOn: jest.Mock
+    let mockEventEmit: jest.Mock
 
     const createWrapper = (shopName = 'test-shop') => {
         queryClient = new QueryClient({
@@ -99,6 +108,12 @@ describe('AIJourneyContext', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockEventOn = jest.fn()
+        mockEventEmit = jest.fn()
+        mockUseEvents.mockReturnValue({
+            on: mockEventOn,
+            emit: mockEventEmit,
+        })
         mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
         mockUseJourneys.mockReturnValue({
             data: mockJourneys,
@@ -759,6 +774,52 @@ describe('AIJourneyContext', () => {
                     selectedProduct: null,
                     outboundMessageInstructions: '',
                 })
+            })
+        })
+
+        describe('followUpMessagesSent', () => {
+            it('should initialize followUpMessagesSent to 0', () => {
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.followUpMessagesSent).toBe(0)
+            })
+
+            it('should allow updating followUpMessagesSent', () => {
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setFollowUpMessagesSent(3)
+                })
+
+                expect(result.current.followUpMessagesSent).toBe(3)
+            })
+
+            it('should reset followUpMessagesSent to 0 when RESET_CONVERSATION event is emitted', () => {
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setFollowUpMessagesSent(5)
+                })
+
+                expect(result.current.followUpMessagesSent).toBe(5)
+
+                const resetCallback = mockEventOn.mock.calls.find(
+                    (call) => call[0] === PlaygroundEvent.RESET_CONVERSATION,
+                )?.[1]
+
+                expect(resetCallback).toBeDefined()
+
+                act(() => {
+                    resetCallback()
+                })
+
+                expect(result.current.followUpMessagesSent).toBe(0)
             })
         })
     })
