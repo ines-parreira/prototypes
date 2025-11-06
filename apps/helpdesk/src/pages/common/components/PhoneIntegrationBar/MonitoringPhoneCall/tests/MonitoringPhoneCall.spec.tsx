@@ -1,8 +1,9 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
 
+import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 import { renderWithStore } from 'utils/testing'
 
@@ -131,6 +132,8 @@ describe('MonitoringPhoneCall', () => {
                 ['customer_id', 'null'],
                 ['customer_phone_number', customerPhoneNumber],
             ]),
+            on: jest.fn(),
+            off: jest.fn(),
         } as unknown as Call
 
         renderWithStore(<MonitoringPhoneCall call={call} />, initialState)
@@ -142,5 +145,35 @@ describe('MonitoringPhoneCall', () => {
         expect(screen.queryByTestId('agent-label')).not.toBeInTheDocument()
         expect(screen.getByText(customerPhoneNumber)).toBeInTheDocument()
         expect(screen.getByText('unknown agent')).toBeInTheDocument()
+    })
+
+    it('should update agent label when InCallAgentChanged message is received', () => {
+        const call = mockMonitoringCall(
+            integrationId,
+            inCallAgentId,
+            customerId,
+            customerPhoneNumber,
+        ) as Call
+
+        renderWithStore(<MonitoringPhoneCall call={call} />, initialState)
+
+        expect(screen.getByTestId('agent-label')).toHaveTextContent(
+            `Agent ${inCallAgentId}`,
+        )
+
+        const newAgentId = 999
+
+        act(() => {
+            call.emit('messageReceived', {
+                content: {
+                    type: TwilioMessageType.InCallAgentChanged,
+                    data: { agent_id: newAgentId.toString() },
+                },
+            })
+        })
+
+        expect(screen.getByTestId('agent-label')).toHaveTextContent(
+            `Agent ${newAgentId}`,
+        )
     })
 })

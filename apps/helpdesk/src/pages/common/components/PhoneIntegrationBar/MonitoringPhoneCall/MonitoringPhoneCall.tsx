@@ -1,8 +1,12 @@
+import { useState } from 'react'
+
 import { Call } from '@twilio/voice-sdk'
 
 import { Button } from '@gorgias/axiom'
 
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
+import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
+import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -19,8 +23,20 @@ type Props = {
 }
 
 export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
-    const { integrationId, inCallAgentId, customerId, customerPhoneNumber } =
-        extractMonitoringCallParams(call)
+    const {
+        integrationId,
+        inCallAgentId: startingInCallAgentId,
+        customerId,
+        customerPhoneNumber,
+    } = extractMonitoringCallParams(call)
+
+    const [inCallAgentId, setInCallAgentId] = useState(startingInCallAgentId)
+
+    useCallMessageListener(call, (twilioMessage) => {
+        if (twilioMessage.type === TwilioMessageType.InCallAgentChanged) {
+            setInCallAgentId(parseInt(twilioMessage.data.agent_id, 10))
+        }
+    })
 
     return (
         <PhoneBarContainer>

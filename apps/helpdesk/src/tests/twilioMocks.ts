@@ -1,4 +1,5 @@
 import { Call, Device } from '@twilio/voice-sdk'
+import { EventEmitter } from 'events'
 
 export const mockDevice = (): Partial<Device> => ({})
 
@@ -47,16 +48,27 @@ export const mockMonitoringCall = (
     inCallAgentId = 123,
     customerId = 456,
     customerPhoneNumber = '+14158880101',
-): Partial<Call> => ({
-    ...mockCall(),
-    direction: Call.CallDirection.Outgoing,
-    status: () => Call.State.Ringing,
-    customParameters: new Map([
-        ['main_call_sid', 'main-call-sid'],
-        ['is_monitoring', 'true'],
-        ['integration_id', integrationId.toString()],
-        ['in_call_agent_id', inCallAgentId.toString()],
-        ['customer_id', customerId.toString()],
-        ['customer_phone_number', customerPhoneNumber],
-    ]),
-})
+): Partial<Call> => {
+    const emitter = new EventEmitter()
+    const mock = {
+        ...mockCall(),
+        direction: Call.CallDirection.Outgoing,
+        status: () => Call.State.Ringing,
+        customParameters: new Map([
+            ['main_call_sid', 'main-call-sid'],
+            ['is_monitoring', 'true'],
+            ['integration_id', integrationId.toString()],
+            ['in_call_agent_id', inCallAgentId.toString()],
+            ['customer_id', customerId.toString()],
+            ['customer_phone_number', customerPhoneNumber],
+        ]),
+        on: (event: string, handler: any) => {
+            emitter.on(event, handler)
+        },
+        off: (event: string, handler: any) => {
+            emitter.off(event, handler)
+        },
+        emit: (event: string, data: any) => emitter.emit(event, data),
+    } as Partial<Call>
+    return mock
+}
