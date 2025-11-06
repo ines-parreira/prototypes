@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
+import { Box } from '@gorgias/axiom'
 import { useSynthesizeSpeechPreview } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
@@ -65,13 +66,15 @@ const VoiceMessageTTSPreviewButton = ({ fieldName }: Props): JSX.Element => {
     ])
 
     return (
-        <TTSPreviewButton
-            src={src}
-            audioState={audioState}
-            setAudioState={setAudioState}
-            onLoad={handleButtonClick}
-            isDisabled={!value.text_to_speech_content}
-        />
+        <Box w="100px" justifyContent="flex-end">
+            <TTSPreviewButton
+                src={src}
+                audioState={audioState}
+                setAudioState={setAudioState}
+                onLoad={handleButtonClick}
+                isDisabled={!value.text_to_speech_content}
+            />
+        </Box>
     )
 }
 
