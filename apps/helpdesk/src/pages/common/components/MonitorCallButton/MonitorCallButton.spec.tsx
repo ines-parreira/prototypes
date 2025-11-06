@@ -55,9 +55,7 @@ const mockParams = {
 
 describe('MonitorCallButton', () => {
     const mockMakeMonitoringCall = jest.fn()
-    const mockPrepareMonitoringCall = jest
-        .fn()
-        .mockResolvedValue({ readyForMonitoring: true })
+    const mockPrepareMonitoringCall = jest.fn()
     const mockNotifyError = jest.fn()
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: false } },
@@ -83,6 +81,9 @@ describe('MonitorCallButton', () => {
     })
 
     beforeEach(() => {
+        mockPrepareMonitoringCall.mockResolvedValue({
+            readyForMonitoring: true,
+        })
         useMonitoringCallMock.mockReturnValue({
             makeMonitoringCall: mockMakeMonitoringCall,
             prepareMonitoringCall: mockPrepareMonitoringCall,
@@ -157,13 +158,78 @@ describe('MonitorCallButton', () => {
             user.click(screen.getByRole('button', { name: 'Listen' })),
         )
 
-        expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123')
+        expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123', false)
         expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
             'CA123',
             42,
             mockParams.monitoringExtraParams,
             expect.any(Function),
         )
+    })
+
+    it('should show loading state during monitoring call preparation', async () => {
+        const user = userEvent.setup()
+        let resolvePrepare: (value: any) => void
+        mockPrepareMonitoringCall.mockReturnValue(
+            new Promise((resolve) => {
+                resolvePrepare = resolve
+            }),
+        )
+
+        renderWithProviders(
+            <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
+        )
+
+        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        expect(listenButton).toBeEnabled()
+        expect(listenButton).not.toHaveAttribute('data-pending', 'true')
+
+        await act(() => user.click(listenButton))
+
+        await waitFor(() => {
+            expect(listenButton).toHaveAttribute('data-pending', 'true')
+            expect(listenButton).toBeDisabled()
+        })
+        expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123', false)
+        expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
+
+        await act(async () => {
+            resolvePrepare!({ readyForMonitoring: true })
+        })
+
+        expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
+            'CA123',
+            42,
+            mockParams.monitoringExtraParams,
+            expect.any(Function),
+        )
+    })
+
+    it('should re-enable button if there is an error during preparation', async () => {
+        const user = userEvent.setup()
+        mockPrepareMonitoringCall.mockResolvedValue({
+            readyForMonitoring: false,
+            errorType: 'error_message',
+            errorMessage: 'Something went wrong',
+        })
+
+        renderWithProviders(
+            <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
+        )
+
+        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        expect(listenButton).toBeEnabled()
+
+        await act(() => user.click(listenButton))
+
+        await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith('Something went wrong')
+        })
+        await waitFor(() => {
+            expect(listenButton).toBeEnabled()
+            expect(listenButton).not.toHaveAttribute('data-pending', 'true')
+        })
+        expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
     })
 
     it('should call prepare and handle monitoring failure from the backend', async () => {
@@ -180,7 +246,7 @@ describe('MonitorCallButton', () => {
             user.click(screen.getByRole('button', { name: 'Listen' })),
         )
 
-        expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123')
+        expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123', false)
         expect(mockMakeMonitoringCall).toHaveBeenCalledWith(
             'CA123',
             42,
@@ -190,7 +256,11 @@ describe('MonitorCallButton', () => {
 
         const onMonitoringValidationFailed =
             mockMakeMonitoringCall.mock.calls[0][3]
-        onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
+
+        await act(() => {
+            onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
+        })
+
         expect(mockNotifyError).toHaveBeenCalledWith(
             MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
         )
@@ -372,7 +442,9 @@ describe('MonitorCallButton', () => {
 
             const onMonitoringValidationFailed =
                 mockMakeMonitoringCall.mock.calls[0][3]
-            onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
+            await act(() => {
+                onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
+            })
             expect(mockNotifyError).toHaveBeenCalledWith(
                 MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
             )
@@ -453,6 +525,34 @@ describe('MonitorCallButton', () => {
 
             expect(mockNotifyError).toHaveBeenCalledWith('Something went wrong')
             expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should close switch modal when monitoring starts', async () => {
+        const user = userEvent.setup()
+        mockPrepareMonitoringCall.mockResolvedValue({
+            readyForMonitoring: false,
+            errorType: 'error_code',
+            errorCode: MonitoringErrorCode.ALREADY_MONITORING_CALL,
+        })
+
+        const { rerender } = renderWithProviders(
+            <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
+        )
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'Listen' })),
+        )
+
+        expect(screen.getByText('Switch call?')).toBeInTheDocument()
+
+        isCallBeingMonitoredMock.mockReturnValue(true)
+        rerender(
+            <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('Switch call?')).not.toBeInTheDocument()
         })
     })
 })

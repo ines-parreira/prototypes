@@ -73,10 +73,12 @@ export function useMonitoringCall() {
                 if (isGorgiasApiError(error)) {
                     const errorData = error.response.data.error
                         .data as PrepareMonitoringErrorData
-                    return {
-                        readyForMonitoring: false,
-                        errorType: 'error_code',
-                        errorCode: errorData.error_code,
+                    if (error.status === 400 && errorData?.error_code) {
+                        return {
+                            readyForMonitoring: false,
+                            errorType: 'error_code',
+                            errorCode: errorData.error_code,
+                        }
                     }
                 }
                 return {

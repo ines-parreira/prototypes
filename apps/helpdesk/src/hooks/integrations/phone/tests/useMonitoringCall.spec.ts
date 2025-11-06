@@ -11,7 +11,10 @@ import { mockPrepareCallMonitoringHandler } from '@gorgias/helpdesk-mocks'
 import { appQueryClient } from 'api/queryClient'
 import { TwilioSocketEventType } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { MONITORING_SWITCH_ERROR } from 'models/voiceCall/constants'
+import {
+    MONITORING_GENERIC_ERROR,
+    MONITORING_SWITCH_ERROR,
+} from 'models/voiceCall/constants'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { MonitoringErrorCode } from 'models/voiceCall/types'
 
@@ -69,8 +72,9 @@ describe('useMonitoringCall', () => {
         } as any)
     })
 
-    afterEach(() => {
+    afterEach(async () => {
         server.resetHandlers()
+        await appQueryClient.cancelQueries()
         appQueryClient.clear()
     })
 
@@ -171,7 +175,41 @@ describe('useMonitoringCall', () => {
             })
         })
 
-        it('should return readyForMonitoring false with isGenericError when non-GorgiasApiError occurs', async () => {
+        it.each([400, 403])(
+            'should handle failure with Gorgias API error but no error code',
+            async (status) => {
+                const mockHandler = mockPrepareCallMonitoringHandler(async () =>
+                    HttpResponse.json(
+                        {
+                            error: {
+                                msg: 'Something went wrong',
+                                data: {},
+                            },
+                        } as any,
+                        { status },
+                    ),
+                )
+                server.use(mockHandler.handler)
+
+                const { result } = renderWithProviders(() =>
+                    useMonitoringCall(),
+                )
+
+                let response
+                await act(async () => {
+                    response =
+                        await result.current.prepareMonitoringCall('CA123')
+                })
+
+                expect(response).toEqual({
+                    readyForMonitoring: false,
+                    errorType: 'error_message',
+                    errorMessage: MONITORING_GENERIC_ERROR,
+                })
+            },
+        )
+
+        it('should handle failure with generic error', async () => {
             const mockHandler = mockPrepareCallMonitoringHandler(async () =>
                 HttpResponse.json({ error: 'Network error' } as any, {
                     status: 500,
@@ -189,7 +227,7 @@ describe('useMonitoringCall', () => {
             expect(response).toEqual({
                 readyForMonitoring: false,
                 errorType: 'error_message',
-                errorMessage: expect.any(String),
+                errorMessage: MONITORING_GENERIC_ERROR,
             })
         })
     })
@@ -293,7 +331,7 @@ describe('useMonitoringCall', () => {
 
             const messageCallback = handleCallEventsMock.mock.calls[0][3]
 
-            act(() => {
+            await act(async () => {
                 messageCallback?.({
                     type: TwilioMessageType.MonitoringValidationFailed,
                     data: {
