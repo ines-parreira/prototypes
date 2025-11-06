@@ -2,6 +2,8 @@ import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useLocalStorage, useTimeout } from '@repo/hooks'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+
 import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 
 export const NAVBAR_DISPLAY_KEY = 'navbar-display'
@@ -16,13 +18,21 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
     const isFrozenRef = useRef(false)
     const [setTimeout, clearTimeout] = useTimeout()
 
+    const logSegmentToggleEvent = useCallback((visible: boolean) => {
+        logEvent(SegmentEvent.NavigationPanelVisibilityStateToggled, {
+            visible,
+        })
+    }, [])
+
     const onNavBarShortCutToggle = useCallback(() => {
         if (navBarDisplay === NavBarDisplayMode.Open) {
             setNavBarDisplay(NavBarDisplayMode.Collapsed)
+            logSegmentToggleEvent(false)
         } else {
             setNavBarDisplay(NavBarDisplayMode.Open)
+            logSegmentToggleEvent(true)
         }
-    }, [navBarDisplay, setNavBarDisplay])
+    }, [navBarDisplay, setNavBarDisplay, logSegmentToggleEvent])
 
     const onMenuToggle = useCallback(() => {
         if (navBarDisplay === NavBarDisplayMode.Open) {
@@ -35,10 +45,18 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
             setTimeout(() => {
                 isFrozenRef.current = false
             }, FREEZE_TIMEOUT)
+            logSegmentToggleEvent(false)
         } else {
             setNavBarDisplay(NavBarDisplayMode.Open)
+            logSegmentToggleEvent(true)
         }
-    }, [navBarDisplay, setNavBarDisplay, clearTimeout, setTimeout])
+    }, [
+        navBarDisplay,
+        setNavBarDisplay,
+        clearTimeout,
+        setTimeout,
+        logSegmentToggleEvent,
+    ])
 
     // Used for both the global nav and the collapsible navbar mouse hover events
     const onNavHover = useCallback(() => {

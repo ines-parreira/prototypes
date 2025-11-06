@@ -1,11 +1,15 @@
 import { act, fireEvent, render } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from 'common/segment'
+
 import {
     NavBarContextType,
     NavBarDisplayMode,
 } from '../../hooks/useNavBar/context'
 import { useNavBar } from '../../hooks/useNavBar/useNavBar'
 import { NAVBAR_DISPLAY_KEY, NavBarProvider } from '../NavBarProvider'
+
+jest.mock('common/segment')
 
 // Updated Test component with interactive buttons
 function TestComponent() {
@@ -259,5 +263,41 @@ describe('NavBarProvider', () => {
             toggleButton.click()
         })
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Open)
+    })
+
+    it('logs the correct event when the navbar is toggled', () => {
+        const { getByTestId } = render(
+            <NavBarProvider>
+                <TestComponent />
+            </NavBarProvider>,
+        )
+
+        const homeToggleButton = getByTestId('home-button')
+
+        fireEvent.click(homeToggleButton)
+        expect(logEvent).toHaveBeenLastCalledWith(
+            SegmentEvent.NavigationPanelVisibilityStateToggled,
+            { visible: false },
+        )
+
+        fireEvent.click(homeToggleButton)
+        expect(logEvent).toHaveBeenLastCalledWith(
+            SegmentEvent.NavigationPanelVisibilityStateToggled,
+            { visible: true },
+        )
+
+        const shortcutToggleButton = getByTestId('toggle-navbar-button')
+
+        fireEvent.click(shortcutToggleButton)
+        expect(logEvent).toHaveBeenLastCalledWith(
+            SegmentEvent.NavigationPanelVisibilityStateToggled,
+            { visible: false },
+        )
+
+        fireEvent.click(shortcutToggleButton)
+        expect(logEvent).toHaveBeenLastCalledWith(
+            SegmentEvent.NavigationPanelVisibilityStateToggled,
+            { visible: true },
+        )
     })
 })

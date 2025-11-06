@@ -277,6 +277,7 @@ export enum SegmentEvent {
     ModalToggled = 'modal-toggled',
     NavbarViewMoved = 'navbar-view-moved',
     NavbarViewToggled = 'navbar-view-toggled',
+    NavigationPanelVisibilityStateToggled = 'navigation-panel-visibility-state-toggled',
     NotificationCenter = 'notification-center',
     NotificationSettingsUpdated = 'notification-settings-updated',
     NotificationToastClicked = 'notification-toast-clicked',
