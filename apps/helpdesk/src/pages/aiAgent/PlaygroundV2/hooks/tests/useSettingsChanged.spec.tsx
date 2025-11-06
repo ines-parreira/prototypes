@@ -54,6 +54,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
         on: jest.fn(),
         emit: jest.fn(),
     })),
+    useSubscribeToEvent: jest.fn(),
     EventsProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
 }))
 

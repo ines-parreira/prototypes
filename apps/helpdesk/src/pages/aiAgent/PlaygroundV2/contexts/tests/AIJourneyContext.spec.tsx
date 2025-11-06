@@ -18,7 +18,7 @@ import {
     AIJourneyProvider,
     useAIJourneyContext,
 } from '../AIJourneyContext'
-import { useEvents } from '../EventsContext'
+import { useEvents, useSubscribeToEvent } from '../EventsContext'
 
 jest.mock('AIJourney/queries', () => ({
     useJourneyData: jest.fn(),
@@ -42,6 +42,7 @@ jest.mock('hooks/useAppSelector')
 
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
     useEvents: jest.fn(),
+    useSubscribeToEvent: jest.fn(),
 }))
 
 const mockUseJourneys = useJourneys as jest.Mock
@@ -49,6 +50,7 @@ const mockUseJourneyData = useJourneyData as jest.Mock
 const mockUseUpdateJourney = useUpdateJourney as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseEvents = useEvents as jest.Mock
+const mockUseSubscribeToEvent = useSubscribeToEvent as jest.Mock
 
 const mockShopifyIntegrations = [
     { id: 123, name: 'test-shop' },
@@ -809,11 +811,13 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.followUpMessagesSent).toBe(5)
 
-                const resetCallback = mockEventOn.mock.calls.find(
+                const subscribeCall = mockUseSubscribeToEvent.mock.calls.find(
                     (call) => call[0] === PlaygroundEvent.RESET_CONVERSATION,
-                )?.[1]
+                )
 
-                expect(resetCallback).toBeDefined()
+                expect(subscribeCall).toBeDefined()
+
+                const resetCallback = subscribeCall?.[1]
 
                 act(() => {
                     resetCallback()

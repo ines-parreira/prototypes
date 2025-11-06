@@ -23,7 +23,7 @@ import {
 } from 'AIJourney/queries'
 import { Product } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import {
     AIJourneySettings,
     PlaygroundEvent,
@@ -254,9 +254,7 @@ const WrappedAIJourneyProvider = ({
         [],
     )
 
-    const { on } = useEvents()
-
-    on(PlaygroundEvent.RESET_CONVERSATION, () => {
+    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, () => {
         setFollowUpMessagesSent(0)
     })
 
