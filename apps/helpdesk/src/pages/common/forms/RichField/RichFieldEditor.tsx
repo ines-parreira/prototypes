@@ -56,6 +56,7 @@ import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
 import { ActionName } from '../../draftjs/plugins/toolbar/types'
 import { ImagePluginConfig, Plugin } from '../../draftjs/plugins/types'
 import createVariablesPlugin from '../../draftjs/plugins/variables/index'
+import { DraftJsErrorBoundary } from './DraftJsErrorBoundary'
 import EmailExtraButton from './EmailExtraButton'
 import provideMentionFilteredSuggestions, {
     InjectedProps as MentionFilteredSuggestionsProps,
@@ -520,31 +521,40 @@ export class RichFieldEditor extends Component<Props, State> {
                         })}
                     >
                         {header}
-                        <Editor
-                            editorState={this.props.editorState}
-                            onChange={this.handleChildChange}
-                            keyBindingFn={this._customKeyBindingFn}
-                            onFocus={this._onEditorFocus}
-                            onBlur={this._onEditorBlur}
-                            plugins={this.plugins}
-                            handleKeyCommand={this._handleKeyCommand}
-                            onTab={this._handleOnTab}
-                            handlePastedText={this._handlePastedText}
-                            readOnly={displayOnly || this.props.readOnly}
-                            // once focused we're removing the placeholder (Gmail style)
-                            placeholder={
-                                !this.state.wasEverFocused
-                                    ? this.props.placeholder
-                                    : undefined
-                            }
-                            ref={(editor: Editor | null) => {
-                                this.editor = editor
+                        <DraftJsErrorBoundary
+                            onError={(error) => {
+                                console.error(
+                                    '[RichFieldEditor] Speech-to-text caused error:',
+                                    error,
+                                )
                             }}
-                            editorKey={this.props.editorKey}
-                            tabIndex={this.props.tabIndex}
-                            spellCheck={this.props.spellCheck}
-                            ticket={ticket}
-                        />
+                        >
+                            <Editor
+                                editorState={this.props.editorState}
+                                onChange={this.handleChildChange}
+                                keyBindingFn={this._customKeyBindingFn}
+                                onFocus={this._onEditorFocus}
+                                onBlur={this._onEditorBlur}
+                                plugins={this.plugins}
+                                handleKeyCommand={this._handleKeyCommand}
+                                onTab={this._handleOnTab}
+                                handlePastedText={this._handlePastedText}
+                                readOnly={displayOnly || this.props.readOnly}
+                                // once focused we're removing the placeholder (Gmail style)
+                                placeholder={
+                                    !this.state.wasEverFocused
+                                        ? this.props.placeholder
+                                        : undefined
+                                }
+                                ref={(editor: Editor | null) => {
+                                    this.editor = editor
+                                }}
+                                editorKey={this.props.editorKey}
+                                tabIndex={this.props.tabIndex}
+                                spellCheck={this.props.spellCheck}
+                                ticket={ticket}
+                            />
+                        </DraftJsErrorBoundary>
                         <MentionSuggestions
                             onSearchChange={this.props.onMentionSearchChange}
                             suggestions={this.props.mentionSearchResults}
