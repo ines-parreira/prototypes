@@ -1,5 +1,12 @@
-import { calculateTotalCapacity } from 'domains/reporting/hooks/helpers'
+import { assumeMock } from '@repo/testing'
+
+import {
+    calculateTotalCapacity,
+    createFetchPerDimension,
+} from 'domains/reporting/hooks/helpers'
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { fetchMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -8,6 +15,8 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+
+jest.mock('domains/reporting/hooks/useMetricPerDimension')
 
 const messagesSentAgentId = HelpdeskMessageDimension.SenderId
 const messagesSentMeasure = HelpdeskMessageMeasure.MessageCount
@@ -149,5 +158,71 @@ describe('calculateTotalCapacity', () => {
         )
 
         expect(result).toEqual({ value: 0 })
+    })
+})
+
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
+
+describe('createFetchPerDimension', () => {
+    const mockQuery = jest.fn()
+    const mockQueryV2 = jest.fn()
+    const statsFilters = {
+        period: { start_datetime: '2023-01-01', end_datetime: '2023-01-31' },
+    }
+    const timezone = 'UTC'
+    const sorting = undefined
+    const dimensionId = '123'
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+        mockQuery.mockReturnValue({
+            metricName: METRIC_NAMES.TEST_METRIC,
+            measures: [],
+            dimensions: [],
+            filters: [],
+        })
+        mockQueryV2.mockReturnValue({
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: [],
+            filters: [],
+        })
+        fetchMetricPerDimensionV2Mock.mockResolvedValue({
+            data: { value: 42, decile: 5, allData: [] },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    it('should call fetchMetricPerDimensionV2 with queryV2 when provided', async () => {
+        const fetchFn = createFetchPerDimension(mockQuery, mockQueryV2)
+
+        await fetchFn(statsFilters, timezone, sorting, dimensionId)
+
+        expect(mockQuery).toHaveBeenCalledWith(statsFilters, timezone, sorting)
+        expect(mockQueryV2).toHaveBeenCalledWith({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        })
+        expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+            mockQuery.mock.results[0].value,
+            mockQueryV2.mock.results[0].value,
+            dimensionId,
+        )
+    })
+
+    it('should call fetchMetricPerDimensionV2 with undefined queryV2 when not provided', async () => {
+        const fetchFn = createFetchPerDimension(mockQuery)
+
+        await fetchFn(statsFilters, timezone, sorting, dimensionId)
+
+        expect(mockQuery).toHaveBeenCalledWith(statsFilters, timezone, sorting)
+        expect(mockQueryV2).not.toHaveBeenCalled()
+        expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+            mockQuery.mock.results[0].value,
+            undefined,
+            dimensionId,
+        )
     })
 })

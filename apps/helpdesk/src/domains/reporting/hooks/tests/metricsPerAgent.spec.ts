@@ -26,7 +26,7 @@ import {
     useZeroTouchTicketsMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -68,7 +68,7 @@ const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMockV2 = assumeMock(useMetricPerDimensionV2)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('metricsPerAgent', () => {
     const periodStart = moment()
@@ -165,12 +165,17 @@ describe('metricsPerAgent', () => {
                         agentId,
                     )
 
-                    expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                         medianFirstResponseTimeMetricPerAgentQueryFactory(
                             statsFilters,
                             timezone,
                             sorting,
                         ),
+                        medianFirstResponseTimePerAgentQueryV2Factory({
+                            filters: statsFilters,
+                            timezone,
+                            sortDirection: sorting,
+                        }),
                         agentId,
                     )
                 })
@@ -186,12 +191,17 @@ describe('metricsPerAgent', () => {
                         agentId,
                     )
 
-                    expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                         medianFirstAgentResponseTimePerAgentQueryFactory(
                             statsFilters,
                             timezone,
                             sorting,
                         ),
+                        medianFirstResponseTimePerAgentQueryV2Factory({
+                            filters: statsFilters,
+                            timezone,
+                            sortDirection: sorting,
+                        }),
                         agentId,
                     )
                 })
@@ -337,8 +347,9 @@ describe('metricsPerAgent', () => {
             async (_, fetchFn, queryFactory) => {
                 await fetchFn(statsFilters, timezone, sorting, agentId)
 
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
+                    undefined,
                     agentId,
                 )
             },

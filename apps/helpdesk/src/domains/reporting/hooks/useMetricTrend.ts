@@ -46,12 +46,23 @@ export type MetricTrendFetch = (
     costSavedPerInteraction: number,
 ) => Promise<MetricTrend>
 
-export async function fetchMetricTrend<TCube extends Cubes>(
+export async function fetchMetricTrend<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
     currentPeriodQuery: ReportingQuery<TCube>,
     prevPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQueryV2?: BuiltQuery<TMeta>,
+    prevPeriodQueryV2?: BuiltQuery<TMeta>,
 ): Promise<MetricTrend> {
-    const currentPeriodMetric = fetchMetric<TCube>(currentPeriodQuery)
-    const prevPeriodMetric = fetchMetric<TCube>(prevPeriodQuery)
+    const currentPeriodMetric = fetchMetric<TCube, TMeta>(
+        currentPeriodQuery,
+        currentPeriodQueryV2,
+    )
+    const prevPeriodMetric = fetchMetric<TCube, TMeta>(
+        prevPeriodQuery,
+        prevPeriodQueryV2,
+    )
 
     return Promise.all([currentPeriodMetric, prevPeriodMetric])
         .then(([currentPeriodResult, previousPeriodResult]) => ({

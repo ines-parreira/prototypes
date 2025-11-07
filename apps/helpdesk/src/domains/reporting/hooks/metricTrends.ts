@@ -161,6 +161,17 @@ export const fetchMedianFirstResponseTimeTrend = async (
             },
             timezone,
         ),
+        medianFirstResponseTimeQueryV2Factory({
+            filters,
+            timezone,
+        }),
+        medianFirstResponseTimeQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 }
 

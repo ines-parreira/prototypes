@@ -7,7 +7,7 @@ import { BREAKDOWN_FIELD } from 'domains/reporting/hooks/withBreakdown'
 import { DataResponse } from 'domains/reporting/hooks/withDeciles'
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
@@ -176,14 +176,18 @@ export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     }
 }
 
-export async function fetchTimeSeries<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>,
-): Promise<TimeSeriesDataItem[][]> {
-    return fetchPostReporting<
+export async function fetchTimeSeries<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(query: TimeSeriesQuery<TCube>, queryV2?: BuiltQuery<TMeta>) {
+    return fetchPostReportingV2<
         Record<string, string>[],
         TimeSeriesDataItem[][],
-        TCube
-    >([query], {}).then((res) => selectTimeSeriesByMeasures<TCube>(query, res))
+        TCube,
+        TMeta
+    >([query], queryV2, {}).then((res) =>
+        selectTimeSeriesByMeasures<TCube>(query, res),
+    )
 }
 
 export function useTimeSeriesPerDimension<
@@ -201,14 +205,16 @@ export function useTimeSeriesPerDimension<
     })
 }
 
-export async function fetchTimeSeriesPerDimension<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>,
-) {
-    return fetchPostReporting<
+export async function fetchTimeSeriesPerDimension<
+    TCube extends Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(query: TimeSeriesQuery<TCube>, queryV2?: BuiltQuery<TMeta>) {
+    return fetchPostReportingV2<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
-        TCube
-    >([query], {}).then((res) =>
+        TCube,
+        TMeta
+    >([query], queryV2, {}).then((res) =>
         selectPerDimension<TCube>(query)(res.data.data),
     )
 }

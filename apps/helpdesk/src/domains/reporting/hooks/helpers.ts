@@ -3,7 +3,7 @@ import { flatMap } from 'lodash'
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     MetricWithDecileFetch,
     QueryReturnType,
     ReportingMetricItem,
@@ -106,15 +106,27 @@ type QueryFactory<TCube extends Cubes> = (
 ) => ReportingQuery<TCube>
 
 export const createFetchPerDimension =
-    <TCube extends Cubes>(query: QueryFactory<TCube>): MetricWithDecileFetch =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: QueryFactory<TCube>,
+        queryV2?: MetricQueryFactory<TMeta, TMetricName>,
+    ): MetricWithDecileFetch =>
     (
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
         dimensionId?: string,
     ) =>
-        fetchMetricPerDimension(
+        fetchMetricPerDimensionV2(
             query(statsFilters, timezone, sorting),
+            queryV2?.({
+                filters: statsFilters,
+                timezone,
+                sortDirection: sorting,
+            }),
             dimensionId,
         )
 

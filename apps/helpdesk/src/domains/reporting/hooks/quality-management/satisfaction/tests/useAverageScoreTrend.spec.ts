@@ -72,6 +72,17 @@ describe('AverageScoreTrend', () => {
                     },
                     timezone,
                 ),
+                averageScoreQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                averageScoreQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

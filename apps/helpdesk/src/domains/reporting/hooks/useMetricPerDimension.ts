@@ -14,6 +14,7 @@ import {
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReporting,
+    fetchPostReportingV2,
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
     usePostReporting,
@@ -223,6 +224,34 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
 ): Promise<MetricWithDecile<TCube>> => {
     return fetchPostReporting<QueryReturnType<TCube>>([query], {
         queryFn: queryWithDeciles(query),
+    })
+        .then((res) => ({
+            data: selectMeasurePerDimension(res.data.data, query, dimensionId),
+            isFetching: false,
+            isError: false,
+        }))
+        .catch(() => ({
+            data: null,
+            isFetching: false,
+            isError: true,
+        }))
+}
+
+export const fetchMetricPerDimensionV2 = async <
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
+    query: ReportingQuery<TCube>,
+    newQuery?: BuiltQuery<TMeta>,
+    dimensionId?: string,
+): Promise<MetricWithDecile<TCube>> => {
+    return fetchPostReportingV2<
+        QueryReturnType<TCube>,
+        MetricWithDecileData<TCube>,
+        TCube,
+        TMeta
+    >([query], newQuery, {
+        queryFn: queryWithDeciles(query, newQuery),
     })
         .then((res) => ({
             data: selectMeasurePerDimension(res.data.data, query, dimensionId),

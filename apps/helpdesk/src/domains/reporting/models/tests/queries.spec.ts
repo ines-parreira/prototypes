@@ -1,10 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
+import { appQueryClient } from 'api/queryClient'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
     fetchPostReporting,
+    fetchPostReportingV2,
     useEnrichedPostReporting,
     usePostReporting,
     usePostReportingV2,
@@ -57,6 +59,7 @@ describe('Reporting queries', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        appQueryClient.clear()
         postReportingMock.mockResolvedValue(mockData)
         executeMetricCallMock.mockResolvedValue(mockData)
     })
@@ -74,7 +77,7 @@ describe('Reporting queries', () => {
     })
 
     describe('usePostReportingV2', () => {
-        it('should call postReporting and return the result', async () => {
+        it('should call postReporting and return the result with V2 query', async () => {
             const { result } = renderHook(
                 () => usePostReportingV2(cubeQueries, newQuery),
                 {
@@ -90,6 +93,23 @@ describe('Reporting queries', () => {
                     },
                     'off',
                 )
+                expect(result.current.data?.data.data).toEqual([42])
+            })
+        })
+
+        it('should call postReporting without V2 query', async () => {
+            const { result } = renderHook(
+                () => usePostReportingV2(cubeQueries, undefined),
+                {
+                    wrapper: mockQueryClientProvider().QueryClientProvider,
+                },
+            )
+            await waitFor(() => {
+                expect(executeMetricCallMock).toHaveBeenCalledWith({
+                    metricName: METRIC_NAMES.TEST_METRIC,
+                    oldPayload: cubeQueries,
+                    newPayload: undefined,
+                })
                 expect(result.current.data?.data.data).toEqual([42])
             })
         })
@@ -119,6 +139,30 @@ describe('Reporting queries', () => {
             const result = await fetchPostReporting(cubeQueries)
 
             expect(postReportingMock).toHaveBeenCalledWith(cubeQueries)
+            expect(result.data?.data).toEqual([42])
+        })
+    })
+
+    describe('fetchPostReportingV2', () => {
+        it('should call metricExecutionHandler with V2 query', async () => {
+            const result = await fetchPostReportingV2(cubeQueries, newQuery)
+
+            expect(executeMetricCallMock).toHaveBeenCalledWith({
+                metricName: METRIC_NAMES.TEST_METRIC,
+                oldPayload: cubeQueries,
+                newPayload: newQuery,
+            })
+            expect(result.data?.data).toEqual([42])
+        })
+
+        it('should work without V2 query', async () => {
+            const result = await fetchPostReportingV2(cubeQueries, undefined)
+
+            expect(executeMetricCallMock).toHaveBeenCalledWith({
+                metricName: METRIC_NAMES.TEST_METRIC,
+                oldPayload: cubeQueries,
+                newPayload: undefined,
+            })
             expect(result.data?.data).toEqual([42])
         })
     })

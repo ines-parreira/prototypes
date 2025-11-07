@@ -162,6 +162,14 @@ describe('metric trends', () => {
                         prevStatsFilters,
                         timezone,
                     ),
+                    medianFirstResponseTime.build({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    medianFirstResponseTime.build({
+                        filters: prevStatsFilters,
+                        timezone,
+                    }),
                 )
             })
         })
@@ -297,11 +305,6 @@ describe('metric trends', () => {
             'fetchCustomerSatisfactionTrend',
             fetchCustomerSatisfactionTrend,
             customerSatisfactionQueryFactory,
-        ],
-        [
-            'fetchMedianFirstResponseTimeTrend',
-            fetchMedianFirstResponseTimeTrend,
-            medianFirstResponseTimeQueryFactory,
         ],
         [
             'fetchHumanResponseTimeAfterAiHandoffTrend',

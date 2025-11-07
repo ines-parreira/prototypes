@@ -1,7 +1,7 @@
 import { Metric } from 'domains/reporting/hooks/metrics'
 import { Cubes } from 'domains/reporting/models/cubes'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     UsePostReportingQueryData,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
@@ -53,14 +53,19 @@ export function useMetric<
     }
 }
 
-export const fetchMetric = async <TCube extends Cubes = Cubes>(
+export const fetchMetric = async <
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
     query: ReportingQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
 ): Promise<Metric> => {
-    return fetchPostReporting<
+    return fetchPostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
-        TCube
-    >([query])
+        TCube,
+        TMeta
+    >([query], queryV2)
         .then((res) => ({
             isFetching: false,
             isError: false,

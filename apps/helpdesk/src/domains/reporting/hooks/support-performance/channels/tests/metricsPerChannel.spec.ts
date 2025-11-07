@@ -25,7 +25,7 @@ import {
     useZeroTouchTicketsMetricPerChannel,
 } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -66,7 +66,7 @@ const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimensionV2)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('metricsPerChannel', () => {
     const periodStart = moment()
@@ -140,12 +140,17 @@ describe('metricsPerChannel', () => {
                     channel,
                 )
 
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     medianFirstAgentResponseTimePerChannelQueryFactory(
                         statsFilters,
                         timezone,
                         sorting,
                     ),
+                    medianFirstResponseTimePerChannelQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
                     channel,
                 )
             })
@@ -248,13 +253,30 @@ describe('metricsPerChannel', () => {
     })
 
     describe('fetch methods', () => {
+        it('should pass the query to fetchMedianFirstResponseTimeMetricPerChannel with V2 query', async () => {
+            await fetchMedianFirstResponseTimeMetricPerChannel(
+                statsFilters,
+                timezone,
+                sorting,
+                channel,
+            )
+
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+                medianFirstResponseTimeMetricPerChannelQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                ),
+                medianFirstResponseTimePerChannelQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: sorting,
+                }),
+                channel,
+            )
+        })
+
         it.each([
-            {
-                name: 'fetchMedianFirstResponseTimeMetricPerChannel',
-                fetch: fetchMedianFirstResponseTimeMetricPerChannel,
-                queryFactory:
-                    medianFirstResponseTimeMetricPerChannelQueryFactory,
-            },
             {
                 name: 'fetchTicketsRepliedMetricPerChannel',
                 fetch: fetchTicketsRepliedMetricPerChannel,
@@ -306,8 +328,9 @@ describe('metricsPerChannel', () => {
             async ({ fetch, queryFactory }) => {
                 await fetch(statsFilters, timezone, sorting, channel)
 
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
+                    undefined,
                     channel,
                 )
             },

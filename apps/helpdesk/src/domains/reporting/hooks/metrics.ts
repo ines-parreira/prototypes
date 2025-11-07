@@ -76,7 +76,13 @@ export const fetchTicketsCreatedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(ticketsCreatedQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        ticketsCreatedQueryFactory(statsFilters, timezone),
+        createdTicketsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const useClosedTicketsMetric = (
     statsFilters: StatsFilters,
@@ -102,6 +108,10 @@ export const fetchClosedTicketsMetric = (
             closedTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        closedTicketsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 // P2/P3
 export const useCustomerSatisfactionMetric = (
@@ -169,6 +179,10 @@ export const fetchMedianFirstResponseTimeMetric = async (
             queryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        medianFirstResponseTimeQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 }
 // P2/P3
@@ -240,6 +254,10 @@ export const fetchMedianResolutionTimeMetric = (
             medianResolutionTimeQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        medianResolutionTimeQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const useTicketsRepliedMetric = (
@@ -258,7 +276,13 @@ export const fetchTicketsRepliedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(ticketsRepliedQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        ticketsRepliedQueryFactory(statsFilters, timezone),
+        ticketsRepliedCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const useMessagesSentMetric = (
     statsFilters: StatsFilters,
@@ -276,7 +300,13 @@ export const fetchMessagesSentMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(messagesSentQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        messagesSentQueryFactory(statsFilters, timezone),
+        sentMessagesCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 // P2/P3
 export const useMessagesReceivedMetric = (
@@ -314,6 +344,10 @@ export const fetchOneTouchTicketsMetric = (
             oneTouchTicketsQueryFactory(statsFilters, timezone),
             ignoreNotAssignedTicketsFilter,
         ),
+        oneTouchTicketsQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const useZeroTouchTicketsMetric = (
@@ -373,6 +407,11 @@ export const fetchTicketAverageHandleTimeMetric = async (
             ),
             ignoreNotAssignedTicketsFilter,
         ),
+        ticketAverageHandleTimeQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
     )
 
 export const useOnlineTimeMetric = (
@@ -394,4 +433,11 @@ export const fetchOnlineTimeMetric = (
     timezone: string,
     sorting?: OrderDirection,
 ): Promise<Metric> =>
-    fetchMetric(onlineTimeQueryFactory(statsFilters, timezone, sorting))
+    fetchMetric(
+        onlineTimeQueryFactory(statsFilters, timezone, sorting),
+        onlineTimeQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
+    )

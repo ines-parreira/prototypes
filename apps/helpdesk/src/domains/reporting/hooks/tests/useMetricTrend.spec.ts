@@ -1,21 +1,21 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 const defaultReporting = {
     isFetching: false,
@@ -252,7 +252,7 @@ describe('fetchMetricTrend', () => {
     } as UseQueryResult
 
     beforeEach(() => {
-        fetchPostReportingMock.mockResolvedValue({
+        fetchPostReportingV2Mock.mockResolvedValue({
             data: defaultReporting,
         } as any)
     })
@@ -271,10 +271,10 @@ describe('fetchMetricTrend', () => {
     })
 
     it('should return undefined if one of the queries is empty', async () => {
-        fetchPostReportingMock.mockResolvedValueOnce({
-            data: defaultReporting,
+        fetchPostReportingV2Mock.mockResolvedValueOnce({
+            data: { data: defaultReporting },
         } as any)
-        fetchPostReportingMock.mockResolvedValueOnce({
+        fetchPostReportingV2Mock.mockResolvedValueOnce({
             data: { data: undefined },
         } as any)
 
@@ -288,7 +288,7 @@ describe('fetchMetricTrend', () => {
     })
 
     it('should return error', async () => {
-        fetchPostReportingMock.mockRejectedValue({})
+        fetchPostReportingV2Mock.mockRejectedValue({})
 
         const result = await fetchMetricTrend(defaultQuery, defaultQuery)
 
@@ -297,5 +297,29 @@ describe('fetchMetricTrend', () => {
             isError: true,
             isFetching: false,
         })
+    })
+
+    it('should fetch with V2 queries', async () => {
+        const queryV2 = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: MetricScope.SatisfactionSurveys,
+            measures: [],
+            dimensions: [],
+            filters: [],
+        }
+
+        await fetchMetricTrend(defaultQuery, defaultQuery, queryV2, queryV2)
+
+        expect(fetchPostReportingV2Mock).toHaveBeenCalledTimes(2)
+        expect(fetchPostReportingV2Mock).toHaveBeenNthCalledWith(
+            1,
+            [defaultQuery],
+            queryV2,
+        )
+        expect(fetchPostReportingV2Mock).toHaveBeenNthCalledWith(
+            2,
+            [defaultQuery],
+            queryV2,
+        )
     })
 })

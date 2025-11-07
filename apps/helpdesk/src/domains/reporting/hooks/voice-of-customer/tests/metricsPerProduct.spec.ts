@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimension,
     useMetricPerDimensionV2,
     useMetricPerDimensionWithEnrichment,
@@ -30,7 +30,7 @@ import { OrderDirection } from 'models/api/types'
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment,
 )
@@ -93,8 +93,9 @@ describe('metricsPerProduct', () => {
             async (_, fetchFn, queryFactory) => {
                 await fetchFn(statsFilters, timezone, sorting, productId)
 
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
+                    undefined,
                     productId,
                 )
             },
@@ -179,13 +180,14 @@ describe('metricsPerProduct', () => {
                     productId,
                 )
 
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(
                         statsFilters,
                         timezone,
                         intentCustomFieldId,
                         sorting,
                     ),
+                    undefined,
                     productId,
                 )
             },

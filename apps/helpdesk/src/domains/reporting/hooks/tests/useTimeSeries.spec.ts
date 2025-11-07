@@ -26,7 +26,7 @@ import {
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
@@ -39,7 +39,7 @@ import {
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 describe('useTimeSeries', () => {
     const defaultTimeDimension = {
@@ -266,13 +266,31 @@ describe('useTimeSeries', () => {
 
     describe('fetchTimeSeries', () => {
         beforeEach(() => {
-            fetchPostReportingMock.mockResolvedValue({
+            fetchPostReportingV2Mock.mockResolvedValue({
                 data: { data: defaultData },
             } as any)
         })
-        it('should use fetchPostReporting and return formatted data', async () => {
+        it('should use fetchPostReportingV2 and return formatted data', async () => {
             const result = await fetchTimeSeries(defaultQuery)
 
+            expect(result).toEqual(expectedTimeSeriesResult)
+        })
+
+        it('should call fetchPostReportingV2 with V2 query when provided', async () => {
+            const queryV2 = {
+                metricName: METRIC_NAMES.TEST_METRIC,
+                scope: 'test-scope',
+                measures: ['testMeasure'],
+                filters: [],
+            } as any
+
+            const result = await fetchTimeSeries(defaultQuery, queryV2)
+
+            expect(fetchPostReportingV2Mock).toHaveBeenCalledWith(
+                [defaultQuery],
+                queryV2,
+                {},
+            )
             expect(result).toEqual(expectedTimeSeriesResult)
         })
     })
@@ -864,9 +882,9 @@ describe('TimeSeriesPerDimension', () => {
 
     describe('fetchTimeSeriesPerDimension', () => {
         it('should return separate time series per dimension value', async () => {
-            fetchPostReportingMock.mockResolvedValue({
+            fetchPostReportingV2Mock.mockResolvedValue({
                 data: defaultResult,
-            } as unknown as ReturnType<typeof fetchPostReporting>)
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
 
             const result = await fetchTimeSeriesPerDimension({
                 ...defaultQuery,
@@ -979,6 +997,37 @@ describe('TimeSeriesPerDimension', () => {
                     ],
                 ],
             })
+        })
+
+        it('should call fetchPostReportingV2 with V2 query when provided', async () => {
+            const queryV2 = {
+                metricName: METRIC_NAMES.TEST_METRIC,
+                scope: 'test-scope',
+                measures: ['testMeasure'],
+                filters: [],
+            } as any
+
+            fetchPostReportingV2Mock.mockResolvedValue({
+                data: defaultResult,
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+
+            const result = await fetchTimeSeriesPerDimension(
+                {
+                    ...defaultQuery,
+                },
+                queryV2,
+            )
+
+            expect(fetchPostReportingV2Mock).toHaveBeenCalledWith(
+                [
+                    {
+                        ...defaultQuery,
+                    },
+                ],
+                queryV2,
+                {},
+            )
+            expect(result).toBeDefined()
         })
     })
 })

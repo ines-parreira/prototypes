@@ -3,7 +3,7 @@ import {
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -61,7 +61,7 @@ export const useMedianFirstResponseTimeMetricPerAgent = (
 }
 
 export const fetchMedianFirstResponseTimeMetricPerAgent = async (
-    statsFilters: StatsFilters,
+    filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     dimensionId?: string,
@@ -72,8 +72,13 @@ export const fetchMedianFirstResponseTimeMetricPerAgent = async (
         ? medianFirstResponseTimeMetricPerAgentQueryFactory
         : medianFirstAgentResponseTimePerAgentQueryFactory
 
-    return fetchMetricPerDimension(
-        queryFactory(statsFilters, timezone, sorting),
+    return fetchMetricPerDimensionV2(
+        queryFactory(filters, timezone, sorting),
+        medianFirstResponseTimePerAgentQueryV2Factory({
+            filters,
+            timezone,
+            sortDirection: sorting,
+        }),
         dimensionId,
     )
 }

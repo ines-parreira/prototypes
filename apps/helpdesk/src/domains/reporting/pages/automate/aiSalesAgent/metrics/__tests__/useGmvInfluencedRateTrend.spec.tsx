@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -44,7 +44,7 @@ const fetchGmvInfluencedTrendInUSDMock = assumeMock(
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReportingV2)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 jest.useFakeTimers()
 
@@ -108,18 +108,18 @@ describe('gmvInfluencedRateTrend', () => {
                     prevValue: 2,
                 },
             } as unknown as ReturnType<typeof fetchGmvInfluencedTrendInUSD>)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 32 }],
                 },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentOrdersMeasure.GmvUsd]: 24 }],
                 },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
 
             const result = await fetchGmvInfluencedRateTrend(
                 statsFilters,

@@ -6,6 +6,7 @@ import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
     fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     fetchMetricPerDimensionWithEnrichment,
     QueryReturnType,
     useMetricPerDimension,
@@ -28,6 +29,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     fetchPostReporting,
+    fetchPostReportingV2,
     useEnrichedPostReporting,
     usePostReporting,
     usePostReportingV2,
@@ -51,6 +53,7 @@ jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const usePostReportingMockV2 = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 jest.mock('domains/reporting/models/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
@@ -381,6 +384,112 @@ describe('MetricPerDimension', () => {
 
             const result = await fetchMetricPerDimension(
                 query,
+                agentIdNotInResponse,
+            )
+
+            expect(result?.data).toEqual(null)
+        })
+    })
+
+    describe('fetchMetricPerDimensionV2', () => {
+        const decileValue = 5
+
+        const dataWithDeciles = Array.from(Array(150).keys()).map((index) => ({
+            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
+                agentId + index,
+            ),
+            [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+                metricValue + index,
+            ),
+            decile: String(decileValue + index),
+        }))
+
+        const mockedResponseWithDeciles = {
+            isFetching: false,
+            isError: false,
+            data: dataWithDeciles,
+        }
+
+        it('should fetchPostReportingV2 with V2 query and return data with decile', async () => {
+            fetchPostReportingV2Mock.mockResolvedValue({
+                data: mockedResponseWithDeciles,
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+
+            const result = await fetchMetricPerDimensionV2(
+                query,
+                queryV2,
+                String(agentId),
+            )
+
+            expect(result).toEqual({
+                isFetching: mockedResponseWithDeciles.isFetching,
+                isError: mockedResponseWithDeciles.isError,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            })
+        })
+
+        it('should work without V2 query', async () => {
+            fetchPostReportingV2Mock.mockResolvedValue({
+                data: mockedResponse,
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+
+            const result = await fetchMetricPerDimensionV2(
+                query,
+                undefined,
+                String(agentId),
+            )
+
+            expect(result).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    value: metricValue,
+                    decile: null,
+                    allData: mockedResponse.data,
+                },
+            })
+        })
+
+        it('should return null when data not available for entity id', async () => {
+            const agentIdNotInResponse = 'notInResponse'
+            fetchPostReportingV2Mock.mockResolvedValue({
+                data: mockedResponseWithDeciles,
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+
+            const result = await fetchMetricPerDimensionV2(
+                query,
+                queryV2,
+                agentIdNotInResponse,
+            )
+
+            expect(result?.data?.value).toBeNull()
+            expect(result?.data?.decile).toBeNull()
+        })
+
+        it('should return null when called without entity', async () => {
+            fetchPostReportingV2Mock.mockResolvedValue({
+                data: mockedResponseWithDeciles,
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+
+            const result = await fetchMetricPerDimensionV2(query, queryV2)
+
+            expect(result?.data?.value).toBeNull()
+            expect(result?.data?.decile).toBeNull()
+        })
+
+        it('should return null on error', async () => {
+            const agentIdNotInResponse = 'notInResponse'
+            fetchPostReportingV2Mock.mockRejectedValue(
+                {} as unknown as ReturnType<typeof fetchPostReportingV2>,
+            )
+
+            const result = await fetchMetricPerDimensionV2(
+                query,
+                queryV2,
                 agentIdNotInResponse,
             )
 

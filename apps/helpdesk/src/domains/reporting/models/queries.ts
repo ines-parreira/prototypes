@@ -74,6 +74,40 @@ export const fetchPostReporting = <
     })
 }
 
+/**
+ * Similar to fetchPostReporting but with support for v2 queries.
+ * This is a temporary solution, because some metrics use `fetchPostReporting` directly
+ * and not one of the `fetchMetricX` functions and refactoring all of them would be too time-consuming for now.
+ */
+export const fetchPostReportingV2 = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>,
+    TCube extends Cube = Cube,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    payload: ReportingParams<TCube>,
+    newPayload?: BuiltQuery<TMeta>,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >,
+) => {
+    return appQueryClient.fetchQuery({
+        queryKey: newPayload
+            ? reportingKeys.postV2(payload, newPayload)
+            : reportingKeys.post(payload),
+        queryFn: () =>
+            metricExecutionHandler<TData, TCube, TMeta>({
+                metricName: payload[0].metricName,
+                oldPayload: payload,
+                newPayload: newPayload,
+            }),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
 export const usePostReporting = <
     TData extends unknown[],
     SelectData = UsePostReportingQueryData<TData>,

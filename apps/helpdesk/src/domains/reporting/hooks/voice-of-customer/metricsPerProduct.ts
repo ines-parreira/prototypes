@@ -3,7 +3,7 @@ import {
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
 import {
-    fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -91,12 +91,13 @@ export const fetchReturnMentionsPerProduct = (
     sorting?: OrderDirection,
     productId?: string,
 ) =>
-    fetchMetricPerDimension(
+    fetchMetricPerDimensionV2(
         returnMentionsPerProductQueryFactory(
             statsFilters,
             timezone,
             intentCustomFieldId,
             sorting,
         ),
+        undefined,
         productId,
     )

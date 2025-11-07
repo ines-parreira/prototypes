@@ -238,6 +238,10 @@ describe('metrics', () => {
                 ),
                 ignoreNotAssignedTicketsFilter,
             ),
+            medianFirstResponseTime.build({
+                filters: statsFilters,
+                timezone,
+            }),
         )
     })
 
@@ -246,16 +250,66 @@ describe('metrics', () => {
             'fetchClosedTicketsMetric',
             fetchClosedTicketsMetric,
             closedTicketsQueryFactory,
-        ],
-        [
-            'fetchCustomerSatisfactionMetric',
-            fetchCustomerSatisfactionMetric,
-            customerSatisfactionQueryFactory,
+            closedTicketsCount,
         ],
         [
             'fetchMedianFirstResponseTimeMetric',
             fetchMedianFirstResponseTimeMetric,
             medianFirstResponseTimeQueryFactory,
+            medianFirstResponseTime,
+        ],
+        [
+            'fetchMedianResolutionTimeMetric',
+            fetchMedianResolutionTimeMetric,
+            medianResolutionTimeQueryFactory,
+            medianResolutionTime,
+        ],
+        [
+            'fetchOneTouchTicketsMetric',
+            fetchOneTouchTicketsMetric,
+            oneTouchTicketsQueryFactory,
+            oneTouchTickets,
+        ],
+        [
+            'fetchTicketHandleTimeMetric',
+            fetchTicketAverageHandleTimeMetric,
+            ticketAverageHandleTimeQueryFactory,
+            ticketAverageHandleTime,
+        ],
+    ])(
+        '%s',
+        (
+            _,
+            fetchTrendFn,
+            queryFactory: (
+                statsFilters: StatsFilters,
+                timezone: string,
+            ) => ReportingQuery,
+            queryBuilder,
+        ) => {
+            it('should fetch reporting metric with assigned tickets only', async () => {
+                const result = await fetchTrendFn(statsFilters, timezone)
+
+                expect(fetchMetricMock).toHaveBeenCalledWith(
+                    withFilter(
+                        queryFactory(statsFilters, timezone),
+                        ignoreNotAssignedTicketsFilter,
+                    ),
+                    queryBuilder.build({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                )
+                expect(result).toBe(defaultMetricValue)
+            })
+        },
+    )
+
+    describe.each([
+        [
+            'fetchCustomerSatisfactionMetric',
+            fetchCustomerSatisfactionMetric,
+            customerSatisfactionQueryFactory,
         ],
         [
             'fetchHumanResponseTimeAfterAiHandoffMetric',
@@ -268,24 +322,9 @@ describe('metrics', () => {
             medianResponseTimeQueryFactory,
         ],
         [
-            'fetchMedianResolutionTimeMetric',
-            fetchMedianResolutionTimeMetric,
-            medianResolutionTimeQueryFactory,
-        ],
-        [
-            'fetchOneTouchTicketsMetric',
-            fetchOneTouchTicketsMetric,
-            oneTouchTicketsQueryFactory,
-        ],
-        [
             'fetchZeroTouchTicketsMetric',
             fetchZeroTouchTicketsMetric,
             zeroTouchTicketsQueryFactory,
-        ],
-        [
-            'fetchTicketHandleTimeMetric',
-            fetchTicketAverageHandleTimeMetric,
-            ticketAverageHandleTimeQueryFactory,
         ],
     ])(
         '%s',
@@ -382,26 +421,57 @@ describe('metrics', () => {
             'fetchMessagesSentMetric',
             fetchMessagesSentMetric,
             messagesSentQueryFactory,
-        ],
-        [
-            'fetchMessagesReceivedMetric',
-            fetchMessagesReceivedMetric,
-            messagesReceivedQueryFactory,
+            sentMessagesCount,
         ],
         [
             'fetchTicketsRepliedMetric',
             fetchTicketsRepliedMetric,
             ticketsRepliedQueryFactory,
+            ticketsRepliedCount,
         ],
         [
             'fetchOnlineTimeMetric',
             fetchOnlineTimeMetric,
             onlineTimeQueryFactory,
+            onlineTime,
         ],
         [
             'fetchTicketsCreatedMetric',
             fetchTicketsCreatedMetric,
             ticketsCreatedQueryFactory,
+            createdTicketsCount,
+        ],
+    ])(
+        '%s',
+        (
+            _,
+            fetchTrendFn,
+            queryFactory: (
+                statsFilters: StatsFilters,
+                timezone: string,
+            ) => ReportingQuery,
+            queryBuilder,
+        ) => {
+            it('should create reporting metric with all tickets', async () => {
+                const result = await fetchTrendFn(statsFilters, timezone)
+
+                expect(fetchMetricMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone),
+                    queryBuilder.build({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                )
+                expect(result).toBe(defaultMetricValue)
+            })
+        },
+    )
+
+    describe.each([
+        [
+            'fetchMessagesReceivedMetric',
+            fetchMessagesReceivedMetric,
+            messagesReceivedQueryFactory,
         ],
     ])(
         '%s',

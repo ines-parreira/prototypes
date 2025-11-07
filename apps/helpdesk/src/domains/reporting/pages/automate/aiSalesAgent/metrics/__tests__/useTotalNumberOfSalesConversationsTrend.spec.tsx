@@ -7,7 +7,7 @@ import moment from 'moment'
 
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
-    fetchPostReporting,
+    fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -36,7 +36,7 @@ jest.useFakeTimers()
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReportingV2)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 describe('totalNumberOfSalesConversationsTrend', () => {
     const defaultReporting = {
@@ -86,18 +86,18 @@ describe('totalNumberOfSalesConversationsTrend', () => {
 
     describe('fetchTotalNumberOfAgentConverationsTrend', () => {
         it('should return correct metric data when the query resolves', async () => {
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentConversationsMeasure.Count]: 32 }],
                 },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: [{ [AiSalesAgentConversationsMeasure.Count]: 24 }],
                 },
-            } as unknown as ReturnType<typeof fetchPostReporting>)
+            } as unknown as ReturnType<typeof fetchPostReportingV2>)
 
             const result = await fetchTotalNumberOfSalesConversationsTrend(
                 statsFilters,

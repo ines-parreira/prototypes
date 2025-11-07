@@ -42,4 +42,15 @@ export const fetchAverageScoreTrend = (
             },
             timezone,
         ),
+        averageScoreQueryV2Factory({
+            filters,
+            timezone,
+        }),
+        averageScoreQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
