@@ -223,7 +223,9 @@ describe('TranslationsDropdown', () => {
             )
             renderWithContext()
 
-            expect(screen.getByText('Unable to regenerate')).toBeInTheDocument()
+            expect(
+                screen.getByText('Regeneration limit reached'),
+            ).toBeInTheDocument()
         })
 
         it('should not show TranslationLimit when failed without hasRegeneratedOnce', () => {
@@ -237,7 +239,7 @@ describe('TranslationsDropdown', () => {
             renderWithContext()
 
             expect(
-                screen.queryByText('Unable to regenerate'),
+                screen.queryByText('Regeneration limit reached'),
             ).not.toBeInTheDocument()
         })
     })

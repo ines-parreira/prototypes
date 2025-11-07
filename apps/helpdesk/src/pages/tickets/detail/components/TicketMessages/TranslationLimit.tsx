@@ -7,7 +7,7 @@ export function TranslationLimit() {
         <div className={css.translationLimit}>
             <Icon name="info" size="sm" />
             <span className={css.translationLimitText}>
-                Unable to regenerate
+                Regeneration limit reached
             </span>
         </div>
     )
