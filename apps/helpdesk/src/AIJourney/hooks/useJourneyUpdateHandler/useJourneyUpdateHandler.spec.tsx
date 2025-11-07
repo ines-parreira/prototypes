@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
-import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,7 +23,7 @@ jest.mock('state/notifications/actions', () => ({
 
 const params = {
     integrationId: 1,
-    journey: { id: 'journey-id' } as JourneyApiDTO,
+    journeyId: 'journey-id',
     followUpValue: 3,
     isDiscountEnabled: true,
     discountValue: '10',
@@ -125,7 +125,7 @@ describe('useJourneyUpdateHandler', () => {
     it('should throw an error if integrationId missing', async () => {
         const params = {
             integrationId: undefined,
-            journey: { id: 'journey-id' } as JourneyApiDTO,
+            journey: 'journey-id',
         }
 
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {
@@ -137,9 +137,7 @@ describe('useJourneyUpdateHandler', () => {
                 result.current.handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
                 }),
-            ).rejects.toThrow(
-                'Missing integration information: ID: undefined, journey ID: journey-id',
-            )
+            ).rejects.toThrow('Missing journey')
         })
 
         expect(mockMutateAsync).not.toHaveBeenCalled()
@@ -148,7 +146,7 @@ describe('useJourneyUpdateHandler', () => {
     it('should throw an error if journey missing', async () => {
         const params = {
             integrationId: 1,
-            journey: undefined,
+            journeyId: undefined,
         }
 
         const { result } = renderHook(() => useJourneyUpdateHandler(params), {
@@ -160,9 +158,7 @@ describe('useJourneyUpdateHandler', () => {
                 result.current.handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
                 }),
-            ).rejects.toThrow(
-                'Missing integration information: ID: 1, journey ID: undefined',
-            )
+            ).rejects.toThrow('Missing journey')
         })
 
         expect(mockMutateAsync).not.toHaveBeenCalled()

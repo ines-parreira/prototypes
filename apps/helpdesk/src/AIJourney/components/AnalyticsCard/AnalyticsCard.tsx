@@ -108,7 +108,7 @@ export const AnalyticsCard = ({
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        journey,
+        journeyId: journey.id,
     })
 
     const handleUpdateJourneyState = useCallback(async () => {

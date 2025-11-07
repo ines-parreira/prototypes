@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
-import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -63,7 +63,7 @@ describe('useJourneyUpdateHandler', () => {
 
     const defaultParams = {
         integrationId: 100,
-        journey: { id: 'journey-123' } as JourneyApiDTO,
+        journeyId: 'journey-123',
         followUpValue: 3,
         isDiscountEnabled: true,
         discountValue: '10',
@@ -152,7 +152,6 @@ describe('useJourneyUpdateHandler', () => {
 
             expect(queryClient.invalidateQueries).toHaveBeenCalledWith([
                 'journeys',
-                100,
             ])
             expect(updateResult).toBe(mockResponse)
             expect(mockDispatch).not.toHaveBeenCalled()
@@ -194,7 +193,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should not include journey configs when all values are undefined or null', async () => {
             const paramsWithoutConfigs = {
                 integrationId: 100,
-                journey: { id: 'journey-123' } as JourneyApiDTO,
+                journeyId: 'journey-123',
                 followUpValue: undefined,
                 isDiscountEnabled: undefined,
                 discountValue: undefined,
@@ -290,9 +289,7 @@ describe('useJourneyUpdateHandler', () => {
                 result.current.handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
                 }),
-            ).rejects.toThrow(
-                'Missing integration information: ID: undefined, journey ID: journey-123',
-            )
+            ).rejects.toThrow('Missing integration')
 
             expect(mockDispatch).toHaveBeenCalledWith(
                 notify({
@@ -305,7 +302,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should throw error when journey id is missing', async () => {
             const paramsWithoutJourneyId = {
                 ...defaultParams,
-                journey: undefined,
+                journeyId: undefined,
             }
 
             const { result } = renderHook(
@@ -317,9 +314,7 @@ describe('useJourneyUpdateHandler', () => {
                 result.current.handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
                 }),
-            ).rejects.toThrow(
-                'Missing integration information: ID: 100, journey ID: undefined',
-            )
+            ).rejects.toThrow('Missing journey')
         })
 
         it('should handle API errors and dispatch notification', async () => {
@@ -486,7 +481,7 @@ describe('useJourneyUpdateHandler', () => {
         it('should handle journey with empty id string', async () => {
             const paramsWithEmptyJourneyId = {
                 ...defaultParams,
-                journey: { id: '' } as JourneyApiDTO,
+                journeyId: '',
             }
 
             const { result } = renderHook(
@@ -498,15 +493,13 @@ describe('useJourneyUpdateHandler', () => {
                 result.current.handleUpdate({
                     journeyState: JourneyStatusEnum.Active,
                 }),
-            ).rejects.toThrow(
-                'Missing integration information: ID: 100, journey ID: ',
-            )
+            ).rejects.toThrow('Missing journey')
         })
 
         it('should include journey configs when at least one value is defined', async () => {
             const paramsWithSingleConfig = {
                 integrationId: 100,
-                journey: { id: 'journey-123' } as JourneyApiDTO,
+                journeyId: 'journey-123',
                 followUpValue: 1, // Only this is defined
                 isDiscountEnabled: false,
                 discountValue: undefined,

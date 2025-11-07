@@ -1,16 +1,15 @@
 import { Link } from 'react-router-dom'
 
+import { Box, ColumnDef, createSortableColumn, Text } from '@gorgias/axiom'
 import {
-    Box,
-    Button,
-    ColumnDef,
-    createSortableColumn,
-    Text,
-} from '@gorgias/axiom'
-import { JourneyApiDTO } from '@gorgias/convert-client'
+    JourneyApiDTO,
+    JourneyCampaignStateEnum,
+} from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 
+import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
+import { MoreOptions } from './MoreOptions/MoreOptions'
 import { CampaignsTableMeta } from './types'
 
 export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
@@ -19,19 +18,23 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
         const journeyType = info.row.original.type
         const journeyId = info.row.original.id
         return (
-            <Box gap="xxxs" minWidth="200px">
+            <Box gap="xs">
                 <Link
                     to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup/${journeyId}`}
                 >
-                    <Text variant="bold">{info.getValue() as string}</Text>
+                    <Text variant="bold" color="black">
+                        {info.getValue() as string}
+                    </Text>
                 </Link>
             </Box>
         )
     }),
     createSortableColumn<JourneyApiDTO>('campaign.state', 'Status', (info) => {
         return (
-            <Box gap="xxxs" minWidth="200px">
-                {info.getValue() as string}
+            <Box gap="xs">
+                <CampaignStateBadge
+                    state={info.getValue() as JourneyCampaignStateEnum}
+                />
             </Box>
         )
     }),
@@ -40,14 +43,20 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
         cell: (info) => {
             const meta = info.table.options.meta as CampaignsTableMeta
             return (
-                <Button
-                    as="button"
-                    icon="delete_outline"
-                    intent="regular"
-                    size="sm"
-                    variant="tertiary"
-                    onClick={() => meta.onRemoveClick(info.row.original.id)}
-                />
+                <Box gap="xs">
+                    <MoreOptions
+                        shopName={info.row.original.store_name}
+                        journeyId={info.row.original.id}
+                        state={info.row.original.campaign?.state!}
+                        handleChangeStatus={() => {}}
+                        handleRemoveClick={() =>
+                            meta.onRemoveClick(info.row.original.id)
+                        }
+                        handleSendClick={() =>
+                            meta.onSendClick(info.row.original.id)
+                        }
+                    />
+                </Box>
             )
         },
     },

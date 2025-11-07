@@ -2,9 +2,10 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { useUpdateJourney } from 'AIJourney/queries'
+import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NewPhoneNumber } from 'models/phoneNumber/types'
 import { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
@@ -12,8 +13,8 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 type UseJourneyActionsParams = {
+    journeyId?: string
     integrationId?: number
-    journey?: JourneyApiDTO
     followUpValue?: number
     isDiscountEnabled?: boolean
     discountValue?: string
@@ -23,8 +24,8 @@ type UseJourneyActionsParams = {
 }
 
 export const useJourneyUpdateHandler = ({
+    journeyId,
     integrationId,
-    journey,
     followUpValue,
     isDiscountEnabled,
     discountValue,
@@ -42,20 +43,24 @@ export const useJourneyUpdateHandler = ({
             journeyState,
             journeyMessageInstructions,
             campaignTitle,
+            campaignState,
             includedAudienceListIds,
             excludedAudienceListIds,
         }: {
-            journeyState: JourneyStatusEnum
+            journeyState?: JourneyStatusEnum
             journeyMessageInstructions?: string | null
             campaignTitle?: string
+            campaignState?: 'draft' | 'scheduled'
             includedAudienceListIds?: string[]
             excludedAudienceListIds?: string[]
         }) => {
             try {
-                if (!integrationId || !journey?.id) {
-                    throw new Error(
-                        `Missing integration information: ID: ${integrationId}, journey ID: ${journey?.id}`,
-                    )
+                if (phoneNumberValue && !integrationId) {
+                    throw new Error(`Missing integration`)
+                }
+
+                if (!journeyId) {
+                    throw new Error(`Missing journey`)
                 }
 
                 const smsIntegrationId = phoneNumberValue?.integrations.find(
@@ -81,17 +86,19 @@ export const useJourneyUpdateHandler = ({
                 )
 
                 const requestBody = {
-                    journeyId: journey.id,
+                    journeyId: journeyId,
                     params: {
                         state: journeyState,
                         message_instructions: journeyMessageInstructions,
                         included_audience_list_ids: includedAudienceListIds,
                         excluded_audience_list_ids: excludedAudienceListIds,
-                        campaign: campaignTitle
-                            ? {
-                                  title: campaignTitle,
-                              }
-                            : undefined,
+                        campaign:
+                            campaignTitle || campaignState
+                                ? {
+                                      title: campaignTitle,
+                                      state: campaignState,
+                                  }
+                                : undefined,
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
                 }
@@ -99,7 +106,7 @@ export const useJourneyUpdateHandler = ({
                 const updateJourneyMutate =
                     await updateJourney.mutateAsync(requestBody)
 
-                await queryClient.invalidateQueries(['journeys', integrationId])
+                await queryClient.invalidateQueries(aiJourneyKeys.all())
 
                 return updateJourneyMutate
             } catch (error) {
@@ -113,8 +120,8 @@ export const useJourneyUpdateHandler = ({
             }
         },
         [
+            journeyId,
             integrationId,
-            journey,
             followUpValue,
             isDiscountEnabled,
             discountValue,

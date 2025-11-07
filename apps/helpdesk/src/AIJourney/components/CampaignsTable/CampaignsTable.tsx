@@ -11,11 +11,15 @@ import {
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
+import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 
+import { useJourneyUpdateHandler } from '../../hooks'
+import { useDeleteJourney } from '../../queries/useDeleteJourney/useDeleteJourney'
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
+import SendCampaignConfirmation from './SendCampaignConfirmation/SendCampaignConfirmation'
 import { CampaignsTableMeta } from './types'
 
 import styles from './CampaignsTable.less'
@@ -32,12 +36,13 @@ export default function CampaignsTable<TData, TValue>({
     isLoading = false,
 }: CampaignsTableProps<TData, TValue>) {
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
-    const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(
-        null,
-    )
+    const [isSendModalOpen, setIsSendModalOpen] = useState(false)
+    const [selectedCampaignId, setSelectedCampaignId] = useState<
+        string | undefined
+    >()
 
-    // TODO: Add delete campaign mutation
-    // const { mutate: deleteCampaign } = useDeleteCampaign()
+    // delete campaign
+    const { mutate: deleteCampaign } = useDeleteJourney()
 
     const handleOpenRemoveModal = useCallback(
         (id: string) => {
@@ -49,15 +54,42 @@ export default function CampaignsTable<TData, TValue>({
 
     const handleCloseRemoveModal = useCallback(() => {
         setIsRemoveModalOpen(false)
-        setSelectedCampaignId(null)
+        setSelectedCampaignId(undefined)
     }, [setSelectedCampaignId, setIsRemoveModalOpen])
 
     const handleConfirmRemove = useCallback(() => {
         if (selectedCampaignId) {
-            // deleteCampaign({ id: selectedCampaignId })
+            deleteCampaign({ id: selectedCampaignId })
         }
         handleCloseRemoveModal()
-    }, [selectedCampaignId, handleCloseRemoveModal])
+    }, [selectedCampaignId, handleCloseRemoveModal, deleteCampaign])
+
+    const { handleUpdate } = useJourneyUpdateHandler({
+        journeyId: selectedCampaignId,
+    })
+
+    // send campaign
+    const handleOpenSendModal = useCallback(
+        (id: string) => {
+            setSelectedCampaignId(id)
+            setIsSendModalOpen(true)
+        },
+        [setSelectedCampaignId, setIsSendModalOpen],
+    )
+
+    const handleCloseSendModal = useCallback(() => {
+        setIsSendModalOpen(false)
+        setSelectedCampaignId(undefined)
+    }, [setSelectedCampaignId, setIsSendModalOpen])
+
+    const handleConfirmSend = useCallback(() => {
+        if (selectedCampaignId) {
+            handleUpdate({
+                campaignState: JourneyCampaignStateEnum.Scheduled,
+            })
+        }
+        handleCloseSendModal()
+    }, [selectedCampaignId, handleCloseSendModal, handleUpdate])
 
     const table = useTable({
         data,
@@ -79,6 +111,7 @@ export default function CampaignsTable<TData, TValue>({
         additionalOptions: {
             meta: {
                 onRemoveClick: handleOpenRemoveModal,
+                onSendClick: handleOpenSendModal,
             } as CampaignsTableMeta,
         },
     })
@@ -129,6 +162,11 @@ export default function CampaignsTable<TData, TValue>({
                 isOpen={isRemoveModalOpen}
                 onClose={handleCloseRemoveModal}
                 onConfirm={handleConfirmRemove}
+            />
+            <SendCampaignConfirmation
+                isOpen={isSendModalOpen}
+                onClose={handleCloseSendModal}
+                onConfirm={handleConfirmSend}
             />
         </>
     )

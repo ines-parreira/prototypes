@@ -72,7 +72,7 @@ export const Activation = () => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        journey: journeyData,
+        journeyId: journeyData?.id,
     })
 
     const { handleTestSms } = useHandleSendTestSMS({

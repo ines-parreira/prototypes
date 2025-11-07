@@ -67,7 +67,7 @@ export const Test = () => {
 
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
-        journey: journeyData,
+        journeyId: journeyData?.id,
     })
 
     useEffect(() => {

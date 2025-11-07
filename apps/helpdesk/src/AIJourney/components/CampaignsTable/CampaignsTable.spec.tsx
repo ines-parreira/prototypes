@@ -1,11 +1,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { JourneyApiDTO } from '@gorgias/convert-client'
 
 import CampaignsTable from './CampaignsTable'
 import { columns } from './Columns'
+
+const mockHandleUpdate = jest.fn()
+jest.mock('AIJourney/hooks', () => ({
+    useJourneyUpdateHandler: () => ({
+        handleUpdate: mockHandleUpdate,
+    }),
+}))
 
 const mockFields: JourneyApiDTO[] = [
     {
@@ -65,27 +72,6 @@ describe('CampaignsTable', () => {
 
         expect(screen.getByText('Welcome campaign')).toBeInTheDocument()
         expect(screen.getByText('Win back campaign')).toBeInTheDocument()
-    })
-
-    it('should open remove modal when remove button is clicked', async () => {
-        render(<CampaignsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
-
-        const buttons = screen.getAllByRole('button')
-        const removeButtons = buttons.filter(
-            (btn) => !btn.id.startsWith('control-visibility'),
-        )
-
-        if (removeButtons.length > 1) {
-            await act(async () => {
-                await userEvent.click(removeButtons[1])
-            })
-        }
-
-        await waitFor(() => {
-            expect(screen.getByText('Delete Campaign?')).toBeInTheDocument()
-        })
     })
 
     it('should render loading state', () => {

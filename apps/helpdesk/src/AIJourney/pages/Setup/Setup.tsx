@@ -240,7 +240,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         isSuccess: isSuccessHandleUpdate,
     } = useJourneyUpdateHandler({
         integrationId,
-        journey: journeyData,
+        journeyId: journeyData?.id,
         followUpValue: numberOfMessageValue - 1,
         isDiscountEnabled,
         discountValue,
