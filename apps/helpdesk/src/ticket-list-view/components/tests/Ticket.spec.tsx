@@ -818,7 +818,7 @@ describe('Ticket', () => {
                 screen.getByText('Translated Excerpt Only'),
             ).toBeInTheDocument()
             expect(screen.getByText(defaultTicket.subject)).toBeInTheDocument()
-            expect(screen.queryByText('translate')).not.toBeInTheDocument()
+            expect(screen.queryByText('translate')).toBeInTheDocument()
         })
 
         it('should handle different languages correctly', () => {

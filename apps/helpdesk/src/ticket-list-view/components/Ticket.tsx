@@ -164,11 +164,10 @@ export default function Ticket({
                                 })}
                             >
                                 <header className={css.header}>
-                                    <span className={css.customerChannel}>
+                                    <div className={css.headerLeftContent}>
                                         <span className={css.customer}>
                                             {customer}
                                         </span>
-
                                         <SourceIcon
                                             ref={sourceRef}
                                             className={css.icon}
@@ -181,7 +180,18 @@ export default function Ticket({
                                         >
                                             {ticket.channel}
                                         </Tooltip>
-                                    </span>
+                                        {showTranslatedContent && (
+                                            <i
+                                                className={cn(
+                                                    'material-icons',
+                                                    css.translateIcon,
+                                                )}
+                                            >
+                                                translate
+                                            </i>
+                                        )}
+                                    </div>
+
                                     {!!ticket.priority &&
                                         ticket.priority !== 'normal' && (
                                             <PriorityLabel
@@ -203,17 +213,6 @@ export default function Ticket({
                                     {showTranslatedContent
                                         ? translation?.subject || ticket.subject
                                         : ticket.subject}
-                                    {showTranslatedContent &&
-                                        translation?.subject && (
-                                            <i
-                                                className={cn(
-                                                    'material-icons',
-                                                    css.translateIcon,
-                                                )}
-                                            >
-                                                translate
-                                            </i>
-                                        )}
                                 </span>
                                 {!hasUndeliveredMessages && (
                                     <div
