@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
 import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { useAiAgentHttpIntegration } from 'pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration'
@@ -24,6 +24,8 @@ type CoreContextValue = {
     onChannelAvailabilityChange: (
         availability: PlaygroundChannelAvailability,
     ) => void
+    setAreActionsEnabled: (value: boolean) => void
+    areActionsEnabled: boolean
 }
 
 const CoreContext = createContext<CoreContextValue | undefined>(undefined)
@@ -47,21 +49,30 @@ export const CoreProvider = ({
     children,
     arePlaygroundActionsAllowed,
 }: CoreProviderProps) => {
+    const [areActionsEnabledInSettings, setAreActionsEnabledInSettings] =
+        useState(false)
+    const areActionsEnabled =
+        arePlaygroundActionsAllowed || areActionsEnabledInSettings
     const { baseUrl } = useAiAgentHttpIntegration()
     const channelState = usePlaygroundChannel()
     const sessionState = useTestSession(baseUrl, {
-        areActionsAllowedToExecute: arePlaygroundActionsAllowed ?? false,
+        areActionsAllowedToExecute: areActionsEnabled ?? false,
     })
     const pollingState = usePlaygroundPolling({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
     })
 
-    const contextValue: CoreContextValue = {
-        ...sessionState,
-        ...pollingState,
-        ...channelState,
-    }
+    const contextValue: CoreContextValue = useMemo(
+        () => ({
+            ...sessionState,
+            ...pollingState,
+            ...channelState,
+            areActionsEnabled,
+            setAreActionsEnabled: setAreActionsEnabledInSettings,
+        }),
+        [sessionState, pollingState, channelState, areActionsEnabled],
+    )
 
     return (
         <CoreContext.Provider value={contextValue}>

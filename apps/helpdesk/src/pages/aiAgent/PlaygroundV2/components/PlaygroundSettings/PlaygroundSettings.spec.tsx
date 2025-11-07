@@ -57,6 +57,21 @@ jest.mock(
 )
 
 jest.mock(
+    'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal',
+    () => ({
+        __esModule: true,
+        default: ({ isOpen, onClose, onConfirm }: any) =>
+            isOpen ? (
+                <div data-testid="actions-warning-modal">
+                    <h2>Warning: Actions will affect real data</h2>
+                    <button onClick={onClose}>Cancel</button>
+                    <button onClick={onConfirm}>Confirm</button>
+                </div>
+            ) : null,
+    }),
+)
+
+jest.mock(
     'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection',
     () => ({
         TargetSelection: ({ customer, onChange }: any) => (
@@ -444,7 +459,7 @@ describe('PlaygroundSettings', () => {
             expect(actionsToggle).not.toBeChecked()
         })
 
-        it('should allow enabling actions toggle', async () => {
+        it('should show warning modal when enabling actions toggle', async () => {
             renderComponent()
 
             const actionsToggle = screen.getByLabelText('Actions')
@@ -452,7 +467,91 @@ describe('PlaygroundSettings', () => {
             await act(() => userEvent.click(actionsToggle))
 
             await waitFor(() => {
+                expect(
+                    screen.getByTestId('actions-warning-modal'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should enable actions when confirming modal', async () => {
+            renderComponent()
+
+            const actionsToggle = screen.getByLabelText('Actions')
+
+            await act(() => userEvent.click(actionsToggle))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('actions-warning-modal'),
+                ).toBeInTheDocument()
+            })
+
+            const confirmButton = screen.getByRole('button', {
+                name: /confirm/i,
+            })
+            await act(() => userEvent.click(confirmButton))
+
+            await waitFor(() => {
                 expect(actionsToggle).toBeChecked()
+                expect(
+                    screen.queryByTestId('actions-warning-modal'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not enable actions when canceling modal', async () => {
+            renderComponent()
+
+            const actionsToggle = screen.getByLabelText('Actions')
+
+            await act(() => userEvent.click(actionsToggle))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('actions-warning-modal'),
+                ).toBeInTheDocument()
+            })
+
+            const cancelButton = screen.getByRole('button', { name: /cancel/i })
+            await act(() => userEvent.click(cancelButton))
+
+            await waitFor(() => {
+                expect(actionsToggle).not.toBeChecked()
+                expect(
+                    screen.queryByTestId('actions-warning-modal'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should disable actions toggle without modal when already enabled', async () => {
+            renderComponent()
+
+            const actionsToggle = screen.getByLabelText('Actions')
+
+            await act(() => userEvent.click(actionsToggle))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('actions-warning-modal'),
+                ).toBeInTheDocument()
+            })
+
+            const confirmButton = screen.getByRole('button', {
+                name: /confirm/i,
+            })
+            await act(() => userEvent.click(confirmButton))
+
+            await waitFor(() => {
+                expect(actionsToggle).toBeChecked()
+            })
+
+            await act(() => userEvent.click(actionsToggle))
+
+            await waitFor(() => {
+                expect(actionsToggle).not.toBeChecked()
+                expect(
+                    screen.queryByTestId('actions-warning-modal'),
+                ).not.toBeInTheDocument()
             })
         })
     })
@@ -588,6 +687,17 @@ describe('PlaygroundSettings', () => {
 
             const actionsToggle = screen.getByLabelText('Actions')
             await act(() => userEvent.click(actionsToggle))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('actions-warning-modal'),
+                ).toBeInTheDocument()
+            })
+
+            const confirmButton = screen.getByRole('button', {
+                name: /confirm/i,
+            })
+            await act(() => userEvent.click(confirmButton))
 
             await waitFor(() => {
                 expect(actionsToggle).toBeChecked()

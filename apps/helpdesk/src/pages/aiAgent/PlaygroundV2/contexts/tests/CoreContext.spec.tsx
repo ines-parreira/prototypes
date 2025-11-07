@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 
 import { CoreProvider, useCoreContext } from '../CoreContext'
 
@@ -68,6 +68,8 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             expect(result.current.isPolling).toBe(false)
             expect(result.current.channel).toBe('email')
             expect(result.current.channelAvailability).toBe('online')
+            expect(result.current.areActionsEnabled).toBe(false)
+            expect(typeof result.current.setAreActionsEnabled).toBe('function')
         })
 
         it('should include test session state', () => {
@@ -190,6 +192,111 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 testSessionId: undefined,
                 baseUrl: 'https://test-base-url.com',
             })
+        })
+    })
+
+    describe('Actions state management', () => {
+        it('should default areActionsEnabled to false when arePlaygroundActionsAllowed is not provided', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(false)
+        })
+
+        it('should set areActionsEnabled to true when arePlaygroundActionsAllowed is true', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider arePlaygroundActionsAllowed={true}>
+                        {children}
+                    </CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+        })
+
+        it('should allow setting areActionsEnabled through setAreActionsEnabled', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(false)
+
+            act(() => {
+                result.current.setAreActionsEnabled(true)
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+        })
+
+        it('should set areActionsEnabled to true when either arePlaygroundActionsAllowed or settings state is true', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider arePlaygroundActionsAllowed={false}>
+                        {children}
+                    </CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(false)
+
+            act(() => {
+                result.current.setAreActionsEnabled(true)
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+        })
+
+        it('should keep areActionsEnabled true when arePlaygroundActionsAllowed is true even if settings state is false', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider arePlaygroundActionsAllowed={true}>
+                        {children}
+                    </CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+
+            act(() => {
+                result.current.setAreActionsEnabled(false)
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+        })
+
+        it('should pass updated areActionsEnabled to useTestSession', () => {
+            const useTestSession = require('../../hooks/useTestSession')
+                .useTestSession as jest.Mock
+
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(useTestSession).toHaveBeenLastCalledWith(
+                'https://test-base-url.com',
+                expect.objectContaining({
+                    areActionsAllowedToExecute: false,
+                }),
+            )
+
+            act(() => {
+                result.current.setAreActionsEnabled(true)
+            })
+
+            expect(useTestSession).toHaveBeenLastCalledWith(
+                'https://test-base-url.com',
+                expect.objectContaining({
+                    areActionsAllowedToExecute: true,
+                }),
+            )
         })
     })
 })

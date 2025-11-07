@@ -4,6 +4,7 @@ import { Button, ListItem, SelectField, ToggleField } from '@gorgias/axiom'
 
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings'
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
+import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import { PlaygroundSegmentControl } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSegmentControl/PlaygroundSegmentControl'
 import { TargetSelection } from 'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
@@ -49,16 +50,17 @@ const SEGMENTS: { value: 'inbound' | 'outbound'; label: string }[] = [
 ]
 
 const InboundSettings: React.FC = () => {
-    const {
-        setSettings,
-        chatAvailability,
-        selectedCustomer,
-        areActionsEnabled,
-    } = useSettingsContext()
+    const { setSettings, chatAvailability, selectedCustomer } =
+        useSettingsContext()
 
     const { setDraftMessage, setDraftSubject } = useMessagesContext()
 
-    const { channel, onChannelChange } = useCoreContext()
+    const {
+        channel,
+        onChannelChange,
+        setAreActionsEnabled,
+        areActionsEnabled,
+    } = useCoreContext()
 
     const selectedOption = useMemo(
         () => CHANNEL_OPTIONS.find((option) => option.id === channel),
@@ -104,17 +106,29 @@ const InboundSettings: React.FC = () => {
         [setSettings, setDraftMessage, setDraftSubject],
     )
 
-    const handleUpdateActions = useCallback(
-        (value: boolean) => {
-            setSettings({
-                areActionsEnabled: value,
-            })
-        },
-        [setSettings],
-    )
+    const [isActionsWarningModalOpen, setIsActionsWarningModalOpen] =
+        React.useState(false)
+
+    const handleActionsModalConfirm = () => {
+        setAreActionsEnabled(true)
+        setIsActionsWarningModalOpen(false)
+    }
+
+    const handleActionsToggle = () => {
+        if (areActionsEnabled) {
+            setAreActionsEnabled(false)
+        } else {
+            setIsActionsWarningModalOpen(true)
+        }
+    }
 
     return (
         <>
+            <PlaygroundActionsModal
+                isOpen={isActionsWarningModalOpen}
+                onClose={() => setIsActionsWarningModalOpen(false)}
+                onConfirm={handleActionsModalConfirm}
+            />
             <SelectField
                 value={selectedOption}
                 onChange={handleChannelUpdate}
@@ -142,7 +156,7 @@ const InboundSettings: React.FC = () => {
                 value={areActionsEnabled}
                 label="Actions"
                 caption="Actions triggered in test mode will affect real customer data and can't be undone."
-                onChange={handleUpdateActions}
+                onChange={handleActionsToggle}
             />
         </>
     )

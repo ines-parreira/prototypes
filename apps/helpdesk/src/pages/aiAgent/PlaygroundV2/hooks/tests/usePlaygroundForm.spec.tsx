@@ -60,7 +60,6 @@ const defaultSettingsContext = {
         id: 123,
     },
     chatAvailability: 'online' as const,
-    areActionsEnabled: false,
     mode: 'inbound' as const,
     resetSettings: jest.fn(),
     setSettings: jest.fn(),

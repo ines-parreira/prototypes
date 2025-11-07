@@ -42,7 +42,6 @@ export type SupportedPlaygroundModes = ('inbound' | 'outbound')[]
 export type InboundSettings = {
     chatAvailability: PlaygroundChannelAvailability
     selectedCustomer: PlaygroundCustomer
-    areActionsEnabled: boolean
 }
 
 export type AIJourneySettings = {

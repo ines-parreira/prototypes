@@ -78,6 +78,39 @@ jest.mock('models/aiAgent/queries', () => ({
     })),
 }))
 
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
+    useTestSession: jest.fn(() => ({
+        testSessionId: 'test-session-id',
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+    })),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
+    usePlaygroundPolling: jest.fn(() => ({
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    })),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: jest.fn(() => ({
+        baseUrl: 'http://test.com',
+        httpIntegrationId: 123,
+    })),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundChannel', () => ({
+    usePlaygroundChannel: jest.fn(() => ({
+        channel: 'chat',
+        channelAvailability: 'online',
+        onChannelChange: jest.fn(),
+        onChannelAvailabilityChange: jest.fn(),
+    })),
+}))
+
 const mockUseJourneys = useJourneys as jest.Mock
 const mockUseJourneyData = useJourneyData as jest.Mock
 const mockUseUpdateJourney = useUpdateJourney as jest.Mock

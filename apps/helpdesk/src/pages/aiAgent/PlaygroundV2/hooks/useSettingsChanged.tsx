@@ -52,9 +52,8 @@ function shallowEqual<T extends Record<string, unknown>>(
 }
 
 export const useSettingsChanged = () => {
-    const { channel } = useCoreContext()
-    const { mode, chatAvailability, selectedCustomer, areActionsEnabled } =
-        useSettingsContext()
+    const { channel, areActionsEnabled } = useCoreContext()
+    const { mode, chatAvailability, selectedCustomer } = useSettingsContext()
     const { aiJourneySettings } = useAIJourneyContext()
 
     const initialStateRef = useRef<InitialState | null>(null)

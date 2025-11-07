@@ -22,7 +22,6 @@ export const DEFAULT_STATE: InboundSettings & {
     mode: 'inbound' as const,
     chatAvailability: 'online' as const,
     selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
-    areActionsEnabled: false,
 }
 
 type SettingsState = {
