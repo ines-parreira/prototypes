@@ -36,7 +36,7 @@ describe('<CancelOrderResponseMessageContent  />', () => {
         )
 
         expect(
-            screen.getByText(/after customers request a cancellation/i),
+            screen.getByText(/customers request a cancellation/i),
         ).toBeInTheDocument()
     })
 })

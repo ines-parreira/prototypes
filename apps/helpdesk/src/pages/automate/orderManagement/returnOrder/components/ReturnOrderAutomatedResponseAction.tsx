@@ -50,8 +50,9 @@ const ReturnOrderAutomatedResponseAction = ({
         <>
             <div className={css.title}>Response text</div>
             <div className={css.description}>
-                After customers request a return, reply with an automated
-                message.
+                When customers request a return, an automated reply is sent. If
+                AI Agent is active, it will replace this message with its own
+                response.
             </div>
             <ToolbarProvider shopifyIntegrations={fromJS([storeIntegration])}>
                 <RichField
