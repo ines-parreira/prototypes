@@ -105,11 +105,14 @@ describe('Reporting queries', () => {
                 },
             )
             await waitFor(() => {
-                expect(executeMetricCallMock).toHaveBeenCalledWith({
-                    metricName: METRIC_NAMES.TEST_METRIC,
-                    oldPayload: cubeQueries,
-                    newPayload: undefined,
-                })
+                expect(executeMetricCallMock).toHaveBeenCalledWith(
+                    {
+                        metricName: METRIC_NAMES.TEST_METRIC,
+                        oldPayload: cubeQueries,
+                        newPayload: undefined,
+                    },
+                    'off',
+                )
                 expect(result.current.data?.data.data).toEqual([42])
             })
         })
