@@ -17,14 +17,14 @@
         gap: 8px;
         padding: 12px;
         background-color: var(--neutral-grey-1); // legacy
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         line-height: 1.4;
 
         i {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             font-size: 16px;
             margin-top: 1px;
             flex-shrink: 0;
@@ -35,5 +35,11 @@
 .axiom :local {
     .disabledMessage {
         background-color: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-default);
+
+        i {
+            color: var(--content-neutral-tertiary);
+        }
     }
 }

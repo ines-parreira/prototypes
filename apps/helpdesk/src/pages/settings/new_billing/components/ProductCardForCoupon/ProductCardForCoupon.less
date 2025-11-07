@@ -6,15 +6,15 @@
         flex-direction: column;
         border-radius: 4px;
         padding: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3, #ddd);
-        background: var(--neutral-grey-1, #f9f9f9);
+        border: 1px solid var(--neutral-grey-3, #ddd); // legacy
+        background: var(--neutral-grey-1, #f9f9f9); // legacy
         gap: var(--layout-spacing-xs);
     }
 
     .inactiveProduct {
         display: flex;
         flex-direction: column;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         gap: var(--layout-spacing-xs);
     }
 
@@ -31,5 +31,16 @@
         display: flex;
         align-items: center;
         line-height: 1.5;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-secondary);
+    }
+
+    .inactiveProduct {
+        color: var(--content-neutral-secondary);
     }
 }

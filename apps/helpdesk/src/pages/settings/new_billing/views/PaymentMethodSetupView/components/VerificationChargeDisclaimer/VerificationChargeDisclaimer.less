@@ -2,12 +2,18 @@
 
 :local {
     .disclaimer {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 12px;
         margin-bottom: 8px;
 
         i {
             padding-right: 4px;
         }
+    }
+}
+
+.axiom :local {
+    .disclaimer {
+        color: var(--content-neutral-secondary);
     }
 }

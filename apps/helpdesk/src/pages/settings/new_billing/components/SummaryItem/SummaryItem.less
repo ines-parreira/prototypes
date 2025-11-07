@@ -1,6 +1,6 @@
 :local {
     .container {
-        border-top: 1px dashed var(--neutral-grey-3);
+        border-top: 1px dashed var(--neutral-grey-3); // legacy
         padding: 8px;
         display: flex;
         justify-content: space-between;
@@ -14,7 +14,7 @@
 
     .strikeThrough {
         text-decoration: line-through;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .description {
@@ -32,8 +32,22 @@
     .oldPrice {
         display: inline-block;
         font-size: 14px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-decoration: line-through;
         padding-right: 4px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-top: 1px dashed var(--border-neutral-default);
+    }
+
+    .strikeThrough {
+        color: var(--content-neutral-secondary);
+    }
+
+    .oldPrice {
+        color: var(--content-neutral-tertiary);
     }
 }

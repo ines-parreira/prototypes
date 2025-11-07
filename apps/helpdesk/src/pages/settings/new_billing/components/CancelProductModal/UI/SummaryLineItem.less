@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        border-top: 1px dashed var(--neutral-grey-3);
+        border-top: 1px dashed var(--neutral-grey-3); // legacy
         padding: var(--layout-spacing-xs);
         display: flex;
         justify-content: space-between;
@@ -14,7 +14,7 @@
     }
 
     .strikeThrough {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-decoration: line-through;
     }
 
@@ -28,5 +28,15 @@
             .body-semibold();
         }
         text-align: right;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-top: 1px dashed var(--border-neutral-default);
+    }
+
+    .strikeThrough {
+        color: var(--content-neutral-secondary);
     }
 }

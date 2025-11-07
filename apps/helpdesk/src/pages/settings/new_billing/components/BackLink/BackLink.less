@@ -2,7 +2,7 @@
     .backLink {
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         line-height: 20px;
         cursor: pointer;
@@ -11,5 +11,11 @@
             margin-right: 4px;
             font-size: 20px;
         }
+    }
+}
+
+.axiom :local {
+    .backLink {
+        color: var(--content-neutral-tertiary);
     }
 }

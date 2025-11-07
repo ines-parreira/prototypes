@@ -1,6 +1,6 @@
 :local {
     .container {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .header {
@@ -43,13 +43,13 @@
     }
 
     .statusPaid {
-        background-color: var(--feedback-success-0);
-        color: var(--feedback-success-3);
+        background-color: var(--feedback-success-0); // legacy
+        color: var(--feedback-success-3); // legacy
     }
 
     .statusUnpaid {
-        background-color: var(--feedback-error-0);
-        color: var(--feedback-error-3);
+        background-color: var(--feedback-error-0); // legacy
+        color: var(--feedback-error-3); // legacy
     }
 
     .invoiceDate {
@@ -58,7 +58,7 @@
     }
 
     .invoiceDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .actionsHeader {
@@ -74,5 +74,25 @@
 
     .downloadLink {
         padding: 0px 8px;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
+    .statusPaid {
+        background-color: var(--surface-success-primary);
+        color: var(--content-success-primary);
+    }
+
+    .statusUnpaid {
+        background-color: var(--surface-error-primary);
+        color: var(--content-error-primary);
+    }
+
+    .invoiceDescription {
+        color: var(--content-neutral-tertiary);
     }
 }

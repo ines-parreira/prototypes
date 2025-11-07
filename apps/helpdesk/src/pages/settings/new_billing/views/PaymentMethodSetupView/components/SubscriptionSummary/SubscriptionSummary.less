@@ -4,7 +4,7 @@
     .summary {
         padding: var(--layout-spacing-m) var(--layout-spacing-s)
             var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .summaryHeader {
@@ -12,7 +12,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding: 0 var(--layout-spacing-xs) var(--layout-spacing-xs);
         text-transform: none;
     }
@@ -26,6 +26,14 @@
 }
 
 .axiom :local {
+    .summary {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .summaryHeader {
+        color: var(--content-neutral-tertiary);
+    }
+
     .startSubscriptionTitle {
         background-color: var(--elevation-neutral-mid);
     }

@@ -5,10 +5,10 @@
         align-items: center;
         gap: 32px;
         padding: 16px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         &.paymentInformationView {
-            border: 0px solid var(--neutral-grey-3);
+            border: 0px solid var(--neutral-grey-3); // legacy
             padding: 0px;
             width: 100%;
         }
@@ -20,17 +20,17 @@
     }
 
     .successIcon {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
         font-size: 20px;
     }
 
     .warningIcon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
         font-size: 20px;
     }
 
     .cardIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 20px;
     }
 
@@ -50,12 +50,12 @@
 
     .change {
         cursor: pointer;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         font-size: 12px;
         font-weight: 500;
 
         &:hover {
-            color: var(--main-primary-4);
+            color: var(--main-primary-4); // legacy
         }
     }
 
@@ -69,6 +69,36 @@
         a {
             font-size: 14px;
             white-space: nowrap;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border-bottom: 1px solid var(--border-neutral-default);
+
+        &.paymentInformationView {
+            border: 0px solid var(--border-neutral-default);
+        }
+    }
+
+    .successIcon {
+        color: var(--content-success-primary);
+    }
+
+    .warningIcon {
+        color: var(--content-warning-primary);
+    }
+
+    .cardIcon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .change {
+        color: var(--content-accent-default);
+
+        &:hover {
+            color: var(--content-additional-blue);
         }
     }
 }

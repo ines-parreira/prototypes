@@ -12,7 +12,7 @@
 
     .infoIcon {
         margin-left: 4px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .card {
@@ -21,7 +21,7 @@
         justify-content: space-between;
         padding: 20px 16px;
         width: 100%;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
     }
 
@@ -29,5 +29,15 @@
         composes: card;
         border: none;
         padding: 0;
+    }
+}
+
+.axiom :local {
+    .infoIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .card {
+        border: 1px solid var(--border-neutral-default);
     }
 }

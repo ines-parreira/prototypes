@@ -6,13 +6,13 @@
         flex-direction: column;
         border-radius: 4px;
         padding: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3, #ddd);
-        background: var(--neutral-grey-1, #f9f9f9);
+        border: 1px solid var(--neutral-grey-3, #ddd); // legacy
+        background: var(--neutral-grey-1, #f9f9f9); // legacy
     }
 
     .title {
         .heading-page-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .amount {
@@ -20,7 +20,7 @@
     }
 
     .subtotal {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         .heading-section-semibold();
         text-decoration: line-through;
     }
@@ -30,12 +30,12 @@
     }
 
     .coupon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: @body-semibold-font-weight;
     }
 
     .caption {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .verticallyAligned {
@@ -43,5 +43,28 @@
         align-items: center;
         line-height: 2;
         gap: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-secondary);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .subtotal {
+        color: var(--content-neutral-secondary);
+    }
+
+    .coupon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .caption {
+        color: var(--content-neutral-tertiary);
     }
 }

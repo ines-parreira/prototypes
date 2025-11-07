@@ -6,7 +6,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding: 0px var(--layout-spacing-xs) var(--layout-spacing-xs)
             var(--layout-spacing-xs);
     }
@@ -20,5 +20,11 @@
     .taxNotion {
         .caption-regular();
         text-align: right;
+    }
+}
+
+.axiom :local {
+    .header {
+        color: var(--content-neutral-tertiary);
     }
 }

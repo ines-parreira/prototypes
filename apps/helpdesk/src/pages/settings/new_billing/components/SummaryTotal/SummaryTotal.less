@@ -1,7 +1,7 @@
 :local {
     .container {
         padding-top: 8px;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .total {
@@ -13,13 +13,13 @@
     .totalTitle {
         font-size: 14px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .totalPrice {
         font-size: 14px;
         font-weight: 400;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         span {
             font-weight: 600;
@@ -30,7 +30,7 @@
         display: inline-block;
         font-size: 14px;
         font-weight: 400;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-decoration: line-through;
         padding-right: 4px;
     }
@@ -43,6 +43,28 @@
     .discountLine {
         font-weight: 400;
         display: flex;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .totalTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .totalPrice {
+        color: var(--content-neutral-default);
+    }
+
+    .oldPrice {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .discountLine {
+        color: var(--content-neutral-tertiary);
     }
 }

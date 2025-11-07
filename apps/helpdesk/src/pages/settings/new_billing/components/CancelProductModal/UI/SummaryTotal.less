@@ -3,7 +3,7 @@
 :local {
     .container {
         padding: var(--layout-spacing-xs);
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .total {
@@ -13,14 +13,28 @@
 
     .totalTitle {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .totalPrice {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         span {
             .body-semibold();
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .totalTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .totalPrice {
+        color: var(--content-neutral-default);
     }
 }

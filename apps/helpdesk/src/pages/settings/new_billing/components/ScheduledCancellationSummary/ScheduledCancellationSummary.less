@@ -3,7 +3,7 @@
 :local {
     .container {
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .content {
@@ -16,5 +16,11 @@
 
     .contactUs {
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-tertiary);
     }
 }

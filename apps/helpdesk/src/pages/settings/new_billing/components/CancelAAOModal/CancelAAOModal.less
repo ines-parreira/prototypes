@@ -25,7 +25,7 @@
             background: var(--neutral-grey-2); // legacy
             padding: 8px;
             border-radius: 20px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             height: 36px;
             width: 36px;
             display: flex;
@@ -38,7 +38,7 @@
         margin-bottom: 4px;
     }
     .featureDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .ctaSelect {
@@ -49,7 +49,7 @@
         font-weight: 600;
 
         span {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -62,7 +62,7 @@
         margin-bottom: 8px;
 
         span {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -90,6 +90,23 @@
     .feature {
         .icon {
             background: var(--surface-neutral-secondary);
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .featureDescription {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .ctaSelect {
+        span {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .ctaAdditionalDetails {
+        span {
+            color: var(--content-error-primary);
         }
     }
 }

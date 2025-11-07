@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 19,
-    "totalFilesAffected": 312,
+    "totalCommits": 20,
+    "totalFilesAffected": 341,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -99,6 +99,11 @@
       "title": "chore(tokens): Migrate color tokens in ticket-related pages (batch 2)",
       "date": "2025-11-05",
       "filesAffected": 39
+    },
+    "batch25": {
+      "title": "chore(tokens): Migrate color tokens in billing settings components (batch 25)",
+      "date": "2025-11-07",
+      "filesAffected": 29
     }
   },
   "tokenMappings": {

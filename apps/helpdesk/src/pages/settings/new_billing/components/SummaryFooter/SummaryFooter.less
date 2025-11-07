@@ -6,10 +6,10 @@
         line-height: 16px;
 
         &.disabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
 
             a {
-                color: var(--neutral-grey-4) !important;
+                color: var(--neutral-grey-4) !important; // legacy
             }
         }
     }
@@ -18,7 +18,7 @@
         padding-bottom: 12px;
 
         a {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             text-decoration: underline !important;
         }
     }
@@ -42,7 +42,7 @@
 
     .termsLabel {
         a {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             text-decoration: underline !important;
         }
     }
@@ -56,5 +56,25 @@
 .axiom :local {
     .container {
         background-color: var(--surface-neutral-secondary);
+
+        &.disabled {
+            color: var(--content-neutral-secondary);
+
+            a {
+                color: var(--content-neutral-secondary) !important;
+            }
+        }
+    }
+
+    .legalText {
+        a {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .termsLabel {
+        a {
+            color: var(--content-neutral-default);
+        }
     }
 }
