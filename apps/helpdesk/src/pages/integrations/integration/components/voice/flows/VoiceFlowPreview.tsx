@@ -5,6 +5,7 @@ import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import Loader from 'pages/common/components/Loader/Loader'
 
+import TextToSpeechProvider from '../VoiceMessageTTS/TextToSpeechProvider'
 import { VoiceFlow } from './VoiceFlow'
 
 import css from './VoiceFlowPreview.less'
@@ -53,9 +54,18 @@ function VoiceFlowPreview({
                 }}
                 onValidSubmit={() => {}}
             >
-                <Box width={width} height={height} className={css.previewBox}>
-                    <VoiceFlow flow={integration.meta.flow} preview={true} />
-                </Box>
+                <TextToSpeechProvider integrationId={integration.id}>
+                    <Box
+                        width={width}
+                        height={height}
+                        className={css.previewBox}
+                    >
+                        <VoiceFlow
+                            flow={integration.meta.flow}
+                            preview={true}
+                        />
+                    </Box>
+                </TextToSpeechProvider>
             </Form>
         </FlowProvider>
     )
