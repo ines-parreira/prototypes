@@ -8,10 +8,10 @@ import {
     isApiEligiblePlaygroundMessage,
     PlaygroundMessage,
 } from 'models/aiAgentPlayground/types'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { reportError } from 'utils/errors'
 
 import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
-import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,

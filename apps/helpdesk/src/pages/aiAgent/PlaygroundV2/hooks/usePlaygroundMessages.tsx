@@ -11,16 +11,16 @@ import {
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
+import { PlaygroundGenericErrorMessage } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundGenericErrorMessage/PlaygroundGenericErrorMessage'
+import {
+    AI_AGENT_SENDER,
+    GREETING_MESSAGE_TEXT,
+} from 'pages/aiAgent/PlaygroundV2/constants'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { reportError } from 'utils/errors'
 
-import {
-    AI_AGENT_SENDER,
-    GREETING_MESSAGE_TEXT,
-    PlaygroundGenericErrorMessage,
-} from '../components/PlaygroundMessage/PlaygroundMessage'
 import { PlaygroundCustomer, PlaygroundEvent } from '../types'
 import {
     handleAiAgentResponse,

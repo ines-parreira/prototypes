@@ -10,7 +10,7 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { FROALA_KEY } from 'config'
 import { useFlag } from 'core/flags'
 import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
-import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import {

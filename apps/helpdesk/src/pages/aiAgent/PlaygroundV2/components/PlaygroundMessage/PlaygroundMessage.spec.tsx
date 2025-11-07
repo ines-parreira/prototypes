@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -18,9 +18,18 @@ import {
     playgroundPromptMessageFixture,
     playgroundTicketEventMessageFixture,
 } from '../../../fixtures/playgroundMessages.fixture'
-import PlaygroundMessage, {
-    PlaygroundGenericErrorMessage,
-} from './PlaygroundMessage'
+import PlaygroundMessage from './PlaygroundMessage'
+
+const mockUseMessagesContext = jest.fn()
+const mockUseAIJourneyContext = jest.fn()
+
+jest.mock('../../contexts/MessagesContext', () => ({
+    useMessagesContext: () => mockUseMessagesContext(),
+}))
+
+jest.mock('../../contexts/AIJourneyContext', () => ({
+    useAIJourneyContext: () => mockUseAIJourneyContext(),
+}))
 
 const renderComponent = (
     props?: Partial<ComponentProps<typeof PlaygroundMessage>>,
@@ -38,6 +47,48 @@ const renderComponent = (
     )
 }
 describe('PlaygroundMessage', () => {
+    beforeEach(() => {
+        mockUseMessagesContext.mockReturnValue({
+            messages: [],
+            onMessageSend: jest.fn(),
+            isMessageSending: false,
+            onNewConversation: jest.fn(),
+            isWaitingResponse: false,
+            draftMessage: '',
+            draftSubject: '',
+            setDraftMessage: jest.fn(),
+            setDraftSubject: jest.fn(),
+        })
+
+        mockUseAIJourneyContext.mockReturnValue({
+            aiJourneySettings: {
+                journeyType: null,
+                selectedProduct: null,
+                totalFollowUp: 1,
+                includeProductImage: false,
+                includeDiscountCode: false,
+                discountCodeValue: 0,
+                discountCodeMessageIdx: 0,
+                outboundMessageInstructions: '',
+            },
+            setAIJourneySettings: jest.fn(),
+            resetAIJourneySettings: jest.fn(),
+            saveAIJourneySettings: jest.fn(),
+            shopifyIntegration: undefined,
+            journeys: [],
+            shopName: '',
+            isLoadingJourneys: false,
+            isLoadingJourneyData: false,
+            isSavingJourneyData: false,
+            followUpMessagesSent: 0,
+            setFollowUpMessagesSent: jest.fn(),
+            currentJourney: undefined,
+            journeyConfiguration: undefined,
+            productList: [],
+            isLoadingProducts: false,
+        })
+    })
+
     it('should render placeholder message', () => {
         renderComponent({ message: playgroundPlaceholderMessageFixture })
 
@@ -121,6 +172,7 @@ describe('PlaygroundMessage', () => {
     })
 
     it('should open a new tab when user clicks on the product in the carousel', async () => {
+        const user = userEvent.setup()
         renderComponent({
             channel: 'chat',
             message: {
@@ -130,9 +182,7 @@ describe('PlaygroundMessage', () => {
             },
         })
 
-        await userEvent.click(
-            screen.getByRole('button', { name: 'Select Options' }),
-        )
+        await user.click(screen.getByRole('button', { name: 'Select Options' }))
 
         expect(window.open).toHaveBeenCalledWith(
             'https://coffee-gorgias-store.myshopify.com/products/dark-roast?variant=35734251045016',
@@ -216,16 +266,302 @@ describe('PlaygroundMessage', () => {
         const messageContainer = container.querySelector('.messageContainer')
         expect(messageContainer).not.toHaveClass('messageContainerHover')
     })
-})
 
-describe('PlaygroundGenericErrorMessage ', () => {
-    it('should render error message', () => {
-        render(<PlaygroundGenericErrorMessage onClick={() => {}} />)
-        expect(
-            screen.getByText(
-                'AI Agent encountered an error and didn’t send a response.',
-            ),
-        ).toBeInTheDocument()
-        expect(screen.getByText('Try again.')).toBeInTheDocument()
+    describe('Journey image rendering', () => {
+        const mockProduct = {
+            id: 123,
+            title: 'Test Product',
+            created_at: '2024-01-01',
+            image: {
+                id: 1,
+                alt: 'Test Product Image',
+                src: 'https://example.com/product.jpg',
+                variant_ids: [],
+            },
+            images: [],
+            options: [],
+            variants: [],
+        }
+
+        it('should render journey image when it is the first message and includeProductImage is true', () => {
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: mockProduct,
+                    totalFollowUp: 1,
+                    includeProductImage: true,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [mockProduct],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: firstMessage })
+
+            const image = screen.getByAltText(mockProduct.title)
+            expect(image).toBeInTheDocument()
+            expect(image).toHaveAttribute('src', mockProduct.image.src)
+        })
+
+        it('should not render journey image when includeProductImage is false', () => {
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: mockProduct,
+                    totalFollowUp: 1,
+                    includeProductImage: false,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [mockProduct],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: firstMessage })
+
+            expect(
+                screen.queryByAltText(mockProduct.title),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render journey image when selectedProduct is null', () => {
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: null,
+                    totalFollowUp: 1,
+                    includeProductImage: true,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: firstMessage })
+
+            expect(
+                screen.queryByAltText(mockProduct.title),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render journey image when message is not the first message', () => {
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            const secondMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:01:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage, secondMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: mockProduct,
+                    totalFollowUp: 1,
+                    includeProductImage: true,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [mockProduct],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: secondMessage })
+
+            expect(
+                screen.queryByAltText(mockProduct.title),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render journey image with undefined src when product has no image', () => {
+            const productWithoutImage = {
+                ...mockProduct,
+                image: null,
+            }
+
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: productWithoutImage,
+                    totalFollowUp: 1,
+                    includeProductImage: true,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [productWithoutImage],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: firstMessage })
+
+            const image = screen.getByAltText(productWithoutImage.title)
+            expect(image).toBeInTheDocument()
+            expect(image).not.toHaveAttribute('src')
+        })
     })
 })

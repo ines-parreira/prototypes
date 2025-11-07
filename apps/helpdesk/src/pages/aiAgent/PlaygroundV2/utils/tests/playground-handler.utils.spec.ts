@@ -6,10 +6,10 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
-import { AI_AGENT_SENDER } from '../../components/PlaygroundMessage/PlaygroundMessage'
 import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,

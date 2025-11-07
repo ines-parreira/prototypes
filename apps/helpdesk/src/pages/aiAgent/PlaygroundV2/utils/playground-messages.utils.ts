@@ -11,15 +11,15 @@ import {
     PlaygroundTextMessage,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+import {
+    AI_AGENT_SENDER,
+    GREETING_MESSAGE_TEXT,
+} from 'pages/aiAgent/PlaygroundV2/constants'
 
 import {
     CustomerHttpIntegrationDataMock,
     PLAYGROUND_PROMPT_CONTENT,
 } from '../../constants'
-import {
-    AI_AGENT_SENDER,
-    GREETING_MESSAGE_TEXT,
-} from '../components/PlaygroundMessage/PlaygroundMessage'
 import {
     PlaygroundChannelAvailability,
     PlaygroundChannels,

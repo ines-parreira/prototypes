@@ -9,8 +9,8 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 
-import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
 import { PlaygroundChannels } from '../types'
 import {
     shouldAiAgentResponseDisplay,

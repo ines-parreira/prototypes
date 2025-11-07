@@ -7,10 +7,10 @@ import {
     PlaygroundMessage,
     PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
+import { GREETING_MESSAGE_TEXT } from 'pages/aiAgent/PlaygroundV2/constants'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
-import { GREETING_MESSAGE_TEXT } from '../../components/PlaygroundMessage/PlaygroundMessage'
 import {
     getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,

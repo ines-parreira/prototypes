@@ -10,6 +10,9 @@ import {
     PlaygroundMessage as PlaygroundMessageType,
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
+import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
+import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
@@ -19,9 +22,6 @@ import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import { PlaygroundChannels } from '../../types'
 
 import css from './PlaygroundMessage.less'
-
-export const AI_AGENT_SENDER = 'AI Agent'
-export const GREETING_MESSAGE_TEXT = 'Hey there 👋'
 
 type Props = {
     withAnimation?: boolean
@@ -36,8 +36,17 @@ const PlaygroundMessage = ({
     channel,
     children,
 }: Props) => {
+    const { messages } = useMessagesContext()
+    const {
+        aiJourneySettings: { includeProductImage, selectedProduct },
+    } = useAIJourneyContext()
     const isAiAgentSender = message.sender === AI_AGENT_SENDER
     const messageType = message.type
+
+    const renderFirstJourneyImage =
+        message.createdDatetime === messages[0]?.createdDatetime &&
+        includeProductImage &&
+        selectedProduct !== null
 
     switch (messageType) {
         case MessageType.ERROR:
@@ -115,6 +124,14 @@ const PlaygroundMessage = ({
                         message.content
                     )}
 
+                    {renderFirstJourneyImage && (
+                        <img
+                            className={css.journeyImage}
+                            src={selectedProduct.image?.src}
+                            alt={selectedProduct.title}
+                        />
+                    )}
+
                     {message?.attachments && (
                         <div className={css.productCarouselContainer}>
                             <ProductCarousel
@@ -130,25 +147,6 @@ const PlaygroundMessage = ({
             assertUnreachable(messageType)
     }
 }
-
-export const PlaygroundGenericErrorMessage = ({
-    onClick,
-}: {
-    onClick: () => void
-}) => (
-    <div className={css.errorMessageText}>
-        AI Agent encountered an error and didn’t send a response.
-        <div
-            className={css.errorMessageLink}
-            // oxlint-disable-next-line prefer-tag-over-role
-            role="button"
-            tabIndex={0}
-            onClick={onClick}
-        >
-            Try again.
-        </div>
-    </div>
-)
 
 type MessageContainerProps = {
     children: ReactNode
