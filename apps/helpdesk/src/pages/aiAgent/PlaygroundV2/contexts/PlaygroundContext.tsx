@@ -6,15 +6,18 @@ import { CoreProvider } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { EventsProvider } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { MessagesProvider } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { SettingsProvider } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
+import { SupportedPlaygroundModes } from 'pages/aiAgent/PlaygroundV2/types'
 
 type PlaygroundProviderProps = {
     children: ReactNode
     shopName: string
     arePlaygroundActionsAllowed?: boolean
+    supportedModes?: SupportedPlaygroundModes
 }
 
 export const PlaygroundProvider = (props: PlaygroundProviderProps) => {
-    const { shopName, arePlaygroundActionsAllowed, children } = props
+    const { shopName, arePlaygroundActionsAllowed, children, supportedModes } =
+        props
 
     return (
         <EventsProvider>
@@ -22,7 +25,9 @@ export const PlaygroundProvider = (props: PlaygroundProviderProps) => {
                 <CoreProvider {...{ arePlaygroundActionsAllowed }}>
                     <MessagesProvider>
                         <AIJourneyProvider shopName={shopName}>
-                            <SettingsProvider>{children}</SettingsProvider>
+                            <SettingsProvider supportedModes={supportedModes}>
+                                {children}
+                            </SettingsProvider>
                         </AIJourneyProvider>
                     </MessagesProvider>
                 </CoreProvider>

@@ -13,6 +13,7 @@ import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import {
     InboundSettings,
     PlaygroundModes,
+    SupportedPlaygroundModes,
 } from 'pages/aiAgent/PlaygroundV2/types'
 
 export const DEFAULT_STATE: InboundSettings & {
@@ -49,9 +50,13 @@ export const useSettingsContext = () => {
 
 type SettingsProviderProps = {
     children: ReactNode
+    supportedModes?: SupportedPlaygroundModes
 }
 
-export const SettingsProvider = ({ children }: SettingsProviderProps) => {
+export const SettingsProvider = ({
+    children,
+    supportedModes,
+}: SettingsProviderProps) => {
     const core = useCoreContext()
     const [localSettings, setLocalSettings] = useState<Partial<SettingsState>>(
         {},
@@ -60,9 +65,10 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     const settingsState = useMemo<SettingsState>(() => {
         return {
             ...DEFAULT_STATE,
+            mode: (supportedModes && supportedModes[0]) || DEFAULT_STATE.mode,
             ...localSettings,
         }
-    }, [localSettings])
+    }, [localSettings, supportedModes])
 
     const resetSettings = useCallback(() => {
         setLocalSettings({})

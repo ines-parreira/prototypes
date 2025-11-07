@@ -74,8 +74,8 @@ export const AiAgentPlaygroundPage = () => {
         >
             <AiAgentPlayground
                 arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
-                shouldDisplayResetButton={!sidePanelEnabled}
-                shouldDisplaySettingsOnSidePanel
+                withResetButton={!sidePanelEnabled}
+                withSettingsOnSidePanel
                 resetPlayground={shouldPlaygroundReset}
                 resetPlaygroundCallback={() => setShouldPlaygroundReset(false)}
             />

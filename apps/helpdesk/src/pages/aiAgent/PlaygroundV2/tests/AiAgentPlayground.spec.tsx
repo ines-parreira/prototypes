@@ -42,6 +42,20 @@ jest.mock('../components/PlaygroundMessageList/PlaygroundMessageList', () => ({
     PlaygroundMessageList: () => <div>PlaygroundMessageList</div>,
 }))
 
+jest.mock('../components/PlaygroundSettings/PlaygroundSettings', () => ({
+    PlaygroundSettings: ({ onClose, withFooter, withModesSwitcher }: any) => (
+        <div data-testid="playground-settings">
+            <button onClick={onClose} data-testid="settings-close-button">
+                Close Settings
+            </button>
+            <span data-testid="with-footer">{String(withFooter)}</span>
+            <span data-testid="with-modes-switcher">
+                {String(withModesSwitcher)}
+            </span>
+        </div>
+    ),
+}))
+
 jest.mock(
     '../components/PlaygroundMissingKnowledgeAlert/PlaygroundMissingKnowledgeAlert',
     () => ({
@@ -256,8 +270,8 @@ describe('AiAgentPlayground', () => {
     })
 
     describe('Props handling', () => {
-        it('should pass shouldDisplayResetButton prop to PlaygroundInputSection', () => {
-            renderComponent({ shouldDisplayResetButton: false })
+        it('should pass withResetButton prop to PlaygroundInputSection', () => {
+            renderComponent({ withResetButton: false })
 
             expect(
                 screen.getByText('PlaygroundInputSection'),
@@ -332,6 +346,56 @@ describe('AiAgentPlayground', () => {
 
             await waitFor(() => {
                 expect(mockResetCallback).toHaveBeenCalled()
+            })
+        })
+    })
+
+    describe('Inplace Settings functionality', () => {
+        it('should toggle between settings and playground views', () => {
+            renderComponent({ inplaceSettingsOpen: true })
+
+            expect(
+                screen.getByTestId('playground-settings'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('PlaygroundMessageList'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should pass correct props based on supportedModes', () => {
+            renderComponent({
+                inplaceSettingsOpen: true,
+                supportedModes: ['inbound'],
+            })
+
+            expect(screen.getByTestId('with-footer')).toHaveTextContent('false')
+            expect(screen.getByTestId('with-modes-switcher')).toHaveTextContent(
+                'false',
+            )
+        })
+
+        it('should enable modes switcher with multiple supported modes', () => {
+            renderComponent({
+                inplaceSettingsOpen: true,
+                supportedModes: ['inbound', 'outbound'],
+            })
+
+            expect(screen.getByTestId('with-modes-switcher')).toHaveTextContent(
+                'true',
+            )
+        })
+
+        it('should call onInplaceSettingsOpenChange when closed', async () => {
+            const mockOnClose = jest.fn()
+            renderComponent({
+                inplaceSettingsOpen: true,
+                onInplaceSettingsOpenChange: mockOnClose,
+            })
+
+            screen.getByTestId('settings-close-button').click()
+
+            await waitFor(() => {
+                expect(mockOnClose).toHaveBeenCalledWith(false)
             })
         })
     })

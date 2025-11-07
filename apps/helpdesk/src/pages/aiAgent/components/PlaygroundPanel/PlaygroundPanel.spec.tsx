@@ -21,6 +21,10 @@ jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
     })),
 }))
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
+
 const mockUseAppContext = require('pages/AppContext').useAppContext as jest.Mock
 
 const MockAiAgentPlayground = require('../../PlaygroundV2/AiAgentPlayground')
@@ -264,12 +268,12 @@ describe('PlaygroundPanel', () => {
     })
 
     describe('AiAgentPlayground integration', () => {
-        it('should pass shouldDisplayResetButton=false to AiAgentPlayground', () => {
+        it('should pass withResetButton=false to AiAgentPlayground', () => {
             render(<PlaygroundPanel />)
 
             expect(MockAiAgentPlayground).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    shouldDisplayResetButton: false,
+                    withResetButton: false,
                 }),
                 {},
             )
@@ -465,6 +469,56 @@ describe('PlaygroundPanel', () => {
             await waitFor(() => {
                 expect(screen.getByText('Close')).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('Settings toggle functionality', () => {
+        const mockUseFlag = require('core/flags').useFlag as jest.Mock
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should show settings button and hide actions toggle when enabled', () => {
+            render(<PlaygroundPanel />)
+
+            expect(
+                screen.getByRole('button', { name: /settings/i }),
+            ).toBeInTheDocument()
+            expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+        })
+
+        it('should toggle inplaceSettingsOpen prop when settings button clicked', async () => {
+            render(<PlaygroundPanel />)
+
+            expect(MockAiAgentPlayground).toHaveBeenCalledWith(
+                expect.objectContaining({ inplaceSettingsOpen: false }),
+                {},
+            )
+
+            await userEvent.click(
+                screen.getByRole('button', { name: /settings/i }),
+            )
+
+            await waitFor(() => {
+                expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ inplaceSettingsOpen: true }),
+                    {},
+                )
+            })
+        })
+
+        it('should pass supportedModes and callback handler to AiAgentPlayground', () => {
+            render(<PlaygroundPanel />)
+
+            expect(MockAiAgentPlayground).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    supportedModes: ['inbound'],
+                    onInplaceSettingsOpenChange: expect.any(Function),
+                }),
+                {},
+            )
         })
     })
 })

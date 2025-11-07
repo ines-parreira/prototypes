@@ -1,13 +1,12 @@
 import { useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
-import {
-    LegacyIconButton as IconButton,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { useFlag } from 'core/flags'
 import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'
 import { useAppContext } from 'pages/AppContext'
@@ -22,13 +21,45 @@ type Props = {
     shopName?: string
 }
 
+type ActionsSectionProps = {
+    actionsAllowed: boolean
+    setActionsAllowed: (value: boolean) => void
+    setIsModalOpen: (value: boolean) => void
+}
+
+const ActionsSection = ({
+    actionsAllowed,
+    setActionsAllowed,
+    setIsModalOpen,
+}: ActionsSectionProps) => {
+    const handleActionsAllowed = () =>
+        actionsAllowed ? setActionsAllowed(false) : setIsModalOpen(true)
+
+    return (
+        <div className={css['actions-allowed-container']}>
+            <div className={css['actions-allowed-toggle']}>
+                <NewToggleButton
+                    checked={actionsAllowed}
+                    onChange={handleActionsAllowed}
+                />
+                <span className={css['toggle-label']}>Actions</span>
+            </div>
+            <IconTooltip icon="info" interactive>
+                {getActionsToggleTooltipContent(actionsAllowed)}
+            </IconTooltip>
+        </div>
+    )
+}
+
 export const PlaygroundPanel = ({ shopName }: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
     const [actionsAllowed, setActionsAllowed] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false)
     const resetRef = useRef<HTMLButtonElement>(null)
     const closeRef = useRef<HTMLButtonElement>(null)
+    const settingsRef = useRef<HTMLButtonElement>(null)
 
     const { setNavBarDisplay } = useNavBar()
 
@@ -53,6 +84,12 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
         setResetPlayground(false)
     }
 
+    const handleClickSettings = () => {
+        setIsSettingsOpen((prev) => !prev)
+    }
+
+    const usePlaygroundSettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
+
     return (
         <div className={css['playground-panel']}>
             <PlaygroundActionsModal
@@ -60,56 +97,64 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={onModalConfirm}
             />
-            <div className={css['panel-header']}>
-                <div className={css['panel-header-title-container']}>
-                    <span className={css['panel-header-title']}>Test</span>
-                </div>
-                <div className={css['panel-header-actions']}>
-                    <div className={css['actions-allowed-container']}>
-                        <div className={css['actions-allowed-toggle']}>
-                            <NewToggleButton
-                                checked={actionsAllowed}
-                                onChange={() =>
-                                    actionsAllowed
-                                        ? setActionsAllowed(false)
-                                        : setIsModalOpen(true)
-                                }
+            {!isSettingsOpen && (
+                <div className={css['panel-header']}>
+                    <div className={css['panel-header-title-container']}>
+                        <span className={css['panel-header-title']}>Test</span>
+                    </div>
+                    <div className={css['panel-header-actions']}>
+                        {!usePlaygroundSettings && (
+                            <ActionsSection
+                                actionsAllowed={actionsAllowed}
+                                setActionsAllowed={setActionsAllowed}
+                                setIsModalOpen={setIsModalOpen}
                             />
-                            <span className={css['toggle-label']}>Actions</span>
+                        )}
+                        <div>
+                            {usePlaygroundSettings && (
+                                <>
+                                    <Button
+                                        icon="settings"
+                                        variant="tertiary"
+                                        onClick={handleClickSettings}
+                                        aria-label="open playground settings"
+                                        ref={settingsRef}
+                                    />
+                                    <Tooltip target={settingsRef}>
+                                        Open settings
+                                    </Tooltip>
+                                </>
+                            )}
+                            <Button
+                                icon="undo"
+                                variant="tertiary"
+                                onClick={handleResetPlayground}
+                                aria-label="reset playground"
+                                ref={resetRef}
+                            />
+                            <Tooltip target={resetRef}>Reset test</Tooltip>
+                            <Button
+                                icon="close"
+                                variant="tertiary"
+                                onClick={handleClose}
+                                aria-label="close playground panel"
+                                ref={closeRef}
+                            />
+                            <Tooltip target={closeRef}>Close</Tooltip>
                         </div>
-                        <IconTooltip icon="info" interactive>
-                            {getActionsToggleTooltipContent(actionsAllowed)}
-                        </IconTooltip>
-                    </div>
-                    <div>
-                        <IconButton
-                            icon="replay"
-                            intent="secondary"
-                            fillStyle="ghost"
-                            onClick={handleResetPlayground}
-                            aria-label="reset playground"
-                            ref={resetRef}
-                        />
-                        <Tooltip target={resetRef}>Reset test</Tooltip>
-                        <IconButton
-                            icon="close"
-                            intent="secondary"
-                            fillStyle="ghost"
-                            onClick={handleClose}
-                            aria-label="close playground panel"
-                            ref={closeRef}
-                        />
-                        <Tooltip target={closeRef}>Close</Tooltip>
                     </div>
                 </div>
-            </div>
+            )}
             <div className={css['panel-body']}>
                 <AiAgentPlayground
                     arePlaygroundActionsAllowed={actionsAllowed}
                     resetPlaygroundCallback={resetPlaygroundCallback}
                     resetPlayground={resetPlayground}
                     shopName={shopName}
-                    shouldDisplayResetButton={false}
+                    withResetButton={false}
+                    inplaceSettingsOpen={isSettingsOpen}
+                    onInplaceSettingsOpenChange={setIsSettingsOpen}
+                    supportedModes={['inbound']}
                 />
             </div>
         </div>

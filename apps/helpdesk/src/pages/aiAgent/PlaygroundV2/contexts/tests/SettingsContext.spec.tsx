@@ -144,17 +144,47 @@ describe('SettingsContext', () => {
                 { wrapper },
             )
 
+            // Should start in inbound mode with chat channel
             expect(result.current.settings.mode).toBe('inbound')
             expect(result.current.core.channel).toBe('chat')
 
+            // Change to outbound mode
             act(() => {
-                result.current.settings.setSettings({
-                    mode: 'outbound',
-                })
+                result.current.settings.setSettings({ mode: 'outbound' })
             })
 
+            // Should automatically change to sms channel
             expect(result.current.settings.mode).toBe('outbound')
             expect(result.current.core.channel).toBe('sms')
+        })
+
+        it('should initialize mode based on supportedModes prop', () => {
+            const createWrapper =
+                (modes: any) =>
+                ({ children }: { children: ReactNode }) => (
+                    <CoreProvider>
+                        <SettingsProvider supportedModes={modes}>
+                            {children}
+                        </SettingsProvider>
+                    </CoreProvider>
+                )
+
+            const { result: inbound } = renderHook(() => useSettingsContext(), {
+                wrapper: createWrapper(['inbound']),
+            })
+            expect(inbound.current.mode).toBe('inbound')
+
+            const { result: outbound } = renderHook(
+                () => useSettingsContext(),
+                { wrapper: createWrapper(['outbound', 'inbound']) },
+            )
+            expect(outbound.current.mode).toBe('outbound')
+
+            const { result: defaultMode } = renderHook(
+                () => useSettingsContext(),
+                { wrapper: createWrapper(undefined) },
+            )
+            expect(defaultMode.current.mode).toBe(DEFAULT_STATE.mode)
         })
     })
 })

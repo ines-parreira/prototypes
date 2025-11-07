@@ -23,6 +23,11 @@ import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import css from './PlaygroundSettings.less'
 
+type Props = {
+    displayFooter?: boolean
+    onClose?: () => void
+}
+
 const CHANNEL_OPTIONS: { id: PlaygroundChannels; label: string }[] = [
     {
         id: 'chat',
@@ -143,15 +148,23 @@ const InboundSettings: React.FC = () => {
     )
 }
 
-const SettingsHeader = () => {
+const SettingsHeader = ({ onClose }: Props) => {
     const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
+
+    const handleClose = () => {
+        if (onClose) {
+            onClose()
+            return
+        }
+        setIsCollapsibleColumnOpen(false)
+    }
 
     return (
         <div className={css.settingsHeader}>
             <span>Test configuration</span>
             <Button
                 icon="close"
-                onClick={() => setIsCollapsibleColumnOpen(false)}
+                onClick={handleClose}
                 aria-label="close playground panel"
                 variant="tertiary"
                 size="sm"
@@ -199,27 +212,39 @@ const SettingsFooter = () => {
     )
 }
 
-export const PlaygroundSettings: React.FC = () => {
+type SettingsProps = {
+    onClose?: () => void
+    withFooter?: boolean
+    withModesSwitcher?: boolean
+}
+
+export const PlaygroundSettings: React.FC<SettingsProps> = ({
+    onClose,
+    withFooter = true,
+    withModesSwitcher = true,
+}) => {
     const settings = useSettingsContext()
 
     return (
         <div className={css.playgroundSettings}>
-            <SettingsHeader />
-            <PlaygroundSegmentControl
-                selectedValue={settings.mode}
-                onValueChange={(value) =>
-                    settings.setSettings({
-                        mode: value as 'inbound' | 'outbound',
-                    })
-                }
-                segments={SEGMENTS}
-            />
+            <SettingsHeader onClose={onClose} />
+            {withModesSwitcher && (
+                <PlaygroundSegmentControl
+                    selectedValue={settings.mode}
+                    onValueChange={(value) =>
+                        settings.setSettings({
+                            mode: value as 'inbound' | 'outbound',
+                        })
+                    }
+                    segments={SEGMENTS}
+                />
+            )}
             {settings.mode === 'outbound' ? (
                 <AIJourneySettings />
             ) : (
                 <InboundSettings />
             )}
-            <SettingsFooter />
+            {withFooter && <SettingsFooter />}
         </div>
     )
 }

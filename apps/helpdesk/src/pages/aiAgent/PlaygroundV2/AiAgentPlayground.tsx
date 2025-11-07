@@ -23,7 +23,7 @@ import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from './hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from './hooks/usePlaygroundTracking'
 import { useShopNameResolution } from './hooks/useShopNameResolution'
-import { PlaygroundEvent } from './types'
+import { PlaygroundEvent, SupportedPlaygroundModes } from './types'
 
 import css from './AiAgentPlayground.less'
 
@@ -32,7 +32,7 @@ type ContextConsumerProps = {
     resetPlayground?: boolean
     resetPlaygroundCallback?: () => void
     shopName?: string
-    shouldDisplaySettingsOnSidePanel: boolean
+    withSettingsOnSidePanel: boolean
 }
 
 const ContextConsumer = ({
@@ -40,7 +40,7 @@ const ContextConsumer = ({
     resetPlayground,
     resetPlaygroundCallback,
     shopName,
-    shouldDisplaySettingsOnSidePanel,
+    withSettingsOnSidePanel,
 }: ContextConsumerProps) => {
     const events = useEvents()
 
@@ -69,10 +69,10 @@ const ContextConsumer = ({
     }, [arePlaygroundActionsAllowed, events])
 
     useEffect(() => {
-        if (shouldDisplaySettingsOnSidePanel) {
+        if (withSettingsOnSidePanel) {
             setCollapsibleColumnChildren(null)
         }
-    }, [shouldDisplaySettingsOnSidePanel, setCollapsibleColumnChildren])
+    }, [withSettingsOnSidePanel, setCollapsibleColumnChildren])
 
     useEffect(() => {
         resetPlaygroundRef.current = resetPlayground
@@ -84,7 +84,7 @@ const ContextConsumer = ({
 
     const shouldDisplaySettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
 
-    if (shouldDisplaySettingsOnSidePanel && shouldDisplaySettings) {
+    if (withSettingsOnSidePanel && shouldDisplaySettings) {
         return warpToCollapsibleColumn(<PlaygroundSettings />)
     }
 
@@ -96,9 +96,12 @@ type Props = {
     resetPlayground?: boolean
     shopName?: string
     resetPlaygroundCallback?: () => void
-    shouldDisplayResetButton?: boolean
+    withResetButton?: boolean
     onGuidanceClick?: (guidanceArticleId: number) => void
-    shouldDisplaySettingsOnSidePanel?: boolean
+    withSettingsOnSidePanel?: boolean
+    inplaceSettingsOpen?: boolean
+    onInplaceSettingsOpenChange?: (isOpen: boolean) => void
+    supportedModes?: SupportedPlaygroundModes
 }
 
 export const AiAgentPlayground = ({
@@ -106,9 +109,12 @@ export const AiAgentPlayground = ({
     resetPlayground,
     resetPlaygroundCallback,
     shopName: propsShopName,
-    shouldDisplayResetButton = true,
-    shouldDisplaySettingsOnSidePanel = false,
+    withResetButton = true,
+    withSettingsOnSidePanel = false,
+    inplaceSettingsOpen = false,
     onGuidanceClick,
+    onInplaceSettingsOpenChange,
+    supportedModes,
 }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -147,6 +153,12 @@ export const AiAgentPlayground = ({
         onTestPageViewed()
     })
 
+    const handleInplaceSettingsClose = () => {
+        onInplaceSettingsOpenChange?.(false)
+    }
+
+    const hasMultipleModes = supportedModes && supportedModes.length > 1
+
     if (isLoading || isCheckingPrerequisites) {
         return (
             <div className={css.spinner}>
@@ -168,23 +180,34 @@ export const AiAgentPlayground = ({
             <PlaygroundProvider
                 arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                 shopName={shopName}
+                supportedModes={supportedModes}
             >
                 <ContextConsumer
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                     resetPlayground={resetPlayground}
                     resetPlaygroundCallback={resetPlaygroundCallback}
                     shopName={shopName}
-                    shouldDisplaySettingsOnSidePanel={
-                        shouldDisplaySettingsOnSidePanel
-                    }
+                    withSettingsOnSidePanel={withSettingsOnSidePanel}
                 />
                 <div className={css.container}>
-                    <PlaygroundMessageList onGuidanceClick={onGuidanceClick} />
-                    <div className={css.inputContainer}>
-                        <PlaygroundInputSection
-                            shouldDisplayResetButton={shouldDisplayResetButton}
+                    {inplaceSettingsOpen ? (
+                        <PlaygroundSettings
+                            onClose={handleInplaceSettingsClose}
+                            withFooter={false}
+                            withModesSwitcher={hasMultipleModes}
                         />
-                    </div>
+                    ) : (
+                        <>
+                            <PlaygroundMessageList
+                                onGuidanceClick={onGuidanceClick}
+                            />
+                            <div className={css.inputContainer}>
+                                <PlaygroundInputSection
+                                    withResetButton={withResetButton}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </PlaygroundProvider>
         )

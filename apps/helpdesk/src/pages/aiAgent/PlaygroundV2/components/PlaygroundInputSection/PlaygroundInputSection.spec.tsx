@@ -222,7 +222,7 @@ const defaultProps = {
     onPromptMessage: jest.fn(),
     channelAvailability: 'online' as PlaygroundChannelAvailability,
     onChannelAvailabilityChange: jest.fn(),
-    shouldDisplayResetButton: true,
+    withResetButton: true,
 }
 
 const renderComponent = (props: any = {}) => {
@@ -322,10 +322,10 @@ const renderComponent = (props: any = {}) => {
         <Provider store={mockStore({})}>
             <QueryClientProvider client={queryClient}>
                 <PlaygroundInputSection
-                    shouldDisplayResetButton={
-                        props.shouldDisplayResetButton !== undefined
-                            ? props.shouldDisplayResetButton
-                            : defaultProps.shouldDisplayResetButton
+                    withResetButton={
+                        props.withResetButton !== undefined
+                            ? props.withResetButton
+                            : defaultProps.withResetButton
                     }
                 />
             </QueryClientProvider>

@@ -28,8 +28,8 @@ jest.mock('../hooks/useShopNameResolution', () => ({
 jest.mock('../AiAgentPlayground', () => ({
     AiAgentPlayground: ({
         arePlaygroundActionsAllowed,
-        shouldDisplayResetButton,
-        shouldDisplaySettingsOnSidePanel,
+        withResetButton,
+        withSettingsOnSidePanel,
         resetPlayground,
         resetPlaygroundCallback,
     }: any) => (
@@ -38,10 +38,10 @@ jest.mock('../AiAgentPlayground', () => ({
                 {String(arePlaygroundActionsAllowed)}
             </span>
             <span data-testid="should-display-reset">
-                {String(shouldDisplayResetButton)}
+                {String(withResetButton)}
             </span>
             <span data-testid="should-display-settings-on-side">
-                {String(shouldDisplaySettingsOnSidePanel)}
+                {String(withSettingsOnSidePanel)}
             </span>
             <span data-testid="reset-playground">
                 {String(resetPlayground)}
@@ -120,7 +120,7 @@ describe('AiAgentPlaygroundPage', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should pass shouldDisplayResetButton as true to AiAgentPlayground', () => {
+        it('should pass withResetButton as true to AiAgentPlayground', () => {
             render(<AiAgentPlaygroundPage />)
 
             expect(
@@ -183,7 +183,7 @@ describe('AiAgentPlaygroundPage', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should pass shouldDisplayResetButton as false to AiAgentPlayground', () => {
+        it('should pass withResetButton as false to AiAgentPlayground', () => {
             render(<AiAgentPlaygroundPage />)
 
             expect(
@@ -191,7 +191,7 @@ describe('AiAgentPlaygroundPage', () => {
             ).toHaveTextContent('false')
         })
 
-        it('should pass shouldDisplaySettingsOnSidePanel as true to AiAgentPlayground', () => {
+        it('should pass withSettingsOnSidePanel as true to AiAgentPlayground', () => {
             render(<AiAgentPlaygroundPage />)
 
             expect(
@@ -259,7 +259,7 @@ describe('AiAgentPlaygroundPage', () => {
             )
         })
 
-        it('should always pass shouldDisplaySettingsOnSidePanel as true', () => {
+        it('should always pass withSettingsOnSidePanel as true', () => {
             ;(useFlag as jest.Mock).mockReturnValue(false)
             render(<AiAgentPlaygroundPage />)
 

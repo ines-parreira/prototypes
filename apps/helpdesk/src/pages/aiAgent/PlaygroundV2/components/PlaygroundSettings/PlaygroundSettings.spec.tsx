@@ -246,24 +246,24 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
+const withProviders = (children: React.ReactNode) => (
+    <Provider store={mockStore({})}>
+        <QueryClientProvider client={queryClient}>
+            <ConfigurationProvider>
+                <AIJourneyProvider shopName="test-shop">
+                    <CoreProvider>
+                        <EventsProvider>
+                            <SettingsProvider>{children}</SettingsProvider>
+                        </EventsProvider>
+                    </CoreProvider>
+                </AIJourneyProvider>
+            </ConfigurationProvider>
+        </QueryClientProvider>
+    </Provider>
+)
+
 const renderComponent = () => {
-    return render(
-        <Provider store={mockStore({})}>
-            <QueryClientProvider client={queryClient}>
-                <ConfigurationProvider>
-                    <AIJourneyProvider shopName="test-shop">
-                        <CoreProvider>
-                            <EventsProvider>
-                                <SettingsProvider>
-                                    <PlaygroundSettings />
-                                </SettingsProvider>
-                            </EventsProvider>
-                        </CoreProvider>
-                    </AIJourneyProvider>
-                </ConfigurationProvider>
-            </QueryClientProvider>
-        </Provider>,
-    )
+    return render(withProviders(<PlaygroundSettings />))
 }
 
 describe('PlaygroundSettings', () => {
@@ -651,6 +651,62 @@ describe('PlaygroundSettings', () => {
                 const updatedChannelSelect = screen.getByLabelText('Channel')
                 expect(updatedChannelSelect).toHaveValue('sms')
             })
+        })
+    })
+
+    describe('Conditional rendering with props', () => {
+        const renderSettings = (props = {}) =>
+            render(withProviders(<PlaygroundSettings {...props} />))
+
+        it('should toggle footer visibility based on withFooter prop', () => {
+            const { rerender } = renderSettings()
+            expect(
+                screen.getByRole('button', { name: /apply/i }),
+            ).toBeInTheDocument()
+
+            rerender(withProviders(<PlaygroundSettings withFooter={false} />))
+
+            expect(
+                screen.queryByRole('button', { name: /apply/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should toggle modes switcher based on withModesSwitcher prop', () => {
+            const { rerender } = renderSettings()
+            expect(screen.getByText('Inbound')).toBeInTheDocument()
+
+            rerender(
+                withProviders(<PlaygroundSettings withModesSwitcher={false} />),
+            )
+            expect(
+                screen.queryByTestId('segment-control'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call custom onClose handler when provided', async () => {
+            const mockOnClose = jest.fn()
+            renderSettings({ onClose: mockOnClose })
+
+            await act(() =>
+                userEvent.click(
+                    screen.getByLabelText('close playground panel'),
+                ),
+            )
+
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+            expect(mockSetIsCollapsibleColumnOpen).not.toHaveBeenCalled()
+        })
+
+        it('should use default close handler when onClose not provided', async () => {
+            renderSettings()
+
+            await act(() =>
+                userEvent.click(
+                    screen.getByLabelText('close playground panel'),
+                ),
+            )
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
         })
     })
 })

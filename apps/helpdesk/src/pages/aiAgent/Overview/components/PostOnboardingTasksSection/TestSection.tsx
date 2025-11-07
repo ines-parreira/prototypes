@@ -192,7 +192,7 @@ export const TestSection = ({
                             resetPlaygroundCallback={() =>
                                 setResetPlayground(false)
                             }
-                            shouldDisplayResetButton={false}
+                            withResetButton={false}
                             onGuidanceClick={onGuidanceClick}
                         />
                     ) : (

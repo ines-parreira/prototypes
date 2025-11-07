@@ -37,6 +37,8 @@ export type PlaygroundEventEmitter = {
 
 export type PlaygroundModes = 'inbound' | 'outbound'
 
+export type SupportedPlaygroundModes = ('inbound' | 'outbound')[]
+
 export type InboundSettings = {
     chatAvailability: PlaygroundChannelAvailability
     selectedCustomer: PlaygroundCustomer

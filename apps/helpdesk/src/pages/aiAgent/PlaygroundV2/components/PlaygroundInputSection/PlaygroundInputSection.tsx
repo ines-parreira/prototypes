@@ -97,10 +97,10 @@ const CHAT_AVAILABILITY_SEGMENTS = [
 ]
 
 type Props = {
-    shouldDisplayResetButton: boolean
+    withResetButton: boolean
 }
 
-export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
+export const PlaygroundInputSection = ({ withResetButton }: Props) => {
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -380,7 +380,7 @@ export const PlaygroundInputSection = ({ shouldDisplayResetButton }: Props) => {
                                 )}
                             </Tooltip>
                         )}
-                        {shouldDisplayResetButton && (
+                        {withResetButton && (
                             <Button
                                 variant="secondary"
                                 onClick={onReset}
