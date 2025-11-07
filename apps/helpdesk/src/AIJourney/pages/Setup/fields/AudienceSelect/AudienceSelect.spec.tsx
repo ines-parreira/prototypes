@@ -61,6 +61,7 @@ describe('AudienceSelect', () => {
                 data: [
                     { id: 'list1', name: 'VIP Customers' },
                     { id: 'list2', name: 'Newsletter Subscribers' },
+                    { id: 'list3', name: 'Excluded list' },
                 ],
             },
             isLoading: false,
@@ -70,6 +71,7 @@ describe('AudienceSelect', () => {
                 data: [
                     { id: 'seg1', name: 'High Value' },
                     { id: 'seg2', name: 'Frequent Buyers' },
+                    { id: 'seg3', name: 'Excluded segment' },
                 ],
             },
             isLoading: false,
@@ -80,6 +82,7 @@ describe('AudienceSelect', () => {
             <AudienceSelect
                 name="Audience to include"
                 value={[]}
+                exclude={['list3', 'seg3']}
                 onChange={() => {}}
             />,
         )
@@ -108,6 +111,11 @@ describe('AudienceSelect', () => {
             }),
         ).toBeInTheDocument()
         expect(
+            screen.queryByRole('option', {
+                name: /Excluded list/i,
+            }),
+        ).not.toBeInTheDocument()
+        expect(
             screen.getByRole('option', {
                 name: /High Value/i,
             }),
@@ -117,6 +125,11 @@ describe('AudienceSelect', () => {
                 name: /Frequent Buyers/i,
             }),
         ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('option', {
+                name: /Excluded segment/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('should call onChange when items are selected', async () => {
@@ -207,43 +220,6 @@ describe('AudienceSelect', () => {
         expect(selectButton).toBeDisabled()
     })
 
-    // it('should handle search functionality', async () => {
-    //     mockUseAudienceLists.mockReturnValue({
-    //         data: {
-    //             data: [
-    //                 { id: 'list1', name: 'VIP Customers' },
-    //             ],
-    //         },
-    //         isLoading: false,
-    //     })
-    //     mockUseAudienceSegments.mockReturnValue({
-    //         data: { data: [] },
-    //         isLoading: false,
-    //     })
-    //
-    //     const user = userEvent.setup()
-    //     render(
-    //         <AudienceSelect
-    //             name="Audience to include"
-    //             value={[]}
-    //             onChange={() => {}}
-    //         />,
-    //     )
-    //
-    //     // Open dropdown
-    //     const selectButton = screen.getByRole('button', { name: /Select audience/i })
-    //     await user.click(selectButton)
-    //
-    //     // Wait for dropdown to open and search functionality to be available
-    //     await waitFor(() => {
-    //         expect(screen.getByText('VIP Customers')).toBeInTheDocument()
-    //     })
-    //
-    //     // Simulate typing in search (MultiSelectField handles search internally)
-    //     // The search functionality would be tested through integration tests
-    //     // since the internal implementation of MultiSelectField is complex
-    // })
-
     it('should handle empty data gracefully', () => {
         mockUseAudienceLists.mockReturnValue({
             data: { data: [] },
@@ -289,10 +265,7 @@ describe('AudienceSelect', () => {
         )
 
         expect(screen.getByText('Audience to include')).toBeInTheDocument()
-        expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined, undefined)
-        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
-            undefined,
-            undefined,
-        )
+        expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
     })
 })

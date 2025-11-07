@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 
@@ -20,6 +20,7 @@ type AudienceSelectFieldProps = {
     name: string
     value: string[]
     onChange: (value: string[]) => void
+    exclude?: string[]
     isDisabled?: boolean
 }
 
@@ -27,44 +28,48 @@ export const AudienceSelect = ({
     name,
     value,
     isDisabled = false,
+    exclude = [],
     onChange = () => {},
 }: AudienceSelectFieldProps) => {
     const { currentIntegration } = useJourneyContext()
-    const [search, setSearch] = useState<string | undefined>()
 
     const { data: audienceLists, isLoading: isLoadingAudienceLists } =
-        useAudienceLists(currentIntegration?.id, search ? search : undefined)
+        useAudienceLists(currentIntegration?.id)
 
     const { data: audienceSegments, isLoading: isLoadingAudienceSegments } =
-        useAudienceSegments(currentIntegration?.id, search ? search : undefined)
+        useAudienceSegments(currentIntegration?.id)
 
     const sections: Section[] = useMemo(() => {
         const currentSections = []
 
-        if (audienceLists && audienceLists.data) {
+        if (audienceLists && audienceLists.data.length > 0) {
             currentSections.push({
                 id: 'list',
                 name: 'Lists',
-                items: audienceLists.data.map((e) => ({
-                    id: e.id,
-                    name: e.name,
-                })),
+                items: audienceLists.data
+                    .map((e) => ({
+                        id: e.id,
+                        name: e.name,
+                    }))
+                    .filter((e) => !exclude.includes(e.id)),
             })
         }
 
-        if (audienceSegments && audienceSegments.data) {
+        if (audienceSegments && audienceSegments.data.length > 0) {
             currentSections.push({
                 id: 'segment',
                 name: 'Segments',
-                items: audienceSegments.data.map((e) => ({
-                    id: e.id,
-                    name: e.name,
-                })),
+                items: audienceSegments.data
+                    .map((e) => ({
+                        id: e.id,
+                        name: e.name,
+                    }))
+                    .filter((e) => !exclude.includes(e.id)),
             })
         }
 
         return currentSections
-    }, [audienceLists, audienceSegments])
+    }, [audienceLists, audienceSegments, exclude])
 
     const handleChange = useCallback(
         (
@@ -78,13 +83,6 @@ export const AudienceSelect = ({
         [onChange],
     )
 
-    const handleSearchChange = useCallback(
-        (value: string) => {
-            setSearch(value)
-        },
-        [setSearch],
-    )
-
     return (
         <div className={css.audienceSelectField}>
             <FieldPresentation name={name} />
@@ -93,9 +91,7 @@ export const AudienceSelect = ({
                 items={sections}
                 maxHeight={250}
                 onChange={handleChange}
-                onSearchChange={handleSearchChange}
                 placeholder="Select audience"
-                searchValue={search}
                 value={value.map((e) => ({ id: e, name: '', items: [] }))}
                 isDisabled={
                     isLoadingAudienceLists ||

@@ -352,6 +352,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 <AudienceSelect
                     name="Audience to include"
                     value={includedAudienceListIds ?? []}
+                    exclude={excludedAudienceListIds ?? []}
                     onChange={handleIncludedAudienceListIds}
                 />
             )}
@@ -360,6 +361,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 <AudienceSelect
                     name="Audience to exclude"
                     value={excludedAudienceListIds ?? []}
+                    exclude={includedAudienceListIds ?? []}
                     onChange={handleExcludedAudienceListIds}
                 />
             )}
