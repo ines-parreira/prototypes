@@ -2532,7 +2532,7 @@ describe('<StoreConfigForm />', () => {
         it('should display only specific channel section when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
-                (key) => FeatureFlagKey.AiAgentSms === key || false,
+                (key) => FeatureFlagKey.AiAgentSmsChannel === key || false,
             )
 
             renderComponent({ section: 'sms' })
@@ -2654,7 +2654,7 @@ describe('<StoreConfigForm />', () => {
         it('should override tab parameter when section prop is sms', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
             useFlagMock.mockImplementation(
-                (key) => FeatureFlagKey.AiAgentSms === key || false,
+                (key) => FeatureFlagKey.AiAgentSmsChannel === key || false,
             )
 
             renderComponent({ section: 'sms' })

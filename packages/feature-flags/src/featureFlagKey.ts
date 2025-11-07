@@ -36,6 +36,7 @@ export enum FeatureFlagKey {
     AiAgentScrapeStoreDomain = 'ai-agent-scrape-store-domain',
     AiAgentShowImageDescriptionInProductCatalog = 'ai-agent-show-image-description-in-product-catalog',
     AiAgentProductAdditionalInfo = 'linear.allow-adding-custom-product-information-in-product-catalog',
+    /** @deprecated Use AiAgentSmsChannel instead */
     AiAgentSms = 'ai-agent-for-sms',
     AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentSupportActionInGuidance = 'ai-agent-support-action-in-guidance',

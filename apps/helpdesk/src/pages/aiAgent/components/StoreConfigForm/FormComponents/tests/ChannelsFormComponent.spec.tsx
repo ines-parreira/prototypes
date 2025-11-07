@@ -691,7 +691,7 @@ describe('ChannelsFormComponent', () => {
             mockUseFlag.mockImplementation(
                 (key) =>
                     key === FeatureFlagKey.AiAgentChat ||
-                    key === FeatureFlagKey.AiAgentSms ||
+                    key === FeatureFlagKey.AiAgentSmsChannel ||
                     false,
             )
 
