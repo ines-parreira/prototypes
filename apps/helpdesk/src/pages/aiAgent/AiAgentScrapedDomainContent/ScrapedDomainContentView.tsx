@@ -124,7 +124,7 @@ const getPageDescription = ({
                 </>
             )
         case CONTENT_TYPE.PRODUCT:
-            return 'View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website.'
+            return 'Products AI Agent can reference are synced automatically from Shopify and your store website. You can add additional information per product to give AI Agent extra context.'
         case CONTENT_TYPE.FILE_QUESTION:
             return 'AI Agent generates questions and answers from the document to use when responding to customers.'
         case CONTENT_TYPE.URL_QUESTION:

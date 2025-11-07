@@ -11,7 +11,7 @@ type Props = {
 const ScrapedDomainHeader = ({ description, searchValue, onSearch }: Props) => {
     return (
         <div className={css.container}>
-            <span>{description}</span>
+            <span className={css.descriptionContainer}>{description}</span>
             {onSearch && (
                 <div>
                     <Search

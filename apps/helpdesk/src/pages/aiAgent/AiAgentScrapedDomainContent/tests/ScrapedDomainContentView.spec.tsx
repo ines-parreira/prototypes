@@ -93,7 +93,9 @@ describe('ScrapedDomainContentView', () => {
     it('renders header description for Product page based on pageType', () => {
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
-            screen.getByText(/View the products AI Agent can reference/i),
+            screen.getByText(
+                /Products AI Agent can reference are synced automatically/i,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -166,7 +168,7 @@ describe('ScrapedDomainContentView', () => {
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
             screen.getByText(
-                /View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website\./i,
+                /Products AI Agent can reference are synced automatically from Shopify and your store website\. You can add additional information per product to give AI Agent extra context\./i,
             ),
         ).toBeInTheDocument()
     })
@@ -179,7 +181,7 @@ describe('ScrapedDomainContentView', () => {
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
             screen.getByText(
-                /View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website\./i,
+                /Products AI Agent can reference are synced automatically from Shopify and your store website\. You can add additional information per product to give AI Agent extra context\./i,
             ),
         ).toBeInTheDocument()
     })

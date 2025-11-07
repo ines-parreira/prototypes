@@ -134,10 +134,12 @@ describe('ScrapedDomainSelectedContent', () => {
         expect(
             screen.getByTestId('accordion-item-additional-info'),
         ).toBeInTheDocument()
-        expect(screen.getByText(/Additional Information/)).toBeInTheDocument()
+        expect(
+            screen.getByText(/Custom product information/),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Custom context that you can add to enhance AI Agent's knowledge about this product/,
+                /Add custom details AI Agent can reference about this product\./,
             ),
         ).toBeInTheDocument()
         expect(

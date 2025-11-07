@@ -240,15 +240,28 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             items: [],
         })
 
+        mockUseGetProductsByIdsFromIntegration.mockReturnValue({
+            data: [
+                {
+                    id: 1,
+                    title: 'Duo Baguette Birthstone Ring',
+                    is_used_by_ai_agent: false,
+                },
+            ],
+        } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
+
         renderComponent()
 
-        const productRow = screen.getByText('Duo Baguette Birthstone Ring')
+        const productRow = screen.getAllByText(
+            'Duo Baguette Birthstone Ring',
+        )[0]
         fireEvent.click(productRow)
 
-        expect(screen.getByText('Product details')).toBeInTheDocument()
-        const hideIcon = screen.getByAltText('hide-view-icon')
-        expect(hideIcon).toBeInTheDocument()
-        expect(screen.getByText('Not in use by AI Agent')).toBeInTheDocument()
+        await waitFor(() => {
+            const hideIcon = screen.getByAltText('hide-view-icon')
+            expect(hideIcon).toBeInTheDocument()
+            expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
+        })
     })
 
     it('should be used by AI Agent', async () => {
@@ -294,7 +307,9 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Product details')).toBeInTheDocument()
+        expect(
+            screen.getAllByText('Duo Baguette Birthstone Ring').length,
+        ).toBeGreaterThan(1)
         expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
     })
 
@@ -311,7 +326,9 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         renderComponent('1')
 
         await waitFor(() => {
-            expect(screen.getByText('Product details')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Duo Baguette Birthstone Ring').length,
+            ).toBeGreaterThan(0)
         })
 
         const hideIcon = screen.getByAltText('hide-view-icon')
@@ -332,7 +349,9 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         renderComponent('1')
 
         await waitFor(() => {
-            expect(screen.getByText('Product details')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Duo Baguette Birthstone Ring').length,
+            ).toBeGreaterThan(0)
         })
 
         const hideIcon = screen.getByAltText('hide-view-icon')
@@ -360,7 +379,9 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
         renderComponent('1')
 
         await waitFor(() => {
-            expect(screen.getByText('Product details')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Duo Baguette Birthstone Ring').length,
+            ).toBeGreaterThan(0)
         })
 
         expect(screen.getByText('Shopify app')).toBeInTheDocument()

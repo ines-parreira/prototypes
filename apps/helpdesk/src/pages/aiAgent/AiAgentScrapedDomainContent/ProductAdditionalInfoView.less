@@ -18,52 +18,38 @@
         color: var(--neutral-grey-5);
     }
 
-    .footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: var(--layout-spacing-xs);
-    }
-
-    .charCount {
-        .caption-regular();
-        color: var(--neutral-grey-5);
-
-        &.limitReached {
-            color: var(--error-red-6);
-            font-weight: 600;
-        }
-    }
-
     .savingIndicator {
         .caption-regular();
         color: var(--primary-blue-5);
         font-style: italic;
     }
-}
 
-.axiom :local {
-    .editorContainer {
-        border-color: var(--border-default);
+    .richField {
+        padding-left: 8px;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 8px;
 
-        &.focused {
-            border-color: var(--border-focused);
+        &.onError {
+            border-color: var(--feedback-error);
+            [class*='Toolbar--maxLength--'] {
+                color: var(--feedback-error) !important;
+            }
+        }
+
+        [class*='Toolbar--maxLength--'] {
+            color: var(--neutral-grey-5) !important;
+            margin-right: 9px;
         }
     }
 
-    .caption {
-        color: var(--text-secondary);
+    .footer {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--Main-XS, 8px);
     }
 
-    .charCount {
-        color: var(--text-secondary);
-
-        &.limitReached {
-            color: var(--text-error);
-        }
-    }
-
-    .savingIndicator {
-        color: var(--text-brand);
+    .modalBody {
+        margin-bottom: 53px;
     }
 }

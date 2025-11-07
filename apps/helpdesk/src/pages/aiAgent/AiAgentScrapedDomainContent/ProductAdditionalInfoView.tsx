@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
+import { Prompt } from 'react-router-dom'
+
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateProductAdditionalInfo } from 'models/ecommerce/queries'
@@ -11,8 +14,14 @@ import {
     AdditionalInfoSourceType,
     ProductAdditionalInfo,
 } from 'models/ecommerce/types'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
+import { ErrorMessage } from 'pages/convert/settings/components/styled'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { contentStateFromTextOrHTML, convertToHTML } from 'utils/editor'
@@ -33,8 +42,6 @@ const displayedActions: ActionName[] = [
     ActionName.Underline,
     ActionName.BulletedList,
     ActionName.OrderedList,
-    ActionName.Emoji,
-    ActionName.Link,
 ]
 
 const ProductAdditionalInfoView = ({
@@ -54,53 +61,59 @@ const ProductAdditionalInfoView = ({
         return EditorState.createEmpty()
     })
     const [isSaving, setIsSaving] = useState(false)
-    const [isFocused, setIsFocused] = useState(false)
-    const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-    const lastSavedContentRef = useRef<string>(initialValue?.rich_text || '')
+    const [isDirty, setIsDirty] = useState(false)
+    const [showCancelModal, setShowCancelModal] = useState(false)
+    const lastSavedContentRef = React.useRef<string>(
+        initialValue?.rich_text || '',
+    )
+
+    const {
+        isOpen: isNavigationModalOpen,
+        onClose: closeNavigationModal,
+        redirectToOriginalLocation,
+        onNavigateAway,
+    } = useUnsavedChangesPrompt({ when: isDirty })
 
     const { mutateAsync: updateAdditionalInfo } =
         useUpdateProductAdditionalInfo()
 
     useEffect(() => {
+        let newEditorState: EditorState
         if (initialValue?.rich_text) {
             const contentState = contentStateFromTextOrHTML(
                 '',
                 initialValue.rich_text,
             )
-            setEditorState(EditorState.createWithContent(contentState))
+            newEditorState = EditorState.createWithContent(contentState)
         } else {
-            setEditorState(EditorState.createEmpty())
+            newEditorState = EditorState.createEmpty()
         }
-        lastSavedContentRef.current = initialValue?.rich_text || ''
+        setEditorState(newEditorState)
+
+        // Normalize the saved content to match what convertToHTML will produce
+        // This prevents false dirty states when navigating between products
+        lastSavedContentRef.current = convertToHTML(
+            newEditorState.getCurrentContent(),
+        )
+        setIsDirty(false)
     }, [productId, initialValue])
 
     const currentCharCount = useMemo(() => {
-        if (editorState.getCurrentContent().getPlainText().length === 0) {
-            // By default the HTML we generate has some tags for empty content
-            // and it looks weird to show 15 charecters already used when the
-            // content is empty.
-            return 0
-        }
-        return convertToHTML(editorState.getCurrentContent()).length
+        return editorState.getCurrentContent().getPlainText().length
     }, [editorState])
 
     const handleChange = useCallback((newEditorState: EditorState) => {
-        const newCharCount = convertToHTML(
-            newEditorState.getCurrentContent(),
-        ).length
+        setEditorState(newEditorState)
 
-        if (newCharCount <= MAX_CHAR_COUNT) {
-            setEditorState(newEditorState)
-        }
+        // Track if content has changed from saved state
+        const currentHtml = convertToHTML(newEditorState.getCurrentContent())
+        const hasChanges = currentHtml !== lastSavedContentRef.current
+        setIsDirty(hasChanges)
     }, [])
 
     const saveContent = useCallback(async () => {
         const content = editorState.getCurrentContent()
         const html = convertToHTML(content)
-
-        if (html === lastSavedContentRef.current) {
-            return
-        }
 
         setIsSaving(true)
 
@@ -120,11 +133,12 @@ const ProductAdditionalInfoView = ({
             })
 
             lastSavedContentRef.current = html
+            setIsDirty(false)
 
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Additional information saved',
+                    message: 'Product information saved successfully.',
                     showDismissButton: true,
                 }),
             )
@@ -132,7 +146,8 @@ const ProductAdditionalInfoView = ({
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: 'Failed to save additional information',
+                    message:
+                        "Product information couldn't be saved. Please try again.",
                     showDismissButton: true,
                 }),
             )
@@ -141,69 +156,153 @@ const ProductAdditionalInfoView = ({
         }
     }, [editorState, updateAdditionalInfo, integrationId, productId, dispatch])
 
-    const handleBlur = useCallback(() => {
-        setIsFocused(false)
-
-        if (saveTimeoutRef.current) {
-            clearTimeout(saveTimeoutRef.current)
-        }
-
-        saveTimeoutRef.current = setTimeout(() => {
-            void saveContent()
-        }, 300)
+    const handleSave = useCallback(async () => {
+        await saveContent()
     }, [saveContent])
 
-    const handleFocus = useCallback(() => {
-        setIsFocused(true)
+    const handleCancel = useCallback(() => {
+        setShowCancelModal(true)
     }, [])
 
-    useEffect(() => {
-        return () => {
-            if (saveTimeoutRef.current) {
-                clearTimeout(saveTimeoutRef.current)
-            }
+    const handleDiscard = useCallback(() => {
+        // Revert to saved content
+        if (lastSavedContentRef.current) {
+            const contentState = contentStateFromTextOrHTML(
+                '',
+                lastSavedContentRef.current,
+            )
+            setEditorState(EditorState.createWithContent(contentState))
+        } else {
+            setEditorState(EditorState.createEmpty())
         }
-    }, [])
+        setIsDirty(false)
+        setShowCancelModal(false)
+        closeNavigationModal()
 
-    const charCountText = useMemo(() => {
-        return `${currentCharCount}/${MAX_CHAR_COUNT} characters (formatting consumes available characters)`
+        // If this was triggered by navigation, allow it to proceed
+        redirectToOriginalLocation()
+    }, [closeNavigationModal, redirectToOriginalLocation])
+
+    const handleBackToEditing = useCallback(() => {
+        setShowCancelModal(false)
+        closeNavigationModal()
+    }, [closeNavigationModal])
+
+    const handleModalSaveChanges = useCallback(async () => {
+        await saveContent()
+        setShowCancelModal(false)
+        closeNavigationModal()
+
+        // If this was triggered by navigation, allow it to proceed after save
+        if (isNavigationModalOpen) {
+            redirectToOriginalLocation()
+        }
+    }, [
+        saveContent,
+        closeNavigationModal,
+        isNavigationModalOpen,
+        redirectToOriginalLocation,
+    ])
+
+    const [hasError, errorMessage] = useMemo(() => {
+        if (currentCharCount > MAX_CHAR_COUNT) {
+            return [
+                true,
+                `You've exceeded the ${MAX_CHAR_COUNT} character limit. Please shorten it to save your changes.`,
+            ]
+        }
+        return [false, '']
     }, [currentCharCount])
+
+    const isSaveDisabled = useMemo(
+        () => !isDirty || isSaving || hasError,
+        [isDirty, isSaving, hasError],
+    )
+
+    const isCancelDisabled = useMemo(
+        () => !isDirty || isSaving,
+        [isDirty, isSaving],
+    )
+
+    const modalMessage = useMemo(() => {
+        if (isSaveDisabled) {
+            return 'Your text exceeds the character limit. You’ll need to shorten it in order to save.'
+        }
+        return "Your changes to this page will be lost if you don't save them."
+    }, [isSaveDisabled])
 
     return (
         <div className={css.container}>
-            <div
-                className={classnames(css.editorContainer, {
-                    [css.focused]: isFocused,
-                })}
-            >
+            <div className={css.editorContainer}>
                 <RichField
                     value={{
                         html: convertToHTML(editorState.getCurrentContent()),
                         text: editorState.getCurrentContent().getPlainText(''),
                     }}
                     onChange={handleChange}
-                    placeholder="Add additional product information..."
                     minHeight={150}
                     displayedActions={displayedActions}
-                    onBlur={handleBlur}
-                    onFocus={handleFocus}
                     spellCheck={true}
                     allowExternalChanges={true}
+                    className={classnames(css.richField, {
+                        [css.onError]: hasError,
+                    })}
+                    maxLength={MAX_CHAR_COUNT}
                 />
+                {hasError && <ErrorMessage>{errorMessage}</ErrorMessage>}
             </div>
 
             <div className={css.footer}>
-                <span
-                    className={classnames(css.charCount, {
-                        [css.limitReached]: currentCharCount >= MAX_CHAR_COUNT,
-                    })}
+                <Button
+                    intent="primary"
+                    onClick={handleSave}
+                    isDisabled={isSaveDisabled}
+                    isLoading={isSaving}
                 >
-                    {charCountText}
-                </span>
-                {isSaving && (
-                    <span className={css.savingIndicator}>Saving...</span>
-                )}
+                    Save Changes
+                </Button>
+                <Button
+                    intent="secondary"
+                    onClick={handleCancel}
+                    isDisabled={isCancelDisabled}
+                >
+                    Cancel
+                </Button>
             </div>
+
+            <Prompt when={isDirty} message={onNavigateAway} />
+
+            <Modal
+                isOpen={showCancelModal || isNavigationModalOpen}
+                onClose={handleBackToEditing}
+                isClosable={false}
+            >
+                <ModalHeader title="Save changes?" />
+                <ModalBody className={css.modalBody}>{modalMessage}</ModalBody>
+                <ModalActionsFooter
+                    extra={
+                        <Button
+                            intent="destructive"
+                            fillStyle="ghost"
+                            onClick={handleDiscard}
+                        >
+                            Discard Changes
+                        </Button>
+                    }
+                >
+                    <Button intent="secondary" onClick={handleBackToEditing}>
+                        Back To Editing
+                    </Button>
+                    <Button
+                        intent="primary"
+                        onClick={handleModalSaveChanges}
+                        isLoading={isSaving}
+                        isDisabled={isSaveDisabled}
+                    >
+                        Save Changes
+                    </Button>
+                </ModalActionsFooter>
+            </Modal>
         </div>
     )
 }

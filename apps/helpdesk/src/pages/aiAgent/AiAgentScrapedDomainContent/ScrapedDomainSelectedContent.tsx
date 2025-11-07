@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
@@ -107,11 +107,51 @@ const SelectedProductView = ({
     const isAdditionalInfoEnabled = useFlag(
         FeatureFlagKey.AiAgentProductAdditionalInfo,
     )
+    const defaultExpandedItem = useMemo(
+        () =>
+            isAdditionalInfoEnabled && integrationId && product
+                ? 'additional-info'
+                : 'store-integration',
+        [isAdditionalInfoEnabled, integrationId, product],
+    )
 
     return (
         <div className={css.contentContainer}>
             <div className={css.productContainer}>
-                <Accordion defaultExpandedItem="store-integration">
+                <Accordion defaultExpandedItem={defaultExpandedItem}>
+                    {isAdditionalInfoEnabled && integrationId && product && (
+                        <AccordionItem id="additional-info">
+                            <AccordionHeader>
+                                <div className={css.productHeaderContainer}>
+                                    <i
+                                        className="material-icons"
+                                        style={{
+                                            fontSize: '20px',
+                                            color: 'var(--neutral-grey-5)',
+                                        }}
+                                    >
+                                        edit
+                                    </i>
+                                    <div className={css.productHeader}>
+                                        <span className="body-semibold">
+                                            Custom product information
+                                        </span>
+                                        <span className="body-regular">
+                                            Add custom details AI Agent can
+                                            reference about this product.
+                                        </span>
+                                    </div>
+                                </div>
+                            </AccordionHeader>
+                            <AccordionBody>
+                                <ProductAdditionalInfoView
+                                    integrationId={integrationId}
+                                    productId={String(product.id)}
+                                    initialValue={additionalInfo?.data}
+                                />
+                            </AccordionBody>
+                        </AccordionItem>
+                    )}
                     {product && (
                         <AccordionItem id="store-integration">
                             <AccordionHeader>
@@ -181,40 +221,6 @@ const SelectedProductView = ({
                             </AccordionBody>
                         </AccordionItem>
                     )}
-                    {isAdditionalInfoEnabled && integrationId && product && (
-                        <AccordionItem id="additional-info">
-                            <AccordionHeader>
-                                <div className={css.productHeaderContainer}>
-                                    <i
-                                        className="material-icons"
-                                        style={{
-                                            fontSize: '20px',
-                                            color: 'var(--primary-blue-5)',
-                                        }}
-                                    >
-                                        edit_note
-                                    </i>
-                                    <div className={css.productHeader}>
-                                        <span className="body-semibold">
-                                            Additional Information
-                                        </span>
-                                        <span className="body-regular">
-                                            Custom context that you can add to
-                                            enhance AI Agent&apos;s knowledge
-                                            about this product.
-                                        </span>
-                                    </div>
-                                </div>
-                            </AccordionHeader>
-                            <AccordionBody>
-                                <ProductAdditionalInfoView
-                                    integrationId={integrationId}
-                                    productId={String(product.id)}
-                                    initialValue={additionalInfo?.data}
-                                />
-                            </AccordionBody>
-                        </AccordionItem>
-                    )}
                 </Accordion>
             </div>
         </div>
@@ -235,7 +241,12 @@ const ScrapedDomainSelectedContent = (props: Props) => {
     } = props
     const { routes } = useAiAgentNavigation({ shopName })
     const titleForQuestion = 'Question details'
-    const titleForProduct = 'Product details'
+    const titleForProduct = useMemo(
+        () =>
+            (selectedContent as ProductWithAiAgentStatus)?.title ??
+            'Product details',
+        [selectedContent],
+    )
 
     const selectedQuestionContent =
         selectedContent as IngestedResourceWithArticleId
