@@ -2,12 +2,16 @@ import { ReactNode } from 'react'
 
 import { act, renderHook } from '@testing-library/react'
 
-import { CoreProvider, useCoreContext } from '../CoreContext'
+import { CoreProvider } from '../CoreContext'
 import {
     DEFAULT_STATE,
     SettingsProvider,
     useSettingsContext,
 } from '../SettingsContext'
+
+const mockResetToDefaultChannel = jest.fn()
+const mockResetToDefaultActionsEnabled = jest.fn()
+const mockOnChannelChange = jest.fn()
 
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
     useTestSession: () => ({
@@ -32,6 +36,40 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
     }),
 }))
 
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundChannel', () => ({
+    usePlaygroundChannel: () => ({
+        channel: 'chat',
+        channelAvailability: 'online',
+        onChannelChange: mockOnChannelChange,
+        onChannelAvailabilityChange: jest.fn(),
+        resetToDefaultChannel: mockResetToDefaultChannel,
+    }),
+}))
+
+jest.mock('../CoreContext', () => {
+    const actualModule = jest.requireActual('../CoreContext')
+    return {
+        ...actualModule,
+        useCoreContext: jest.fn(() => ({
+            testSessionId: 'test-session-id',
+            isTestSessionLoading: false,
+            createTestSession: jest.fn(),
+            testSessionLogs: undefined,
+            isPolling: false,
+            startPolling: jest.fn(),
+            stopPolling: jest.fn(),
+            channel: 'chat',
+            channelAvailability: 'online',
+            onChannelChange: mockOnChannelChange,
+            onChannelAvailabilityChange: jest.fn(),
+            resetToDefaultChannel: mockResetToDefaultChannel,
+            areActionsEnabled: false,
+            setAreActionsEnabled: jest.fn(),
+            resetToDefaultActionsEnabled: mockResetToDefaultActionsEnabled,
+        })),
+    }
+})
+
 jest.mock('core/flags/hooks/useFlag', () => ({
     __esModule: true,
     default: jest.fn(() => true),
@@ -46,6 +84,9 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 describe('SettingsContext', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockResetToDefaultChannel.mockClear()
+        mockResetToDefaultActionsEnabled.mockClear()
+        mockOnChannelChange.mockClear()
     })
     describe('useSettingsContext', () => {
         it('should throw error when used outside provider', () => {
@@ -118,6 +159,30 @@ describe('SettingsContext', () => {
             expect(result.current).toMatchObject(DEFAULT_STATE)
         })
 
+        it('should call resetToDefaultChannel when resetSettings is called', () => {
+            const { result } = renderHook(() => useSettingsContext(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.resetSettings()
+            })
+
+            expect(mockResetToDefaultChannel).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call resetToDefaultActionsEnabled when resetSettings is called', () => {
+            const { result } = renderHook(() => useSettingsContext(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.resetSettings()
+            })
+
+            expect(mockResetToDefaultActionsEnabled).toHaveBeenCalledTimes(1)
+        })
+
         it('should update partial settings without affecting other values', () => {
             const { result } = renderHook(() => useSettingsContext(), {
                 wrapper,
@@ -135,27 +200,22 @@ describe('SettingsContext', () => {
             expect(result.current.mode).toBe(initialMode)
         })
 
-        it('should automatically change channel to sms when mode is set to outbound', () => {
-            const { result } = renderHook(
-                () => ({
-                    settings: useSettingsContext(),
-                    core: useCoreContext(),
-                }),
-                { wrapper },
-            )
+        it('should call onChannelChange with sms when mode is set to outbound', () => {
+            const { result } = renderHook(() => useSettingsContext(), {
+                wrapper,
+            })
 
-            // Should start in inbound mode with chat channel
-            expect(result.current.settings.mode).toBe('inbound')
-            expect(result.current.core.channel).toBe('chat')
+            // Should start in inbound mode
+            expect(result.current.mode).toBe('inbound')
 
             // Change to outbound mode
             act(() => {
-                result.current.settings.setSettings({ mode: 'outbound' })
+                result.current.setSettings({ mode: 'outbound' })
             })
 
-            // Should automatically change to sms channel
-            expect(result.current.settings.mode).toBe('outbound')
-            expect(result.current.core.channel).toBe('sms')
+            // Should call onChannelChange with 'sms'
+            expect(result.current.mode).toBe('outbound')
+            expect(mockOnChannelChange).toHaveBeenCalledWith('sms')
         })
 
         it('should initialize mode based on supportedModes prop', () => {

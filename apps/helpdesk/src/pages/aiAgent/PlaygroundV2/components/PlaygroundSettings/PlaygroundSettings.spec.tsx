@@ -187,7 +187,15 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/MessagesContext', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    Button: ({ children, onClick, icon, isDisabled, ...props }: any) => (
+    Button: ({
+        children,
+        onClick,
+        icon,
+        isDisabled,
+        isLoading: __isLoading,
+        variant: __variant,
+        ...props
+    }: any) => (
         <button onClick={onClick} disabled={isDisabled} {...props}>
             {icon && <span data-icon={icon} />}
             {children}
@@ -230,6 +238,7 @@ jest.mock('@gorgias/axiom', () => ({
     ListItem: ({ label }: any) => label,
 }))
 
+const mockResetAIJourneySettings = jest.fn()
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
     ...jest.requireActual(
         'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
@@ -251,7 +260,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
             outboundMessageInstructions: '',
         },
         setAIJourneySettings: jest.fn(),
-        resetAIJourneySettings: jest.fn(),
+        resetAIJourneySettings: mockResetAIJourneySettings,
         saveAIJourneySettings: jest.fn(),
         isLoadingJourneyData: false,
         isSavingJourneyData: false,
@@ -284,6 +293,7 @@ const renderComponent = () => {
 describe('PlaygroundSettings', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockResetAIJourneySettings.mockClear()
         mockUseSettingsChanged.mockReturnValue({
             hasChanged: false,
             hasInboundChanged: false,
@@ -590,7 +600,15 @@ describe('PlaygroundSettings', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /apply/i }),
+                screen.getByRole('button', { name: /apply changes/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render revert changes button', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /revert changes/i }),
             ).toBeInTheDocument()
         })
 
@@ -604,7 +622,9 @@ describe('PlaygroundSettings', () => {
 
             renderComponent()
 
-            const applyButton = screen.getByRole('button', { name: /apply/i })
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
             expect(applyButton).toBeDisabled()
         })
 
@@ -618,7 +638,9 @@ describe('PlaygroundSettings', () => {
 
             renderComponent()
 
-            const applyButton = screen.getByRole('button', { name: /apply/i })
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
             expect(applyButton).not.toBeDisabled()
         })
 
@@ -632,7 +654,9 @@ describe('PlaygroundSettings', () => {
 
             renderComponent()
 
-            const applyButton = screen.getByRole('button', { name: /apply/i })
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
             expect(applyButton).not.toBeDisabled()
         })
     })
@@ -761,6 +785,85 @@ describe('PlaygroundSettings', () => {
                 const updatedChannelSelect = screen.getByLabelText('Channel')
                 expect(updatedChannelSelect).toHaveValue('sms')
             })
+        })
+    })
+
+    describe('Reset functionality', () => {
+        it('should call resetSettings and not resetAIJourneySettings when revert button is clicked in inbound mode', async () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: true,
+                hasOutboundChanged: false,
+                resetInitialState: jest.fn(),
+            })
+
+            const SettingsContext = require('../../contexts/SettingsContext')
+            const resetSettingsSpy = jest.spyOn(
+                SettingsContext,
+                'useSettingsContext',
+            )
+            const mockResetSettings = jest.fn()
+            resetSettingsSpy.mockReturnValue({
+                ...SettingsContext.DEFAULT_STATE,
+                resetSettings: mockResetSettings,
+                setSettings: jest.fn(),
+            })
+
+            renderComponent()
+
+            const revertButton = screen.getByRole('button', {
+                name: /revert changes/i,
+            })
+
+            await act(() => userEvent.click(revertButton))
+
+            expect(mockResetSettings).toHaveBeenCalled()
+
+            expect(mockResetAIJourneySettings).not.toHaveBeenCalled()
+
+            resetSettingsSpy.mockRestore()
+        })
+
+        it('should call resetAIJourneySettings and not resetSettings when revert button is clicked in outbound mode', async () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: false,
+                hasOutboundChanged: true,
+                resetInitialState: jest.fn(),
+            })
+
+            const SettingsContext = require('../../contexts/SettingsContext')
+            const resetSettingsSpy = jest.spyOn(
+                SettingsContext,
+                'useSettingsContext',
+            )
+            const mockResetSettings = jest.fn()
+            resetSettingsSpy.mockReturnValue({
+                ...SettingsContext.DEFAULT_STATE,
+                mode: 'outbound',
+                resetSettings: mockResetSettings,
+                setSettings: jest.fn(),
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('AI Journey Settings'),
+                ).toBeInTheDocument()
+            })
+
+            const revertButton = screen.getByRole('button', {
+                name: /revert changes/i,
+            })
+
+            await act(() => userEvent.click(revertButton))
+
+            expect(mockResetAIJourneySettings).toHaveBeenCalled()
+
+            expect(mockResetSettings).not.toHaveBeenCalled()
+
+            resetSettingsSpy.mockRestore()
         })
     })
 

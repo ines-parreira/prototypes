@@ -1,9 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import useFlag from 'core/flags/hooks/useFlag'
-
 import { PlaygroundChannelAvailability, PlaygroundChannels } from '../types'
 
 type UsePlaygroundChannelReturn = {
@@ -13,18 +9,14 @@ type UsePlaygroundChannelReturn = {
     onChannelAvailabilityChange: (
         availability: PlaygroundChannelAvailability,
     ) => void
+    resetToDefaultChannel: () => void
 }
 
-export const usePlaygroundChannel = (): UsePlaygroundChannelReturn => {
-    // Ensure useFlag is called with a proper default value
-    const isStandalone = useFlag(
-        FeatureFlagKey.StandaloneHandoverCapabilities,
-        false,
-    )
+const DEFAULT_CHANNEL = 'chat'
 
-    const [channel, setChannel] = useState<PlaygroundChannels>(
-        isStandalone ? 'chat' : 'email',
-    )
+export const usePlaygroundChannel = (): UsePlaygroundChannelReturn => {
+    const [channel, setChannel] = useState<PlaygroundChannels>(DEFAULT_CHANNEL)
+
     const [channelAvailability, setChannelAvailability] =
         useState<PlaygroundChannelAvailability>('online')
 
@@ -42,9 +34,15 @@ export const usePlaygroundChannel = (): UsePlaygroundChannelReturn => {
         [],
     )
 
+    const resetToDefaultChannel = useCallback(
+        () => setChannel(DEFAULT_CHANNEL),
+        [],
+    )
+
     return {
         channel,
         channelAvailability,
+        resetToDefaultChannel,
         onChannelChange: handleChannelChange,
         onChannelAvailabilityChange: handleChannelAvailabilityChange,
     }

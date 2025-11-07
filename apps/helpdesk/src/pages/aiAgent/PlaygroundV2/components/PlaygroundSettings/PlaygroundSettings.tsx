@@ -189,8 +189,12 @@ const SettingsHeader = ({ onClose }: Props) => {
 
 const SettingsFooter = () => {
     const { hasChanged, resetInitialState } = useSettingsChanged()
-    const { mode } = useSettingsContext()
-    const { saveAIJourneySettings, isSavingJourneyData } = useAIJourneyContext()
+    const { mode, resetSettings } = useSettingsContext()
+    const {
+        saveAIJourneySettings,
+        isSavingJourneyData,
+        resetAIJourneySettings,
+    } = useAIJourneyContext()
     const { triggerMessage } = useAiJourneyMessages()
     const { emit } = useEvents()
 
@@ -204,6 +208,14 @@ const SettingsFooter = () => {
 
     const { isPolling } = useCoreContext()
 
+    const handleRevertClick = () => {
+        if (mode === 'outbound') {
+            resetAIJourneySettings()
+        } else {
+            resetSettings()
+        }
+    }
+
     return (
         <div className={css.settingsFooter}>
             <Button
@@ -211,7 +223,7 @@ const SettingsFooter = () => {
                 onClick={handleApply}
                 isLoading={isSavingJourneyData}
             >
-                {mode === 'inbound' ? 'Apply' : 'Save and Apply'}
+                Apply changes
             </Button>
             {mode === 'outbound' && (
                 <Button
@@ -222,6 +234,13 @@ const SettingsFooter = () => {
                     Generate follow up
                 </Button>
             )}
+            <Button
+                variant="tertiary"
+                isDisabled={mode === 'outbound' && !hasChanged}
+                onClick={handleRevertClick}
+            >
+                Revert changes
+            </Button>
         </div>
     )
 }
@@ -253,11 +272,13 @@ export const PlaygroundSettings: React.FC<SettingsProps> = ({
                     segments={SEGMENTS}
                 />
             )}
-            {settings.mode === 'outbound' ? (
-                <AIJourneySettings />
-            ) : (
-                <InboundSettings />
-            )}
+            <div className={css.settingsContent}>
+                {settings.mode === 'outbound' ? (
+                    <AIJourneySettings />
+                ) : (
+                    <InboundSettings />
+                )}
+            </div>
             {withFooter && <SettingsFooter />}
         </div>
     )

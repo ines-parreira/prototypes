@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import {
+    createContext,
+    ReactNode,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react'
 
 import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { useAiAgentHttpIntegration } from 'pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration'
@@ -7,6 +14,8 @@ import { useTestSession } from 'pages/aiAgent/PlaygroundV2/hooks/useTestSession'
 
 import { usePlaygroundChannel } from '../hooks/usePlaygroundChannel'
 import { PlaygroundChannelAvailability, PlaygroundChannels } from '../types'
+
+const DEFAULT_ACTIONS_ENABLED = false
 
 type CoreContextValue = {
     testSessionId: string | null
@@ -26,6 +35,8 @@ type CoreContextValue = {
     ) => void
     setAreActionsEnabled: (value: boolean) => void
     areActionsEnabled: boolean
+    resetToDefaultChannel: () => void
+    resetToDefaultActionsEnabled: () => void
 }
 
 const CoreContext = createContext<CoreContextValue | undefined>(undefined)
@@ -50,7 +61,7 @@ export const CoreProvider = ({
     arePlaygroundActionsAllowed,
 }: CoreProviderProps) => {
     const [areActionsEnabledInSettings, setAreActionsEnabledInSettings] =
-        useState(false)
+        useState(DEFAULT_ACTIONS_ENABLED)
     const areActionsEnabled =
         arePlaygroundActionsAllowed || areActionsEnabledInSettings
     const { baseUrl } = useAiAgentHttpIntegration()
@@ -62,6 +73,9 @@ export const CoreProvider = ({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
     })
+    const resetToDefaultActionsEnabled = useCallback(() => {
+        setAreActionsEnabledInSettings(DEFAULT_ACTIONS_ENABLED)
+    }, [])
 
     const contextValue: CoreContextValue = useMemo(
         () => ({
@@ -69,9 +83,16 @@ export const CoreProvider = ({
             ...pollingState,
             ...channelState,
             areActionsEnabled,
+            resetToDefaultActionsEnabled,
             setAreActionsEnabled: setAreActionsEnabledInSettings,
         }),
-        [sessionState, pollingState, channelState, areActionsEnabled],
+        [
+            sessionState,
+            pollingState,
+            channelState,
+            areActionsEnabled,
+            resetToDefaultActionsEnabled,
+        ],
     )
 
     return (

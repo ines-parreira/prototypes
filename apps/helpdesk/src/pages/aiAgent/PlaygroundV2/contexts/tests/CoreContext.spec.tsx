@@ -9,12 +9,14 @@ jest.mock('../../hooks/useAiAgentHttpIntegration', () => ({
     })),
 }))
 
+const mockResetToDefaultChannel = jest.fn()
 jest.mock('../../hooks/usePlaygroundChannel', () => ({
     usePlaygroundChannel: jest.fn(() => ({
         channel: 'email',
         channelAvailability: 'online',
         onChannelChange: jest.fn(),
         onChannelAvailabilityChange: jest.fn(),
+        resetToDefaultChannel: mockResetToDefaultChannel,
     })),
 }))
 
@@ -40,6 +42,11 @@ jest.mock('../../hooks/usePlaygroundPolling', () => ({
 }))
 
 describe('CoreContext (PlaygroundStateContext)', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockResetToDefaultChannel.mockClear()
+    })
+
     describe('usePlaygroundStateContext', () => {
         it('should throw error when used outside provider', () => {
             const consoleErrorSpy = jest
@@ -70,6 +77,10 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             expect(result.current.channelAvailability).toBe('online')
             expect(result.current.areActionsEnabled).toBe(false)
             expect(typeof result.current.setAreActionsEnabled).toBe('function')
+            expect(typeof result.current.resetToDefaultActionsEnabled).toBe(
+                'function',
+            )
+            expect(typeof result.current.resetToDefaultChannel).toBe('function')
         })
 
         it('should include test session state', () => {
@@ -297,6 +308,70 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                     areActionsAllowedToExecute: true,
                 }),
             )
+        })
+
+        it('should reset actions to default value when resetToDefaultActionsEnabled is called', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            act(() => {
+                result.current.setAreActionsEnabled(true)
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+
+            act(() => {
+                result.current.resetToDefaultActionsEnabled()
+            })
+
+            expect(result.current.areActionsEnabled).toBe(false)
+        })
+
+        it('should not affect areActionsEnabled when arePlaygroundActionsAllowed is true', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider arePlaygroundActionsAllowed={true}>
+                        {children}
+                    </CoreProvider>
+                ),
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+
+            act(() => {
+                result.current.resetToDefaultActionsEnabled()
+            })
+
+            expect(result.current.areActionsEnabled).toBe(true)
+        })
+    })
+
+    describe('Channel reset functionality', () => {
+        it('should expose resetToDefaultChannel function from usePlaygroundChannel', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(typeof result.current.resetToDefaultChannel).toBe('function')
+        })
+
+        it('should call resetToDefaultChannel when invoked', () => {
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            act(() => {
+                result.current.resetToDefaultChannel()
+            })
+
+            expect(mockResetToDefaultChannel).toHaveBeenCalledTimes(1)
         })
     })
 })

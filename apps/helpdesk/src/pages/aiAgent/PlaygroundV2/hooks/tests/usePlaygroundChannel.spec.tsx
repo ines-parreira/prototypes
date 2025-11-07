@@ -1,63 +1,32 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { usePlaygroundChannel } from '../usePlaygroundChannel'
-
-jest.mock('core/flags/hooks/useFlag')
-
-const mockUseFlag = require('core/flags/hooks/useFlag').default as jest.Mock
 
 describe('usePlaygroundChannel', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('should initialize with email channel when standalone flag is false', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { result } = renderHook(() => usePlaygroundChannel())
-
-        expect(result.current.channel).toBe('email')
-        expect(result.current.channelAvailability).toBe('online')
-    })
-
-    it('should initialize with chat channel when standalone flag is true', () => {
-        mockUseFlag.mockReturnValue(true)
-
+    it('should initialize with chat channel by default', () => {
         const { result } = renderHook(() => usePlaygroundChannel())
 
         expect(result.current.channel).toBe('chat')
         expect(result.current.channelAvailability).toBe('online')
-    })
-
-    it('should check standalone handover feature flag', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        renderHook(() => usePlaygroundChannel())
-
-        expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.StandaloneHandoverCapabilities,
-            false,
-        )
     })
 
     it('should change channel when onChannelChange is called', () => {
-        mockUseFlag.mockReturnValue(false)
-
         const { result } = renderHook(() => usePlaygroundChannel())
 
-        expect(result.current.channel).toBe('email')
+        expect(result.current.channel).toBe('chat')
 
         act(() => {
-            result.current.onChannelChange('chat')
+            result.current.onChannelChange('email')
         })
 
-        expect(result.current.channel).toBe('chat')
+        expect(result.current.channel).toBe('email')
     })
 
     it('should change channel availability when onChannelAvailabilityChange is called', () => {
-        mockUseFlag.mockReturnValue(false)
-
         const { result } = renderHook(() => usePlaygroundChannel())
 
         expect(result.current.channelAvailability).toBe('online')
@@ -70,26 +39,22 @@ describe('usePlaygroundChannel', () => {
     })
 
     it('should switch between multiple channels', () => {
-        mockUseFlag.mockReturnValue(false)
-
         const { result } = renderHook(() => usePlaygroundChannel())
-
-        act(() => {
-            result.current.onChannelChange('chat')
-        })
-
-        expect(result.current.channel).toBe('chat')
 
         act(() => {
             result.current.onChannelChange('email')
         })
 
         expect(result.current.channel).toBe('email')
+
+        act(() => {
+            result.current.onChannelChange('sms')
+        })
+
+        expect(result.current.channel).toBe('sms')
     })
 
     it('should handle channel availability changes correctly', () => {
-        mockUseFlag.mockReturnValue(false)
-
         const { result } = renderHook(() => usePlaygroundChannel())
 
         act(() => {
@@ -106,13 +71,52 @@ describe('usePlaygroundChannel', () => {
     })
 
     it('should maintain independent state for channel and availability', () => {
-        mockUseFlag.mockReturnValue(false)
-
         const { result } = renderHook(() => usePlaygroundChannel())
 
         act(() => {
-            result.current.onChannelChange('chat')
+            result.current.onChannelChange('email')
             result.current.onChannelAvailabilityChange('offline')
+        })
+
+        expect(result.current.channel).toBe('email')
+        expect(result.current.channelAvailability).toBe('offline')
+    })
+
+    it('should reset channel to default when resetToDefaultChannel is called', () => {
+        const { result } = renderHook(() => usePlaygroundChannel())
+
+        act(() => {
+            result.current.onChannelChange('email')
+        })
+
+        expect(result.current.channel).toBe('email')
+
+        act(() => {
+            result.current.resetToDefaultChannel()
+        })
+
+        expect(result.current.channel).toBe('chat')
+    })
+
+    it('should expose resetToDefaultChannel function', () => {
+        const { result } = renderHook(() => usePlaygroundChannel())
+
+        expect(typeof result.current.resetToDefaultChannel).toBe('function')
+    })
+
+    it('should not affect channel availability when resetting channel', () => {
+        const { result } = renderHook(() => usePlaygroundChannel())
+
+        act(() => {
+            result.current.onChannelChange('email')
+            result.current.onChannelAvailabilityChange('offline')
+        })
+
+        expect(result.current.channel).toBe('email')
+        expect(result.current.channelAvailability).toBe('offline')
+
+        act(() => {
+            result.current.resetToDefaultChannel()
         })
 
         expect(result.current.channel).toBe('chat')

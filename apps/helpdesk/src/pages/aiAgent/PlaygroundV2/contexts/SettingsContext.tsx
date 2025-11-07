@@ -56,7 +56,11 @@ export const SettingsProvider = ({
     children,
     supportedModes,
 }: SettingsProviderProps) => {
-    const core = useCoreContext()
+    const {
+        onChannelChange,
+        resetToDefaultActionsEnabled,
+        resetToDefaultChannel,
+    } = useCoreContext()
     const [localSettings, setLocalSettings] = useState<Partial<SettingsState>>(
         {},
     )
@@ -71,7 +75,9 @@ export const SettingsProvider = ({
 
     const resetSettings = useCallback(() => {
         setLocalSettings({})
-    }, [])
+        resetToDefaultChannel()
+        resetToDefaultActionsEnabled()
+    }, [resetToDefaultActionsEnabled, resetToDefaultChannel])
 
     const setSettings = useCallback((newState: Partial<SettingsState>) => {
         setLocalSettings((prev) => ({
@@ -82,9 +88,9 @@ export const SettingsProvider = ({
 
     useEffect(() => {
         if (settingsState.mode === 'outbound') {
-            core.onChannelChange('sms')
+            onChannelChange('sms')
         }
-    }, [settingsState.mode, core])
+    }, [settingsState.mode, onChannelChange])
 
     const value = useMemo(
         () => ({
