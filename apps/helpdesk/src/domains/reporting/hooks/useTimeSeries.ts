@@ -16,7 +16,9 @@ import {
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 export type TimeSeriesHook = (
     filters: StatsFilters,
@@ -131,15 +133,23 @@ const selectPerDimension =
         return objectMap(_groupBy(escapedResponse, dimension), select(query))
     }
 
-const selectTimeSeriesByMeasures = <TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>,
+export const selectTimeSeriesByMeasures = <
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
     result: DataResponse,
+    query: TimeSeriesQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
+    useV2: boolean = false,
 ): TimeSeriesDataItem[][] => {
     let matchingArray: TimeSeriesDataItem[][] = []
 
     const dataItems = select<TCube>(query)(result.data.data)
 
-    query.measures.forEach((measure, index) => {
+    const measures =
+        useV2 && queryV2?.measures ? queryV2.measures : query.measures
+
+    measures.forEach((measure, index) => {
         const dataItem = dataItems.find((arr) =>
             arr.some((item) => item.label === measure),
         )
@@ -161,13 +171,18 @@ export function useTimeSeries<TCube extends Cubes, TMeta extends ScopeMeta>(
     query: TimeSeriesQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
 ): TimeSeriesResult {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     const result = usePostReportingV2<
         Record<string, string>[],
         TimeSeriesDataItem[][],
         TCube,
         TMeta
     >([query], queryV2, {
-        select: (res) => selectTimeSeriesByMeasures<TCube>(query, res),
+        select: (res) =>
+            selectTimeSeriesByMeasures<TCube, TMeta>(res, query, queryV2, isV2),
     })
 
     return {
@@ -180,13 +195,19 @@ export async function fetchTimeSeries<
     TCube extends Cubes,
     TMeta extends ScopeMeta = ScopeMeta,
 >(query: TimeSeriesQuery<TCube>, queryV2?: BuiltQuery<TMeta>) {
+    const migrationStage = await getNewStatsFeatureFlagMigration(
+        query.metricName,
+    )
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     return fetchPostReportingV2<
         Record<string, string>[],
         TimeSeriesDataItem[][],
         TCube,
         TMeta
     >([query], queryV2, {}).then((res) =>
-        selectTimeSeriesByMeasures<TCube>(query, res),
+        selectTimeSeriesByMeasures<TCube, TMeta>(res, query, queryV2, isV2),
     )
 }
 

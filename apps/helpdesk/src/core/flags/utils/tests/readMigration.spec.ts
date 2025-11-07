@@ -1,6 +1,6 @@
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import { readMigration } from 'core/flags/utils/readMigration'
+import { MigrationStage, readMigration } from 'core/flags/utils/readMigration'
 import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('utils/launchDarkly', () => ({
@@ -34,9 +34,10 @@ describe('readMigration', () => {
     })
 
     it('Should run both branches but return the old result in "shadow" mode', async () => {
-        ldClientMock.variation.mockReturnValue('shadow')
+        const migrationMode: MigrationStage = 'shadow'
+        ldClientMock.variation.mockReturnValue(migrationMode)
 
-        const result = await readMigration('shadow', v1, v2, comparison)
+        const result = await readMigration(migrationMode, v1, v2, comparison)
 
         expect(result).toBe('old')
         expect(v1).toHaveBeenCalled()
@@ -45,9 +46,10 @@ describe('readMigration', () => {
     })
 
     it('Should run both branches and return the new result in "live" mode', async () => {
-        ldClientMock.variation.mockReturnValue('live')
+        const migrationMode: MigrationStage = 'live'
+        ldClientMock.variation.mockReturnValue(migrationMode)
 
-        const result = await readMigration('live', v1, v2, comparison)
+        const result = await readMigration(migrationMode, v1, v2, comparison)
 
         expect(result).toBe('new')
         expect(v1).toHaveBeenCalled()
@@ -67,19 +69,21 @@ describe('readMigration', () => {
     })
 
     it('Should not throw if the non-authoritative branch throws', async () => {
+        const migrationMode: MigrationStage = 'shadow'
         v2.mockRejectedValue(Error('Something happened'))
-        ldClientMock.variation.mockReturnValue('shadow')
+        ldClientMock.variation.mockReturnValue(migrationMode)
 
-        const result = readMigration('shadow', v1, v2)
+        const result = readMigration(migrationMode, v1, v2)
 
         expect(result).resolves.toBe('old')
     })
 
     it('Should throw if the authoritative branch throws', async () => {
+        const migrationMode: MigrationStage = 'live'
         v2.mockRejectedValue(Error('Something happened'))
-        ldClientMock.variation.mockReturnValue('live')
+        ldClientMock.variation.mockReturnValue(migrationMode)
 
-        const result = readMigration('live', v1, v2)
+        const result = readMigration(migrationMode, v1, v2)
 
         expect(result).rejects.toThrow('Something happened')
     })

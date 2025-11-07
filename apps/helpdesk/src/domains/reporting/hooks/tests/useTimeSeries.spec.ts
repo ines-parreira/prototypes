@@ -1,11 +1,13 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { AxiosResponse } from 'axios'
 
+import { MigrationStage } from 'core/flags/utils/readMigration'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
+    selectTimeSeriesByMeasures,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -36,10 +38,16 @@ import {
     ReportingResponse,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
 
 describe('useTimeSeries', () => {
     const defaultTimeDimension = {
@@ -93,6 +101,9 @@ describe('useTimeSeries', () => {
             isFetching: false,
             isError: false,
         } as any)
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+            'off' as MigrationStage,
+        )
     })
 
     const expectedTimeSeriesResult = [
@@ -508,6 +519,8 @@ describe('useTimeSeries', () => {
     })
 
     it('should call usePostReportingV2 with V2 queries when provided', () => {
+        const migrationMode: MigrationStage = 'shadow'
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(migrationMode)
         const queryV2 = {
             metricName: METRIC_NAMES.TEST_METRIC,
             scope: 'test-scope',
@@ -527,6 +540,8 @@ describe('useTimeSeries', () => {
     })
 
     it('should return data when using V2 queries', () => {
+        const migrationMode: MigrationStage = 'complete'
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(migrationMode)
         const queryV2 = {
             metricName: METRIC_NAMES.TEST_METRIC,
             scope: 'test-scope',
@@ -552,6 +567,217 @@ describe('useTimeSeries', () => {
         )
 
         expect(result.current.data).toEqual(singleDataPoint)
+    })
+})
+
+describe('selectTimeSeriesByMeasures', () => {
+    const defaultTimeDimension = {
+        dimension: TicketDimension.CreatedDatetime,
+        granularity: ReportingGranularity.Hour,
+        dateRange: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
+    }
+    const defaultQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
+        measures: [
+            TicketMessagesMeasure.MedianFirstResponseTime,
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+        ],
+        dimensions: [],
+        filters: [],
+        metricName: METRIC_NAMES.TEST_METRIC,
+        timeDimensions: [defaultTimeDimension],
+    }
+    const defaultData = [
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '3.4',
+        },
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
+        },
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T02:00:00',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '4.1',
+        },
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T04:00:00',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '139',
+            [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '1.2',
+        },
+    ]
+    const defaultResult = {
+        data: {
+            data: defaultData,
+        },
+    }
+
+    it('should use V1 measures when useV2 is false', () => {
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            defaultQuery,
+            undefined,
+            false,
+        )
+
+        expect(result).toHaveLength(2)
+        expect(result[0]).toBeDefined()
+        expect(result[1]).toBeDefined()
+        expect(result[0]?.[0]?.label).toBe(
+            TicketMessagesMeasure.MedianFirstResponseTime,
+        )
+        expect(result[1]?.[0]?.label).toBe(
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+        )
+    })
+
+    it('should use V1 measures when queryV2 is not provided', () => {
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            defaultQuery,
+            undefined,
+            true,
+        )
+
+        expect(result).toHaveLength(2)
+        expect(result[0]?.[0]?.label).toBe(
+            TicketMessagesMeasure.MedianFirstResponseTime,
+        )
+        expect(result[1]?.[0]?.label).toBe(
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+        )
+    })
+
+    it('should use V2 measures when useV2 is true and queryV2 has measures', () => {
+        const queryV2 = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['v2Measure1', 'v2Measure2'],
+            filters: [],
+        } as any
+
+        const v2Query: TimeSeriesQuery<TicketCubeWithJoins> = {
+            ...defaultQuery,
+            measures: ['v2Measure1', 'v2Measure2'] as any,
+        }
+
+        const v2Data = [
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                v2Measure1: '100',
+                v2Measure2: '200',
+            },
+        ]
+
+        const v2Result = {
+            data: {
+                data: v2Data,
+            },
+        }
+
+        const result = selectTimeSeriesByMeasures(
+            v2Result as any,
+            v2Query,
+            queryV2,
+            true,
+        )
+
+        expect(result).toHaveLength(2)
+        expect(result[0]?.[0]?.label).toBe('v2Measure1')
+        expect(result[1]?.[0]?.label).toBe('v2Measure2')
+    })
+
+    it('should preserve the order of measures from the query with default value', () => {
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            defaultQuery,
+            undefined,
+        )
+
+        expect(result[0]?.[0]?.label).toBe(
+            TicketMessagesMeasure.MedianFirstResponseTime,
+        )
+        expect(result[1]?.[0]?.label).toBe(
+            TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+        )
+    })
+
+    it('should handle missing measures by creating empty data for them', () => {
+        const queryWithMissingMeasure: TimeSeriesQuery<TicketCubeWithJoins> = {
+            ...defaultQuery,
+            measures: [
+                TicketMessagesMeasure.MedianFirstResponseTime,
+                'nonExistentMeasure' as any,
+                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+            ],
+        }
+
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            queryWithMissingMeasure,
+            undefined,
+            false,
+        )
+
+        expect(result).toHaveLength(3)
+        expect(result[0]).toBeDefined()
+        expect(result[1]).toBeDefined()
+        expect(result[1]?.[0]?.label).toBe('nonExistentMeasure')
+        expect(result[1]?.[0]?.value).toBe(0)
+        expect(result[2]).toBeDefined()
+    })
+
+    it('should match measures by label in data items', () => {
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            defaultQuery,
+            undefined,
+            false,
+        )
+
+        expect(result[0]?.[0]?.value).toBe(65)
+        expect(result[0]?.[1]?.value).toBe(32)
+        expect(result[0]?.[4]?.value).toBe(139)
+        expect(result[1]?.[0]?.value).toBe(3.4)
+        expect(result[1]?.[2]?.value).toBe(4.1)
+        expect(result[1]?.[4]?.value).toBe(1.2)
+    })
+
+    it('should use V1 measures when queryV2 measures is empty', () => {
+        const queryV2 = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: [],
+            filters: [],
+        } as any
+
+        const result = selectTimeSeriesByMeasures(
+            defaultResult as any,
+            defaultQuery,
+            queryV2,
+            true,
+        )
+
+        expect(result).toHaveLength(0)
+    })
+
+    it('should handle empty data array', () => {
+        const emptyResult = {
+            data: {
+                data: [],
+            },
+        }
+
+        const result = selectTimeSeriesByMeasures(
+            emptyResult as any,
+            defaultQuery,
+            undefined,
+            false,
+        )
+
+        expect(result).toHaveLength(2)
+        expect(result[0]).toBeDefined()
+        expect(result[1]).toBeDefined()
     })
 })
 
