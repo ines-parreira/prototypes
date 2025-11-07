@@ -13,6 +13,7 @@ import {
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
+import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
@@ -36,6 +37,7 @@ const PlaygroundMessage = ({
     channel,
     children,
 }: Props) => {
+    const { mode } = useSettingsContext()
     const { messages } = useMessagesContext()
     const {
         aiJourneySettings: { includeProductImage, selectedProduct },
@@ -44,6 +46,7 @@ const PlaygroundMessage = ({
     const messageType = message.type
 
     const renderFirstJourneyImage =
+        mode === 'outbound' &&
         message.createdDatetime === messages[0]?.createdDatetime &&
         includeProductImage &&
         selectedProduct !== null

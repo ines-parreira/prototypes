@@ -18,6 +18,8 @@ import {
     playgroundPromptMessageFixture,
     playgroundTicketEventMessageFixture,
 } from '../../../fixtures/playgroundMessages.fixture'
+import { CoreProvider } from '../../contexts/CoreContext'
+import { SettingsProvider } from '../../contexts/SettingsContext'
 import PlaygroundMessage from './PlaygroundMessage'
 
 const mockUseMessagesContext = jest.fn()
@@ -31,18 +33,56 @@ jest.mock('../../contexts/AIJourneyContext', () => ({
     useAIJourneyContext: () => mockUseAIJourneyContext(),
 }))
 
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
+    useTestSession: () => ({
+        testSessionId: 'test-session-id',
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
+    usePlaygroundPolling: () => ({
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: () => ({
+        baseUrl: 'http://test.com',
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundChannel', () => ({
+    usePlaygroundChannel: () => ({
+        channel: 'chat',
+        channelAvailability: 'online',
+        onChannelChange: jest.fn(),
+        onChannelAvailabilityChange: jest.fn(),
+        resetToDefaultChannel: jest.fn(),
+    }),
+}))
+
 const renderComponent = (
     props?: Partial<ComponentProps<typeof PlaygroundMessage>>,
+    supportedModes?: ('inbound' | 'outbound')[],
 ) => {
     return render(
         <Provider
             store={configureMockStore()(storeWithActiveSubscriptionWithConvert)}
         >
-            <PlaygroundMessage
-                channel="email"
-                message={playgroundMessageFixture}
-                {...props}
-            />
+            <CoreProvider>
+                <SettingsProvider supportedModes={supportedModes}>
+                    <PlaygroundMessage
+                        channel="email"
+                        message={playgroundMessageFixture}
+                        {...props}
+                    />
+                </SettingsProvider>
+            </CoreProvider>
         </Provider>,
     )
 }
@@ -330,11 +370,65 @@ describe('PlaygroundMessage', () => {
                 isLoadingProducts: false,
             })
 
-            renderComponent({ message: firstMessage })
+            renderComponent({ message: firstMessage }, ['outbound'])
 
             const image = screen.getByAltText(mockProduct.title)
             expect(image).toBeInTheDocument()
             expect(image).toHaveAttribute('src', mockProduct.image.src)
+        })
+
+        it('should not render journey image when mode is inbound', () => {
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            mockUseMessagesContext.mockReturnValue({
+                messages: [firstMessage],
+                onMessageSend: jest.fn(),
+                isMessageSending: false,
+                onNewConversation: jest.fn(),
+                isWaitingResponse: false,
+                draftMessage: '',
+                draftSubject: '',
+                setDraftMessage: jest.fn(),
+                setDraftSubject: jest.fn(),
+            })
+
+            mockUseAIJourneyContext.mockReturnValue({
+                aiJourneySettings: {
+                    journeyType: null,
+                    selectedProduct: mockProduct,
+                    totalFollowUp: 1,
+                    includeProductImage: true,
+                    includeDiscountCode: false,
+                    discountCodeValue: 0,
+                    discountCodeMessageIdx: 0,
+                    outboundMessageInstructions: '',
+                },
+                setAIJourneySettings: jest.fn(),
+                resetAIJourneySettings: jest.fn(),
+                saveAIJourneySettings: jest.fn(),
+                shopifyIntegration: undefined,
+                journeys: [],
+                shopName: '',
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isSavingJourneyData: false,
+                followUpMessagesSent: 0,
+                setFollowUpMessagesSent: jest.fn(),
+                currentJourney: undefined,
+                journeyConfiguration: undefined,
+                productList: [mockProduct],
+                isLoadingProducts: false,
+            })
+
+            renderComponent({ message: firstMessage }, ['inbound'])
+
+            expect(
+                screen.queryByAltText(mockProduct.title),
+            ).not.toBeInTheDocument()
         })
 
         it('should not render journey image when includeProductImage is false', () => {
@@ -384,7 +478,7 @@ describe('PlaygroundMessage', () => {
                 isLoadingProducts: false,
             })
 
-            renderComponent({ message: firstMessage })
+            renderComponent({ message: firstMessage }, ['outbound'])
 
             expect(
                 screen.queryByAltText(mockProduct.title),
@@ -438,7 +532,7 @@ describe('PlaygroundMessage', () => {
                 isLoadingProducts: false,
             })
 
-            renderComponent({ message: firstMessage })
+            renderComponent({ message: firstMessage }, ['outbound'])
 
             expect(
                 screen.queryByAltText(mockProduct.title),
@@ -498,7 +592,7 @@ describe('PlaygroundMessage', () => {
                 isLoadingProducts: false,
             })
 
-            renderComponent({ message: secondMessage })
+            renderComponent({ message: secondMessage }, ['outbound'])
 
             expect(
                 screen.queryByAltText(mockProduct.title),
@@ -557,7 +651,7 @@ describe('PlaygroundMessage', () => {
                 isLoadingProducts: false,
             })
 
-            renderComponent({ message: firstMessage })
+            renderComponent({ message: firstMessage }, ['outbound'])
 
             const image = screen.getByAltText(productWithoutImage.title)
             expect(image).toBeInTheDocument()
