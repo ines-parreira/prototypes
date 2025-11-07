@@ -1,6 +1,5 @@
 import { assumeMock } from '@repo/testing'
 import { AxiosResponse } from 'axios'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
 import {
@@ -19,15 +18,12 @@ import {
     metricExecutionHandler,
 } from 'domains/reporting/utils/metricExecutionHandler'
 import { reportError } from 'utils/errors'
-import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('core/flags/utils/newApiMetricFlags')
 
 jest.mock('utils/launchDarkly', () => ({
     getLDClient: jest.fn(),
 }))
-const getLDClientMock = getLDClient as jest.Mock
-getLDClientMock.mockReturnValue(ldClientMock)
 
 const resolveMetricFlagMock = assumeMock(resolveMetricFlag)
 
@@ -112,7 +108,6 @@ describe('metricExecutionHandler', () => {
     describe('off mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('off')
         })
 
         it('should call only the old API and return its response', async () => {
@@ -123,7 +118,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'off')
 
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect(postReportingV1Mock).toHaveBeenCalledWith(mockOldPayload)
@@ -141,7 +136,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            await expect(metricExecutionHandler(config)).rejects.toThrow(
+            await expect(metricExecutionHandler(config, 'off')).rejects.toThrow(
                 'Old API failed',
             )
         })
@@ -150,7 +145,6 @@ describe('metricExecutionHandler', () => {
     describe('shadow mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('shadow')
         })
 
         it('should call both APIs and return old response', async () => {
@@ -165,7 +159,7 @@ describe('metricExecutionHandler', () => {
                 newPayload: mockNewPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'shadow')
 
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect(postReportingV1Mock).toHaveBeenCalledWith(mockOldPayload)
@@ -196,9 +190,9 @@ describe('metricExecutionHandler', () => {
                 newPayload: mockNewPayload,
             }
 
-            await expect(metricExecutionHandler(config)).rejects.toThrow(
-                'Old API failed',
-            )
+            await expect(
+                metricExecutionHandler(config, 'shadow'),
+            ).rejects.toThrow('Old API failed')
         })
 
         it('should return old result when new API fails and log error', async () => {
@@ -213,7 +207,7 @@ describe('metricExecutionHandler', () => {
                 newPayload: mockNewPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'shadow')
 
             expect((result.data as any).data[0]).toBe(42)
             expect(reportErrorMock).toHaveBeenCalledWith(
@@ -235,7 +229,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'shadow')
 
             expect(reportErrorMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -254,7 +248,6 @@ describe('metricExecutionHandler', () => {
     describe('complete mode', () => {
         beforeEach(() => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('complete')
         })
 
         it('should call new API and return its response', async () => {
@@ -268,7 +261,7 @@ describe('metricExecutionHandler', () => {
                 newPayload: mockNewPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'complete')
 
             expect(postReportingV2Mock).toHaveBeenCalledTimes(1)
             expect(postReportingV2Mock).toHaveBeenCalledWith(mockNewPayload)
@@ -284,9 +277,9 @@ describe('metricExecutionHandler', () => {
                 newPayload: mockNewPayload,
             }
 
-            await expect(metricExecutionHandler(config)).rejects.toThrow(
-                'New API failed',
-            )
+            await expect(
+                metricExecutionHandler(config, 'complete'),
+            ).rejects.toThrow('New API failed')
         })
 
         it('should fallback to off mode when new payload is missing', async () => {
@@ -297,7 +290,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'complete')
 
             expect(reportErrorMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -313,46 +306,10 @@ describe('metricExecutionHandler', () => {
         })
     })
 
-    describe('feature flag integration', () => {
-        it('should handle flag resolution errors', async () => {
-            resolveMetricFlagMock.mockImplementation(() => {
-                throw new Error('Flag resolution failed')
-            })
-
-            const config: ExecuteMetricConfig = {
-                metricName: 'test-metric',
-                oldPayload: mockOldPayload,
-            }
-
-            await expect(metricExecutionHandler(config)).rejects.toThrow(
-                'Flag resolution failed',
-            )
-        })
-
-        it('should fallback to off mode for unknown migration mode', async () => {
-            resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('unknown' as any)
-            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
-
-            const config: ExecuteMetricConfig = {
-                metricName: 'test-metric',
-                oldPayload: mockOldPayload,
-            }
-
-            const result = await metricExecutionHandler(config)
-
-            expect(reportErrorMock).toHaveBeenCalledWith(
-                'Unknown migration stage: unknown',
-            )
-            expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
-            expect((result.data as any).data[0]).toBe(42)
-        })
-    })
-
     describe('configuration validation with fallback', () => {
         it('should fallback to off mode when shadow mode config is invalid', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('shadow')
+
             postReportingV1Mock.mockResolvedValue(createMockOldResponse(500))
 
             const config: ExecuteMetricConfig = {
@@ -360,7 +317,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'shadow')
 
             expect(reportErrorMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -377,7 +334,6 @@ describe('metricExecutionHandler', () => {
 
         it('should fallback to off mode when live mode config is invalid', async () => {
             resolveMetricFlagMock.mockReturnValue('test-flag' as any)
-            ldClientMock.variation.mockReturnValue('complete')
             postReportingV1Mock.mockResolvedValue(createMockOldResponse(600))
 
             const config: ExecuteMetricConfig = {
@@ -385,7 +341,7 @@ describe('metricExecutionHandler', () => {
                 oldPayload: mockOldPayload,
             }
 
-            const result = await metricExecutionHandler(config)
+            const result = await metricExecutionHandler(config, 'complete')
 
             expect(reportErrorMock).toHaveBeenCalledWith(
                 expect.objectContaining({

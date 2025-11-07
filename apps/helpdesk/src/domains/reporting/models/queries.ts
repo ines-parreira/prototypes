@@ -16,6 +16,7 @@ import {
     ReportingResponse,
 } from 'domains/reporting/models/types'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 const stopOnError = (query: Pick<Query, 'state'>) =>
     query.state.status !== 'error'
@@ -112,16 +113,23 @@ export const usePostReportingV2 = <
         SelectData
     >,
 ) => {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(
+        payload[0].metricName,
+    )
     return useQuery({
         queryKey: newPayload
             ? reportingKeys.postV2(payload, newPayload)
             : reportingKeys.post(payload),
+
         queryFn: () =>
-            metricExecutionHandler<TData, TCube, TMeta>({
-                metricName: payload[0].metricName,
-                oldPayload: payload,
-                newPayload: newPayload,
-            }),
+            metricExecutionHandler<TData, TCube, TMeta>(
+                {
+                    metricName: payload[0].metricName,
+                    oldPayload: payload,
+                    newPayload: newPayload,
+                },
+                migrationStage,
+            ),
         ...defaultOptions,
         ...overrides,
     })

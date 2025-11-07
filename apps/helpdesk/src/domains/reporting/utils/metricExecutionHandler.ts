@@ -1,9 +1,5 @@
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
-import {
-    getMigrationStage,
-    readMigration,
-} from 'core/flags/utils/readMigration'
+import { MigrationStage, readMigration } from 'core/flags/utils/readMigration'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     postReportingV1,
@@ -47,10 +43,8 @@ export async function metricExecutionHandler<
     TMeta extends ScopeMeta = ScopeMeta,
 >(
     config: ExecuteMetricConfig<TCube, TMeta>,
+    stage: MigrationStage = 'off',
 ): Promise<UsePostReportingQueryData<TData>> {
-    const flagName = resolveMetricFlag(config.metricName)
-    const stage = await getMigrationStage(flagName)
-
     const v1 = async (): Promise<Result<TData>> => {
         const result = await postReportingV1<TData, TCube>(config.oldPayload)
         return { data: result, query: result.data.query }
@@ -109,6 +103,6 @@ export async function metricExecutionHandler<
     const comparison = (v1: Result<TData>, v2: Result<TData>): boolean =>
         compareAndReportQueries(config.metricName, v1.query!, v2.query!)
 
-    const result = await readMigration(flagName, v1, v2, comparison)
+    const result = await readMigration(stage, v1, v2, comparison)
     return result.data!
 }

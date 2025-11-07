@@ -1,8 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { reportError } from 'utils/errors'
-import { getLDClient } from 'utils/launchDarkly'
-
 /**
  * Migration stage
  * - off: run only old implementation
@@ -12,55 +7,24 @@ import { getLDClient } from 'utils/launchDarkly'
  */
 export type MigrationStage = 'off' | 'shadow' | 'live' | 'complete'
 
-const ALLOWED_VALUES: Set<MigrationStage> = new Set([
-    'off',
-    'shadow',
-    'live',
-    'complete',
-])
-
-/**
- * @param flag - The feature flag to check from the FeatureFlagKey enum
- * @param defaultValue - The default value to return if the feature flag is not set, defaults to OFF
- * @returns The active migration stage for this flag
- */
-export async function getMigrationStage(
-    flag: FeatureFlagKey,
-    defaultValue: MigrationStage = 'off',
-): Promise<MigrationStage> {
-    const client = getLDClient()
-    await client.waitForInitialization(3)
-    const value = client.variation(flag, defaultValue) || defaultValue
-
-    if (!ALLOWED_VALUES.has(value)) {
-        reportError('Unknown migration stage: ' + value)
-        return defaultValue
-    }
-    return value
-}
-
 /**
  * Custom implementation of LaunchDarkly migration flags as their current JS SDK does not support them.
  * Does not send analytics events to LaunchDarkly and as such does not have nice graphs in their interface.
  *
  * @see https://launchdarkly.com/docs/home/flags/migration
  *
- * @param flag - The feature flag to check from the FeatureFlagKey enum
+ * @param migrationMode - The migration stage to read from
  * @param v1 - The "old" branch of the code, called in off/shadow/live and returned in off/shadow modes
  * @param v2 - The "new" branch of the code, called in shadow/live/complete and returned in live/complete modes
  * @param comparison - Optional comparison method for results, used in shadow/live modes
- * @param defaultValue - The default value to return if the feature flag is not set, defaults to OFF
  * @returns The return value of the authoritative branch ("old" in off/shadow, "new" in live/complete)
  */
 export async function readMigration<T>(
-    flag: FeatureFlagKey,
+    migrationMode: MigrationStage = 'off',
     v1: () => Promise<T>,
     v2: () => Promise<T>,
     comparison?: (v1: T, v2: T) => boolean,
-    defaultValue: MigrationStage = 'off',
 ): Promise<T> {
-    const migrationMode = await getMigrationStage(flag, defaultValue)
-
     // For simple modes, we simply return the correct branch as-is
     if (migrationMode === 'off') return v1()
     if (migrationMode === 'complete') return v2()
@@ -68,7 +32,7 @@ export async function readMigration<T>(
     // For more complex modes (shadow/live) we run both branches in parallel
     const [oldResult, newResult] = await Promise.allSettled([v1(), v2()])
 
-    // Call the comparison method only if both branches succeeeded
+    // Call the comparison method only if both branches succeeded
     if (
         comparison &&
         oldResult.status === 'fulfilled' &&

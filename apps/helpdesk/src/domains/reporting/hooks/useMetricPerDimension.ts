@@ -1,3 +1,4 @@
+import { MigrationStage } from 'core/flags/utils/readMigration'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting//models/scopes/scope'
 import { RequestedData } from 'domains/reporting/hooks/types'
 import {
@@ -29,6 +30,7 @@ import {
     ReportingQuery,
 } from 'domains/reporting/models/types'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { OrderDirection } from 'models/api/types'
 import { DrillDownReportingQuery } from 'models/job/types'
 import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
@@ -160,26 +162,31 @@ const queryWithDeciles =
     <TCube extends Cubes, TMeta extends ScopeMeta>(
         query: ReportingQuery<TCube>,
         newQuery?: BuiltQuery<TMeta>,
+        migrationStage?: MigrationStage,
     ) =>
     () =>
-        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>({
-            metricName: query.metricName,
-            oldPayload: [query],
-            newPayload: newQuery,
-        }).then(withDeciles)
+        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>(
+            {
+                metricName: query.metricName,
+                oldPayload: [query],
+                newPayload: newQuery,
+            },
+            migrationStage,
+        ).then(withDeciles)
 
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
     enabled?: boolean,
 ): MetricWithDecile<TCube> {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
         MetricWithDecileData<TCube>
     >([query], {
         select: (data) =>
             selectMeasurePerDimension(data.data.data, query, dimensionId),
-        queryFn: queryWithDeciles(query),
+        queryFn: queryWithDeciles(query, undefined, migrationStage),
         enabled,
     })
 
