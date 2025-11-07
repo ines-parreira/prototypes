@@ -46,7 +46,7 @@ export const AnalyticsData = ({ data, period }: AnalyticsDataProps) => {
                                             prevValue={metric.prevValue}
                                             metricFormat={metric.metricFormat}
                                             currency={metric.currency}
-                                            interpretAs="more-is-better"
+                                            interpretAs={metric.interpretAs}
                                         />
                                     </div>
                                 </div>

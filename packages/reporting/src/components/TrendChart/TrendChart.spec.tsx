@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react'
 
-import { AreaChart } from './AreaChart'
+import { TrendChart } from './TrendChart'
 
-describe('AreaChart', () => {
+describe('TrendChart', () => {
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
             observe() {}
@@ -32,8 +32,9 @@ describe('AreaChart', () => {
 
     it('should render area chart with provided data', () => {
         const { container } = render(
-            <AreaChart
+            <TrendChart
                 data={mockData}
+                trendColor="positive"
                 areaChartProps={{ width: 500, height: 300 }}
             />,
         )
@@ -47,8 +48,9 @@ describe('AreaChart', () => {
 
     it('should render with empty data', () => {
         const { container } = render(
-            <AreaChart
+            <TrendChart
                 data={[]}
+                trendColor="neutral"
                 areaChartProps={{ width: 500, height: 300 }}
             />,
         )
@@ -86,8 +88,9 @@ describe('AreaChart', () => {
         ]
 
         const { container } = render(
-            <AreaChart
+            <TrendChart
                 data={multiSeriesData}
+                trendColor="positive"
                 areaChartProps={{ width: 500, height: 300 }}
             />,
         )
@@ -96,11 +99,78 @@ describe('AreaChart', () => {
         expect(areas).toHaveLength(3)
     })
 
+    describe('trend colors', () => {
+        it('should apply positive color gradient', () => {
+            const { container } = render(
+                <TrendChart
+                    data={mockData}
+                    trendColor="positive"
+                    areaChartProps={{ width: 500, height: 300 }}
+                />,
+            )
+
+            const colorGradient = container.querySelector('#colorUv')
+            expect(colorGradient).toBeInTheDocument()
+
+            const gradientStops = colorGradient?.querySelectorAll('stop')
+            expect(gradientStops?.[0]).toHaveAttribute('stop-color', '#0EAA77')
+        })
+
+        it('should apply negative color gradient', () => {
+            const { container } = render(
+                <TrendChart
+                    data={mockData}
+                    trendColor="negative"
+                    areaChartProps={{ width: 500, height: 300 }}
+                />,
+            )
+
+            const colorGradient = container.querySelector('#colorUv')
+            expect(colorGradient).toBeInTheDocument()
+
+            const gradientStops = colorGradient?.querySelectorAll('stop')
+            expect(gradientStops?.[0]).toHaveAttribute('stop-color', '#FF425D')
+        })
+
+        it('should apply neutral color gradient', () => {
+            const { container } = render(
+                <TrendChart
+                    data={mockData}
+                    trendColor="neutral"
+                    areaChartProps={{ width: 500, height: 300 }}
+                />,
+            )
+
+            const colorGradient = container.querySelector('#colorUv')
+            expect(colorGradient).toBeInTheDocument()
+
+            const gradientStops = colorGradient?.querySelectorAll('stop')
+            expect(gradientStops?.[0]).toHaveAttribute('stop-color', '#5C6370')
+        })
+
+        it('should apply unchanged color gradient', () => {
+            const { container } = render(
+                <TrendChart
+                    data={mockData}
+                    trendColor="unchanged"
+                    areaChartProps={{ width: 500, height: 300 }}
+                />,
+            )
+
+            const colorGradient = container.querySelector('#colorUv')
+            expect(colorGradient).toBeInTheDocument()
+
+            const gradientStops = colorGradient?.querySelectorAll('stop')
+            expect(gradientStops?.[0]).toHaveAttribute('stop-color', '#5C6370')
+        })
+    })
+
     describe('gradient configuration', () => {
         it('should apply stroke gradient when isStrokeSolid is false', () => {
             const { container } = render(
-                <AreaChart
+                <TrendChart
                     data={mockData}
+                    trendColor="positive"
                     isStrokeSolid={false}
                     areaChartProps={{ width: 500, height: 300 }}
                 />,
@@ -112,8 +182,9 @@ describe('AreaChart', () => {
 
         it('should not render stroke gradient when isStrokeSolid is true', () => {
             const { container } = render(
-                <AreaChart
+                <TrendChart
                     data={mockData}
+                    trendColor="positive"
                     isStrokeSolid={true}
                     areaChartProps={{ width: 500, height: 300 }}
                 />,
@@ -125,8 +196,9 @@ describe('AreaChart', () => {
 
         it('should render area color gradient', () => {
             const { container } = render(
-                <AreaChart
+                <TrendChart
                     data={mockData}
+                    trendColor="positive"
                     areaChartProps={{ width: 500, height: 300 }}
                 />,
             )
@@ -139,8 +211,9 @@ describe('AreaChart', () => {
     describe('custom styling', () => {
         it('should apply custom dimensions via areaChartProps', () => {
             const { container } = render(
-                <AreaChart
+                <TrendChart
                     data={mockData}
+                    trendColor="positive"
                     areaChartProps={{
                         width: 500,
                         height: 300,

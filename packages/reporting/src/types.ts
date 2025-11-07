@@ -43,3 +43,13 @@ export type TwoDimensionalDataItem = {
     isDashed?: boolean
     isDisabled?: boolean
 }
+
+export type MetricTrend = {
+    isFetching: boolean
+    isError: boolean
+    data?: {
+        label: string
+        value: number | null
+        prevValue: number | null
+    }
+}

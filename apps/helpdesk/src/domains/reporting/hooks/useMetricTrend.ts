@@ -8,6 +8,11 @@ import { ReportingQuery } from 'domains/reporting/models/types'
 
 import { fetchMetric, useMetric } from './useMetric'
 
+/**
+ * @deprecated Use MetricTrend from @repo/reporting instead
+ * @date 2025-11-05
+ * @type reporting-ui-kit
+ */
 export type MetricTrend = {
     isFetching: boolean
     isError: boolean

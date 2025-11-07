@@ -1,24 +1,30 @@
 import { Area, AreaChart as AreaChartRecharts } from 'recharts'
+import { CartesianChartProps } from 'recharts/types/util/types'
 
-import { TwoDimensionalDataItem } from '../../types'
+import { TrendColor, TwoDimensionalDataItem } from '../../types'
 import { toChartData } from '../LineChart/utils'
 
 export type AreaChartProps = {
     data: TwoDimensionalDataItem[]
     isStrokeSolid?: boolean
-    areaColor?: string
-    strokeColor?: string
-    areaChartProps?: any
+    areaChartProps?: CartesianChartProps & React.RefAttributes<SVGSVGElement>
+    trendColor: TrendColor
 }
 
-export const AreaChart = ({
+export const TrendChart = ({
     areaChartProps,
     data,
     isStrokeSolid = false,
-    areaColor = '#0EAA77',
-    strokeColor = '#0EAA77',
+    trendColor,
 }: AreaChartProps) => {
     const transformedData = toChartData(data)
+
+    const trendColorValue = {
+        neutral: '#5C6370',
+        unchanged: '#5C6370',
+        positive: '#0EAA77',
+        negative: '#FF425D',
+    }
 
     return (
         <AreaChartRecharts
@@ -30,22 +36,22 @@ export const AreaChart = ({
                 <linearGradient id="colorUv" x1="0" y1="1" x2="1" y2="1">
                     <stop
                         offset="0%"
-                        stopColor={areaColor}
+                        stopColor={trendColorValue[trendColor]}
                         stopOpacity={0.02}
                     />
                     <stop
                         offset="50%"
-                        stopColor={areaColor}
+                        stopColor={trendColorValue[trendColor]}
                         stopOpacity={0.05}
                     />
                     <stop
                         offset="75%"
-                        stopColor={areaColor}
-                        stopOpacity={0.1}
+                        stopColor={trendColorValue[trendColor]}
+                        stopOpacity={0.07}
                     />
                     <stop
                         offset="100%"
-                        stopColor={areaColor}
+                        stopColor={trendColorValue[trendColor]}
                         stopOpacity={0.1}
                     />
                 </linearGradient>
@@ -59,17 +65,27 @@ export const AreaChart = ({
                     >
                         <stop
                             offset="0%"
-                            stopColor={strokeColor}
+                            stopColor={trendColorValue[trendColor]}
+                            stopOpacity={0.05}
+                        />
+                        <stop
+                            offset="25%"
+                            stopColor={trendColorValue[trendColor]}
                             stopOpacity={0.05}
                         />
                         <stop
                             offset="50%"
-                            stopColor={strokeColor}
+                            stopColor={trendColorValue[trendColor]}
+                            stopOpacity={0.35}
+                        />
+                        <stop
+                            offset="75%"
+                            stopColor={trendColorValue[trendColor]}
                             stopOpacity={0.5}
                         />
                         <stop
                             offset="100%"
-                            stopColor={strokeColor}
+                            stopColor={trendColorValue[trendColor]}
                             stopOpacity={1}
                         />
                     </linearGradient>
@@ -80,7 +96,9 @@ export const AreaChart = ({
                     type="monotone"
                     dataKey={series.label}
                     stroke={
-                        isStrokeSolid ? strokeColor : 'url(#strokeGradient)'
+                        isStrokeSolid
+                            ? trendColorValue[trendColor]
+                            : 'url(#strokeGradient)'
                     }
                     strokeWidth={1.5}
                     fillOpacity={1}
