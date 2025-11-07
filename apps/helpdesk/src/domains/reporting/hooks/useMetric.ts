@@ -8,6 +8,8 @@ import {
 import { ReportingQuery } from 'domains/reporting/models/types'
 
 import { BuiltQuery, ScopeMeta } from '../models/scopes/scope'
+import { getNewStatsFeatureFlagMigration } from '../utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from '../utils/useGetNewStatsFeatureFlagMigration'
 
 export type MetricFetch = (...arg: any) => Promise<Metric>
 
@@ -15,10 +17,19 @@ export type QueryReturnType<Measure extends Cubes['measures']> = [
     Record<Measure, string | null>,
 ]
 
-export const selectMeasure = <Measure extends Cubes['measures']>(
-    measure: Measure,
-    data: UsePostReportingQueryData<QueryReturnType<Measure>>,
+export const selectMeasure = <
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    data: UsePostReportingQueryData<QueryReturnType<Cubes['measures']>>,
+    query: ReportingQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
+    isV2?: boolean,
 ) => {
+    const measure =
+        isV2 && queryV2?.measures
+            ? (queryV2.measures[0] as TCube['measures'])
+            : query.measures[0]
     const dataMeasure = data.data.data?.[0]?.[measure] || null
     return dataMeasure !== null ? parseFloat(dataMeasure) : null
 }
@@ -31,13 +42,18 @@ export function useMetric<
     queryV2?: BuiltQuery<TMeta>,
     enabled: boolean = true,
 ): Metric {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     const currentPeriodMetric = usePostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
         TCube,
         TMeta
     >([query], queryV2, {
-        select: (data) => selectMeasure(query.measures[0], data),
+        select: (data) =>
+            selectMeasure<TCube, TMeta>(data, query, queryV2, isV2),
         enabled,
     })
 
@@ -60,6 +76,12 @@ export const fetchMetric = async <
     query: ReportingQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
 ): Promise<Metric> => {
+    const migrationStage = await getNewStatsFeatureFlagMigration(
+        query.metricName,
+    )
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     return fetchPostReportingV2<
         QueryReturnType<TCube['measures']>,
         number | null,
@@ -72,7 +94,12 @@ export const fetchMetric = async <
             data:
                 res.data.data !== undefined
                     ? {
-                          value: selectMeasure(query.measures[0], res),
+                          value: selectMeasure<TCube, TMeta>(
+                              res,
+                              query,
+                              queryV2,
+                              isV2,
+                          ),
                       }
                     : undefined,
         }))

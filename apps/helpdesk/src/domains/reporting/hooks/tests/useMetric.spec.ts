@@ -7,8 +7,6 @@ import {
     selectMeasure,
     useMetric,
 } from 'domains/reporting/hooks/useMetric'
-import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketMessagesCube,
     TicketMessagesMeasure,
@@ -249,21 +247,89 @@ describe('Metric', () => {
     })
 
     describe('selectMeasure', () => {
-        const ticketCount = 100
-        const data = {
-            data: { data: [{ [TicketMeasure.TicketCount]: ticketCount }] },
-        } as any
+        it('should select measure from V1 query when isV2 is false', () => {
+            const measureValue = '123.45'
+            const data = {
+                data: {
+                    data: [
+                        {
+                            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                                measureValue,
+                        },
+                    ],
+                },
+            } as any
 
-        it('should return the measure value', () => {
-            expect(selectMeasure(TicketMeasure.TicketCount, data)).toEqual(
-                ticketCount,
-            )
+            const result = selectMeasure(data, defaultQuery, undefined, false)
+
+            expect(result).toBe(123.45)
         })
 
-        it('should return null for the missing measure', () => {
+        it('should select measure from V2 query when isV2 is true', () => {
+            const measureValue = '67.89'
+            const data = {
+                data: {
+                    data: [
+                        {
+                            medianFirstResponseTime: measureValue,
+                        },
+                    ],
+                },
+            } as any
+
+            const result = selectMeasure(
+                data,
+                defaultQuery,
+                defaultQueryV2,
+                true,
+            )
+
+            expect(result).toBe(67.89)
+        })
+
+        it('should return null when data is missing or null', () => {
+            const dataWithNull = {
+                data: {
+                    data: [
+                        {
+                            [TicketMessagesMeasure.MedianFirstResponseTime]:
+                                null,
+                        },
+                    ],
+                },
+            } as any
+
+            const dataWithMissingMeasure = {
+                data: {
+                    data: [{}],
+                },
+            } as any
+
+            const dataWithEmptyArray = {
+                data: {
+                    data: [],
+                },
+            } as any
+
             expect(
-                selectMeasure(HelpdeskMessageMeasure.TicketCount, data),
-            ).toEqual(null)
+                selectMeasure(dataWithNull, defaultQuery, undefined, false),
+            ).toBe(null)
+            expect(
+                selectMeasure(
+                    dataWithMissingMeasure,
+                    defaultQuery,
+                    undefined,
+                    false,
+                ),
+            ).toBe(null)
+            expect(
+                selectMeasure(
+                    dataWithEmptyArray,
+                    defaultQuery,
+                    undefined,
+                    false,
+                ),
+            ).toBe(null)
         })
     })
 })
