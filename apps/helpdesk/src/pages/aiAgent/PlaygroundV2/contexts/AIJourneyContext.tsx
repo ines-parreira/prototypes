@@ -254,9 +254,14 @@ const WrappedAIJourneyProvider = ({
         [],
     )
 
-    useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, () => {
+    const resetFollowUpMessagesSent = useCallback(() => {
         setFollowUpMessagesSent(0)
-    })
+    }, [])
+
+    useSubscribeToEvent(
+        PlaygroundEvent.RESET_CONVERSATION,
+        resetFollowUpMessagesSent,
+    )
 
     const contextValue = useMemo(
         () => ({

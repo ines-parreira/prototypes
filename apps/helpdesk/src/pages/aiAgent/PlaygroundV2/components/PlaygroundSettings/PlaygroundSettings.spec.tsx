@@ -236,36 +236,59 @@ jest.mock('@gorgias/axiom', () => ({
         </div>
     ),
     ListItem: ({ label }: any) => label,
+    LegacyTooltip: ({ children, 'aria-hidden': ariaHidden, ...props }: any) => (
+        <div data-testid="tooltip" aria-hidden={ariaHidden} {...props}>
+            {children}
+        </div>
+    ),
 }))
 
+const DEFAULT_AI_JOURNEY_CONTEXT = {
+    shopifyIntegration: undefined,
+    journeys: [],
+    shopName: 'test-shop',
+    isLoadingJourneys: false,
+    followUpMessagesSent: 0,
+    aiJourneySettings: {
+        journeyType: 'cart-abandoned' as const,
+        selectedProduct: null,
+        totalFollowUp: 3,
+        includeProductImage: true,
+        includeDiscountCode: true,
+        discountCodeValue: 10,
+        discountCodeMessageIdx: 1,
+        outboundMessageInstructions: '',
+    },
+    setAIJourneySettings: jest.fn(),
+    resetAIJourneySettings: jest.fn(),
+    saveAIJourneySettings: jest.fn(),
+    isLoadingJourneyData: false,
+    isSavingJourneyData: false,
+}
+
 const mockResetAIJourneySettings = jest.fn()
+const mockUseAIJourneyContextValue = {
+    ...DEFAULT_AI_JOURNEY_CONTEXT,
+    resetAIJourneySettings: mockResetAIJourneySettings,
+}
+
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext', () => ({
     ...jest.requireActual(
         'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
     ),
     AIJourneyProvider: ({ children }: any) => <div>{children}</div>,
-    useAIJourneyContext: () => ({
-        shopifyIntegration: undefined,
-        journeys: [],
-        shopName: 'test-shop',
-        isLoadingJourneys: false,
-        aiJourneySettings: {
-            journeyType: 'cart-abandoned',
-            selectedProduct: null,
-            totalFollowUp: 1,
-            includeProductImage: true,
-            includeDiscountCode: true,
-            discountCodeValue: 10,
-            discountCodeMessageIdx: 1,
-            outboundMessageInstructions: '',
-        },
-        setAIJourneySettings: jest.fn(),
-        resetAIJourneySettings: mockResetAIJourneySettings,
-        saveAIJourneySettings: jest.fn(),
-        isLoadingJourneyData: false,
-        isSavingJourneyData: false,
-    }),
+    useAIJourneyContext: () => mockUseAIJourneyContextValue,
 }))
+
+const mockAIJourneyContext = (
+    overrides: Partial<typeof DEFAULT_AI_JOURNEY_CONTEXT> = {},
+) => {
+    Object.assign(mockUseAIJourneyContextValue, {
+        ...DEFAULT_AI_JOURNEY_CONTEXT,
+        resetAIJourneySettings: mockResetAIJourneySettings,
+        ...overrides,
+    })
+}
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
@@ -300,6 +323,7 @@ describe('PlaygroundSettings', () => {
             hasOutboundChanged: false,
             resetInitialState: jest.fn(),
         })
+        mockAIJourneyContext()
     })
 
     describe('Header', () => {
@@ -920,6 +944,120 @@ describe('PlaygroundSettings', () => {
             )
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        })
+    })
+
+    describe('Follow-up button and tooltip', () => {
+        it('should show "Generate follow up" button in outbound mode', async () => {
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const followUpButton = screen.getByRole('button', {
+                    name: /generate follow up/i,
+                })
+                expect(followUpButton).toBeInTheDocument()
+                expect(followUpButton).not.toHaveAttribute(
+                    'aria-hidden',
+                    'true',
+                )
+            })
+        })
+
+        it('should hide "Generate follow up" button in inbound mode', () => {
+            renderComponent()
+
+            const followUpButton = screen.getByText('Generate follow up')
+            expect(followUpButton).toBeInTheDocument()
+            const parentDiv = followUpButton.closest('button')?.parentElement
+            expect(parentDiv).toHaveAttribute('aria-hidden', 'true')
+        })
+
+        it('should enable "Generate follow up" button when limit not reached', async () => {
+            mockAIJourneyContext({ followUpMessagesSent: 2 })
+
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const followUpButton = screen.getByRole('button', {
+                    name: /generate follow up/i,
+                })
+                expect(followUpButton).not.toBeDisabled()
+            })
+        })
+
+        it('should disable "Generate follow up" button when limit reached', async () => {
+            mockAIJourneyContext({ followUpMessagesSent: 3 })
+
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const followUpButton = screen.getByRole('button', {
+                    name: /generate follow up/i,
+                })
+                expect(followUpButton).toBeDisabled()
+            })
+        })
+
+        it('should disable "Generate follow up" button when limit exceeded', async () => {
+            mockAIJourneyContext({ followUpMessagesSent: 5 })
+
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const followUpButton = screen.getByRole('button', {
+                    name: /generate follow up/i,
+                })
+                expect(followUpButton).toBeDisabled()
+            })
+        })
+
+        it('should show tooltip when follow-up limit is reached in outbound mode', async () => {
+            mockAIJourneyContext({ followUpMessagesSent: 3 })
+
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const tooltip = screen.getByTestId('tooltip')
+                expect(tooltip).toBeInTheDocument()
+                expect(tooltip).toHaveTextContent(
+                    'Configured follow up limit reached',
+                )
+            })
+        })
+
+        it('should hide tooltip when follow-up limit is not reached in outbound mode', async () => {
+            mockAIJourneyContext({ followUpMessagesSent: 1 })
+
+            renderComponent()
+
+            await act(() => userEvent.click(screen.getByText('Outbound')))
+
+            await waitFor(() => {
+                const tooltip = screen.queryByTestId('tooltip')
+                expect(tooltip).not.toBeInTheDocument()
+            })
+        })
+
+        it('should show tooltip in inbound mode if limit is reached', () => {
+            mockAIJourneyContext({ followUpMessagesSent: 3 })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('tooltip')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent(
+                'Configured follow up limit reached',
+            )
         })
     })
 })

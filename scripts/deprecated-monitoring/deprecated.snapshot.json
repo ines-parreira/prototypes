@@ -1902,7 +1902,7 @@
           }
         },
         {
-          "usageCount": 137,
+          "usageCount": 138,
           "name": "@gorgias.LegacyTooltip",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -1942,6 +1942,7 @@
               "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceActionsBadge.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent.tsx",
               "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunityCard/OpportunityCard.tsx",
+              "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal.tsx",
               "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioItem.tsx",

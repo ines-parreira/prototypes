@@ -104,7 +104,7 @@ export const useAiJourneyMessages = () => {
     } = useAIJourneyContext()
     const { accountId } = useConfigurationContext()
     const { createTestSession, testSessionId, startPolling } = useCoreContext()
-    const { mutateAsync } = useTriggerAIJourney()
+    const { mutateAsync, isLoading } = useTriggerAIJourney()
 
     const triggerMessage = useCallback(async () => {
         if (!currentJourney || !shopifyIntegration) {
@@ -151,5 +151,6 @@ export const useAiJourneyMessages = () => {
 
     return {
         triggerMessage,
+        isTriggeringMessage: isLoading,
     }
 }

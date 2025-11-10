@@ -1,6 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 
-import { Button, ListItem, SelectField, ToggleField } from '@gorgias/axiom'
+import {
+    Button,
+    ListItem,
+    SelectField,
+    ToggleField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings'
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
@@ -193,10 +199,13 @@ const SettingsFooter = () => {
     const {
         saveAIJourneySettings,
         isSavingJourneyData,
+        followUpMessagesSent,
+        aiJourneySettings: { totalFollowUp },
         resetAIJourneySettings,
     } = useAIJourneyContext()
-    const { triggerMessage } = useAiJourneyMessages()
+    const { triggerMessage, isTriggeringMessage } = useAiJourneyMessages()
     const { emit } = useEvents()
+    const followUpButtonRef = useRef<HTMLButtonElement>(null)
 
     const handleApply = useCallback(async () => {
         if (mode === 'outbound') {
@@ -205,6 +214,8 @@ const SettingsFooter = () => {
         emit(PlaygroundEvent.RESET_CONVERSATION)
         resetInitialState()
     }, [mode, saveAIJourneySettings, resetInitialState, emit])
+
+    const followUpLimitReached = followUpMessagesSent >= totalFollowUp
 
     const { isPolling } = useCoreContext()
 
@@ -225,14 +236,21 @@ const SettingsFooter = () => {
             >
                 Apply changes
             </Button>
-            {mode === 'outbound' && (
+            <div aria-hidden={mode !== 'outbound'}>
                 <Button
-                    isDisabled={isPolling}
+                    isDisabled={isPolling || followUpLimitReached}
                     variant="secondary"
                     onClick={triggerMessage}
+                    ref={followUpButtonRef}
+                    isLoading={isTriggeringMessage}
                 >
                     Generate follow up
                 </Button>
+            </div>
+            {followUpLimitReached && (
+                <Tooltip target={followUpButtonRef} placement="top">
+                    Configured follow up limit reached
+                </Tooltip>
             )}
             <Button
                 variant="tertiary"
