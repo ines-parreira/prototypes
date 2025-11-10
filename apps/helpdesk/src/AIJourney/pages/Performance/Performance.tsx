@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
 import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import {
@@ -14,7 +12,6 @@ import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyK
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useFlag } from 'core/flags'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import {
     formatMetricTrend,
@@ -78,34 +75,16 @@ const availableJourneys: AvailableJourney[] = [
 const FILTERS = ['All', 'Active', 'Coming soon']
 
 export const Performance = () => {
-    const isSessionAbandonedEnabled = useFlag(
-        FeatureFlagKey.AiJourneySessionAbandonedEnabled,
-    )
-
-    const filteredAvailableJourneys = availableJourneys.filter((journey) => {
-        if (!isSessionAbandonedEnabled)
-            return journey.type !== JourneyTypeEnum.SessionAbandoned
-        return true
-    })
-
     const [filter, setFilter] = useState('All')
 
     const { journeys, currentIntegration, isLoadingJourneys } =
         useJourneyContext()
 
-    const visibleJourneys = journeys?.filter((journey) => {
-        if (!isSessionAbandonedEnabled)
-            return journey.type !== JourneyTypeEnum.SessionAbandoned
-        return true
+    const inactiveJourneys = availableJourneys.filter((availableJourney) => {
+        return !journeys?.some(
+            (journey) => journey.type === availableJourney.type,
+        )
     })
-
-    const inactiveJourneys = filteredAvailableJourneys.filter(
-        (availableJourney) => {
-            return !visibleJourneys?.some(
-                (journey) => journey.type === availableJourney.type,
-            )
-        },
-    )
 
     const namespacedShopName = useGetNamespacedShopNameForStore(
         currentIntegration?.id ? [currentIntegration.id] : [],
@@ -127,12 +106,10 @@ export const Performance = () => {
     let filteredUserJourneys: JourneyApiDTO[] | undefined
     switch (filter) {
         case 'All':
-            filteredUserJourneys = visibleJourneys
+            filteredUserJourneys = journeys
             break
         case 'Active':
-            filteredUserJourneys = visibleJourneys?.filter(
-                (j) => j.state === 'active',
-            )
+            filteredUserJourneys = journeys?.filter((j) => j.state === 'active')
             break
         default:
             filteredUserJourneys = []

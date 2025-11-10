@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -340,126 +339,21 @@ describe('<Performance />', () => {
         },
     )
 
-    describe('Session Abandoned feature flag', () => {
-        it('should show Browse Abandoned journey when feature flag is enabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneySessionAbandonedEnabled) {
-                    return true
-                }
-                return false
-            })
+    it('should show Browse Abandoned journey', async () => {
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Performance />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
 
-            renderWithRouter(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <IntegrationsProvider>
-                            <JourneyProvider>
-                                <Performance />
-                            </JourneyProvider>
-                        </IntegrationsProvider>
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getAllByText('Browse Abandoned').length).toEqual(
-                    2,
-                )
-            })
-        })
-
-        it('should hide Browse Abandoned journey when feature flag is disabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneySessionAbandonedEnabled) {
-                    return false
-                }
-                return false
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <IntegrationsProvider>
-                            <JourneyProvider>
-                                <Performance />
-                            </JourneyProvider>
-                        </IntegrationsProvider>
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('AI Journey Performance'),
-                ).toBeInTheDocument()
-            })
-
-            expect(
-                screen.queryByText('Browse Abandoned'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should filter out session_abandoned journey from provider when feature flag is disabled', async () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneySessionAbandonedEnabled) {
-                    return false
-                }
-                return false
-            })
-
-            mockUseJourneyContext.mockReturnValue({
-                journeyData: {
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '415-111-111',
-                        sms_sender_integration_id: 1,
-                    },
-                },
-                currentIntegration: { id: 1, name: 'shopify-store' },
-                shopName: 'shopify-store',
-                isLoading: false,
-                storeConfiguration: {
-                    monitoredSmsIntegrations: [1, 2],
-                },
-                journeys: [
-                    {
-                        id: 'cart-journey-id',
-                        type: 'cart_abandoned',
-                        store_name: 'arthur-gorgias',
-                        store_type: 'shopify',
-                        state: 'active',
-                    },
-                    {
-                        id: 'session-journey-id',
-                        type: 'session_abandoned',
-                        store_name: 'arthur-gorgias',
-                        store_type: 'shopify',
-                        state: 'active',
-                    },
-                ],
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore({})}>
-                        <IntegrationsProvider>
-                            <JourneyProvider>
-                                <Performance />
-                            </JourneyProvider>
-                        </IntegrationsProvider>
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(screen.getByText('Cart Abandoned')).toBeInTheDocument()
-            })
-
-            expect(
-                screen.queryByText('Browse Abandoned'),
-            ).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getAllByText('Browse Abandoned').length).toEqual(2)
         })
     })
 })

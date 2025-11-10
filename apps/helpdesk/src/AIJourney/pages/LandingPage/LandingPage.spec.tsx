@@ -120,6 +120,10 @@ describe('<LandingPage />', () => {
         const buttonLabel = screen.getByText('Try out now')
         expect(buttonLabel).toBeInTheDocument()
 
+        const abandonedCartButton = screen.getByText('Abandoned Cart')
+        await act(async () => {
+            await userEvent.click(abandonedCartButton)
+        })
         const button = screen.getByTestId('ai-journey-button')
         await act(async () => {
             await userEvent.click(button)
