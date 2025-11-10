@@ -14,6 +14,7 @@ exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and 
   </span>
   <div
     class="ui-badge-badge-7025 pill ui-badge-uppercase-7025"
+    data-name="badge"
     style="border-radius: 100px;"
   >
     3

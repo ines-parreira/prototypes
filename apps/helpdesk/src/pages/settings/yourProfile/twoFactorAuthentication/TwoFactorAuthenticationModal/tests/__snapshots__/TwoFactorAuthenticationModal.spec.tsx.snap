@@ -504,6 +504,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
@@ -565,6 +566,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 <svg
                   class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+                  data-name="loading-spinner"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
                   role="status"
@@ -739,6 +741,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
@@ -800,6 +803,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 <svg
                   class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+                  data-name="loading-spinner"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
                   role="status"
@@ -964,6 +968,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
@@ -1366,6 +1371,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
@@ -1555,6 +1561,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button
@@ -2159,6 +2166,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 />
               </div>
               <div
+                data-name="box"
                 style="display: flex; flex-direction: column; align-items: center;"
               >
                 <button

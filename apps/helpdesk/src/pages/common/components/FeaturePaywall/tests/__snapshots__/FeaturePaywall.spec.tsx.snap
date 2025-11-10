@@ -49,6 +49,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
             >
               <div
                 class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                data-name="badge"
                 style="border-radius: 100px;"
               >
                 <i
@@ -65,6 +66,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
               </i>
               <div
                 class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                data-name="badge"
                 style="border-radius: 100px;"
               >
                 Enterprise Plan
@@ -229,6 +231,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
             >
               <div
                 class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                data-name="badge"
                 style="border-radius: 100px;"
               >
                 <i
@@ -245,6 +248,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
               </i>
               <div
                 class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                data-name="badge"
                 style="border-radius: 100px;"
               >
                 Basic Plan
@@ -413,6 +417,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
             >
               <div
                 class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                data-name="badge"
                 style="border-radius: 100px;"
               >
                 Pro Plan

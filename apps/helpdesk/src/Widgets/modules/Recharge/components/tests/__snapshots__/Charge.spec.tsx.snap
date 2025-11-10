@@ -86,6 +86,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button
@@ -121,6 +122,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button
@@ -156,6 +158,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button
@@ -191,6 +194,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button
@@ -241,6 +245,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Foobar
@@ -266,6 +271,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Error
@@ -282,6 +288,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button
@@ -317,6 +324,7 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
   >
     <div
       class="ui-multibutton-group-3397"
+      data-name="box"
       style="display: flex;"
     >
       <button

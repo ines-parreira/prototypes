@@ -264,6 +264,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         New
@@ -502,6 +503,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         New
@@ -740,6 +742,7 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         New
@@ -780,6 +783,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Canceled
@@ -822,6 +826,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Closed
@@ -864,6 +869,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Complete
@@ -906,6 +912,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         New
@@ -948,6 +955,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         On hold
@@ -990,6 +998,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Pending
@@ -1032,6 +1041,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Processing

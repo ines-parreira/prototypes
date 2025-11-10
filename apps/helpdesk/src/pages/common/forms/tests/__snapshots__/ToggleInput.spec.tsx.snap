@@ -97,6 +97,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
     />
     <svg
       class="ui-loadingspinner-spinner-4660 ui-loadingspinner-light-4660 ui-loadingspinner-small-4660 spinner spinnerLeft"
+      data-name="loading-spinner"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"
@@ -148,6 +149,7 @@ exports[`ToggleInput should render the button loading, and have onClick disabled
     />
     <svg
       class="ui-loadingspinner-spinner-4660 ui-loadingspinner-light-4660 ui-loadingspinner-small-4660 spinner spinnerLeft"
+      data-name="loading-spinner"
       preserveAspectRatio="xMidYMid meet"
       role="status"
       viewBox="0 0 20 20"

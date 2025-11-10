@@ -105,6 +105,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
                   <th>
                     <div
                       class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                      data-name="badge"
                       style="border-radius: 100px;"
                     >
                       electronics
@@ -226,6 +227,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
                   <th>
                     <div
                       class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                      data-name="badge"
                       style="border-radius: 100px;"
                     >
                       electronics
@@ -347,6 +349,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
                   <th>
                     <div
                       class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                      data-name="badge"
                       style="border-radius: 100px;"
                     >
                       electronics

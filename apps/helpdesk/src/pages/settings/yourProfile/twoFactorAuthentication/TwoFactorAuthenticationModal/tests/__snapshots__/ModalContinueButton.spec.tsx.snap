@@ -8,6 +8,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 >
   <svg
     class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+    data-name="loading-spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -52,6 +53,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 >
   <svg
     class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+    data-name="loading-spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"
@@ -96,6 +98,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
 >
   <svg
     class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+    data-name="loading-spinner"
     height="22"
     preserveAspectRatio="xMidYMid meet"
     role="status"

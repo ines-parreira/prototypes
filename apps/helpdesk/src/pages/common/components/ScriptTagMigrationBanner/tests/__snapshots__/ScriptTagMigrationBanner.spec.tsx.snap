@@ -5,6 +5,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -62,6 +63,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -109,6 +111,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -156,6 +159,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -210,6 +214,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -264,6 +269,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"
@@ -321,6 +327,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
   <div
     aria-label=""
     class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    data-name="banner"
   >
     <div
       class="ui-banner-content-e3eb"

@@ -78,6 +78,7 @@ exports[`Event should render 1`] = `
       </b>
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         200 OK

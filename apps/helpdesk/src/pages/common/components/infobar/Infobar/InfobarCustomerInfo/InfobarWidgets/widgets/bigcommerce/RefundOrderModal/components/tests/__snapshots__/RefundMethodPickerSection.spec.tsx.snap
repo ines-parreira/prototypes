@@ -117,6 +117,7 @@ exports[`RefundMethodPickerSection snapshot renders the initial disabled state 1
     >
       <svg
         class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-loadingspinner-medium-4660 spinner"
+        data-name="loading-spinner"
         preserveAspectRatio="xMidYMid meet"
         role="status"
         viewBox="0 0 20 20"

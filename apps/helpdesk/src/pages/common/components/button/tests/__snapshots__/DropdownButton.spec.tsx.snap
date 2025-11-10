@@ -6,6 +6,7 @@ exports[`<DropdownButton /> should render a button with dropdown 1`] = `
 >
   <div
     class="ui-multibutton-group-3397"
+    data-name="box"
     style="display: flex;"
   >
     <button

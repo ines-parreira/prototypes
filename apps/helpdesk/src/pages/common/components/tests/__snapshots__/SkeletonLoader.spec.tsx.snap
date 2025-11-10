@@ -7,6 +7,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
   >
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"
@@ -24,6 +25,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
     </div>
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"
@@ -45,6 +47,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
   >
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"
@@ -62,6 +65,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
     </div>
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"
@@ -83,6 +87,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
   >
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"
@@ -100,6 +105,7 @@ exports[`<SkeletonLoader /> should render 1`] = `
     </div>
     <div
       aria-label="Loading"
+      data-name="skeleton"
     >
       <span
         aria-busy="true"

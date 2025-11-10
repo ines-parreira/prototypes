@@ -40,6 +40,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
             >
               <svg
                 class="ui-loadingspinner-spinner-4660 ui-loadingspinner-dark-4660 ui-loadingspinner-small-4660"
+                data-name="loading-spinner"
                 preserveAspectRatio="xMidYMid meet"
                 role="status"
                 viewBox="0 0 20 20"
@@ -130,6 +131,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
                   Synchronize customer notes between Gorgias and Shopify
                   <div
                     class="ui-fieldcaption-caption-1f94"
+                    data-name="field-caption"
                   >
                     When editing notes in both places at the same time, the first one saved will be synchronized.
                     <br />
@@ -161,6 +163,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
                   Match customer by Shopify default address phone number
                   <div
                     class="ui-fieldcaption-caption-1f94"
+                    data-name="field-caption"
                   >
                     Gorgias will search for Shopify customer’s default address for customer matching.
                     <br />

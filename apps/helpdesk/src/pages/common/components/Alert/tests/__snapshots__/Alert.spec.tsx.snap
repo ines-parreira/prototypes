@@ -196,6 +196,7 @@ exports[`<Alert /> should render icon for loading alert type 1`] = `
     >
       <svg
         class="ui-loadingspinner-spinner-4660 ui-loadingspinner-dark-4660 ui-loadingspinner-small-4660"
+        data-name="loading-spinner"
         preserveAspectRatio="xMidYMid meet"
         role="status"
         viewBox="0 0 20 20"

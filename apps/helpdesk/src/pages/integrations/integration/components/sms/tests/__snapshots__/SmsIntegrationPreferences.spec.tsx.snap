@@ -273,6 +273,7 @@ exports[`<SmsIntegrationPreferences/> render() should submit a valid payload wit
           >
             <svg
               class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+              data-name="loading-spinner"
               height="22"
               preserveAspectRatio="xMidYMid meet"
               role="status"

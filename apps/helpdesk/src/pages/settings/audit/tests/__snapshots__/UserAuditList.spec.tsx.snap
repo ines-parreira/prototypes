@@ -454,6 +454,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
     >
       <div
         class="ui-multibutton-group-3397"
+        data-name="box"
         style="display: flex;"
       >
         <button

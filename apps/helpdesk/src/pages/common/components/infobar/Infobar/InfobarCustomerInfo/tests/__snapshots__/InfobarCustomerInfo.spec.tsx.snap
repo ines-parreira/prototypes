@@ -50,6 +50,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     <div
       class="ui-separator-separator-f4da separator"
       data-direction="horizontal"
+      data-name="separator"
       data-variant="solid"
       role="separator"
     />
@@ -105,6 +106,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     <div
       class="ui-separator-separator-f4da separator"
       data-direction="horizontal"
+      data-name="separator"
       data-variant="solid"
       role="separator"
     />
@@ -168,6 +170,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     <div
       class="ui-separator-separator-f4da separator"
       data-direction="horizontal"
+      data-name="separator"
       data-variant="solid"
       role="separator"
     />
@@ -223,6 +226,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     <div
       class="ui-separator-separator-f4da separator"
       data-direction="horizontal"
+      data-name="separator"
       data-variant="solid"
       role="separator"
     />

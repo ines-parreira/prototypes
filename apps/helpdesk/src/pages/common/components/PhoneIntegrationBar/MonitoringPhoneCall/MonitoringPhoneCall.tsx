@@ -70,7 +70,7 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                 <Button
                     intent="destructive"
                     leadingSlot="headset_mic"
-                    onPress={() => call.disconnect()}
+                    onClick={() => call.disconnect()}
                 >
                     Stop Listening
                 </Button>

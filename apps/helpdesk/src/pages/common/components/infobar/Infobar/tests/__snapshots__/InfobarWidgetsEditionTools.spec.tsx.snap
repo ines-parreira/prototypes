@@ -69,6 +69,7 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
   >
     <svg
       class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+      data-name="loading-spinner"
       height="22"
       preserveAspectRatio="xMidYMid meet"
       role="status"
@@ -110,6 +111,7 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
   >
     <svg
       class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+      data-name="loading-spinner"
       height="22"
       preserveAspectRatio="xMidYMid meet"
       role="status"

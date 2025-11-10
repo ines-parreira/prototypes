@@ -23,12 +23,14 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
   >
     <div
       class="ui-badge-badge-7025 topic ui-badge-uppercase-7025"
+      data-name="badge"
       style="border-radius: 100px;"
     >
       bread
     </div>
     <div
       class="ui-badge-badge-7025 topic ui-badge-uppercase-7025"
+      data-name="badge"
       style="border-radius: 100px;"
     >
       test

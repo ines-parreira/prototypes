@@ -403,6 +403,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 <div>
                   <div
                     class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                    data-name="badge"
                     style="border-radius: 100px;"
                   >
                     Online
@@ -536,6 +537,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
         <div>
           <div
             class="ui-multibutton-group-3397"
+            data-name="box"
             style="display: flex;"
           >
             <button

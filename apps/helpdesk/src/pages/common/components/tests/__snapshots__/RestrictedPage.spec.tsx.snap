@@ -21,6 +21,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Admin
@@ -68,6 +69,7 @@ exports[`<RestrictedPage/> should render for admin role and include higher permi
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Admin
@@ -115,6 +117,7 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Lead
@@ -162,6 +165,7 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Basic
@@ -209,6 +213,7 @@ exports[`<RestrictedPage/> should render for bot role and include higher permiss
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Bot
@@ -256,6 +261,7 @@ exports[`<RestrictedPage/> should render for internal-agent role and include hig
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Gorgias Support
@@ -303,6 +309,7 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Lite
@@ -350,6 +357,7 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
     >
       <div
         class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        data-name="badge"
         style="border-radius: 100px;"
       >
         Observer
