@@ -60,6 +60,7 @@ export enum FeatureFlagKey {
     /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',
     AiShoppingAssistantAbTesting = 'ai-shopping-assistant-ab-testing',
+    AiShoppingAssistantAutomaticDiscounts = 'linear.project_shopping-assistant-is-aware-of-automatic-discounts',
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',

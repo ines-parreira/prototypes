@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -8,6 +9,8 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
@@ -69,6 +72,11 @@ export const SalesSettings = () => {
     const dispatch = useAppDispatch()
     const { storeConfiguration, isLoading, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
+
+    const isAutomaticDiscountsBannerEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts,
+        false,
+    )
 
     const methods = useForm<SalesSettingsData>({
         values: {
@@ -352,6 +360,39 @@ export const SalesSettings = () => {
                                 />
                             </div>
                         </section>
+
+                        {isAutomaticDiscountsBannerEnabled && (
+                            <section className={css.card}>
+                                <div className={css.titleContainer}>
+                                    <label className={css.title}>
+                                        Shopping Assistant uses your Shopify
+                                        discounts to boost conversion
+                                    </label>
+                                </div>
+                                <div>
+                                    Shopping Assistant automatically detects
+                                    “automatic discounts” from Shopify — such as
+                                    “free shipping” or “amount-off” orders — and
+                                    mentions them naturally in conversations to
+                                    help shoppers complete their purchase.
+                                </div>
+                                {storeConfiguration?.storeName && (
+                                    <Button
+                                        className="mt-3"
+                                        intent="secondary"
+                                        onClick={() => {
+                                            window.open(
+                                                `${shopifyAdminBaseUrl(storeConfiguration.storeName)}/discounts?method=automatic&discount_type=free_shipping%2Cmoney_off_orders`,
+                                                '_blank',
+                                            )
+                                        }}
+                                        trailingIcon="open_in_new"
+                                    >
+                                        View automatic discounts in Shopify
+                                    </Button>
+                                )}
+                            </section>
+                        )}
 
                         <div className={css.contentActions}>
                             <Button

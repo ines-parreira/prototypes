@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -8,6 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
@@ -60,6 +62,9 @@ const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
     useAiAgentStoreConfigurationContext,
 )
 
+jest.mock('core/flags')
+const mockUseFlag = jest.mocked(useFlag)
+
 const mockUpdateStoreConfiguration = jest
     .fn()
     .mockImplementation((c: StoreConfiguration) => c)
@@ -95,6 +100,8 @@ describe('<SalesSettings />', () => {
             createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
         })
+
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render', async () => {
@@ -491,5 +498,83 @@ describe('<SalesSettings />', () => {
                 'Your changes to this page will be lost if you don’t save them.',
             ),
         ).toBeInTheDocument()
+    })
+
+    describe('Automatic discounts banner', () => {
+        it('should render the banner when feature flag is enabled', async () => {
+            mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts
+                ) {
+                    return true
+                }
+                return false
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    'Shopping Assistant uses your Shopify discounts to boost conversion',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the banner when feature flag is disabled', async () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    'Shopping Assistant uses your Shopify discounts to boost conversion',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open Shopify URL with correct parameters when button is clicked', async () => {
+            const windowOpenSpy = jest
+                .spyOn(window, 'open')
+                .mockImplementation()
+
+            mockUseFlag.mockImplementation((flag: FeatureFlagKey) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts
+                ) {
+                    return true
+                }
+                return false
+            })
+
+            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    storeName: 'test-store',
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent()
+
+            const button = await screen.findByRole('button', {
+                name: 'View automatic discounts in Shopify',
+            })
+
+            await act(async () => {
+                await userEvent.click(button)
+            })
+
+            expect(windowOpenSpy).toHaveBeenCalledWith(
+                'https://admin.shopify.com/store/test-store/discounts?method=automatic&discount_type=free_shipping%2Cmoney_off_orders',
+                '_blank',
+            )
+
+            windowOpenSpy.mockRestore()
+        })
     })
 })
