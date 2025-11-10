@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 20,
-    "totalFilesAffected": 341,
+    "totalCommits": 21,
+    "totalFilesAffected": 377,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -104,6 +104,11 @@
       "title": "chore(tokens): Migrate color tokens in billing settings components (batch 25)",
       "date": "2025-11-07",
       "filesAffected": 29
+    },
+    "batch47": {
+      "title": "chore(tokens): Migrate color tokens in settings pages (batch 47)",
+      "date": "2025-11-10",
+      "filesAffected": 36
     }
   },
   "tokenMappings": {
@@ -1227,6 +1232,166 @@
           "2fbb04ffac"
         ],
         "affectedFiles": "Secondary success surfaces"
+      }
+    ],
+    "commit_batch47": [
+      {
+        "legacyToken": "--main-latte",
+        "newToken": "--surface-additional-yellow",
+        "context": "Background color for banner and footer",
+        "files": [
+          "LandingBanner.less",
+          "RequestApp.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "LandingBanner.less",
+          "FormSection.less",
+          "MetafieldTypeItem.less",
+          "UnselectableItems.less",
+          "StoreInformationForm.less",
+          "ListCustomBusinessHours.less",
+          "Category.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-6",
+        "newToken": "--content-neutral-default",
+        "context": "Primary text colors",
+        "files": [
+          "FormSection.less",
+          "ToggleCell.less",
+          "ChannelsDrawer.less",
+          "UnselectableItems.less",
+          "Card.less",
+          "RequestApp.less",
+          "ConditionalFieldRow.less",
+          "Pill.less",
+          "ThenField.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text and icon colors",
+        "files": [
+          "ChannelListCell.less",
+          "DatetimeCell.less",
+          "SLAListView.less",
+          "TableRow.less",
+          "ToggleCell.less",
+          "Templates.less",
+          "CustomBusinessHoursIntegrationCell.less",
+          "StoreManagementTable.less",
+          "ChannelListCell.less (store mgmt)",
+          "StoreManagementTableRow.less",
+          "Row.less",
+          "TypeSelectInput.less",
+          "DropdownCSVImportDropZone.less",
+          "CustomDropdownInput.less",
+          "ThenField.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Border colors",
+        "files": [
+          "ChannelsDrawer.less",
+          "CreateNewChannel.less",
+          "StoreManagementTable.less",
+          "DefaultBusinessHours.less",
+          "FormSectionCard.less",
+          "DropdownCSVImportDropZone.less",
+          "DropdownInputRow.less",
+          "CategoryFilter.less",
+          "Pill.less",
+          "ThenField.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Background colors for secondary surfaces",
+        "files": [
+          "CreateNewChannel.less",
+          "StoreInformationForm.less",
+          "DropdownCSVImport.less",
+          "DropdownCSVImportDropZone.less",
+          "DefaultBusinessHours.less",
+          "Pill.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--hover-default",
+        "context": "Hover states",
+        "files": [
+          "TableRow.less",
+          "StoreManagementTableRow.less",
+          "BusinessHoursSelectField.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--surface-neutral-secondary",
+        "context": "Secondary background colors",
+        "files": [
+          "AddCustomBusinessHoursModal.less",
+          "DefaultBusinessHours.less",
+          "Pill.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Base neutral backgrounds",
+        "files": [
+          "ChannelsDrawer.less",
+          "TemplateListView.less",
+          "AddCustomBusinessHoursModal.less",
+          "FormSectionCard.less",
+          "Card.less",
+          "Mine.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--content-accent-default",
+        "context": "Accent colors for links and interactive elements",
+        "files": [
+          "BusinessHoursSelectField.less",
+          "StoreManagementTableRow.less",
+          "CategoryFilter.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary-0",
+        "newToken": "--surface-accent-default",
+        "context": "Accent background colors",
+        "files": [
+          "Card.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-error-2",
+        "newToken": "--content-error-primary",
+        "context": "Error state colors",
+        "files": [
+          "BusinessHoursSelectField.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-success",
+        "newToken": "--surface-success-primary",
+        "context": "Success state colors",
+        "files": [
+          "Card.less"
+        ]
       }
     ],
     "availableAxiomTokens": {

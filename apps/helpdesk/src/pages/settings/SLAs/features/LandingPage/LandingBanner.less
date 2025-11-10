@@ -4,7 +4,7 @@
 :local {
     .banner {
         padding: 0 64px;
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
         overflow: hidden;
         gap: var(--layout-spacing-m);
         display: flex;
@@ -35,7 +35,7 @@
         }
 
         p.description {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             .body-regular();
             margin-bottom: 0;
         }
@@ -44,5 +44,17 @@
     .templatesImage {
         height: 284px;
         padding: 22px 0 0 0;
+    }
+}
+
+.axiom :local {
+    .banner {
+        background: var(--surface-additional-yellow);
+    }
+
+    .text {
+        p.description {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

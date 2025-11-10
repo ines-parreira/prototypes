@@ -70,13 +70,26 @@
 }
 
 .axiom :local {
+    .delimiter {
+        &::after {
+            border-top: 1px dashed var(--border-neutral-default);
+        }
+    }
+
     .link {
+        color: var(--content-neutral-default);
         &:hover {
+            color: var(--content-neutral-default);
             background-color: var(--surface-neutral-primary);
         }
         &.active,
         &:active {
+            color: var(--content-accent-default);
             background-color: var(--surface-neutral-primary);
         }
+    }
+
+    .aside {
+        border-top: 1px dashed var(--border-neutral-default);
     }
 }
