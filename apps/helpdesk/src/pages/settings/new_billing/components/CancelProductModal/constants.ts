@@ -18,71 +18,171 @@ export enum CommonReasonLabel {
 }
 
 export enum HelpdeskPrimaryReasonLabel {
-    DoesNotFitMyNeeds = "Doesn't fit my needs",
-    InternalReasons = 'Internal reasons',
-    PoorExperience = 'Poor experience',
-    Pricing = 'Pricing',
-    Product = 'Product',
+    Pricing = 'Pricing & Subscription',
+    DoesNotFitMyNeeds = 'Product Fit, Features & Roadmap',
+    EaseOfUse = 'Ease of Use, Adoption & Value Realization',
+    PerformanceAndReliability = 'Platform Performance & Reliability',
+    SupportAndService = 'Support & Services Experience',
+    SecurityAndCompliance = 'Security, Compliance & Legal',
 }
 
 export enum HelpdeskSecondaryReasonLabel {
-    BusinessSlowingDown = 'Business slowing down',
-    ClosingStore = 'Closing store',
-    ConsolidatingAccounts = 'Consolidating accounts',
-    GotAcquired = 'Got acquired',
-    HelpdeskPricingTiers = 'Helpdesk pricing tiers',
-    InadequateHelp = 'Inadequate help',
-    NotAnEcommerceStore = 'Not an ecommerce store',
-    TooExpensive = 'Too expensive',
-    DifficultUIUX = 'Difficult UI/UX',
-    OutagesAndStability = 'Outages and stability',
-    IDontGetEnoughTickets = "I don't get enough tickets",
-    IDontSeeTheValue = "I don't see the value",
-    Features = 'Features',
+    // Pricing & Subscription
+    TooExpensive = 'Too expensive for perceived value',
+    RenewalNotApproved = 'Renewal increase not approved',
+    CostForUsage = "Cost doesn't match usage level",
+    PricingModel = "Pricing model doesn't fit my needs",
+    LackOfSpendControl = 'Lack of spend control',
+    LackOfPaymentTermsFlexibility = 'Lack of payment terms or length terms flexibility',
+    InvoicingOrPaymentMethodIssues = 'Invoicing or payment method issues',
+    TaxesCurrencyOrFXFriction = 'Taxes, currency, or FX friction',
+
+    // Product Fit, Features & Roadmap
+    CriticalFeaturesMissing = 'Critical features missing',
+    IntegrationGap = 'Integration gap with key systems',
+    CustomizationOrPermissionsLimited = 'Customization or permissions too limited',
+    RoadmapTimingWontMeetNeeds = "Roadmap timing won't meet needs",
+    UseCaseEvolvedBeyondProduct = 'Use case evolved beyond product scope',
+    ProductNegativelyImpactedBusiness = 'The product negatively impacted my business',
+
+    // Ease of Use, Adoption & Value Realization
+    HardToLearnOrTooComplex = 'Hard to learn or too complex',
+    PoorOnboardingOrTraining = 'Poor onboarding, enablement or training',
+    LowInternalAdoptionOrUtilization = 'Low internal adoption or low utilization',
+    WorkflowMismatch = 'Workflow mismatch with team processes',
+    DontHaveBandwidthOrOtherPriorities = "Don't have the bandwidth to implement or I have other priorities",
+    SlowTimeToValue = 'Slow time-to-value',
+    InsufficientROIOrUnclearImpact = 'Insufficient ROI or unclear impact',
+    NotSolvingCoreNeeds = "Not solving company's core needs",
+
+    // Platform Performance & Reliability
+    DowntimeIssuesBugsOutagesOrIncidents = 'Downtime issues, bugs, outages, or incidents',
+    SlowPerformanceAndLatencyIssues = 'Slow performance and latency issues',
+    DataQualityAndAccuracyIssues = 'Data quality and accuracy issues',
+    ScaleLimitations = 'Scale limitations',
+
+    // Support & Services Experience
+    SlowOrIneffectiveSupport = 'Slow or ineffective support',
+    UnresolvedOpenIssues = 'Unresolved open issues',
+    LackOfSelfServeGuidance = 'Lack of self-serve guidance to manage my account',
+    LackOfProfessionalServices = 'Lack of Professional Services to optimize my account',
+    DocumentationNotSufficient = 'Documentation not sufficient',
+
+    // Security, Compliance & Legal
+    DataPrivacyConcerns = 'Data privacy concerns',
+    MissingComplianceCertifications = 'Missing compliance certifications (SOC 2, HIPAA, GDPR, etc.)',
+    SecurityReviewNotPassed = 'Security review not passed',
+    ContractDPAOrLegalTermsMisalignment = 'Contract, DPA, or legal terms misalignment',
 }
 export const HELPDESK_CANCELLATION_REASONS: CancellationReason[] = [
+    {
+        primaryReason: { label: HelpdeskPrimaryReasonLabel.Pricing },
+        secondaryReasons: [
+            { label: HelpdeskSecondaryReasonLabel.TooExpensive },
+            { label: HelpdeskSecondaryReasonLabel.RenewalNotApproved },
+            { label: HelpdeskSecondaryReasonLabel.CostForUsage },
+            { label: HelpdeskSecondaryReasonLabel.PricingModel },
+            { label: HelpdeskSecondaryReasonLabel.LackOfSpendControl },
+            {
+                label: HelpdeskSecondaryReasonLabel.LackOfPaymentTermsFlexibility,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.InvoicingOrPaymentMethodIssues,
+            },
+            { label: HelpdeskSecondaryReasonLabel.TaxesCurrencyOrFXFriction },
+            { label: CommonReasonLabel.Other },
+        ],
+    },
     {
         primaryReason: {
             label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
         },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.IDontGetEnoughTickets },
-            { label: HelpdeskSecondaryReasonLabel.NotAnEcommerceStore },
+            { label: HelpdeskSecondaryReasonLabel.CriticalFeaturesMissing },
+            { label: HelpdeskSecondaryReasonLabel.IntegrationGap },
+            {
+                label: HelpdeskSecondaryReasonLabel.CustomizationOrPermissionsLimited,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.RoadmapTimingWontMeetNeeds,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.UseCaseEvolvedBeyondProduct,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.ProductNegativelyImpactedBusiness,
+            },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: { label: HelpdeskPrimaryReasonLabel.InternalReasons },
+        primaryReason: {
+            label: HelpdeskPrimaryReasonLabel.EaseOfUse,
+        },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.BusinessSlowingDown },
-            { label: HelpdeskSecondaryReasonLabel.ClosingStore },
-            { label: HelpdeskSecondaryReasonLabel.ConsolidatingAccounts },
-            { label: HelpdeskSecondaryReasonLabel.GotAcquired },
+            { label: HelpdeskSecondaryReasonLabel.HardToLearnOrTooComplex },
+            { label: HelpdeskSecondaryReasonLabel.PoorOnboardingOrTraining },
+            {
+                label: HelpdeskSecondaryReasonLabel.LowInternalAdoptionOrUtilization,
+            },
+            { label: HelpdeskSecondaryReasonLabel.WorkflowMismatch },
+            {
+                label: HelpdeskSecondaryReasonLabel.DontHaveBandwidthOrOtherPriorities,
+            },
+            { label: HelpdeskSecondaryReasonLabel.SlowTimeToValue },
+            {
+                label: HelpdeskSecondaryReasonLabel.InsufficientROIOrUnclearImpact,
+            },
+            { label: HelpdeskSecondaryReasonLabel.NotSolvingCoreNeeds },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: { label: HelpdeskPrimaryReasonLabel.PoorExperience },
+        primaryReason: {
+            label: HelpdeskPrimaryReasonLabel.PerformanceAndReliability,
+        },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.IDontSeeTheValue },
-            { label: HelpdeskSecondaryReasonLabel.InadequateHelp },
+            {
+                label: HelpdeskSecondaryReasonLabel.DowntimeIssuesBugsOutagesOrIncidents,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.SlowPerformanceAndLatencyIssues,
+            },
+            {
+                label: HelpdeskSecondaryReasonLabel.DataQualityAndAccuracyIssues,
+            },
+            { label: HelpdeskSecondaryReasonLabel.ScaleLimitations },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: { label: HelpdeskPrimaryReasonLabel.Pricing },
+        primaryReason: {
+            label: HelpdeskPrimaryReasonLabel.SupportAndService,
+        },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.HelpdeskPricingTiers },
-            { label: HelpdeskSecondaryReasonLabel.TooExpensive },
+            { label: HelpdeskSecondaryReasonLabel.SlowOrIneffectiveSupport },
+            { label: HelpdeskSecondaryReasonLabel.UnresolvedOpenIssues },
+            { label: HelpdeskSecondaryReasonLabel.LackOfSelfServeGuidance },
+            {
+                label: HelpdeskSecondaryReasonLabel.LackOfProfessionalServices,
+            },
+            { label: HelpdeskSecondaryReasonLabel.DocumentationNotSufficient },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: { label: HelpdeskPrimaryReasonLabel.Product },
+        primaryReason: {
+            label: HelpdeskPrimaryReasonLabel.SecurityAndCompliance,
+        },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.DifficultUIUX },
-            { label: HelpdeskSecondaryReasonLabel.Features },
-            { label: HelpdeskSecondaryReasonLabel.OutagesAndStability },
+            { label: HelpdeskSecondaryReasonLabel.DataPrivacyConcerns },
+            {
+                label: HelpdeskSecondaryReasonLabel.MissingComplianceCertifications,
+            },
+            { label: HelpdeskSecondaryReasonLabel.SecurityReviewNotPassed },
+            {
+                label: HelpdeskSecondaryReasonLabel.ContractDPAOrLegalTermsMisalignment,
+            },
             { label: CommonReasonLabel.Other },
         ],
     },
