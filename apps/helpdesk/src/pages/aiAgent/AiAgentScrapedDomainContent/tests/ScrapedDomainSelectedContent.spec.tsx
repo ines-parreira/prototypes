@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainSelectedContent from '../ScrapedDomainSelectedContent'
-import { IngestedProduct } from '../types'
+import { IngestedProduct, IngestedResourceWithArticleId } from '../types'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(() => ({
@@ -46,6 +46,12 @@ jest.mock('../IngestionProductView', () => {
     }
 })
 
+jest.mock('../ScrapedDomainQuestion', () => {
+    return function MockScrapedDomainQuestion() {
+        return <div>Scraped Domain Question</div>
+    }
+})
+
 jest.mock('pages/common/components/accordion/Accordion', () => {
     return function MockAccordion({ children }: any) {
         return <div data-testid="accordion">{children}</div>
@@ -69,6 +75,24 @@ jest.mock('pages/common/components/accordion/AccordionBody', () => {
         return <div data-testid="accordion-body">{children}</div>
     }
 })
+
+jest.mock('pages/common/components/ItemWithTooltip/ItemWithTooltip', () => {
+    return function MockItemWithTooltip({ item }: any) {
+        return <div>{item}</div>
+    }
+})
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacyTooltip: ({ children, target, disabled }: any) => {
+        if (disabled) return null
+        return (
+            <div data-testid="tooltip" data-target={target?.id || 'element'}>
+                {children}
+            </div>
+        )
+    },
+}))
 
 describe('ScrapedDomainSelectedContent', () => {
     const mockProduct: ProductWithAiAgentStatus = {
@@ -108,6 +132,18 @@ describe('ScrapedDomainSelectedContent', () => {
             rich_text: '<p>Additional product information</p>',
         },
         version: new Date().toISOString(),
+    }
+
+    const mockQuestion: IngestedResourceWithArticleId = {
+        id: 1,
+        title: 'Test Question',
+        status: 'enabled',
+        web_pages: [],
+        article_ingestion_log_id: 1,
+        article_id: 1,
+        scraping_id: 'this-is-not-a-generic-api-key',
+        snippet_id: 'this-is-not-a-generic-api-key',
+        execution_id: 'this-is-not-a-generic-api-key',
     }
 
     const baseProps = {
@@ -212,5 +248,169 @@ describe('ScrapedDomainSelectedContent', () => {
         expect(
             screen.getByTestId('accordion-item-additional-info'),
         ).toBeInTheDocument()
+    })
+
+    describe('Title tooltip', () => {
+        beforeEach(() => {
+            Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+                configurable: true,
+                value: 100,
+            })
+            Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+                configurable: true,
+                value: 100,
+            })
+        })
+
+        it('shows tooltip when product title is truncated', async () => {
+            const longTitleProduct = {
+                ...mockProduct,
+                title: 'This is a very long product title that will be truncated',
+            }
+
+            Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+                configurable: true,
+                get: function () {
+                    return this.textContent?.includes('very long') ? 500 : 100
+                },
+            })
+            Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+                configurable: true,
+                value: 350,
+            })
+
+            render(
+                <ScrapedDomainSelectedContent
+                    {...baseProps}
+                    contentType={CONTENT_TYPE.PRODUCT}
+                    selectedContent={longTitleProduct}
+                    detail={mockDetail}
+                    integrationId={123}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('tooltip')).toBeInTheDocument()
+            })
+
+            expect(screen.getByTestId('tooltip')).toHaveTextContent(
+                'This is a very long product title that will be truncated',
+            )
+        })
+
+        it('does not show tooltip when product title is not truncated', async () => {
+            Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+                configurable: true,
+                value: 100,
+            })
+            Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+                configurable: true,
+                value: 350,
+            })
+
+            render(
+                <ScrapedDomainSelectedContent
+                    {...baseProps}
+                    contentType={CONTENT_TYPE.PRODUCT}
+                    selectedContent={mockProduct}
+                    detail={mockDetail}
+                    integrationId={123}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Product')).toBeInTheDocument()
+            })
+
+            expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        })
+
+        it('shows tooltip with question title when content type is QUESTION', async () => {
+            Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+                configurable: true,
+                get: function () {
+                    return this.textContent?.includes('Question details')
+                        ? 500
+                        : 100
+                },
+            })
+            Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+                configurable: true,
+                value: 350,
+            })
+
+            render(
+                <ScrapedDomainSelectedContent
+                    {...baseProps}
+                    contentType={CONTENT_TYPE.QUESTION}
+                    selectedContent={mockQuestion}
+                    detail={null}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('tooltip')).toBeInTheDocument()
+            })
+
+            expect(screen.getByTestId('tooltip')).toHaveTextContent(
+                'Question details',
+            )
+        })
+
+        it('updates tooltip when product changes', async () => {
+            const firstProduct = {
+                ...mockProduct,
+                title: 'First Product Title That Is Very Long',
+            }
+            const secondProduct = {
+                ...mockProduct,
+                title: 'Second Product Title That Is Also Very Long',
+            }
+
+            Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+                configurable: true,
+                get: function () {
+                    return this.textContent ? 500 : 100
+                },
+            })
+            Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+                configurable: true,
+                value: 350,
+            })
+
+            const { rerender } = render(
+                <ScrapedDomainSelectedContent
+                    {...baseProps}
+                    contentType={CONTENT_TYPE.PRODUCT}
+                    selectedContent={firstProduct}
+                    detail={mockDetail}
+                    integrationId={123}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('tooltip')).toBeInTheDocument()
+            })
+
+            expect(screen.getByTestId('tooltip')).toHaveTextContent(
+                'First Product Title That Is Very Long',
+            )
+
+            rerender(
+                <ScrapedDomainSelectedContent
+                    {...baseProps}
+                    contentType={CONTENT_TYPE.PRODUCT}
+                    selectedContent={secondProduct}
+                    detail={mockDetail}
+                    integrationId={123}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('tooltip')).toHaveTextContent(
+                    'Second Product Title That Is Also Very Long',
+                )
+            })
+        })
     })
 })

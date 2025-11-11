@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
-import { Badge } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
@@ -240,6 +240,9 @@ const ScrapedDomainSelectedContent = (props: Props) => {
         onUpdateStatus,
     } = props
     const { routes } = useAiAgentNavigation({ shopName })
+    const [isTitleOverflowing, setIsTitleOverflowing] = useState(false)
+    const [titleRef, setTitleRef] = useState<HTMLDivElement | null>(null)
+
     const titleForQuestion = 'Question details'
     const titleForProduct = useMemo(
         () =>
@@ -247,6 +250,23 @@ const ScrapedDomainSelectedContent = (props: Props) => {
             'Product details',
         [selectedContent],
     )
+
+    const title =
+        contentType === CONTENT_TYPE.QUESTION
+            ? titleForQuestion
+            : titleForProduct
+
+    const titleCallbackRef = useCallback((node: HTMLDivElement | null) => {
+        if (node) {
+            setTitleRef(node)
+        }
+    }, [])
+
+    useLayoutEffect(() => {
+        if (titleRef) {
+            setIsTitleOverflowing(titleRef.scrollWidth > titleRef.offsetWidth)
+        }
+    }, [title, titleRef])
 
     const selectedQuestionContent =
         selectedContent as IngestedResourceWithArticleId
@@ -298,11 +318,6 @@ const ScrapedDomainSelectedContent = (props: Props) => {
         </div>
     )
 
-    const title =
-        contentType === CONTENT_TYPE.QUESTION
-            ? titleForQuestion
-            : titleForProduct
-
     const content =
         contentType === CONTENT_TYPE.QUESTION
             ? contentForQuestion
@@ -324,7 +339,14 @@ const ScrapedDomainSelectedContent = (props: Props) => {
             allowClickThrough={true}
         >
             <div className={css.header}>
-                <div className={css.headerTitle}>{title}</div>
+                <div ref={titleCallbackRef} className={css.headerTitle}>
+                    {title}
+                </div>
+                {isTitleOverflowing && titleRef && (
+                    <Tooltip target={titleRef} placement="bottom">
+                        {title}
+                    </Tooltip>
+                )}
                 <div className={css.headerActions}>
                     {additionalContent}
                     <img
