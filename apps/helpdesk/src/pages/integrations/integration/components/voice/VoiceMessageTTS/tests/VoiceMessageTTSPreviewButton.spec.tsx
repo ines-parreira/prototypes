@@ -338,13 +338,14 @@ describe('VoiceMessageTTSPreviewButton', () => {
             })
         })
 
-        it('should use default language when language is not provided', async () => {
+        it('should use default language and gender when language and gender are not provided', async () => {
             const waitForRequest =
                 mockSynthesizeSpeechPreviewHandler().waitForRequest(server)
 
             const valueWithoutLanguage = {
                 ...mockValue,
                 language: undefined,
+                gender: undefined,
             } as VoiceMessageTextToSpeech
 
             renderComponent(valueWithoutLanguage)
@@ -358,6 +359,7 @@ describe('VoiceMessageTTSPreviewButton', () => {
             await waitForRequest(async (request) => {
                 const body = await request.json()
                 expect(body.language_code).toBe(VoiceLanguage.EnUs)
+                expect(body.voice_gender).toBe(VoiceGender.Female)
             })
         })
     })

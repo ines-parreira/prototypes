@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
@@ -8,7 +8,7 @@ import { useSynthesizeSpeechPreview } from '@gorgias/helpdesk-queries'
 import { useNotify } from 'hooks/useNotify'
 import { VoiceMessageTextToSpeech } from 'models/integration/types'
 
-import { DEFAULT_TTS_LANGUAGE } from './constants'
+import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'
 import TTSPreviewButton, { AudioState } from './TTSPreviewButton'
 
@@ -40,7 +40,7 @@ const VoiceMessageTTSPreviewButton = ({ fieldName }: Props): JSX.Element => {
                 integrationId: integrationId,
                 data: {
                     language_code: value.language ?? DEFAULT_TTS_LANGUAGE,
-                    voice_gender: value.gender ?? DEFAULT_TTS_LANGUAGE,
+                    voice_gender: value.gender ?? DEFAULT_TTS_GENDER,
                     property_url: fieldName,
                     text: value.text_to_speech_content,
                 },
