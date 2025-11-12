@@ -20,6 +20,21 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
                 category: 'customer',
             },
             {
+                name: 'Note',
+                value: '&&&customer.note&&&',
+                category: 'customer',
+            },
+            {
+                name: 'Order count',
+                value: '&&&customer.orders_count&&&',
+                category: 'customer',
+            },
+            {
+                name: 'Total spent',
+                value: '&&&customer.total_spent&&&',
+                category: 'customer',
+            },
+            {
                 name: 'Created datetime',
                 value: '&&&order.created_datetime&&&',
                 category: 'order',
@@ -107,6 +122,76 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
             {
                 name: 'Fulfillment - Line items',
                 value: '&&&order.fulfillment.line_items&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Tracking company',
+                value: '&&&order.fulfillment.tracking_company&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Last updated datetime',
+                value: '&&&order.fulfillment.updated_at&&&',
+                category: 'order',
+            },
+            {
+                name: 'Fulfillment - Location id',
+                value: '&&&order.fulfillment.location_id&&&',
+                category: 'order',
+            },
+            {
+                name: 'Currency',
+                value: '&&&order.currency&&&',
+                category: 'order',
+            },
+            {
+                name: 'Total price',
+                value: '&&&order.current_total_price&&&',
+                category: 'order',
+            },
+            {
+                name: 'Total tax',
+                value: '&&&order.current_total_tax&&&',
+                category: 'order',
+            },
+            {
+                name: 'Discount codes',
+                value: '&&&order.discount_codes&&&',
+                category: 'order',
+            },
+            {
+                name: 'Financial status',
+                value: '&&&order.financial_status&&&',
+                category: 'order',
+            },
+            {
+                name: 'Id',
+                value: '&&&order.id&&&',
+                category: 'order',
+            },
+            {
+                name: 'Name',
+                value: '&&&order.name&&&',
+                category: 'order',
+            },
+            {
+                name: 'Payment gateway name',
+                value: '&&&order.payment_gateway_names&&&',
+                category: 'order',
+            },
+            {
+                name: 'Note',
+                value: '&&&order.note&&&',
+                category: 'order',
+            },
+            {
+                name: 'Order status URL',
+                value: '&&&order.order_status_url&&&',
+                category: 'order',
+            },
+            {
+                name: 'Total weight',
+                value: '&&&order.total_weight&&&',
                 category: 'order',
             },
         ],
