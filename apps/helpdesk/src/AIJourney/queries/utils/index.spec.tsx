@@ -92,25 +92,37 @@ describe('AIJourney Utils', () => {
                 const journeyId = 'journey-123'
                 const result = aiJourneyKeys.journeyConfiguration(journeyId)
 
-                expect(result).toEqual(['journeyConfiguration', 'journey-123'])
+                expect(result).toEqual([
+                    'journeys',
+                    'journeyConfiguration',
+                    'journey-123',
+                ])
             })
 
             it('should return correct query key for journey configuration with undefined journey ID', () => {
                 const result = aiJourneyKeys.journeyConfiguration(undefined)
 
-                expect(result).toEqual(['journeyConfiguration', undefined])
+                expect(result).toEqual([
+                    'journeys',
+                    'journeyConfiguration',
+                    undefined,
+                ])
             })
 
             it('should return correct query key for journey configuration with empty string journey ID', () => {
                 const result = aiJourneyKeys.journeyConfiguration('')
 
-                expect(result).toEqual(['journeyConfiguration', ''])
+                expect(result).toEqual(['journeys', 'journeyConfiguration', ''])
             })
 
             it('should return correct query key for journey configuration with null journey ID', () => {
                 const result = aiJourneyKeys.journeyConfiguration(null as any)
 
-                expect(result).toEqual(['journeyConfiguration', null])
+                expect(result).toEqual([
+                    'journeys',
+                    'journeyConfiguration',
+                    null,
+                ])
             })
         })
     })
@@ -150,7 +162,7 @@ describe('AIJourney Utils', () => {
             expect(Array.isArray(configKey)).toBe(true)
 
             expect(journeysKey.length).toBe(2)
-            expect(configKey.length).toBe(2)
+            expect(configKey.length).toBe(3)
 
             expect(typeof journeysKey[0]).toBe('string')
             expect(typeof configKey[0]).toBe('string')

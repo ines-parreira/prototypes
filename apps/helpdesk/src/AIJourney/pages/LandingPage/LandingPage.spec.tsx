@@ -25,6 +25,12 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+const mockUseFlag = jest.fn()
+jest.mock('core/flags', () => ({
+    ...jest.requireActual('core/flags'),
+    useFlag: (...args: any[]) => mockUseFlag(...args),
+}))
+
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -76,6 +82,8 @@ describe('<LandingPage />', () => {
     })
 
     beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+
         mockUseJourneyContext.mockReturnValue({
             journey: undefined,
             journeyData: undefined,
@@ -205,5 +213,50 @@ describe('<LandingPage />', () => {
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledTimes(0)
         })
+    })
+
+    it('should not display campaigns option when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
+        expect(screen.getByText('Browse Abandonment')).toBeInTheDocument()
+        expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
+    })
+
+    it('should display campaigns option when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
+        expect(screen.getByText('Browse Abandonment')).toBeInTheDocument()
+        expect(screen.getByText('Campaigns')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
+            ),
+        ).toBeInTheDocument()
     })
 })

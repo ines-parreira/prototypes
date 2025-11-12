@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
@@ -36,6 +36,7 @@ export const Test = () => {
     } = useJourneyContext()
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+    const [error, setError] = useState<string | undefined>()
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
         useState<string>(journeyData?.message_instructions || '')
 
@@ -46,6 +47,10 @@ export const Test = () => {
     const totalMessagesToBeGenerated = useMemo(() => {
         return (journeyParams?.max_follow_up_messages ?? 0) + 1
     }, [journeyParams?.max_follow_up_messages])
+
+    const areInstructionsMandatory = useMemo(() => {
+        return journeyData?.type === JOURNEY_TYPES.CAMPAIGN
+    }, [journeyData])
 
     const { productList, isLoading: isLoadingProductsList } =
         useAIJourneyProductList({ integrationId })
@@ -82,7 +87,36 @@ export const Test = () => {
         }
     }, [productList, selectedProduct])
 
-    const handleContinue = async () => {
+    const handleInstructionsChange = useCallback(
+        (value: string) => {
+            setJourneyMessageInstructions(value)
+
+            if (value) {
+                setError(undefined)
+            }
+        },
+        [setJourneyMessageInstructions, setError],
+    )
+
+    const handleGenerateMessagesClick = useCallback(async () => {
+        if (areInstructionsMandatory && !journeyMessageInstructions) {
+            setError('Please provide message guidance to continue.')
+            return
+        }
+        setError(undefined)
+        await handleGenerateMessages()
+    }, [
+        handleGenerateMessages,
+        areInstructionsMandatory,
+        journeyMessageInstructions,
+    ])
+
+    const handleContinue = useCallback(async () => {
+        if (areInstructionsMandatory && !journeyMessageInstructions) {
+            setError('Please provide message guidance to continue.')
+            return
+        }
+        setError(undefined)
         await handleUpdate({
             journeyState: journeyData?.state || 'draft',
             journeyMessageInstructions,
@@ -90,7 +124,15 @@ export const Test = () => {
         history.push(
             `/app/ai-journey/${shopName}/${journeyType}/activate/${journeyData?.id}`,
         )
-    }
+    }, [
+        areInstructionsMandatory,
+        journeyMessageInstructions,
+        shopName,
+        journeyType,
+        journeyData,
+        handleUpdate,
+        history,
+    ])
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
 
@@ -143,26 +185,29 @@ export const Test = () => {
                             name={textContent[journeyType].name}
                             description={textContent[journeyType].description}
                         />
-                        <ProductSelectField
-                            options={productList}
-                            name="Select an abandoned product"
-                            description={undefined}
-                            onChange={handleProductSelectChange}
-                        />
+                        {journeyData.type !== JOURNEY_TYPES.CAMPAIGN && (
+                            <ProductSelectField
+                                options={productList}
+                                name="Select an abandoned product"
+                                description={undefined}
+                                onChange={handleProductSelectChange}
+                            />
+                        )}
                         <JourneyMessageInstructionsField
                             description="Write guidelines for how the AI should text your shoppers"
                             hideInfoContent
                             name="Message guidance"
                             maxLength={4000}
-                            onChange={setJourneyMessageInstructions}
-                            optional
+                            onChange={handleInstructionsChange}
+                            optional={!areInstructionsMandatory}
+                            error={error}
                             value={journeyMessageInstructions}
                         />
                     </div>
                     <Button
                         variant="secondary"
                         label="Preview messages"
-                        onClick={handleGenerateMessages}
+                        onClick={handleGenerateMessagesClick}
                         isDisabled={isGeneratingMessages}
                     />
                 </div>

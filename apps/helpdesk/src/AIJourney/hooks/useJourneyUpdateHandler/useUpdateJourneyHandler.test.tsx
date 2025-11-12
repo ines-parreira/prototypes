@@ -150,9 +150,9 @@ describe('useJourneyUpdateHandler', () => {
                 },
             })
 
-            expect(queryClient.invalidateQueries).toHaveBeenCalledWith([
-                'journeys',
-            ])
+            expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+                queryKey: ['journeys'],
+            })
             expect(updateResult).toBe(mockResponse)
             expect(mockDispatch).not.toHaveBeenCalled()
         })

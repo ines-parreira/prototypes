@@ -36,7 +36,6 @@ export const useJourneys = <TData = Awaited<ReturnType<typeof fetchJourneys>>>(
         queryFn: () => fetchJourneys(integrationId!, accessToken!, types),
         enabled: !!accessToken && !!integrationId && options.enabled !== false,
         refetchOnWindowFocus: false,
-        refetchOnMount: false,
         staleTime: Infinity,
         ...options,
     })

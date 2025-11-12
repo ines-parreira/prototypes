@@ -223,28 +223,6 @@ describe('<AiJourneyNavbar />', () => {
             expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
         })
 
-        it('should not render analytics section when journey is in draft state', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'draft',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
-        })
-
         it('should not render analytics section when feature flag is disabled', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
@@ -336,59 +314,6 @@ describe('<AiJourneyNavbar />', () => {
                 ...mockJourneyContext,
                 journeyData: { type: 'cart_abandoned', id: undefined },
                 journeys: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
-        })
-
-        it('should not render playground section when journey is in draft state', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'draft',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
-        })
-
-        it('should not render playground section when journey is in draft state', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'draft',
-                },
-                journeys: [
-                    {
-                        id: 'journey-id',
-                        type: 'cart_abandoned',
-                        store_name: 'arthur-gorgias',
-                        store_type: 'shopify',
-                        state: 'draft',
-                    },
-                ],
             }
 
             mockUseJourneyContext.mockReturnValue(

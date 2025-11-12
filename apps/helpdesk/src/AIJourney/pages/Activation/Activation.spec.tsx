@@ -252,6 +252,62 @@ describe('<Activation />', () => {
         })
     })
 
+    it('should redirect from Activation to campaign on continue', async () => {
+        const user = userEvent.setup()
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                id: 'journey-123',
+                type: 'campaign',
+                message_instructions: 'test message instructions',
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'campaign',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Activation />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toBeInTheDocument()
+        })
+
+        const input = screen.getByRole('textbox')
+        await act(async () => {
+            await user.type(input, '1234567890')
+        })
+
+        const button = screen.getByTestId('ai-journey-button')
+        expect(button).toBeEnabled()
+
+        await act(() => user.click(button))
+
+        await waitFor(
+            () => {
+                expect(mockHistoryPush).toHaveBeenCalledTimes(1)
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/shopify-store/campaigns',
+                )
+            },
+            { timeout: 1000 },
+        )
+        expect(mockHandleUpdate).toHaveBeenCalledWith({
+            journeyMessageInstructions: 'test message instructions',
+            journeyState: 'active',
+        })
+    })
+
     it('should redirect from activation to test step on return', async () => {
         renderWithRouter(
             <Provider store={mockStore}>

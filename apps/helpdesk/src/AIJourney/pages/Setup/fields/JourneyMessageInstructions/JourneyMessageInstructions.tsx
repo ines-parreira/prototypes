@@ -14,12 +14,14 @@ type JourneyMessageInstructionsFieldProps = {
     name?: string
     onChange?: (value: string) => void
     optional?: boolean
+    error?: string
     value?: string
 }
 
 export const JourneyMessageInstructionsField = ({
     description,
     hideInfoContent = false,
+    error,
     maxLength = 2000,
     name,
     onChange,
@@ -54,6 +56,7 @@ export const JourneyMessageInstructionsField = ({
                     onChange={handleChange}
                     style={{ minHeight: '150px' }}
                     innerClassName={css.textArea}
+                    error={error}
                 />
                 <div
                     className={classNames(css.characterCount, {

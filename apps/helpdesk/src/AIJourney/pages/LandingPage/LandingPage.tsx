@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button, PerformanceBadge } from 'AIJourney/components'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
+import { useFlag } from 'core/flags'
 
 import { AnimatedText } from './components/AnimatedText'
 import { JourneyOption } from './components/JourneyOption'
@@ -19,20 +21,37 @@ export const LandingPage = () => {
     const [isVisible, setIsVisible] = useState(true)
     const [selectedJourney, setSelectedJourney] = useState<string | null>(null)
 
-    const availableJourneys = [
-        {
-            name: 'Abandoned Cart',
-            description:
-                'Stop leaving money on the table, let the Abandoned Cart Journey reclaim missed sales.',
-            value: JOURNEY_TYPES.CART_ABANDONMENT,
-        },
-        {
-            name: 'Browse Abandonment',
-            description:
-                'Retain your shoppers, let the Browse Abandonment Journey re-engage visitors who left without converting.',
-            value: JOURNEY_TYPES.SESSION_ABANDONMENT,
-        },
-    ]
+    const isAiJourneyCampaignsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignsEnabled,
+    )
+
+    const availableJourneys = useMemo(() => {
+        const journeys = [
+            {
+                name: 'Abandoned Cart',
+                description:
+                    'Stop leaving money on the table, let the Abandoned Cart Journey reclaim missed sales.',
+                value: JOURNEY_TYPES.CART_ABANDONMENT,
+            },
+            {
+                name: 'Browse Abandonment',
+                description:
+                    'Retain your shoppers, let the Browse Abandonment Journey re-engage visitors who left without converting.',
+                value: JOURNEY_TYPES.SESSION_ABANDONMENT,
+            },
+        ]
+
+        if (isAiJourneyCampaignsEnabled) {
+            journeys.push({
+                name: 'Campaigns',
+                description:
+                    'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
+                value: JOURNEY_TYPES.CAMPAIGN,
+            })
+        }
+
+        return journeys
+    }, [isAiJourneyCampaignsEnabled])
 
     const { journeys, isLoading } = useJourneyContext()
 

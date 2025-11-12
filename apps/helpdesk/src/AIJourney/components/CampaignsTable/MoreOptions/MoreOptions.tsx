@@ -5,7 +5,10 @@ import { useHistory } from 'react-router-dom'
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
-import { JOURNEY_TYPES } from 'AIJourney/constants'
+import {
+    JOURNEY_TYPES,
+    UpdatableJourneyCampaignState,
+} from 'AIJourney/constants'
 
 import css from './MoreOptions.less'
 
@@ -21,7 +24,6 @@ const Options = {
 
 type Options = (typeof Options)[keyof typeof Options]
 
-// TODO: add pause option when the functionality is available
 export const CAMPAIGN_STATE_TO_FIELDS: Record<
     JourneyCampaignStateEnum,
     Options[]
@@ -38,7 +40,8 @@ export const CAMPAIGN_STATE_TO_FIELDS: Record<
         Options.Pause,
         Options.Cancel,
     ],
-    [JourneyCampaignStateEnum.Canceled]: [Options.Duplicate, Options.Resume],
+    [JourneyCampaignStateEnum.Paused]: [Options.Resume, Options.Cancel],
+    [JourneyCampaignStateEnum.Canceled]: [Options.Duplicate],
     [JourneyCampaignStateEnum.Sent]: [Options.Duplicate],
 }
 
@@ -50,14 +53,18 @@ export const MoreOptions = ({
     state,
     handleChangeStatus,
     handleRemoveClick,
+    handleCancelClick,
     handleSendClick,
+    handleDuplicateClick,
 }: {
     shopName: string
     journeyId: string
     state: JourneyCampaignStateEnum
-    handleChangeStatus: () => void
+    handleChangeStatus: (status: UpdatableJourneyCampaignState) => void
     handleRemoveClick: () => void
+    handleCancelClick: () => void
     handleSendClick: () => void
+    handleDuplicateClick: () => void
 }) => {
     const history = useHistory()
 
@@ -67,9 +74,17 @@ export const MoreOptions = ({
                 case Options.Send:
                     handleSendClick()
                     break
+                case Options.Pause:
+                    handleChangeStatus(UpdatableJourneyCampaignState.Paused)
+                    break
                 case Options.Resume:
+                    handleChangeStatus(UpdatableJourneyCampaignState.Scheduled)
+                    break
                 case Options.Cancel:
-                    handleChangeStatus()
+                    handleCancelClick()
+                    break
+                case Options.Duplicate:
+                    handleDuplicateClick()
                     break
                 case Options.Edit:
                     history.push(
@@ -90,6 +105,8 @@ export const MoreOptions = ({
             history,
             handleRemoveClick,
             handleChangeStatus,
+            handleCancelClick,
+            handleDuplicateClick,
         ],
     )
 
@@ -104,11 +121,35 @@ export const MoreOptions = ({
                             id: option,
                             name: 'Send',
                         }
+                    case Options.Pause:
+                        return {
+                            icon: 'media-pause-circle',
+                            id: option,
+                            name: 'Pause',
+                        }
+                    case Options.Resume:
+                        return {
+                            icon: 'media-play-circle',
+                            id: option,
+                            name: 'Resume',
+                        }
+                    case Options.Cancel:
+                        return {
+                            icon: 'media-stop-circle',
+                            id: option,
+                            name: 'Cancel',
+                        }
                     case Options.Edit:
                         return {
                             icon: 'edit-pencil',
                             id: option,
                             name: 'Edit',
+                        }
+                    case Options.Duplicate:
+                        return {
+                            icon: 'copy',
+                            id: option,
+                            name: 'Duplicate',
                         }
                     case Options.Delete:
                         return {

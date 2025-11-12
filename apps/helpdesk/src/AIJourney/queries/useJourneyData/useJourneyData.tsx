@@ -7,7 +7,10 @@ import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/cli
 
 import { aiJourneyKeys } from '../utils'
 
-const getJourneyData = async (journeyId: string, accessToken: string) => {
+export const getJourneyData = async (
+    journeyId: string,
+    accessToken: string,
+) => {
     if (!journeyId || !accessToken) {
         throw new Error(
             `Journey ID and access token are required.\n journeyId: ${journeyId} \n accessToken: ${accessToken}`,

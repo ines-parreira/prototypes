@@ -3,8 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink, useHistory, useParams } from 'react-router-dom'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
-
 import { useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -30,7 +28,7 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneyCampaignsEnabled,
     )
 
-    const { journeys, journeyData } = useJourneyContext()
+    const { journeys } = useJourneyContext()
 
     const history = useHistory()
 
@@ -41,16 +39,6 @@ export const AiJourneyNavbar = () => {
     const hasJourney = useMemo(() => {
         return journeys?.length !== 0
     }, [journeys])
-
-    const isJourneyDraft = useMemo(
-        () => hasJourney && journeyData?.state === JourneyStatusEnum.Draft,
-        [journeyData, hasJourney],
-    )
-
-    const hasValidJourney = useMemo(
-        () => hasJourney && !isJourneyDraft,
-        [hasJourney, isJourneyDraft],
-    )
 
     const selectedStoreIntegration = useMemo(() => {
         return storeIntegrations.find(
@@ -81,10 +69,9 @@ export const AiJourneyNavbar = () => {
         [storeIntegrations, history],
     )
 
-    const shouldAccessPlayground =
-        isAiJourneyPlaygroundEnabled && hasValidJourney
-
-    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled && hasValidJourney
+    const shouldAccessPlayground = isAiJourneyPlaygroundEnabled && hasJourney
+    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled && hasJourney
+    const shouldAccessCampaigns = isAiJourneyCampaignsEnabled && hasJourney
 
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
@@ -112,7 +99,7 @@ export const AiJourneyNavbar = () => {
                     >
                         {hasJourney ? 'Overview' : 'Setup'}
                     </Navigation.SectionItem>
-                    {isAiJourneyCampaignsEnabled && (
+                    {shouldAccessCampaigns && (
                         <Navigation.SectionItem
                             as={NavLink}
                             exact

@@ -2,8 +2,12 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import {
+    CampaignUpdateApiDTO,
+    JourneyStatusEnum,
+} from '@gorgias/convert-client'
 
+import { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -40,6 +44,7 @@ export const useJourneyUpdateHandler = ({
 
     const handleUpdate = useCallback(
         async ({
+            id,
             journeyState,
             journeyMessageInstructions,
             campaignTitle,
@@ -47,19 +52,22 @@ export const useJourneyUpdateHandler = ({
             includedAudienceListIds,
             excludedAudienceListIds,
         }: {
+            id?: string
             journeyState?: JourneyStatusEnum
             journeyMessageInstructions?: string | null
             campaignTitle?: string
-            campaignState?: 'draft' | 'scheduled'
+            campaignState?: UpdatableJourneyCampaignState
             includedAudienceListIds?: string[]
             excludedAudienceListIds?: string[]
         }) => {
             try {
+                const entityId = id || journeyId
+
                 if (phoneNumberValue && !integrationId) {
                     throw new Error(`Missing integration`)
                 }
 
-                if (!journeyId) {
+                if (!entityId) {
                     throw new Error(`Missing journey`)
                 }
 
@@ -86,7 +94,7 @@ export const useJourneyUpdateHandler = ({
                 )
 
                 const requestBody = {
-                    journeyId: journeyId,
+                    journeyId: entityId,
                     params: {
                         state: journeyState,
                         message_instructions: journeyMessageInstructions,
@@ -94,10 +102,10 @@ export const useJourneyUpdateHandler = ({
                         excluded_audience_list_ids: excludedAudienceListIds,
                         campaign:
                             campaignTitle || campaignState
-                                ? {
+                                ? ({
                                       title: campaignTitle,
                                       state: campaignState,
-                                  }
+                                  } as CampaignUpdateApiDTO)
                                 : undefined,
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),
@@ -106,7 +114,9 @@ export const useJourneyUpdateHandler = ({
                 const updateJourneyMutate =
                     await updateJourney.mutateAsync(requestBody)
 
-                await queryClient.invalidateQueries(aiJourneyKeys.all())
+                await queryClient.invalidateQueries({
+                    queryKey: aiJourneyKeys.all(),
+                })
 
                 return updateJourneyMutate
             } catch (error) {

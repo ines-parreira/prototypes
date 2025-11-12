@@ -10,5 +10,5 @@ export const aiJourneyKeys = {
         return types ? ([...base, { types }] as const) : base
     },
     journeyConfiguration: (journeyId: string | undefined) =>
-        ['journeyConfiguration', journeyId] as const,
+        [...aiJourneyKeys.all(), 'journeyConfiguration', journeyId] as const,
 }

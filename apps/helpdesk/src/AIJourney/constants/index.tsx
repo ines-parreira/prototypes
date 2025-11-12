@@ -40,3 +40,13 @@ export const JOURNEY_TYPE_MAP_FROM_URL = Object.fromEntries(
         key,
     ]),
 ) as Record<JOURNEY_TYPES, JourneyTypeEnum>
+
+export type UpdatableJourneyCampaignState =
+    (typeof UpdatableJourneyCampaignState)[keyof typeof UpdatableJourneyCampaignState]
+
+export const UpdatableJourneyCampaignState = {
+    Draft: 'draft',
+    Scheduled: 'scheduled',
+    Canceled: 'canceled',
+    Paused: 'paused',
+}

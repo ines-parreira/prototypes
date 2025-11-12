@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
 import {
     Box,
     Button,
@@ -11,12 +13,23 @@ import {
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
-import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+import {
+    JourneyApiDTO,
+    JourneyCampaignStateEnum,
+} from '@gorgias/convert-client'
 
-import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
+import {
+    JOURNEY_TYPES,
+    STEPS_NAMES,
+    UpdatableJourneyCampaignState,
+} from 'AIJourney/constants'
+import { useJourneyUpdateHandler } from 'AIJourney/hooks'
+import { useAccessToken, useJourneyContext } from 'AIJourney/providers'
+import { useCreateNewJourney } from 'AIJourney/queries'
+import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
+import { getJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 
-import { useJourneyUpdateHandler } from '../../hooks'
-import { useDeleteJourney } from '../../queries/useDeleteJourney/useDeleteJourney'
+import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampaignConfirmation'
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
 import SendCampaignConfirmation from './SendCampaignConfirmation/SendCampaignConfirmation'
@@ -37,9 +50,16 @@ export default function CampaignsTable<TData, TValue>({
 }: CampaignsTableProps<TData, TValue>) {
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
     const [isSendModalOpen, setIsSendModalOpen] = useState(false)
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
     const [selectedCampaignId, setSelectedCampaignId] = useState<
         string | undefined
     >()
+
+    const history = useHistory()
+    const { shopName } = useJourneyContext()
+    const accessToken = useAccessToken()
+
+    const createNewJourney = useCreateNewJourney()
 
     // delete campaign
     const { mutate: deleteCampaign } = useDeleteJourney()
@@ -64,9 +84,7 @@ export default function CampaignsTable<TData, TValue>({
         handleCloseRemoveModal()
     }, [selectedCampaignId, handleCloseRemoveModal, deleteCampaign])
 
-    const { handleUpdate } = useJourneyUpdateHandler({
-        journeyId: selectedCampaignId,
-    })
+    const { handleUpdate } = useJourneyUpdateHandler({})
 
     // send campaign
     const handleOpenSendModal = useCallback(
@@ -85,11 +103,91 @@ export default function CampaignsTable<TData, TValue>({
     const handleConfirmSend = useCallback(() => {
         if (selectedCampaignId) {
             handleUpdate({
+                id: selectedCampaignId,
                 campaignState: JourneyCampaignStateEnum.Scheduled,
             })
         }
         handleCloseSendModal()
     }, [selectedCampaignId, handleCloseSendModal, handleUpdate])
+
+    // cancel campaign
+    const handleOpenCancelModal = useCallback(
+        (id: string) => {
+            setSelectedCampaignId(id)
+            setIsCancelModalOpen(true)
+        },
+        [setSelectedCampaignId, setIsCancelModalOpen],
+    )
+
+    const handleCloseCancelModal = useCallback(() => {
+        setIsCancelModalOpen(false)
+        setSelectedCampaignId(undefined)
+    }, [setSelectedCampaignId, setIsCancelModalOpen])
+
+    const handleConfirmCancel = useCallback(() => {
+        if (selectedCampaignId) {
+            handleUpdate({
+                id: selectedCampaignId,
+                campaignState: JourneyCampaignStateEnum.Canceled,
+            })
+        }
+        handleCloseCancelModal()
+    }, [selectedCampaignId, handleCloseCancelModal, handleUpdate])
+
+    const handleChangeStatus = useCallback(
+        (id: string, status: UpdatableJourneyCampaignState) => {
+            if (id) {
+                handleUpdate({
+                    id,
+                    campaignState: status,
+                })
+            }
+        },
+        [handleUpdate],
+    )
+
+    const handleDuplicate = useCallback(
+        async (journey: JourneyApiDTO) => {
+            const journeyData = await getJourneyData(journey.id, accessToken!)
+
+            const createdJourney = await createNewJourney.mutateAsync({
+                params: {
+                    store_integration_id: journeyData.store_integration_id,
+                    store_name: journeyData.store_name,
+                    type: journeyData.type,
+                    campaign: {
+                        title:
+                            (journeyData.campaign?.title || 'Untitled') +
+                            ' (Copy)',
+                    },
+                    included_audience_list_ids:
+                        journeyData.included_audience_list_ids,
+                    excluded_audience_list_ids:
+                        journeyData.excluded_audience_list_ids,
+                    message_instructions: journeyData.message_instructions,
+                },
+                journeyConfigs: {
+                    max_follow_up_messages:
+                        journeyData.configuration.max_follow_up_messages,
+                    offer_discount: journeyData.configuration.offer_discount,
+                    max_discount_percent:
+                        journeyData.configuration.max_discount_percent,
+                    sms_sender_integration_id:
+                        journeyData.configuration.sms_sender_integration_id,
+                    sms_sender_number:
+                        journeyData.configuration.sms_sender_number,
+                    discount_code_message_threshold:
+                        journeyData.configuration
+                            .discount_code_message_threshold,
+                },
+            })
+
+            history.push(
+                `/app/ai-journey/${shopName}/${createdJourney.type}/setup/${createdJourney.id}`,
+            )
+        },
+        [history, createNewJourney, accessToken, shopName],
+    )
 
     const table = useTable({
         data,
@@ -112,6 +210,9 @@ export default function CampaignsTable<TData, TValue>({
             meta: {
                 onRemoveClick: handleOpenRemoveModal,
                 onSendClick: handleOpenSendModal,
+                onCancelClick: handleOpenCancelModal,
+                onChangeStatus: handleChangeStatus,
+                onDuplicateClick: handleDuplicate,
             } as CampaignsTableMeta,
         },
     })
@@ -127,9 +228,11 @@ export default function CampaignsTable<TData, TValue>({
                             key: 'create',
                             content: (
                                 <Button
-                                    as="a"
-                                    href={`${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`}
-                                    target="_self"
+                                    onClick={() =>
+                                        history.push(
+                                            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+                                        )
+                                    }
                                 >
                                     Create campaign
                                 </Button>
@@ -167,6 +270,11 @@ export default function CampaignsTable<TData, TValue>({
                 isOpen={isSendModalOpen}
                 onClose={handleCloseSendModal}
                 onConfirm={handleConfirmSend}
+            />
+            <CancelCampaignConfirmation
+                isOpen={isCancelModalOpen}
+                onClose={handleCloseCancelModal}
+                onConfirm={handleConfirmCancel}
             />
         </>
     )

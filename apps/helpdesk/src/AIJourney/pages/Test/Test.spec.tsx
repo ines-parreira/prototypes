@@ -65,20 +65,31 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 jest.mock('AIJourney/hooks', () => ({
     ...jest.requireActual('AIJourney/hooks'),
     useJourneyUpdateHandler: jest.fn(),
+    useGeneratePlaygroundMessage: jest.fn(),
 }))
 
 const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
     .useJourneyUpdateHandler as jest.Mock
 
+const mockUseGeneratePlaygroundMessage = require('AIJourney/hooks')
+    .useGeneratePlaygroundMessage as jest.Mock
+
 describe('<Test />', () => {
     const mockStore = configureMockStore([thunk])()
     const mockHandleUpdate = jest.fn()
+    const mockHandleGenerateMessages = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockUseJourneyUpdateHandler.mockImplementation(() => ({
             handleUpdate: mockHandleUpdate,
+        }))
+
+        mockUseGeneratePlaygroundMessage.mockImplementation(() => ({
+            handleGenerateMessages: mockHandleGenerateMessages,
+            playgroundMessages: [],
+            isGeneratingMessages: false,
         }))
 
         mockUseJourneyContext.mockImplementation(() => ({
@@ -252,5 +263,154 @@ describe('<Test />', () => {
         expect(screen.getByDisplayValue(newInstructions)).toBeInTheDocument()
         expect(screen.getByText('Default Title')).toBeInTheDocument()
         expect(screen.getByText('Strong phone')).toBeInTheDocument()
+    })
+
+    it('should show error when continue button is clicked without message instructions for campaign journey type', async () => {
+        mockUseJourneyContext.mockImplementation(() => ({
+            journey: null,
+            journeyData: {
+                id: 'journey-123',
+                type: 'campaign',
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            journeyType: 'campaign',
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            storeConfiguration: {
+                monitoredSmsIntegrations: [],
+            },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <Test />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        await act(async () => {
+            await user.click(continueButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Please provide message guidance to continue.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+    })
+
+    it('should show error when preview messages button is clicked without message instructions for campaign journey type', async () => {
+        mockUseJourneyContext.mockImplementation(() => ({
+            journey: null,
+            journeyData: {
+                id: 'journey-123',
+                type: 'campaign',
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            journeyType: 'campaign',
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            storeConfiguration: {
+                monitoredSmsIntegrations: [],
+            },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <Test />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const previewButton = screen.getByRole('button', {
+            name: 'Preview messages',
+        })
+        await act(async () => {
+            await user.click(previewButton)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Please provide message guidance to continue.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockHandleGenerateMessages).not.toHaveBeenCalled()
+    })
+
+    it('should call handleGenerateMessages when preview messages button is clicked with valid instructions', async () => {
+        mockUseJourneyContext.mockImplementation(() => ({
+            journey: null,
+            journeyData: {
+                id: 'journey-123',
+                type: 'campaign',
+                message_instructions: 'Test instructions',
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            journeyType: 'campaign',
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            storeConfiguration: {
+                monitoredSmsIntegrations: [],
+            },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <Test />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const previewButton = screen.getByRole('button', {
+            name: 'Preview messages',
+        })
+        await act(async () => {
+            await user.click(previewButton)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleGenerateMessages).toHaveBeenCalledTimes(1)
+        })
     })
 })

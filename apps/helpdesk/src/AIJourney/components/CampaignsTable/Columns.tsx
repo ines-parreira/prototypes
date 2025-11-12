@@ -1,13 +1,11 @@
-import { Link } from 'react-router-dom'
-
-import { Box, ColumnDef, createSortableColumn, Text } from '@gorgias/axiom'
+import { Box, ColumnDef, createSortableColumn } from '@gorgias/axiom'
 import {
     JourneyApiDTO,
     JourneyCampaignStateEnum,
 } from '@gorgias/convert-client'
 
-import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
-
+import { UpdatableJourneyCampaignState } from '../../constants'
+import CampaignName from './CampaignName/CampaignName'
 import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'
 import { CampaignsTableMeta } from './types'
@@ -19,13 +17,12 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
         const journeyId = info.row.original.id
         return (
             <Box gap="xs">
-                <Link
-                    to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup/${journeyId}`}
-                >
-                    <Text variant="bold" color="black">
-                        {info.getValue() as string}
-                    </Text>
-                </Link>
+                <CampaignName
+                    name={info.getValue() as string}
+                    storeName={storeName}
+                    journeyType={journeyType}
+                    journeyId={journeyId}
+                />
             </Box>
         )
     }),
@@ -48,12 +45,22 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
                         shopName={info.row.original.store_name}
                         journeyId={info.row.original.id}
                         state={info.row.original.campaign?.state!}
-                        handleChangeStatus={() => {}}
+                        handleChangeStatus={(
+                            status: UpdatableJourneyCampaignState,
+                        ) => {
+                            meta.onChangeStatus(info.row.original.id, status)
+                        }}
+                        handleCancelClick={() =>
+                            meta.onCancelClick(info.row.original.id)
+                        }
                         handleRemoveClick={() =>
                             meta.onRemoveClick(info.row.original.id)
                         }
                         handleSendClick={() =>
                             meta.onSendClick(info.row.original.id)
+                        }
+                        handleDuplicateClick={() =>
+                            meta.onDuplicateClick(info.row.original)
                         }
                     />
                 </Box>

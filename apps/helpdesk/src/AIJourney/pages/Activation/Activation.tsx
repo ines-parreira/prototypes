@@ -90,7 +90,11 @@ export const Activation = () => {
             })
             setIsVisible(false)
             setTimeout(() => {
-                history.push(`/app/ai-journey/${shopName}/performance`)
+                if (journeyData?.type === JOURNEY_TYPES.CAMPAIGN) {
+                    history.push(`/app/ai-journey/${shopName}/campaigns`)
+                } else {
+                    history.push(`/app/ai-journey/${shopName}/performance`)
+                }
             }, 700)
         } catch (error) {
             void dispatch(
@@ -120,10 +124,7 @@ export const Activation = () => {
             name: 'Select a product to feature',
             description: `Customer ${customerName} has not purchased in a while. Feature this product to entice them back.`,
         },
-        [JOURNEY_TYPES.CAMPAIGN]: {
-            name: 'Select a product to feature',
-            description: `Customer ${customerName} is part of this campaign. Feature this product in the message.`,
-        },
+        [JOURNEY_TYPES.CAMPAIGN]: null,
     }
 
     if (isLoading) {
@@ -138,6 +139,8 @@ export const Activation = () => {
         )
     }
 
+    const description = productSelectDescription[journeyType]
+
     return (
         <motion.div
             className={css.container}
@@ -149,12 +152,14 @@ export const Activation = () => {
                 name="Give your flow a test run before going live"
                 description="Impersonate a customer and test the conversation with the agent on your phone."
             />
-            <ProductSelectField
-                name={productSelectDescription[journeyType].name}
-                description={productSelectDescription[journeyType].description}
-                options={productList}
-                onChange={handleProductSelectChange}
-            />
+            {description !== null && (
+                <ProductSelectField
+                    name={description.name}
+                    description={description.description}
+                    options={productList}
+                    onChange={handleProductSelectChange}
+                />
+            )}
             <TestSMSField
                 value={testSmsNumber}
                 onChange={handleTestSmsNumberChange}

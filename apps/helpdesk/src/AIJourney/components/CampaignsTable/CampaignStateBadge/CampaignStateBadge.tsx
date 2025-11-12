@@ -22,6 +22,10 @@ export default function CampaignStateBadge({
             color = 'yellow'
             label = 'Scheduled'
             break
+        case JourneyCampaignStateEnum.Paused:
+            color = 'yellow'
+            label = 'Paused'
+            break
         case JourneyCampaignStateEnum.Active:
             color = 'blue'
             label = 'Sending'

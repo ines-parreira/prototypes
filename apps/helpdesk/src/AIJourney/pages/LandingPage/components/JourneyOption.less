@@ -2,14 +2,14 @@
     .infoText {
         display: flex;
         align-items: flex-start;
-        gap: 16px;
+        gap: var(--layout-spacing-xs);
+        width: 100%;
     }
 
     .onboardingJourneyOption {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: var(--layout-spacing-xs);
         font-size: 12px;
         align-items: center;
 
@@ -17,6 +17,7 @@
         box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.25);
         padding: var(--layout-spacing-m);
         cursor: pointer;
+        width: 100%;
 
         &:hover {
             background: var(--neutral-grey-1);
@@ -30,7 +31,7 @@
         align-items: flex-start;
         gap: var(--layout-spacing-s);
         font-size: 14px;
-        max-width: 350px;
+        width: 100%;
     }
 
     input[type='radio'] {
