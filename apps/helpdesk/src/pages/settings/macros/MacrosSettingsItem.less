@@ -13,12 +13,12 @@
     }
 
     .dateCell {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .tableBodyRow {
         &:hover {
-            background: var(--neutral-grey-1) !important;
+            background: var(--neutral-grey-1) !important; // legacy
         }
     }
 
@@ -30,7 +30,7 @@
             .material-icons-outlined {
                 transition: 0.2s all;
                 opacity: 0.3;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
 
             &:hover .material-icons {
@@ -50,5 +50,26 @@
 
     .checkbox {
         margin: unset;
+    }
+}
+
+.axiom :local {
+    .dateCell {
+        color: var(--content-neutral-secondary);
+    }
+
+    .tableBodyRow {
+        &:hover {
+            background: var(--hover-default) !important;
+        }
+    }
+
+    .actions {
+        :global .btn {
+            .material-icons,
+            .material-icons-outlined {
+                color: var(--content-neutral-default);
+            }
+        }
     }
 }

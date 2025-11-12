@@ -12,12 +12,12 @@
 
         &:hover {
             color: unset;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
 
         &.selected {
             color: unset;
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         &.shrinkInfo {
@@ -57,7 +57,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             .caption-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             &.indented {
                 margin-left: var(--layout-spacing-l);
             }
@@ -74,7 +74,7 @@
 
     .title {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -89,12 +89,12 @@
         height: 1px;
         flex-shrink: 0;
         margin: 0 8px;
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
     }
 
     .info {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         overflow: hidden;
         flex-shrink: 0;
 
@@ -105,5 +105,33 @@
 
     .arrowIcon:not(:first-of-type) {
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .container {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+
+        &.selected {
+            background-color: var(--elevation-neutral-mid);
+        }
+
+        .infoFooter {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .separator {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .info {
+        color: var(--content-neutral-secondary);
     }
 }

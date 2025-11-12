@@ -21,9 +21,15 @@
 
     .operator {
         .caption-allcaps();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         flex-shrink: 0;
         line-height: 32px;
         padding: 0 8px;
+    }
+}
+
+.axiom :local {
+    .operator {
+        color: var(--content-neutral-secondary);
     }
 }

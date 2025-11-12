@@ -14,7 +14,7 @@
     }
 
     .listHeader {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
     }
 
@@ -37,7 +37,7 @@
 :local .card {
     position: relative;
 
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy
     font-size: 13px;
     transition: all 0.12s ease-out;
 
@@ -55,7 +55,7 @@
                 var(--neutral-grey-6-l),
                 0.2
             );
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     i {
@@ -66,11 +66,30 @@
         margin-right: 20px;
         padding: 2px 5px;
         border-radius: 20px;
-        border: 1px solid var(--neutral-grey-3);
-        color: var(--neutral-grey-4);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-4); // legacy
 
         i {
             line-height: 1.2;
         }
+    }
+}
+
+.axiom :local .component {
+    .listHeader {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+}
+
+.axiom :local .card {
+    color: var(--content-neutral-default);
+
+    &:hover {
+        color: var(--content-neutral-default);
+    }
+
+    .action {
+        border: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-secondary);
     }
 }

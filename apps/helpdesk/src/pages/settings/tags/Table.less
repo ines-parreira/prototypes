@@ -31,7 +31,7 @@
                 text-align: center;
                 padding-top: var(--layout-spacing-s);
                 padding-bottom: var(--layout-spacing-s);
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
 
                 b {
                     font-weight: 500;
@@ -51,7 +51,7 @@
                     cursor: unset;
 
                     &:hover {
-                        color: var(--neutral-grey-5);
+                        color: var(--neutral-grey-5); // legacy
                         background-color: unset; // legacy
                     }
                 }
@@ -86,12 +86,14 @@
     thead {
         td {
             &.banner {
-                background: var(--main-primary-0);
+                background: var(--surface-accent-default);
+                color: var(--content-neutral-secondary);
             }
 
             .columnHeadCell {
                 &.isNotSortable {
                     &:hover {
+                        color: var(--content-neutral-secondary);
                         background-color: unset;
                     }
                 }

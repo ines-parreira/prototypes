@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 21,
-    "totalFilesAffected": 377,
+    "totalCommits": 22,
+    "totalFilesAffected": 391,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -109,6 +109,11 @@
       "title": "chore(tokens): Migrate color tokens in settings pages (batch 47)",
       "date": "2025-11-10",
       "filesAffected": 36
+    },
+    "batch32": {
+      "title": "chore(tokens): Migrate color tokens in settings and spotlight (batch 32)",
+      "date": "2025-11-10",
+      "filesAffected": 14
     }
   },
   "tokenMappings": {
@@ -1391,6 +1396,125 @@
         "context": "Success state colors",
         "files": [
           "Card.less"
+        ]
+      }
+    ],
+    "commit_batch32": [
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--surface-neutral-secondary",
+        "context": "Separator backgrounds",
+        "files": [
+          "SpotlightCallRow.less",
+          "SpotlightCustomerRow.less",
+          "SpotlightRow.less",
+          "SpotlightTicketRow.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text and icon colors",
+        "files": [
+          "SpotlightModal.less",
+          "MacrosCSVImportPopover.less",
+          "MacrosSettingsItem.less",
+          "MacrosSettingsTable.less",
+          "RuleCreationModalContent.less",
+          "List.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-0",
+        "newToken": "--elevation-neutral-default",
+        "context": "Background colors for base surfaces",
+        "files": [
+          "SpotlightModal.less",
+          "Table.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-1",
+        "newToken": "--hover-default",
+        "context": "Hover states",
+        "files": [
+          "SpotlightRow.less",
+          "MacrosSettingsItem.less",
+          "Row.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-2",
+        "newToken": "--elevation-neutral-mid",
+        "context": "Selected/active background colors",
+        "files": [
+          "SpotlightRow.less",
+          "MacrosCSVImportPopover.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--border-neutral-default",
+        "context": "Border colors",
+        "files": [
+          "SpotlightModal.less",
+          "MacrosCSVImportPopover.less",
+          "List.less",
+          "Row.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-5",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "SpotlightNoResults.less",
+          "SpotlightRow.less",
+          "Table.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-6",
+        "newToken": "--content-neutral-default",
+        "context": "Primary text colors",
+        "files": [
+          "SpotlightRow.less",
+          "MacrosCSVImportPopover.less",
+          "MacrosSettingsItem.less",
+          "List.less",
+          "Row.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--content-accent-default",
+        "context": "Accent colors for links and interactive elements",
+        "files": [
+          "SpotlightNoResults.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary-4",
+        "newToken": "--pressed-default",
+        "context": "Pressed/active state colors",
+        "files": [
+          "SpotlightNoResults.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary-0",
+        "newToken": "--surface-accent-default",
+        "context": "Accent background colors for banners",
+        "files": [
+          "Table.less"
+        ]
+      },
+      {
+        "legacyToken": "--feedback-error",
+        "newToken": "--content-error-primary",
+        "context": "Error state colors",
+        "files": [
+          "MoreActions.less"
         ]
       }
     ],

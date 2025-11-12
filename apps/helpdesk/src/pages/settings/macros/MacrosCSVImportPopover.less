@@ -5,12 +5,12 @@
 
     .modalCloudIcon {
         font-size: 32px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: block;
     }
 
     .fileDropArea {
-        border: 2px dashed var(--neutral-grey-3);
+        border: 2px dashed var(--neutral-grey-3); // legacy
         background: var(--neutral-grey-2); // legacy
         padding: 14px;
         cursor: pointer;
@@ -45,7 +45,7 @@
         }
 
         & i {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -64,7 +64,18 @@
         background-color: var(--surface-neutral-secondary);
     }
 
+    .modalCloudIcon {
+        color: var(--content-neutral-secondary);
+    }
+
     .fileDropArea {
+        border: 2px dashed var(--border-neutral-default);
         background: var(--surface-neutral-secondary);
+    }
+
+    .fileSelectedArea {
+        & i {
+            color: var(--content-neutral-default);
+        }
     }
 }

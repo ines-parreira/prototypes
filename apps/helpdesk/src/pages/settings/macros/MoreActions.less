@@ -11,11 +11,19 @@
         }
 
         &.destructive {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
     .wrapperActions {
         gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .dropdownItem {
+        &.destructive {
+            color: var(--content-error-primary);
+        }
     }
 }

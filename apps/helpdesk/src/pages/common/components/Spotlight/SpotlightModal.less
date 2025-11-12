@@ -14,12 +14,12 @@
     .spotlightModalContent {
         max-height: 644px;
         .caption-semibold();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .tabNavigator {
-        background-color: var(--neutral-grey-0);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         padding: 0 8px;
         flex-shrink: 0;
     }
@@ -33,7 +33,7 @@
     .textInput {
         height: 100%;
         border: none;
-        border-bottom: 1px solid var(--neutral-grey-3) !important;
+        border-bottom: 1px solid var(--neutral-grey-3) !important; // legacy
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
         box-shadow: none !important;
@@ -62,7 +62,8 @@
         padding: 8px;
         background:
             linear-gradient(var(--neutral-grey-0) 30%, rgba(255, 255, 255, 0))
-                center top,
+                // legacy
+            center top,
             linear-gradient(rgba(22, 22, 22, 0.16), rgba(0, 0, 0, 0)) center top;
         background-repeat: no-repeat;
         background-size:
@@ -86,8 +87,8 @@
         display: flex;
         justify-content: space-between;
         padding: 8px 16px;
-        background-color: var(--neutral-grey-0);
-        border-top: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border-top: 1px solid var(--neutral-grey-3); // legacy
 
         &.cleanSearchFooter {
             border-top: none;
@@ -122,11 +123,45 @@
     .groupContent {
         display: flex;
         justify-content: space-between;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
 
         a {
             .caption-semibold();
         }
+    }
+}
+
+.axiom :local {
+    .spotlightModalContent {
+        color: var(--content-neutral-secondary);
+    }
+
+    .tabNavigator {
+        background-color: var(--elevation-neutral-default);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .textInput {
+        border-bottom: 1px solid var(--border-neutral-default) !important;
+    }
+
+    .modalBody {
+        background:
+            linear-gradient(
+                    var(--elevation-neutral-default) 30%,
+                    rgba(255, 255, 255, 0)
+                )
+                center top,
+            linear-gradient(rgba(22, 22, 22, 0.16), rgba(0, 0, 0, 0)) center top;
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-default);
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .groupContent {
+        background-color: var(--elevation-neutral-default);
     }
 }
