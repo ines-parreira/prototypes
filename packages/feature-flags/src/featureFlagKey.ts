@@ -48,6 +48,7 @@ export enum FeatureFlagKey {
     AiJourneyPlayground = 'ai-journey-playground',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',
+    AiJourneyWinBackEnabled = 'ai-journey-win-back-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
     AiJourneyAnalyticsEnabled = 'ai-journey-analytics-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',

@@ -31,7 +31,7 @@ export const JOURNEY_TYPE_MAP_TO_STRING: Record<JourneyTypeEnum, string> = {
     [JourneyTypeEnum.CartAbandoned]: 'Cart Abandoned',
     [JourneyTypeEnum.SessionAbandoned]: 'Browse Abandoned',
     [JourneyTypeEnum.Campaign]: 'Campaign',
-    [JourneyTypeEnum.WinBack]: 'Win-back',
+    [JourneyTypeEnum.WinBack]: 'Customer Win-back',
 }
 
 export const JOURNEY_TYPE_MAP_FROM_URL = Object.fromEntries(

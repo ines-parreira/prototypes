@@ -42,7 +42,7 @@ export const AiJourneyOnboarding = ({
     const titleMapping = {
         [JOURNEY_TYPES.CART_ABANDONMENT]: 'SMS Cart Abandoned flow',
         [JOURNEY_TYPES.SESSION_ABANDONMENT]: 'SMS Browse Abandoned flow',
-        [JOURNEY_TYPES.WIN_BACK]: 'Win-Back flow',
+        [JOURNEY_TYPES.WIN_BACK]: 'Customer Win-back flow',
         [JOURNEY_TYPES.CAMPAIGN]: journeyData
             ? journeyData.campaign?.title
             : 'Create New Campaign',

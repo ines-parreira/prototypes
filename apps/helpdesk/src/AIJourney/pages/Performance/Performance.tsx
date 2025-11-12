@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import {
@@ -18,6 +20,8 @@ import {
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
+
+import { useFlag } from '../../../core/flags'
 
 import css from './Performance.less'
 
@@ -47,19 +51,16 @@ type AvailableJourney = {
     type: JourneyTypeEnum
 }
 
-const upcomingJourneys: UpcomingJourney[] = [
+const defaultUpcomingJourneys: UpcomingJourney[] = [
     {
         name: 'Welcome New Subscribers',
     },
     {
         name: 'Post-Purchase Follow-up',
     },
-    {
-        name: 'Customer Winback',
-    },
 ]
 
-const availableJourneys: AvailableJourney[] = [
+const defaultAvailableJourneys: AvailableJourney[] = [
     {
         name: 'Cart Abandoned',
         available: true,
@@ -70,6 +71,11 @@ const availableJourneys: AvailableJourney[] = [
         available: true,
         type: JourneyTypeEnum.SessionAbandoned,
     },
+    {
+        name: 'Customer Win-back',
+        available: true,
+        type: JourneyTypeEnum.WinBack,
+    },
 ]
 
 const FILTERS = ['All', 'Active', 'Coming soon']
@@ -77,8 +83,31 @@ const FILTERS = ['All', 'Active', 'Coming soon']
 export const Performance = () => {
     const [filter, setFilter] = useState('All')
 
+    const isAiJourneyWinBackEnabled = useFlag(
+        FeatureFlagKey.AiJourneyWinBackEnabled,
+    )
+
     const { journeys, currentIntegration, isLoadingJourneys } =
         useJourneyContext()
+
+    const { availableJourneys, upcomingJourneys } = useMemo(() => {
+        const availableJourneys = [...defaultAvailableJourneys]
+        const upcomingJourneys = [...defaultUpcomingJourneys]
+
+        if (!isAiJourneyWinBackEnabled) {
+            availableJourneys.splice(
+                availableJourneys.findIndex(
+                    (journey) => journey.type === JourneyTypeEnum.WinBack,
+                ),
+                1,
+            )
+            upcomingJourneys.push({
+                name: 'Customer Win-back',
+            })
+        }
+
+        return { availableJourneys, upcomingJourneys }
+    }, [isAiJourneyWinBackEnabled])
 
     const inactiveJourneys = availableJourneys.filter((availableJourney) => {
         return !journeys?.some(

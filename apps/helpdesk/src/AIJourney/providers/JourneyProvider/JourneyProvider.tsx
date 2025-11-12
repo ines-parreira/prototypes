@@ -80,7 +80,11 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
 
     const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
         integrationId,
-        [JourneyTypeEnum.CartAbandoned, JourneyTypeEnum.SessionAbandoned],
+        [
+            JourneyTypeEnum.CartAbandoned,
+            JourneyTypeEnum.SessionAbandoned,
+            JourneyTypeEnum.WinBack,
+        ],
         {
             enabled: !!integrationId,
         },

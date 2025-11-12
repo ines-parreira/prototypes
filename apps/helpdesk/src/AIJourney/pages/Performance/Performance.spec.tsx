@@ -271,7 +271,7 @@ describe('<Performance />', () => {
             expect(
                 screen.getAllByText('Post-Purchase Follow-up').length,
             ).toEqual(2)
-            expect(screen.getAllByText('Customer Winback').length).toEqual(2)
+            expect(screen.getAllByText('Customer Win-back').length).toEqual(2)
         })
 
         await act(async () => {
@@ -286,7 +286,7 @@ describe('<Performance />', () => {
                 screen.queryByText('Post-Purchase Follow-up'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText('Customer Winback'),
+                screen.queryByText('Customer Win-back'),
             ).not.toBeInTheDocument()
         })
 
@@ -296,12 +296,14 @@ describe('<Performance />', () => {
         await waitFor(() => {
             expect(screen.queryByText('Cart Abandoned')).not.toBeInTheDocument()
             expect(
+                screen.queryByText('Customer Win-back'),
+            ).not.toBeInTheDocument()
+            expect(
                 screen.getAllByText('Welcome New Subscribers').length,
             ).toEqual(2)
             expect(
                 screen.getAllByText('Post-Purchase Follow-up').length,
             ).toEqual(2)
-            expect(screen.getAllByText('Customer Winback').length).toEqual(2)
         })
     })
 
@@ -354,6 +356,29 @@ describe('<Performance />', () => {
 
         await waitFor(() => {
             expect(screen.getAllByText('Browse Abandoned').length).toEqual(2)
+        })
+    })
+
+    it('should display win-back in coming soon', async () => {
+        mockUseFlag.mockReturnValue(false)
+
+        renderWithRouter(
+            <QueryClientProvider client={appQueryClient}>
+                <Provider store={mockStore({})}>
+                    <IntegrationsProvider>
+                        <Performance />
+                    </IntegrationsProvider>
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        await act(async () => {
+            await userEvent.click(
+                screen.getByRole('button', { name: 'Coming soon' }),
+            )
+        })
+        await waitFor(() => {
+            expect(screen.queryAllByText('Customer Win-back').length).toEqual(2)
         })
     })
 })

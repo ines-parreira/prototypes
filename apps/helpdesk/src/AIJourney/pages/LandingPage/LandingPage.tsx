@@ -25,6 +25,10 @@ export const LandingPage = () => {
         FeatureFlagKey.AiJourneyCampaignsEnabled,
     )
 
+    const isAiJourneyWinBackEnabled = useFlag(
+        FeatureFlagKey.AiJourneyWinBackEnabled,
+    )
+
     const availableJourneys = useMemo(() => {
         const journeys = [
             {
@@ -41,6 +45,15 @@ export const LandingPage = () => {
             },
         ]
 
+        if (isAiJourneyWinBackEnabled) {
+            journeys.push({
+                name: 'Customer Win-back',
+                description:
+                    'Reconnect with inactive customers and revive their interest in your store using personalized AI-driven messages.',
+                value: JOURNEY_TYPES.WIN_BACK,
+            })
+        }
+
         if (isAiJourneyCampaignsEnabled) {
             journeys.push({
                 name: 'Campaigns',
@@ -51,7 +64,7 @@ export const LandingPage = () => {
         }
 
         return journeys
-    }, [isAiJourneyCampaignsEnabled])
+    }, [isAiJourneyCampaignsEnabled, isAiJourneyWinBackEnabled])
 
     const { journeys, isLoading } = useJourneyContext()
 

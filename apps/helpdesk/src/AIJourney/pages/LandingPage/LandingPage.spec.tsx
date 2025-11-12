@@ -233,6 +233,7 @@ describe('<LandingPage />', () => {
         expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
         expect(screen.getByText('Browse Abandonment')).toBeInTheDocument()
         expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
+        expect(screen.queryByText('Customer Win-back')).not.toBeInTheDocument()
     })
 
     it('should display campaigns option when feature flag is enabled', () => {
@@ -258,5 +259,6 @@ describe('<LandingPage />', () => {
                 'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
             ),
         ).toBeInTheDocument()
+        expect(screen.getByText('Customer Win-back')).toBeInTheDocument()
     })
 })

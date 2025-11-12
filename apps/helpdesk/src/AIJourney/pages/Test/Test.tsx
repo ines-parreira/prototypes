@@ -153,21 +153,25 @@ export const Test = () => {
             name: 'Preview your abandoned cart messages',
             description:
                 'See the messages your customers would receive if they left something in their cart.',
+            productSelect: 'Select an abandoned product',
         },
         [JOURNEY_TYPES.SESSION_ABANDONMENT]: {
             name: 'Preview your browse abandonment messages',
             description:
                 'See the messages your customers would receive if they leave the product page without adding anything to their cart.',
+            productSelect: 'Select an abandoned product',
         },
         [JOURNEY_TYPES.CAMPAIGN]: {
             name: 'Preview your campaign messages',
             description:
                 'See the messages your customers would receive if they are part of this campaign.',
+            productSelect: '',
         },
         [JOURNEY_TYPES.WIN_BACK]: {
             name: 'Preview your win-back messages',
             description:
                 'See the messages your customers would receive if they bought something from your store but haven’t returned in a while.',
+            productSelect: 'Select a product to feature',
         },
     }
 
@@ -188,7 +192,7 @@ export const Test = () => {
                         {journeyData.type !== JOURNEY_TYPES.CAMPAIGN && (
                             <ProductSelectField
                                 options={productList}
-                                name="Select an abandoned product"
+                                name={textContent[journeyType].productSelect}
                                 description={undefined}
                                 onChange={handleProductSelectChange}
                             />
