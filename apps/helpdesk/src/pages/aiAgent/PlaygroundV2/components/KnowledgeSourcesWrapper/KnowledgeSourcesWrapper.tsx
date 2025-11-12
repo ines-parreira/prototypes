@@ -8,6 +8,7 @@ import { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { ticketOutcomeToLabel } from 'pages/aiAgent/components/TicketEvent/TicketEvent'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import {
     AiAgentKnowledgeResourceTypeEnum,
@@ -45,6 +46,8 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
             storeConfiguration,
             data: feedback,
         })
+
+    const { mode } = useSettingsContext()
 
     const hasReceivedData =
         feedback?.executions && feedback.executions.length > 0
@@ -98,6 +101,10 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
 
         return sources
     }, [enrichedData])
+
+    if (mode === 'outbound') {
+        return null
+    }
 
     if (isLoading) {
         if (!isPolling && !isEnrichmentLoading && !knowledgeSources.length)

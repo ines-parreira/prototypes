@@ -3,8 +3,10 @@ import React, { useEffect, useRef } from 'react'
 import classNames from 'classnames'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
+import { SmsChannelMessagesContainer } from 'pages/aiAgent/PlaygroundV2/components/SmsChannelMessagesContainer/SmsChannelMessagesContainer'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
@@ -17,7 +19,7 @@ type Props = {
     onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
-export const PlaygroundMessageList = ({ onGuidanceClick }: Props) => {
+const WrappedPlaygroundMessageList = ({ onGuidanceClick }: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
 
     const { storeConfiguration } = useConfigurationContext()
@@ -55,29 +57,39 @@ export const PlaygroundMessageList = ({ onGuidanceClick }: Props) => {
                     <PlaygroundInitialContent />
                 ) : (
                     messages.map((message, index) => (
-                        <div key={index}>
-                            <PlaygroundMessageComponent
-                                message={message}
-                                channel={channel}
-                                withAnimation
-                            >
-                                {message.type === MessageType.MESSAGE &&
-                                    message.executionId &&
-                                    storeConfiguration && (
-                                        <KnowledgeSourcesWrapper
-                                            executionId={message.executionId}
-                                            storeConfiguration={
-                                                storeConfiguration
-                                            }
-                                            outcome={outcome}
-                                            onGuidanceClick={onGuidanceClick}
-                                        />
-                                    )}
-                            </PlaygroundMessageComponent>
-                        </div>
+                        <PlaygroundMessageComponent
+                            message={message}
+                            channel={channel}
+                            withAnimation
+                            key={index}
+                        >
+                            {message.type === MessageType.MESSAGE &&
+                                message.executionId &&
+                                storeConfiguration && (
+                                    <KnowledgeSourcesWrapper
+                                        executionId={message.executionId}
+                                        storeConfiguration={storeConfiguration}
+                                        outcome={outcome}
+                                        onGuidanceClick={onGuidanceClick}
+                                    />
+                                )}
+                        </PlaygroundMessageComponent>
                     ))
                 )}
             </div>
         </div>
     )
+}
+
+export const PlaygroundMessageList = (props: Props) => {
+    const { shopName } = useConfigurationContext()
+    const { mode } = useSettingsContext()
+    if (mode === 'outbound') {
+        return (
+            <SmsChannelMessagesContainer storeName={shopName}>
+                <WrappedPlaygroundMessageList {...props} />
+            </SmsChannelMessagesContainer>
+        )
+    }
+    return <WrappedPlaygroundMessageList />
 }

@@ -307,6 +307,32 @@ describe('PlaygroundMessage', () => {
         expect(messageContainer).not.toHaveClass('messageContainerHover')
     })
 
+    it('should add data-agent-message attribute for AI agent messages', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                type: MessageType.MESSAGE,
+            },
+        })
+
+        const messageContainer = container.querySelector('.messageContainer')
+        expect(messageContainer).toHaveAttribute('data-agent-message', 'true')
+    })
+
+    it('should add data-agent-message attribute for non-AI agent messages', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                sender: 'customer',
+                type: MessageType.MESSAGE,
+            },
+        })
+
+        const messageContainer = container.querySelector('.messageContainer')
+        expect(messageContainer).toHaveAttribute('data-agent-message', 'false')
+    })
+
     describe('Journey image rendering', () => {
         const mockProduct = {
             id: 123,

@@ -6,6 +6,7 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useConfigurationContext } from '../../../contexts/ConfigurationContext'
 import { useCoreContext } from '../../../contexts/CoreContext'
 import { useMessagesContext } from '../../../contexts/MessagesContext'
+import { useSettingsContext } from '../../../contexts/SettingsContext'
 import { PlaygroundMessageList } from '../PlaygroundMessageList'
 
 jest.mock('../../../contexts/MessagesContext', () => ({
@@ -18,6 +19,10 @@ jest.mock('../../../contexts/ConfigurationContext', () => ({
 
 jest.mock('../../../contexts/CoreContext', () => ({
     useCoreContext: jest.fn(),
+}))
+
+jest.mock('../../../contexts/SettingsContext', () => ({
+    useSettingsContext: jest.fn(),
 }))
 
 jest.mock('../../PlaygroundInitialContent/PlaygroundInitialContent', () => ({
@@ -44,9 +49,21 @@ jest.mock('../../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
     ),
 }))
 
+jest.mock(
+    '../../SmsChannelMessagesContainer/SmsChannelMessagesContainer',
+    () => ({
+        SmsChannelMessagesContainer: ({ children, storeName }: any) => (
+            <div data-testid="sms-container" data-store-name={storeName}>
+                {children}
+            </div>
+        ),
+    }),
+)
+
 const mockUseMessagesContext = jest.mocked(useMessagesContext)
 const mockUseConfigurationContext = jest.mocked(useConfigurationContext)
 const mockUseCoreContext = jest.mocked(useCoreContext)
+const mockUseSettingsContext = jest.mocked(useSettingsContext)
 
 const defaultMessagesState = {
     messages: [],
@@ -93,6 +110,13 @@ describe('PlaygroundMessageList', () => {
             defaultConfigurationContext as any,
         )
         mockUseCoreContext.mockReturnValue(defaultCoreContext as any)
+        mockUseSettingsContext.mockReturnValue({
+            mode: 'inbound',
+            chatAvailability: 'online',
+            selectedCustomer: null,
+            resetSettings: jest.fn(),
+            setSettings: jest.fn(),
+        } as any)
     })
 
     describe('Empty state', () => {
@@ -321,6 +345,68 @@ describe('PlaygroundMessageList', () => {
             expect(
                 screen.queryByText(/KnowledgeSourcesWrapper/),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Outbound mode', () => {
+        it('should render with SmsChannelMessagesContainer when mode is outbound', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'outbound',
+                chatAvailability: 'online',
+                selectedCustomer: null,
+                resetSettings: jest.fn(),
+                setSettings: jest.fn(),
+            } as any)
+
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'Customer',
+                        type: MessageType.MESSAGE,
+                        content: 'Hello',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
+            } as any)
+
+            render(<PlaygroundMessageList />)
+
+            expect(screen.getByTestId('sms-container')).toBeInTheDocument()
+            expect(screen.getByTestId('sms-container')).toHaveAttribute(
+                'data-store-name',
+                'test-store',
+            )
+            expect(screen.getByText('Message: Hello')).toBeInTheDocument()
+        })
+
+        it('should not render with SmsChannelMessagesContainer when mode is inbound', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'inbound',
+                chatAvailability: 'online',
+                selectedCustomer: null,
+                resetSettings: jest.fn(),
+                setSettings: jest.fn(),
+            } as any)
+
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesState,
+                messages: [
+                    {
+                        sender: 'Customer',
+                        type: MessageType.MESSAGE,
+                        content: 'Hello',
+                        createdDatetime: new Date().toISOString(),
+                    },
+                ],
+            } as any)
+
+            render(<PlaygroundMessageList />)
+
+            expect(
+                screen.queryByTestId('sms-container'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Message: Hello')).toBeInTheDocument()
         })
     })
 })

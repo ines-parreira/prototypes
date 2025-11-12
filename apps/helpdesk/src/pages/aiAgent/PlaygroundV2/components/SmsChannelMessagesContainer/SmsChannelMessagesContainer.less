@@ -7,14 +7,90 @@
         overflow-y: auto;
         max-height: 546px;
         display: flex;
-        max-width: 292.148px;
-        height: 546px;
+        width: 292px;
         flex-direction: column;
         align-items: center;
         flex-shrink: 0;
         border-radius: 24px;
-        border: 2.93px solid var(--Content-content-neutral-secondary, #5c6370);
+        border: 2.93px solid var(--content-neutral-secondary);
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
         background: var(--neutral-grey-0);
+        margin: auto;
+        aspect-ratio: 292/546;
+        [class*='PlaygroundInitialContent--container--'] {
+            margin-top: 50px;
+        }
+        [class*='TicketEvent--ticketEventContainer--'],
+        [class*='Avatar--avatar--'],
+        [class*='PlaygroundMessage--messageHeader--'] {
+            display: none;
+        }
+
+        [class*='PlaygroundMessage--messageContent--'] {
+            background-color: var(--surface-neutral-secondary);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 16px 16px 4px 16px;
+
+            p {
+                margin: 0;
+            }
+
+            font-kerning: none;
+            font-variant-numeric: lining-nums tabular-nums;
+
+            /* text-styles/regular-sm */
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px; /* 133.333% */
+            letter-spacing: 0.12px;
+        }
+
+        [class*='PlaygroundMessage--messageContainer--'],
+        [class*='PlaygroundMessage--messageAnimation--'],
+        [class*='PlaygroundMessage--messageContainerHover--'] {
+            &:hover {
+                background-color: transparent !important;
+            }
+        }
+
+        [class*='AiAgentPlayground--outputInner--'] {
+            gap: var(--spacing-md);
+        }
+
+        [class*='PlaygroundMessage--messageContainer--'] {
+            width: 195px !important;
+            align-self: flex-end;
+            gap: 0;
+            padding: 0;
+
+            img {
+                border: 1px solid var(--border-neutral-default);
+                border-radius: var(--sm, 12px);
+                background: var(--elevation-neutral-high);
+
+                width: 126px;
+            }
+        }
+
+        [data-agent-message='true'] {
+            display: flex;
+            align-self: flex-start;
+
+            [class*='PlaygroundMessage--messageContent--'] {
+                border-radius: 16px 16px 16px 4px !important;
+            }
+
+            [class*='PlaygroundMessage--messageContentContainer--'] {
+                display: flex;
+                justify-content: flex-start;
+
+                :last-child {
+                    align-self: flex-start;
+                }
+            }
+        }
     }
 
     .header {
@@ -27,6 +103,7 @@
         z-index: 1;
         padding: 17px 24px;
         gap: var(--spacing-xs);
+        color: var(--content-neutral-default);
 
         .statusBar {
             display: flex;
@@ -59,6 +136,7 @@
     }
 
     .messagesContainer {
-        padding: 0 24px;
+        padding: 0 var(--spacing-md);
+        width: 100%;
     }
 }

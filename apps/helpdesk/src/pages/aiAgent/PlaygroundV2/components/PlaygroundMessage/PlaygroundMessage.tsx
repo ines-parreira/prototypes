@@ -192,6 +192,7 @@ const MessageContainer = ({
                     !!isAiAgentSender && type === MessageType.MESSAGE,
             })}
             role={role}
+            data-agent-message={isAiAgentSender}
         >
             <div className={css.messageAvatarContainer}>
                 {isAiAgentSender ? (

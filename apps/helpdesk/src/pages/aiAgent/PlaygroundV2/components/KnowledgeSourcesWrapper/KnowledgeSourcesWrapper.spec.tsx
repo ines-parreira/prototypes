@@ -15,6 +15,7 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnrichFeedbackData } from '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import { useSettingsContext } from '../../contexts/SettingsContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
 import KnowledgeSourcesWrapper from './KnowledgeSourcesWrapper'
 
@@ -27,9 +28,13 @@ jest.mock('@gorgias/axiom')
 jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: jest.fn(),
 }))
+jest.mock('../../contexts/SettingsContext', () => ({
+    useSettingsContext: jest.fn(),
+}))
 
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)
+const mockUseSettingsContext = jest.mocked(useSettingsContext)
 const SkeletonMock = assumeMock(Skeleton)
 
 const mockStore = configureMockStore()
@@ -60,6 +65,15 @@ describe('KnowledgeSourcesWrapper', () => {
 
         // Mock Skeleton component to render a test-id for easy testing
         SkeletonMock.mockImplementation(() => <div data-testid="skeleton" />)
+
+        // Mock SettingsContext to return inbound mode by default
+        mockUseSettingsContext.mockReturnValue({
+            mode: 'inbound',
+            chatAvailability: 'online',
+            selectedCustomer: null,
+            resetSettings: jest.fn(),
+            setSettings: jest.fn(),
+        } as any)
     })
 
     it('should display knowledge sources when data is loaded', () => {
@@ -518,6 +532,71 @@ describe('KnowledgeSourcesWrapper', () => {
 
             // Should no longer show loading skeleton (indicates polling has stopped)
             expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('outbound mode', () => {
+        it('should render nothing when mode is outbound', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'outbound',
+                chatAvailability: 'online',
+                selectedCustomer: null,
+                resetSettings: jest.fn(),
+                setSettings: jest.fn(),
+            } as any)
+
+            const mockEnrichedData = {
+                knowledgeResources: [
+                    {
+                        executionId: 'test-execution-id',
+                        resource: {
+                            id: 'resource-1',
+                            resourceType: 'article',
+                            resourceTitle: 'Test Article',
+                            resourceId: 'set-1',
+                        },
+                        metadata: {
+                            content: 'Test content',
+                            url: 'https://example.com/test',
+                            title: 'Test Article',
+                            isDeleted: false,
+                        },
+                    },
+                ],
+                suggestedResources: [],
+                freeForm: null,
+            }
+
+            mockUseFeedbackPolling.mockReturnValue({
+                feedback: {
+                    accountId: 123,
+                    objectId: '123',
+                    objectType: 'TICKET',
+                    executions: [
+                        {
+                            executionId: 'test-execution-id',
+                            feedback: [],
+                            resources: [],
+                            storeConfiguration: mockStoreConfiguration as any,
+                        },
+                    ],
+                },
+                isPolling: false,
+                stopPolling: jest.fn(),
+                startPolling: jest.fn(),
+            })
+
+            mockUseEnrichFeedbackData.mockReturnValue({
+                enrichedData: mockEnrichedData,
+                isLoading: false,
+            } as any)
+
+            const { container } = renderComponent({
+                executionId: 'test-execution-id',
+                storeConfiguration: mockStoreConfiguration,
+            })
+
+            expect(container.firstChild).toBeNull()
         })
     })
 })
