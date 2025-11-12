@@ -2,6 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
+import { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
@@ -9,6 +10,7 @@ import {
     fetchMetricPerDimensionV2,
     fetchMetricPerDimensionWithEnrichment,
     QueryReturnType,
+    selectMeasurePerDimension,
     useMetricPerDimension,
     useMetricPerDimensionV2,
     useMetricPerDimensionWithBreakdown,
@@ -44,10 +46,12 @@ import {
     postEnrichedReporting,
     postReportingV1,
 } from 'domains/reporting/models/resources'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     EnrichmentFields,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -67,6 +71,11 @@ const withEnrichmentMock = assumeMock(withEnrichment)
 
 jest.mock('domains/reporting/utils/metricExecutionHandler')
 
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
+
 describe('MetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
         medianFirstResponseTimeMetricPerAgentQueryFactory(
@@ -78,9 +87,19 @@ describe('MetricPerDimension', () => {
             },
             'timezone',
         )
-    const queryV2 = {
+    const testScopeMeta = {
+        scope: 'test-scope' as any,
+        filters: ['periodStart', 'periodEnd'] as const,
+        measures: ['medianFirstResponseTime'] as const,
+        dimensions: ['agentId'] as const,
+        timeDimensions: ['createdDatetime'] as const,
+    } as const satisfies ScopeMeta
+
+    const queryV2: BuiltQuery<typeof testScopeMeta> = {
         metricName: METRIC_NAMES.TEST_METRIC,
         scope: MetricScope.SatisfactionSurveys,
+        measures: ['medianFirstResponseTime'],
+        dimensions: ['agentId'],
     }
 
     const agentId = 456
@@ -178,28 +197,30 @@ describe('MetricPerDimension', () => {
         })
     })
 
+    const decileValue = 5
+    const dataWithDeciles = Array.from(Array(150).keys()).map((index) => ({
+        [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
+            agentId + index,
+        ),
+        [TicketMessagesMeasure.MedianFirstResponseTime]: String(
+            metricValue + index,
+        ),
+        decile: String(decileValue + index),
+    }))
+
+    const mockedResponseWithDeciles: UseQueryResult<
+        QueryReturnType<TicketMessagesCube>
+    > = {
+        isFetching: false,
+        isError: false,
+        data: dataWithDeciles,
+    } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
+
     describe('useMetricPerDimensionV2', () => {
-        const decileValue = 5
-
-        const dataWithDeciles = Array.from(Array(150).keys()).map((index) => ({
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
-                agentId + index,
-            ),
-            [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-                metricValue + index,
-            ),
-            decile: String(decileValue + index),
-        }))
-
-        const mockedResponseWithDeciles: UseQueryResult<
-            QueryReturnType<TicketMessagesCube>
-        > = {
-            isFetching: false,
-            isError: false,
-            data: dataWithDeciles,
-        } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
-
         beforeEach(() => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'off' as MigrationStage,
+            )
             jest.clearAllMocks()
         })
 
@@ -318,6 +339,241 @@ describe('MetricPerDimension', () => {
 
             expect(result.current.isFetching).toBe(false)
             expect(result.current.isError).toBe(true)
+        })
+    })
+
+    describe('useMetricPerDimensionV2 with migration stage complete or live', () => {
+        beforeEach(() => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'complete' as MigrationStage,
+            )
+
+            const mockResponse = {
+                ...mockedResponseWithDeciles,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            }
+
+            usePostReportingMockV2.mockReturnValue(mockResponse as any)
+        })
+
+        it('should return metric data with value and decile when dimensionId is provided and migration stage is complete or live', () => {
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(result.current).toEqual({
+                isFetching: mockedResponseWithDeciles.isFetching,
+                isError: mockedResponseWithDeciles.isError,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            })
+        })
+
+        it('should not use queryV2 when migration stage is complete or live if its is not provided', () => {
+            const { result } = renderHook(() =>
+                useMetricPerDimensionV2(query, undefined, String(agentId)),
+            )
+
+            expect(result.current).toEqual({
+                isFetching: mockedResponseWithDeciles.isFetching,
+                isError: mockedResponseWithDeciles.isError,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                },
+            })
+        })
+    })
+
+    describe('useMetricPerDimensionV2 select function (line 231)', () => {
+        const dimensionKey = TicketMessagesDimension.FirstHelpdeskMessageUserId
+        const measureKey = TicketMessagesMeasure.MedianFirstResponseTime
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
+        it('should call selectMeasurePerDimension with correct parameters when migration stage is off', () => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'off' as MigrationStage,
+            )
+
+            let capturedSelect: ((data: any) => any) | undefined
+            const testData = [
+                {
+                    [dimensionKey]: String(agentId),
+                    [measureKey]: String(metricValue),
+                    decile: String(decileValue),
+                },
+            ]
+
+            usePostReportingMockV2.mockImplementation((_, __, options) => {
+                capturedSelect = options?.select
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: null,
+                } as any
+            })
+
+            renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(capturedSelect).toBeDefined()
+            if (capturedSelect) {
+                const result = capturedSelect({
+                    data: {
+                        data: testData,
+                    },
+                })
+
+                expect(result).toEqual({
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: testData,
+                })
+            }
+        })
+
+        it('should call selectMeasurePerDimension with isV2=true when migration stage is complete', () => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'complete' as MigrationStage,
+            )
+
+            let capturedSelect: ((data: any) => any) | undefined
+            const testData = [
+                {
+                    agentId: String(agentId),
+                    medianFirstResponseTime: String(metricValue),
+                    decile: String(decileValue),
+                },
+            ]
+
+            usePostReportingMockV2.mockImplementation((_, __, options) => {
+                capturedSelect = options?.select
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: null,
+                } as any
+            })
+
+            renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(capturedSelect).toBeDefined()
+            if (capturedSelect) {
+                const result = capturedSelect({
+                    data: {
+                        data: testData,
+                    },
+                })
+
+                expect(result).toEqual({
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: testData,
+                })
+            }
+        })
+
+        it('should call selectMeasurePerDimension with isV2=true when migration stage is live', () => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'live' as MigrationStage,
+            )
+
+            let capturedSelect: ((data: any) => any) | undefined
+            const testData = [
+                {
+                    agentId: String(agentId),
+                    medianFirstResponseTime: String(metricValue),
+                    decile: String(decileValue),
+                },
+            ]
+
+            usePostReportingMockV2.mockImplementation((_, __, options) => {
+                capturedSelect = options?.select
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: null,
+                } as any
+            })
+
+            renderHook(() =>
+                useMetricPerDimensionV2(query, queryV2, String(agentId)),
+            )
+
+            expect(capturedSelect).toBeDefined()
+            if (capturedSelect) {
+                const result = capturedSelect({
+                    data: {
+                        data: testData,
+                    },
+                })
+
+                expect(result).toEqual({
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: testData,
+                })
+            }
+        })
+
+        it('should pass correct parameters to selectMeasurePerDimension including dimensionId', () => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'off' as MigrationStage,
+            )
+
+            let capturedSelect: ((data: any) => any) | undefined
+            const testData = [
+                {
+                    [dimensionKey]: '123',
+                    [measureKey]: '100',
+                    decile: '1',
+                },
+                {
+                    [dimensionKey]: '456',
+                    [measureKey]: '200',
+                    decile: '2',
+                },
+            ]
+
+            usePostReportingMockV2.mockImplementation((_, __, options) => {
+                capturedSelect = options?.select
+                return {
+                    isFetching: false,
+                    isError: false,
+                    data: null,
+                } as any
+            })
+
+            renderHook(() => useMetricPerDimensionV2(query, queryV2, '456'))
+
+            expect(capturedSelect).toBeDefined()
+            if (capturedSelect) {
+                const result = capturedSelect({
+                    data: {
+                        data: testData,
+                    },
+                })
+
+                expect(result).toEqual({
+                    value: 200,
+                    decile: 2,
+                    allData: testData,
+                })
+            }
         })
     })
 
@@ -774,5 +1030,328 @@ describe('fetchMetricPerDimensionWithEnrichment', () => {
             isFetching: false,
             isError: true,
         })
+    })
+})
+describe('selectMeasurePerDimension', () => {
+    const query: ReportingQuery<TicketCubeWithJoins> =
+        medianFirstResponseTimeMetricPerAgentQueryFactory(
+            {
+                period: {
+                    start_datetime: '2020-01-16T03:04:56.789-10:00',
+                    end_datetime: '2020-01-02T03:04:56.789-10:00',
+                },
+            },
+            'timezone',
+        )
+
+    const testScopeMeta = {
+        scope: 'test-scope' as any,
+        filters: ['periodStart', 'periodEnd'] as const,
+        measures: ['medianFirstResponseTime'] as const,
+        dimensions: ['agentId'] as const,
+        timeDimensions: ['createdDatetime'] as const,
+    } as const satisfies ScopeMeta
+
+    const queryV2: BuiltQuery<typeof testScopeMeta> = {
+        metricName: METRIC_NAMES.TEST_METRIC,
+        scope: MetricScope.SatisfactionSurveys,
+        measures: ['medianFirstResponseTime'],
+        dimensions: ['agentId'],
+    }
+
+    const dimensionKey = TicketMessagesDimension.FirstHelpdeskMessageUserId
+    const measureKey = TicketMessagesMeasure.MedianFirstResponseTime
+
+    it('should return null when data is null', () => {
+        const result = selectMeasurePerDimension(
+            null,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toBeNull()
+    })
+
+    it('should return null values when dimensionId is not provided', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            undefined,
+        )
+
+        expect(result).toEqual({
+            value: null,
+            decile: null,
+            allData: data,
+        })
+    })
+
+    it('should return null values when measure is not in query', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const queryWithoutMeasure: ReportingQuery<TicketCubeWithJoins> = {
+            ...query,
+            measures: [],
+        }
+
+        const result = selectMeasurePerDimension(
+            data,
+            queryWithoutMeasure,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: null,
+            decile: null,
+            allData: data,
+        })
+    })
+
+    it('should return null values when dimension is not in query', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const queryWithoutDimension: ReportingQuery<TicketCubeWithJoins> = {
+            ...query,
+            dimensions: [],
+        }
+
+        const result = selectMeasurePerDimension(
+            data,
+            queryWithoutDimension,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: null,
+            decile: null,
+            allData: data,
+        })
+    })
+
+    it('should return correct value and decile when dimensionId matches', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+            {
+                [dimensionKey]: '456',
+                [measureKey]: '789',
+                decile: '7',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 456,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should parse numeric string values correctly', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '123.45',
+                decile: '8.5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 123.45,
+            decile: 8.5,
+            allData: data,
+        })
+    })
+
+    it('should return null for non-numeric metric values', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: 'not-a-number',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: null,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should use queryV2 measures and dimensions when isV2 is true', () => {
+        const data = [
+            {
+                agentId: '123',
+                medianFirstResponseTime: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            queryV2,
+            true,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 456,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should use query measures and dimensions when isV2 is undefined', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            queryV2,
+            undefined,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 456,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should return null when queryV2 measures and dimensions are undefined', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            { ...queryV2, measures: undefined, dimensions: undefined },
+            undefined,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 456,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should use query measures and dimensions when queryV2 is undefined even if isV2 is true', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            true,
+            '123',
+        )
+
+        expect(result).toEqual({
+            value: 456,
+            decile: 5,
+            allData: data,
+        })
+    })
+
+    it('should return allData with all input data', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+            {
+                [dimensionKey]: '789',
+                [measureKey]: '101',
+                decile: '2',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allData).toEqual(data)
+        expect(result?.allData).toHaveLength(2)
     })
 })

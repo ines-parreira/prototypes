@@ -30,6 +30,7 @@ import {
     EnrichmentFields,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { OrderDirection } from 'models/api/types'
@@ -109,19 +110,27 @@ export type MetricPerDimensionWithEnrichment<
 
 export type QueryReturnType<TCube extends Cubes> = ReportingMetricItem<TCube>[]
 
-const selectMeasurePerDimension = <
+export const selectMeasurePerDimension = <
     TData extends Record<string, string | null>,
     TCube extends Cubes,
+    TMeta extends ScopeMeta,
 >(
     data: TData[] | null | undefined,
     query: ReportingQuery<TCube>,
+    queryV2?: BuiltQuery<TMeta>,
+    isV2?: boolean,
     dimensionId?: string, // TODO(Nicolas): dimension should not be optional
 ) => {
     if (data === null || data === undefined) return null
 
-    const measure = query.measures[0]
-    const dimension = query.dimensions[0]
-
+    const measure =
+        isV2 && queryV2?.measures
+            ? (queryV2.measures[0] as TCube['measures'])
+            : query.measures[0]
+    const dimension =
+        isV2 && queryV2?.dimensions
+            ? (queryV2.dimensions[0] as TCube['dimensions'])
+            : query.dimensions[0]
     if (!dimensionId || !measure || !dimension) {
         return { value: null, decile: null, allData: data }
     }
@@ -186,7 +195,13 @@ export function useMetricPerDimension<TCube extends Cubes>(
         MetricWithDecileData<TCube>
     >([query], {
         select: (data) =>
-            selectMeasurePerDimension(data.data.data, query, dimensionId),
+            selectMeasurePerDimension(
+                data.data.data,
+                query,
+                undefined,
+                undefined,
+                dimensionId,
+            ),
         queryFn: queryWithDeciles(query, undefined, migrationStage),
         enabled,
     })
@@ -203,6 +218,9 @@ export function useMetricPerDimensionV2<
     dimensionId?: string,
     enabled?: boolean,
 ): MetricWithDecile<TCube> {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     const metricData = usePostReportingV2<
         QueryReturnType<TCube>,
         MetricWithDecileData<TCube>,
@@ -210,7 +228,13 @@ export function useMetricPerDimensionV2<
         TMeta
     >([query], newQuery, {
         select: (data) =>
-            selectMeasurePerDimension(data.data.data, query, dimensionId),
+            selectMeasurePerDimension(
+                data.data.data,
+                query,
+                newQuery,
+                isV2,
+                dimensionId,
+            ),
         queryFn: queryWithDeciles(query, newQuery),
         enabled,
     })
@@ -226,7 +250,13 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
         queryFn: queryWithDeciles(query),
     })
         .then((res) => ({
-            data: selectMeasurePerDimension(res.data.data, query, dimensionId),
+            data: selectMeasurePerDimension(
+                res.data.data,
+                query,
+                undefined,
+                undefined,
+                dimensionId,
+            ),
             isFetching: false,
             isError: false,
         }))
@@ -245,6 +275,10 @@ export const fetchMetricPerDimensionV2 = async <
     newQuery?: BuiltQuery<TMeta>,
     dimensionId?: string,
 ): Promise<MetricWithDecile<TCube>> => {
+    const migrationStage = await getNewStatsFeatureFlagMigration(
+        query.metricName,
+    )
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
     return fetchPostReportingV2<
         QueryReturnType<TCube>,
         MetricWithDecileData<TCube>,
@@ -254,7 +288,13 @@ export const fetchMetricPerDimensionV2 = async <
         queryFn: queryWithDeciles(query, newQuery),
     })
         .then((res) => ({
-            data: selectMeasurePerDimension(res.data.data, query, dimensionId),
+            data: selectMeasurePerDimension(
+                res.data.data,
+                query,
+                newQuery,
+                isV2,
+                dimensionId,
+            ),
             isFetching: false,
             isError: false,
         }))
@@ -322,7 +362,13 @@ export function useMetricPerDimensionWithEnrichment(
         { query, enrichment_fields: enrichmentFields },
         {
             select: (data) =>
-                selectMeasurePerDimension(data.data.data, query, dimensionId),
+                selectMeasurePerDimension(
+                    data.data.data,
+                    query,
+                    undefined,
+                    undefined,
+                    dimensionId,
+                ),
             queryFn: () => {
                 return postEnrichedReporting<{
                     data: MergedRecordWithEnrichment[]
