@@ -11,8 +11,8 @@ catalogs:
       version: 0.1.14
   axiom:
     '@gorgias/axiom':
-      specifier: 0.110.0
-      version: 0.110.0
+      specifier: 0.112.1
+      version: 0.112.1
     '@gorgias/design-tokens':
       specifier: 0.11.1
       version: 0.11.1
@@ -400,7 +400,7 @@ importers:
         version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.110.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.112.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -1442,7 +1442,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.110.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.112.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.1
@@ -1750,7 +1750,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.110.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.112.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       react-is:
         specifier: catalog:react
         version: 18.2.0
@@ -1975,7 +1975,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.110.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.112.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.65
@@ -3490,8 +3490,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.110.0':
-    resolution: {integrity: sha512-X/aI1CmidmeS8R2whog4SrJEkn2b5lI9Ky8Qut6c/8zLslwcCb8riNoV6ak5yl8JL6bDm9nDcjWbp2jLPbY7HQ==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.110.0/7cf927aa41fa2c45e83fa4fbdccc52baef394af2}
+  '@gorgias/axiom@0.112.1':
+    resolution: {integrity: sha512-cWsDNCJX5sa38nJCnYPW1BCDZr+XFrKDOV8/hoYWbgvW8uy3sH0y4wJYqYzYL8p0QMRHTdemAwU72XX2163e6Q==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.112.1/afee92533551c92237be8858758d86eee210dd8e}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -7185,6 +7185,7 @@ packages:
 
   bootstrap@4.6.2:
     resolution: {integrity: sha512-51Bbp/Uxr9aTuy6ca/8FbFloBUJZLHwnhTcnjIeRn2suQWsWzcuJhGjKDB5eppVte/8oCdOL3VuwxvZDUggwGQ==}
+    deprecated: This version of Bootstrap is no longer supported. Please upgrade to the latest version.
     peerDependencies:
       jquery: 3.5.1
       popper.js: ^1.16.1
@@ -15148,7 +15149,7 @@ snapshots:
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.110.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.112.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.11.1
@@ -15163,6 +15164,7 @@ snapshots:
       react-aria-components: 1.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
       react-loading-skeleton: 3.5.0(react@18.2.0)
+      react-stately: 3.42.0(react@18.2.0)
       reactstrap: 8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   '@gorgias/branding-assets@0.2.1': {}
