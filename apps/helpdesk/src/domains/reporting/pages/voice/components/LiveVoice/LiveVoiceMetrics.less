@@ -4,7 +4,7 @@
         align-items: center;
         justify-content: end;
         gap: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 12px;
 
         i {
@@ -14,5 +14,11 @@
 
     .metricCardInfoCell {
         margin-top: -1rem;
+    }
+}
+
+.axiom :local {
+    .metricCardInfo {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -14,7 +14,7 @@
     }
 
     .agentLabel {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .agent {
@@ -34,5 +34,11 @@
             overflow: hidden;
             width: 100%;
         }
+    }
+}
+
+.axiom :local {
+    .agentLabel {
+        color: var(--content-accent-default);
     }
 }

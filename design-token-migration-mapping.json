@@ -1,7 +1,7 @@
 {
   "migrationAnalysis": {
-    "totalCommits": 22,
-    "totalFilesAffected": 391,
+    "totalCommits": 23,
+    "totalFilesAffected": 396,
     "migrationStrategy": "Systematic replacement of color-based tokens with semantic axiom design tokens while maintaining backward compatibility"
   },
   "commits": {
@@ -109,6 +109,11 @@
       "title": "chore(tokens): Migrate color tokens in settings pages (batch 47)",
       "date": "2025-11-10",
       "filesAffected": 36
+    },
+    "batch28": {
+      "title": "chore(tokens): Migrate color tokens in reporting pages part 2 (batch 28)",
+      "date": "2025-11-11",
+      "filesAffected": 5
     },
     "batch32": {
       "title": "chore(tokens): Migrate color tokens in settings and spotlight (batch 32)",
@@ -1396,6 +1401,42 @@
         "context": "Success state colors",
         "files": [
           "Card.less"
+        ]
+      }
+    ],
+    "commit_batch28": [
+      {
+        "legacyToken": "--neutral-grey-4",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "LiveVoiceMetrics.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary",
+        "newToken": "--content-accent-default",
+        "context": "Accent text/content colors",
+        "files": [
+          "VoiceCallActivity.less",
+          "VoiceCallCallerExperienceMetric.less",
+          "stats.less"
+        ]
+      },
+      {
+        "legacyToken": "--neutral-grey-3",
+        "newToken": "--content-neutral-secondary",
+        "context": "Secondary text colors",
+        "files": [
+          "VoiceCallFilter.less"
+        ]
+      },
+      {
+        "legacyToken": "--main-primary-4",
+        "newToken": "--content-additional-blue",
+        "context": "Hover state for accent colors",
+        "files": [
+          "stats.less"
         ]
       }
     ],
