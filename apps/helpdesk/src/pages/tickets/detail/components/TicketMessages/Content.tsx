@@ -4,6 +4,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
+import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
+
 import { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
@@ -26,6 +28,7 @@ type Props = {
     messagePosition: number
     toggleQuote: (messageId: number | undefined) => void
     isMessageExpanded: boolean
+    translations?: TicketMessageTranslation
 }
 
 const Content = ({
@@ -38,18 +41,27 @@ const Content = ({
     messagePosition,
     toggleQuote,
     isMessageExpanded,
+    translations,
 }: Props) => {
     const trimmedHtml = html?.trim() || ''
     const trimmedText = text?.trim() || ''
     const trimmedStrippedHtml = strippedHtml?.trim() || ''
     const trimmedStrippedText = strippedText?.trim() || ''
+    const trimmedTranslatedHtml = translations?.stripped_html?.trim() || ''
+    const trimmedTranslatedText = translations?.stripped_text?.trim() || ''
     const content = trimmedHtml || trimmedText
 
     const isHtml = !!trimmedHtml
+    const hasTranslations = !!trimmedTranslatedHtml || !!trimmedTranslatedText
+
     const strippedContent =
         trimmedHtml && trimmedStrippedHtml
             ? trimmedStrippedHtml
             : trimmedStrippedText
+
+    const translatedStrippedContent = trimmedTranslatedHtml
+        ? trimmedTranslatedHtml
+        : trimmedTranslatedText
 
     // only show quoteButton if the contents of body and stripped are different
     // we're ignoring whitespaces because mailgun sends stripped_html without spaces
@@ -60,8 +72,26 @@ const Content = ({
         [content, strippedContent],
     )
 
-    const contentToRender =
-        isStripped && !isMessageExpanded ? strippedContent : content
+    const contentToRender = useMemo(() => {
+        /**
+         * Translations are only present when we want to shown them.
+         */
+        if (hasTranslations && !isMessageExpanded) {
+            return translatedStrippedContent
+        }
+        if (isStripped && !isMessageExpanded) {
+            return strippedContent
+        }
+
+        return content
+    }, [
+        isStripped,
+        isMessageExpanded,
+        strippedContent,
+        content,
+        hasTranslations,
+        translatedStrippedContent,
+    ])
 
     const sanitizedHtml = useMemo(() => {
         const parsedMedia = parseMedia(contentToRender, '1000x')

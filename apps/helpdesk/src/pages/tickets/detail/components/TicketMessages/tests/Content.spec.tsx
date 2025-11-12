@@ -4,6 +4,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
+import { mockTicketMessageTranslation } from '@gorgias/helpdesk-mocks'
+
 import { THEME_NAME } from 'core/theme'
 
 import Content from '../Content'
@@ -330,5 +332,121 @@ describe('Content', () => {
             SegmentEvent.MessageThreadClicked,
         )
         expect(toggleQuote).toHaveBeenCalledWith(1)
+    })
+
+    describe('Translations', () => {
+        it('should display original content when no translations provided', () => {
+            const { getByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml="<strong>stripped original</strong>"
+                />,
+            )
+            expect(getByText('stripped original')).toBeInTheDocument()
+        })
+
+        it('should display translated stripped content when translations object is provided', () => {
+            const { getByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml="<strong>stripped original</strong>"
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '<strong>translated stripped</strong>',
+                        stripped_text: 'translated stripped text',
+                    })}
+                />,
+            )
+            expect(getByText('translated stripped')).toBeInTheDocument()
+        })
+
+        it('should fall back to original stripped content when translations object lacks stripped_html & stripped_text', () => {
+            const { getByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml="<strong>stripped original</strong>"
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '',
+                        stripped_text: '',
+                    })}
+                />,
+            )
+            expect(getByText('stripped original')).toBeInTheDocument()
+        })
+
+        it('should display translated stripped text when only stripped_text translation is provided', () => {
+            const { getByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    strippedText="stripped original text"
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '',
+                        stripped_text: 'translated stripped text',
+                    })}
+                />,
+            )
+            expect(getByText('translated stripped text')).toBeInTheDocument()
+        })
+
+        it('should prefer translated stripped_html over stripped_text when both are provided', () => {
+            const { getByText, queryByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml="<strong>stripped original</strong>"
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '<strong>translated html</strong>',
+                        stripped_text: 'translated text',
+                    })}
+                />,
+            )
+            expect(getByText('translated html')).toBeInTheDocument()
+            expect(queryByText('translated text')).not.toBeInTheDocument()
+        })
+
+        it('should display translated content when not expanded and translations available', () => {
+            const { getByText, queryByText } = render(
+                <Content
+                    {...sharedProps}
+                    messageId={123}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml="<strong>stripped original</strong>"
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '<strong>translated stripped</strong>',
+                        stripped_text: 'translated stripped text',
+                    })}
+                />,
+            )
+
+            expect(getByText('translated stripped')).toBeInTheDocument()
+            expect(queryByText('stripped original')).not.toBeInTheDocument()
+            expect(getByText('…')).toBeInTheDocument()
+        })
+
+        it('should display translated content when stripped fields are null but body fields have content', () => {
+            const { getByText } = render(
+                <Content
+                    {...sharedProps}
+                    text="original text"
+                    html="<strong>original html</strong>"
+                    strippedHtml={null}
+                    strippedText={null}
+                    translations={mockTicketMessageTranslation({
+                        stripped_html: '<strong>translated html</strong>',
+                        stripped_text: 'translated text',
+                    })}
+                />,
+            )
+
+            expect(getByText('translated html')).toBeInTheDocument()
+        })
     })
 })

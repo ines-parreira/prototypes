@@ -2,6 +2,8 @@ import classNamesBind from 'classnames/bind'
 import { noop } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
 
+import { TicketMessageTranslation } from '@gorgias/helpdesk-types'
+
 import { TicketMessage } from 'models/ticket/types'
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
@@ -17,7 +19,7 @@ import css from './Body.less'
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    message: TicketMessage
+    message: TicketMessage & { translations?: TicketMessageTranslation }
     className?: string
     hasError?: boolean
     messagePosition?: number
@@ -56,6 +58,7 @@ const Body = ({
                     messagePosition={messagePosition}
                     toggleQuote={toggleQuote}
                     isMessageExpanded={isMessageExpanded}
+                    translations={message.translations}
                 />
             )}
 

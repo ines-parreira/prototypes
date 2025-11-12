@@ -1,6 +1,6 @@
 import { type ComponentType, useMemo } from 'react'
 
-import { Language } from '@gorgias/helpdesk-types'
+import { Language, TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { TicketMessage } from 'models/ticket/types'
@@ -12,7 +12,7 @@ import { DisplayedContent } from './context/ticketMessageTranslationDisplayConte
 import { useTicketMessageTranslationDisplay } from './context/useTicketMessageTranslationDisplay'
 
 export type WithMessageTranslationsProps = {
-    message: TicketMessage
+    message: TicketMessage & { translations?: TicketMessageTranslation }
     ticketId: number
 }
 
@@ -45,8 +45,7 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
             ) {
                 return {
                     ...props.message,
-                    stripped_html: messageTranslations?.stripped_html ?? null,
-                    stripped_text: messageTranslations?.stripped_text ?? null,
+                    translations: messageTranslations,
                 }
             }
             return props.message

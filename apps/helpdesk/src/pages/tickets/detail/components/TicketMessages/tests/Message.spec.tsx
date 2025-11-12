@@ -500,8 +500,10 @@ describe('Message', () => {
                         id: 123,
                         body_text: 'a test',
                         body_html: '<strong>a test</strong>',
-                        stripped_html: '<strong>translated test</strong>',
-                        stripped_text: 'translated test',
+                        translations: expect.objectContaining({
+                            stripped_html: '<strong>translated test</strong>',
+                            stripped_text: 'translated test',
+                        }),
                     }),
                 }),
             )

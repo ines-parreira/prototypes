@@ -95,8 +95,7 @@ export default function Message({
         ) {
             return {
                 ...message,
-                stripped_html: messageTranslations?.stripped_html ?? null,
-                stripped_text: messageTranslations?.stripped_text ?? null,
+                translations: messageTranslations,
             }
         }
         return message
