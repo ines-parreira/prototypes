@@ -35,6 +35,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
 }))
 
 const guidanceArticle = getGuidanceArticleFixture(1)
+const guidanceArticle2 = getGuidanceArticleFixture(2)
 
 const mockUseGuidanceArticle = jest.fn()
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
@@ -109,6 +110,71 @@ describe('KnowledgeEditorGuidance', () => {
             ),
             { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
         )
+
+        fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
+
+        expect(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        ).toBeInTheDocument()
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'fullscreen' }),
+        ).toBeInTheDocument()
+    })
+
+    it('fetches the content if guidanceArticleId is changed', () => {
+        const { rerender } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="read"
+                    isOpen
+                    onDelete={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText(guidanceArticle.content)).toBeInTheDocument()
+        expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
+
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: guidanceArticle2,
+            isGuidanceArticleLoading: false,
+        })
+
+        rerender(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={2}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText(guidanceArticle2.content)).toBeInTheDocument()
+        expect(screen.getByText(guidanceArticle2.title)).toBeInTheDocument()
+        expect(
+            screen.queryByText(guidanceArticle.content),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(guidanceArticle.title),
+        ).not.toBeInTheDocument()
     })
 
     it('renders in create mode when no guidanceArticleId provided', () => {
@@ -230,7 +296,9 @@ describe('KnowledgeEditorGuidance', () => {
             },
         }
 
-        createGuidanceArticle.mockResolvedValue(newArticle)
+        createGuidanceArticle.mockRejectedValue(
+            new Error('Failed to create article'),
+        )
 
         const { getByLabelText } = render(
             <Provider store={mockStore({})}>
@@ -249,6 +317,18 @@ describe('KnowledgeEditorGuidance', () => {
         const nameInput = getByLabelText(/Guidance name/i)
         await act(async () => {
             fireEvent.change(nameInput, { target: { value: 'New Article' } })
+            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
+        })
+
+        await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while creating guidance.',
+            )
+            expect(onCreate).not.toHaveBeenCalled()
+        })
+
+        createGuidanceArticle.mockResolvedValue(newArticle)
+        await act(async () => {
             fireEvent.click(screen.getByRole('button', { name: 'Create' }))
         })
 
@@ -293,7 +373,9 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('calls onDelete callback after successful article deletion', async () => {
         const onDelete = jest.fn()
-        const deleteGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+        const deleteGuidanceArticle = jest
+            .fn()
+            .mockRejectedValue(new Error('Failed to delete guidance'))
 
         jest.mocked(
             require('pages/aiAgent/hooks/useGuidanceArticleMutation')
@@ -325,6 +407,22 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         await waitFor(() => {
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while deleting guidance.',
+            )
+            expect(onDelete).not.toHaveBeenCalled()
+        })
+
+        mockNotifyError.mockClear()
+
+        deleteGuidanceArticle.mockResolvedValue(undefined)
+
+        await act(async () => {
+            fireEvent.click(getByRole('button', { name: 'delete' }))
+        })
+
+        await waitFor(() => {
+            expect(mockNotifyError).not.toHaveBeenCalled()
             expect(deleteGuidanceArticle).toHaveBeenCalledWith(1)
             expect(onDelete).toHaveBeenCalledTimes(1)
         })
@@ -493,5 +591,62 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         expect(onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('toggles ai agent status', () => {
+        const { rerender } = render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'expand side panel' }),
+        )
+
+        rerender(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
+        ).toBeChecked()
+
+        fireEvent.click(
+            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
+        )
+
+        expect(updateGuidanceArticle).toHaveBeenCalledWith(
+            expect.objectContaining({
+                content: 'Content 1',
+                locale: 'en-US',
+                templateKey: null,
+                title: 'Title 1',
+                visibility: 'UNLISTED',
+            }),
+            { articleId: 1, locale: 'en-US' },
+        )
     })
 })

@@ -61,6 +61,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                     onChange={onChange ?? (() => {})}
                     size="small"
                     className={className}
+                    ariaLabel="ai-agent-status"
                 />
             </span>
             {tooltip && (

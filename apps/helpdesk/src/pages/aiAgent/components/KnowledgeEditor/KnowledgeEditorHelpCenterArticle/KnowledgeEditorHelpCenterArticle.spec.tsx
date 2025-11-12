@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -7,9 +7,18 @@ import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArt
 import { InitialArticleMode } from './KnowledgeEditorHelpCenterExistingArticle'
 
 jest.mock('./KnowledgeEditorHelpCenterExistingArticle', () => ({
-    KnowledgeEditorHelpCenterExistingArticle: (__props: any) => (
+    KnowledgeEditorHelpCenterExistingArticle: ({
+        isFullscreen,
+        onToggleFullscreen,
+    }: {
+        isFullscreen: boolean
+        onToggleFullscreen: () => void
+    }) => (
         <>
             <div>EXISTING ARTICLE</div>
+            <button onClick={onToggleFullscreen}>
+                {isFullscreen ? 'leave fullscreen' : 'fullscreen'}
+            </button>
         </>
     ),
 }))
@@ -41,6 +50,20 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         )
 
         expect(screen.getByText('EXISTING ARTICLE')).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
+
+        expect(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        ).toBeInTheDocument()
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'fullscreen' }),
+        ).toBeInTheDocument()
     })
 
     it('renders new article', () => {

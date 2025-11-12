@@ -92,8 +92,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         <div className={controlsCss.separator} />
                     </>
                 )}
-                {/* TODO: add fullscreen button back in when implemented */}
-                {/* <button
+                <button
                     className={classNames(
                         controlsCss.icon,
                         controlsCss.secondaryButton,
@@ -106,10 +105,12 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 >
                     <Icon
                         name={
-                            props.isFullscreen ? 'arrow-shrink' : 'arrow-expand'
+                            props.isFullscreen
+                                ? 'arrow-collapse'
+                                : 'arrow-expand'
                         }
                     />
-                </button> */}
+                </button>
 
                 <button
                     className={classNames(

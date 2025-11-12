@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import {
     act,
     fireEvent,
@@ -9,6 +10,7 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
+import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticleTranslation,
     useDeleteArticle,
@@ -32,6 +34,9 @@ import {
 } from './KnowledgeEditorHelpCenterExistingArticle'
 
 let onChangeCallback: (value: string) => void = jest.fn()
+
+jest.mock('hooks/useNotify')
+const useNotifyMock = assumeMock(useNotify)
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor',
@@ -119,14 +124,23 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 describe('KnowledgeEditorHelpCenterExistingArticle', () => {
-    const updateArticleTranslationMock = jest.fn().mockResolvedValue(undefined)
-    const deleteArticleMock = jest.fn().mockResolvedValue(undefined)
+    const updateArticleTranslationMock = jest.fn()
+    const deleteArticleMock = jest.fn()
     const createArticleTranslationMock = jest.fn()
-    const deleteArticleTranslationMock = jest.fn().mockResolvedValue(undefined)
+    const deleteArticleTranslationMock = jest.fn()
     const onClose = jest.fn()
+    const notifyMock = jest.fn()
 
     beforeEach(() => {
         jest.resetAllMocks()
+
+        useNotifyMock.mockReturnValue({ error: notifyMock } as any)
+
+        updateArticleTranslationMock.mockImplementation((o) =>
+            Promise.resolve({ data: o }),
+        )
+        deleteArticleMock.mockResolvedValue(undefined)
+        deleteArticleTranslationMock.mockResolvedValue(undefined)
 
         mockedUseCreateArticleTranslation.mockReturnValue({
             mutateAsync: createArticleTranslationMock,
@@ -166,6 +180,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -175,6 +191,14 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         expect(
             screen.getByText(article.translation.content),
         ).toBeInTheDocument()
+
+        expect(screen.queryByText('Settings')).toBeInTheDocument()
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'collapse side panel' }),
+        )
+
+        expect(screen.queryByText('Settings')).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByRole('button', { name: 'edit' }))
 
@@ -189,7 +213,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         expect(onClose).toHaveBeenCalled()
     })
 
-    it('renders the edit view and saves changes', async () => {
+    it('renders the edit view', async () => {
         const { rerender } = render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterExistingArticle
@@ -201,6 +225,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.EDIT}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -226,17 +252,25 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.EDIT}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
 
         expect(screen.getByText('Updated text')).toBeInTheDocument()
 
+        updateArticleTranslationMock.mockRejectedValue('some error')
+
         act(() =>
-            fireEvent.click(
-                screen.getByRole('button', { name: 'Save & publish' }),
-            ),
+            fireEvent.click(screen.getByRole('button', { name: 'Publish' })),
         )
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while updating the article.',
+            )
+        })
 
         expect(updateArticleTranslationMock).toHaveBeenCalledWith([
             undefined,
@@ -250,9 +284,138 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                 content: 'Updated text',
             },
         ])
+
+        updateArticleTranslationMock.mockResolvedValue({
+            data: {
+                ...article.translation,
+                content: 'Updated text',
+            },
+        })
+
+        notifyMock.mockClear()
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'Publish' })),
+        )
+
+        await waitFor(() => {
+            expect(notifyMock).not.toHaveBeenCalled()
+        })
+
+        expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
+        expect(screen.getByText(article.translation.title)).toBeInTheDocument()
+        expect(screen.getByText('Updated text')).toBeInTheDocument()
+    })
+
+    it('saves draft', async () => {
+        mockedUseGetHelpCenterArticle.mockReturnValue({
+            data: {
+                ...article,
+                translation: {
+                    ...article.translation,
+                    visibility_status: 'UNLISTED',
+                },
+                is_current: false,
+            },
+            isLoading: false,
+        } as any)
+
+        const { rerender } = render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('EDITOR')).toBeInTheDocument()
+        expect(screen.getByRole('textbox', { name: 'title' })).toHaveValue(
+            article.translation.title,
+        )
+        expect(
+            screen.getByText(article.translation.content),
+        ).toBeInTheDocument()
+
+        act(() => onChangeCallback('Updated text'))
+
+        rerender(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('Updated text')).toBeInTheDocument()
+
+        updateArticleTranslationMock.mockRejectedValue('some error')
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'Save draft' })),
+        )
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while updating the article.',
+            )
+        })
+
+        expect(updateArticleTranslationMock).toHaveBeenCalledWith([
+            undefined,
+            {
+                help_center_id: helpCenter.id,
+                article_id: article.id,
+                locale: helpCenter.default_locale,
+            },
+            {
+                title: article.translation.title,
+                content: 'Updated text',
+            },
+        ])
+
+        updateArticleTranslationMock.mockResolvedValue({
+            data: {
+                ...article.translation,
+                content: 'Updated text',
+            },
+        })
+
+        notifyMock.mockClear()
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'Save draft' })),
+        )
+
+        await waitFor(() => {
+            expect(notifyMock).not.toHaveBeenCalled()
+        })
+
+        expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
+        expect(screen.getByText(article.translation.title)).toBeInTheDocument()
+        expect(screen.getByText('Updated text')).toBeInTheDocument()
     })
 
     it('deletes the article', async () => {
+        deleteArticleMock.mockRejectedValue('some error')
+
         render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterExistingArticle
@@ -264,6 +427,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -289,6 +454,24 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         ])
 
         await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while deleting the article.',
+            )
+
+            expect(onClose).not.toHaveBeenCalled()
+        })
+
+        deleteArticleMock.mockResolvedValue(undefined)
+
+        fireEvent.click(screen.getByRole('button', { name: 'delete' }))
+
+        fireEvent.click(
+            screen.getByRole('button', {
+                name: 'Delete article',
+            }),
+        )
+
+        await waitFor(() => {
             expect(onClose).toHaveBeenCalled()
         })
     })
@@ -305,6 +488,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.EDIT}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -322,6 +507,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.EDIT}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -348,6 +535,71 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         ).toBeInTheDocument()
     })
 
+    it('saves changes if clicking cancel and saving', async () => {
+        const { rerender } = render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        act(() => onChangeCallback('Updated text'))
+
+        rerender(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('Updated text')).toBeInTheDocument()
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'cancel' })),
+        )
+
+        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+
+        updateArticleTranslationMock.mockResolvedValue({
+            data: {
+                ...article.translation,
+                content: 'Updated text',
+            },
+        })
+
+        act(() =>
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
+            expect(screen.getByText('Updated text')).toBeInTheDocument()
+        })
+    })
+
     it('opens a new translation', async () => {
         const { rerender } = render(
             <Wrapper>
@@ -360,6 +612,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -383,6 +637,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -418,10 +674,22 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             expect(screen.getByText('Content in German')).toBeInTheDocument()
         })
 
+        createArticleTranslationMock.mockRejectedValue('some error')
+
         act(() =>
-            fireEvent.click(
-                screen.getByRole('button', { name: 'Save & publish' }),
-            ),
+            fireEvent.click(screen.getByRole('button', { name: 'Publish' })),
+        )
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while creating the article.',
+            )
+        })
+
+        createArticleTranslationMock.mockResolvedValue(undefined)
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'Publish' })),
         )
 
         expect(createArticleTranslationMock).toHaveBeenCalledWith([
@@ -467,9 +735,13 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
+
+        deleteArticleTranslationMock.mockRejectedValue('some error')
 
         act(() =>
             fireEvent.click(
@@ -478,6 +750,38 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                 }),
             ),
         )
+
+        act(() => {
+            fireEvent.click(
+                within(screen.getByTestId('option-de-DE')).getByRole('button', {
+                    name: 'delete',
+                }),
+            )
+        })
+
+        act(() => {
+            fireEvent.click(
+                screen.getByRole('button', {
+                    name: 'Delete German - Germany',
+                }),
+            )
+        })
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while deleting the article translation.',
+            )
+        })
+
+        deleteArticleTranslationMock.mockResolvedValue(undefined)
+
+        act(() => {
+            fireEvent.click(
+                screen.getByRole('button', {
+                    name: 'en-US English - USA arrow_drop_down',
+                }),
+            )
+        })
 
         act(() => {
             fireEvent.click(
@@ -527,6 +831,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -588,6 +894,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -607,6 +915,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     onClose={onClose}
                     initialArticleMode={InitialArticleMode.READ}
                     articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -637,5 +947,75 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             },
             { timeout: 1500 },
         )
+    })
+
+    it('closes the side panel and saves changes', async () => {
+        const { rerender } = render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        act(() => onChangeCallback('Updated text'))
+
+        rerender(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.EDIT}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('Updated text')).toBeInTheDocument()
+
+        act(() =>
+            fireEvent.click(screen.getByRole('button', { name: 'close' })),
+        )
+
+        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
+        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+
+        act(() =>
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            ),
+        )
+
+        expect(updateArticleTranslationMock).toHaveBeenCalledWith([
+            undefined,
+            {
+                help_center_id: helpCenter.id,
+                article_id: article.id,
+                locale: helpCenter.default_locale,
+            },
+            {
+                title: article.translation.title,
+                content: 'Updated text',
+            },
+        ])
+
+        await waitFor(() => {
+            expect(onClose).toHaveBeenCalled()
+        })
     })
 })

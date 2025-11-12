@@ -40,6 +40,8 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
     onClickPrevious,
     onClickNext,
     guidanceMode,
+    isFullscreen,
+    onToggleFullscreen,
 }: BaseProps & {
     shopName: string
     guidanceArticle: GuidanceArticle
@@ -112,6 +114,8 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
             onChangeContent={setContent}
             isGuidanceArticleUpdating={isGuidanceArticleUpdating}
             guidanceMode={guidanceMode}
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={onToggleFullscreen}
         />
     )
 }
@@ -124,6 +128,8 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
     isGuidanceArticleUpdating,
     onClose,
     guidanceMode,
+    isFullscreen,
+    onToggleFullscreen,
 }: BaseProps & {
     shopName: string
     guidanceTemplate?: GuidanceTemplate
@@ -170,6 +176,8 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
             onChangeContent={setContent}
             isGuidanceArticleUpdating={isGuidanceArticleUpdating}
             guidanceMode={guidanceMode}
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={onToggleFullscreen}
         />
     )
 }
@@ -187,6 +195,8 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     onDeleteFn,
     onUpdateFn,
     onCopyFn,
+    isFullscreen,
+    onToggleFullscreen,
 }: BaseProps & {
     shopType: string
     guidanceArticleId: number
@@ -282,6 +292,8 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
             guidanceMode={guidanceMode}
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={onToggleFullscreen}
         />
     )
 }
@@ -296,6 +308,8 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     onArticleCreated,
     onCreateFn,
     guidanceMode,
+    isFullscreen,
+    onToggleFullscreen,
 }: BaseProps & {
     shopType: string
     guidanceTemplate?: GuidanceTemplate
@@ -358,6 +372,8 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
             isGuidanceArticleUpdating={isGuidanceArticleUpdating}
             onClose={onClose}
             guidanceMode={guidanceMode}
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={onToggleFullscreen}
         />
     )
 }
@@ -377,6 +393,8 @@ const KnowledgeEditorGuidanceRouter = ({
     onUpdateFn,
     onCopyFn,
     guidanceMode,
+    isFullscreen,
+    onToggleFullscreen,
 }: BaseProps & {
     shopType: string
     guidanceArticleId?: number
@@ -412,6 +430,8 @@ const KnowledgeEditorGuidanceRouter = ({
                 onUpdateFn={onUpdateFn}
                 onCopyFn={onCopyFn}
                 guidanceMode={currentGuidanceMode}
+                isFullscreen={isFullscreen}
+                onToggleFullscreen={onToggleFullscreen}
             />
         )
     }
@@ -429,6 +449,8 @@ const KnowledgeEditorGuidanceRouter = ({
             onArticleCreated={handleArticleCreated}
             onCreateFn={onCreateFn}
             guidanceMode={guidanceMode}
+            isFullscreen={isFullscreen}
+            onToggleFullscreen={onToggleFullscreen}
         />
     )
 }
@@ -447,7 +469,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     onUpdate,
     onCopy,
     isOpen,
-}: BaseProps & {
+}: Omit<BaseProps, 'isFullscreen' | 'onToggleFullscreen'> & {
     shopName: string
     shopType: string
     guidanceArticleId?: number
@@ -463,8 +485,18 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
         helpCenterType: 'guidance',
     })
 
+    const [isFullscreen, setIsFullscreen] = useState(false)
+
+    const onToggleFullscreen = useCallback(() => {
+        setIsFullscreen(!isFullscreen)
+    }, [isFullscreen])
+
     return (
-        <SidePanel isOpen={isOpen} withoutPadding size="xl">
+        <SidePanel
+            isOpen={isOpen}
+            withoutPadding
+            width={isFullscreen ? '100vw' : '66vw'}
+        >
             {guidanceHelpCenter ? (
                 <KnowledgeEditorGuidanceRouter
                     shopName={shopName}
@@ -481,6 +513,8 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
                     onCreateFn={onCreate}
                     onUpdateFn={onUpdate}
                     onCopyFn={onCopy}
+                    isFullscreen={isFullscreen}
+                    onToggleFullscreen={onToggleFullscreen}
                 />
             ) : (
                 <LoadingSpinner size="big" />

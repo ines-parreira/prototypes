@@ -26,6 +26,8 @@ export type BaseProps = {
     onClickPrevious?: () => void
     onClickNext?: () => void
     guidanceMode: GuidanceMode['mode']
+    isFullscreen: boolean
+    onToggleFullscreen: () => void
 }
 
 type Props = BaseProps & {
@@ -48,6 +50,8 @@ type Props = BaseProps & {
     onChangeTitle: (title: string) => void
     onChangeContent: (content: string) => void
     isGuidanceArticleUpdating: boolean
+    isFullscreen: boolean
+    onToggleFullscreen: () => void
 }
 
 export const KnowledgeEditorGuidanceView = ({
@@ -71,10 +75,11 @@ export const KnowledgeEditorGuidanceView = ({
     guidanceMode: initialGuidanceMode,
     availableActions,
     availableVariables,
+    isFullscreen,
+    onToggleFullscreen,
 }: Props) => {
     const [initialTitle] = useState(title)
     const [initialContent] = useState(content)
-    const [isFullscreen, setIsFullscreen] = useState(false)
     const [isDetailsView, setIsDetailsView] = useState(false)
     const [guidanceMode, setGuidanceMode] =
         useState<GuidanceMode['mode']>(initialGuidanceMode)
@@ -115,8 +120,14 @@ export const KnowledgeEditorGuidanceView = ({
     ])
 
     const onClickCreate = useCallback(async () => {
-        await onCreate({ name: title, content, isVisible: aiAgentEnabled })
-        setGuidanceMode('read')
+        const response = await onCreate({
+            name: title,
+            content,
+            isVisible: aiAgentEnabled,
+        })
+        if (response) {
+            setGuidanceMode('read')
+        }
     }, [onCreate, title, content, aiAgentEnabled])
 
     const onClickCopy = useCallback(async () => {
@@ -158,10 +169,6 @@ export const KnowledgeEditorGuidanceView = ({
             isFormValid,
         ],
     )
-
-    const onToggleFullscreen = () => {
-        setIsFullscreen(!isFullscreen)
-    }
 
     const onToggleDetailsView = () => {
         setIsDetailsView(!isDetailsView)

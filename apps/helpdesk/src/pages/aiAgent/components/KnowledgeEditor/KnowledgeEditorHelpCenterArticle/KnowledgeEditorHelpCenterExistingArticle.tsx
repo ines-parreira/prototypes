@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { AxiosResponse } from 'axios'
-
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticleTranslation,
     useDeleteArticle,
@@ -12,15 +11,12 @@ import {
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import {
-    ArticleTranslationResponseDto,
     ArticleWithLocalTranslation,
     Category,
     HelpCenter,
-    LocalArticleTranslation,
     Locale,
     LocaleCode,
     UpdateArticleTranslationDto,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import {
     ActionType as LocaleActionType,
@@ -45,6 +41,13 @@ import { useKnowledgeEditorHelpCenterArticleSettings } from './hooks/useKnowledg
 import { KnowledgeEditorHelpCenterArticleEditView } from './KnowledgeEditorHelpCenterArticleEditView'
 import { KnowledgeEditorHelpCenterArticleReadView } from './KnowledgeEditorHelpCenterArticleReadView'
 import { KnowledgeEditorHelpCenterArticleUnsavedChangesModal } from './KnowledgeEditorHelpCenterArticleUnsavedChangesModal'
+import {
+    ArticleState,
+    editModeFromVisibilityStatus,
+    mergeResponseContentAndTitleInArticle,
+    mergeResponseSettingsInArticle,
+    newTranslation,
+} from './KnowledgeEditorHelpCenterExistingArticle.utils'
 import { KnowledgeEditorHelpCenterExistingArticleDeleteModal } from './KnowledgeEditorHelpCenterExistingArticleDeleteModal'
 
 import css from './KnowledgeEditorHelpCenterArticle.less'
@@ -62,90 +65,15 @@ type Props = {
     onClickNext: () => void
     onClose: () => void
     initialArticleMode: InitialArticleMode
+    isFullscreen: boolean
+    onToggleFullscreen: () => void
 }
-
-type ArticleState = ArticleWithLocalTranslation & {
-    translationMode: 'existing' | 'new'
-}
-
-const newTranslation = (
-    article: Omit<ArticleWithLocalTranslation, 'translation'>,
-    locale: LocaleCode,
-): LocalArticleTranslation => {
-    const now = new Date().toISOString()
-    return {
-        created_datetime: now,
-        updated_datetime: now,
-        title: '',
-        excerpt: '',
-        content: '',
-        slug: '',
-        locale,
-        article_id: article.id,
-        category_id: null,
-        article_unlisted_id: article.unlisted_id,
-        seo_meta: {
-            title: null,
-            description: null,
-        },
-        visibility_status: 'PUBLIC',
-        is_current: true,
-    }
-}
-
-const mergeResponseSettingsInArticle =
-    (response: AxiosResponse<ArticleTranslationResponseDto, any> | null) =>
-    (prev: ArticleState): ArticleState => {
-        if (!response?.data || !prev) {
-            return prev
-        }
-
-        const {
-            title: __title,
-            content: __content,
-            ...updatedFields
-        } = response.data
-
-        return {
-            ...prev,
-            translation: {
-                ...prev.translation,
-                ...updatedFields,
-            },
-        }
-    }
-
-const mergeContentAndTitleInArticle =
-    (content: string, title: string) =>
-    (prev: ArticleState): ArticleState => ({
-        ...prev,
-        translation: {
-            ...prev.translation,
-            content,
-            title,
-        },
-    })
-
-const mergeResponseContentAndTitleInArticle =
-    (response: ArticleTranslationResponseDto | undefined) =>
-    (prev: ArticleState): ArticleState =>
-        response
-            ? mergeContentAndTitleInArticle(
-                  response.content,
-                  response.title,
-              )(prev)
-            : prev
-
-const editModeFromVisibilityStatus = (
-    visibilityStatus: VisibilityStatus,
-): ArticleModes =>
-    visibilityStatus === 'PUBLIC'
-        ? ArticleModes.EDIT_PUBLISHED
-        : ArticleModes.EDIT_DRAFT
 
 const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     props: Props & { article: ArticleWithLocalTranslation },
 ) => {
+    const { error: notifyError } = useNotify()
+
     const { modal, openUnsavedChangesModal, openConfirmDeleteModal } =
         useKnowledgeEditorHelpCenterArticleModal()
 
@@ -194,60 +122,83 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     const updateArticleTranslation = useUpdateArticleTranslation()
     const deleteArticleTranslation = useDeleteArticleTranslation()
 
-    const upsertArticleContentAndTitle = useCallback(async () => {
-        if (article.translationMode === 'new') {
-            const response = await createArticleTranslation.mutateAsync([
-                undefined,
-                {
-                    help_center_id: props.helpCenter.id,
-                    article_id: props.article.id,
-                },
-                {
-                    locale,
-                    title: article.translation.title,
-                    excerpt: article.translation.content,
-                    content: article.translation.content,
-                    slug: slugify(article.translation.title),
-                    seo_meta: {
-                        title: article.translation.seo_meta.title,
-                        description: article.translation.seo_meta.description,
+    const upsertArticleContentAndTitle = useCallback(
+        async (publish: boolean) => {
+            try {
+                if (article.translationMode === 'new') {
+                    const response = await createArticleTranslation.mutateAsync(
+                        [
+                            undefined,
+                            {
+                                help_center_id: props.helpCenter.id,
+                                article_id: props.article.id,
+                            },
+                            {
+                                locale,
+                                title: article.translation.title,
+                                excerpt: article.translation.content,
+                                content: article.translation.content,
+                                slug: slugify(article.translation.title),
+                                seo_meta: {
+                                    title: article.translation.seo_meta.title,
+                                    description:
+                                        article.translation.seo_meta
+                                            .description,
+                                },
+                                is_current: publish,
+                                visibility_status:
+                                    article.translation.visibility_status,
+                                category_id: article.translation.category_id,
+                            },
+                        ],
+                    )
+
+                    if (response?.data) {
+                        setArticle((prev) => ({
+                            ...prev,
+                            translation: response.data,
+                        }))
+                    }
+
+                    return response?.data
+                }
+
+                const response = await updateArticleTranslation.mutateAsync([
+                    undefined,
+                    {
+                        help_center_id: props.helpCenter.id,
+                        article_id: props.article.id,
+                        locale,
                     },
-                    is_current: article.translation.is_current,
-                    visibility_status: article.translation.visibility_status,
-                    category_id: article.translation.category_id,
-                },
-            ])
+                    {
+                        title: article.translation.title,
+                        content: article.translation.content,
+                    },
+                ])
 
-            if (response?.data) {
-                setArticle((prev) => ({
-                    ...prev,
-                    translation: response.data,
-                }))
+                setArticle(
+                    mergeResponseContentAndTitleInArticle(response?.data),
+                )
+
+                return response?.data
+            } catch {
+                notifyError(
+                    `An error occurred while ${article.translationMode === 'new' ? 'creating' : 'updating'} the article.`,
+                )
+
+                return undefined
             }
-        } else {
-            const response = await updateArticleTranslation.mutateAsync([
-                undefined,
-                {
-                    help_center_id: props.helpCenter.id,
-                    article_id: props.article.id,
-                    locale,
-                },
-                {
-                    title: article.translation.title,
-                    content: article.translation.content,
-                },
-            ])
-
-            setArticle(mergeResponseContentAndTitleInArticle(response?.data))
-        }
-    }, [
-        props.helpCenter.id,
-        props.article.id,
-        locale,
-        createArticleTranslation,
-        updateArticleTranslation,
-        article,
-    ])
+        },
+        [
+            props.helpCenter.id,
+            props.article.id,
+            locale,
+            createArticleTranslation,
+            updateArticleTranslation,
+            article,
+            notifyError,
+        ],
+    )
 
     const updateArticleSettings = useCallback(
         async (payload: UpdateArticleTranslationDto) => {
@@ -313,8 +264,10 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
             openUnsavedChangesModal({
                 onDiscardChanges: props.onClose,
                 onSaveChanges: async () => {
-                    await upsertArticleContentAndTitle()
-                    props.onClose()
+                    const response = await upsertArticleContentAndTitle(false)
+                    if (response) {
+                        props.onClose()
+                    }
                 },
             })
         } else {
@@ -347,8 +300,11 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                 openUnsavedChangesModal({
                     onDiscardChanges: cancelChanges,
                     onSaveChanges: async () => {
-                        await upsertArticleContentAndTitle()
-                        setModeType(ArticleModes.READ)
+                        const response =
+                            await upsertArticleContentAndTitle(false)
+                        if (response) {
+                            setModeType(ArticleModes.READ)
+                        }
                     },
                 })
             } else {
@@ -358,27 +314,41 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         onEdit: () =>
             setModeType(
                 article.translationMode === 'new'
-                    ? ArticleModes.EDIT_PUBLISHED
+                    ? ArticleModes.EDIT_DRAFT
                     : editModeFromVisibilityStatus(
                           article.translation.visibility_status,
                       ),
             ),
-        onSave: async () => {
-            await upsertArticleContentAndTitle()
-            setModeType(ArticleModes.READ)
+        onSaveAndPublish: async () => {
+            const response = await upsertArticleContentAndTitle(true)
+            if (response) {
+                setModeType(ArticleModes.READ)
+            }
+        },
+        onSaveDraft: async () => {
+            const response = await upsertArticleContentAndTitle(false)
+            if (response) {
+                setModeType(ArticleModes.READ)
+            }
         },
         onDelete: async () => {
             openConfirmDeleteModal({
                 resource: { kind: 'article' },
                 onConfirm: async () => {
-                    await deleteArticle.mutateAsync([
-                        undefined,
-                        {
-                            help_center_id: props.helpCenter.id,
-                            id: props.article.id,
-                        },
-                    ])
-                    props.onClose()
+                    try {
+                        await deleteArticle.mutateAsync([
+                            undefined,
+                            {
+                                help_center_id: props.helpCenter.id,
+                                id: props.article.id,
+                            },
+                        ])
+                        props.onClose()
+                    } catch {
+                        notifyError(
+                            'An error occurred while deleting the article.',
+                        )
+                    }
                 },
             })
         },
@@ -393,15 +363,21 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                         locale: currentOption,
                     },
                     onConfirm: async () => {
-                        await deleteArticleTranslation.mutateAsync([
-                            undefined,
-                            {
-                                help_center_id: props.helpCenter.id,
-                                article_id: props.article.id,
-                                locale: currentOption.value,
-                            },
-                        ])
-                        props.onClose()
+                        try {
+                            await deleteArticleTranslation.mutateAsync([
+                                undefined,
+                                {
+                                    help_center_id: props.helpCenter.id,
+                                    article_id: props.article.id,
+                                    locale: currentOption.value,
+                                },
+                            ])
+                            props.onClose()
+                        } catch {
+                            notifyError(
+                                'An error occurred while deleting the article translation.',
+                            )
+                        }
                     },
                 })
             } else if (action === 'view') {
@@ -409,8 +385,11 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     openUnsavedChangesModal({
                         onDiscardChanges: () => setLocale(currentOption.value),
                         onSaveChanges: async () => {
-                            await upsertArticleContentAndTitle()
-                            setLocale(currentOption.value)
+                            const response =
+                                await upsertArticleContentAndTitle(false)
+                            if (response) {
+                                setLocale(currentOption.value)
+                            }
                         },
                     })
                 } else {
@@ -421,8 +400,11 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     openUnsavedChangesModal({
                         onDiscardChanges: () => setLocale(currentOption.value),
                         onSaveChanges: async () => {
-                            await upsertArticleContentAndTitle()
-                            setLocale(currentOption.value)
+                            const response =
+                                await upsertArticleContentAndTitle(false)
+                            if (response) {
+                                setLocale(currentOption.value)
+                            }
                         },
                     })
                 } else {
@@ -437,6 +419,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
             openConfirmDeleteModal,
             hasUnsavedChanges,
             openUnsavedChangesModal,
+            notifyError,
         ],
     )
 
@@ -480,7 +463,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     )
 
     return (
-        <div>
+        <div className={css.container}>
             {modal.type === 'unsaved-changes' && (
                 <KnowledgeEditorHelpCenterArticleUnsavedChangesModal
                     isOpen={true}
@@ -515,8 +498,8 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                                   },
                               }))
                 }
-                isFullscreen={false}
-                onToggleFullscreen={() => {}}
+                isFullscreen={props.isFullscreen}
+                onToggleFullscreen={props.onToggleFullscreen}
                 onClose={onClose}
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
@@ -533,7 +516,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     <LoadingSpinner size="big" />
                 </div>
             ) : (
-                <div className={css.container}>
+                <div className={css.contentContainer}>
                     {mode.mode === ArticleModes.READ ? (
                         <KnowledgeEditorHelpCenterArticleReadView
                             content={article.translation?.content ?? ''}

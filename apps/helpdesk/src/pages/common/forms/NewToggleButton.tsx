@@ -15,6 +15,7 @@ type Props = {
     stopPropagation?: boolean
     name?: string
     size?: 'small' | 'medium'
+    ariaLabel?: string
 }
 // TODO: To rename to a proper name
 const InnerNewToggleButton = (
@@ -27,6 +28,7 @@ const InnerNewToggleButton = (
         color,
         name,
         size,
+        ariaLabel,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
@@ -85,6 +87,7 @@ const InnerNewToggleButton = (
                 disabled={isDisabled}
                 readOnly
                 name={name}
+                aria-label={ariaLabel}
             />
             <div className={css.knob}>
                 {size !== 'small' && <i className="material-icons">check</i>}

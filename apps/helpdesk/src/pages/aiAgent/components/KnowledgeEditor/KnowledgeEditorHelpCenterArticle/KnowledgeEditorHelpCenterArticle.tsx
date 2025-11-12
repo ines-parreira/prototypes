@@ -1,3 +1,5 @@
+import { useCallback, useState } from 'react'
+
 import { SidePanel } from '@gorgias/axiom'
 
 import {
@@ -38,8 +40,18 @@ type Props = {
 }
 
 export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
+    const [isFullscreen, setIsFullscreen] = useState(false)
+
+    const onToggleFullscreen = useCallback(() => {
+        setIsFullscreen(!isFullscreen)
+    }, [isFullscreen])
+
     return (
-        <SidePanel isOpen={true} withoutPadding width="66vw">
+        <SidePanel
+            isOpen={true}
+            withoutPadding
+            width={isFullscreen ? '100vw' : '66vw'}
+        >
             {props.article.type === 'existing' ? (
                 <KnowledgeEditorHelpCenterExistingArticle
                     helpCenter={props.helpCenter}
@@ -50,6 +62,8 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                     onClose={props.onClose}
                     initialArticleMode={props.article.initialArticleMode}
                     articleId={props.article.articleId}
+                    isFullscreen={isFullscreen}
+                    onToggleFullscreen={onToggleFullscreen}
                 />
             ) : (
                 <KnowledgeEditorHelpCenterNewArticle
@@ -59,6 +73,8 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                     onClose={props.onClose}
                     template={props.article.template}
                     onCreated={props.article.onCreated}
+                    isFullscreen={isFullscreen}
+                    onToggleFullscreen={onToggleFullscreen}
                 />
             )}
         </SidePanel>

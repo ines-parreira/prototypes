@@ -36,6 +36,8 @@ describe('KnowledgeEditorGuidanceView', () => {
         onChangeTitle: jest.fn(),
         onChangeContent: jest.fn(),
         isGuidanceArticleUpdating: false,
+        isFullscreen: false,
+        onToggleFullscreen: jest.fn(),
     }
 
     beforeEach(() => {
@@ -123,7 +125,15 @@ describe('KnowledgeEditorGuidanceView', () => {
     })
 
     it('switches to read mode after successful create', async () => {
-        const onCreate = jest.fn()
+        const onCreate = jest.fn().mockReturnValue({
+            data: {
+                id: 1,
+                title: 'New Title',
+                content: 'New Content',
+                isVisible: true,
+            },
+        })
+
         const { rerender, container } = render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidanceView

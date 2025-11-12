@@ -17,13 +17,16 @@ export const KnowledgeEditorHelpCenterArticleEditView = ({
     content,
     onChangeContent,
 }: Props) => (
-    <div id={EDITOR_MODAL_CONTAINER_ID} className={css.editor}>
-        <HelpCenterEditor
-            locale={locale}
-            articleId={articleId}
-            value={content}
-            onChange={onChangeContent}
-            useXSLayout={false}
-        />
+    <div className={css.container}>
+        <div id={EDITOR_MODAL_CONTAINER_ID}>
+            <HelpCenterEditor
+                locale={locale}
+                articleId={articleId}
+                value={content}
+                onChange={onChangeContent}
+                useXSLayout={false}
+                className={css.editor}
+            />
+        </div>
     </div>
 )

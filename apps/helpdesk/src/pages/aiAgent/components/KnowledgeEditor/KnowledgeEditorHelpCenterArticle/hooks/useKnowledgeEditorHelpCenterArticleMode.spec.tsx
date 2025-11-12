@@ -7,7 +7,8 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
     it('returns article mode', () => {
         const onEdit = jest.fn()
         const onCancel = jest.fn()
-        const onSave = jest.fn()
+        const onSaveAndPublish = jest.fn()
+        const onSaveDraft = jest.fn()
         const onDelete = jest.fn()
 
         const { result, rerender } = renderHook(
@@ -21,7 +22,8 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
                     mode: ArticleModes.READ,
                     onEdit,
                     onCancel,
-                    onSave,
+                    onSaveAndPublish,
+                    onSaveDraft,
                     onDelete,
                 },
             },
@@ -38,13 +40,14 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
             mode: ArticleModes.EDIT_PUBLISHED,
             onEdit,
             onCancel,
-            onSave,
+            onSaveAndPublish,
+            onSaveDraft,
             onDelete,
         })
 
         expect(result.current).toEqual({
             mode: ArticleModes.EDIT_PUBLISHED,
-            onSaveAndPublish: onSave,
+            onSaveAndPublish: onSaveAndPublish,
             onCancel: onCancel,
         })
 
@@ -52,13 +55,15 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
             mode: ArticleModes.EDIT_DRAFT,
             onEdit,
             onCancel,
-            onSave,
+            onSaveAndPublish,
+            onSaveDraft,
             onDelete,
         })
 
         expect(result.current).toEqual({
             mode: ArticleModes.EDIT_DRAFT,
-            onCreate: onSave,
+            onSaveDraft: onSaveDraft,
+            onSaveAndPublish: onSaveAndPublish,
             onCancel: onCancel,
         })
     })

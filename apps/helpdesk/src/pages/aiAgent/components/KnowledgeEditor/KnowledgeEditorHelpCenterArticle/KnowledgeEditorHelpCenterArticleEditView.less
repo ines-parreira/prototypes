@@ -1,5 +1,25 @@
 :local {
-    .editor {
+    .container {
         width: 100%;
+    }
+
+    .editor {
+        :global {
+            .fr-toolbar {
+                border: none;
+            }
+
+            .fr-wrapper {
+                border: none !important;
+            }
+
+            .fr-second-toolbar {
+                display: none;
+            }
+
+            .fr-wrapper {
+                background: none !important;
+            }
+        }
     }
 }

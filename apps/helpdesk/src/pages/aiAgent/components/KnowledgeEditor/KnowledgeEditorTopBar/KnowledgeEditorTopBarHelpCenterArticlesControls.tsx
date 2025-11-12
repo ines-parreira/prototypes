@@ -72,7 +72,7 @@ const EditDraftControls = (
             onClick={props.onSaveAndPublish}
             disabled={props.onSaveAndPublish === undefined || props.disabled}
         >
-            Save & publish
+            Publish
         </button>
     </>
 )
@@ -91,7 +91,7 @@ const EditPublishedControls = (
             onClick={props.onSaveAndPublish}
             disabled={props.onSaveAndPublish === undefined || props.disabled}
         >
-            Save & publish
+            Publish
         </button>
     </>
 )

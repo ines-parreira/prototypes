@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { useNotify } from 'hooks/useNotify'
 import { useCreateArticle } from 'models/helpCenter/queries'
 import {
     ArticleWithLocalTranslation,
@@ -43,6 +44,8 @@ type Props = {
         key: string
     }
     onCreated: (article: ArticleWithLocalTranslation) => void
+    isFullscreen: boolean
+    onToggleFullscreen: () => void
 }
 
 const createArticlePayload = (
@@ -50,6 +53,7 @@ const createArticlePayload = (
     title: string,
     content: string,
     settingsChanges: SettingsChanges,
+    isPublished: boolean,
     templateKey?: string,
 ) => ({
     template_key: templateKey,
@@ -64,12 +68,16 @@ const createArticlePayload = (
             description: settingsChanges.seo_meta?.description ?? null,
         },
         category_id: settingsChanges.category_id ?? null,
-        is_current: true,
-        visibility_status: settingsChanges.visibility_status ?? 'PUBLIC',
+        is_current: isPublished,
+        visibility_status:
+            settingsChanges.visibility_status ??
+            (isPublished ? 'PUBLIC' : 'UNLISTED'),
     },
 })
 
 export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
+    const { error: notifyError } = useNotify()
+
     const { modal, openUnsavedChangesModal } =
         useKnowledgeEditorHelpCenterArticleModal()
 
@@ -95,40 +103,50 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
 
     const createArticleMutation = useCreateArticle()
 
-    const createArticle = useCallback(async () => {
-        const response = await createArticleMutation.mutateAsync([
-            undefined,
-            { help_center_id: props.helpCenter.id },
-            createArticlePayload(
-                locale,
-                title,
-                content,
-                settingsChanges,
-                props.template?.key,
-            ),
-        ])
+    const createArticle = useCallback(
+        async (publish: boolean) => {
+            try {
+                const response = await createArticleMutation.mutateAsync([
+                    undefined,
+                    { help_center_id: props.helpCenter.id },
+                    createArticlePayload(
+                        locale,
+                        title,
+                        content,
+                        settingsChanges,
+                        publish,
+                        props.template?.key,
+                    ),
+                ])
 
-        return response?.data
-    }, [
-        props.helpCenter.id,
-        locale,
-        title,
-        content,
-        createArticleMutation,
-        props.template?.key,
-        settingsChanges,
-    ])
+                return response?.data
+            } catch {
+                notifyError('An error occurred while creating the article.')
+                return undefined
+            }
+        },
+        [
+            props.helpCenter.id,
+            locale,
+            title,
+            content,
+            createArticleMutation,
+            props.template?.key,
+            settingsChanges,
+            notifyError,
+        ],
+    )
 
     const onCancel = useCallback(() => {
         if (title !== '' || content !== '') {
             openUnsavedChangesModal({
                 onDiscardChanges: props.onClose,
                 onSaveChanges: async () => {
-                    const article = await createArticle()
+                    const article = await createArticle(false)
                     if (article) {
                         props.onCreated(article)
+                        props.onClose()
                     }
-                    props.onClose()
                 },
             })
         } else {
@@ -137,17 +155,23 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
     }, [content, props, title, createArticle, openUnsavedChangesModal])
 
     const [modeType, setModeType] = useState<ArticleModes>(
-        ArticleModes.EDIT_PUBLISHED,
+        ArticleModes.EDIT_DRAFT,
     )
 
     const mode = useKnowledgeEditorHelpCenterArticleMode({
         mode: modeType,
         onCancel,
         onEdit: () => {
-            setModeType(ArticleModes.EDIT_PUBLISHED)
+            setModeType(ArticleModes.EDIT_DRAFT)
         },
-        onSave: async () => {
-            const article = await createArticle()
+        onSaveAndPublish: async () => {
+            const article = await createArticle(true)
+            if (article) {
+                props.onCreated(article)
+            }
+        },
+        onSaveDraft: async () => {
+            const article = await createArticle(false)
             if (article) {
                 props.onCreated(article)
             }
@@ -176,7 +200,7 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
     const controlsDisabled = createArticleMutation.isLoading
 
     return (
-        <div>
+        <div className={css.container}>
             {modal.type === 'unsaved-changes' && (
                 <KnowledgeEditorHelpCenterArticleUnsavedChangesModal
                     isOpen={true}
@@ -188,8 +212,8 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
             <KnowledgeEditorTopBar
                 title={title}
                 onChangeTitle={setTitle}
-                isFullscreen={false}
-                onToggleFullscreen={() => {}}
+                isFullscreen={props.isFullscreen}
+                onToggleFullscreen={props.onToggleFullscreen}
                 onClose={onCancel}
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
@@ -201,7 +225,7 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
                 />
             </KnowledgeEditorTopBar>
 
-            <div className={css.container}>
+            <div className={css.contentContainer}>
                 <KnowledgeEditorHelpCenterArticleEditView
                     locale={locale}
                     content={content}

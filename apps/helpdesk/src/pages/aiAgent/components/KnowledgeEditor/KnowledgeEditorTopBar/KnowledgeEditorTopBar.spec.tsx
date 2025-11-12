@@ -9,13 +9,14 @@ describe('KnowledgeEditorTopBar', () => {
         const onClickPrevious = jest.fn()
         const onClickNext = jest.fn()
         const onChangeTitle = jest.fn()
+        const onToggleFullscreen = jest.fn()
 
-        render(
+        const { rerender } = render(
             <KnowledgeEditorTopBar
                 disabled={false}
                 title="Guidance"
                 isFullscreen={false}
-                onToggleFullscreen={jest.fn()}
+                onToggleFullscreen={onToggleFullscreen}
                 onClose={onClose}
                 isDetailsView={false}
                 onToggleDetailsView={onToggleDetailsView}
@@ -47,6 +48,31 @@ describe('KnowledgeEditorTopBar', () => {
             target: { value: 'New Title' },
         })
         expect(onChangeTitle).toHaveBeenCalledWith('New Title')
+
+        fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
+        expect(onToggleFullscreen).toHaveBeenCalled()
+
+        rerender(
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={true}
+                onToggleFullscreen={onToggleFullscreen}
+                onClose={onClose}
+                isDetailsView={false}
+                onToggleDetailsView={onToggleDetailsView}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+                onChangeTitle={onChangeTitle}
+            >
+                <div>Test Content</div>
+            </KnowledgeEditorTopBar>,
+        )
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'leave fullscreen' }),
+        )
+        expect(onToggleFullscreen).toHaveBeenCalledTimes(2)
     })
 
     it('renders disabled when updating', () => {

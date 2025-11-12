@@ -1,6 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { useNotify } from 'hooks/useNotify'
 import { useCreateArticle } from 'models/helpCenter/queries'
 import { flattenCategories } from 'models/helpCenter/utils'
 import { Props as HelpCenterEditorProps } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
@@ -11,6 +13,9 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorHelpCenterNewArticle } from './KnowledgeEditorHelpCenterNewArticle'
+
+jest.mock('hooks/useNotify')
+const useNotifyMock = assumeMock(useNotify)
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor',
@@ -71,6 +76,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('KnowledgeEditorHelpCenterNewArticle', () => {
     const mutateAsyncMock = jest.fn()
+    const notifyMock = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -79,10 +85,44 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
             mutateAsync: mutateAsyncMock,
             isLoading: false,
         } as any)
+
+        useNotifyMock.mockReturnValue({ error: notifyMock } as any)
     })
     it('renders the editor', async () => {
         const onClose = jest.fn()
         const onCreated = jest.fn()
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterNewArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClose={onClose}
+                    onCreated={onCreated}
+                    template={{
+                        title: 'Test Article',
+                        content: 'Test Content',
+                        key: 'test-template',
+                    }}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('EDITOR')).toBeInTheDocument()
+        expect(screen.getByText('Test Content')).toBeInTheDocument()
+
+        mutateAsyncMock.mockRejectedValue('some error')
+
+        fireEvent.click(screen.getByRole('button', { name: 'Publish' }))
+
+        await waitFor(() => {
+            expect(notifyMock).toHaveBeenCalledWith(
+                'An error occurred while creating the article.',
+            )
+        })
 
         mutateAsyncMock.mockResolvedValue({
             data: {
@@ -102,27 +142,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
             },
         })
 
-        render(
-            <Wrapper>
-                <KnowledgeEditorHelpCenterNewArticle
-                    helpCenter={helpCenter}
-                    supportedLocales={getLocalesResponseFixture}
-                    categories={categories}
-                    onClose={onClose}
-                    onCreated={onCreated}
-                    template={{
-                        title: 'Test Article',
-                        content: 'Test Content',
-                        key: 'test-template',
-                    }}
-                />
-            </Wrapper>,
-        )
-
-        fireEvent.click(screen.getByRole('button', { name: 'Save & publish' }))
-
-        expect(screen.getByText('EDITOR')).toBeInTheDocument()
-        expect(screen.getByText('Test Content')).toBeInTheDocument()
+        fireEvent.click(screen.getByRole('button', { name: 'Publish' }))
 
         expect(mutateAsyncMock).toHaveBeenCalledWith([
             undefined,
@@ -171,6 +191,8 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     categories={categories}
                     onClose={onClose}
                     onCreated={onCreated}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
                 />
             </Wrapper>,
         )
@@ -181,6 +203,89 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
 
         await waitFor(() => {
             expect(onCreated).not.toHaveBeenCalled()
+        })
+    })
+
+    it('saves as draft', async () => {
+        const onClose = jest.fn()
+        const onCreated = jest.fn()
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterNewArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClose={onClose}
+                    onCreated={onCreated}
+                    template={{
+                        title: 'Test Article',
+                        content: 'Test Content',
+                        key: 'test-template',
+                    }}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('EDITOR')).toBeInTheDocument()
+        expect(screen.getByText('Test Content')).toBeInTheDocument()
+
+        mutateAsyncMock.mockResolvedValue({
+            data: {
+                id: 1,
+                title: 'Test Article',
+                content: 'Test Content',
+                slug: 'test-article',
+                locale: 'en-US',
+                category_id: null,
+                visibility_status: 'UNLISTED',
+                is_current: false,
+                excerpt: '',
+                seo_meta: {
+                    title: null,
+                    description: null,
+                },
+            },
+        })
+
+        fireEvent.click(screen.getByRole('button', { name: 'Save draft' }))
+
+        expect(mutateAsyncMock).toHaveBeenCalledWith([
+            undefined,
+            { help_center_id: helpCenter.id },
+            {
+                template_key: 'test-template',
+                translation: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    slug: 'test-article',
+                    locale: 'en-US',
+                    category_id: null,
+                    visibility_status: 'UNLISTED',
+                    is_current: false,
+                    excerpt: '',
+                    seo_meta: {
+                        title: null,
+                        description: null,
+                    },
+                },
+            },
+        ])
+
+        await waitFor(() => {
+            expect(onCreated).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: expect.any(Number),
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    slug: 'test-article',
+                    locale: 'en-US',
+                    visibility_status: 'UNLISTED',
+                    is_current: false,
+                }),
+            )
         })
     })
 })

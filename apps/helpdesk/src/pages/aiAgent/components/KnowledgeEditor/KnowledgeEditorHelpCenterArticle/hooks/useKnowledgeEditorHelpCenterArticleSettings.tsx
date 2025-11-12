@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
+import { useNotify } from 'hooks/useNotify'
 import {
     ArticleWithLocalTranslation,
     Category,
@@ -96,6 +97,8 @@ export const useKnowledgeEditorHelpCenterArticleSettings = ({
     behavior,
     categories,
 }: Props): Omit<HelpCenterArticleSettingsProps, 'sectionId'> => {
+    const { error: notifyError } = useNotify()
+
     const categoryTitlesById = useMemo(
         () => getCategoryTitlesById(categories),
         [categories],
@@ -208,11 +211,12 @@ export const useKnowledgeEditorHelpCenterArticleSettings = ({
                 setLastUpdated(new Date())
             } catch {
                 setAutoSaveState(AutoSaveState.INITIAL)
+                notifyError('An error occurred while saving the settings.')
             } finally {
-                setPendingChanges({}) // TODO what to do if it failed
+                setPendingChanges({})
             }
         },
-        [behavior],
+        [behavior, notifyError],
     )
 
     useDebouncedEffect(
