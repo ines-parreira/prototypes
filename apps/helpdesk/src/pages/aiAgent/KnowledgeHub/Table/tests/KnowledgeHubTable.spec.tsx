@@ -59,7 +59,15 @@ describe('KnowledgeHubTable', () => {
         it('renders empty state when no data', () => {
             renderComponent({ data: [] })
 
-            expect(screen.getByText('0 items')).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: 'Create new content' }),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Guidance')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Instruct AI Agent to handle customer requests and follow internal processes.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -169,7 +177,14 @@ describe('KnowledgeHubTable', () => {
                 selectedTypeFilter: KnowledgeType.Guidance,
             })
 
-            expect(screen.getByText('0 items')).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Get started with Guidance',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Create Guidance' }),
+            ).toBeInTheDocument()
         })
 
         it('filters grouped data correctly when multiple types share same source', () => {
@@ -241,6 +256,258 @@ describe('KnowledgeHubTable', () => {
 
             const itemCountText = screen.getByText('1 item')
             expect(itemCountText).toBeInTheDocument()
+        })
+    })
+
+    describe('empty state components', () => {
+        describe('EmptyStateAllContent', () => {
+            it('renders when no data and no filter is selected', () => {
+                renderComponent({ data: [], selectedTypeFilter: null })
+
+                expect(
+                    screen.getByRole('heading', { name: 'Create new content' }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'Sync or upload external content',
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('displays all knowledge type cards in create section', () => {
+                renderComponent({ data: [], selectedTypeFilter: null })
+
+                expect(screen.getByText('Guidance')).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Instruct AI Agent to handle customer requests and follow internal processes.',
+                    ),
+                ).toBeInTheDocument()
+
+                expect(
+                    screen.getByText('Help Center articles'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Let AI Agent use published Help Center articles as knowledge.',
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('displays all knowledge type cards in sync section', () => {
+                renderComponent({ data: [], selectedTypeFilter: null })
+
+                expect(screen.getByText('Store website')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Sync your site content'),
+                ).toBeInTheDocument()
+
+                expect(screen.getByText('URLs')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Sync single-page URLs'),
+                ).toBeInTheDocument()
+
+                expect(screen.getByText('Documents')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Upload external files'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('EmptyStateGuidance', () => {
+            it('renders when Guidance filter is selected with no data', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.Guidance,
+                })
+
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'Get started with Guidance',
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Instruct AI Agent to handle customer requests and follow end-to-end processes with internal-facing Guidance.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: 'Create Guidance' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('EmptyStateFAQ', () => {
+            it('renders with "Connect Help Center" when helpCenterId is not provided', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.FAQ,
+                    faqHelpCenterId: null,
+                })
+
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'Connect your Help Center',
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Let AI Agent use your published Help Center articles as knowledge.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: 'Connect Help Center' }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders with "Create Help Center article" when helpCenterId is provided with no articles', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.FAQ,
+                    faqHelpCenterId: 123,
+                })
+
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'Get started with Help Center articles',
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Let AI Agent use your published Help Center articles as knowledge.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: 'Create Help Center article',
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('shows different description when helpCenterId exists but articles are available', () => {
+                const faqData = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        title: 'FAQ 1',
+                        lastUpdatedAt: '2024-01-10T10:00:00Z',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                        source: 'docs.example.com',
+                        id: '1',
+                    },
+                ]
+
+                renderComponent({
+                    data: faqData,
+                    selectedTypeFilter: KnowledgeType.Document,
+                    faqHelpCenterId: 123,
+                })
+
+                expect(
+                    screen.getByRole('heading', { name: 'Add documents' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('EmptyStateDomain', () => {
+            it('renders when Domain filter is selected with no data', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.Domain,
+                })
+
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'Sync your store website',
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        /Use your website.s content and product pages as knowledge for AI Agent/,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: /Sync/ }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('EmptyStateURL', () => {
+            it('renders when URL filter is selected with no data', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.URL,
+                })
+
+                expect(
+                    screen.getByRole('heading', { name: 'Add URLs' }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Add links to public pages AI Agent can learn from like blog posts or external documentation.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: 'Add URL' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('EmptyStateDocument', () => {
+            it('renders when Document filter is selected with no data', () => {
+                renderComponent({
+                    data: [],
+                    selectedTypeFilter: KnowledgeType.Document,
+                })
+
+                expect(
+                    screen.getByRole('heading', { name: 'Add documents' }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Upload external documents such as policies or product manuals to help your AI Agent provide more accurate answers.',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: 'Upload Document' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        describe('empty state visibility', () => {
+            it('does not render empty state when loading', () => {
+                renderComponent({ data: [], isLoading: true })
+
+                expect(
+                    screen.queryByRole('heading', {
+                        name: 'Create new content',
+                    }),
+                ).not.toBeInTheDocument()
+            })
+
+            it('renders empty state when data becomes empty after loading', () => {
+                const { rerender } = renderComponent({
+                    data: mockData,
+                    isLoading: true,
+                })
+
+                expect(
+                    screen.queryByRole('heading', {
+                        name: 'Create new content',
+                    }),
+                ).not.toBeInTheDocument()
+
+                rerender(
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        data={[]}
+                        isLoading={false}
+                    />,
+                )
+
+                expect(
+                    screen.getByRole('heading', { name: 'Create new content' }),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

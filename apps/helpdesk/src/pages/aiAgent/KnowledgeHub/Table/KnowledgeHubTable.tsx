@@ -9,6 +9,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { EmptyStateWrapper } from '../EmptyState/EmptyStates'
 import { GroupedKnowledgeItem, KnowledgeItem, KnowledgeType } from '../types'
 import { AddFilterButton, FilterOption } from './AddFilterButton'
 import { getColumns } from './columns'
@@ -33,6 +34,7 @@ type KnowledgeHubTableProps = {
     onRowClick: (data: GroupedKnowledgeItem) => void
     selectedFolder: GroupedKnowledgeItem | null
     selectedTypeFilter?: KnowledgeType | null
+    faqHelpCenterId?: number | null
 }
 
 export const KnowledgeHubTable = ({
@@ -41,6 +43,7 @@ export const KnowledgeHubTable = ({
     onRowClick,
     selectedFolder,
     selectedTypeFilter = null,
+    faqHelpCenterId,
 }: KnowledgeHubTableProps) => {
     const [searchTerm, setSearchTerm] = useState('')
 
@@ -111,6 +114,18 @@ export const KnowledgeHubTable = ({
             enableMultiRowSelection: true,
         },
     })
+
+    if (displayData.length === 0 && !isLoading) {
+        return (
+            <div className={css.emptyTable}>
+                <EmptyStateWrapper
+                    documentFilter={selectedTypeFilter}
+                    articles={displayData}
+                    helpCenterId={faqHelpCenterId}
+                />
+            </div>
+        )
+    }
 
     return (
         <div className={css.tableContainer}>

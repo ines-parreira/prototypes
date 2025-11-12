@@ -1,38 +1,42 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 
 import { KnowledgeHubContainer } from './KnowledgeHubContainer'
-import { KnowledgeHubHeader } from './KnowledgeHubHeader/KnowledgeHubHeader'
+import { KnowledgeVisibility } from './types'
+import { transformKnowledgeHubArticlesToKnowledgeItems } from './utils/transformKnowledgeHubArticles'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
-}))
-jest.mock('models/helpCenter/queries', () => ({
-    useGetKnowledgeHubArticles: jest.fn(() => ({
-        data: { articles: [] },
-        isLoading: false,
-    })),
-}))
-jest.mock('./KnowledgeHubHeader/KnowledgeHubHeader', () => ({
-    KnowledgeHubHeader: jest.fn(({ type, shopName }) => (
-        <div data-testid="knowledge-hub-header">
-            <span>Type: {type}</span>
-            <span>ShopName: {shopName}</span>
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+jest.mock('models/helpCenter/queries')
+jest.mock('./utils/transformKnowledgeHubArticles')
+jest.mock('./DocumentFilters/DocumentFilters', () => ({
+    DocumentFilters: ({ selectedFilter, onFilterChange }: any) => (
+        <div>
+            <button onClick={() => onFilterChange('document')}>
+                Document Filter
+            </button>
+            <button onClick={() => onFilterChange('guidance')}>
+                Guidance Filter
+            </button>
+            <span>Selected: {selectedFilter || 'none'}</span>
         </div>
-    )),
+    ),
 }))
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
-const mockKnowledgeHubHeader = KnowledgeHubHeader as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
+const mockUseGetKnowledgeHubArticles = useGetKnowledgeHubArticles as jest.Mock
+const mockTransformKnowledgeHubArticlesToKnowledgeItems =
+    transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -56,12 +60,11 @@ describe('KnowledgeHubContainer', () => {
         jest.clearAllMocks()
         delete (window as any).location
         window.location = { href: 'http://localhost/app' } as Location
-        mockUseAppSelector.mockImplementation((selector) => {
-            if (selector.name === 'getCurrentAccountId') {
-                return 123
-            }
-            return []
-        })
+
+        mockUseAppSelector
+            .mockReturnValueOnce(123) // getCurrentAccountId
+            .mockReturnValueOnce(mockShopifyIntegrations) // getShopifyIntegrationsSortedByName
+
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 guidanceHelpCenterId: 1,
@@ -73,6 +76,26 @@ describe('KnowledgeHubContainer', () => {
             createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
         })
+        mockUseGetKnowledgeHubArticles.mockReturnValue({
+            data: { articles: [] },
+            isInitialLoading: false,
+        })
+
+        mockTransformKnowledgeHubArticlesToKnowledgeItems.mockImplementation(
+            (articles) => {
+                return articles.map((article: any) => ({
+                    id: article.id,
+                    title: article.title,
+                    type: article.type,
+                    lastUpdatedAt: article.lastUpdatedAt,
+                    inUseByAI:
+                        article.visibilityStatus === 'public'
+                            ? KnowledgeVisibility.PUBLIC
+                            : KnowledgeVisibility.UNLISTED,
+                    source: article.source,
+                }))
+            },
+        )
     })
 
     afterEach(() => {
@@ -87,85 +110,167 @@ describe('KnowledgeHubContainer', () => {
         )
     }
 
-    it('should render the component with KnowledgeHubHeader', () => {
-        mockUseAppSelector.mockReturnValue([])
-        mockExtractShopNameFromUrl.mockReturnValue(undefined)
+    describe('rendering', () => {
+        it('renders the container with all main components', () => {
+            mockExtractShopNameFromUrl.mockReturnValue(undefined)
 
-        renderComponent()
+            renderComponent()
 
-        expect(screen.getByTestId('knowledge-hub-header')).toBeInTheDocument()
+            expect(screen.getByText('Document Filter')).toBeInTheDocument()
+            expect(screen.getByText('Selected: none')).toBeInTheDocument()
+        })
+
+        it('renders empty state when no data', () => {
+            mockExtractShopNameFromUrl.mockReturnValue(undefined)
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('heading', { name: 'Create new content' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders table with data when articles are present', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test Article',
+                            type: 'guidance',
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Test Article')).toBeInTheDocument()
+        })
     })
 
-    it('should extract shop name from URL and pass it to KnowledgeHubHeader', () => {
-        const routeShopName = 'my-shop-from-url'
-        mockExtractShopNameFromUrl.mockReturnValue(routeShopName)
-        mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
+    describe('shop name resolution', () => {
+        it('extracts shop name from URL when available', () => {
+            const routeShopName = 'my-shop-from-url'
+            mockExtractShopNameFromUrl.mockReturnValue(routeShopName)
 
-        renderComponent()
+            renderComponent()
 
-        expect(mockExtractShopNameFromUrl).toHaveBeenCalledWith(
-            window.location.href,
-        )
-        expect(mockKnowledgeHubHeader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: null,
-                shopName: routeShopName,
-            }),
-            expect.anything(),
-        )
+            expect(mockExtractShopNameFromUrl).toHaveBeenCalledWith(
+                window.location.href,
+            )
+        })
+
+        it('uses first Shopify integration shop name when URL extraction returns undefined', () => {
+            mockExtractShopNameFromUrl.mockReturnValue(undefined)
+
+            renderComponent()
+
+            expect(mockUseAppSelector).toHaveBeenCalled()
+        })
+
+        it('prefers URL shop name over first integration when both exist', () => {
+            const routeShopName = 'url-shop'
+            mockExtractShopNameFromUrl.mockReturnValue(routeShopName)
+
+            renderComponent()
+
+            expect(mockExtractShopNameFromUrl).toHaveBeenCalledWith(
+                window.location.href,
+            )
+        })
     })
 
-    it('should use first Shopify integration shop name when URL extraction returns undefined', () => {
-        mockExtractShopNameFromUrl.mockReturnValue(undefined)
-        mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
+    describe('filtering', () => {
+        it('updates filter when filter button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        renderComponent()
+            expect(screen.getByText('Selected: none')).toBeInTheDocument()
 
-        expect(mockKnowledgeHubHeader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: null,
-                shopName: 'store-alpha',
-            }),
-            expect.anything(),
-        )
+            await user.click(screen.getByText('Document Filter'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Selected: document'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('can switch between different filters', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByText('Document Filter'))
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Selected: document'),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByText('Guidance Filter'))
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Selected: guidance'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 
-    it('should pass undefined shopName when no URL extraction and no integrations', () => {
-        mockExtractShopNameFromUrl.mockReturnValue(undefined)
-        mockUseAppSelector.mockReturnValue([])
+    describe('loading state', () => {
+        it('passes loading state to table component', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: undefined,
+                isInitialLoading: true,
+            })
 
-        renderComponent()
+            renderComponent()
 
-        expect(mockKnowledgeHubHeader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: null,
-                shopName: undefined,
-            }),
-            expect.anything(),
-        )
+            expect(
+                screen.queryByRole('heading', { name: 'Create new content' }),
+            ).not.toBeInTheDocument()
+        })
     })
 
-    it('should prefer URL shop name over first integration when both exist', () => {
-        const routeShopName = 'url-shop'
-        mockExtractShopNameFromUrl.mockReturnValue(routeShopName)
-        mockUseAppSelector.mockReturnValue(mockShopifyIntegrations)
+    describe('data fetching', () => {
+        it('fetches articles with correct parameters', () => {
+            mockExtractShopNameFromUrl.mockReturnValue(undefined)
 
-        renderComponent()
+            renderComponent()
 
-        expect(mockKnowledgeHubHeader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                shopName: routeShopName,
-            }),
-            expect.anything(),
-        )
-    })
+            expect(mockUseGetKnowledgeHubArticles).toHaveBeenCalledWith(
+                {
+                    account_id: 123,
+                    guidance_help_center_id: 1,
+                    snippet_help_center_id: 2,
+                    faq_help_center_id: 3,
+                },
+                {
+                    enabled: true,
+                },
+            )
+        })
 
-    it('should call getShopifyIntegrationsSortedByName selector', () => {
-        mockExtractShopNameFromUrl.mockReturnValue('test-shop')
-        mockUseAppSelector.mockReturnValue([])
+        it('waits for store configuration before fetching articles', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: null,
+                isLoading: true,
+                updateStoreConfiguration: jest.fn(),
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
 
-        renderComponent()
+            renderComponent()
 
-        expect(mockUseAppSelector).toHaveBeenCalled()
+            expect(mockUseGetKnowledgeHubArticles).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
     })
 })
