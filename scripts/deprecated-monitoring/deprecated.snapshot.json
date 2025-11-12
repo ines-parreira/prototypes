@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 77,
-    "totalUsages": 1605,
-    "reportGeneratedAt": "2025-11-07T13:15:53.825Z"
+    "totalUsages": 1606,
+    "reportGeneratedAt": "2025-11-12T09:24:40.934Z"
   },
   "entries": [
     {
@@ -1217,7 +1217,7 @@
       "type": "ui-kit-migration",
       "entries": [
         {
-          "usageCount": 671,
+          "usageCount": 672,
           "name": "@gorgias.LegacyButton",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -1287,6 +1287,7 @@
               "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/ItemDrawer.tsx",
               "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/RecommendationRuleCard.tsx",
               "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader.tsx",
+              "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ProductAdditionalInfoView.tsx",
               "apps/helpdesk/src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
               "apps/helpdesk/src/pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker.tsx",
@@ -1901,7 +1902,7 @@
           }
         },
         {
-          "usageCount": 138,
+          "usageCount": 137,
           "name": "@gorgias.LegacyTooltip",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -1941,7 +1942,6 @@
               "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceActionsBadge.tsx",
               "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent.tsx",
               "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunityCard/OpportunityCard.tsx",
-              "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal.tsx",
               "apps/helpdesk/src/pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal.tsx",
               "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioItem.tsx",
