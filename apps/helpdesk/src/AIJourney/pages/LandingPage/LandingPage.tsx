@@ -27,9 +27,9 @@ export const LandingPage = () => {
             value: JOURNEY_TYPES.CART_ABANDONMENT,
         },
         {
-            name: 'Abandoned Browse',
+            name: 'Browse Abandonment',
             description:
-                'Retain your shoppers, let the Abandoned Browse Journey re-engage visitors who left without converting.',
+                'Retain your shoppers, let the Browse Abandonment Journey re-engage visitors who left without converting.',
             value: JOURNEY_TYPES.SESSION_ABANDONMENT,
         },
     ]

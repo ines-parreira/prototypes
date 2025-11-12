@@ -113,7 +113,7 @@ export const Test = () => {
                 'See the messages your customers would receive if they left something in their cart.',
         },
         [JOURNEY_TYPES.SESSION_ABANDONMENT]: {
-            name: 'Preview your abandoned browse messages',
+            name: 'Preview your browse abandonment messages',
             description:
                 'See the messages your customers would receive if they leave the product page without adding anything to their cart.',
         },
