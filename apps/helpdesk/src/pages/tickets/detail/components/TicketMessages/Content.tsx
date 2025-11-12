@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -6,7 +6,6 @@ import ReactPlayer from 'react-player'
 
 import { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
-import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
 import {
     linkifyHtml,
@@ -25,6 +24,8 @@ type Props = {
     strippedHtml?: string | null
     strippedText?: string | null
     messagePosition: number
+    toggleQuote: (messageId: number | undefined) => void
+    isMessageExpanded: boolean
 }
 
 const Content = ({
@@ -35,14 +36,9 @@ const Content = ({
     strippedHtml,
     strippedText,
     messagePosition,
+    toggleQuote,
+    isMessageExpanded,
 }: Props) => {
-    const { toggleQuote, expandedQuotes } = useContext(MessageQuoteContext)
-
-    const isMessageExpanded = useMemo(
-        () => !!messageId && expandedQuotes.includes(messageId),
-        [messageId, expandedQuotes],
-    )
-
     const trimmedHtml = html?.trim() || ''
     const trimmedText = text?.trim() || ''
     const trimmedStrippedHtml = strippedHtml?.trim() || ''

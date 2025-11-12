@@ -26,6 +26,7 @@ import {
     TicketMessagesTranslationDisplayContext,
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
+import MessageQuoteContext from '../../MessageQuoteContext'
 import Message from '../Message'
 
 // Mock the feature flag hook
@@ -157,18 +158,30 @@ const mockStore = {
     dispatch: jest.fn(),
 }
 
+// Default MessageQuoteContext value
+const defaultMessageQuoteContext = {
+    expandedQuotes: [] as number[],
+    toggleQuote: jest.fn(),
+}
+
 // Test component wrapper
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider store={mockStore as any}>
-        <QueryClientProvider client={appQueryClient}>
-            <TicketMessagesTranslationDisplayContext.Provider
-                value={mockTranslationDisplayContext}
-            >
-                {children}
-            </TicketMessagesTranslationDisplayContext.Provider>
-        </QueryClientProvider>
-    </Provider>
-)
+const createWrapper =
+    (messageQuoteContextValue = defaultMessageQuoteContext) =>
+    ({ children }: { children: React.ReactNode }) => (
+        <Provider store={mockStore as any}>
+            <QueryClientProvider client={appQueryClient}>
+                <TicketMessagesTranslationDisplayContext.Provider
+                    value={mockTranslationDisplayContext}
+                >
+                    <MessageQuoteContext.Provider
+                        value={messageQuoteContextValue}
+                    >
+                        {children}
+                    </MessageQuoteContext.Provider>
+                </TicketMessagesTranslationDisplayContext.Provider>
+            </QueryClientProvider>
+        </Provider>
+    )
 
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
     <div>AIBanner</div>
@@ -221,9 +234,11 @@ describe('Message', () => {
                 hasRegeneratedOnce: false,
             },
         )
+        defaultMessageQuoteContext.toggleQuote.mockClear()
     })
 
     it('should render all message sections', () => {
+        const wrapper = createWrapper()
         render(<Message {...defaultProps} />, { wrapper })
         expect(screen.getByText('Body')).toBeInTheDocument()
         expect(screen.getByText('Attachments')).toBeInTheDocument()
@@ -232,11 +247,13 @@ describe('Message', () => {
     })
 
     it('should render source details when showSourceDetails is true', () => {
+        const wrapper = createWrapper()
         render(<Message {...defaultProps} showSourceDetails />, { wrapper })
         expect(screen.getByText('SourceActionsHeader')).toBeInTheDocument()
     })
 
     it('should render reply details card when meta.replied_to exists', () => {
+        const wrapper = createWrapper()
         render(
             <Message
                 {...defaultProps}
@@ -256,16 +273,19 @@ describe('Message', () => {
     })
 
     it('should not render reply details card when meta.replied_to is absent', () => {
+        const wrapper = createWrapper()
         render(<Message {...defaultProps} />, { wrapper })
         expect(screen.queryByText('ReplyDetailsCard')).not.toBeInTheDocument()
     })
 
     it('should not render Actions when isAIAgentMessage is true', () => {
+        const wrapper = createWrapper()
         render(<Message {...defaultProps} isAIAgentMessage />, { wrapper })
         expect(screen.queryByText('Actions')).not.toBeInTheDocument()
     })
 
     it('should handle message without id', () => {
+        const wrapper = createWrapper()
         const messageWithoutId = {
             ...defaultProps.message,
             id: undefined,
@@ -280,6 +300,7 @@ describe('Message', () => {
     })
 
     it('should show visible class on hover when showSourceDetails is true', async () => {
+        const wrapper = createWrapper()
         const user = userEvent.setup()
         const { container } = render(
             <Message {...defaultProps} showSourceDetails />,
@@ -298,6 +319,7 @@ describe('Message', () => {
 
     describe('TranslationsDropdown visibility', () => {
         it('should not render when feature flag is disabled', () => {
+            const wrapper = createWrapper()
             mockUseFlag.mockReturnValue(false)
 
             render(<Message {...defaultProps} />, { wrapper })
@@ -308,6 +330,7 @@ describe('Message', () => {
         })
 
         it('should not render when message has no id', () => {
+            const wrapper = createWrapper()
             const messageWithoutId = {
                 ...defaultProps.message,
                 id: undefined,
@@ -323,6 +346,7 @@ describe('Message', () => {
         })
 
         it('should not render when no translations and fetching state is Idle', () => {
+            const wrapper = createWrapper()
             mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Original,
@@ -339,6 +363,7 @@ describe('Message', () => {
         })
 
         it('should render when fetching state is Loading', () => {
+            const wrapper = createWrapper()
             mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Original,
@@ -353,6 +378,7 @@ describe('Message', () => {
         })
 
         it('should render when translations exist', () => {
+            const wrapper = createWrapper()
             const mockTranslation = mockTicketMessageTranslation({
                 id: '456',
                 ticket_message_id: 123,
@@ -376,10 +402,43 @@ describe('Message', () => {
 
             expect(screen.getByText('TranslationsDropdown')).toBeInTheDocument()
         })
+
+        it('should not render when message is expanded', () => {
+            const wrapper = createWrapper({
+                expandedQuotes: [123],
+                toggleQuote: jest.fn(),
+            })
+
+            const mockTranslation = mockTicketMessageTranslation({
+                id: '456',
+                ticket_message_id: 123,
+                stripped_html: '<strong>translated test</strong>',
+                stripped_text: 'translated test',
+            })
+
+            mockUseTicketMessageTranslations.mockReturnValue({
+                getMessageTranslation: jest.fn(() => mockTranslation),
+            })
+
+            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
+                {
+                    display: DisplayedContent.Original,
+                    fetchingState: FetchingState.Idle,
+                    hasRegeneratedOnce: false,
+                },
+            )
+
+            render(<Message {...defaultProps} />, { wrapper })
+
+            expect(
+                screen.queryByText('TranslationsDropdown'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('Translation display', () => {
         it('should display original message when display type is Original', () => {
+            const wrapper = createWrapper()
             mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Original,
@@ -413,6 +472,7 @@ describe('Message', () => {
         })
 
         it('should display translated content when display type is Translated', () => {
+            const wrapper = createWrapper()
             mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Translated,
@@ -448,6 +508,7 @@ describe('Message', () => {
         })
 
         it('should fall back to original when display is Translated but no translation exists', () => {
+            const wrapper = createWrapper()
             mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
                 {
                     display: DisplayedContent.Translated,
@@ -464,6 +525,64 @@ describe('Message', () => {
                         body_text: 'a test',
                         body_html: '<strong>a test</strong>',
                     }),
+                }),
+            )
+        })
+    })
+
+    describe('Message quote expansion', () => {
+        it.each([
+            {
+                description: 'when message id is in expandedQuotes',
+                expandedQuotes: [456, 123, 789],
+                expected: true,
+            },
+            {
+                description: 'when message id is not in expandedQuotes',
+                expandedQuotes: [456, 789],
+                expected: false,
+            },
+            {
+                description: 'when expandedQuotes is empty',
+                expandedQuotes: [],
+                expected: false,
+            },
+        ])(
+            'should set isMessageExpanded to $expected $description',
+            ({ expandedQuotes, expected }) => {
+                const wrapper = createWrapper({
+                    expandedQuotes,
+                    toggleQuote: jest.fn(),
+                })
+
+                render(<Message {...defaultProps} />, { wrapper })
+
+                expect(mockBodyComponent).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        isMessageExpanded: expected,
+                    }),
+                )
+            },
+        )
+
+        it('should pass isMessageExpanded as false when message has no id', () => {
+            const wrapper = createWrapper({
+                expandedQuotes: [123],
+                toggleQuote: jest.fn(),
+            })
+
+            const messageWithoutId = {
+                ...defaultProps.message,
+                id: undefined,
+            } as TicketMessage
+
+            render(<Message {...defaultProps} message={messageWithoutId} />, {
+                wrapper,
+            })
+
+            expect(mockBodyComponent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isMessageExpanded: false,
                 }),
             )
         })

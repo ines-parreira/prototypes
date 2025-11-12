@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 import _noop from 'lodash/noop'
 
@@ -13,3 +13,13 @@ const MessageQuoteContext = createContext<MessageContextState>({
 })
 
 export default MessageQuoteContext
+
+export const useMessageQuote = () => {
+    const context = useContext(MessageQuoteContext)
+    if (!context) {
+        throw new Error(
+            'useMessageQuote must be used within a MessageQuoteContextProvider',
+        )
+    }
+    return context
+}

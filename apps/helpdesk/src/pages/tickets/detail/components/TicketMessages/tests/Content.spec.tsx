@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
@@ -48,6 +48,8 @@ const sharedProps: ComponentProps<typeof Content> = {
     messageId: 1,
     meta: null,
     messagePosition: 1,
+    toggleQuote: jest.fn(),
+    isMessageExpanded: false,
 }
 
 describe('Content', () => {
@@ -290,7 +292,8 @@ describe('Content', () => {
         ).toBeTruthy()
     })
 
-    it('should track when showing full content', () => {
+    it('should toggle quote and track event when clicking ellipsis for non-first message', () => {
+        const toggleQuote = jest.fn()
         const { getByText } = render(
             <Content
                 {...sharedProps}
@@ -299,14 +302,17 @@ describe('Content', () => {
                 strippedHtml="stripped html"
                 strippedText="stripped text"
                 messagePosition={2}
+                toggleQuote={toggleQuote}
             />,
         )
 
         userEvent.click(getByText('…'))
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.MessageThreadClicked)
+        expect(toggleQuote).toHaveBeenCalledWith(1)
     })
 
-    it('should not track when showing full content', () => {
+    it('should toggle quote without tracking event when clicking ellipsis for first message', () => {
+        const toggleQuote = jest.fn()
         const { getByText } = render(
             <Content
                 {...sharedProps}
@@ -315,6 +321,7 @@ describe('Content', () => {
                 strippedHtml="stripped html"
                 strippedText="stripped text"
                 messagePosition={1}
+                toggleQuote={toggleQuote}
             />,
         )
 
@@ -322,5 +329,6 @@ describe('Content', () => {
         expect(logEvent).not.toHaveBeenCalledWith(
             SegmentEvent.MessageThreadClicked,
         )
+        expect(toggleQuote).toHaveBeenCalledWith(1)
     })
 })

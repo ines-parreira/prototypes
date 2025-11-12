@@ -23,6 +23,7 @@ import {
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
+import { useMessageQuote } from '../MessageQuoteContext'
 import Body from './Body'
 import Errors from './Errors'
 import ReplyDetailsCard from './ReplyDetailsCard'
@@ -53,6 +54,13 @@ export default function Message({
     const hasError = isFailed(message)
     const [isOver, setIsOver] = useState(false)
     const ticket = useAppSelector(getTicket)
+
+    const { toggleQuote, expandedQuotes } = useMessageQuote()
+
+    const isMessageExpanded = useMemo(
+        () => !!message.id && expandedQuotes.includes(message.id),
+        [message.id, expandedQuotes],
+    )
 
     const { getMessageTranslation } = useTicketMessageTranslations({
         ticket_id: ticketId,
@@ -102,10 +110,12 @@ export default function Message({
 
     const showTranslationsDropdown = useMemo(
         () =>
+            !isMessageExpanded &&
             hasMessagesTranslation &&
             shouldShowTranslatedContent(ticket.language as Language) &&
             (!!messageTranslations || fetchingState !== FetchingState.Idle),
         [
+            isMessageExpanded,
             hasMessagesTranslation,
             messageTranslations,
             fetchingState,
@@ -138,6 +148,8 @@ export default function Message({
                 message={displayedMessage}
                 hasError={hasError}
                 messagePosition={messagePosition}
+                toggleQuote={toggleQuote}
+                isMessageExpanded={isMessageExpanded}
             />
             {showTranslationsDropdown && message.id && (
                 <TranslationsDropdown messageId={message.id} />

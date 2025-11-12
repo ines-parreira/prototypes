@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -98,7 +96,12 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={facebookCarouselMessage} messagePosition={1} />
+                <Body
+                    message={facebookCarouselMessage}
+                    messagePosition={1}
+                    toggleQuote={jest.fn()}
+                    isMessageExpanded={false}
+                />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -225,7 +228,12 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={quotedTweetTicketMessage} messagePosition={1} />
+                <Body
+                    message={quotedTweetTicketMessage}
+                    messagePosition={1}
+                    toggleQuote={jest.fn()}
+                    isMessageExpanded={false}
+                />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -333,7 +341,12 @@ describe('Body', () => {
         }
         const { container } = render(
             <Provider store={store}>
-                <Body message={productCardTicketMessage} messagePosition={1} />
+                <Body
+                    message={productCardTicketMessage}
+                    messagePosition={1}
+                    toggleQuote={jest.fn()}
+                    isMessageExpanded={false}
+                />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -367,6 +380,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -392,6 +407,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -427,6 +444,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -448,6 +467,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -471,6 +492,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -497,6 +520,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -526,6 +551,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )
@@ -552,6 +579,8 @@ describe('Body', () => {
                         <Body
                             message={messageWithSmartFollowUps}
                             messagePosition={1}
+                            toggleQuote={jest.fn()}
+                            isMessageExpanded={false}
                         />
                     </Provider>,
                 )

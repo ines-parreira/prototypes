@@ -1,4 +1,5 @@
 import classNamesBind from 'classnames/bind'
+import { noop } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
 
 import { TicketMessage } from 'models/ticket/types'
@@ -20,9 +21,15 @@ type Props = {
     className?: string
     hasError?: boolean
     messagePosition?: number
+    toggleQuote?: (messageId: number | undefined) => void
+    isMessageExpanded?: boolean
 }
 
-const Body = (props: Props) => {
+const Body = ({
+    toggleQuote = noop,
+    isMessageExpanded = false,
+    ...props
+}: Props) => {
     const { message, className, messagePosition = 1 } = props
 
     const {
@@ -47,6 +54,8 @@ const Body = (props: Props) => {
                     strippedText={message.stripped_text}
                     meta={message.meta}
                     messagePosition={messagePosition}
+                    toggleQuote={toggleQuote}
+                    isMessageExpanded={isMessageExpanded}
                 />
             )}
 
