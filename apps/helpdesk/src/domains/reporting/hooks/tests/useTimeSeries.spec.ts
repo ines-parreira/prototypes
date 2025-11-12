@@ -7,6 +7,8 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
+    getPeriodDateTimesFromFilters,
+    selectPerDimension,
     selectTimeSeriesByMeasures,
     useTimeSeries,
     useTimeSeriesPerDimension,
@@ -31,11 +33,17 @@ import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
+    BuiltQuery,
+    ScopeFilters,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import {
+    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
     ReportingResponse,
+    ReportingTimeDimension,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
@@ -53,17 +61,30 @@ describe('useTimeSeries', () => {
     const defaultTimeDimension = {
         dimension: TicketDimension.CreatedDatetime,
         granularity: ReportingGranularity.Hour,
-        dateRange: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
     }
+
     const defaultQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
         measures: [
             TicketMessagesMeasure.MedianFirstResponseTime,
             TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         ],
         dimensions: [],
-        filters: [],
+        filters: [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ],
         metricName: METRIC_NAMES.TEST_METRIC,
-        timeDimensions: [defaultTimeDimension],
+        timeDimensions: [
+            defaultTimeDimension as ReportingTimeDimension<unknown>,
+        ],
     }
     const defaultData = [
         {
@@ -230,15 +251,23 @@ describe('useTimeSeries', () => {
             useTimeSeries({
                 ...defaultQuery,
                 measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+                filters: [
+                    {
+                        member: TicketDimension.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2023-04-18T00:00:00.000'],
+                    },
+                    {
+                        member: TicketDimension.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2023-04-20T00:00:00.000'],
+                    },
+                ],
                 timeDimensions: [
                     {
                         ...defaultTimeDimension,
                         granularity: ReportingGranularity.Week,
-                        dateRange: [
-                            '2023-04-18T00:00:00.000',
-                            '2023-04-20T00:00:00.000',
-                        ],
-                    },
+                    } as ReportingTimeDimension<unknown>,
                 ],
             }),
         )
@@ -574,15 +603,25 @@ describe('selectTimeSeriesByMeasures', () => {
     const defaultTimeDimension = {
         dimension: TicketDimension.CreatedDatetime,
         granularity: ReportingGranularity.Hour,
-        dateRange: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
-    }
+    } as ReportingTimeDimension<unknown>
     const defaultQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
         measures: [
             TicketMessagesMeasure.MedianFirstResponseTime,
             TicketSatisfactionSurveyMeasure.AvgSurveyScore,
         ],
         dimensions: [],
-        filters: [],
+        filters: [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ],
         metricName: METRIC_NAMES.TEST_METRIC,
         timeDimensions: [defaultTimeDimension],
     }
@@ -653,7 +692,18 @@ describe('selectTimeSeriesByMeasures', () => {
             metricName: METRIC_NAMES.TEST_METRIC,
             scope: 'test-scope',
             measures: ['v2Measure1', 'v2Measure2'],
-            filters: [],
+            filters: [
+                {
+                    member: TicketDimension.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2022-01-02T00:00:00.000'],
+                },
+                {
+                    member: TicketDimension.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2022-01-02T05:00:00.000'],
+                },
+            ],
         } as any
 
         const v2Query: TimeSeriesQuery<TicketCubeWithJoins> = {
@@ -781,6 +831,150 @@ describe('selectTimeSeriesByMeasures', () => {
     })
 })
 
+describe('selectPerDimension', () => {
+    const defaultTimeDimension = {
+        dimension: TicketDimension.CreatedDatetime,
+        granularity: ReportingGranularity.Hour,
+    } as ReportingTimeDimension<unknown>
+    const defaultQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
+        measures: [TicketMessagesMeasure.MedianFirstResponseTime],
+        dimensions: [TicketDimension.Channel],
+        filters: [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ],
+        metricName: METRIC_NAMES.TEST_METRIC,
+        timeDimensions: [defaultTimeDimension],
+    }
+    const testScopeMeta = {
+        scope: 'test-scope' as any,
+        filters: ['periodStart', 'periodEnd'] as const,
+        measures: ['medianFirstResponseTime'] as const,
+        dimensions: ['agentId'] as const,
+        timeDimensions: ['createdDatetime'] as const,
+    } as const satisfies ScopeMeta
+    const defaultQueryV2: BuiltQuery<typeof testScopeMeta> = {
+        metricName: METRIC_NAMES.TEST_METRIC,
+        measures: testScopeMeta.measures,
+        time_dimensions: [defaultTimeDimension] as any,
+        dimensions: testScopeMeta.dimensions,
+        filters: [
+            {
+                member: 'periodStart',
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ] as ScopeFilters<typeof testScopeMeta>,
+        scope: testScopeMeta.scope,
+    }
+
+    const defaultData = [
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+            [TicketDimension.Channel]: 'email',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+        },
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+            [TicketDimension.Channel]: 'email',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
+        },
+        {
+            [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+            [TicketDimension.Channel]: 'chat',
+            [TicketMessagesMeasure.MedianFirstResponseTime]: '45',
+        },
+    ]
+
+    it('should select dimensions from V1 query when isV2 is false', () => {
+        const result = selectPerDimension(
+            defaultQuery,
+            undefined,
+            false,
+        )(defaultData)
+
+        expect(result.email).toBeDefined()
+        expect(result.chat).toBeDefined()
+        expect(result.email[0]).toHaveLength(5)
+        expect(result.chat[0]).toHaveLength(5)
+    })
+
+    it('should select dimensions from V2 query when isV2 is true', () => {
+        const v2Data = [
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                agentId: 'agent1',
+                medianFirstResponseTime: '65',
+            },
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                agentId: 'agent1',
+                medianFirstResponseTime: '32',
+            },
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                agentId: 'agent2',
+                medianFirstResponseTime: '45',
+            },
+        ] as any
+
+        const result = selectPerDimension(
+            defaultQuery,
+            defaultQueryV2,
+            true,
+        )(v2Data)
+
+        expect(result.agent1).toBeDefined()
+        expect(result.agent2).toBeDefined()
+        expect(result.agent1[0]).toHaveLength(5)
+        expect(result.agent2[0]).toHaveLength(5)
+    })
+
+    it('should strip escaped quotes from BREAKDOWN_FIELD dimension values', () => {
+        const escapedField = '\"customTag::subTag\"'
+        const unEscapedField = 'customTag::subTag'
+        const breakdownData = [
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                [BREAKDOWN_FIELD]: escapedField,
+                [TicketMessagesMeasure.MedianFirstResponseTime]: '65',
+            },
+            {
+                [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                [BREAKDOWN_FIELD]: escapedField,
+                [TicketMessagesMeasure.MedianFirstResponseTime]: '32',
+            },
+        ] as any
+
+        const breakdownQuery: TimeSeriesQuery<TicketCubeWithJoins> = {
+            ...defaultQuery,
+            dimensions: [BREAKDOWN_FIELD],
+        }
+
+        const result = selectPerDimension(
+            breakdownQuery,
+            undefined,
+        )(breakdownData)
+
+        expect(result).toHaveProperty(unEscapedField)
+        expect(result).not.toHaveProperty(escapedField)
+        expect(result[unEscapedField]).toBeDefined()
+    })
+})
+
 describe('TimeSeriesPerDimension', () => {
     const customFieldId = '1'
     const ticketField = 'customTag'
@@ -791,12 +985,22 @@ describe('TimeSeriesPerDimension', () => {
         dimension:
             TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
         granularity: ReportingGranularity.Hour,
-        dateRange: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
-    }
+    } as ReportingTimeDimension<unknown>
+
     const defaultQuery: TimeSeriesQuery<HelpdeskMessageCubeWithJoins> = {
         measures: [VALUE_FIELD],
         dimensions: [BREAKDOWN_FIELD],
         filters: [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                 operator: ReportingFilterOperator.Equals,
@@ -851,6 +1055,12 @@ describe('TimeSeriesPerDimension', () => {
     }
 
     describe('useTimeSeriesPerDimension', () => {
+        beforeEach(() => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                'off' as MigrationStage,
+            )
+        })
+
         it('should return separate time series per escaped dimension value', () => {
             renderHook(() =>
                 useTimeSeriesPerDimension(
@@ -984,6 +1194,16 @@ describe('TimeSeriesPerDimension', () => {
                     TicketCustomFieldsDimension.TicketCustomFieldsValueString,
                 ],
                 filters: [
+                    {
+                        member: TicketDimension.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2022-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: TicketDimension.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2022-01-02T05:00:00.000'],
+                    },
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
                         operator: ReportingFilterOperator.Equals,
@@ -1255,5 +1475,89 @@ describe('TimeSeriesPerDimension', () => {
             )
             expect(result).toBeDefined()
         })
+    })
+})
+
+describe('getDateRangeFromFilters', () => {
+    it('should return empty array when periodStart and periodEnd values are null', () => {
+        const granularity = ReportingGranularity.Hour
+
+        expect(getPeriodDateTimesFromFilters(undefined, granularity)).toEqual(
+            [],
+        )
+        expect(getPeriodDateTimesFromFilters([], granularity)).toEqual([])
+    })
+
+    it('should return empty array when periodStart and periodEnd are null', () => {
+        const filters = [
+            {
+                member: TicketDimension.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: ['email'],
+            },
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: null,
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: null,
+            },
+        ]
+        const granularity = ReportingGranularity.Hour
+
+        const result = getPeriodDateTimesFromFilters(
+            filters as ReportingFilter[],
+            granularity,
+        )
+
+        expect(result).toEqual([])
+    })
+
+    it('should return date range when periodStart and periodEnd have values', () => {
+        const filters = [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ]
+        const granularity = ReportingGranularity.Hour
+
+        const result = getPeriodDateTimesFromFilters(filters, granularity)
+
+        expect(result).toEqual([
+            '2022-01-02T00:00:00.000',
+            '2022-01-02T01:00:00.000',
+            '2022-01-02T02:00:00.000',
+            '2022-01-02T03:00:00.000',
+            '2022-01-02T04:00:00.000',
+        ])
+    })
+
+    it('should return date range when periodStart and periodEnd have values and granularity is undefined', () => {
+        const filters = [
+            {
+                member: TicketDimension.PeriodStart,
+                operator: ReportingFilterOperator.AfterDate,
+                values: ['2022-01-02T00:00:00.000'],
+            },
+            {
+                member: TicketDimension.PeriodEnd,
+                operator: ReportingFilterOperator.BeforeDate,
+                values: ['2022-01-02T05:00:00.000'],
+            },
+        ]
+
+        expect(getPeriodDateTimesFromFilters(filters, undefined)).toEqual([
+            '2022-01-02T00:00:00.000',
+        ])
     })
 })

@@ -10,9 +10,15 @@ import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import {
+    BuiltQuery,
+    ScopeFilters,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
+    ReportingFilter,
+    ReportingFilterOperator,
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
@@ -69,10 +75,19 @@ export type TimeSeriesResult = Omit<
 }
 
 const select =
-    <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
+    <TCube extends Cubes, TMeta extends ScopeMeta>(
+        query: TimeSeriesQuery<TCube>,
+        queryV2?: BuiltQuery<TMeta>,
+        isV2?: boolean,
+    ) =>
     (res: DataResponse['data']['data']) => {
-        const { timeDimensions, measures } = query
-        const { dimension, dateRange, granularity } = timeDimensions[0]
+        const timeDimensions =
+            isV2 && queryV2?.time_dimensions
+                ? queryV2.time_dimensions
+                : query.timeDimensions
+        const measures =
+            isV2 && queryV2?.measures ? queryV2.measures : query.measures
+        const { dimension, granularity } = timeDimensions[0]
 
         const dateTimeToValuesMap = res.reduce<
             Partial<Record<string, { values: number[]; rawData: any }>>
@@ -85,7 +100,10 @@ const select =
             return acc
         }, {})
 
-        const dateTimes = getPeriodDateTimes(dateRange, granularity)
+        const dateTimes = getPeriodDateTimesFromFilters(
+            isV2 && queryV2 ? queryV2.filters : query.filters,
+            granularity,
+        )
         return measures.map((_, index) => {
             return dateTimes.map((dateTime) => {
                 const entry = dateTimeToValuesMap[dateTime]
@@ -112,10 +130,15 @@ const objectMap = <T, S>(
 
 export type TimeSeriesPerDimension = Record<string, TimeSeriesDataItem[][]>
 
-const selectPerDimension =
-    <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
+export const selectPerDimension =
+    <TCube extends Cubes, TMeta extends ScopeMeta>(
+        query: TimeSeriesQuery<TCube>,
+        queryV2?: BuiltQuery<TMeta>,
+        isV2?: boolean,
+    ) =>
     (res: DataResponse['data']['data']): TimeSeriesPerDimension => {
-        const { dimensions } = query
+        const dimensions =
+            isV2 && queryV2?.dimensions ? queryV2.dimensions : query.dimensions
         let escapedResponse = res
         const dimension = dimensions[0]
 
@@ -130,7 +153,10 @@ const selectPerDimension =
             })
         }
 
-        return objectMap(_groupBy(escapedResponse, dimension), select(query))
+        return objectMap(
+            _groupBy(escapedResponse, dimension),
+            select(query, queryV2, isV2),
+        )
     }
 
 export const selectTimeSeriesByMeasures = <
@@ -144,7 +170,11 @@ export const selectTimeSeriesByMeasures = <
 ): TimeSeriesDataItem[][] => {
     let matchingArray: TimeSeriesDataItem[][] = []
 
-    const dataItems = select<TCube>(query)(result.data.data)
+    const dataItems = select<TCube, TMeta>(
+        query,
+        queryV2,
+        useV2,
+    )(result.data.data)
 
     const measures =
         useV2 && queryV2?.measures ? queryV2.measures : query.measures
@@ -215,13 +245,22 @@ export function useTimeSeriesPerDimension<
     TCube extends Cubes,
     TMeta extends ScopeMeta,
 >(query: TimeSeriesQuery<TCube>, newQuery?: BuiltQuery<TMeta>, enabled = true) {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     return usePostReportingV2<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
         TCube,
         TMeta
     >([query], newQuery, {
-        select: (res) => selectPerDimension<TCube>(query)(res.data.data),
+        select: (res) =>
+            selectPerDimension<TCube, TMeta>(
+                query,
+                newQuery,
+                isV2,
+            )(res.data.data),
         enabled,
     })
 }
@@ -230,13 +269,19 @@ export async function fetchTimeSeriesPerDimension<
     TCube extends Cubes,
     TMeta extends ScopeMeta = ScopeMeta,
 >(query: TimeSeriesQuery<TCube>, queryV2?: BuiltQuery<TMeta>) {
+    const migrationStage = await getNewStatsFeatureFlagMigration(
+        query.metricName,
+    )
+
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     return fetchPostReportingV2<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
         TCube,
         TMeta
     >([query], queryV2, {}).then((res) =>
-        selectPerDimension<TCube>(query)(res.data.data),
+        selectPerDimension<TCube, TMeta>(query, queryV2, isV2)(res.data.data),
     )
 }
 
@@ -266,4 +311,23 @@ export function getPeriodDateTimes(
         currentDate = currentDate.add(1, granularity)
     }
     return dates
+}
+
+export const getPeriodDateTimesFromFilters = <TMeta extends ScopeMeta>(
+    filters: ReportingFilter[] | ScopeFilters<TMeta> | undefined,
+    granularity: ReportingGranularity = ReportingGranularity.Day,
+): string[] => {
+    if (!filters) return []
+
+    const periodStart = filters.find(
+        (filter) => filter.operator === ReportingFilterOperator.AfterDate,
+    )
+    const periodEnd = filters.find(
+        (filter) => filter.operator === ReportingFilterOperator.BeforeDate,
+    )
+    const dateRange = [
+        periodStart?.values?.[0] || '',
+        periodEnd?.values?.[0] || '',
+    ]
+    return getPeriodDateTimes(dateRange, granularity)
 }

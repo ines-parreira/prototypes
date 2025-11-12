@@ -3,6 +3,7 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     CustomFieldsFilter,
+    DateFilter,
     DimensionName,
     StandardFilter,
     TagsFilter,
@@ -16,6 +17,9 @@ import {
 
 type Values<T> = T extends readonly (infer U)[] ? U : never
 
+type RequiredFilter<TMember extends readonly string[]> = DateFilter & {
+    member: TMember
+}
 // Helper type to map filter members to their specific shapes
 type FilterMemberToShape<TMember extends string> =
     TMember extends 'customFields'
@@ -37,14 +41,15 @@ export type ScopeMeta = {
     measures?: readonly string[]
     dimensions?: readonly DimensionName[]
     timeDimensions?: readonly TimeDimensionName[]
-    filters?: readonly string[]
+    filters: readonly string[]
     order?: readonly string[]
     limit?: number
 }
 
 export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
     TScopeMeta['filters'] extends readonly string[]
-        ? OptionalFilters<TScopeMeta['filters']>
+        ? RequiredFilter<TScopeMeta['filters']> &
+              OptionalFilters<TScopeMeta['filters']>
         : never
 >
 

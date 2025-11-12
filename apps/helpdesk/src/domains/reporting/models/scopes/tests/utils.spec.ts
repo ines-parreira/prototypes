@@ -44,6 +44,7 @@ describe('utils', () => {
         it('should handle scope config with undefined filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
+                filters: ['periodStart', 'periodEnd'],
             }
 
             const result = createScopeFilters(basePeriodFilters, scopeConfig)

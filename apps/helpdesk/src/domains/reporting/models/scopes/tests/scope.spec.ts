@@ -71,6 +71,7 @@ describe('scope', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
                 measures: ['onlineTime'],
+                filters: ['periodStart', 'periodEnd'],
             }
 
             const result = defineScope(config)
@@ -319,6 +320,7 @@ describe('scope', () => {
         it('should handle empty scope configuration', () => {
             const scope = defineScope({
                 scope: MetricScope.TicketsOpen,
+                filters: ['periodStart', 'periodEnd'],
             })
             const scopeBuilder = scope
 
