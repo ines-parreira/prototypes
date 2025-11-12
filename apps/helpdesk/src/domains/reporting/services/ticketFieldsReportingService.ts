@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _flatten from 'lodash/flatten'
 import _orderBy from 'lodash/orderBy'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {

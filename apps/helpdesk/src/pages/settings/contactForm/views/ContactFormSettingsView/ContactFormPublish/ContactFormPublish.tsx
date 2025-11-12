@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Route, Switch } from 'react-router-dom'
 import {
@@ -10,7 +11,6 @@ import {
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import BackLink from 'pages/common/components/BackLink'
 import useClipboard from 'pages/common/hooks/useClipboard'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'

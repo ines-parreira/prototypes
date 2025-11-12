@@ -1,10 +1,10 @@
 import React, { FormEvent, useCallback } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { get as _get } from 'lodash'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     Action,
     Parameter,

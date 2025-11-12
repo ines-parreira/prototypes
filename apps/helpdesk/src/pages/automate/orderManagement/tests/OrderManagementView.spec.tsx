@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,7 +12,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -45,7 +45,7 @@ import OrderManagementView from '../OrderManagementView'
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useContactFormsAutomationSettings')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('core/flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import {
     Button,
@@ -9,7 +10,6 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'

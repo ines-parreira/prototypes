@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { submitSetting } from 'state/currentUser/actions'
 import {
@@ -15,12 +15,12 @@ import {
 import AvailabilityToggle from '../AvailabilityToggle'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

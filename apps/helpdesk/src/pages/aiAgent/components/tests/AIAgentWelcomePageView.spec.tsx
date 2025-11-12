@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
@@ -72,7 +72,7 @@ jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     })),
 }))
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         AiAgentWelcomePageViewed: 'ai-agent-welcome-page-viewed',

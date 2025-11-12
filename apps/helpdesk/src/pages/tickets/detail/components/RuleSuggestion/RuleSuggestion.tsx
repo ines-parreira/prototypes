@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
@@ -12,7 +13,6 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'

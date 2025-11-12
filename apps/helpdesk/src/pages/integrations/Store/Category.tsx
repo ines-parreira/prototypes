@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { Category as CategoryType } from 'models/integration/types/app'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'

@@ -1,11 +1,11 @@
 import React from 'react'
 
+import * as SegmentTracker from '@repo/logging'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as SegmentTracker from 'common/segment'
 import { IntegrationType } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'

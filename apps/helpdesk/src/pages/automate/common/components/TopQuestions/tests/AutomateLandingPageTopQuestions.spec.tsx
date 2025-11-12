@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
@@ -14,7 +14,7 @@ import { useTopQuestionsArticles } from '../useTopQuestionsArticles'
 import { useTopQuestionsFilters } from '../useTopQuestionsFilters'
 import { useTopQuestionsViewedOnPage } from '../useTopQuestionsViewedOnPage'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('../useTopQuestionsFilters')

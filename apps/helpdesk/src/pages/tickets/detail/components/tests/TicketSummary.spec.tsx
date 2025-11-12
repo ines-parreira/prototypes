@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
 
@@ -30,7 +30,7 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => ({
 
 const useTicketSummaryMock = useTicketSummary as jest.Mock
 const useGetDateAndTimeFormatMock = useGetDateAndTimeFormat as jest.Mock
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 const baseSummary = {

@@ -1,13 +1,13 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { IntegrationType } from 'models/integration/constants'
 
 import { TopQuestionsSection } from '../TopQuestionsSection'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('<TopQuestionsSection />', () => {

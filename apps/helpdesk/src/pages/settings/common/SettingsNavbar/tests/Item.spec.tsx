@@ -1,19 +1,19 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ADMIN_ROLE } from 'config/user'
 import { ProductType } from 'models/billing/types'
 import { renderWithRouter } from 'utils/testing'
 
 import Item from '../Item'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock(
     'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView',
     () => ({

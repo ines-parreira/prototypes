@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { account as accountFixture } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import { user as userFixture } from 'fixtures/users'
@@ -24,7 +24,7 @@ import { renderWithRouter } from 'utils/testing'
 
 import ManageEmbedments from '../ManageEmbedments'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

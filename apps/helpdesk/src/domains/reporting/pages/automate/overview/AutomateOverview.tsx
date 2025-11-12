@@ -1,6 +1,6 @@
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     paywallConfigs as defaultPaywallConfigs,
     PaywallConfig,

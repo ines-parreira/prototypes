@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { useDownloadAgentsPerformanceData } from 'domains/reporting/hooks/support-performance/agents/useDownloadAgentsPerformanceData'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { saveZippedFiles } from 'utils/file'

@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import Dropdown, {
     DropdownContext,
 } from 'pages/common/components/dropdown/Dropdown'

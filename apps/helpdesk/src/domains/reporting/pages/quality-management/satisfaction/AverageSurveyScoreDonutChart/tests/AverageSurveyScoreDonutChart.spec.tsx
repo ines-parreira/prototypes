@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -21,7 +21,7 @@ import { SatisfactionAverageSurveyScoreMetric } from 'domains/reporting/state/ui
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock(

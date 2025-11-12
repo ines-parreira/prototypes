@@ -7,12 +7,12 @@ import {
     useContext,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { Badge, ColorType } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,

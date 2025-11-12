@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
 import { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { StripePaymentMethodType } from 'models/billing/types'

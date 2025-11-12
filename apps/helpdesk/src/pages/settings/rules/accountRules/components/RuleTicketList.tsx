@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,6 @@ import { Table } from 'reactstrap'
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

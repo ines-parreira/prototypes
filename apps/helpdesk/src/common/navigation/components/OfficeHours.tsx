@@ -1,7 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'

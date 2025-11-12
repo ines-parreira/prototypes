@@ -1,9 +1,8 @@
 import React from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import { PromoCard } from 'pages/common/components/PromoCard'
 
 import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'

@@ -1,10 +1,10 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
 import { SLAPolicy, useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     FilterKey,
@@ -35,7 +35,7 @@ import { renderWithStore } from 'utils/testing'
 jest.mock('@gorgias/helpdesk-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

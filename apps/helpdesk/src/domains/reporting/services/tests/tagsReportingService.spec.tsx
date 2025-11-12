@@ -1,6 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
@@ -54,7 +54,7 @@ const useTagsReportContextMock = assumeMock(useTagsReportContext)
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 
 import { useId } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import {
     LegacyButton as Button,
@@ -8,7 +9,6 @@ import {
 } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import { logEvent, SegmentEvent } from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'

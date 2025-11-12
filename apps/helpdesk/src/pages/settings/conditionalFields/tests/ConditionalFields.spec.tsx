@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Link } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
@@ -16,10 +16,10 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import ConditionalFields, { MAX_CONDITIONS } from '../ConditionalFields'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )

@@ -1,14 +1,13 @@
 import React from 'react'
 
 import { FilterStatus } from '@knocklabs/react'
-import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
-
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
-} from 'common/segment'
+} from '@repo/logging'
+import { assumeMock } from '@repo/testing'
+import { render, screen, waitFor } from '@testing-library/react'
 
 import useCount from '../../hooks/useCount'
 import FeedHeader from '../FeedHeader'
@@ -29,7 +28,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         NotificationCenter: 'notification-center',

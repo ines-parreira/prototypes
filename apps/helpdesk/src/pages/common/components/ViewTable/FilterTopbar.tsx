@@ -15,6 +15,7 @@ import {
     useUnmount,
     useUpdateEffect,
 } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
@@ -37,7 +38,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getConfigByName } from 'config/views'
 import { useFlag } from 'core/flags'
 import { OBJECT_PATHS } from 'custom-fields/constants'

@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { Tag } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'

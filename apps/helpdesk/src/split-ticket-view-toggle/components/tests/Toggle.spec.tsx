@@ -10,7 +10,7 @@ import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import Toggle from '../Toggle'
 
 // Mock the dependencies
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag', () => ({
     useDesktopOnlyShowGlobalNavFeatureFlag: jest.fn(() => true),
 }))

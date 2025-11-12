@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { isSourceRecord, Source } from 'models/widget/types'
 
 import { defaultShopifyContextValue } from '../contexts/ShopifyContext'

@@ -1,6 +1,6 @@
 import { useEffectOnce } from '@repo/hooks'
+import { identifyUser } from '@repo/logging'
 
-import { identifyUser } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import userActivityManager from 'services/userActivityManager'

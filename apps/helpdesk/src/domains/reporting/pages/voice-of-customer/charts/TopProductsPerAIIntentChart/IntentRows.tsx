@@ -1,9 +1,9 @@
 import { CSSProperties, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { TrendIcon } from '@repo/reporting'
 import classNames from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { transformCategorySeparator } from 'domains/reporting/hooks/helpers'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import { TableWithNestedRowsCell } from 'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell'

@@ -1,10 +1,10 @@
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import {
     addTagsAction,
@@ -19,7 +19,7 @@ import { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosQuickReply } from '../MacrosQuickReply'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
+import { SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'

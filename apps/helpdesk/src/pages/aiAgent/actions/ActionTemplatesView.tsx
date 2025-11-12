@@ -1,7 +1,7 @@
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'

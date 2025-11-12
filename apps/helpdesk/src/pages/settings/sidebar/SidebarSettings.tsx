@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { produce } from 'immer'
 import _isEqual from 'lodash/isEqual'
@@ -7,7 +8,6 @@ import _isEqual from 'lodash/isEqual'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import * as constants from 'domains/reporting/pages/dashboards/config'
 import { CHARTS_MODAL_ICONS } from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon'
@@ -49,7 +49,7 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('AddChartsModal', () => {

@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { isOutdatedValue } from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'

@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 
 import { Badge, LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

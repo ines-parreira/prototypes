@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'

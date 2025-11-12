@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     Article,

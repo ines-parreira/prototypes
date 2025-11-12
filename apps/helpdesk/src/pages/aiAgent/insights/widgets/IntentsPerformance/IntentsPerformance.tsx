@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 
 import { useGridSize } from '@repo/hooks'
+import { SegmentEvent } from '@repo/logging'
 
-import { SegmentEvent } from 'common/segment'
 import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'

@@ -1,9 +1,8 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import InfobarCustomerActions from '../InfobarCustomerActions'
 
@@ -12,10 +11,10 @@ jest.mock('utils', () => ({
 }))
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,13 +9,12 @@ import thunk from 'redux-thunk'
 
 import { Macro } from '@gorgias/helpdesk-queries'
 
-import { logEvent } from 'common/segment'
 import { user } from 'fixtures/users'
 import { RootState } from 'state/types'
 
 import MacroListContainer from '../MacroList'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 const mockStore = configureMockStore([thunk])

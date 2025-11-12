@@ -1,5 +1,6 @@
 import React, { memo, RefObject, useCallback, useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -10,7 +11,6 @@ import {
     getDraftOrderLineItemTotal,
 } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import IconButton from 'pages/common/components/button/IconButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'

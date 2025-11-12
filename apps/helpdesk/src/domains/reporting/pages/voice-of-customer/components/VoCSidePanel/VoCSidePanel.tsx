@@ -1,8 +1,9 @@
 import { FC } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { TabNavigation } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ProductHeader } from 'domains/reporting/pages/voice-of-customer/components/ProductHeader'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanel/VoCSidePanel.less'
 import {

@@ -1,18 +1,18 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import * as notificationActions from 'state/notifications/actions'
 import * as fileUtils from 'utils/file'
 
 import { DropdownCSVImport } from '../DropdownCSVImport'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockStore = configureMockStore([thunk])()

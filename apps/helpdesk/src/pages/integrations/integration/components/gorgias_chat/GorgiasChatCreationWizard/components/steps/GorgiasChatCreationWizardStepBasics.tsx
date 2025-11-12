@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -12,7 +13,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import {
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,

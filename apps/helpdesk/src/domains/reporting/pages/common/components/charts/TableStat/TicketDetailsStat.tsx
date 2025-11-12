@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent, StatViewLinkClickedStat } from '@repo/logging'
+
 import { TicketStatus } from 'business/types/ticket'
-import { logEvent, SegmentEvent, StatViewLinkClickedStat } from 'common/segment'
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import css from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat.less'
 import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'

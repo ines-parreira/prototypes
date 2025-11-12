@@ -1,9 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 

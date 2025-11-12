@@ -29,7 +29,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('react-cookie')
 jest.mock('hooks/useHasAgentPrivileges')
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 
 const queryClient = mockQueryClient()
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)

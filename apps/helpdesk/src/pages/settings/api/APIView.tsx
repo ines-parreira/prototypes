@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 import { fromJS } from 'immutable'
@@ -10,7 +11,6 @@ import { InputType } from 'reactstrap/es/Input'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import IconButton from 'pages/common/components/button/IconButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputGroup from 'pages/common/forms/input/InputGroup'

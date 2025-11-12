@@ -1,10 +1,10 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
@@ -81,7 +81,7 @@ const mockUseStoreConfigurationMutation = assumeMock(
     useStoreConfigurationMutation,
 )
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         AiAgentOnboardingWizardHelpCenterConnected:

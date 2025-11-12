@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import { ChartsDefaultFrame } from 'domains/reporting/pages/dashboards/ChartsDefaultFrame'
 import { DASHBOARDS_DOCUMENTATION_URL } from 'domains/reporting/pages/dashboards/constants'

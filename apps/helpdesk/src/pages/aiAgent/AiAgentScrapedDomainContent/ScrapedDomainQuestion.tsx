@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useParams } from 'react-router'
 
 import {
@@ -8,7 +9,6 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'

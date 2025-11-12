@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'

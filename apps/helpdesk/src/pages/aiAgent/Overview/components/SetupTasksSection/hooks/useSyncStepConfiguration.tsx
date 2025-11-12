@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     postStoreInstallationStepsKeys,
     useUpdateStepConfigurationPure,

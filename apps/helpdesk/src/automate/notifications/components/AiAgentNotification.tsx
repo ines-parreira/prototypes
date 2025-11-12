@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { Content, Excerpt, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { FeedItem, FeedItem as KnockFeedItem } from '@knocklabs/client'
 import {
@@ -7,9 +7,11 @@ import {
     RenderItemProps,
     useKnockFeed,
 } from '@knocklabs/react'
-
-import { logEvent, SegmentEvent } from 'common/segment'
-import { NotificationCenterEventTypes } from 'common/segment/types'
+import {
+    logEvent,
+    NotificationCenterEventTypes,
+    SegmentEvent,
+} from '@repo/logging'
 
 import { RawNotification } from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'

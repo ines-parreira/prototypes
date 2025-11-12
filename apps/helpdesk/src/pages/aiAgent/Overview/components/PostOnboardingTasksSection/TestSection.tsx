@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -11,7 +12,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import {
     PostStoreInstallationStepStatus,

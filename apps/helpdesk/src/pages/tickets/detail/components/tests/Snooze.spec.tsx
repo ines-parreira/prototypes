@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import { Moment } from 'moment'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Snooze from '../Snooze'
@@ -16,7 +16,7 @@ jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     useShortcuts: jest.fn(),
 }))
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock(
     '../TicketDetails/TicketSnoozePicker',
     () =>

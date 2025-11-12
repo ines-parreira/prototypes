@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import {
@@ -9,7 +10,6 @@ import {
 } from '@gorgias/axiom'
 import { TicketSummary } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/TicketSummary.less'

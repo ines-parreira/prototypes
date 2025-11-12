@@ -1,9 +1,9 @@
 import React, { Dispatch, Fragment, ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,

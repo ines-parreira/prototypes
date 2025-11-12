@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 export function useTicketModal(ticketIds: number[]) {
     const [ticketId, setTicketId] = useState<number | null>(null)

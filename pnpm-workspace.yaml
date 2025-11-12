@@ -128,3 +128,7 @@ catalogs:
     '@types/mousetrap': '^1.6.15'
   recharts:
     recharts: 3.3.0
+  notifications:
+    'push.js': '1.0.12'
+  logging:
+    '@types/segment-analytics': '^0.0.38'

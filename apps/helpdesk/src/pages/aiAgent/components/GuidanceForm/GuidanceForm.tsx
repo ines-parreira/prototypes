@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
 import {
@@ -9,7 +10,6 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'

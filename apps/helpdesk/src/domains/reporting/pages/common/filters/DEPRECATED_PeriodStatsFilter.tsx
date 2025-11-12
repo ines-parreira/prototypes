@@ -1,10 +1,10 @@
 import React, { ComponentProps, useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'

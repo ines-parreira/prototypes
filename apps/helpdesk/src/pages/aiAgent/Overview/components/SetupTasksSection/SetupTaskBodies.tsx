@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, LoadingSpinner, Text } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { StoreConfiguration } from 'models/aiAgent/types'

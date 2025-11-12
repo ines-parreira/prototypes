@@ -1,6 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ArticleTemplate } from 'models/helpCenter/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

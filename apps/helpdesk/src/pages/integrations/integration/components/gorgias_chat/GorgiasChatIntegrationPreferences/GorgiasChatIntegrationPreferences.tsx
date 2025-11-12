@@ -3,6 +3,7 @@ import { Component } from 'react'
 
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -21,7 +22,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'

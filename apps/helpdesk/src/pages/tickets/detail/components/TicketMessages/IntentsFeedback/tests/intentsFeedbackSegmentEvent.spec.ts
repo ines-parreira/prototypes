@@ -1,4 +1,4 @@
-import { logEvent } from 'common/segment'
+import { logEvent } from '@repo/logging'
 
 import {
     DropdownOpenEventProps,
@@ -7,7 +7,7 @@ import {
     UserSubmissionSubEventType,
 } from '../intentsFeedbackSegmentEvents'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 describe('Intents feedback segment utils', () => {

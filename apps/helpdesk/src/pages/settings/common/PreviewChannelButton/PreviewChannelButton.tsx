@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import styles from './PreviewChannelButton.less'

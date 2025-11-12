@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { IntegrationType } from 'models/integration/constants'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -15,7 +15,7 @@ import { draftOrderCustomization } from '../DraftOrder'
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const TitleWrapper = draftOrderCustomization.TitleWrapper!

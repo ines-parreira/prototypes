@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { JobType } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Update, useBulkAction } from 'jobs'
 
 import AssignUser from './AssignUser'

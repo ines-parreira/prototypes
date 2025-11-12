@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
@@ -14,7 +14,7 @@ import WrappedCustomerMetafields from '../WrappedCustomerMetafields'
 jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShopifyMetafieldsOpenCustomer: 'shopify/metafields/customer/open',

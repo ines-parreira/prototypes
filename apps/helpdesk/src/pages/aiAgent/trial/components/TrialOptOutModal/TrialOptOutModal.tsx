@@ -1,9 +1,9 @@
 import { memo, useCallback } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {

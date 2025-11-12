@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AI_MANAGED_TYPES,
     OBJECT_TYPE_SETTINGS,
@@ -22,10 +22,10 @@ import {
 import CustomFields from '../CustomFields'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )

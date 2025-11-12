@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Route, Router } from 'react-router-dom'
 
-import * as segment from 'common/segment'
 import { useFlag } from 'core/flags'
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
@@ -37,7 +37,9 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { trial } from 'pages/settings/new_billing/fixtures'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+}))
 jest.mock('models/billing/queries')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')

@@ -1,15 +1,15 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import EmailInvoicePopover from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-jest.mock('common/segment', () => {
-    const SegmentTracker = jest.requireActual('common/segment')
+jest.mock('@repo/logging', () => {
+    const SegmentTracker = jest.requireActual('@repo/logging')
     return {
         ...SegmentTracker,
         logEvent: jest.fn(),

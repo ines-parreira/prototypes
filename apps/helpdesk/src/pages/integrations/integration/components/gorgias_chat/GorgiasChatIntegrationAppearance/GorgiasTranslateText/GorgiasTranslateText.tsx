@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
 import { get, set } from 'lodash'
@@ -19,7 +20,6 @@ import {
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
 import { useFlag } from 'core/flags'

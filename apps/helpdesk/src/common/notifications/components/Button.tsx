@@ -1,12 +1,15 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
+import {
+    logEvent,
+    NotificationCenterEventTypes,
+    SegmentEvent,
+} from '@repo/logging'
 import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import { logEvent, SegmentEvent } from 'common/segment'
-import { NotificationCenterEventTypes } from 'common/segment/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 

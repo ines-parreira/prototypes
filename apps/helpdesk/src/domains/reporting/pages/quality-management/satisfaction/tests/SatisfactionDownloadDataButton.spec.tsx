@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { SatisfactionDownloadDataButton } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
@@ -16,7 +16,7 @@ jest.mock('domains/reporting/services/satisfactionReportingService')
 const useSatisfactionReportDataMock = assumeMock(useSatisfactionReportData)
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('SatisfactionDownloadDataButton', () => {

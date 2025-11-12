@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
 import { CreateCustomField } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
 import { CustomFieldInput, CustomFieldObjectTypes } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'

@@ -1,8 +1,8 @@
 import React, { ReactNode, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { AddChartToDashboardModal } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
 import css from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu.less'

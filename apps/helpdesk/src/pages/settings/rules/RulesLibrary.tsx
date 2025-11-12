@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect, useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import { parse } from 'qs'
@@ -9,7 +10,6 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'

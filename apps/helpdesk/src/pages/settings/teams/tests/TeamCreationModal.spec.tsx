@@ -1,12 +1,12 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { createTeam } from 'models/team/resources'
 import { RootState, StoreDispatch } from 'state/types'
 
@@ -26,7 +26,7 @@ jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => () => (
     <div>RuleCreationModalContent</div>
 ))
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const logEventMock = logEvent as jest.Mock
 

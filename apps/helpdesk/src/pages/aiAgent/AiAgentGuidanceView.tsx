@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

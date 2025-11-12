@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { Category } from 'models/integration/types/app'

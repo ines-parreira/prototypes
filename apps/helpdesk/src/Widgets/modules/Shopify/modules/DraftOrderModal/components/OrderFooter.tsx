@@ -1,12 +1,12 @@
 import React, { ChangeEvent, Component, ContextType, RefObject } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map } from 'immutable'
 import { uniqBy } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { connect } from 'react-redux'
 import { Col, Container, Row } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 
@@ -9,7 +10,6 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'

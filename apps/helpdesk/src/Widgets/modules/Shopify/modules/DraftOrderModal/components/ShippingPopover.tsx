@@ -8,12 +8,12 @@ import React, {
     RefObject,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Button, Form, Input, Popover, PopoverBody } from 'reactstrap'
 
 import { formatPrice } from 'business/shopify/number'
-import { logEvent, SegmentEvent } from 'common/segment'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import RadioButton from 'pages/common/components/RadioButton'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'

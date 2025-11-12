@@ -1,7 +1,7 @@
+import { identifyUser } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { identifyUser } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import userActivityManager from 'services/userActivityManager'
@@ -18,7 +18,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('services/userActivityManager')
 jest.mock('state/currentUser/actions')
 jest.mock('state/views/actions')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('services/activityTracker')
 
 describe('useSharedLogic', () => {

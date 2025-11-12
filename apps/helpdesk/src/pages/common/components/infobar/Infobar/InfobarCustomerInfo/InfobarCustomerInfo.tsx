@@ -1,13 +1,13 @@
 import { MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import Clipboard from 'clipboard'
 import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { Box, Button, Separator } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

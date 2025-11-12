@@ -36,7 +36,7 @@ const mockNotify = jest.fn()
 jest.mocked(notify).mockImplementation(mockNotify)
 
 // Mock tracking services
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('utils/gorgiasAppsAuth')
 
 // Mock aiAgent queries

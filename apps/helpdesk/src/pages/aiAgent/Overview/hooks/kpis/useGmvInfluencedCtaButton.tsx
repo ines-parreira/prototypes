@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'

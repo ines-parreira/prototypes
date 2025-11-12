@@ -1,6 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useDownloadDashboardData } from 'domains/reporting/hooks/dashboards/useDownloadDashboardData'
 import {
@@ -17,7 +17,7 @@ const useDashboardDataMock = assumeMock(useDashboardData)
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('useDownloadDashboardData', () => {

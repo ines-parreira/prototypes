@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'

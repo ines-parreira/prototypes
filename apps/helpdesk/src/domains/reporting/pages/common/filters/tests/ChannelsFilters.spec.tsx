@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -44,7 +44,7 @@ jest.mock('config/views.tsx', () => ({
     default: () => null,
 }))
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

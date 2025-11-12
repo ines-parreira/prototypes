@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { isCurrentlyOnTicket } from 'utils'
 

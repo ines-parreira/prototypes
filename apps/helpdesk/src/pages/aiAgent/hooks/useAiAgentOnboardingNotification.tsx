@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import hash from 'object-hash'
 
 import {
@@ -12,7 +13,6 @@ import {
     getNotificationReceivedDatetime,
     getNotificationReceivedDatetimePayload,
 } from 'automate/notifications/utils'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -43,7 +43,7 @@ jest.mock('../utils', () => ({
     bigcommerceCreateOrderFromCheckoutCart: jest.fn(),
 }))
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const defaultState = {
     integrations: fromJS(integrationsState),

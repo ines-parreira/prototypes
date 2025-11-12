@@ -1,6 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -22,7 +23,6 @@ import { UserSettingType } from '@gorgias/helpdesk-queries'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
@@ -124,7 +124,7 @@ jest.mock('reactstrap', () => {
     }
 })
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const mockMoment = moment
 

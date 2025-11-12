@@ -1,6 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 
@@ -8,7 +8,8 @@ import { useShoppingAssistantTracking } from '../useShoppingAssistantTracking'
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
-jest.mock('common/segment/segment', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

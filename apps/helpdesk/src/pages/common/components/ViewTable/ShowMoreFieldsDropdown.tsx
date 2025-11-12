@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { List, Map } from 'immutable'
 import _throttle from 'lodash/throttle'
 import {
@@ -9,7 +10,6 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { notify } from 'state/notifications/actions'

@@ -2,6 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import * as segment from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render } from '@testing-library/react'
@@ -11,7 +12,6 @@ import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as segment from 'common/segment'
 import { useFlag } from 'core/flags'
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'

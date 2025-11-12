@@ -23,7 +23,7 @@ jest.mock('@repo/hooks', () => ({
         .fn()
         .mockImplementation(() => ({ width: 100, height: 100 })),
 }))
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 
 const mockDispatch = jest.fn()
 assumeMock(useAppDispatch).mockReturnValue(mockDispatch)

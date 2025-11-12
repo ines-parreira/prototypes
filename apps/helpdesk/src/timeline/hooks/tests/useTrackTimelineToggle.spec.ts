@@ -1,13 +1,13 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS, List } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getTicketState } from 'state/ticket/selectors'
 
 import { useTimelinePanel } from '../useTimelinePanel'
 import { useTrackTimelineToggle } from '../useTrackTimelineToggle'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('../useTimelinePanel')
 jest.mock('state/ticket/selectors')

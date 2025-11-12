@@ -1,10 +1,10 @@
 import React from 'react'
 
+import * as segmentTracker from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import * as segmentTracker from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { getCurrentUser } from 'state/currentUser/selectors'
 

@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
-import { logEvent } from 'common/segment'
-import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import {

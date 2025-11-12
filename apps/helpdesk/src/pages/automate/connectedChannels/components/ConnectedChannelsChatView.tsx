@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { noop, startCase } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetHelpCenter } from 'models/helpCenter/queries'

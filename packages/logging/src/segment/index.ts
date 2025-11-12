@@ -1,4 +1,9 @@
-export { identifyUser, logEvent, logPageChange } from './segment'
+export {
+    identifyUser,
+    logEvent,
+    logEventWithSampling,
+    logPageChange,
+} from './segment'
 export {
     SegmentEvent,
     StatViewLinkClickedStat,

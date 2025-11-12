@@ -1,11 +1,11 @@
 import { useId } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { Macro } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import { getCurrentUser } from 'state/currentUser/selectors'

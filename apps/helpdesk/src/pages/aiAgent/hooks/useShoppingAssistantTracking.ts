@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { DiscountStrategy } from '../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from '../Onboarding/components/steps/PersonalityStep/PersuasionLevel'

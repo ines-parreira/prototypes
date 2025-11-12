@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
@@ -17,12 +17,12 @@ import { closePanels } from 'state/layout/actions'
 import MainNavigation, { ActiveContent } from '../MainNavigation'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

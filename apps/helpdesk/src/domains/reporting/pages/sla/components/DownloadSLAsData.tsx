@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { useDownloadSLAsData } from 'domains/reporting/hooks/sla/useDownloadSLAsData'
 import { DownloadSLAsDataButton } from 'domains/reporting/pages/sla/components/DownloadSLAsDataButton'
 import { saveZippedFiles } from 'utils/file'

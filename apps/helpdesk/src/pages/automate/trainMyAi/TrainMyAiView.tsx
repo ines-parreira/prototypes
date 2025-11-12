@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Link, useParams } from 'react-router-dom'
 
 import { Badge, LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import {
     ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,
     useArticleRecommendationPredictions,

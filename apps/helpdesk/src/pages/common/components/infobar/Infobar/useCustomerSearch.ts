@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {

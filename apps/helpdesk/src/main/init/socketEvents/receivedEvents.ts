@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import { fromJS, List, Map } from 'immutable'
@@ -8,7 +9,6 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { store as reduxStore } from 'common/store'
 import { isSpecificTicketPath } from 'common/utils'
 import { MAX_RECENT_CHATS } from 'config/recentChats'

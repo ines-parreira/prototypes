@@ -2,10 +2,9 @@ import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
-import { SegmentEvent } from 'common/segment'
-import { logEvent } from 'common/segment/segment'
 import { useFlag } from 'core/flags'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'

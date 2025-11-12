@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -5,7 +6,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyAutomationPlan,
@@ -44,7 +44,7 @@ jest.mock('react-router')
 jest.mock('../../CancelProductModal/CancelProductModal')
 const CancelProductModalMock = assumeMock(CancelProductModal)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('ProductPlanSelection', () => {

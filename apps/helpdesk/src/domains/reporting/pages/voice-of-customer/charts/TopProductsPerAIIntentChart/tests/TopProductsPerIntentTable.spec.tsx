@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 
-import { logEvent } from 'common/segment'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useIntentTicketCountsAndDelta } from 'domains/reporting/hooks/voice-of-customer/useIntentTicketCountsAndDelta'
 import { useProductsTicketCountsPerIntentDistribution } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
@@ -45,7 +45,7 @@ jest.mock(
     'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger',
 )
 const VoCSidePanelTriggerMock = assumeMock(VoCSidePanelTrigger)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('TopProductsPerIntentTable', () => {

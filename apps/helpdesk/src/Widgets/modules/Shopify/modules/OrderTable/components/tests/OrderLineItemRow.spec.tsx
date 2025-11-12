@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { InventoryManagement } from 'constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
@@ -23,7 +23,7 @@ jest.mock(
             setTimeout(() => fn(...args), delay),
 )
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 describe('<OrderLineItemRow/>', () => {

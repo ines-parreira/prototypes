@@ -1,11 +1,11 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Source } from 'models/widget/types'
 
 import { getShopifyResourceIds } from '../getShopifyResourceIds'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShopifyContextDataMissing: 'moki',

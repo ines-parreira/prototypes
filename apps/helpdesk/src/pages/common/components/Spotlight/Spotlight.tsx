@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import SpotlightModal from 'pages/common/components/Spotlight/SpotlightModal'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
 

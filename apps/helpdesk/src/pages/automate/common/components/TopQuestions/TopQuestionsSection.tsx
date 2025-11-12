@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import { Badge } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { IntegrationType } from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { getIconFromType } from 'state/integrations/helpers'

@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent } from 'common/segment'
 import { UserSetting, UserSettingType } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
@@ -14,7 +14,7 @@ import { RootState } from 'state/types'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 jest.mock('hooks/useAppDispatch.ts', () => {
     return {

@@ -1,15 +1,24 @@
-import { mockProductionEnvironment } from '@repo/testing'
-
-import { user } from 'fixtures/users'
-
 import { identifyUser, logEventWithSampling } from '../segment'
 import { SegmentEvent } from '../types'
+
+const mockUser = {
+    name: 'Alex Plugaru',
+    email: 'alex@gorgias.io',
+    country: 'US',
+    role: { name: 'admin' },
+    created_datetime: '2016-12-22T19:36:12.487448+00:00',
+    notification_permission: 'granted',
+}
 
 describe('segmentTracker', () => {
     const analytics = globalThis.analytics
 
     beforeEach(() => {
-        mockProductionEnvironment()
+        // Mock production environment
+        window.PRODUCTION = true
+        window.STAGING = false
+        window.DEVELOPMENT = false
+        vi.clearAllMocks()
     })
 
     afterEach(() => {
@@ -19,18 +28,18 @@ describe('segmentTracker', () => {
 
     describe('identifyUser', () => {
         it('should identify the user', () => {
-            identifyUser(user)
+            identifyUser(mockUser)
 
             expect(window.analytics.identify).toHaveBeenNthCalledWith(
                 1,
                 window.SEGMENT_ANALYTICS_USER_ID,
                 {
                     gorgias_subdomain: 'localhost',
-                    name: user.name,
-                    email: user.email,
-                    country: user.country,
-                    role: user.role.name,
-                    created_at: user.created_datetime,
+                    name: mockUser.name,
+                    email: mockUser.email,
+                    country: mockUser.country,
+                    role: mockUser.role.name,
+                    created_at: mockUser.created_datetime,
                     notification_permission: 'granted',
                 },
             )
@@ -38,7 +47,7 @@ describe('segmentTracker', () => {
 
         it('should not identify the user when the user is impersonated', () => {
             window.USER_IMPERSONATED = true
-            identifyUser(user)
+            identifyUser(mockUser)
 
             expect(window.analytics.identify).not.toHaveBeenCalled()
         })
@@ -46,7 +55,7 @@ describe('segmentTracker', () => {
         it('should not identify the user when the analytics are undefined', () => {
             // @ts-ignore: analytics is optional
             delete globalThis.analytics
-            identifyUser(user)
+            identifyUser(mockUser)
 
             expect(analytics.identify).not.toHaveBeenCalled()
         })
@@ -79,7 +88,7 @@ describe('segmentTracker', () => {
         })
 
         it('should use default sample rate', () => {
-            jest.spyOn(global.Math, 'random').mockReturnValue(0.001)
+            vi.spyOn(global.Math, 'random').mockReturnValue(0.001)
             logEventWithSampling(SegmentEvent.AiAgentCopiedToEditor)
 
             expect(window.analytics.track).toHaveBeenCalledTimes(1)

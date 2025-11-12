@@ -1,9 +1,9 @@
 import { ForwardedRef, forwardRef, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS,

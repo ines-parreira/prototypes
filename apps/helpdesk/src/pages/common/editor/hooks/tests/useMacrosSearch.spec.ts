@@ -1,10 +1,10 @@
 import * as debounceHook from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ticket as defaultTicket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -14,7 +14,7 @@ jest.mock('models/macro/resources', () => ({
     fetchMacros: jest.fn(),
 }))
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)

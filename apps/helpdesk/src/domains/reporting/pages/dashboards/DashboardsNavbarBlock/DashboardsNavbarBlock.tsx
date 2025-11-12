@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { NavLink, useHistory } from 'react-router-dom'
 import {
@@ -11,7 +12,6 @@ import {
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Navigation } from 'components/Navigation/Navigation'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import { CampaignSuggestCopyResponse } from 'models/convert/campaign/types'

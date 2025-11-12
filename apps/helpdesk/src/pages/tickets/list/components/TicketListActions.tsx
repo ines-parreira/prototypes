@@ -1,5 +1,6 @@
 import { MouseEvent, useMemo, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -19,7 +20,6 @@ import {
 } from '@gorgias/axiom'
 import { JobType } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Popover } from 'components/Popover'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'

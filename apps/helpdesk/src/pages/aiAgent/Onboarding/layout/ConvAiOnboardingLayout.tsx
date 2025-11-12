@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     aiAgentRoutes,
     getAiAgentNavigationRoutes,

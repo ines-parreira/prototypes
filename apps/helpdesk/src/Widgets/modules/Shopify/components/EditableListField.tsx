@@ -1,11 +1,11 @@
 import React, { useContext, useMemo, useState } from 'react'
 
 import { useId } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useSaveTagsInTicketDraft from 'hooks/useSaveTagsInTicketDraft'
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'

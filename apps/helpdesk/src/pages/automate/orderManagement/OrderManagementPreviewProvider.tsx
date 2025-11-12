@@ -1,8 +1,8 @@
 import React, { ReactNode, useMemo, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import { SegmentEvent } from 'common/segment'
 import { IntegrationType } from 'models/integration/constants'
 import useSelfServiceChannels, {
     SelfServiceChannel,

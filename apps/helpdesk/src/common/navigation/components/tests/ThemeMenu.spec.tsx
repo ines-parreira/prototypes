@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, within } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     THEME_CONFIGS,
     THEME_NAME,
@@ -15,12 +15,12 @@ import {
 import ThemeMenu from '../ThemeMenu'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock(

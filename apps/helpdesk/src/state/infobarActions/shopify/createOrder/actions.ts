@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import axios, { AxiosResponse } from 'axios'
 import { fromJS, List } from 'immutable'
 import type { Map } from 'immutable'
@@ -15,7 +16,6 @@ import {
 } from 'business/shopify/draftOrder'
 import { getDraftOrderTotalLineItemsPrice } from 'business/shopify/lineItem'
 import { formatPercentage, formatPrice } from 'business/shopify/number'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,

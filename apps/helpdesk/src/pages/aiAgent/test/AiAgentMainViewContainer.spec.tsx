@@ -95,7 +95,7 @@ jest.mock('models/storeMapping/queries', () => ({
     }),
 }))
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { AiAgentWelcomePageViewed: 'ai-agent-welcome-page-viewed' },
 }))

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
-import { SegmentEvent } from 'common/segment'
+import { SegmentEvent } from '@repo/logging'
+
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'

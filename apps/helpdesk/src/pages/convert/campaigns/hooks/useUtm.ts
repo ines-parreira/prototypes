@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
 import { ChannelConnection } from 'models/convert/channelConnection/types'
 

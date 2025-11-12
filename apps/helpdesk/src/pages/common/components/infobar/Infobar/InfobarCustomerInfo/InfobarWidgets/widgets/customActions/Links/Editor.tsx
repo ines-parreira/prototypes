@@ -6,12 +6,12 @@ import React, {
     useState,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     Link,

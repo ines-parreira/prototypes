@@ -1,10 +1,10 @@
 import React, { ReactNode, useContext, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, Map } from 'immutable'
 import { connect, ConnectedProps } from 'react-redux'
 
 import logo from 'assets/img/infobar/shopify.svg'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType, ShopifyIntegration } from 'models/integration/types'

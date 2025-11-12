@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { closePanels } from 'state/layout/actions'
@@ -15,12 +15,12 @@ import { setViewActive } from 'state/views/actions'
 import { RecentChats } from '../RecentChats'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

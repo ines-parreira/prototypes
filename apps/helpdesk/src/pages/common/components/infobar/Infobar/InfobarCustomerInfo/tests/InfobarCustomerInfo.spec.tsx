@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -9,7 +10,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     BIGCOMMERCE_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
@@ -24,7 +24,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({

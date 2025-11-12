@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { _goToNextOrPrevTicket, clearTicket } from 'state/ticket/actions'
 

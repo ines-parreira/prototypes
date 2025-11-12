@@ -2,10 +2,10 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ErrorBoundary } from 'pages/ErrorBoundary'

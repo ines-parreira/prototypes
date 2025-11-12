@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import { Icon, Text } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { usePostStoreInstallationStepsMutation } from 'pages/aiAgent/hooks/usePostStoreInstallationStepsMutation'
 import Accordion from 'pages/common/components/accordion/Accordion'

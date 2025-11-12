@@ -1,11 +1,11 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { convertPlan1, convertPlan2 } from 'fixtures/productPrices'
 
 import { handleConvertProductDowngraded } from '../handleConvertProductDowngraded'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('handleConvertProductDowngraded', () => {

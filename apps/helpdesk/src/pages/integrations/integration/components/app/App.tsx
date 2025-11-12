@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useEffectOnce, useTitle } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { isEmpty } from 'lodash'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -12,7 +13,6 @@ import {
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'

@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     ACTION_MENU_LABEL,
     ActionMenuItem,

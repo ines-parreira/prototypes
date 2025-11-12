@@ -1,15 +1,14 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
     InjectedProps,
 } from '../withGrammarlyUsageTracking'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.useFakeTimers()
 
 const MockComponent = ({ detectGrammarly }: InjectedProps) => (

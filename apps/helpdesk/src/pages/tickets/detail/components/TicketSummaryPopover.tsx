@@ -1,8 +1,9 @@
 import { forwardRef, useCallback, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Popover } from 'components/Popover'
 import useAppSelector from 'hooks/useAppSelector'
 import TicketSummarySection, {

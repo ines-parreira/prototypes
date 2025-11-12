@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
@@ -7,7 +8,6 @@ import {
 } from 'automate/notifications/types'
 import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
 import type { Notification } from 'common/notifications'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 
@@ -17,12 +17,12 @@ const TICKET_VIEW_ID = 123
 const SHOP_NAME = 'store_1'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({

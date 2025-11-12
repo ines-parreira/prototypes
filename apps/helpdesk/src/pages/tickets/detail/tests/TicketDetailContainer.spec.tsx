@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -14,7 +15,6 @@ import thunk from 'redux-thunk'
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
@@ -100,7 +100,7 @@ jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     skipExistingTimer: jest.fn(),
 }))
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual<Record<string, unknown>>('state/ticket/actions'),
     triggerTicketFieldsErrors: jest.fn(),

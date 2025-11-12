@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
+
 import {
     Badge,
     BadgeIcon,
@@ -8,8 +10,6 @@ import {
 } from '@gorgias/axiom'
 import { Tag } from '@gorgias/helpdesk-types'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     FeedbackOnMessage,

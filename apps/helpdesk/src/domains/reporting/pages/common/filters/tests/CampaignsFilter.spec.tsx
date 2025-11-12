@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -33,7 +33,7 @@ const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]
 const mockedCampaignsList = campaignsList
 
 jest.mock('domains/reporting/pages/convert/hooks/useGetCampaignsForStore')
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

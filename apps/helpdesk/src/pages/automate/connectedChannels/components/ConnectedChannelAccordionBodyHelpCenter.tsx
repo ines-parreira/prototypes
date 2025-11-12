@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterAutomationSettings } from 'models/helpCenter/types'

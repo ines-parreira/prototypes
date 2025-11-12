@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { AxiosError } from 'axios'
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
@@ -9,7 +10,6 @@ import { Link } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CursorDirection, OrderDirection } from 'models/api/types'
 import { fetchTeams } from 'models/team/resources'

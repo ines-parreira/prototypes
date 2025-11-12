@@ -1,8 +1,8 @@
 import React, { useReducer, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import _capitalize from 'lodash/capitalize'
 
-import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'

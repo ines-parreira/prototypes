@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import { useFlag } from 'core/flags'
 import { StoreConfiguration } from 'models/aiAgent/types'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'

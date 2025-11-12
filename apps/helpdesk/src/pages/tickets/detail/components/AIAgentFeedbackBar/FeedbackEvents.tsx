@@ -1,7 +1,7 @@
 import { type FC, Fragment } from 'react'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
+
 import { TicketMessage } from 'models/ticket/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import TicketTag from 'pages/common/components/TicketTag'

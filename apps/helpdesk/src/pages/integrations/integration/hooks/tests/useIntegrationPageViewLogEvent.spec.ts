@@ -1,7 +1,6 @@
+import * as segmentTracker from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { Map } from 'immutable'
-
-import * as segmentTracker from 'common/segment'
 
 import useIntegrationPageViewLogEvent from '../useIntegrationPageViewLogEvent'
 

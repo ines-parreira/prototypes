@@ -1,14 +1,14 @@
+import * as Segment from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
-import * as Segment from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { setFieldVisibility } from 'state/views/actions'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShowMoreFieldsClicked: 'ShowMoreFieldsClicked',

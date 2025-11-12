@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

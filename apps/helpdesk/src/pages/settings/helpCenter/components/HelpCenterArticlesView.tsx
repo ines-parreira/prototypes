@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useLimitations } from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

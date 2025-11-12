@@ -1,6 +1,5 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, fireEvent, render } from '@testing-library/react'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import {
     NavBarContextType,
@@ -9,7 +8,7 @@ import {
 import { useNavBar } from '../../hooks/useNavBar/useNavBar'
 import { NAVBAR_DISPLAY_KEY, NavBarProvider } from '../NavBarProvider'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 // Updated Test component with interactive buttons
 function TestComponent() {

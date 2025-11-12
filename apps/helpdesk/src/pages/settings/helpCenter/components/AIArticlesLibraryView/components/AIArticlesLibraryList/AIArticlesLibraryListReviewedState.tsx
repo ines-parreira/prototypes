@@ -1,6 +1,5 @@
 import { useEffectOnce } from '@repo/hooks'
-
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import css from './AIArticlesLibraryList.less'
 

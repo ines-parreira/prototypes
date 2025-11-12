@@ -1,6 +1,7 @@
 import React, { ElementType, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalFooter } from 'reactstrap'
@@ -11,7 +12,6 @@ import {
 } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'

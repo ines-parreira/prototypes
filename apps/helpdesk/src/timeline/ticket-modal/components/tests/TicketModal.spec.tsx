@@ -1,19 +1,19 @@
 import React, { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { TicketDetail } from 'tickets/ticket-detail'
 
 import { TicketModal } from '../TicketModal'
 import { TicketModalProvider } from '../TicketModalProvider'
 
-jest.mock('common/segment', () => ({
-    ...jest.requireActual('common/segment'),
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

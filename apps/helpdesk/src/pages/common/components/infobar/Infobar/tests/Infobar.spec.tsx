@@ -1,12 +1,12 @@
 import { ComponentProps, useState as mockUseState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { SegmentEvent } from 'common/segment'
 import { agents } from 'fixtures/agents'
 import { mockSearchRank } from 'fixtures/searchRank'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
@@ -38,15 +38,15 @@ const mockedStartEditionMode = assumeMock(startEditionMode)
 const mockedStopEditionMode = assumeMock(stopEditionMode)
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )
 
-const { logEvent } = jest.requireMock('common/segment') as {
+const { logEvent } = jest.requireMock('@repo/logging') as {
     logEvent: jest.Mock
 }
 

@@ -1,8 +1,7 @@
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import { useAIAgentMetrics } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'

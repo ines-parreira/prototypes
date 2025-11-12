@@ -1,6 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
@@ -13,7 +13,7 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('state/currentAccount/actions', () => ({
     submitSetting: jest.fn(() => 'submit-setting'),
 }))
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         AutoMergeSettingsUpdated: 'auto-merge-settings-updated',

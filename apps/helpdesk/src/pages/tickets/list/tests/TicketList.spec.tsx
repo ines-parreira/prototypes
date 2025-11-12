@@ -75,7 +75,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const mockViewTickets = jest.fn()
 jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({

@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
@@ -7,7 +8,6 @@ import {
     ListUsersRelationshipsItem,
 } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
@@ -19,9 +19,9 @@ import { STALE_TIME_MS, USERS_PER_PAGE, useUserList } from '../useUserList'
 jest.mock('@gorgias/helpdesk-queries')
 const mockedUseListUsers = jest.mocked(useListUsers)
 
-jest.mock('common/segment', () => {
+jest.mock('@repo/logging', () => {
     const segmentTracker: Record<string, unknown> =
-        jest.requireActual('common/segment')
+        jest.requireActual('@repo/logging')
 
     return {
         ...segmentTracker,

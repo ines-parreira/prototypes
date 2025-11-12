@@ -6,10 +6,9 @@
  * Though, some browsers (like Safari) do not support `SharedWorkers` and/or `BroadcastChannels`, so we've had to
  * create this adapter that behaves like the `SharedWorker` would, except it runs in the tab directly.
  */
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _noop from 'lodash/noop'
 import io, { Socket } from 'socket.io-client'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,

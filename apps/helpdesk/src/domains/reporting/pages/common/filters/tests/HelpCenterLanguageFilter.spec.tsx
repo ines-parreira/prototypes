@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
@@ -28,7 +28,7 @@ import { renderWithStore } from 'utils/testing'
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

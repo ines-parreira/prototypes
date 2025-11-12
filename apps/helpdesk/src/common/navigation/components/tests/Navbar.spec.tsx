@@ -28,7 +28,7 @@ jest.mock('common/notifications', () => ({
     NotificationsButton: () => <div>NotificationsButton</div>,
 }))
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 

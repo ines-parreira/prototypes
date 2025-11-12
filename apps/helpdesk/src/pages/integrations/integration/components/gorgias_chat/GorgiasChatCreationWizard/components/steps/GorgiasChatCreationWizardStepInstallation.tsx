@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {

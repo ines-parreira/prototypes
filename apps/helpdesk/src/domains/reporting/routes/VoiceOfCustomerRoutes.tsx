@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { logPageChange } from '@repo/logging'
 import {
     Redirect,
     Route,
@@ -8,7 +9,6 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import { logPageChange } from 'common/segment'
 import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'

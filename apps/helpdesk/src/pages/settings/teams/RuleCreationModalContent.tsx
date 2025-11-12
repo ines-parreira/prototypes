@@ -1,13 +1,13 @@
 import React, { FormEvent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn, usePrevious, useUpdateEffect } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ISO639English } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

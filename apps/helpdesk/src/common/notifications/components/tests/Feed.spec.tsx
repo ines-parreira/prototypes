@@ -2,14 +2,13 @@ import type { ComponentProps } from 'react'
 
 import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
 import type { RenderItemProps } from '@knocklabs/react'
-import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
-
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
-} from 'common/segment'
+} from '@repo/logging'
+import { assumeMock, userEvent } from '@repo/testing'
+import { render, screen } from '@testing-library/react'
 
 import Feed from '../Feed'
 import FeedHeader from '../FeedHeader'
@@ -46,12 +45,12 @@ jest.mock('@knocklabs/react', () => {
 const useKnockFeedMock = assumeMock(useKnockFeed)
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 jest.mock(
     '../FeedHeader',

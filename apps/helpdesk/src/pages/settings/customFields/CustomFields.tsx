@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useCallbackRef, useDebouncedValue, useTitle } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
@@ -8,7 +9,6 @@ import { Container } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useUpdateCustomFieldDefinitions } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'

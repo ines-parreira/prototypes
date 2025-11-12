@@ -1,9 +1,9 @@
+import * as segment from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import * as segment from 'common/segment'
 import {
     ConvAiOnboardingLayout,
     OnboardingContentContainer,
@@ -18,7 +18,7 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const historyPushMock = assumeMock(history.push)
 const logEventMock = assumeMock(segment.logEvent)
 

@@ -1,10 +1,10 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'

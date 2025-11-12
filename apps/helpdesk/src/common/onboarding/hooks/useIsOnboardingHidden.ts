@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import moment from 'moment'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { tryLocalStorage } from 'services/common/utils'
 import { getCurrentUser } from 'state/currentUser/selectors'

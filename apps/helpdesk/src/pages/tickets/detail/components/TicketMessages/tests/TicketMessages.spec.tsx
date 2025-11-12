@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -7,8 +8,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
@@ -53,7 +52,8 @@ jest.mock(
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/ticket/selectors')
-jest.mock('common/segment/segment', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEventWithSampling: jest.fn(),
     logEvent: jest.fn(),
 }))

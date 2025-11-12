@@ -1,15 +1,15 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { isAdmin } from 'utils'
 
 import useIsOnboardingHidden from '../useIsOnboardingHidden'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { OnboardingWidgetClicked: 'onboarding-widget-clicked' },
 }))

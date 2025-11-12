@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
 
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
+
 import { Badge, BadgeIcon, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,

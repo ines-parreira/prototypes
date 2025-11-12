@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import { JobType } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useBulkAction } from 'jobs'
 
@@ -18,7 +18,7 @@ import BulkActions from '../BulkActions'
 import CloseTickets from '../CloseTickets'
 import MoreActions from '../MoreActions'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock(

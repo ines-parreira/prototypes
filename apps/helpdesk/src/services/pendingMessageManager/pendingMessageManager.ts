@@ -1,9 +1,9 @@
 import { EnhancedStore } from '@reduxjs/toolkit'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
 import { dismissNotification } from 'reapop'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { store as reduxStore } from 'common/store'
 import {
     newMessageResetFromMessage,

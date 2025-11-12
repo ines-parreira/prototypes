@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
     fireEvent,
@@ -9,7 +10,6 @@ import {
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -77,7 +77,7 @@ const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('domains/reporting/pages/dashboards/PinnedFilterSyncProvider')

@@ -1,12 +1,12 @@
 import * as React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,7 +30,7 @@ jest.mock('../hooks/useNotifyTrialExtensionSlackChannel')
 jest.mock('../hooks/useAiAgentTrialOnboarding')
 jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useModalManager')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/notifications/actions')

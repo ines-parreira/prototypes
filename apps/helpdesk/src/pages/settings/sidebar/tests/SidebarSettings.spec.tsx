@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ViewCategory } from 'models/view/types'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import * as accountActions from 'state/currentAccount/actions'
@@ -37,7 +37,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 })
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const WrappedGeneralSettings = () => (
     <Provider store={mockStore}>

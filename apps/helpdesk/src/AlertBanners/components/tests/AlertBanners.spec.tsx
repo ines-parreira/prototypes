@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 import {
@@ -25,7 +25,7 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('../../hooks/useBannerCarousel')
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         BannerCarouselNavigationClicked: 'banner-carousel-navigation-clicked',

@@ -2,6 +2,7 @@ import { KeyboardEvent, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { InfobarTicketDetails } from '@repo/tickets'
 import classnames from 'classnames'
@@ -13,7 +14,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,4 +1,4 @@
-import { SegmentEvent } from 'common/segment'
+import { SegmentEvent } from '@repo/logging'
 
 import { getBannerDetails } from '../utils'
 

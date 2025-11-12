@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     DrillDownModalTrigger,
     useOpenDrillDownModal,
@@ -18,7 +18,7 @@ import {
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('<DrillDownModalTrigger />', () => {

@@ -1,8 +1,8 @@
 import React, { ReactNode, useMemo } from 'react'
 
+import { logEvent, SegmentEvent, StatViewLinkClickedStat } from '@repo/logging'
 import { List, Map } from 'immutable'
 
-import { logEvent, SegmentEvent, StatViewLinkClickedStat } from 'common/segment'
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'
 import ViewLink from 'domains/reporting/pages/common/ViewLink'

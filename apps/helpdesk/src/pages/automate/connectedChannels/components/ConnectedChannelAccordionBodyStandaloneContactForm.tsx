@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ContactFormAutomationSettings } from 'models/contactForm/types'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'

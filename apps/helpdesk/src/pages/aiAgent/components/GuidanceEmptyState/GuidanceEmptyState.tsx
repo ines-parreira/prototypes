@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
@@ -5,7 +6,6 @@ import { Link } from 'react-router-dom'
 import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'

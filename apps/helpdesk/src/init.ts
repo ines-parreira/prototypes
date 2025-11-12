@@ -16,9 +16,9 @@ import moment from 'moment-timezone'
 
 import './polyfills'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { store } from 'common/store'
 import { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'

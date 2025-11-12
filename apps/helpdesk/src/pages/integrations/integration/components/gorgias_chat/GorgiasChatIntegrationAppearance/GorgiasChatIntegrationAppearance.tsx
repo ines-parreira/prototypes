@@ -1,6 +1,7 @@
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { produce } from 'immer'
 import { fromJS, List, Map } from 'immutable'
@@ -24,7 +25,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import {
     getGorgiasChatLanguageOptions,
     getPrimaryLanguageFromChatConfig,

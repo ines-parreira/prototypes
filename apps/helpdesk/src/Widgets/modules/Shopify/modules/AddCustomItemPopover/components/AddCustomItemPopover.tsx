@@ -7,6 +7,7 @@ import React, {
     RefObject,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import {
@@ -21,7 +22,6 @@ import {
 import { ulid } from 'ulidx'
 
 import { formatPrice } from 'business/shopify/number'
-import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import { focusElement } from 'utils/html'

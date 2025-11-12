@@ -15,7 +15,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { customer } from 'fixtures/customer'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { ticket } from 'fixtures/ticket'
@@ -111,7 +111,7 @@ const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 jest.mock('models/ticket/resources')
 const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('hooks/useSearchRankScenario')

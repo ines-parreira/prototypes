@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import { Link, useHistory } from 'react-router-dom'
@@ -10,7 +11,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'

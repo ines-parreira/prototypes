@@ -1,8 +1,8 @@
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { getViewLanguage } from 'state/ui/helpCenter'

@@ -1,5 +1,6 @@
 import { Component } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, List, Map, Set } from 'immutable'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
@@ -12,7 +13,6 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Customer } from 'models/customer/types'
 import {
     CustomerChannel,

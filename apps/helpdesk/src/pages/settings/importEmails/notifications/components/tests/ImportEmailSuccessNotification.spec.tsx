@@ -1,14 +1,14 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
 import type { Notification } from 'common/notifications'
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import type { ImportNotification } from '../../types'
 import ImportEmailSuccessNotification from '../ImportEmailSuccessNotification'
 import { createMockNotification } from './shared-mocks'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         SuccessfulEmailImportNotification:

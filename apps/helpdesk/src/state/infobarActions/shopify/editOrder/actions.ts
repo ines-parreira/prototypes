@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import axios from 'axios'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
@@ -10,7 +11,6 @@ import {
     addVariant,
     initDraftOrderPayload,
 } from 'business/shopify/draftOrder'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     EditOrderAction,
     Product,

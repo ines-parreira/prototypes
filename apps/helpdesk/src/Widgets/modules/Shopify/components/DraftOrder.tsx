@@ -1,10 +1,10 @@
 import React, { ReactNode, useContext } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map } from 'immutable'
 
 import { Badge } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { AxiosError } from 'axios'
 import { fromJS, List, Map } from 'immutable'
@@ -22,7 +23,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     setInvalidCustomFieldsToErrored,
     triggerTicketFieldsRefreshAndInvalidation,

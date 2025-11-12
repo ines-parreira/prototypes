@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
@@ -16,10 +16,10 @@ import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRo
 import Row from '../Row'
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )

@@ -1,5 +1,6 @@
 import { ReactNode, useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -11,7 +12,6 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketStatus } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'

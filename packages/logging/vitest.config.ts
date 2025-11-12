@@ -1,0 +1,15 @@
+import { createConfig } from '@repo/config/vitest'
+
+export default createConfig({
+    test: {
+        setupFiles: ['./src/tests/setup.ts'],
+        coverage: {
+            exclude: [
+                // Exclude feature flag keys enum from coverage as it's just constant definitions
+                '**/featureFlagKey.ts',
+                'vitest.config.ts',
+                'src/index.ts',
+            ],
+        },
+    },
+})

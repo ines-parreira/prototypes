@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
@@ -21,7 +21,7 @@ const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
 const mockStore = configureMockStore([thunk])
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('PeriodStatsFilter', () => {
     const defaultState = {

@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { logEvent } from 'common/segment'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
 import { Campaign } from 'pages/convert/campaigns/types/Campaign'
@@ -11,7 +11,7 @@ import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { AICopyAssistant } from '../AICopyAssistant'
 
 jest.mock('models/convert/campaign/queries')
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ConvertApplySuggestionClicked: 'ConvertApplySuggestionClicked',

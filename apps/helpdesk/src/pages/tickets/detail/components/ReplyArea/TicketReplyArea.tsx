@@ -1,5 +1,6 @@
 import React, { Component, KeyboardEvent as KeyboardEventReact } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
@@ -9,7 +10,6 @@ import { connect, ConnectedProps } from 'react-redux'
 import { Macro } from '@gorgias/helpdesk-queries'
 
 import { clearMacroBeforeApply } from 'business/macro'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { MacrosProperties } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
 import RichField from 'pages/common/forms/RichField/RichField'

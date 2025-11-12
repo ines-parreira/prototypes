@@ -1,11 +1,11 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent } from 'common/segment'
 import { ticket as ticketFixture } from 'fixtures/ticket'
 import { fetchTicketsByRuleId } from 'models/ticket/resources'
 
@@ -18,7 +18,7 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 describe('<RuleTicketList/>', () => {

@@ -1,5 +1,6 @@
 import React, { ReactNode, useMemo, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import _uniq from 'lodash/uniq'
@@ -7,7 +8,6 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
 
 import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'

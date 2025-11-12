@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
@@ -8,7 +9,6 @@ import { notify } from 'reapop'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchMacros } from 'models/macro/resources'
 import { Filters } from 'models/macro/types'

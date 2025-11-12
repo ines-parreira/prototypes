@@ -1,4 +1,5 @@
-import { SegmentEvent } from 'common/segment'
+import { SegmentEvent } from '@repo/logging'
+
 import { ProductImage } from 'domains/reporting/pages/voice-of-customer/components/ProductImage'
 import { CellWrapper } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/CellWrapper'
 import css from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent.less'

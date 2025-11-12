@@ -18,7 +18,7 @@ jest.mock('state/notifications/actions')
 jest.mock('copy-to-clipboard', () => jest.fn())
 const copyMock = copy as jest.MockedFunction<typeof copy>
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('<Copy/>', () => {
     const mockStore = configureMockStore()

@@ -1,10 +1,7 @@
-import React from 'react'
-
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 
@@ -12,7 +9,7 @@ import FeedbackEvents from '../FeedbackEvents'
 import { TicketEventEnum } from '../types'
 import { messageFeedback } from './fixtures'
 
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 jest.mock('pages/tickets/detail/hooks/useAIAgentMessageEvents')
 
 const logEventMock = assumeMock(logEventWithSampling)

@@ -3,6 +3,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -13,7 +14,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import {
@@ -68,7 +68,7 @@ const mockUsePublicResourcesPooling = assumeMock(usePublicResourcesPooling)
 const mockedHelpCenters = getHelpCentersResponseFixture.data
 const mockedStoreConfiguration = getStoreConfigurationFixture()
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         AiAgentOnboardingWizardPublicUrlIngested:

@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import axios, { AxiosError, CancelToken } from 'axios'
@@ -18,7 +19,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,

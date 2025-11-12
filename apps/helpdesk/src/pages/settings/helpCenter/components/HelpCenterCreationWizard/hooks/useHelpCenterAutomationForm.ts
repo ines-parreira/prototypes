@@ -1,7 +1,7 @@
 import { useCallback, useReducer } from 'react'
 
-import { SegmentEvent } from 'common/segment'
-import { logEvent } from 'common/segment/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 
 export type UseHelpCenterAutomationFormState = {

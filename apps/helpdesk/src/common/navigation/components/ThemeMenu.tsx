@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_CONFIGS, useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
 

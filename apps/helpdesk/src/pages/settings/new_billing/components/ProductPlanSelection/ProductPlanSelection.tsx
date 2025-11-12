@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
 import {
@@ -8,7 +9,6 @@ import {
 } from '@gorgias/axiom'
 import { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, Plan, ProductType } from 'models/billing/types'
 import {

@@ -1,11 +1,11 @@
 import { forwardRef } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     Card,
     CardCaption,

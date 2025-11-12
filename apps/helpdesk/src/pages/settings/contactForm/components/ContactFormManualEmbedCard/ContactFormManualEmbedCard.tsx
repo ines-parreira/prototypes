@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import InstructionsCard from 'pages/common/components/InstructionsCard'
 
 import { useContactFormManualEmbedInstructionsCardState } from './useContactFormManualEmbedTabs'

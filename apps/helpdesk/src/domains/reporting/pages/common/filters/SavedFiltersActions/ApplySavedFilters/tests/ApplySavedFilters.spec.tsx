@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { SavedFilter } from 'domains/reporting/models/stat/types'
 import ApplySavedFilers, {
     APPLY_SAVED_FILTER_TOOLTIP,
@@ -19,7 +19,7 @@ const savedFilters: SavedFilter[] = [
     { id: 2, name: 'Temp Filter 2', filter_group: [] },
 ]
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 const defaultState = {

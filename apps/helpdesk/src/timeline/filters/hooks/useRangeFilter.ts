@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Range, TimelineItem } from '../../types'
 import { filterTicketsByRange } from '../helpers/rangeFilter'

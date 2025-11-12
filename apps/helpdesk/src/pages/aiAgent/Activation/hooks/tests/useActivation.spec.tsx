@@ -1,6 +1,8 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import * as segment from '@repo/logging'
+import { logEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
@@ -12,8 +14,6 @@ import { Route, Router, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as segment from 'common/segment'
-import { logEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -33,9 +33,9 @@ import { useActivation } from '../useActivation'
 import { getStoreConfigurationFixture } from './fixtures/store-configurations.fixture'
 
 // Mock only external services
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('core/flags')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const mockLogEvent = jest.mocked(logEvent)
 jest.mock('models/helpCenter/queries')
 const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)

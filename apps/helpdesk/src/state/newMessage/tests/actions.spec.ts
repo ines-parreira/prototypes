@@ -14,8 +14,8 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import * as segmentTracker from 'common/segment'
-import { SegmentEvent } from 'common/segment'
+import * as segmentTracker from '@repo/logging'
+import { SegmentEvent } from '@repo/logging'
 import { AttachmentEnum } from 'common/types'
 import * as commonUtils from 'common/utils'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'

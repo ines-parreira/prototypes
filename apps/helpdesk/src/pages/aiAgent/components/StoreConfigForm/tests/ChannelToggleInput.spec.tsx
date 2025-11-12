@@ -1,9 +1,9 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     BannerText,
     SettingsBannerType,
@@ -13,8 +13,8 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('common/segment', () => ({
-    ...jest.requireActual('common/segment'),
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

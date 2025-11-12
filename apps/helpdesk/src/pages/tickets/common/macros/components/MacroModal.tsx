@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
@@ -16,7 +17,6 @@ import { Col, Container, Row } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DEFAULT_ACTIONS } from 'config'
 import {
     useBulkArchiveMacros,

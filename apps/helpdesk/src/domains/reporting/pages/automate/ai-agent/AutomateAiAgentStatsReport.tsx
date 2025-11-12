@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce, useGridSize } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'

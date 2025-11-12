@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
@@ -25,7 +25,7 @@ import { renderWithStore } from 'utils/testing'
 
 const mockedRemove = jest.fn()
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

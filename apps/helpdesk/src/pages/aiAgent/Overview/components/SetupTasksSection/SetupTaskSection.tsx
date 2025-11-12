@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 

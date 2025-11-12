@@ -1,6 +1,7 @@
 import React, { Component, ComponentType } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { tryLocalStorage } from 'services/common/utils'
 
 export type InjectedProps = {

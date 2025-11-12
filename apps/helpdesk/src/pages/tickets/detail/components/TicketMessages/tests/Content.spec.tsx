@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { THEME_NAME } from 'core/theme'
 
 import Content from '../Content'
@@ -36,12 +36,12 @@ jest.mock(
 )
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 const sharedProps: ComponentProps<typeof Content> = {

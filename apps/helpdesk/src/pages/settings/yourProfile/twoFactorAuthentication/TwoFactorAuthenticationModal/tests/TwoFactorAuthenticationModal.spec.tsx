@@ -1,12 +1,12 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { authenticatorData } from 'fixtures/authenticatorData'
 import { recoveryCodes as recoveryCodesFixture } from 'fixtures/recoveryCodes'
@@ -43,7 +43,7 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
     typeof createRecoveryCodes
 >
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))

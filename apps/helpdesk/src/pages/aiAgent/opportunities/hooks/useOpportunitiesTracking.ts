@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 interface UseOpportunitiesTrackingProps {
     accountId: number

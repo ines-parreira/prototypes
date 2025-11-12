@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
-import { logEvent, SegmentEvent } from 'common/segment'
 import * as platform from 'utils/platform'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('<GlobalNavigationSpotlight />', () => {
     it('should render a tooltip on button hover on mac', async () => {

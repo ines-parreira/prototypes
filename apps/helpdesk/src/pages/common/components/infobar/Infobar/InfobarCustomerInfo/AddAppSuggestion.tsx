@@ -1,8 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 export default function AddAppSuggestion() {
     return (

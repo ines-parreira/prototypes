@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import {
     ListUsersParams,
     ListUsersResult,
@@ -11,7 +13,6 @@ import {
     User,
 } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'

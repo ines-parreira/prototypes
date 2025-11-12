@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent } from 'common/segment'
 import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
 import ViewLink from 'domains/reporting/pages/common/ViewLink'
@@ -23,7 +23,7 @@ const logEventMock = logEvent as jest.Mock
 const reportErrorMock = reportError as jest.Mock
 
 jest.mock('utils/errors')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock(
     'domains/reporting/pages/common/ViewLink',
     () =>

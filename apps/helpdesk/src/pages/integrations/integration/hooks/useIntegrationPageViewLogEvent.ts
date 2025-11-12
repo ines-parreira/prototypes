@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map } from 'immutable'
-
-import { logEvent, SegmentEvent } from 'common/segment'
 
 export type Options = {
     isReady: boolean

@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ArticleTemplateKey } from 'models/helpCenter/types'
 import {
@@ -17,7 +17,7 @@ import { reportError } from 'utils/errors'
 
 import { useFeedbackArticleActions } from '../useFeedbackArticleActions'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/settings/helpCenter/hooks/useArticlesActions')
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')

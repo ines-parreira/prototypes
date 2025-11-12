@@ -1,3 +1,4 @@
+import { logEvent } from '@repo/logging'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -5,7 +6,6 @@ import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { logEvent } from 'common/segment'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ProductType } from 'models/billing/types'
 import { renderWithRouter } from 'utils/testing'
@@ -18,8 +18,8 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn(),
 }))
-jest.mock('common/segment', () => ({
-    ...jest.requireActual('common/segment'),
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 jest.mock('core/flags', () => ({

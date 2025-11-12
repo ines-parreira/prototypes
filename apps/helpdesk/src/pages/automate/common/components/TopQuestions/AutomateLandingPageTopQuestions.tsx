@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import moment from 'moment'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenter } from 'models/helpCenter/types'
 import { StoreIntegration } from 'models/integration/types'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'

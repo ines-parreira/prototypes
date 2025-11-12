@@ -1,11 +1,12 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import {
     LegacyIconButton as IconButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { SavedFilter } from 'domains/reporting/models/stat/types'
 
 export interface PinSavedFilterButtonProps

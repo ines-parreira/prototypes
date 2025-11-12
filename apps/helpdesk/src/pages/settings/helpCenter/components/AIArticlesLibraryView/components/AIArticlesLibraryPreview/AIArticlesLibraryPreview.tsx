@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
 import {
@@ -5,7 +6,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { AIArticle } from 'models/helpCenter/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

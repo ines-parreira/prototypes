@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -11,7 +12,6 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import {
@@ -80,7 +80,7 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('<DrillDownTable />', () => {

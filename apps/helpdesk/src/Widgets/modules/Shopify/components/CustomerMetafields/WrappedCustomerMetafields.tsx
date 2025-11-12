@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 
 import { MetafieldsContainer } from '../../modules/Metafields'

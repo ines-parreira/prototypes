@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { Source } from 'models/widget/types'
 import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'

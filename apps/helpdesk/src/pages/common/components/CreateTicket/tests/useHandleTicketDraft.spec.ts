@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import LocalForageManager from 'services/localForageManager/localForageManager'
@@ -35,7 +35,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock
 
 describe('useHandleTicketDraft', () => {

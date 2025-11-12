@@ -1,9 +1,8 @@
 import { useCallback, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import moment from 'moment'
 
-import { SegmentEvent } from 'common/segment'
-import { logEvent } from 'common/segment/segment'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'

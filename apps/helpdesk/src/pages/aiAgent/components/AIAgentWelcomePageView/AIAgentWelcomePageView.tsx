@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,

@@ -3,9 +3,7 @@ import { isDevelopment } from '@repo/utils'
 import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
 
-import { User } from 'config/types/user'
-import { devLog } from 'utils'
-
+import { devLog } from '../utils/devLog'
 import { SegmentEvent } from './types'
 
 export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
@@ -36,7 +34,18 @@ export const logEventWithSampling = (
     }
 }
 
-export const identifyUser = (user: User) => {
+type GorgiasUser = {
+    name: string
+    email: string
+    country: string
+    role: {
+        name: string
+    }
+    created_datetime: string
+    notification_permission: string
+}
+
+export const identifyUser = <U extends GorgiasUser>(user: U) => {
     if (!shouldSendEvent()) {
         return
     }

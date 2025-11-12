@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
@@ -7,14 +8,13 @@ import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { MemoryRouter, Route, Router, Switch } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { usePostOnboardingNudges } from '../../../hooks/usePostOnboardingNudges'
 import { PostOnboardingUserNudges } from '../PostOnboardingUserNudges'
 
 jest.mock('../../../hooks/usePostOnboardingNudges')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector')
 
 const mockUsePostOnboardingNudges =

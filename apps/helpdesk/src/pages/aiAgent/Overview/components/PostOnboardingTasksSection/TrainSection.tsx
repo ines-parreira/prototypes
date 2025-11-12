@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     PostStoreInstallationStepStatus,
     StepConfiguration,

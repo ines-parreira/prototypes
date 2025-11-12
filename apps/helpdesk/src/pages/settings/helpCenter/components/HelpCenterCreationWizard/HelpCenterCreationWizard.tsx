@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     HelpCenter,
     HelpCenterAutomateType,

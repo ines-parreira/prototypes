@@ -1,6 +1,7 @@
 import { SyntheticEvent, useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -19,7 +20,6 @@ import {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UploadType } from 'common/types'
 import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
 import { useFlag } from 'core/flags'

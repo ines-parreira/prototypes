@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { Row } from 'reactstrap'
@@ -17,7 +18,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OptionSelection } from 'models/integration/resources/bigcommerce'

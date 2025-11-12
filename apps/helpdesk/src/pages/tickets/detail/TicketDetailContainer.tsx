@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import { fromJS, List, Map } from 'immutable'
 import _pick from 'lodash/pick'
@@ -16,7 +17,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'

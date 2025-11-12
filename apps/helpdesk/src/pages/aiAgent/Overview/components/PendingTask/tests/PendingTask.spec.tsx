@@ -1,13 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-
 import { PendingTask } from '../PendingTask'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         AiAgentOverviewPendingTaskClicked:

@@ -9,7 +9,7 @@ import { Order } from 'constants/integrations/types/shopify'
 import { TimelineItem, TimelineItemKind } from '../../../types'
 import { ActiveFilters, useTimelineFilters } from '../useTimelineFilters'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('@repo/hooks', () => ({
     useLocalStorage: jest.fn(),
 }))

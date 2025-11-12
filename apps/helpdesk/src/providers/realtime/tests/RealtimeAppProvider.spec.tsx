@@ -1,12 +1,12 @@
 import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, render } from '@testing-library/react'
 
 import { RealtimeProvider } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
 
@@ -47,7 +47,7 @@ jest.mock('../hooks/useErrorThreshold', () => ({
 }))
 const mockUseErrorThreshold = useErrorThreshold as jest.Mock
 
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 const mockLogEvent = logEvent as jest.Mock
 
 jest.mock('AlertBanners', () => ({

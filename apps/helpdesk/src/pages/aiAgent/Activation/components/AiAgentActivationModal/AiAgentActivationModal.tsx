@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     atLeastOneStoreHasActiveTrialOnSpecificStores,
     useCanUseAiSalesAgent,

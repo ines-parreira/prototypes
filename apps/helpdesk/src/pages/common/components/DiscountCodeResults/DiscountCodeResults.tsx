@@ -1,6 +1,7 @@
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,6 @@ import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

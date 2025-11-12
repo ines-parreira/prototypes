@@ -2,6 +2,7 @@ import { createElement, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import {
     matchPath,
@@ -15,7 +16,6 @@ import { Container } from 'reactstrap'
 
 import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
 import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'

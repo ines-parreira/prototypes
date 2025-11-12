@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import {
     defaultEnrichmentFields,

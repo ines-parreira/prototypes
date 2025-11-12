@@ -1,11 +1,12 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from '../../../../common/segment'
-import { GorgiasInitialState } from '../../../../types'
+import { GorgiasInitialState } from 'types'
+
 import { useRangeFilter } from '../useRangeFilter'
 
-jest.mock('../../../../common/segment')
+jest.mock('@repo/logging')
 
 describe('useRangeFilter', () => {
     beforeEach(() => {

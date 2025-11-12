@@ -12,7 +12,7 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import OrderTable from '../OrderTable'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('<OrderTable/>', () => {
     let handleLineItemUpdate: jest.MockedFunction<any>

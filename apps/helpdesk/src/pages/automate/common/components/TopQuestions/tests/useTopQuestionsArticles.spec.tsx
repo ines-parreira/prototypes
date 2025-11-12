@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { AIArticle, LocalArticleTranslation } from 'models/helpCenter/types'
 import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
@@ -24,7 +24,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useTopQuestionsArticles } from '../useTopQuestionsArticles'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 const queryClient = mockQueryClient()

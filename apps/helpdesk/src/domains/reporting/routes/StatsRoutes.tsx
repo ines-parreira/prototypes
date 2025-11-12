@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { logPageChange } from '@repo/logging'
 import {
     Redirect,
     Route,
@@ -9,7 +10,6 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import { logPageChange } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
 import AutomateAiAgentStatsReport from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
 import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'

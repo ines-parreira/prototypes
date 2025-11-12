@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import React, { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { noop } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useUpdateHelpCenter } from 'models/helpCenter/queries'

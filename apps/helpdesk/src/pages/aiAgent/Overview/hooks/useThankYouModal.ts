@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 
 export const useThankYouModal = () => {

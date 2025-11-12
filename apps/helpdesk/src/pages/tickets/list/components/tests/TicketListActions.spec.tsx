@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
     act,
@@ -16,7 +17,6 @@ import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { ticket } from 'fixtures/ticket'
@@ -63,7 +63,7 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))

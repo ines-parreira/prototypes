@@ -1,10 +1,10 @@
 import { CSSProperties } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { TrendIcon } from '@repo/reporting'
 import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import { SegmentEvent } from 'common/segment'
 import {
     ProductTicketCountsPerIntentItem,
     useProductsTicketCountsPerIntentDistribution,

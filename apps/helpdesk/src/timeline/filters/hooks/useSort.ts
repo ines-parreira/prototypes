@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { DEFAULT_SORT_OPTION } from '../../constants'
 import { SortOption, TimelineItem } from '../../types'

@@ -1,8 +1,7 @@
 import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useLocalStorage, useTimeout } from '@repo/hooks'
-
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 

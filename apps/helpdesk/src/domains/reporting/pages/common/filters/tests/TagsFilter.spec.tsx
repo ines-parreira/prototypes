@@ -1,10 +1,10 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { Tag } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import {
     withDefaultLogicalOperator,
@@ -38,7 +38,7 @@ import { renderWithStore } from 'utils/testing'
 jest.mock('domains/reporting/hooks/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
@@ -24,7 +24,7 @@ import { renderWithStore } from 'utils/testing'
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

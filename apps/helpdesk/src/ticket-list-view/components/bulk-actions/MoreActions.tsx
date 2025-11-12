@@ -1,10 +1,10 @@
 import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import { JobType, TicketPriority } from '@gorgias/helpdesk-types'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Item } from 'components/Dropdown'
 import { Popover } from 'components/Popover'
 import { UserRole } from 'config/types/user'

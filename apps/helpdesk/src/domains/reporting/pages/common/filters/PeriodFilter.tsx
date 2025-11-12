@@ -1,12 +1,12 @@
 import React, { ComponentProps, useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 import { Moment } from 'moment/moment'
 import { connect } from 'react-redux'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
 import {

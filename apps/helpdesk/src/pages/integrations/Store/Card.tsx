@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 
 import { Badge } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { AppListItem, isAppListItem } from 'models/integration/types/app'

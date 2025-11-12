@@ -1,3 +1,4 @@
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useCookies } from 'react-cookie'
 
@@ -7,8 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { getTicketState } from 'state/ticket/selectors'
 
-import { SegmentEvent } from '../../../../../common/segment'
-import { logEventWithSampling } from '../../../../../common/segment/segment'
 import {
     Action,
     Feedback,

@@ -1,13 +1,13 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import * as platform from 'utils/platform'
 
 import Button from '../SpotlightButton'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('<SpotlightSearchButton />', () => {
     it('should render a search button', () => {

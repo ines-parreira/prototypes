@@ -1,4 +1,5 @@
 import { useMeasure } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavigationProvider } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
@@ -31,7 +31,7 @@ jest.mock('state/ticket/actions', () => ({
         payload: 'pending',
     })),
 }))
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)

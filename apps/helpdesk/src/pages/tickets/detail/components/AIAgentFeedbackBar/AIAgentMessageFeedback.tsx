@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ReportIssueOption } from 'models/aiAgentFeedback/constants'

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import _flatten from 'lodash/flatten'
@@ -12,7 +13,6 @@ import {
 } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { RuleRecipe } from 'models/ruleRecipe/types'

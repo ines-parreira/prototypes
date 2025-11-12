@@ -1,8 +1,8 @@
+import { logEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent } from 'common/segment'
 import { assetsUrl } from 'utils'
 
 import { getBannerDetails } from './utils'

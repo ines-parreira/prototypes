@@ -2,6 +2,7 @@ import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
+import { logEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -16,7 +17,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { logEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
@@ -74,8 +74,8 @@ const queryClient = mockQueryClient()
 jest.mock('utils/errors')
 jest.mock('../hooks/useVerifyChannelsActivation')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('common/segment', () => ({
-    ...jest.requireActual('common/segment'),
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 const mockLogEvent = jest.mocked(logEvent)

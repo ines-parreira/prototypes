@@ -1,11 +1,11 @@
 import React, { useMemo, useRef, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,

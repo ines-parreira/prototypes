@@ -1,18 +1,18 @@
 import React from 'react'
 
+import * as segment from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import * as segment from 'common/segment'
 import * as useAutomateBaseURL from 'settings/automate/hooks/useAutomateBaseURL'
 
 import WorkflowAnalyticsContainer from '../WorkflowAnalyticsContainer'
 
 // Mock dependencies
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         FlowBuilderViewed: 'FlowBuilderViewed',

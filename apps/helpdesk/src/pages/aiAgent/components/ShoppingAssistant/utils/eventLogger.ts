@@ -1,4 +1,4 @@
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
 

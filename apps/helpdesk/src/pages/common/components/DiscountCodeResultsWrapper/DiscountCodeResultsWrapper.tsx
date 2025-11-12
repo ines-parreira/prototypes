@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import { DiscountCode } from 'models/discountCodes/types'

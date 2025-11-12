@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import {
     SLA_REPORT_FILENAME,
@@ -19,7 +19,7 @@ import {
 import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
 import { saveZippedFiles } from 'utils/file'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock('utils/file')

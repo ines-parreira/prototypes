@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useCallbackRef, useDebouncedValue, useTitle } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
@@ -8,7 +9,6 @@ import { Container } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'

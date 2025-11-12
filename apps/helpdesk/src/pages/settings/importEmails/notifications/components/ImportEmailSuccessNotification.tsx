@@ -1,6 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import { getStartEndDate } from '../../utils'
 import { ImportNotification } from '../types'

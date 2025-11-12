@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { AutoQADownloadDataButton } from 'domains/reporting/pages/support-performance/auto-qa/AutoQADownloadDataButton'
 import { useAutoQAReportData } from 'domains/reporting/services/autoQAReportingService'
 import { saveZippedFiles } from 'utils/file'
@@ -14,7 +14,7 @@ const useAutoQAReportDataMock = assumeMock(useAutoQAReportData)
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('ChannelsDownloadDataButton', () => {

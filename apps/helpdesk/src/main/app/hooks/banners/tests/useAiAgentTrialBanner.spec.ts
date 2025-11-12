@@ -37,7 +37,7 @@ jest.mock('state/integrations/selectors', () => {
     }
 })
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         TrialSystemWideBannerViewed: 'TrialSystemWideBannerViewed',

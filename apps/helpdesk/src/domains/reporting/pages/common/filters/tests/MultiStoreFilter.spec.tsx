@@ -1,10 +1,10 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useListStores } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -28,7 +28,7 @@ import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constan
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

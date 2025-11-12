@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { SegmentEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import axios from 'axios'
 import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
@@ -10,7 +11,6 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Accordion from 'pages/common/components/accordion/Accordion'

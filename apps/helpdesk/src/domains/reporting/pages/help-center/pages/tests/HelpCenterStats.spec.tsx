@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
 import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -114,7 +114,7 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const mockedLogEvent = assumeMock(logEvent)
 
 describe('<HelpCenterStats />', () => {

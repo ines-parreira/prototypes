@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useChannelsReportMetrics } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { ChannelsDownloadDataButton } from 'domains/reporting/pages/support-performance/channels/ChannelsDownloadDataButton'
 import { channels } from 'fixtures/channels'
@@ -17,7 +17,7 @@ const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('ChannelsDownloadDataButton', () => {

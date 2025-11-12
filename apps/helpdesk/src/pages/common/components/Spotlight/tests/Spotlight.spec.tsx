@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {
     SpotlightContext,
@@ -33,7 +33,7 @@ const mockShortcutManager = shortcutManager as jest.Mocked<
     typeof shortcutManager
 >
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 const renderWithSpotlightContext = (

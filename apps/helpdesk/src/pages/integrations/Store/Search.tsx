@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import debounce from 'lodash/debounce'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import IconInput from 'pages/common/forms/input/IconInput'

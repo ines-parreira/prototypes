@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import StealthInput from 'custom-fields/components/StealthInput'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'

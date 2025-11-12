@@ -1,7 +1,7 @@
+import { SegmentEvent } from '@repo/logging'
+import * as segmentTracker from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
-import { SegmentEvent } from 'common/segment'
-import * as segmentTracker from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 

@@ -1,10 +1,7 @@
-import React from 'react'
-
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,
@@ -12,7 +9,7 @@ import {
 
 import FeedbackReportIssue from '../FeedbackReportIssue'
 
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEventWithSampling)
 
 describe('FeedbackReportIssue', () => {

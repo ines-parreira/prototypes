@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 import _kebabCase from 'lodash/kebabCase'
 import {
@@ -9,7 +10,6 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'

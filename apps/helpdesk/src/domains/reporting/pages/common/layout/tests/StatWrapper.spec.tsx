@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent } from 'common/segment'
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
 import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
@@ -23,7 +23,7 @@ import { saveFileAsDownloaded } from 'utils/file'
 jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('domains/reporting/models/stat/resources')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),

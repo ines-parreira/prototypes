@@ -12,7 +12,7 @@ import ChannelToggle from '../ChannelToggle'
 jest.mock('../../helper/ChannelWarning', () =>
     jest.fn(() => <div>ChannelWarning</div>),
 )
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     SegmentEvent: {
         AutomateChannelUpdateFromFlows: 'AutomateChannelUpdateFromFlows',
     },

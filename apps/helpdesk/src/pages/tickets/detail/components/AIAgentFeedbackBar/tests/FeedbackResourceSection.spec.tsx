@@ -1,3 +1,4 @@
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { useCookies } from 'react-cookie'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEventWithSampling } from 'common/segment/segment'
 import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
@@ -13,7 +13,6 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
 import { RootState, StoreDispatch } from 'state/types'
 
-import { SegmentEvent } from '../../../../../../common/segment'
 import {
     FeedbackResourceSection,
     TOOLTIP_COOKIE_NAME,
@@ -32,7 +31,7 @@ jest.mock('state/ticket/actions', () => ({
 }))
 jest.mock('react-cookie')
 jest.mock('hooks/useHasAgentPrivileges')
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 
 const guidanceResource = {
     id: 1,

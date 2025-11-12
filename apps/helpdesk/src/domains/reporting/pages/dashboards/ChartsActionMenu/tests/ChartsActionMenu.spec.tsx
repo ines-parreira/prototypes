@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { UserRole } from 'config/types/user'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { AddChartToDashboardModal } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
@@ -29,7 +29,7 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal',
 )
 const AddChartToDashboardModalMock = assumeMock(AddChartToDashboardModal)
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('<ChartsActionMenu />', () => {

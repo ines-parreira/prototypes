@@ -1,9 +1,9 @@
 import { ComponentProps } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     CleanFilterComponentKeys,
     CustomFieldFilter,

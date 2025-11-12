@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { CustomerDraft } from 'models/customer/types'
 import { submitCustomer } from 'state/customers/actions'

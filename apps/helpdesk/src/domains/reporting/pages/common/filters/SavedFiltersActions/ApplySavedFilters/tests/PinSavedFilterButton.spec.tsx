@@ -1,15 +1,15 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     PinSavedFilterButton,
     REMOVE_AS_DEFAULT_FILTER_TOOLTIP,
     SET_AS_DEFAULT_FILTER_TOOLTIP,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('PinSavedFilterButton', () => {

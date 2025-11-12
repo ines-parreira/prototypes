@@ -10,7 +10,7 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import { OrderNotesField } from '../OrderNotesField'
 
 jest.mock('core/flags')
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShopifyEditOrderNoteEditStarted: 'ShopifyEditOrderNoteEditStarted',

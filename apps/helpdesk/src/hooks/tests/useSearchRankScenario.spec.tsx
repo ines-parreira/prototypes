@@ -1,11 +1,11 @@
 import React, { ComponentType } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import useSearchRankScenario, {
     DATABASE_TYPE,
@@ -18,7 +18,7 @@ import { SearchEngine } from 'models/search/types'
 import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('useSearchRankScenario', () => {

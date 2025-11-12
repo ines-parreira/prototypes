@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react'
 
 import { useId } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { TooltipDelay } from 'core/ui/tooltip.utils'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'

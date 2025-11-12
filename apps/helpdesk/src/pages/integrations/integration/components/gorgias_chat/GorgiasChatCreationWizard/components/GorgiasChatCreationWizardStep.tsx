@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { SegmentEvent } from '@repo/logging'
 
-import { SegmentEvent } from 'common/segment'
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgiasChat'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'

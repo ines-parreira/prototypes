@@ -18,7 +18,8 @@ import {
 import { getResourceMetadata } from '../useEnrichKnowledgeFeedbackData/utils'
 
 // Mock the segment event logging
-jest.mock('common/segment/segment', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEventWithSampling: jest.fn(),
 }))
 

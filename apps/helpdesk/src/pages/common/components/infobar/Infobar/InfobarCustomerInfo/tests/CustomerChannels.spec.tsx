@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react'
 
+import * as segmentTracker from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as segmentTracker from 'common/segment'
 import { UserRole, UserSettingType } from 'config/types/user'
 import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import {

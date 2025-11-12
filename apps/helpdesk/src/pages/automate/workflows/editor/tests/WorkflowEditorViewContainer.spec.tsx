@@ -1,12 +1,12 @@
 import React from 'react'
 
+import * as segment from '@repo/logging'
 import { act, render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
-import * as segment from 'common/segment'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
@@ -33,7 +33,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('settings/automate/hooks/useAutomateBaseURL')
 jest.mock('settings/automate/hooks/useIsAutomateSettings')
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     SegmentEvent: {
         FlowBuilderViewed: 'FlowBuilderViewed',
         FlowBuilderSaved: 'FlowBuilderSaved',

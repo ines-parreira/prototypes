@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { UseQueryResult } from '@tanstack/react-query'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -40,7 +40,7 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('utils/file')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('ticketFieldsReportingService', () => {
     const dateSeries: Parameters<typeof formatData>[1] = ['2023-06-07']

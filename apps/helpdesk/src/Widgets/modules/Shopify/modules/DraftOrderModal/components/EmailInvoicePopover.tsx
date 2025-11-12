@@ -8,6 +8,7 @@ import React, {
     RefObject,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import {
@@ -20,7 +21,6 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DraftOrderInvoice } from 'constants/integrations/types/shopify'
 import { focusElement } from 'utils/html'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'

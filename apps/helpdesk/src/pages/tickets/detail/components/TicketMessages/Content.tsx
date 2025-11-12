@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'

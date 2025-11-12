@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import axios, { AxiosError, CancelToken } from 'axios'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
@@ -14,7 +15,6 @@ import { Button } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
 import {
     LegacyStatsFilters,

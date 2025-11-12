@@ -1,9 +1,9 @@
+import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
-import * as segment from 'common/segment'
 import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'

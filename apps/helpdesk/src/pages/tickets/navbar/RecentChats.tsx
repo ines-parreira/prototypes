@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Navigation } from 'components/Navigation/Navigation'
 import { MAX_RECENT_CHATS } from 'config/recentChats'
 import useAppDispatch from 'hooks/useAppDispatch'

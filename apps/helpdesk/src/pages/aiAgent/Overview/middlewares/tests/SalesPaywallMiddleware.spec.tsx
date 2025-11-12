@@ -1,10 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Route, Switch } from 'react-router-dom'
 
-import { logEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
@@ -86,7 +86,7 @@ jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useModalManager')
 
 // Mock modal components

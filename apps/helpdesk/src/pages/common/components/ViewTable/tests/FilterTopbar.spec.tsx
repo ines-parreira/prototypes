@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { mockSearchRank } from 'fixtures/searchRank'
@@ -43,7 +43,7 @@ const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 jest.spyOn(viewsActions, 'activeViewIdSet')
 jest.mock('state/entities/views/actions')
 jest.mock('state/views/actions')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock

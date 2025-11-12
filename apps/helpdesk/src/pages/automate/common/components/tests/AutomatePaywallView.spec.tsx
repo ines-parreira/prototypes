@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
 import { useFlag } from 'core/flags'
@@ -23,7 +23,7 @@ import { AutomateFeatures } from 'pages/automate/common/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('core/flags')
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('../../hooks/usePaywallConfig')
 
 const mockUseFlag = useFlag as jest.Mock

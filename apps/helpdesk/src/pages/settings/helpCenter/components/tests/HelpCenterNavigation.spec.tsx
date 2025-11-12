@@ -1,10 +1,10 @@
 import React from 'react'
 
+import * as segment from '@repo/logging'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
-import * as segment from 'common/segment'
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

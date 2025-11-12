@@ -9,12 +9,12 @@ import {
 } from 'react'
 
 import { useAsyncFn, usePrevious } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { BaseEmoji, EmojiData, emojiIndex } from 'emoji-mart'
 import { Map } from 'immutable'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { createTeam } from 'models/team/resources'

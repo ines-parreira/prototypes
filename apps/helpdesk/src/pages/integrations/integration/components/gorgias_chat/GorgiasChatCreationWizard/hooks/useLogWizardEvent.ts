@@ -1,9 +1,9 @@
 import { useCallback, useContext } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, List, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

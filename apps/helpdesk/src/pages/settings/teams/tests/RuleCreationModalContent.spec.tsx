@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { createRule } from 'models/rule/resources'
@@ -23,7 +23,7 @@ jest.mock('models/rule/resources', () => ({
 
 jest.mock('state/notifications/actions')
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 const logEventMock = logEvent as jest.Mock
 

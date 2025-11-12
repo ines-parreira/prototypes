@@ -1,13 +1,12 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
-
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 
 import { useReasoningTracking } from '../useReasoningTracking'
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
-jest.mock('common/segment/segment', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

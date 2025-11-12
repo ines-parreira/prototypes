@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'

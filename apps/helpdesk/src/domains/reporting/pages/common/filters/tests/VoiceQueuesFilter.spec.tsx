@@ -1,9 +1,9 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceQueue } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
@@ -27,7 +27,7 @@ import { renderWithStore } from 'utils/testing'
 jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'

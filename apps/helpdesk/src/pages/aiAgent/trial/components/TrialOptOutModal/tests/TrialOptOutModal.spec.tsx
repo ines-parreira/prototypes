@@ -1,8 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as useAppSelectorModule from 'hooks/useAppSelector'
 import {
@@ -14,7 +13,7 @@ import * as trialExtensionUtils from 'pages/aiAgent/trial/utils/trialExtensionUt
 
 import TrialOptOutModal from '../TrialOptOutModal'
 
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('models/aiAgent/queries')

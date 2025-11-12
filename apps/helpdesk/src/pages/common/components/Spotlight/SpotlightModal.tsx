@@ -1,6 +1,7 @@
 import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
 
 import { useUnmount, useUpdateEffect } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
@@ -9,7 +10,6 @@ import { useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import Modal from 'pages/common/components/modal/Modal'

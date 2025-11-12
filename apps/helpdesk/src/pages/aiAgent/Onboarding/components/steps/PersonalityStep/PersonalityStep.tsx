@@ -1,13 +1,13 @@
 import { FC, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'

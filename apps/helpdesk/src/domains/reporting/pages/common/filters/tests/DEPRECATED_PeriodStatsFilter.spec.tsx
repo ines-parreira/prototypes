@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import DEPRECATED_PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
 import { CALENDAR_ICON } from 'domains/reporting/pages/common/PeriodPicker'
@@ -22,7 +22,7 @@ const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
 const mockStore = configureMockStore([thunk])
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 
 describe('DEPRECATED_PeriodStatsFilter', () => {
     const defaultState = {

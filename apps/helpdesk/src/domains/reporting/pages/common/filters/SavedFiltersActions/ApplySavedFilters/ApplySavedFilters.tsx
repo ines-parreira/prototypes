@@ -1,13 +1,13 @@
 import { useMemo, useRef, useState } from 'react'
 
 import { useToggle } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     SavedFilter,
     SavedFilterAPI,

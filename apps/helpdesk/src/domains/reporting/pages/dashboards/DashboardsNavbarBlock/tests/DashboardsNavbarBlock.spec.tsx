@@ -1,9 +1,9 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { Accordion } from 'components/Accordion/Accordion'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { LIMIT_REACHED_MESSAGE } from 'domains/reporting/pages/dashboards/constants'
@@ -46,7 +46,7 @@ jest.mock('state/currentUser/selectors', () => ({
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock(

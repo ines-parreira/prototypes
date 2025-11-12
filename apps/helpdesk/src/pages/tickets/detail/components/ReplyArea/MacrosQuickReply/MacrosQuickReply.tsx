@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import { UncontrolledTooltip } from 'reactstrap'
 
 import { Macro } from '@gorgias/helpdesk-queries'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { CurrentAccountState } from 'state/currentAccount/types'

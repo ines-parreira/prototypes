@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { useKnockFeed } from '@knocklabs/react'
-
-import { logEvent, SegmentEvent } from 'common/segment'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import useToasts from '../hooks/useToasts'
 import Toast from './Toast'

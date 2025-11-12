@@ -7,12 +7,11 @@ import React, {
 } from 'react'
 
 import { useEffectOnce, useMeasure } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { isEqual } from 'lodash'
 import { useParams } from 'react-router-dom'
 
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'

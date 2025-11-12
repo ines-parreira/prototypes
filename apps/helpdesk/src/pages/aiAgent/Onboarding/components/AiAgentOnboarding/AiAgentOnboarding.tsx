@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     Redirect,
     Route,
@@ -8,7 +9,6 @@ import {
     useParams,
 } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import { EngagementStep } from 'pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding/components/steps/HandoverStep/HandoverStep'

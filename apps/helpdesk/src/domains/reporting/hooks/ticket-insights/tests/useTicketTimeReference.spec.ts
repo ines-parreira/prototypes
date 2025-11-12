@@ -1,8 +1,8 @@
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import {
     Entity,
@@ -11,7 +11,7 @@ import {
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('core/flags')

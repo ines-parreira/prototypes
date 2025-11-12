@@ -1,0 +1,47 @@
+{
+    "name": "@repo/logging",
+    "version": "1.0.0",
+    "description": "Logging package",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "lodash": "catalog:lodash",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "push.js": "catalog:notifications"
+    },
+    "devDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
+        "@repo/config": "workspace:*",
+        "@repo/utils": "workspace:*",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/lodash": "catalog:lodash",
+        "@types/segment-analytics": "catalog:logging",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@vitest/coverage-v8": "catalog:test",
+        "lodash": "catalog:lodash",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

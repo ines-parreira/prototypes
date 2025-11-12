@@ -1,12 +1,12 @@
 import React, { ComponentProps } from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent } from 'common/segment'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import client from 'models/api/resources'
@@ -15,7 +15,7 @@ import { TicketMessageIntent } from 'models/ticket/types'
 
 import { IntentsFeedback } from '../IntentsFeedback'
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock('state/ticket/actions')
 
 const mockStore = configureMockStore([thunk])

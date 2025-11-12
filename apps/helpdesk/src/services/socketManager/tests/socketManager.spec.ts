@@ -1,7 +1,7 @@
+import * as segment from '@repo/logging'
 import _noop from 'lodash/noop'
 import * as reapop from 'reapop'
 
-import * as segment from 'common/segment'
 import * as actions from 'state/notifications/actions'
 import { BannerNotification } from 'state/notifications/types'
 

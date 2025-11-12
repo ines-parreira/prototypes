@@ -7,7 +7,7 @@ import { usePostOnboardingKnowledgeEditor } from '../usePostOnboardingKnowledgeE
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         PostOnboardingTaskActionDone: 'PostOnboardingTaskActionDone',
@@ -131,7 +131,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     })
 
     it('should dispatch notification when guidance is created', () => {
-        const { logEvent } = require('common/segment')
+        const { logEvent } = require('@repo/logging')
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
                 shopName: mockShopName,

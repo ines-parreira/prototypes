@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
@@ -8,7 +9,6 @@ import _pick from 'lodash/pick'
 import { connect, ConnectedProps } from 'react-redux'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
 import CheckBox from 'pages/common/forms/CheckBox'
 import withRouter from 'pages/common/utils/withRouter'

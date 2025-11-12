@@ -1,5 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     CustomFieldSavedFilter,
     FilterKey,
@@ -50,7 +51,7 @@ jest.mock('api/queryClient', () => ({
     },
 }))
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

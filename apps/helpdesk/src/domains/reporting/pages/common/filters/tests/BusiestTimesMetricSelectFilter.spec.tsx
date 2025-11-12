@@ -1,7 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
 import { BusiestTimesMetricSelectFilter } from 'domains/reporting/pages/common/filters/BusiestTimesMetricSelectFilter'
@@ -16,7 +16,7 @@ import { FILTER_DROPDOWN_ICON } from 'pages/common/forms/FilterInput/constants'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

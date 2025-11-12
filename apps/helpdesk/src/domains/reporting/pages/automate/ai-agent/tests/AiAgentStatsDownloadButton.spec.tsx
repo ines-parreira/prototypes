@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useAIAgentReportMetrics } from 'domains/reporting/hooks/automate/useAIAgentReportMetrics'
 import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { AiAgentStatsDownloadButton } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsDownloadButton'
@@ -21,7 +21,7 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('AiAgentStatsDownloadButton', () => {

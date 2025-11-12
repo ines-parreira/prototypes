@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { logEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _keyBy from 'lodash/keyBy'
@@ -9,7 +10,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { logEvent } from 'common/segment'
 import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import TicketsCreatedPerTagViewLink from 'domains/reporting/pages/common/TicketsCreatedPerTagViewLink'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
@@ -19,7 +19,7 @@ import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('common/segment')
+jest.mock('@repo/logging')
 jest.mock(
     'domains/reporting/pages/common/ViewLink',
     () => (props: LinkProps) => (

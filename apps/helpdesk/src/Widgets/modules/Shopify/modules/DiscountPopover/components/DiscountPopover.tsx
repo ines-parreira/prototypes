@@ -9,6 +9,7 @@ import React, {
     SyntheticEvent,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, Map } from 'immutable'
 import {
     Button,
@@ -24,7 +25,6 @@ import {
 
 import { getDiscountAmount } from 'business/shopify/discount'
 import { formatPrice } from 'business/shopify/number'
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,

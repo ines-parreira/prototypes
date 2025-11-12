@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {

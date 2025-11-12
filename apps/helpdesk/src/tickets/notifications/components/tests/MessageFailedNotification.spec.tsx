@@ -1,15 +1,15 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
-import { logEvent, SegmentEvent } from 'common/segment'
 
 import type { TicketPayload } from '../../types'
 import MessageFailedNotification from '../MessageFailedNotification'
 
 // Mock the segment tracking
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         FailedMessageNotification: 'failed-message-notification',

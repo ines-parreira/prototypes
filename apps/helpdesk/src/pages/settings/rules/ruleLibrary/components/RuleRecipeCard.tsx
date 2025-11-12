@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { List, Map } from 'immutable'
@@ -7,7 +8,6 @@ import _getIn from 'lodash/get'
 import { Badge } from 'reactstrap'
 
 import successIcon from 'assets/img/icons/success.svg'
-import { logEvent, SegmentEvent } from 'common/segment'
 import { fromAST } from 'common/utils'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'

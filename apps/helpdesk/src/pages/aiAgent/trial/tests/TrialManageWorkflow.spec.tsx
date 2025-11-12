@@ -1,9 +1,9 @@
+// Import mocked modules
+import { logEvent } from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { useHistory, useLocation } from 'react-router-dom'
 
-// Import mocked modules
-import { logEvent } from 'common/segment/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -18,7 +18,7 @@ import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { TrialManageWorkflow } from '../components/TrialManageWorkflow/TrialManageWorkflow'
 
 // Mock only what the component directly uses
-jest.mock('common/segment/segment')
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner')

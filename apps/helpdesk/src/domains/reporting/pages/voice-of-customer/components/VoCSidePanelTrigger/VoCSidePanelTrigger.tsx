@@ -1,11 +1,11 @@
 import { PropsWithChildren } from 'react'
 
 import { useId } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger.less'
 import {

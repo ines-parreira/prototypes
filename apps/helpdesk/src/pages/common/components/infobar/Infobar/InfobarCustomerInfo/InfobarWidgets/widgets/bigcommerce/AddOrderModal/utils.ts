@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Map as ImmutableMap } from 'immutable'
 import _debounce from 'lodash/debounce'
 import _omit from 'lodash/omit'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     addBigCommerceCheckoutBillingAddress,
     addBigCommerceCustomAddressToCustomerAddressBook,

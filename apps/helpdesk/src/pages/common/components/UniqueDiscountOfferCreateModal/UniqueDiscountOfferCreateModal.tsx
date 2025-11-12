@@ -6,6 +6,7 @@ import React, {
     useState,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { AxiosError } from 'axios'
 import { Map } from 'immutable'
 import { isEqual } from 'lodash'
@@ -21,7 +22,6 @@ import {
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import {

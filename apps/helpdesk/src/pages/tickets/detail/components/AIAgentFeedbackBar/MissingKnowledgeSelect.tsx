@@ -1,5 +1,6 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import {
@@ -9,8 +10,6 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
-import { SegmentEvent } from 'common/segment'
-import { logEventWithSampling } from 'common/segment/segment'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import useAppSelector from 'hooks/useAppSelector'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'

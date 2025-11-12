@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { ArticleTemplate } from 'models/helpCenter/types'
 
 import { ArticleTemplateModal } from '../ArticleTemplateModal/ArticleTemplateModal'

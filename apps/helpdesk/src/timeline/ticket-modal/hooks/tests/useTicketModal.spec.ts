@@ -1,12 +1,11 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
-
 import { useTicketModal } from '../useTicketModal'
 
-jest.mock('common/segment', () => ({
-    ...jest.requireActual('common/segment'),
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

@@ -7,9 +7,9 @@ import React, {
     RefObject,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Button, Form, Popover, PopoverBody } from 'reactstrap'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { focusElement } from 'utils/html'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'

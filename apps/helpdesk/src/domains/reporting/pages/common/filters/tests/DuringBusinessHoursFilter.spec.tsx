@@ -1,6 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
     FILTER_CLEAR_ICON,
@@ -22,7 +22,7 @@ import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))

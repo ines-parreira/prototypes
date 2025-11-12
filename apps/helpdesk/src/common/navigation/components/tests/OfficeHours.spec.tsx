@@ -1,8 +1,8 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { useFlag } from 'core/flags'
 import type { HelpdeskPlan } from 'models/billing/types'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
@@ -18,12 +18,12 @@ jest.mock('core/flags', () => ({
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
-    'common/segment',
+    '@repo/logging',
     () =>
         ({
-            ...jest.requireActual('common/segment'),
+            ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment'),
+        }) as typeof import('@repo/logging'),
 )
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())

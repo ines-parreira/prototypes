@@ -6,9 +6,9 @@ import {
     useMemo,
 } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS, Map } from 'immutable'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import {

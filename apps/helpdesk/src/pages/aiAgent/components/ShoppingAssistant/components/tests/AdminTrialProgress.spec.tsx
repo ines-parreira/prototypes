@@ -1,8 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { logEvent } from 'common/segment/segment'
-import { SegmentEvent } from 'common/segment/types'
 
 import {
     PromoCardContent,
@@ -11,7 +9,8 @@ import {
 } from '../../types/ShoppingAssistant'
 import { AdminTrialProgress } from '../AdminTrialProgress'
 
-jest.mock('common/segment/segment', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
 

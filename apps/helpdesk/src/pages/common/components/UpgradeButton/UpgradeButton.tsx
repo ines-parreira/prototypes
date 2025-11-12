@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { logEvent, SegmentEventToSend } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import {
     type LegacyButtonComponentProps as ButtonComponentProps,
 } from '@gorgias/axiom'
 
-import { logEvent, SegmentEventToSend } from 'common/segment'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'

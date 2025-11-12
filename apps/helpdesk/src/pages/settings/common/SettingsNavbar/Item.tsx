@@ -1,9 +1,9 @@
 import { ReactNode, useMemo, useRef } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _kebabCase from 'lodash/kebabCase'
 import { NavLink, useLocation } from 'react-router-dom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { DisplayType } from 'components/Navigation/components/NavigationSectionItem'
 import { Navigation } from 'components/Navigation/Navigation'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'

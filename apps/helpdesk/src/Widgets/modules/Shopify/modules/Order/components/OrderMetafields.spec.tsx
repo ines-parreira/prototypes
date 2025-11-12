@@ -1,13 +1,13 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WrappedOrderMetafields from './OrderMetafields'
 
-jest.mock('common/segment', () => ({
+jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
         ShopifyMetafieldsOpenOrder: 'SHOPIFY_METAFIELDS_OPEN_ORDER',

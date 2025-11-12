@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
 import { Banner } from '@gorgias/axiom'
 
-import { logEvent, SegmentEvent } from 'common/segment'
 import {
     BannerText,
     SettingsBannerType,

@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Container } from 'reactstrap'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ArticleTemplate } from 'models/helpCenter/types'
