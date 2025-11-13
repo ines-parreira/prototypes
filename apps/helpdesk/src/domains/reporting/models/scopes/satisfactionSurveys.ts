@@ -61,7 +61,7 @@ export const averageCsatScorePerAgentTimeseries = satisfactionSurveysScope
     )
     .defineQuery(({ ctx }) => {
         const query = {
-            measures: ['scoredSurveysCount'] as const,
+            measures: ['averageSurveyScore', 'scoredSurveysCount'] as const,
             dimensions: ['agentId'] as const,
             time_dimensions: [
                 {
@@ -91,7 +91,7 @@ export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
     )
     .defineQuery(({ ctx }) => {
         const query = {
-            measures: ['scoredSurveysCount', 'averageSurveyScore'] as const,
+            measures: ['averageSurveyScore', 'scoredSurveysCount'] as const,
             dimensions: ['channel'] as const,
             time_dimensions: [
                 {
@@ -121,7 +121,7 @@ export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
     )
     .defineQuery(({ ctx }) => {
         const query = {
-            measures: ['scoredSurveysCount'] as const,
+            measures: ['averageSurveyScore', 'scoredSurveysCount'] as const,
             dimensions: ['integrationId'] as const,
             time_dimensions: [
                 {

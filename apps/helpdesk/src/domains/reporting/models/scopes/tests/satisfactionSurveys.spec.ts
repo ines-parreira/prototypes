@@ -105,7 +105,7 @@ describe('averageCsatScope', () => {
             const actual = averageCsatScorePerAgentTimeseries.build(context)
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['agentId'],
                 time_dimensions: [
                     {
@@ -141,7 +141,7 @@ describe('averageCsatScope', () => {
             })
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['agentId'],
                 time_dimensions: [
                     {
@@ -177,7 +177,7 @@ describe('averageCsatScope', () => {
             const actual = averageCsatScorePerChannelTimeseries.build(context)
 
             const expected = {
-                measures: ['scoredSurveysCount', 'averageSurveyScore'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['channel'],
                 time_dimensions: [
                     {
@@ -213,7 +213,7 @@ describe('averageCsatScope', () => {
             })
 
             const expected = {
-                measures: ['scoredSurveysCount', 'averageSurveyScore'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['channel'],
                 time_dimensions: [
                     {
@@ -250,7 +250,7 @@ describe('averageCsatScope', () => {
                 averageCsatScorePerIntegrationTimeseries.build(context)
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['integrationId'],
                 time_dimensions: [
                     {
@@ -286,7 +286,7 @@ describe('averageCsatScope', () => {
             })
 
             const expected = {
-                measures: ['scoredSurveysCount'],
+                measures: ['averageSurveyScore', 'scoredSurveysCount'],
                 dimensions: ['integrationId'],
                 time_dimensions: [
                     {
