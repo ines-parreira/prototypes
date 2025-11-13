@@ -80,8 +80,9 @@
             }
 
             [contenteditable='true'] {
-                height: 88px !important;
-                overflow-y: scroll;
+                min-height: 88px !important;
+                max-height: 45vh !important;
+                overflow-y: auto;
 
                 &:focus {
                     scroll-behavior: smooth;
