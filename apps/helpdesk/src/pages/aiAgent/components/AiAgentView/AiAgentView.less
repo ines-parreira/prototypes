@@ -5,13 +5,17 @@
         display: grid;
         grid-template-columns: minmax(480px, 1000px) 1fr;
         padding: 0;
+        overflow: auto;
+        height: 100%;
+        width: 100%;
+
+        padding: var(--layout-spacing-m);
+        gap: var(--layout-spacing-m);
+        flex-basis: auto;
     }
 
     .pageHeaderContainer {
-        position: sticky;
-        top: 0;
         background-color: var(--neutral-grey-0); // legacy
-        z-index: 1;
     }
 
     .spinner {
@@ -23,9 +27,9 @@
     }
 
     .parentContainer {
-        height: auto;
+        height: 100%;
 
-        overflow-y: auto;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
     }
