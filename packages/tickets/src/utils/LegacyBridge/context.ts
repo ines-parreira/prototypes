@@ -21,6 +21,16 @@ export type LegacyBridgeContextType = {
         status: NotificationStatus
         message: string
     }) => void
+    ticketViewNavigation: {
+        shouldDisplay: boolean
+        shouldUseLegacyFunctions: boolean
+        previousTicketId: number | undefined
+        nextTicketId: number | undefined
+        legacyGoToPrevTicket: () => Promise<void>
+        isPreviousEnabled: boolean
+        legacyGoToNextTicket: () => Promise<void>
+        isNextEnabled: boolean
+    }
 }
 
 export const LegacyBridgeContext =

@@ -12,7 +12,7 @@ import useIsTicketNavigationAvailable from './useIsTicketNavigationAvailable'
 import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
 
 export default function useGoToNextTicket(
-    ticketId: string,
+    ticketId?: string,
     activeTab?: TicketInfobarTab,
 ) {
     const { isEnabled: isSplitTicketViewEnabled, nextTicketId } =

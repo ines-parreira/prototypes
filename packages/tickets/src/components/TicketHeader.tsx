@@ -4,6 +4,7 @@ import { getCustomerName } from '../helpers/getCustomerName'
 import { useTicket } from '../hooks/useTicket'
 import { TeamAssignee, UserAssignee } from './TicketAssignee'
 import { TicketPriority } from './TicketPriority'
+import { TicketViewNavigator } from './TicketViewNavigator/TicketViewNavigator'
 
 import css from './TicketHeader.less'
 
@@ -44,6 +45,7 @@ export function TicketHeader({ ticketId }: Props) {
                     currentAssignee={currentAssignee}
                 />
                 <TeamAssignee ticketId={ticketId} currentTeam={currentTeam} />
+                <TicketViewNavigator />
             </div>
         </div>
     )

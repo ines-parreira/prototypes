@@ -4,12 +4,30 @@ import {
     TicketsLegacyBridgeProvider,
     useTicketsLegacyBridge,
 } from '../LegacyBridge'
-import { NotificationStatus } from '../LegacyBridge/context'
+import {
+    LegacyBridgeContextType,
+    NotificationStatus,
+} from '../LegacyBridge/context'
+
+const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
+    {
+        shouldDisplay: true,
+        shouldUseLegacyFunctions: false,
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        legacyGoToPrevTicket: vi.fn(),
+        isPreviousEnabled: false,
+        legacyGoToNextTicket: vi.fn(),
+        isNextEnabled: false,
+    }
 
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
-            <TicketsLegacyBridgeProvider dispatchNotification={() => {}}>
+            <TicketsLegacyBridgeProvider
+                dispatchNotification={() => {}}
+                ticketViewNavigation={mockTicketViewNavigation}
+            >
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
         )
@@ -36,7 +54,10 @@ describe('TicketsLegacyBridgeProvider', () => {
         }
 
         render(
-            <TicketsLegacyBridgeProvider dispatchNotification={mockFn}>
+            <TicketsLegacyBridgeProvider
+                dispatchNotification={mockFn}
+                ticketViewNavigation={mockTicketViewNavigation}
+            >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
         )
@@ -68,7 +89,10 @@ describe('useTicketsLegacyBridge', () => {
         }
 
         render(
-            <TicketsLegacyBridgeProvider dispatchNotification={mockFn}>
+            <TicketsLegacyBridgeProvider
+                dispatchNotification={mockFn}
+                ticketViewNavigation={mockTicketViewNavigation}
+            >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
         )

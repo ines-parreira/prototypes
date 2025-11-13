@@ -10,7 +10,7 @@ import { getActiveView } from 'state/views/selectors'
 import useIsTicketNavigationAvailable from './useIsTicketNavigationAvailable'
 import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
 
-export default function useGoToPreviousTicket(ticketId: string) {
+export default function useGoToPreviousTicket(ticketId?: string) {
     const { isEnabled: isSplitTicketViewEnabled, previousTicketId } =
         useSplitTicketView()
 

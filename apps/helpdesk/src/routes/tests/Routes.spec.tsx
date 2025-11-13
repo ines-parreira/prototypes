@@ -34,6 +34,7 @@ import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import Routes from 'routes/Routes'
+import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
 import { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -320,7 +321,9 @@ describe('<Routes/>', () => {
     it('should not log page change via segment on initial render', () => {
         renderWithRouter(
             <Provider store={mockStore({})}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             { history: mockHistory },
         )
@@ -330,7 +333,9 @@ describe('<Routes/>', () => {
     it('should not log page change after location change', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             {
                 history: mockHistory,
@@ -347,7 +352,9 @@ describe('<Routes/>', () => {
 
         renderWithRouter(
             <Provider store={mockStore({})}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             {
                 history: mockHistory,
@@ -364,7 +371,9 @@ describe('<Routes/>', () => {
 
         renderWithRouter(
             <Provider store={mockStore({})}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             {
                 history: mockHistory,
@@ -383,7 +392,9 @@ describe('<Routes/>', () => {
 
         renderWithRouter(
             <Provider store={mockStore({})}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             {
                 history: mockHistory,
@@ -402,7 +413,9 @@ describe('<Routes/>', () => {
     it('should log page change after location change to a tracked page', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
-                <Routes />
+                <SplitTicketViewProvider>
+                    <Routes />
+                </SplitTicketViewProvider>
             </Provider>,
             {
                 history: mockHistory,
@@ -425,7 +438,9 @@ describe('<Routes/>', () => {
         const renderRoute = () => {
             renderWithRouter(
                 <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -456,7 +471,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -477,7 +494,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -498,7 +517,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 { history: mockHistory },
             )
@@ -517,7 +538,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -538,7 +561,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -559,7 +584,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -580,7 +607,9 @@ describe('<Routes/>', () => {
 
             renderWithRouter(
                 <Provider store={mockStore({})}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 {
                     history: mockHistory,
@@ -606,7 +635,9 @@ describe('<Routes/>', () => {
         it.each(pathsNotToRedirect)('should render Loader for %s', (path) => {
             const { history } = renderWithRouter(
                 <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                    <Routes />
+                    <SplitTicketViewProvider>
+                        <Routes />
+                    </SplitTicketViewProvider>
                 </Provider>,
                 { route: path },
             )
@@ -638,7 +669,9 @@ describe('<Routes/>', () => {
             ({ from, to }) => {
                 const { history } = renderWithRouter(
                     <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </Provider>,
                     { route: from },
                 )
@@ -652,7 +685,9 @@ describe('<Routes/>', () => {
             (path) => {
                 renderWithRouter(
                     <Provider store={mockStore({ currentUser: fromJS(user) })}>
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </Provider>,
                     { route: path },
                 )
@@ -680,7 +715,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/knowledge',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -705,7 +742,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/knowledge',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -733,7 +772,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/knowledge',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -764,7 +805,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/knowledge/sources',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -795,7 +838,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/knowledge/sources',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -830,7 +875,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -856,7 +903,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/sales',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -879,7 +928,9 @@ describe('<Routes/>', () => {
                             '/app/ai-agent/shopify/test-shop/sales/customer-engagement',
                         ]}
                     >
-                        <Routes />
+                        <SplitTicketViewProvider>
+                            <Routes />
+                        </SplitTicketViewProvider>
                     </MemoryRouter>
                 </Provider>,
             )
@@ -906,7 +957,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -936,7 +989,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -970,7 +1025,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -989,7 +1046,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1016,7 +1075,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1040,7 +1101,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
                         <Router history={mockHistory}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1062,7 +1125,9 @@ describe('<Routes/>', () => {
                                 '/app/ai-agent/shopify/test-shop/actions/templates',
                             ]}
                         >
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </MemoryRouter>
                     </Provider>
                 </QueryClientProvider>,
@@ -1091,7 +1156,9 @@ describe('<Routes/>', () => {
                         <MemoryRouter
                             initialEntries={['/app/ai-agent/onboarding']}
                         >
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </MemoryRouter>
                     </Provider>
                 </QueryClientProvider>,
@@ -1113,7 +1180,9 @@ describe('<Routes/>', () => {
                                 '/app/ai-agent/onboarding/shopify integration',
                             ]}
                         >
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </MemoryRouter>
                     </Provider>
                 </QueryClientProvider>,
@@ -1227,7 +1296,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1252,7 +1323,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1278,7 +1351,9 @@ describe('<Routes/>', () => {
                         <IntegrationsProvider>
                             <TokenProvider>
                                 <Router history={history}>
-                                    <Routes />
+                                    <SplitTicketViewProvider>
+                                        <Routes />
+                                    </SplitTicketViewProvider>
                                 </Router>
                             </TokenProvider>
                         </IntegrationsProvider>
@@ -1305,7 +1380,9 @@ describe('<Routes/>', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={queryClient}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </QueryClientProvider>
                 </Provider>,
@@ -1331,7 +1408,9 @@ describe('<Routes/>', () => {
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </Provider>
                 </QueryClientProvider>,
@@ -1354,7 +1433,9 @@ describe('<Routes/>', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={queryClient}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </QueryClientProvider>
                 </Provider>,
@@ -1385,7 +1466,9 @@ describe('<Routes/>', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={queryClient}>
                         <Router history={history}>
-                            <Routes />
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
                         </Router>
                     </QueryClientProvider>
                 </Provider>,

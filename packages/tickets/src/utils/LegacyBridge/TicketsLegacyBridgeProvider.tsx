@@ -1,8 +1,7 @@
 import { LegacyBridgeContext, LegacyBridgeContextType } from './context'
 
-type TicketsLegacyBridgeProviderProps = Partial<LegacyBridgeContextType> & {
+type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     children: React.ReactNode
-    dispatchNotification: LegacyBridgeContextType['dispatchNotification']
 }
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk
@@ -10,10 +9,10 @@ type TicketsLegacyBridgeProviderProps = Partial<LegacyBridgeContextType> & {
  */
 export const TicketsLegacyBridgeProvider = ({
     children,
-    dispatchNotification,
+    ...props
 }: TicketsLegacyBridgeProviderProps) => {
     return (
-        <LegacyBridgeContext.Provider value={{ dispatchNotification }}>
+        <LegacyBridgeContext.Provider value={props}>
             {children}
         </LegacyBridgeContext.Provider>
     )

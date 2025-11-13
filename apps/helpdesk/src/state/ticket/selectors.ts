@@ -457,7 +457,7 @@ export const isTicketViewActive = createSelector(getActiveView, (view) => {
     )
 })
 
-export const isTicketNavigationAvailable = (ticketId: number | string) =>
+export const isTicketNavigationAvailable = (ticketId?: number | string) =>
     createSelector(isTicketViewActive, (isActive) => {
-        return !!parseFloat(ticketId as string) && isActive
+        return !!(ticketId && parseFloat(ticketId as string)) && isActive
     })
