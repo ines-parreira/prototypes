@@ -1392,9 +1392,7 @@ describe('<Routes/>', () => {
             )
 
             await waitFor(() => {
-                expect(
-                    screen.getByText('AI Journey Performance'),
-                ).toBeInTheDocument()
+                expect(screen.getByText('Analytics')).toBeInTheDocument()
             })
         })
     })

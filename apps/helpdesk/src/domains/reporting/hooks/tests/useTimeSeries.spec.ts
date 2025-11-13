@@ -10,6 +10,7 @@ import {
     getPeriodDateTimesFromFilters,
     selectPerDimension,
     selectTimeSeriesByMeasures,
+    seriesToTwoDimensionalDataItem,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -1558,6 +1559,97 @@ describe('getDateRangeFromFilters', () => {
 
         expect(getPeriodDateTimesFromFilters(filters, undefined)).toEqual([
             '2022-01-02T00:00:00.000',
+        ])
+    })
+})
+
+describe('seriesToTwoDimensionalDataItem', () => {
+    it('should return empty array when no series', () => {
+        expect(seriesToTwoDimensionalDataItem(undefined)).toEqual([])
+    })
+
+    it('should group item without label under "default" label', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 10,
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series)
+
+        expect(result).toEqual([
+            {
+                label: 'default',
+                values: [
+                    {
+                        x: '2022-01-01T00:00:00.000',
+                        y: 10,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should use provided label for item with label', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 20,
+                label: 'test-label',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series)
+
+        expect(result).toEqual([
+            {
+                label: 'test-label',
+                values: [
+                    {
+                        x: '2022-01-01T00:00:00.000',
+                        y: 20,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should create separate groups for items with different labels', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 30,
+                label: 'label-1',
+            },
+            {
+                dateTime: '2022-01-01T01:00:00.000',
+                value: 40,
+                label: 'label-2',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series)
+
+        expect(result).toEqual([
+            {
+                label: 'label-1',
+                values: [
+                    {
+                        x: '2022-01-01T00:00:00.000',
+                        y: 30,
+                    },
+                ],
+            },
+            {
+                label: 'label-2',
+                values: [
+                    {
+                        x: '2022-01-01T01:00:00.000',
+                        y: 40,
+                    },
+                ],
+            },
         ])
     })
 })

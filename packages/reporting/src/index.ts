@@ -6,7 +6,12 @@
  */
 export { TrendIcon } from './components/TrendIcon/TrendIcon'
 export { TrendBadge } from './components/TrendBadge/TrendBadge'
-export { type MetricValueFormat, type MetricTrendFormat } from './types'
+export {
+    type MetricValueFormat,
+    type MetricTrendFormat,
+    type TwoDimensionalDataItem,
+} from './types'
 export { LineChart } from './components/LineChart/LineChart'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
+export { formatMetricTrend, formatMetricValue } from './utils/helpers'

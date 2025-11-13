@@ -1,3 +1,4 @@
+import { TwoDimensionalDataItem } from '@repo/reporting'
 import { UseQueryResult } from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
@@ -59,6 +60,24 @@ export type TimeSeriesDataItem = {
     label?: string
     rawData?: any
     [key: string]: any
+}
+
+export const seriesToTwoDimensionalDataItem = (
+    series?: TimeSeriesDataItem[],
+): TwoDimensionalDataItem[] => {
+    if (!series) {
+        return []
+    }
+
+    const groupedByLabel = _groupBy(series, (item) => item.label || 'default')
+
+    return Object.entries(groupedByLabel).map(([label, items]) => ({
+        label,
+        values: items.map((item) => ({
+            x: item.dateTime,
+            y: item.value,
+        })),
+    }))
 }
 
 export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
