@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import classNames from 'classnames'
 
 import { MessageType } from 'models/aiAgentPlayground/types'
-import { SmsChannelMessagesContainer } from 'pages/aiAgent/PlaygroundV2/components/SmsChannelMessagesContainer/SmsChannelMessagesContainer'
+import { PlaygroundOutboundMessageList } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundOutboundMessageList/PlaygroundOutboundMessageList'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
@@ -105,13 +105,13 @@ const WrappedPlaygroundMessageList = ({
 }
 
 export const PlaygroundMessageList = (props: Props) => {
-    const { shopName } = useConfigurationContext()
     const { mode } = useSettingsContext()
+
     if (mode === 'outbound') {
         return (
-            <SmsChannelMessagesContainer storeName={shopName}>
+            <PlaygroundOutboundMessageList>
                 <WrappedPlaygroundMessageList {...props} />
-            </SmsChannelMessagesContainer>
+            </PlaygroundOutboundMessageList>
         )
     }
     return <WrappedPlaygroundMessageList {...props} />

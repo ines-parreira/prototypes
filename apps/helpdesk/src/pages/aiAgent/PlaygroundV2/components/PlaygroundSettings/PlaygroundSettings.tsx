@@ -1,12 +1,6 @@
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {
-    Button,
-    ListItem,
-    SelectField,
-    ToggleField,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, ListItem, SelectField, ToggleField } from '@gorgias/axiom'
 
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings'
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
@@ -18,7 +12,6 @@ import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
-import { useAiJourneyMessages } from 'pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages'
 import { useSettingsChanged } from 'pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged'
 import {
     PlaygroundChannelAvailability,
@@ -199,13 +192,9 @@ const SettingsFooter = () => {
     const {
         saveAIJourneySettings,
         isSavingJourneyData,
-        followUpMessagesSent,
-        aiJourneySettings: { totalFollowUp },
         resetAIJourneySettings,
     } = useAIJourneyContext()
-    const { triggerMessage, isTriggeringMessage } = useAiJourneyMessages()
     const { emit } = useEvents()
-    const followUpButtonRef = useRef<HTMLButtonElement>(null)
 
     const handleApply = useCallback(async () => {
         if (mode === 'outbound') {
@@ -214,10 +203,6 @@ const SettingsFooter = () => {
         emit(PlaygroundEvent.RESET_CONVERSATION)
         resetInitialState()
     }, [mode, saveAIJourneySettings, resetInitialState, emit])
-
-    const followUpLimitReached = followUpMessagesSent >= totalFollowUp
-
-    const { isPolling } = useCoreContext()
 
     const handleRevertClick = () => {
         if (mode === 'outbound') {
@@ -236,22 +221,7 @@ const SettingsFooter = () => {
             >
                 Apply changes
             </Button>
-            <div aria-hidden={mode !== 'outbound'}>
-                <Button
-                    isDisabled={isPolling || followUpLimitReached}
-                    variant="secondary"
-                    onClick={triggerMessage}
-                    ref={followUpButtonRef}
-                    isLoading={isTriggeringMessage}
-                >
-                    Generate follow up
-                </Button>
-            </div>
-            {followUpLimitReached && (
-                <Tooltip target={followUpButtonRef} placement="top">
-                    Configured follow up limit reached
-                </Tooltip>
-            )}
+
             <Button
                 variant="tertiary"
                 isDisabled={mode === 'outbound' && !hasChanged}

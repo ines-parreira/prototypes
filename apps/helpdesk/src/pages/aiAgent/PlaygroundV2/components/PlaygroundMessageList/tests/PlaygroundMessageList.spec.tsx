@@ -50,12 +50,10 @@ jest.mock('../../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
 }))
 
 jest.mock(
-    '../../SmsChannelMessagesContainer/SmsChannelMessagesContainer',
+    '../../PlaygroundOutboundMessageList/PlaygroundOutboundMessageList',
     () => ({
-        SmsChannelMessagesContainer: ({ children, storeName }: any) => (
-            <div data-testid="sms-container" data-store-name={storeName}>
-                {children}
-            </div>
+        PlaygroundOutboundMessageList: ({ children }: any) => (
+            <div data-testid="outbound-message-list">{children}</div>
         ),
     }),
 )
@@ -353,7 +351,7 @@ describe('PlaygroundMessageList', () => {
     })
 
     describe('Outbound mode', () => {
-        it('should render with SmsChannelMessagesContainer when mode is outbound', () => {
+        it('should render with PlaygroundOutboundMessageList when mode is outbound', () => {
             mockUseSettingsContext.mockReturnValue({
                 mode: 'outbound',
                 chatAvailability: 'online',
@@ -376,15 +374,13 @@ describe('PlaygroundMessageList', () => {
 
             render(<PlaygroundMessageList />)
 
-            expect(screen.getByTestId('sms-container')).toBeInTheDocument()
-            expect(screen.getByTestId('sms-container')).toHaveAttribute(
-                'data-store-name',
-                'test-store',
-            )
+            expect(
+                screen.getByTestId('outbound-message-list'),
+            ).toBeInTheDocument()
             expect(screen.getByText('Message: Hello')).toBeInTheDocument()
         })
 
-        it('should not render with SmsChannelMessagesContainer when mode is inbound', () => {
+        it('should not render with PlaygroundOutboundMessageList when mode is inbound', () => {
             mockUseSettingsContext.mockReturnValue({
                 mode: 'inbound',
                 chatAvailability: 'online',
@@ -408,7 +404,7 @@ describe('PlaygroundMessageList', () => {
             render(<PlaygroundMessageList />)
 
             expect(
-                screen.queryByTestId('sms-container'),
+                screen.queryByTestId('outbound-message-list'),
             ).not.toBeInTheDocument()
             expect(screen.getByText('Message: Hello')).toBeInTheDocument()
         })
