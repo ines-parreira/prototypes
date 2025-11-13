@@ -126,7 +126,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
           <div
             class="title"
           >
-            Working with rules
+            Creating Rules in Gorgias
           </div>
         </div>
         <div

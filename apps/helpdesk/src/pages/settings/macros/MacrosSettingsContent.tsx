@@ -221,7 +221,11 @@ export function MacrosSettingsContent() {
                         </p>
                     </div>
                 </div>
-                <Video youtubeId="RevBOdLYeYo" legend="Working with macros" />
+                <Video
+                    videoURL="https://fast.wistia.net/embed/iframe/6s8saw4177"
+                    previewURL="https://embed-ssl.wistia.com/deliveries/a8df3940377f558e8a34511eba0e2770.jpg"
+                    legend="Creating Macros in Gorgias"
+                />
             </div>
 
             <SecondaryNavbar>

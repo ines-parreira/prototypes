@@ -162,7 +162,7 @@ export function RulesList() {
                     </div>
                     <div className="d-flex">
                         <Video
-                            legend="Working with rules"
+                            legend="Creating Rules in Gorgias"
                             videoURL="https://fast.wistia.net/embed/iframe/762b0nk1i6"
                             previewURL="https://embed-ssl.wistia.com/deliveries/7436e6362e322c3cba098340519adc2d.jpg"
                         />
