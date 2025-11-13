@@ -186,6 +186,7 @@ export enum FeatureFlagKey {
      https://app.launchdarkly.com/projects/default/flags/shopping-assistant-trial-revamp-milestone/targeting?env=production&env=staging&selected-env=production */
     ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
+    ShowAiReasoningInPlayground = 'linear.project_playground.show_ai_reasoning_in_playground',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
     StandaloneHandoverCapabilities = 'linear.project_standalone-handover-capabilities',

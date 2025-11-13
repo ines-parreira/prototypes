@@ -1,8 +1,11 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
 import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
 import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
@@ -10,6 +13,8 @@ import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketM
 import css from './PlaygroundReasoning.less'
 
 type ReasoningStatus = 'loading' | 'error' | 'collapsed' | 'expanded' | 'static'
+
+type LoadingState = 'loading' | 'loaded' | 'timeout'
 
 type PreviewParams = {
     id: string
@@ -114,7 +119,7 @@ const ReasoningBody = ({
     )
 }
 
-export interface PlaygroundReasoningProps {
+export interface PlaygroundReasoningStatelessProps {
     status: ReasoningStatus
     reasoningContent: string | null
     reasoningResources: KnowledgeReasoningResource[]
@@ -129,7 +134,7 @@ export interface PlaygroundReasoningProps {
     onOpenPreview: (params: PreviewParams) => void
 }
 
-export const PlaygroundReasoning = ({
+export const PlaygroundReasoningStateless = ({
     status,
     reasoningContent,
     reasoningResources,
@@ -139,7 +144,7 @@ export const PlaygroundReasoning = ({
     onToggle,
     onRetry,
     onOpenPreview,
-}: PlaygroundReasoningProps) => {
+}: PlaygroundReasoningStatelessProps) => {
     const isStatic = status === 'static'
     const shouldRenderBody = !(
         status === 'error' ||
@@ -176,5 +181,99 @@ export const PlaygroundReasoning = ({
                 />
             )}
         </div>
+    )
+}
+
+export interface PlaygroundReasoning {
+    testSessionId: string
+    messageId: string
+    storeConfiguration?: {
+        shopName?: string
+        shopType?: string
+    } | null
+}
+
+export const PlaygroundReasoning = ({
+    testSessionId,
+    messageId,
+    storeConfiguration,
+}: PlaygroundReasoning) => {
+    const [isExpanded, setIsExpanded] = useState(false)
+    const [loadingState, setLoadingState] = useState<LoadingState>('loading')
+
+    const {
+        reasoningContent,
+        reasoningResources,
+        reasoningMetadata,
+        staticMessage,
+        storeConfiguration: reasoningStoreConfig,
+        refetch,
+    } = useAiAgentReasoning({
+        objectId: testSessionId,
+        objectType: 'TEST_MODE_SESSION',
+        messageId: messageId,
+        enabled: !!messageId,
+        refetchInterval: loadingState === 'loading' ? 2000 : false,
+    })
+
+    useEffect(() => {
+        if (
+            loadingState === 'loading' &&
+            reasoningContent &&
+            reasoningContent.length > 0
+        ) {
+            setLoadingState('loaded')
+        }
+    }, [loadingState, reasoningContent])
+
+    useEffect(() => {
+        setIsExpanded(false)
+        setLoadingState('loading')
+    }, [messageId])
+
+    useEffect(() => {
+        if (loadingState !== 'loading') {
+            return
+        }
+
+        const timeout = setTimeout(() => {
+            setLoadingState('timeout')
+        }, 30000)
+
+        return () => clearTimeout(timeout)
+    }, [loadingState])
+
+    const status: ReasoningStatus = useMemo(() => {
+        if (loadingState === 'timeout') {
+            return 'error'
+        }
+        if (loadingState === 'loading') {
+            return 'loading'
+        }
+        if (staticMessage) {
+            return 'static'
+        }
+        return isExpanded ? 'expanded' : 'collapsed'
+    }, [staticMessage, loadingState, isExpanded])
+
+    const handleRetry = useCallback(() => {
+        setLoadingState('loading')
+        refetch()
+    }, [refetch])
+
+    return (
+        <PlaygroundReasoningStateless
+            status={status}
+            reasoningContent={reasoningContent}
+            reasoningResources={reasoningResources}
+            reasoningMetadata={reasoningMetadata}
+            staticMessage={staticMessage}
+            storeConfiguration={storeConfiguration || reasoningStoreConfig}
+            onToggle={() => setIsExpanded((prev) => !prev)}
+            onRetry={handleRetry}
+            onOpenPreview={(params) =>
+                window.open(params.url, '_blank', 'noopener,noreferrer')
+            }
+        />
     )
 }

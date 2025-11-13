@@ -11,7 +11,7 @@ import { appQueryClient } from 'api/queryClient'
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import { PlaygroundReasoning } from './PlaygroundReasoning'
+import { PlaygroundReasoningStateless } from './PlaygroundReasoning'
 
 const defaultState = {
     currentUser: Map(user),
@@ -19,7 +19,7 @@ const defaultState = {
 
 const storyConfig: Meta = {
     title: 'AI Agent/PlaygroundV2/PlaygroundReasoning',
-    component: PlaygroundReasoning,
+    component: PlaygroundReasoningStateless,
     decorators: [
         (story) => (
             <Provider store={configureMockStore()(defaultState)}>
@@ -41,7 +41,7 @@ const storyConfig: Meta = {
 
 const InteractiveWrapper = (
     props: Omit<
-        ComponentProps<typeof PlaygroundReasoning>,
+        ComponentProps<typeof PlaygroundReasoningStateless>,
         'status' | 'onToggle'
     > & {
         initialStatus?:
@@ -59,7 +59,7 @@ const InteractiveWrapper = (
     const { initialStatus, ...rest } = props
 
     return (
-        <PlaygroundReasoning
+        <PlaygroundReasoningStateless
             {...rest}
             status={status}
             onToggle={() =>
@@ -70,7 +70,7 @@ const InteractiveWrapper = (
 }
 
 type StoryArgs = Omit<
-    ComponentProps<typeof PlaygroundReasoning>,
+    ComponentProps<typeof PlaygroundReasoningStateless>,
     'status' | 'onToggle'
 > & {
     initialStatus?: 'collapsed' | 'expanded' | 'loading' | 'static' | 'error'
@@ -81,7 +81,7 @@ const Template: StoryFn<StoryArgs> = (args) => {
 }
 
 const baseProps: Omit<
-    ComponentProps<typeof PlaygroundReasoning>,
+    ComponentProps<typeof PlaygroundReasoningStateless>,
     'status' | 'onToggle'
 > = {
     reasoningContent: null,

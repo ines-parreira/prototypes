@@ -35,6 +35,7 @@ const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
     createdDatetime: new Date().toISOString(),
 }
 const GREETING_MESSAGE: PlaygroundMessage = {
+    id: '00000000-0000-0000-0000-000000000000',
     sender: AI_AGENT_SENDER,
     type: MessageType.MESSAGE,
     content: GREETING_MESSAGE_TEXT,

@@ -116,6 +116,9 @@ export const AiAgentPlayground = ({
     onInplaceSettingsOpenChange,
     supportedModes,
 }: Props) => {
+    const shouldDisplayReasoning = useFlag(
+        FeatureFlagKey.ShowAiReasoningInPlayground,
+    )
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -200,6 +203,7 @@ export const AiAgentPlayground = ({
                         <>
                             <PlaygroundMessageList
                                 onGuidanceClick={onGuidanceClick}
+                                shouldDisplayReasoning={shouldDisplayReasoning}
                             />
                             <div className={css.inputContainer}>
                                 <PlaygroundInputSection

@@ -91,6 +91,7 @@ describe('playground-handler.utils', () => {
 
                 expect(result).toEqual([
                     {
+                        id: '00000000-0000-0000-0000-000000000000',
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
                         content: 'HTML reply for email',
@@ -173,6 +174,7 @@ describe('playground-handler.utils', () => {
 
                 expect(result).toEqual([
                     {
+                        id: '00000000-0000-0000-0000-000000000000',
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
                         agentSkill: AgentSkill.SUPPORT,
@@ -257,6 +259,7 @@ describe('playground-handler.utils', () => {
 
                     expect(result).toEqual([
                         {
+                            id: '00000000-0000-0000-0000-000000000000',
                             sender: AI_AGENT_SENDER,
                             type: MessageType.MESSAGE,
                             agentSkill,
@@ -343,6 +346,7 @@ describe('playground-handler.utils', () => {
                 expect(result).toEqual(
                     expect.arrayContaining([
                         {
+                            id: '00000000-0000-0000-0000-000000000000',
                             sender: AI_AGENT_SENDER,
                             type: MessageType.MESSAGE,
                             agentSkill: AgentSkill.SUPPORT,
@@ -438,6 +442,7 @@ describe('playground-handler.utils', () => {
                 expect(result).toEqual(
                     expect.arrayContaining([
                         {
+                            id: '00000000-0000-0000-0000-000000000000',
                             sender: AI_AGENT_SENDER,
                             type: MessageType.MESSAGE,
                             agentSkill,
@@ -456,7 +461,7 @@ describe('playground-handler.utils', () => {
 
         it('should return support message for AI_AGENT_REPLY type with no sales opportunity', () => {
             const log: TestSessionLog = {
-                id: '123',
+                id: '00000000-0000-0000-0000-000000000001',
                 accountId: 456,
                 testModeSessionId: 'session-123',
                 aiAgentExecutionId: 'exec-123',
@@ -475,6 +480,7 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log)
 
             expect(result).toEqual({
+                id: '00000000-0000-0000-0000-000000000001',
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
                 content: 'Reply message',
@@ -486,7 +492,7 @@ describe('playground-handler.utils', () => {
 
         it('should return sales message for AI_AGENT_REPLY type with sales opportunity', () => {
             const log: TestSessionLog = {
-                id: '123',
+                id: '00000000-0000-0000-0000-000000000001',
                 accountId: 456,
                 testModeSessionId: 'session-123',
                 aiAgentExecutionId: 'exec-123',
@@ -505,6 +511,7 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log)
 
             expect(result).toEqual({
+                id: '00000000-0000-0000-0000-000000000001',
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
                 content: 'Sales reply message',
@@ -516,7 +523,7 @@ describe('playground-handler.utils', () => {
 
         it('should return ticket event for AI_AGENT_EXECUTION_FINISHED type', () => {
             const log: TestSessionLog = {
-                id: '123',
+                id: '00000000-0000-0000-0000-000000000001',
                 accountId: 456,
                 testModeSessionId: 'session-123',
                 aiAgentExecutionId: 'exec-123',
@@ -535,6 +542,7 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log)
 
             expect(result).toEqual({
+                id: '00000000-0000-0000-0000-000000000001',
                 sender: AI_AGENT_SENDER,
                 type: MessageType.TICKET_EVENT,
                 outcome: TicketOutcome.HANDOVER,

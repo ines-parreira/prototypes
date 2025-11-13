@@ -22,6 +22,7 @@ describe('playground-message utils', () => {
     describe('isPlaygroundMessageSupportedByServer', () => {
         it('should return true if message type is MESSAGE', () => {
             const message: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 type: MessageType.MESSAGE,
                 sender: 'agent',
                 createdDatetime: '2021-07-29T09:00:00Z',
@@ -55,6 +56,7 @@ describe('playground-message utils', () => {
         it('should map PlaygroundMessage to CreatePlaygroundMessage', () => {
             const messages: PlaygroundMessage[] = [
                 {
+                    id: '00000000-0000-0000-0000-000000000000',
                     type: MessageType.MESSAGE,
                     agentSkill: AgentSkill.SUPPORT,
                     sender: 'agent',
@@ -93,6 +95,7 @@ describe('playground-message utils', () => {
                 message: 'Hello, how can I help you?',
             }
             const expected: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 sender: DEFAULT_PLAYGROUND_CUSTOMER.name!,
                 type: MessageType.MESSAGE,
                 content: 'Hello, how can I help you?',
@@ -136,6 +139,7 @@ describe('playground-message utils', () => {
     describe('getPlaygroundMessageMeta', () => {
         it('should return entry customer message type for first shopper message', () => {
             const message: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 type: MessageType.MESSAGE,
                 content: 'Test message',
                 sender: 'User',
@@ -187,6 +191,7 @@ describe('playground-message utils', () => {
 
         it('should return greeting type for greeting message', () => {
             const message: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 type: MessageType.MESSAGE,
                 content: GREETING_MESSAGE_TEXT,
                 sender: 'User',
@@ -202,6 +207,7 @@ describe('playground-message utils', () => {
 
         it('should return undefined for non-matching message', () => {
             const message: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 type: MessageType.MESSAGE,
                 content: 'Regular message',
                 sender: 'User',
@@ -215,6 +221,7 @@ describe('playground-message utils', () => {
 
         it('should set the given channel availability', () => {
             const message: PlaygroundMessage = {
+                id: '00000000-0000-0000-0000-000000000000',
                 type: MessageType.MESSAGE,
                 content: 'Test message',
                 sender: 'User',

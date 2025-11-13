@@ -14,6 +14,7 @@ import {
 import { AI_AGENT_SENDER } from '../Playground/components/PlaygroundMessage/PlaygroundMessage'
 
 export const playgroundMessageFixture: PlaygroundTextMessage = {
+    id: '00000000-0000-0000-0000-000000000000',
     type: MessageType.MESSAGE,
     content: 'Hello, how can I help you?',
     sender: AI_AGENT_SENDER,
@@ -58,6 +59,7 @@ export const playgroundTicketEventMessageFixture: PlaygroundTicketEventMessage =
     }
 
 export const playgroundCustomerMessage: PlaygroundTextMessage = {
+    id: '00000000-0000-0000-0000-000000000000',
     type: MessageType.MESSAGE,
     content: 'Hello, how can I help you?',
     sender: 'customer',

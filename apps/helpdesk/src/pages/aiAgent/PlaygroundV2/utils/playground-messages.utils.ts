@@ -89,6 +89,7 @@ export const mapPlaygroundFormValuesToMessage = (
     formValues: PlaygroundFormValues,
 ): PlaygroundTextMessage => {
     return {
+        id: '00000000-0000-0000-0000-000000000000',
         sender: formValues.customer.name ?? formValues.customer.email,
         type: MessageType.MESSAGE,
         content: formValues.message,

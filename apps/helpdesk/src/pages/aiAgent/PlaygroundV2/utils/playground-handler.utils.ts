@@ -31,6 +31,8 @@ const getEmailChannelMessagesFromResponse = (
 
     if (storeData && shouldAiAgentResponseDisplay(aiAgentResponse, storeData)) {
         messages.push({
+            // TODO: rework the way these messages are created to not need to set the id
+            id: '00000000-0000-0000-0000-000000000000',
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
             content:
@@ -78,6 +80,8 @@ const getChatChannelMessagesFromResponse = (
             aiAgentResponse.generate.output.generated_message.length)
     ) {
         messages.push({
+            // TODO: rework the way these messages are created to not need to set the id
+            id: '00000000-0000-0000-0000-000000000000',
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
             agentSkill: aiAgentResponse.postProcessing.isSalesOpportunity
@@ -93,6 +97,8 @@ const getChatChannelMessagesFromResponse = (
 
     if (shouldDisplayActions(aiAgentResponse)) {
         messages.push({
+            // TODO: rework the way these messages are created to not need to set the id
+            id: '00000000-0000-0000-0000-000000000000',
             sender: AI_AGENT_SENDER,
             type: MessageType.MESSAGE,
             agentSkill: aiAgentResponse.postProcessing.isSalesOpportunity
@@ -170,6 +176,7 @@ export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
     switch (log.type) {
         case TestSessionLogType.AI_AGENT_REPLY:
             return {
+                id: log.id,
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE as const,
                 content: log.data.message,
@@ -181,6 +188,7 @@ export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
             }
         case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
             return {
+                id: log.id,
                 sender: AI_AGENT_SENDER,
                 type: MessageType.TICKET_EVENT as const,
                 createdDatetime: log.createdDatetime,

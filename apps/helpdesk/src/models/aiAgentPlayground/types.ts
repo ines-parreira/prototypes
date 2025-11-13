@@ -134,6 +134,7 @@ type BaseMessage = {
     createdDatetime: string
 }
 export type PlaygroundTextMessage = BaseMessage & {
+    id?: string // Optional until we drop the old Playground code
     type: MessageType.MESSAGE
     agentSkill?: AgentSkill
     content: string

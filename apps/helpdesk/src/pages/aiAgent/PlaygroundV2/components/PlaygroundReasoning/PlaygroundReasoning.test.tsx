@@ -1,23 +1,34 @@
 import '@testing-library/jest-dom'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Map } from 'immutable'
+import { fromJS, Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
+import {
+    mockAiReasoning,
+    mockFindAiReasoningAiReasoningHandler,
+} from '@gorgias/knowledge-service-mocks'
 
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import {
     PlaygroundReasoning,
-    PlaygroundReasoningProps,
+    PlaygroundReasoningStateless,
+    PlaygroundReasoningStatelessProps,
 } from './PlaygroundReasoning'
 
 const mockStore = configureMockStore()
 const defaultState = {
     currentUser: Map(user),
+    integrations: fromJS({
+        integrations: [],
+    }),
 }
 
 const queryClient = new QueryClient({
@@ -31,7 +42,7 @@ const mockOnToggle = jest.fn()
 const mockOnRetry = jest.fn()
 const mockOnOpenPreview = jest.fn()
 
-const defaultProps: PlaygroundReasoningProps = {
+const defaultProps: PlaygroundReasoningStatelessProps = {
     status: 'collapsed',
     reasoningContent: 'Sample reasoning content',
     reasoningResources: [],
@@ -46,11 +57,13 @@ const defaultProps: PlaygroundReasoningProps = {
     onOpenPreview: mockOnOpenPreview,
 }
 
-const renderComponent = (props: Partial<PlaygroundReasoningProps> = {}) => {
+const renderComponent = (
+    props: Partial<PlaygroundReasoningStatelessProps> = {},
+) => {
     return render(
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
-                <PlaygroundReasoning {...defaultProps} {...props} />
+                <PlaygroundReasoningStateless {...defaultProps} {...props} />
             </QueryClientProvider>
         </Provider>,
     )
@@ -85,31 +98,15 @@ describe('PlaygroundReasoning', () => {
                     container.querySelector('[aria-busy="true"]')
                 expect(mainContainer).toBeInTheDocument()
             })
-
-            it('should not render body content when loading', () => {
-                renderComponent({
-                    status: 'loading',
-                    reasoningContent: 'Test content',
-                })
-
-                expect(
-                    screen.queryByText('Test content'),
-                ).not.toBeInTheDocument()
-            })
         })
 
         describe('Error state', () => {
-            it('should render error message', () => {
+            it('should render error message with retry button', () => {
                 renderComponent({ status: 'error' })
 
                 expect(
                     screen.getByText(/Couldn't load reasoning/),
                 ).toBeInTheDocument()
-            })
-
-            it('should render "Try again" button', () => {
-                renderComponent({ status: 'error' })
-
                 expect(screen.getByText('Try again')).toBeInTheDocument()
             })
 
@@ -120,17 +117,6 @@ describe('PlaygroundReasoning', () => {
                 await userEvent.click(retryButton)
 
                 expect(mockOnRetry).toHaveBeenCalledTimes(1)
-            })
-
-            it('should not render body content when in error state', () => {
-                renderComponent({
-                    status: 'error',
-                    reasoningContent: 'Test content',
-                })
-
-                expect(
-                    screen.queryByText('Test content'),
-                ).not.toBeInTheDocument()
             })
         })
 
@@ -165,17 +151,6 @@ describe('PlaygroundReasoning', () => {
                 await userEvent.click(button)
 
                 expect(mockOnToggle).toHaveBeenCalledTimes(1)
-            })
-
-            it('should not render body content when collapsed', () => {
-                renderComponent({
-                    status: 'collapsed',
-                    reasoningContent: 'Test content',
-                })
-
-                expect(
-                    screen.queryByText('Test content'),
-                ).not.toBeInTheDocument()
             })
         })
 
@@ -222,17 +197,6 @@ describe('PlaygroundReasoning', () => {
                     screen.getByText('Test reasoning content'),
                 ).toBeInTheDocument()
             })
-
-            it('should pass reasoning content to AiAgentReasoningContent', () => {
-                renderComponent({
-                    status: 'expanded',
-                    reasoningContent: 'Test reasoning content',
-                })
-
-                expect(
-                    screen.getByText('Test reasoning content'),
-                ).toBeInTheDocument()
-            })
         })
 
         describe('Static state', () => {
@@ -255,17 +219,26 @@ describe('PlaygroundReasoning', () => {
 
                 expect(screen.queryByRole('button')).not.toBeInTheDocument()
             })
+        })
 
-            it('should render static message in body', () => {
-                renderComponent({
-                    status: 'static',
-                    staticMessage: 'Test static message',
-                })
+        describe('Body content visibility', () => {
+            it.each([
+                ['loading', 'loading'],
+                ['error', 'error'],
+                ['collapsed', 'collapsed'],
+            ] as const)(
+                'should not render body content when status is %s',
+                (_, status) => {
+                    renderComponent({
+                        status,
+                        reasoningContent: 'Test content',
+                    })
 
-                expect(
-                    screen.getByText('Test static message'),
-                ).toBeInTheDocument()
-            })
+                    expect(
+                        screen.queryByText('Test content'),
+                    ).not.toBeInTheDocument()
+                },
+            )
         })
     })
 
@@ -340,6 +313,266 @@ describe('PlaygroundReasoning', () => {
             await userEvent.keyboard(' ')
 
             expect(mockOnToggle).toHaveBeenCalledTimes(1)
+        })
+    })
+})
+
+describe('PlaygroundReasoning (Connected Component)', () => {
+    const server = setupServer()
+    let testQueryClient: QueryClient
+
+    const renderConnectedComponent = (
+        props: Partial<React.ComponentProps<typeof PlaygroundReasoning>> = {},
+    ) => {
+        return render(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={testQueryClient}>
+                    <PlaygroundReasoning
+                        testSessionId="test-session-123"
+                        messageId="message-456"
+                        storeConfiguration={null}
+                        {...props}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+    }
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'bypass' })
+    })
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        testQueryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+                mutations: { retry: false },
+            },
+        })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    describe('Loading and Data Fetching', () => {
+        it('should start in loading state and transition to collapsed when data loads', async () => {
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    const baseReasoning = mockAiReasoning()
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Test reasoning content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            renderConnectedComponent()
+
+            expect(
+                screen.getByText('Generating reasoning...'),
+            ).toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByText('Generating reasoning...'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should continue polling when reasoning content is empty', async () => {
+            let callCount = 0
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    callCount++
+                    const baseReasoning = mockAiReasoning()
+                    if (callCount < 3) {
+                        return HttpResponse.json({
+                            ...baseReasoning,
+                            reasoning: [],
+                            resources: [],
+                        })
+                    }
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Loaded content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            renderConnectedComponent()
+
+            expect(
+                screen.getByText('Generating reasoning...'),
+            ).toBeInTheDocument()
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText('Show reasoning'),
+                    ).toBeInTheDocument()
+                },
+                { timeout: 10000 },
+            )
+
+            expect(callCount).toBeGreaterThanOrEqual(3)
+        })
+    })
+
+    describe('MessageId Changes', () => {
+        it('should reset state when messageId changes', async () => {
+            const baseReasoning = mockAiReasoning()
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Initial content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            const { rerender } = renderConnectedComponent({
+                messageId: 'message-1',
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            const expandButton = screen.getByText('Show reasoning')
+            await act(async () => {
+                await userEvent.click(expandButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Hide reasoning')).toBeInTheDocument()
+            })
+
+            server.use(
+                mockFindAiReasoningAiReasoningHandler(async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'New content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                }).handler,
+            )
+
+            rerender(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={testQueryClient}>
+                        <PlaygroundReasoning
+                            testSessionId="test-session-123"
+                            messageId="message-2"
+                            storeConfiguration={null}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Generating reasoning...'),
+            ).toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Expand/Collapse Behavior', () => {
+        it('should allow expanding and collapsing reasoning content', async () => {
+            const baseReasoning = mockAiReasoning()
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Test content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            renderConnectedComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            const showButton = screen.getByText('Show reasoning')
+            await act(async () => {
+                await userEvent.click(showButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Hide reasoning')).toBeInTheDocument()
+            })
+
+            expect(screen.getByText('Test content')).toBeInTheDocument()
+
+            const hideButton = screen.getByText('Hide reasoning')
+            await act(async () => {
+                await userEvent.click(hideButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            expect(screen.queryByText('Test content')).not.toBeInTheDocument()
         })
     })
 })

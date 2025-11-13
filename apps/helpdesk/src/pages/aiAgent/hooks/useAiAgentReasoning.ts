@@ -14,6 +14,7 @@ export interface UseAiAgentReasoningParams {
     messageId: string
     enabled?: boolean
     isHandover?: boolean
+    refetchInterval?: number | false
 }
 
 /**
@@ -32,6 +33,7 @@ export const useAiAgentReasoning = ({
     messageId,
     enabled = true,
     isHandover = false,
+    refetchInterval,
 }: UseAiAgentReasoningParams) => {
     const {
         data: messageAiReasoning,
@@ -46,6 +48,7 @@ export const useAiAgentReasoning = ({
         },
         {
             enabled: enabled && !!messageId,
+            refetchInterval,
         },
     )
 

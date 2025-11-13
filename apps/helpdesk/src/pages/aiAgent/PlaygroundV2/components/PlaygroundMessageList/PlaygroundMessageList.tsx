@@ -8,23 +8,30 @@ import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/Con
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 
+import { AI_AGENT_SENDER } from '../../constants'
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
+import { PlaygroundReasoning } from '../PlaygroundReasoning/PlaygroundReasoning'
 
 import css from '../../AiAgentPlayground.less'
 
 type Props = {
     onGuidanceClick?: (guidanceArticleId: number) => void
+    shouldDisplayReasoning?: boolean
 }
 
-const WrappedPlaygroundMessageList = ({ onGuidanceClick }: Props) => {
+const WrappedPlaygroundMessageList = ({
+    onGuidanceClick,
+    shouldDisplayReasoning = false,
+}: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
 
     const { storeConfiguration } = useConfigurationContext()
     const { channel } = useCoreContext()
     const { messages } = useMessagesContext()
+    const { testSessionId } = useCoreContext()
 
     // Auto-scroll to bottom when messages change
     useEffect(() => {
@@ -63,7 +70,8 @@ const WrappedPlaygroundMessageList = ({ onGuidanceClick }: Props) => {
                             withAnimation
                             key={index}
                         >
-                            {message.type === MessageType.MESSAGE &&
+                            {!shouldDisplayReasoning &&
+                                message.type === MessageType.MESSAGE &&
                                 message.executionId &&
                                 storeConfiguration && (
                                     <KnowledgeSourcesWrapper
@@ -71,6 +79,15 @@ const WrappedPlaygroundMessageList = ({ onGuidanceClick }: Props) => {
                                         storeConfiguration={storeConfiguration}
                                         outcome={outcome}
                                         onGuidanceClick={onGuidanceClick}
+                                    />
+                                )}
+                            {shouldDisplayReasoning &&
+                                message.type === MessageType.MESSAGE &&
+                                message.sender === AI_AGENT_SENDER &&
+                                testSessionId && (
+                                    <PlaygroundReasoning
+                                        testSessionId={testSessionId}
+                                        messageId={message.id!}
                                     />
                                 )}
                         </PlaygroundMessageComponent>
