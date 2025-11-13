@@ -1,14 +1,11 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 
 import classnames from 'classnames'
-
-import { Badge, LoadingSpinner, Skeleton } from '@gorgias/axiom'
 
 import error from 'assets/img/icons/error.svg'
 import {
     MessageType,
     PlaygroundMessage as PlaygroundMessageType,
-    ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
@@ -255,71 +252,11 @@ const MessageContainer = ({
 }
 
 const PlaygroundPlaceholderMessage = () => {
-    const [processingStatus, setProcessingStatus] = useState(
-        ProcessingStatus.CHECKING_PERMISSIONS,
-    )
-
-    useEffect(() => {
-        const timeoutsToClear: NodeJS.Timeout[] = []
-
-        const aiAgentProcessingStatusUpdate = (
-            newStatus: ProcessingStatus,
-            delay: number,
-        ) => {
-            return setTimeout(() => {
-                setProcessingStatus(newStatus)
-            }, delay)
-        }
-
-        timeoutsToClear.push(
-            aiAgentProcessingStatusUpdate(ProcessingStatus.SUMMARIZING, 5000),
-            aiAgentProcessingStatusUpdate(
-                ProcessingStatus.GATHERING_INFO,
-                10000,
-            ),
-            aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000),
-        )
-        return () => {
-            timeoutsToClear.forEach(clearTimeout)
-        }
-    }, [])
-
     return (
-        <div
-            className={classnames(
-                css.messageContent,
-                css.aiAgentLoadingSkeletonContainer,
-            )}
-            role="status"
-            aria-live="polite"
-        >
-            <Skeleton
-                className={css.aiAgentLoadingSkeleton}
-                height={32}
-                width="100%"
-                count={1}
-            />
-            <Skeleton
-                className={css.aiAgentLoadingSkeleton}
-                height={32}
-                width="80%"
-                count={1}
-            />
-            <Skeleton
-                className={css.aiAgentLoadingSkeleton}
-                height={32}
-                width="50%"
-                count={1}
-            />
-            <Badge type={'magenta'} className={css.aiAgentProcessingBadge}>
-                <LoadingSpinner
-                    size={12}
-                    className={css.aiAgentProcessingIcon}
-                />
-                <div className={css.aiAgentProcessingStatus}>
-                    {processingStatus}
-                </div>
-            </Badge>
+        <div className={css.messageContent}>
+            <div className={css.aiAgentLoadingSkeletonContainer} role="status">
+                Loading...
+            </div>
         </div>
     )
 }

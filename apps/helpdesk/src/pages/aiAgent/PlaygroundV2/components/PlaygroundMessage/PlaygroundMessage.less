@@ -63,7 +63,20 @@
         }
 
         .aiAgentLoadingSkeletonContainer {
-            padding-top: var(--layout-spacing-xs);
+            background: linear-gradient(
+                90deg,
+                var(--neutral-grey-6) 0%,
+                var(--neutral-grey-3) 50%,
+                var(--neutral-grey-6) 100%
+            );
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            :global {
+                animation: shimmer 1.5s infinite ease-in-out;
+            }
         }
 
         .aiAgentLoadingSkeleton {
