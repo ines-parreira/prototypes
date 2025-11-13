@@ -26,10 +26,6 @@
         overflow: hidden;
     }
 
-    .container.expanded {
-        gap: var(--layout-spacing-s);
-    }
-
     .container.static {
         flex-direction: row;
         justify-content: space-between;
@@ -94,7 +90,24 @@
         margin-left: auto;
     }
 
+    .bodyContainer {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.5s ease-in-out;
+        overflow: hidden;
+
+        &.expanded {
+            grid-template-rows: 1fr;
+        }
+    }
+
+    .bodyInnerContainer {
+        min-height: 0;
+    }
+
     .body {
+        padding-top: var(--layout-spacing-s);
+
         .caption-regular();
         max-height: 0;
         opacity: 0;

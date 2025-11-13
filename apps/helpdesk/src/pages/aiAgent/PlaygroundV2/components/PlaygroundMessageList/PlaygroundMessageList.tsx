@@ -114,6 +114,5 @@ export const PlaygroundMessageList = (props: Props) => {
             </SmsChannelMessagesContainer>
         )
     }
-
     return <WrappedPlaygroundMessageList {...props} />
 }

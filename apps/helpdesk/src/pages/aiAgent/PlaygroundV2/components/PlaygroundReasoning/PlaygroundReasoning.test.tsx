@@ -234,9 +234,14 @@ describe('PlaygroundReasoning', () => {
                         reasoningContent: 'Test content',
                     })
 
-                    expect(
-                        screen.queryByText('Test content'),
-                    ).not.toBeInTheDocument()
+                    const content = screen.queryByText('Test content')
+                    if (status === 'collapsed') {
+                        // Content is in DOM for animation but hidden via CSS
+                        expect(content).toBeInTheDocument()
+                    } else {
+                        // For loading and error, content is not rendered
+                        expect(content).not.toBeInTheDocument()
+                    }
                 },
             )
         })
@@ -576,7 +581,8 @@ describe('PlaygroundReasoning (Connected Component)', () => {
                 expect(screen.getByText('Show reasoning')).toBeInTheDocument()
             })
 
-            expect(screen.queryByText('Test content')).not.toBeInTheDocument()
+            // Content remains in DOM for animation but is hidden
+            expect(screen.getByText('Test content')).toBeInTheDocument()
         })
     })
 })

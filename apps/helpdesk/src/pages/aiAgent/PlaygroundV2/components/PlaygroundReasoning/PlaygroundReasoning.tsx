@@ -147,11 +147,7 @@ export const PlaygroundReasoningStateless = ({
     onOpenPreview,
 }: PlaygroundReasoningStatelessProps) => {
     const isStatic = status === 'static'
-    const shouldRenderBody = !(
-        status === 'error' ||
-        status === 'loading' ||
-        status === 'collapsed'
-    )
+    const shouldRenderBody = !(status === 'error' || status === 'loading')
 
     return (
         <div
@@ -170,17 +166,26 @@ export const PlaygroundReasoningStateless = ({
                     onToggle={onToggle}
                 />
             )}
-            {shouldRenderBody && (
-                <ReasoningBody
-                    status={status}
-                    reasoningContent={reasoningContent}
-                    reasoningResources={reasoningResources}
-                    reasoningMetadata={reasoningMetadata}
-                    staticMessage={staticMessage}
-                    storeConfiguration={storeConfiguration}
-                    onOpenPreview={onOpenPreview}
-                />
-            )}
+
+            <div
+                className={classNames(css.bodyContainer, {
+                    [css.expanded]: status === 'expanded',
+                })}
+            >
+                <div className={css.bodyInnerContainer}>
+                    {shouldRenderBody && (
+                        <ReasoningBody
+                            status={status}
+                            reasoningContent={reasoningContent}
+                            reasoningResources={reasoningResources}
+                            reasoningMetadata={reasoningMetadata}
+                            staticMessage={staticMessage}
+                            storeConfiguration={storeConfiguration}
+                            onOpenPreview={onOpenPreview}
+                        />
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
