@@ -3,6 +3,7 @@ import { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/Conve
 import { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/ConvertOrderEventsCube'
 import { FilterOperatorMap } from 'domains/reporting/models/queryFactories/utils'
 import {
+    ReportingFilterOperator,
     ReportingGranularity,
     ReportingParams,
     ReportingQuery,
@@ -37,6 +38,7 @@ const _getDefaultFilters = ({
     campaignsOperator,
     shopName,
     abVariant,
+    allowNoCampaign,
 }: DefaultFilterParams): CubeFilter[] => {
     const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
 
@@ -44,6 +46,12 @@ const _getDefaultFilters = ({
         filters.push(
             _campaignEqualsFilter(campaignIds, campaignsOperator, cubeName),
         )
+    } else if (!allowNoCampaign) {
+        filters.push({
+            member: `${cubeName}.${SharedDimension.campaignId}`,
+            operator: ReportingFilterOperator.NotEquals,
+            values: [''],
+        })
     }
 
     if (shopName) {
@@ -325,6 +333,7 @@ export const getStoreRevenueTotalData = ({
                 endDate,
                 cubeName: Cube.orderConversion,
                 shopName,
+                allowNoCampaign: true,
             }),
             metricName: METRIC_NAMES.CONVERT_STORE_REVENUE_TOTAL,
         },
@@ -358,6 +367,7 @@ export const getRevenueGraphData = ({
                 endDate,
                 cubeName: Cube.orderConversion,
                 shopName,
+                allowNoCampaign: true,
             }),
             metricName: METRIC_NAMES.CONVERT_REVENUE_GRAPH,
         },

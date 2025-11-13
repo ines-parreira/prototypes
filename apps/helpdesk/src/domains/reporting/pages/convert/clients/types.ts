@@ -25,6 +25,7 @@ export type DefaultFilterParams = {
     campaignsOperator?: LogicalOperatorEnum
     shopName?: string
     abVariant?: string
+    allowNoCampaign?: boolean
 } & RequiredFilterParams
 
 export type FilterParams = {
