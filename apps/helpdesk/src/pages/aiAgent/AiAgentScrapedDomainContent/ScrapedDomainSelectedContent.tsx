@@ -344,7 +344,7 @@ const ScrapedDomainSelectedContent = (props: Props) => {
                 </div>
                 {isTitleOverflowing && titleRef && (
                     <Tooltip target={titleRef} placement="bottom">
-                        {title}
+                        Products details for the {title}
                     </Tooltip>
                 )}
                 <div className={css.headerActions}>

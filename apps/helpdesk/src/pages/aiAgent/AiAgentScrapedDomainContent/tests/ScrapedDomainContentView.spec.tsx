@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
+import useFlag from 'core/flags/hooks/useFlag'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
@@ -9,8 +9,9 @@ import ScrapedDomainContentView from '../ScrapedDomainContentView'
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 jest.mock('state/notifications/actions')
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
+jest.mock('core/flags/hooks/useFlag', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 const mockUseFlag = assumeMock(useFlag)
 
@@ -94,7 +95,7 @@ describe('ScrapedDomainContentView', () => {
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
             screen.getByText(
-                /Products AI Agent can reference are synced automatically/i,
+                /View the products AI Agent can reference and the information available for each/i,
             ),
         ).toBeInTheDocument()
     })
@@ -164,19 +165,19 @@ describe('ScrapedDomainContentView', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders correct description for PRODUCT pageType', () => {
+    it('renders correct description for PRODUCT pageType when feature flag is disabled', () => {
+        mockUseFlag.mockImplementation(() => false)
+
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(
             screen.getByText(
-                /Products AI Agent can reference are synced automatically from Shopify and your store website\. You can add additional information per product to give AI Agent extra context\./i,
+                /View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website\./i,
             ),
         ).toBeInTheDocument()
     })
 
-    it('renders correct description for PRODUCT pageType', () => {
-        mockUseFlag.mockImplementation(() => {
-            return false
-        })
+    it('renders correct description for PRODUCT pageType when feature flag is enabled', () => {
+        mockUseFlag.mockImplementation(() => true)
 
         setup({ pageType: CONTENT_TYPE.PRODUCT })
         expect(

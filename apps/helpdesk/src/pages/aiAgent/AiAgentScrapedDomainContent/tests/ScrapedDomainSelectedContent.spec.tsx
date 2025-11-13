@@ -294,7 +294,7 @@ describe('ScrapedDomainSelectedContent', () => {
             })
 
             expect(screen.getByTestId('tooltip')).toHaveTextContent(
-                'This is a very long product title that will be truncated',
+                'Products details for the This is a very long product title that will be truncated',
             )
         })
 
@@ -393,7 +393,7 @@ describe('ScrapedDomainSelectedContent', () => {
             })
 
             expect(screen.getByTestId('tooltip')).toHaveTextContent(
-                'First Product Title That Is Very Long',
+                'Products details for the First Product Title That Is Very Long',
             )
 
             rerender(
@@ -408,7 +408,7 @@ describe('ScrapedDomainSelectedContent', () => {
 
             await waitFor(() => {
                 expect(screen.getByTestId('tooltip')).toHaveTextContent(
-                    'Second Product Title That Is Also Very Long',
+                    'Products details for the Second Product Title That Is Also Very Long',
                 )
             })
         })

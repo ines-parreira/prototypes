@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
@@ -8,6 +9,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ContentType,
@@ -102,9 +104,11 @@ const ColumnIsNotUsedByAiAgent = ({ id }: { id: number }) => (
 const getPageDescription = ({
     pageType,
     productsRoute,
+    isAdditionalInfoEnabled,
 }: {
     pageType: string
     productsRoute: string
+    isAdditionalInfoEnabled: boolean
 }) => {
     switch (pageType) {
         case CONTENT_TYPE.QUESTION:
@@ -124,7 +128,9 @@ const getPageDescription = ({
                 </>
             )
         case CONTENT_TYPE.PRODUCT:
-            return 'Products AI Agent can reference are synced automatically from Shopify and your store website. You can add additional information per product to give AI Agent extra context.'
+            return isAdditionalInfoEnabled
+                ? 'Products AI Agent can reference are synced automatically from Shopify and your store website. You can add additional information per product to give AI Agent extra context.'
+                : 'View the products AI Agent can reference and the information available for each, synced from sources like Shopify and your store website.'
         case CONTENT_TYPE.FILE_QUESTION:
             return 'AI Agent generates questions and answers from the document to use when responding to customers.'
         case CONTENT_TYPE.URL_QUESTION:
@@ -180,9 +186,14 @@ function ScrapedDomainContentView<T extends ContentType>({
 }: Props<T>) {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
+    const isAdditionalInfoEnabled = useFlag(
+        FeatureFlagKey.AiAgentProductAdditionalInfo,
+    )
+
     const description = getPageDescription({
         pageType,
         productsRoute: routes.products,
+        isAdditionalInfoEnabled,
     })
 
     const [questionStatusMap, setQuestionStatusMap] = useState<
