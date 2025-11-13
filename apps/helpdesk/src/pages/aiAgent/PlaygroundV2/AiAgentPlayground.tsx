@@ -14,6 +14,7 @@ import {
 } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUserState } from 'state/currentUser/selectors'
 
 import { PlaygroundInputSection } from './components/PlaygroundInputSection/PlaygroundInputSection'
 import { PlaygroundMessageList } from './components/PlaygroundMessageList/PlaygroundMessageList'
@@ -120,6 +121,9 @@ export const AiAgentPlayground = ({
         FeatureFlagKey.ShowAiReasoningInPlayground,
     )
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUserState)
+    const accountId = (currentAccount.get('id') as number) ?? 0
+    const userId = (currentUser.get('id') as number) ?? 0
     const accountDomain = currentAccount.get('domain')
 
     const { resolvedShopName: shopNameFromIntegration } =
@@ -202,6 +206,8 @@ export const AiAgentPlayground = ({
                     ) : (
                         <>
                             <PlaygroundMessageList
+                                accountId={accountId}
+                                userId={userId}
                                 onGuidanceClick={onGuidanceClick}
                                 shouldDisplayReasoning={shouldDisplayReasoning}
                             />

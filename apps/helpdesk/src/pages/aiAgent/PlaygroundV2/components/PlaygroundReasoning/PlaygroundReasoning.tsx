@@ -9,6 +9,7 @@ import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
+import { useReasoningTracking } from 'pages/tickets/detail/components/TicketMessages/hooks/useReasoningTracking'
 
 import css from './PlaygroundReasoning.less'
 
@@ -185,6 +186,8 @@ export const PlaygroundReasoningStateless = ({
 }
 
 export interface PlaygroundReasoning {
+    accountId: number
+    userId: number
     testSessionId: string
     messageId: string
     storeConfiguration?: {
@@ -194,6 +197,8 @@ export interface PlaygroundReasoning {
 }
 
 export const PlaygroundReasoning = ({
+    accountId,
+    userId,
     testSessionId,
     messageId,
     storeConfiguration,
@@ -261,6 +266,22 @@ export const PlaygroundReasoning = ({
         refetch()
     }, [refetch])
 
+    const { onReasoningOpened } = useReasoningTracking({
+        accountId,
+        userId,
+        ticketId: Number(testSessionId),
+        messageId: Number(messageId) || 0,
+    })
+
+    const handleToggle = useCallback(() => {
+        setIsExpanded((prev) => {
+            if (!prev) {
+                onReasoningOpened()
+            }
+            return !prev
+        })
+    }, [onReasoningOpened])
+
     return (
         <PlaygroundReasoningStateless
             status={status}
@@ -269,7 +290,7 @@ export const PlaygroundReasoning = ({
             reasoningMetadata={reasoningMetadata}
             staticMessage={staticMessage}
             storeConfiguration={storeConfiguration || reasoningStoreConfig}
-            onToggle={() => setIsExpanded((prev) => !prev)}
+            onToggle={handleToggle}
             onRetry={handleRetry}
             onOpenPreview={(params) =>
                 window.open(params.url, '_blank', 'noopener,noreferrer')

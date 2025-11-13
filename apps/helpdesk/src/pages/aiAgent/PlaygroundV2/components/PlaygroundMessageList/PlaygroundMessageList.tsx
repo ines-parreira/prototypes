@@ -18,11 +18,15 @@ import { PlaygroundReasoning } from '../PlaygroundReasoning/PlaygroundReasoning'
 import css from '../../AiAgentPlayground.less'
 
 type Props = {
+    accountId: number
+    userId: number
     onGuidanceClick?: (guidanceArticleId: number) => void
     shouldDisplayReasoning?: boolean
 }
 
 const WrappedPlaygroundMessageList = ({
+    accountId,
+    userId,
     onGuidanceClick,
     shouldDisplayReasoning = false,
 }: Props) => {
@@ -88,6 +92,8 @@ const WrappedPlaygroundMessageList = ({
                                     <PlaygroundReasoning
                                         testSessionId={testSessionId}
                                         messageId={message.id!}
+                                        accountId={accountId}
+                                        userId={userId}
                                     />
                                 )}
                         </PlaygroundMessageComponent>
@@ -108,5 +114,6 @@ export const PlaygroundMessageList = (props: Props) => {
             </SmsChannelMessagesContainer>
         )
     }
-    return <WrappedPlaygroundMessageList />
+
+    return <WrappedPlaygroundMessageList {...props} />
 }

@@ -7,7 +7,7 @@ import { useConfigurationContext } from '../../../contexts/ConfigurationContext'
 import { useCoreContext } from '../../../contexts/CoreContext'
 import { useMessagesContext } from '../../../contexts/MessagesContext'
 import { useSettingsContext } from '../../../contexts/SettingsContext'
-import { PlaygroundMessageList } from '../PlaygroundMessageList'
+import { PlaygroundMessageList as RawPlaygroundMessageList } from '../PlaygroundMessageList'
 
 jest.mock('../../../contexts/MessagesContext', () => ({
     useMessagesContext: jest.fn(),
@@ -100,6 +100,10 @@ const defaultCoreContext = {
     isPolling: false,
     startPolling: jest.fn(),
     stopPolling: jest.fn(),
+}
+
+const PlaygroundMessageList = () => {
+    return <RawPlaygroundMessageList accountId={1} userId={2} />
 }
 
 describe('PlaygroundMessageList', () => {

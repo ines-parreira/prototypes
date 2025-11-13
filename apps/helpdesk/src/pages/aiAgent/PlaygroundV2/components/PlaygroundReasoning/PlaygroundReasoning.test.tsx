@@ -328,6 +328,8 @@ describe('PlaygroundReasoning (Connected Component)', () => {
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={testQueryClient}>
                     <PlaygroundReasoning
+                        accountId={1}
+                        userId={2}
                         testSessionId="test-session-123"
                         messageId="message-456"
                         storeConfiguration={null}
@@ -506,6 +508,8 @@ describe('PlaygroundReasoning (Connected Component)', () => {
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={testQueryClient}>
                         <PlaygroundReasoning
+                            accountId={1}
+                            userId={2}
                             testSessionId="test-session-123"
                             messageId="message-2"
                             storeConfiguration={null}

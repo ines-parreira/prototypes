@@ -3,10 +3,10 @@ import { useCallback, useMemo } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 interface UseReasoningTrackingProps {
-    ticketId: number
+    ticketId?: number
     accountId: number
     userId: number
-    messageId: number
+    messageId?: number
 }
 
 interface ReasoningTrackingCallbacks {
