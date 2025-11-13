@@ -181,6 +181,95 @@ describe('AIJourneySettings', () => {
 
             expect(anotherProductOption).toBeInTheDocument()
         })
+
+        describe('Product image rendering', () => {
+            it('should render product image when selectedProduct has an image', () => {
+                const productWithImage = mockProducts[0]
+
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            selectedProduct: productWithImage,
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                const productImage = screen.getByAltText('selected product')
+                expect(productImage).toBeInTheDocument()
+                expect(productImage).toHaveAttribute(
+                    'src',
+                    productWithImage.image?.src,
+                )
+            })
+
+            it('should render image element when selectedProduct is undefined', () => {
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            selectedProduct: null,
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                const productImage = screen.getByAltText('selected product')
+                expect(productImage).toBeInTheDocument()
+                expect(productImage).toHaveAttribute('src', '')
+            })
+
+            it('should render image element when selectedProduct.image is null', () => {
+                const productWithoutImage: Product = {
+                    ...mockProducts[0],
+                    image: null as any,
+                }
+
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            selectedProduct: productWithoutImage,
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                const productImage = screen.getByAltText('selected product')
+                expect(productImage).toBeInTheDocument()
+                expect(productImage).toHaveAttribute('src', '')
+            })
+
+            it('should render image element when selectedProduct.image.src is undefined', () => {
+                const productWithImageNoSrc: Product = {
+                    ...mockProducts[0],
+                    image: {
+                        id: 123,
+                        alt: 'test',
+                        variant_ids: [],
+                    } as any,
+                }
+
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            selectedProduct: productWithImageNoSrc,
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                const productImage = screen.getByAltText('selected product')
+                expect(productImage).toBeInTheDocument()
+                expect(productImage).toHaveAttribute('src', '')
+            })
+        })
     })
 
     describe('Message settings', () => {

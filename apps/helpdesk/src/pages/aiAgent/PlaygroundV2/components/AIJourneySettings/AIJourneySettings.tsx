@@ -1,11 +1,13 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
 import {
     Banner,
     Button,
     ListItem,
     LoadingSpinner,
+    Select,
     SelectField,
+    SelectTrigger,
     TextField,
     ToggleField,
 } from '@gorgias/axiom'
@@ -43,6 +45,7 @@ export const AIJourneySettings: React.FC = () => {
         setAIJourneySettings,
         productList,
     } = useAIJourneyContext()
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const {
         selectedProduct,
@@ -131,18 +134,44 @@ export const AIJourneySettings: React.FC = () => {
                     <ListItem label={option.label} />
                 )}
             </SelectField>
-            <SelectField
-                isSearchable
-                value={selectedProductOption}
-                onChange={(value) => {
+
+            <Select
+                data-name="select-field"
+                aria-label="Product"
+                trigger={({ selectedText, isOpen }) => (
+                    <SelectTrigger>
+                        <TextField
+                            inputRef={inputRef}
+                            value={selectedText}
+                            label="Product"
+                            isFocused={isOpen}
+                            leadingSlot={
+                                <img
+                                    className={css.selectedProductImage}
+                                    src={selectedProduct?.image?.src || ''}
+                                    alt="selected product"
+                                />
+                            }
+                            trailingSlot={
+                                isOpen
+                                    ? 'arrow-chevron-up'
+                                    : 'arrow-chevron-down'
+                            }
+                        />
+                    </SelectTrigger>
+                )}
+                triggerRef={inputRef}
+                items={productOptions}
+                selectedItem={selectedProductOption}
+                onSelect={(value) => {
                     const product = getProductById(value.id)
                     if (!product) return
                     setAIJourneySettings({
                         selectedProduct: product,
                     })
                 }}
-                items={productOptions}
-                label="Product"
+                isDisabled={false}
+                isSearchable
             >
                 {(option: (typeof productOptions)[number]) => (
                     <ListItem
@@ -158,7 +187,8 @@ export const AIJourneySettings: React.FC = () => {
                         }
                     />
                 )}
-            </SelectField>
+            </Select>
+
             <span>Message settings</span>
             <SelectField
                 value={FOLLOW_UP_OPTIONS.find(

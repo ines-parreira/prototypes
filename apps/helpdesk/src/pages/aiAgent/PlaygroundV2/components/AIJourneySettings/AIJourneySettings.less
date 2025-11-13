@@ -20,4 +20,29 @@
             border: unset;
         }
     }
+
+    [class*='ui-input-wrapper-'] {
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+
+        .selectedProductImage {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        span {
+            cursor: pointer;
+        }
+
+        input {
+            box-shadow: unset;
+        }
+    }
+
+    [class*='ui-input-wrapper-'][class*='ui-input-isfocused-'] {
+        [class*='ui-input-input-'] {
+            box-shadow: unset !important;
+        }
+        box-shadow: inset 0 0 0 1px var(--border-neutral-secondary);
+    }
 }
