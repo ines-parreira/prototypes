@@ -347,6 +347,9 @@ describe('fetch download methods', () => {
                 expect.objectContaining({
                     dimensions: [TicketDimension.AssigneeUserId],
                 }),
+                expect.objectContaining({
+                    dimensions: ['agentId'],
+                }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()
             expect(result).toEqual({
@@ -384,6 +387,9 @@ describe('fetch download methods', () => {
             expect(fetchTimeSeriesPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dimensions: [TicketDimension.Channel],
+                }),
+                expect.objectContaining({
+                    dimensions: ['channel'],
                 }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()
@@ -429,6 +435,9 @@ describe('fetch download methods', () => {
             expect(fetchTimeSeriesPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dimensions: [TicketMessagesDimension.Integration],
+                }),
+                expect.objectContaining({
+                    dimensions: ['integrationId'],
                 }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()

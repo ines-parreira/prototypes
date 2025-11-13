@@ -9,11 +9,11 @@ import {
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
 import {
+    AggregationWindow,
     StaticFilter,
     StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomateAiAgentsChart } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AutomateOverviewChart } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
@@ -118,7 +118,7 @@ export type DistributionDataExportFetch = {
 export type ReportFetch = (
     statsFilters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     context: {
         agents: User[]
         agentsQA: User[]

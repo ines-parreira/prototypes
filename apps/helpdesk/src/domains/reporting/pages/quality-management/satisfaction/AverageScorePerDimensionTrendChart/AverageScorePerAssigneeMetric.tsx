@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { getMetricQuery } from 'domains/reporting/hooks/quality-management/satisfaction/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
@@ -11,15 +12,22 @@ import {
     formatZeroToNALabel,
     getFormattedInfo,
 } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import useAppSelector from 'hooks/useAppSelector'
 import { getAllAgentsJS } from 'state/agents/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
 
-const DIMENSION = TicketDimension.AssigneeUserId
+const V1DIMENSION = TicketDimension.AssigneeUserId
+const V2DIMENSION = 'agentId'
 
 export const AverageScorePerAssigneeMetric = () => {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
+    )
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const useMetricQuery = getMetricQuery(DIMENSION)
+    const useMetricQuery = getMetricQuery(V1DIMENSION)
     const { isFetching, data, isError } = useMetricQuery(
         cleanStatsFilters,
         userTimezone,
@@ -42,12 +50,12 @@ export const AverageScorePerAssigneeMetric = () => {
     } = useMemo(
         () =>
             getFormattedInfo({
-                dimension: DIMENSION,
+                dimension: isV2 ? V2DIMENSION : V1DIMENSION,
                 data,
                 integrations,
                 getAgentDetails,
             }),
-        [data, getAgentDetails, integrations],
+        [data, getAgentDetails, integrations, isV2],
     )
 
     const isLoading = isFetching || !dataToRender || !labels || !tooltips

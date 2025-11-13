@@ -13,6 +13,7 @@ export const getMetricQuery = (
         | TicketDimension.Channel
         | TicketMessagesDimension.Integration,
 ): TimeSeriesPerDimensionHook => {
+    // component selection by dimension applies for V1 and V2 metrics
     switch (dimension) {
         case TicketDimension.AssigneeUserId:
             return useAverageCSATPerAssigneeTimeseries

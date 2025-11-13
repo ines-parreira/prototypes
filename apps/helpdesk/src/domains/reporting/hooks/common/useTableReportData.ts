@@ -16,8 +16,10 @@ import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTabl
 import { MetricFetch } from 'domains/reporting/hooks/useMetric'
 import { MetricWithDecileFetch } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import {
+    AggregationWindow,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
@@ -48,7 +50,7 @@ export type TableSummaryDataSources<T> = {
 export const useTables = (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     fetchTables: { title: string; fetchTable: ReportFetch }[],
 ) => {
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(

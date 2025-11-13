@@ -120,7 +120,7 @@ const select =
         }, {})
 
         const dateTimes = getPeriodDateTimesFromFilters(
-            isV2 && queryV2 ? queryV2.filters : query.filters,
+            isV2 && queryV2?.filters ? queryV2.filters : query.filters,
             granularity,
         )
         return measures.map((_, index) => {

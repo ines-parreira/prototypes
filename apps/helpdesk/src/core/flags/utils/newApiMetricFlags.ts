@@ -14,12 +14,13 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.FirstResponseTime,
     MetricScope.ResolutionTime,
     MetricScope.OneTouchTickets,
-    MetricScope.SatisfactionSurveys,
     MetricScope.MessagesPerTicket,
     MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
     MetricScope.OnlineTime,
 ]
+
+export const P2_SCOPES: MetricScope[] = [MetricScope.SatisfactionSurveys]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 
@@ -28,6 +29,15 @@ P1_SCOPES.forEach((scope) => {
         METRIC_TO_FLAG_MAP.set(
             metricName,
             FeatureFlagKey.ReportingP1MetricMigration,
+        )
+    })
+})
+
+P2_SCOPES.forEach((scope) => {
+    METRIC_NAMES_BY_SCOPE[scope].forEach((metricName) => {
+        METRIC_TO_FLAG_MAP.set(
+            metricName,
+            FeatureFlagKey.ReportingP2MetricMigration,
         )
     })
 })

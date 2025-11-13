@@ -1,6 +1,7 @@
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { MigrationStage, readMigration } from 'core/flags/utils/readMigration'
+import { readMigration } from 'core/flags/utils/readMigration'
 import { MetricName } from 'domains/reporting/hooks/metricNames'
+import { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     postReportingV1,
     postReportingV2,
@@ -13,9 +14,8 @@ import {
     ReportingParams,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { reportError } from 'utils/errors'
-
-import { UsePostReportingQueryData } from '../models/queries'
 
 export interface ExecuteMetricConfig<
     TCube extends Cube = Cube,
@@ -43,8 +43,9 @@ export async function metricExecutionHandler<
     TMeta extends ScopeMeta = ScopeMeta,
 >(
     config: ExecuteMetricConfig<TCube, TMeta>,
-    stage: MigrationStage = 'off',
 ): Promise<UsePostReportingQueryData<TData>> {
+    const stage = await getNewStatsFeatureFlagMigration(config.metricName)
+
     const v1 = async (): Promise<Result<TData>> => {
         const result = await postReportingV1<TData, TCube>(config.oldPayload)
         return { data: result, query: result.data.query }

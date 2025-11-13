@@ -3,6 +3,14 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
 
+// TODO use correct type to dimensions in scope
+export type SatisfactionSurveysDimension =
+    | 'ticketId'
+    | 'agentId'
+    | 'channel'
+    | 'integrationId'
+    | 'surveyScore'
+
 const satisfactionSurveysScope = defineScope({
     scope: MetricScope.SatisfactionSurveys,
     measures: ['averageSurveyScore', 'scoredSurveysCount'],

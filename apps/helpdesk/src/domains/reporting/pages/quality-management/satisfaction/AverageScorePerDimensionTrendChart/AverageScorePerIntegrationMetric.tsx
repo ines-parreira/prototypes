@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { getMetricQuery } from 'domains/reporting/hooks/quality-management/satisfaction/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
@@ -11,15 +12,21 @@ import {
     formatZeroToNALabel,
     getFormattedInfo,
 } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import useAppSelector from 'hooks/useAppSelector'
 import { getAllAgentsJS } from 'state/agents/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
 
-const DIMENSION = TicketMessagesDimension.Integration
+const V1DIMENSION = TicketMessagesDimension.Integration
+const V2DIMENSION = 'integrationId'
 
 export const AverageScorePerIntegrationMetric = () => {
+    const migrationStage = useGetNewStatsFeatureFlagMigration(
+        METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,
+    )
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
-    const useMetricQuery = getMetricQuery(DIMENSION)
+    const useMetricQuery = getMetricQuery(V1DIMENSION)
     const { isFetching, data, isError } = useMetricQuery(
         cleanStatsFilters,
         userTimezone,
@@ -42,12 +49,12 @@ export const AverageScorePerIntegrationMetric = () => {
     } = useMemo(
         () =>
             getFormattedInfo({
-                dimension: DIMENSION,
+                dimension: isV2 ? V2DIMENSION : V1DIMENSION,
                 data,
                 integrations,
                 getAgentDetails,
             }),
-        [data, getAgentDetails, integrations],
+        [data, getAgentDetails, integrations, isV2],
     )
     const isLoading = isFetching || !dataToRender || !labels || !tooltips
 

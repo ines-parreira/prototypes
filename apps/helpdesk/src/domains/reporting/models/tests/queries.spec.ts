@@ -85,14 +85,11 @@ describe('Reporting queries', () => {
                 },
             )
             await waitFor(() => {
-                expect(executeMetricCallMock).toHaveBeenCalledWith(
-                    {
-                        metricName: METRIC_NAMES.TEST_METRIC,
-                        oldPayload: cubeQueries,
-                        newPayload: newQuery,
-                    },
-                    'off',
-                )
+                expect(executeMetricCallMock).toHaveBeenCalledWith({
+                    metricName: METRIC_NAMES.TEST_METRIC,
+                    oldPayload: cubeQueries,
+                    newPayload: newQuery,
+                })
                 expect(result.current.data?.data.data).toEqual([42])
             })
         })
@@ -105,14 +102,11 @@ describe('Reporting queries', () => {
                 },
             )
             await waitFor(() => {
-                expect(executeMetricCallMock).toHaveBeenCalledWith(
-                    {
-                        metricName: METRIC_NAMES.TEST_METRIC,
-                        oldPayload: cubeQueries,
-                        newPayload: undefined,
-                    },
-                    'off',
-                )
+                expect(executeMetricCallMock).toHaveBeenCalledWith({
+                    metricName: METRIC_NAMES.TEST_METRIC,
+                    oldPayload: cubeQueries,
+                    newPayload: undefined,
+                })
                 expect(result.current.data?.data.data).toEqual([42])
             })
         })

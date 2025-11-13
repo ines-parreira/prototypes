@@ -1,4 +1,3 @@
-import { MigrationStage } from 'core/flags/utils/readMigration'
 import { BuiltQuery, ScopeMeta } from 'domains/reporting//models/scopes/scope'
 import { RequestedData } from 'domains/reporting/hooks/types'
 import {
@@ -172,24 +171,19 @@ const queryWithDeciles =
     <TCube extends Cubes, TMeta extends ScopeMeta>(
         query: ReportingQuery<TCube>,
         newQuery?: BuiltQuery<TMeta>,
-        migrationStage?: MigrationStage,
     ) =>
     () =>
-        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>(
-            {
-                metricName: query.metricName,
-                oldPayload: [query],
-                newPayload: newQuery,
-            },
-            migrationStage,
-        ).then(withDeciles)
+        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>({
+            metricName: query.metricName,
+            oldPayload: [query],
+            newPayload: newQuery,
+        }).then(withDeciles)
 
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
     enabled?: boolean,
 ): MetricWithDecile<TCube> {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
         MetricWithDecileData<TCube>
@@ -202,7 +196,7 @@ export function useMetricPerDimension<TCube extends Cubes>(
                 undefined,
                 dimensionId,
             ),
-        queryFn: queryWithDeciles(query, undefined, migrationStage),
+        queryFn: queryWithDeciles(query, undefined),
         enabled,
     })
 

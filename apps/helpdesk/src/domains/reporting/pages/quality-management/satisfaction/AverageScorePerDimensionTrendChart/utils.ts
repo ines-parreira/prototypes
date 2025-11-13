@@ -8,7 +8,7 @@ import {
 } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import { SatisfactionSurveysDimension } from 'domains/reporting/models/scopes/satisfactionSurveys'
 import { NOT_AVAILABLE_TEXT } from 'domains/reporting/pages/common/utils'
 import { Integration } from 'models/integration/types'
 
@@ -20,10 +20,10 @@ const getAverageCSATScorePerDimension = (data?: TimeSeriesPerDimension) => {
     return Object.entries(data).reduce<Record<string, number>>(
         (acc, [key, value]) => {
             const measureIndices = getMeasureIndices(value)
+            const measureIndicesKeys = Object.keys(measureIndices)
             const scoredSurveysCountIndex =
-                measureIndices[
-                    TicketSatisfactionSurveyMeasure.ScoredSurveysCount
-                ]
+                measureIndices[measureIndicesKeys[1]]
+            // Equivalent to TicketSatisfactionSurveyMeasure.ScoredSurveysCount in V2 and scoredSurveysCount in V2
 
             if (scoredSurveysCountIndex === undefined) return acc
 
@@ -54,14 +54,20 @@ export const getAverageCSATLabels = ({
 }) => {
     let labels = initialLabels
     let tooltips = initialTooltips
-    if (dimension === TicketDimension.AssigneeUserId) {
+    if (
+        dimension === TicketDimension.AssigneeUserId ||
+        dimension === 'agentId'
+    ) {
         labels = initialLabels.map((label) => {
             if (label === 'null') return 'No Agent'
             const agent = getAgentDetails?.(parseInt(label))
             return agent ? String(agent.name) : label
         })
         tooltips = [...labels]
-    } else if (dimension === TicketMessagesDimension.Integration) {
+    } else if (
+        dimension === TicketMessagesDimension.Integration ||
+        dimension === 'integrationId'
+    ) {
         labels = initialLabels.map((label) => {
             if (label === 'null') return 'No Integration'
             const integration = integrations?.find(
@@ -114,10 +120,13 @@ export const computeAverageCSAT = (data?: TimeSeriesPerDimension) => {
     if (!data || dataValues.length === 0) return
     const timeseriesData = dataValues[0]
     const measureIndices = getMeasureIndices(timeseriesData)
-    const avgSurveyScoreIndex =
-        measureIndices[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
-    const scoredSurveysCountIndex =
-        measureIndices[TicketSatisfactionSurveyMeasure.ScoredSurveysCount]
+
+    const measureIndicesKeys = Object.keys(measureIndices)
+    // Get measures dynamically from the measureIndices object
+    const avgSurveyScoreIndex = measureIndices[measureIndicesKeys[0]]
+    // Equivalent toTicketSatisfactionSurveyMeasure.AvgSurveyScore in V1 and averageSurveyScore in V2
+    const scoredSurveysCountIndex = measureIndices[measureIndicesKeys[1]]
+    // Equivalent to TicketSatisfactionSurveyMeasure.ScoredSurveysCount in V2 and scoredSurveysCount in V2
 
     if (
         !timeseriesData?.[0] ||
@@ -153,7 +162,10 @@ export const getFormattedInfo = ({
     integrations,
     getAgentDetails,
 }: {
-    dimension: string
+    dimension:
+        | SatisfactionSurveysDimension
+        | TicketDimension
+        | TicketMessagesDimension
     getAgentDetails?: (id: number) => User | undefined
     integrations?: Array<Integration>
     data?: TimeSeriesPerDimension

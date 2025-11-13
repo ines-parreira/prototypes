@@ -7,9 +7,16 @@ import {
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { averageCSATScorePerDimensionTimeSeriesFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import { integrationCsatQueryBuilder } from 'domains/reporting/models/scopes/satisfactionSurveys'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import {
+    averageCsatScorePerAgentTimeseriesQueryV2Factory,
+    averageCsatScorePerChannelTimeseriesQueryV2Factory,
+    averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
+    integrationCsatQueryBuilder,
+} from 'domains/reporting/models/scopes/satisfactionSurveys'
+import {
+    AggregationWindow,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import {
     getFormattedInfo,
@@ -35,7 +42,7 @@ export const useAverageCSATPerAssigneeTimeseries = (
 export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     context: {
         getAgentDetails?: (id: number) => User | undefined
         integrations?: Array<Integration>
@@ -53,6 +60,12 @@ export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
             granularity,
             OrderDirection.Desc,
         ),
+        averageCsatScorePerAgentTimeseriesQueryV2Factory({
+            timezone,
+            granularity,
+            filters,
+            sortDirection: OrderDirection.Desc,
+        }),
     )
 
     const { dataToRender = [], labels = [] } = getFormattedInfo({
@@ -90,7 +103,7 @@ export const useAverageCSATPerChannelTimeseries = (
 export const fetchAverageCSATPerChannelTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     context: {
         getAgentDetails: (id: number) => User | undefined
         integrations: Array<Integration>
@@ -108,7 +121,14 @@ export const fetchAverageCSATPerChannelTable: ReportFetch = async (
             granularity,
             OrderDirection.Desc,
         ),
+        averageCsatScorePerChannelTimeseriesQueryV2Factory({
+            timezone,
+            granularity,
+            filters,
+            sortDirection: OrderDirection.Desc,
+        }),
     )
+
     const { dataToRender = [], labels = [] } = getFormattedInfo({
         dimension: TicketDimension.Channel,
         data: timeseriesData,
@@ -144,7 +164,7 @@ export const useAverageCSATPerIntegrationTimeseries = (
 export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     context: {
         getAgentDetails: (id: number) => User | undefined
         integrations: Array<Integration>
@@ -162,6 +182,12 @@ export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
             granularity,
             OrderDirection.Desc,
         ),
+        averageCsatScorePerIntegrationTimeseriesQueryV2Factory({
+            timezone,
+            granularity,
+            filters,
+            sortDirection: OrderDirection.Desc,
+        }),
     )
     const { dataToRender = [], labels = [] } = getFormattedInfo({
         dimension: TicketMessagesDimension.Integration,
@@ -195,6 +221,13 @@ const useAverageCSATPerDimensionTimeSeries = (
 ) => {
     const { granularity } = useStatsFilters()
 
+    const newQuery = integrationCsatQueryBuilder[dimension]({
+        timezone,
+        granularity,
+        filters,
+        sortDirection: OrderDirection.Desc,
+    })
+
     return useTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
             dimension,
@@ -203,11 +236,6 @@ const useAverageCSATPerDimensionTimeSeries = (
             granularity,
             OrderDirection.Desc,
         ),
-        integrationCsatQueryBuilder[dimension]({
-            timezone,
-            granularity,
-            filters,
-            sortDirection: OrderDirection.Desc,
-        }),
+        newQuery,
     )
 }

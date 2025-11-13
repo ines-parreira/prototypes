@@ -5,11 +5,10 @@ import {
     UsePostReportingQueryData,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import { ReportingQuery } from 'domains/reporting/models/types'
-
-import { BuiltQuery, ScopeMeta } from '../models/scopes/scope'
-import { getNewStatsFeatureFlagMigration } from '../utils/getNewStatsFeatureFlagMigration'
-import { useGetNewStatsFeatureFlagMigration } from '../utils/useGetNewStatsFeatureFlagMigration'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 export type MetricFetch = (...arg: any) => Promise<Metric>
 
@@ -43,7 +42,6 @@ export function useMetric<
     enabled: boolean = true,
 ): Metric {
     const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
-
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const currentPeriodMetric = usePostReportingV2<

@@ -23,6 +23,12 @@ describe('resolveMetricFlag', () => {
     })
 
     it('should return the correct flag for P2 metrics', () => {
+        expect(resolveMetricFlag(METRIC_NAMES.SATISFACTION_AVERAGE_SCORE)).toBe(
+            FeatureFlagKey.ReportingP2MetricMigration,
+        )
+    })
+
+    it('should return the correct flag for P2 metrics', () => {
         expect(
             resolveMetricFlag(METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT),
         ).toBe(FeatureFlagKey.ReportingUnsortedMetricMigration)
