@@ -25,7 +25,7 @@
     transition: all 0.2s linear;
     .caption-semibold();
 
-    color: var(--main-secondary);
+    color: var(--main-secondary); // legacy
 
     /* derive the background color from the text color
    */
@@ -61,4 +61,10 @@
 .btn .badge-dot {
     position: absolute;
     top: -6px;
+}
+
+.axiom {
+    .badge.badge-tag {
+        color: var(--content-neutral-secondary);
+    }
 }

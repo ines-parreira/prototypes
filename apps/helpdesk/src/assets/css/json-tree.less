@@ -17,7 +17,7 @@
     }
 
     .string-value {
-        color: var(--main-primary-2);
+        color: var(--main-primary-2); // legacy
         white-space: pre-line;
     }
 
@@ -34,6 +34,12 @@
     }
 }
 
-.axiom .json-tree {
-    background: var(--surface-neutral-secondary);
+.axiom {
+    .json-tree {
+        background: var(--surface-neutral-secondary);
+
+        .string-value {
+            color: var(--content-accent-default);
+        }
+    }
 }

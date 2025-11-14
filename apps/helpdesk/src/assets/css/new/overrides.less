@@ -4,7 +4,7 @@ html {
 
 body {
     width: 100%;
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy;
     font-family: 'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     text-align: initial;
 }
@@ -55,12 +55,12 @@ h5 {
 // never underline links
 a,
 .btn.btn-link {
-    color: var(--main-primary);
+    color: var(--main-primary); // legacy;
     text-decoration: none !important;
 
     &:active,
     &:hover {
-        color: var(--main-primary-2);
+        color: var(--main-primary-2); // legacy;
     }
 }
 
@@ -159,7 +159,7 @@ label.form-check-label {
     margin-bottom: 4px; // no need for the big default margin since we have no background, default padding is enough
 
     .breadcrumb-item.active {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy;
         font-weight: 400;
     }
 }
@@ -182,9 +182,9 @@ div.btn {
 // input placeholder color override
 input,
 textarea {
-    @placeholder-color: var(--neutral-grey-4);
-    background-color: var(--neutral-grey-0); // legacy
-    color: var(--neutral-grey-6);
+    @placeholder-color: var(--neutral-grey-4); // legacy;
+    background-color: var(--neutral-grey-0); // legacy;
+    color: var(--neutral-grey-6); // legacy;
 
     &::-webkit-input-placeholder {
         color: @placeholder-color !important;
@@ -227,27 +227,27 @@ strong {
 }
 
 .list-group-item {
-    background-color: var(--neutral-grey-1);
+    background-color: var(--neutral-grey-1); // legacy;
 }
 
 .list-group-item-action {
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy;
 
     &:focus,
     &:hover {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy;
     }
 }
 
 :global(.react-loading-skeleton) {
-    --base-color: var(--neutral-grey-3);
-    --highlight-color: var(--neutral-grey-1);
+    --base-color: var(--neutral-grey-3); // legacy;
+    --highlight-color: var(--neutral-grey-1); // legacy;
 
     line-height: 1.5;
 }
 
 pre {
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy;
 }
 
 .axiom {

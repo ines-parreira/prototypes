@@ -41,16 +41,16 @@
 
 .daterangepicker {
     font-family: 'Inter', sans-serif;
-    background-color: var(--neutral-grey-0);
-    border: 1px solid var(--neutral-grey-3); // legacy
-    color: var(--neutral-grey-6);
+    background-color: var(--neutral-grey-0); // legacy;
+    border: 1px solid var(--neutral-grey-3); // legacy;
+    color: var(--neutral-grey-6); // legacy;
 
     &:after {
-        border-bottom-color: var(--neutral-grey-0); // legacy
+        border-bottom-color: var(--neutral-grey-0); // legacy;
     }
 
     &:before {
-        border-bottom-color: var(--neutral-grey-3); // legacy
+        border-bottom-color: var(--neutral-grey-3); // legacy;
     }
 
     .calendar-time {
@@ -59,12 +59,12 @@
 
     .drp-calendar {
         .calendar-table {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy;
             border: unset;
 
             thead {
                 th.available:hover {
-                    background-color: var(--neutral-grey-1);
+                    background-color: var(--neutral-grey-1); // legacy;
                 }
 
                 tr {
@@ -95,7 +95,7 @@
 
             .next span,
             .prev span {
-                border: solid var(--neutral-grey-5); // legacy
+                border: solid var(--neutral-grey-5); // legacy;
                 border-width: 0 2px 2px 0;
             }
         }
@@ -149,9 +149,9 @@
             width: auto;
 
             li {
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy;
                 border-radius: 4px;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy;
                 cursor: pointer;
                 font-size: 14px;
                 font-weight: 500;
@@ -165,11 +165,11 @@
                 }
 
                 &.active {
-                    background-color: var(--main-primary);
+                    background-color: var(--main-primary); // legacy;
                 }
 
                 &:hover {
-                    background-color: var(--neutral-grey-2);
+                    background-color: var(--neutral-grey-2); // legacy;
                 }
 
                 @media @mobiles {
@@ -180,7 +180,7 @@
             }
 
             &::before {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy;
                 content: attr(label);
                 display: block;
                 font-size: 11px;
@@ -294,16 +294,16 @@
             appearance: none;
             -moz-appearance: none;
             -webkit-appearance: none;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy;
             @arrowColor: escape(--neutral-grey-4);
             background-image: url('data:image/svg+xml;utf8,<svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.591547 1.75837L2.74988 3.91671C3.07488 4.24171 3.59988 4.24171 3.92488 3.91671L6.08321 1.75837C6.60821 1.23337 6.23321 0.333374 5.49155 0.333374H1.17488C0.433213 0.333374 0.0665467 1.23337 0.591547 1.75837Z" fill="@{arrowColor}"/></svg>');
             background-position:
                 right 0.7em top 50%,
                 0 0;
             background-repeat: no-repeat, repeat;
-            border: 1px solid var(--neutral-grey-3); // legacy
+            border: 1px solid var(--neutral-grey-3); // legacy;
             border-radius: 4px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy;
             font-size: 14px;
             height: 32px;
             line-height: 1.3;
@@ -315,7 +315,7 @@
         &.monthselect,
         &.yearselect {
             &:focus-visible {
-                outline: var(--neutral-grey-3) auto 0;
+                outline: var(--neutral-grey-3); // legacy auto 0;
             }
         }
 
@@ -331,29 +331,29 @@
     td {
         &.active,
         &.active:hover {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy;
         }
 
         &:hover,
         &.available:not(.active):hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy;
         }
 
         &.disabled {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy;
             border-radius: 0;
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy;
             text-decoration: none;
         }
 
         &.off.available {
-            color: var(--neutral-grey-4);
-            background-color: var(--neutral-grey-0);
+            color: var(--neutral-grey-4); // legacy;
+            background-color: var(--neutral-grey-0); // legacy;
         }
 
         &.in-range:not(.active):not(.off) {
-            background-color: var(--main-primary-0);
-            color: var(--main-primary);
+            background-color: var(--main-primary-0); // legacy;
+            color: var(--main-primary); // legacy;
         }
     }
 
@@ -408,7 +408,7 @@
                         align-items: center;
                         align-self: stretch;
                         border-radius: 0;
-                        color: var(--neutral-grey-6);
+                        color: var(--neutral-grey-6); // legacy;
                         cursor: pointer;
                         justify-content: space-between;
 
@@ -423,7 +423,7 @@
                                 font-family: 'Material Icons';
                                 content: '\e876';
                                 font-size: 20px;
-                                color: var(--neutral-grey-4);
+                                color: var(--neutral-grey-4); // legacy;
                                 margin-left: var(--layout-spacing-xs);
                                 font-variation-settings:
                                     'FILL' 0,
@@ -477,7 +477,7 @@
                 grid-column-end: 1;
                 grid-row-start: 1;
                 grid-row-end: 3;
-                border-right: 1px solid var(--neutral-grey-3); // legacy
+                border-right: 1px solid var(--neutral-grey-3); // legacy;
             }
 
             .drp-buttons {
@@ -500,8 +500,8 @@
                 flex-direction: row;
                 align-items: center;
                 gap: 8px;
-                background-color: var(--neutral-grey-2);
-                border-top: 1px solid var(--neutral-grey-3); // legacy
+                background-color: var(--neutral-grey-2); // legacy;
+                border-top: 1px solid var(--neutral-grey-3); // legacy;
                 position: relative;
                 margin: 0 -24px;
                 bottom: -24px;
@@ -518,7 +518,7 @@
             .drp-selected {
                 display: block;
                 .body-regular();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy;
                 padding: 0;
             }
         }
@@ -538,7 +538,7 @@
         border: 1px solid var(--border-neutral-default);
 
         &:after {
-            border-bottom-color: var(--neutral-grey-0);
+            border-bottom-color: var(--neutral-grey-0); // legacy;
         }
 
         &:before {
@@ -549,7 +549,7 @@
             .calendar-table {
                 .next span,
                 .prev span {
-                    border: solid var(--neutral-grey-5);
+                    border: solid var(--neutral-grey-5); // legacy;
                 }
             }
         }

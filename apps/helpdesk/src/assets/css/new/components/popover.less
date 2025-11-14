@@ -2,21 +2,21 @@
 // https://github.com/reactstrap/reactstrap/issues/449
 .popover {
     max-width: 350px;
-    background-color: var(--neutral-grey-1);
-    color: var(--neutral-grey-6);
+    background-color: var(--neutral-grey-1); // legacy;
+    color: var(--neutral-grey-6); // legacy;
     font-size: 1rem;
     z-index: 1051 !important;
-    border-color: var(--neutral-grey-3); // legacy
+    border-color: var(--neutral-grey-3); // legacy;
 
     &.bs-popover-auto {
         &[x-placement^='top'],
         &.bs-popover-top {
             > .arrow::after {
-                border-top-color: var(--neutral-grey-1); // legacy
+                border-top-color: var(--neutral-grey-1); // legacy;
             }
 
             > .arrow::before {
-                border-top-color: var(--neutral-grey-3); // legacy
+                border-top-color: var(--neutral-grey-3); // legacy;
             }
 
             .popover-header::before {
@@ -27,11 +27,11 @@
         &[x-placement^='right'],
         &.bs-popover-right {
             > .arrow::after {
-                border-right-color: var(--neutral-grey-1); // legacy
+                border-right-color: var(--neutral-grey-1); // legacy;
             }
 
             > .arrow::before {
-                border-right-color: var(--neutral-grey-3); // legacy
+                border-right-color: var(--neutral-grey-3); // legacy;
             }
 
             .popover-header::before {
@@ -42,11 +42,11 @@
         &[x-placement^='bottom'],
         &.bs-popover-bottom {
             > .arrow::after {
-                border-bottom-color: var(--neutral-grey-1); // legacy
+                border-bottom-color: var(--neutral-grey-1); // legacy;
             }
 
             > .arrow::before {
-                border-bottom-color: var(--neutral-grey-3); // legacy
+                border-bottom-color: var(--neutral-grey-3); // legacy;
             }
 
             .popover-header::before {
@@ -57,11 +57,11 @@
         &[x-placement^='left'],
         &.bs-popover-left {
             > .arrow::after {
-                border-left-color: var(--neutral-grey-1); // legacy
+                border-left-color: var(--neutral-grey-1); // legacy;
             }
 
             > .arrow::before {
-                border-left-color: var(--neutral-grey-3); // legacy
+                border-left-color: var(--neutral-grey-3); // legacy;
             }
 
             .popover-header::before {
@@ -72,13 +72,13 @@
 }
 
 .popover-body {
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy;
     padding: 16px;
 }
 
 .popover-header {
-    background-color: var(--neutral-grey-0);
-    border-color: var(--neutral-grey-3); // legacy
+    background-color: var(--neutral-grey-0); // legacy;
+    border-color: var(--neutral-grey-3); // legacy;
 
     &:before {
         display: none;
@@ -92,7 +92,7 @@
                 &[x-placement^='bottom'],
                 &.bs-popover-bottom {
                     > .arrow::after {
-                        border-bottom-color: var(--neutral-grey-0); // legacy
+                        border-bottom-color: var(--neutral-grey-0); // legacy;
                     }
                 }
             }
@@ -108,7 +108,7 @@
             &[x-placement^='top'],
             &.bs-popover-top {
                 > .arrow::after {
-                    border-top-color: var(--neutral-grey-1);
+                    border-top-color: var(--neutral-grey-1); // legacy;
                 }
 
                 > .arrow::before {
@@ -119,7 +119,7 @@
             &[x-placement^='right'],
             &.bs-popover-right {
                 > .arrow::after {
-                    border-right-color: var(--neutral-grey-1);
+                    border-right-color: var(--neutral-grey-1); // legacy;
                 }
 
                 > .arrow::before {
@@ -130,7 +130,7 @@
             &[x-placement^='bottom'],
             &.bs-popover-bottom {
                 > .arrow::after {
-                    border-bottom-color: var(--neutral-grey-1);
+                    border-bottom-color: var(--neutral-grey-1); // legacy;
                 }
 
                 > .arrow::before {
@@ -141,7 +141,7 @@
             &[x-placement^='left'],
             &.bs-popover-left {
                 > .arrow::after {
-                    border-left-color: var(--neutral-grey-1);
+                    border-left-color: var(--neutral-grey-1); // legacy;
                 }
 
                 > .arrow::before {
@@ -162,7 +162,9 @@
                     &[x-placement^='bottom'],
                     &.bs-popover-bottom {
                         > .arrow::after {
-                            border-bottom-color: var(--neutral-grey-0);
+                            border-bottom-color: var(
+                                --neutral-grey-0
+                            ); // legacy;
                         }
                     }
                 }

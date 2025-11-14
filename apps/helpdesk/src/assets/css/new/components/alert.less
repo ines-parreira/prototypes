@@ -8,8 +8,16 @@
         var(--accessory-orange-1-h),
         var(--accessory-orange-1-s),
         calc(var(--accessory-orange-1-l) + 3%)
-    );
-    border-color: var(--accessory-orange-1);
+    ); // legacy
+    border-color: var(--accessory-orange-1); // legacy
 
-    color: var(--main-secondary);
+    color: var(--main-secondary); // legacy
+}
+
+.axiom {
+    .alert-warning {
+        background-color: var(--surface-warning-primary);
+        border-color: var(--border-warning-primary);
+        color: var(--content-neutral-secondary);
+    }
 }

@@ -48,7 +48,7 @@
     }
 
     &.red {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
     &.strong {
         font-weight: bold;
@@ -204,4 +204,15 @@
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.axiom {
+    .material-icons,
+    .material-icons-outlined,
+    .material-icons-round,
+    .icon-custom {
+        &.red {
+            color: var(--content-error-primary);
+        }
+    }
 }

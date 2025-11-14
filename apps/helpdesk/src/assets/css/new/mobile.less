@@ -8,8 +8,8 @@
         justify-content: space-between;
         align-items: center;
         padding: 10px;
-        background-color: var(--navigation-background);
-        color: var(--neutral-grey-0);
+        background-color: var(--navigation-background); // legacy
+        color: var(--neutral-grey-0); // legacy
         z-index: 1030;
         flex-shrink: 0;
     }
@@ -39,5 +39,14 @@
         min-width: @width !important;
         max-width: @width !important;
         position: relative !important;
+    }
+}
+
+.axiom {
+    @media @mobiles {
+        .mobile-nav {
+            background-color: var(--elevation-neutral-bg);
+            color: var(--content-inverted-default);
+        }
     }
 }

@@ -70,7 +70,7 @@ div[class*='bs-tether'] {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy
     user-select: none;
     font-size: 1rem;
 
@@ -196,4 +196,10 @@ body,
 .app-content {
     flex: 1;
     overflow: auto;
+}
+
+.axiom {
+    .divider {
+        color: var(--content-neutral-default);
+    }
 }

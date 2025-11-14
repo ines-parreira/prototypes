@@ -38,8 +38,8 @@
                     var(--main-primary-1-h),
                     var(--main-primary-1-s),
                     calc(var(--main-primary-1-l) + 15%)
-                );
-                border: 1px solid var(--main-primary-2);
+                ); // legacy
+                border: 1px solid var(--main-primary-2); // legacy
             }
         }
     }
@@ -95,7 +95,8 @@
                 border: 1px solid var(--border-neutral-default);
 
                 &.active {
-                    border: 1px solid var(--main-primary-2);
+                    background: var(--surface-accent-default);
+                    border: 1px solid var(--border-accent-default);
                 }
             }
         }

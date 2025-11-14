@@ -8,19 +8,21 @@
 :root {
     :global(.light),
     :global(.dark) {
-        --navbar-link-hover-background-color: var(--neutral-grey-2); // legacy
-        --navbar-link-hover-text: var(--navigation-text-item);
-        --navbar-chat-ticket-new: var(--neutral-grey-6);
+        --navbar-link-hover-background-color: var(--neutral-grey-2); // legacy;
+        --navbar-link-hover-text: var(--navigation-text-item); // legacy;
+        --navbar-chat-ticket-new: var(--neutral-grey-6); // legacy;
 
-        --navbar-block-toggle-active-color: var(--navigation-text-item);
+        --navbar-block-toggle-active-color: var(
+            --navigation-text-item
+        ); // legacy;
         --navbar-block-toggle-active-background-color: var(
             --neutral-grey-3
         ); // legacy
         --navbar-block-toggle-hover-background-color: unset;
-        --navbar-block-toggle-hover-color: var(--neutral-grey-6);
+        --navbar-block-toggle-hover-color: var(--neutral-grey-6); // legacy;
 
-        --scrollbar-thumb: var(--neutral-grey-4);
-        --scrollbar-track: var(--neutral-grey-1);
+        --scrollbar-thumb: var(--neutral-grey-4); // legacy;
+        --scrollbar-track: var(--neutral-grey-1); // legacy;
 
         --accessory-magenta-25: #c34ced;
     }
@@ -52,9 +54,9 @@
     --accessory-magenta-25-l: 61%;
 
     --highlightYellow: hsl(
-        var(--feedback-warning-1-h),
-        var(--feedback-warning-1-s),
-        calc(var(--feedback-warning-1-l) + 12%)
+        var(--feedback-warning-1-h) // legacy,
+        var(--feedback-warning-1-s) // legacy,
+        calc(var(--feedback-warning-1-l) // legacy + 12%)
     );
 
     /**
@@ -62,21 +64,24 @@
     * Used for label backgrounds
     */
     --ultraLightRed: hsl(
-        var(--feedback-error-1-h) var(--feedback-error-1-s)
-            calc(var(--feedback-error-1-l) + 19%)
-    );
+        var(--feedback-error-1-h),
+        var(--feedback-error-1-s),
+        calc(var(--feedback-error-1-l) + 19%)
+    ); // legacy
     --ultraLightBlue: hsl(
-        var(--main-primary-1-h) var(--main-primary-1-s)
-            calc(var(--main-primary-1-l) + 15%)
-    );
+        var(--main-primary-1-h),
+        var(--main-primary-1-s),
+        calc(var(--main-primary-1-l) + 15%)
+    ); // legacy
     --ultraLightOrange: hsl(
-        var(--feedback-warning-1-h) var(--feedback-warning-1-s)
-            calc(var(--feedback-warning-1-l) + 13%)
-    );
+        var(--feedback-warning-1-h),
+        var(--feedback-warning-1-s),
+        calc(var(--feedback-warning-1-l) + 13%)
+    ); // legacy
     --ultraLightPurple: hsl(
-        var(--purple-h),
-        var(--purple-s),
-        calc(var(--purple-l) + 30%)
+        var(--purple-h) // legacy,
+        var(--purple-s) // legacy,
+        calc(var(--purple-l) // legacy + 30%)
     );
 
     // Third-party services colors

@@ -47,10 +47,10 @@ pre {
     top: 4px;
     left: 4px;
     z-index: 5;
-    color: var(--neutral-grey-0);
+    color: var(--neutral-grey-0); // legacy;
 
     .material-icons {
-        color: var(--feedback-error-2);
+        color: var(--feedback-error-2); // legacy;
     }
 }
 
@@ -77,7 +77,7 @@ pre {
 .IfStatement,
 .ExpressionStatement {
     &.hovered:hover {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy;
         border-radius: 4px;
     }
 }
@@ -104,8 +104,8 @@ pre {
 
         &.show {
             & > .ControlStructureButton.dropdown-toggle {
-                color: var(--neutral-grey-0) !important;
-                background: var(--main-primary) !important;
+                color: var(--neutral-grey-0) !important; // legacy
+                background: var(--main-primary) !important; // legacy
             }
         }
     }
@@ -136,28 +136,28 @@ pre {
     .rule-badge-mixin;
     text-transform: none;
     font-weight: 500;
-    background-color: var(--accessory-magenta-1);
-    color: var(--accessory-magenta-3);
+    background-color: var(--accessory-magenta-1); // legacy;
+    color: var(--accessory-magenta-3); // legacy;
 }
 
 .LogicalOperator {
     .rule-badge-mixin;
-    background-color: var(--accessory-orange-1);
-    color: var(--feedback-warning) !important;
+    background-color: var(--accessory-orange-1); // legacy;
+    color: var(--feedback-warning) !important; // legacy
 }
 
 .ControlStructureButton,
 .ControlStructureButton:hover,
 .ControlStructureButton:active {
     .rule-badge-mixin;
-    background-color: var(--accessory-blue-1) !important;
-    color: var(--main-primary-3) !important;
+    background-color: var(--accessory-blue-1) !important; // legacy
+    color: var(--main-primary-3) !important; // legacy
 }
 
 .OperatorDropdown .dropdown-toggle {
     .rule-badge-mixin;
-    background-color: var(--accessory-blue-1) !important;
-    color: var(--main-primary-3) !important;
+    background-color: var(--accessory-blue-1) !important; // legacy
+    color: var(--main-primary-3) !important; // legacy
     line-height: 20px !important;
 }
 
@@ -165,7 +165,7 @@ pre {
     top: 0;
     left: 0.5rem;
     text-transform: uppercase;
-    color: var(--navy);
+    color: var(--navy); // legacy;
     font-weight: 600;
 }
 
@@ -174,9 +174,9 @@ pre {
     padding: 2px 8px;
     font-weight: normal;
     text-transform: none;
-    background-color: var(--accessory-blue-1);
+    background-color: var(--accessory-blue-1); // legacy;
     line-height: 20px !important;
-    color: var(--neutral-grey-6) !important;
+    color: var(--neutral-grey-6) !important; // legacy
 
     input {
         top: 0;
@@ -208,7 +208,7 @@ pre {
     input,
     input:focus {
         .rule-select-mixin;
-        color: var(--accessory-magenta-3) !important;
+        color: var(--accessory-magenta-3) !important; // legacy
     }
 
     .dropdown-toggle {
@@ -248,8 +248,8 @@ pre {
 
     .ActionSelect .dropdown-toggle {
         .rule-badge-mixin;
-        background-color: var(--feedback-success-0);
-        color: var(--feedback-success-3) !important;
+        background-color: var(--feedback-success-0); // legacy;
+        color: var(--feedback-success-3) !important; // legacy
     }
 
     .card-action {
@@ -272,7 +272,7 @@ pre {
                 border: none;
                 text-transform: none;
                 font-weight: normal;
-                color: var(--accessory-magenta-3) !important;
+                color: var(--accessory-magenta-3) !important; // legacy
 
                 &:focus {
                     box-shadow: none;
@@ -296,7 +296,7 @@ pre {
             input, input:focus {
                 // for input in labels of Dropdowns, and inputs in MultiSelect field
                 .rule-select-mixin;
-                color: var(--accessory-magenta-3) !important;
+                color: var(--accessory-magenta-3) !important; // legacy
             }
 
             .dropdown-toggle {
@@ -382,6 +382,76 @@ pre {
                     }
                 }
             }
+        }
+    }
+}
+
+.axiom {
+    .delete-blockstatement {
+        color: var(--content-inverted-default);
+
+        .material-icons {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .IfStatement,
+    .ExpressionStatement {
+        &.hovered:hover {
+            background: var(--elevation-neutral-default);
+        }
+    }
+
+    .test,
+    .consequent,
+    .alternate {
+        .btn-group {
+            & > .ControlStructureButton.dropdown-toggle {
+                &:not(:disabled) {
+                    background: var(--surface-accent-default);
+
+                    &:hover {
+                        background: var(--surface-accent-default);
+                    }
+                }
+            }
+        }
+    }
+
+    .Program .BlockStatement .customer-dropdown .customer-input-field {
+        .Select-control {
+            .Select-placeholder {
+                color: var(--content-accent-default);
+            }
+        }
+
+        &.customer-field-input--select {
+            background-color: var(--surface-additional-blue);
+            color: var(--content-accent-default);
+        }
+
+        &.customer-field-input--text-select {
+            background-color: var(--surface-additional-magenta);
+            color: var(--content-additional-fuchsia);
+        }
+
+        &.customer-field-input--badge {
+            background-color: var(--surface-warning-primary);
+            color: var(--content-warning-primary);
+        }
+
+        &.customer-field-input--bool {
+            background-color: var(--surface-additional-blue);
+        }
+
+        &.customer-field-input--order {
+            background-color: var(--content-neutral-secondary);
+            color: var(--static-default-black);
+        }
+
+        &.customer-field-input--status {
+            background-color: var(--surface-success-primary);
+            color: var(--content-success-primary);
         }
     }
 }

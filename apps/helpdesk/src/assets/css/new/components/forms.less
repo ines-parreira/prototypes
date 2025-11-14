@@ -1,31 +1,31 @@
 .form-control {
-    border: 1px solid var(--neutral-grey-3); // legacy
+    border: 1px solid var(--neutral-grey-3); // legacy;
     border-radius: 3px;
-    background-color: var(--neutral-grey-0); // legacy
-    color: var(--neutral-grey-6);
+    background-color: var(--neutral-grey-0); // legacy;
+    color: var(--neutral-grey-6); // legacy;
 
     &:focus {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy;
     }
 
     &:focus {
-        background-color: var(--neutral-grey-0); // legacy
+        background-color: var(--neutral-grey-0); // legacy;
         box-shadow: 0 0 0 0.2rem
             hsla(
-                var(--main-primary-h),
-                var(--main-primary-s),
-                var(--main-primary-l),
+                var(--main-primary-h) // legacy,
+                var(--main-primary-s) // legacy,
+                var(--main-primary-l) // legacy,
                 0.1
             );
     }
 
     &:disabled,
     &[readonly] {
-        background-color: var(--neutral-grey-3); // legacy
+        background-color: var(--neutral-grey-3); // legacy;
     }
 
     &::placeholder {
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
     }
 }
 
@@ -41,8 +41,8 @@
 }
 
 .input-group-text {
-    background-color: var(--neutral-grey-1); // legacy
-    border-color: var(--neutral-grey-3); // legacy
+    background-color: var(--neutral-grey-1); // legacy;
+    border-color: var(--neutral-grey-3); // legacy;
 }
 
 .axiom {

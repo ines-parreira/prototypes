@@ -12,8 +12,8 @@
 .rich-textarea-wrapper {
     .rich-content-wrapper;
 
-    background: var(--neutral-grey-0); // legacy
-    border: 1px solid var(--neutral-grey-2); // legacy
+    background: var(--neutral-grey-0); // legacy;
+    border: 1px solid var(--neutral-grey-2); // legacy;
     border-radius: 3px;
     position: relative;
     z-index: 0;
@@ -38,7 +38,7 @@
             display: block;
             width: calc(~'100% - 25px');
             font-size: 30px;
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy;
             top: calc(~'50% - 36px');
             text-align: center;
             font-weight: 600;
@@ -47,7 +47,7 @@
         }
 
         &.drop {
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy;
 
             & > * {
                 opacity: 0.3;
@@ -83,7 +83,7 @@
         img:hover {
             cursor: default;
             border-radius: 2px;
-            box-shadow: 0 0 0 3px var(--accessory-blue-2);
+            box-shadow: 0 0 0 3px var(--accessory-blue-2); // legacy;
         }
     }
 }
@@ -91,15 +91,15 @@
 .textarea-toolbar {
     position: relative;
     z-index: 2;
-    background-color: var(--neutral-grey-2); // legacy
+    background-color: var(--neutral-grey-2); // legacy;
     padding: 0.6rem 0.5rem;
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     margin-bottom: -2px;
-    border: 1px solid var(--neutral-grey-3);
+    border: 1px solid var(--neutral-grey-3); // legacy;
 
     & + textarea {
-        border-top-color: var(--neutral-grey-3) !important;
+        border-top-color: var(--neutral-grey-3) !important; // legacy
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
     }
@@ -111,8 +111,8 @@
     justify-content: flex-start;
     align-items: center;
     padding: 0 4px;
-    background-color: var(--accessory-blue-1);
-    color: var(--main-primary-3);
+    background-color: var(--accessory-blue-1); // legacy;
+    color: var(--main-primary-3); // legacy;
     border-radius: 3px;
 
     &.badge-variable-type-survey i {
@@ -121,28 +121,28 @@
     }
 
     &.badge-variable-type-shopify {
-        background-color: var(--accessory-green-1);
+        background-color: var(--accessory-green-1); // legacy;
         color: var(--TEMP_shopifyBadgeColor);
     }
 
     &.badge-variable-type-bigcommerce {
-        background-color: var(--accessory-violet-2);
-        color: var(--accessory-violet-3);
+        background-color: var(--accessory-violet-2); // legacy;
+        color: var(--accessory-violet-3); // legacy;
     }
 
     &.badge-variable-type-recharge {
-        background-color: var(--accessory-teal-1);
-        color: var(--accessory-teal-3);
+        background-color: var(--accessory-teal-1); // legacy;
+        color: var(--accessory-teal-3); // legacy;
     }
 
     &.badge-variable-type-smile {
-        background-color: var(--accessory-yellow-2);
-        color: var(--accessory-yellow-3);
+        background-color: var(--accessory-yellow-2); // legacy;
+        color: var(--accessory-yellow-3); // legacy;
     }
 
     &.badge-variable-type-magento2 {
-        background-color: var(--accessory-orange-1);
-        color: var(--accessory-orange-3);
+        background-color: var(--accessory-orange-1); // legacy;
+        color: var(--accessory-orange-3); // legacy;
     }
 
     .badge-variable-icon {
