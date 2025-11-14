@@ -98,7 +98,7 @@ export type InitialRootState = {
     chats: Map<any, any>
     currentAccount: Map<any, any>
     currentCompany: {
-        fixed_gmv_band: string
+        fixed_gmv_band: CompanyTier | null
     }
     currentUSer: Map<any, any>
     entities: {

@@ -12,7 +12,7 @@ export enum CompanyTier {
 }
 
 export type CurrentCompanyState = {
-    fixed_gmv_band?: CompanyTier | string | null
+    fixed_gmv_band?: CompanyTier | null
 }
 
 export const initialState: CurrentCompanyState = {}
@@ -21,10 +21,7 @@ export const currentCompanySlice = createSlice({
     name: 'currentCompany',
     initialState,
     reducers: {
-        setCompanyGmvBand(
-            state,
-            action: PayloadAction<CompanyTier | string | null>,
-        ) {
+        setCompanyGmvBand(state, action: PayloadAction<CompanyTier | null>) {
             state.fixed_gmv_band = action.payload
         },
         resetCompanyState() {
@@ -39,7 +36,8 @@ export const { setCompanyGmvBand, resetCompanyState } =
 export const getCurrentCompanyState = (state: RootState) =>
     state.currentCompany || {}
 
-export const getCompanyFixedGmvBandTier = (state: RootState) =>
-    state.currentCompany?.fixed_gmv_band || null
+export const getCompanyFixedGmvBandTier = (
+    state: RootState,
+): CompanyTier | null => state.currentCompany?.fixed_gmv_band || null
 
 export default currentCompanySlice.reducer

@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 import { getCompanyFixedGmvBandTier } from 'state/currentCompany/selectors'
+import { CompanyTier } from 'state/currentCompany/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './UserMenu.less'
@@ -23,7 +24,11 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
     const gmvBandTier = useAppSelector(getCompanyFixedGmvBandTier)
 
     // Eligible tiers: tier_2 (SMB 2), tier_3 (Commercial 1), tier_4 (Commercial 2)
-    const eligibleTiers = ['tier_2', 'tier_3', 'tier_4']
+    const eligibleTiers = [
+        CompanyTier.Tier2,
+        CompanyTier.Tier3,
+        CompanyTier.Tier4,
+    ]
     const isEligibleByGmvBand =
         gmvBandTier && eligibleTiers.includes(gmvBandTier)
 

@@ -8,6 +8,7 @@ import type { HelpdeskPlan } from 'models/billing/types'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 import { getCompanyFixedGmvBandTier } from 'state/currentCompany/selectors'
+import { CompanyTier } from 'state/currentCompany/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import OfficeHours from '../OfficeHours'
@@ -126,9 +127,9 @@ describe('OfficeHours', () => {
     describe('GMV Band tier logic', () => {
         describe('eligible tiers should render `Book office hours` button', () => {
             const eligibleTiers = [
-                { tier: 'tier_2', description: 'SMB 2' },
-                { tier: 'tier_3', description: 'Commercial 1' },
-                { tier: 'tier_4', description: 'Commercial 2' },
+                { tier: CompanyTier.Tier2, description: 'SMB 2' },
+                { tier: CompanyTier.Tier3, description: 'Commercial 1' },
+                { tier: CompanyTier.Tier4, description: 'Commercial 2' },
             ]
 
             it.each(eligibleTiers)(
@@ -149,9 +150,9 @@ describe('OfficeHours', () => {
 
         describe('ineligible tiers should not render `Book office hours` button', () => {
             const ineligibleTiers = [
-                { tier: 'tier_1', description: 'SMB 1' },
-                { tier: 'tier_5', description: 'Enterprise 1' },
-                { tier: 'tier_6', description: 'Enterprise 2' },
+                { tier: CompanyTier.Tier1, description: 'SMB 1' },
+                { tier: CompanyTier.Tier5, description: 'Enterprise 1' },
+                { tier: CompanyTier.Tier6, description: 'Enterprise 2' },
             ]
 
             it.each(ineligibleTiers)(
