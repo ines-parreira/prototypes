@@ -246,8 +246,11 @@ export const usePlaygroundMessages = () => {
 
                 // Process only new logs
                 const newMessages = newLogs
-                    .map((log) => {
-                        const message = handleAiAgentTestSessionLog(log)
+                    .map((log, index) => {
+                        const message = handleAiAgentTestSessionLog(
+                            log,
+                            index > 0 ? newLogs[index - 1] : undefined,
+                        )
                         if (message) {
                             // Add the log id to the processed set to avoid duplicates
                             processedLogIds.current.add(log.id)

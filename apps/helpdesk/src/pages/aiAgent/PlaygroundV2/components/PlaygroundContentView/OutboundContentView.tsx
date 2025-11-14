@@ -1,0 +1,89 @@
+import { useState } from 'react'
+
+import { Tooltip } from 'reactstrap'
+
+import { Button } from '@gorgias/axiom'
+
+import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
+import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
+import { useAiJourneyMessages } from 'pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages'
+
+import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
+import { PlaygroundMessageList } from '../PlaygroundMessageList/PlaygroundMessageList'
+import { SmsChannelMessagesContainer } from '../SmsChannelMessagesContainer/SmsChannelMessagesContainer'
+import { BaseContentViewProps } from './ContentView'
+
+// TODO: extract the style into a dedicated file
+import css from './OutboundContentView.less'
+
+type OutboundContentViewProps = BaseContentViewProps
+
+export const OutboundContentView = ({
+    accountId,
+    userId,
+    onGuidanceClick,
+    shouldDisplayReasoning,
+    messages,
+}: OutboundContentViewProps) => {
+    const [tooltipOpen, setTooltipOpen] = useState(false)
+    const { shopName } = useConfigurationContext()
+    const { isPolling } = useCoreContext()
+    const { triggerMessage, isTriggeringMessage } = useAiJourneyMessages()
+
+    const {
+        followUpMessagesSent,
+        aiJourneySettings: { totalFollowUp },
+    } = useAIJourneyContext()
+
+    const followUpLimitReached = followUpMessagesSent >= totalFollowUp
+
+    const toggleTooltip = () => setTooltipOpen(!tooltipOpen)
+
+    return (
+        <>
+            {messages.length > 0 && (
+                <div className={css.messageListContainer}>
+                    <SmsChannelMessagesContainer storeName={shopName}>
+                        <PlaygroundMessageList
+                            accountId={accountId}
+                            userId={userId}
+                            messages={messages}
+                            onGuidanceClick={onGuidanceClick}
+                            shouldDisplayReasoning={shouldDisplayReasoning}
+                        />
+                    </SmsChannelMessagesContainer>
+                    <div>
+                        <Button
+                            id="follow-up-button"
+                            isDisabled={isPolling || followUpLimitReached}
+                            variant="secondary"
+                            onClick={triggerMessage}
+                            isLoading={isTriggeringMessage}
+                        >
+                            View follow-up message
+                        </Button>
+                        {followUpLimitReached && (
+                            <Tooltip
+                                target="follow-up-button"
+                                placement="left"
+                                isOpen={tooltipOpen}
+                                toggle={toggleTooltip}
+                            >
+                                Configured follow up limit reached
+                            </Tooltip>
+                        )}
+                    </div>
+                </div>
+            )}
+            {messages.length === 0 && (
+                <div className={css.initialContentContainer}>
+                    <PlaygroundInitialContent
+                        onStartClick={triggerMessage}
+                        isLoading={isTriggeringMessage}
+                    />
+                </div>
+            )}
+        </>
+    )
+}

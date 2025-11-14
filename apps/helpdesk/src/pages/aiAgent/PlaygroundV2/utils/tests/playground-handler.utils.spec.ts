@@ -487,6 +487,7 @@ describe('playground-handler.utils', () => {
                 agentSkill: AgentSkill.SUPPORT,
                 createdDatetime: testDatetime,
                 executionId: 'exec-123',
+                isReasoningEligible: true,
             })
         })
 
@@ -518,6 +519,7 @@ describe('playground-handler.utils', () => {
                 agentSkill: AgentSkill.SALES,
                 createdDatetime: testDatetime,
                 executionId: 'exec-123',
+                isReasoningEligible: true,
             })
         })
 
@@ -542,7 +544,6 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log)
 
             expect(result).toEqual({
-                id: '00000000-0000-0000-0000-000000000001',
                 sender: AI_AGENT_SENDER,
                 type: MessageType.TICKET_EVENT,
                 outcome: TicketOutcome.HANDOVER,
@@ -571,6 +572,48 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log as TestSessionLog)
 
             expect(result).toBeNull()
+        })
+
+        it('should set isReasoningEligible to false when previous log is AI Journey triggered', () => {
+            const aiJourneyTriggeredLog: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.SHOPPER_MESSAGE,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'AI Journey triggered',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const aiAgentReplyLog: TestSessionLog = {
+                id: '123',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_REPLY,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Reply message',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(
+                aiAgentReplyLog,
+                aiJourneyTriggeredLog,
+            )
+            expect(result?.isReasoningEligible).toBe(false)
         })
     })
 })

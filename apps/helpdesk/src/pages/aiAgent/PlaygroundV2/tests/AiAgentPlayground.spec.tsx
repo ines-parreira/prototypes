@@ -14,6 +14,14 @@ import { usePlaygroundResources } from '../hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from '../hooks/usePlaygroundTracking'
 import { useShopNameResolution } from '../hooks/useShopNameResolution'
 
+jest.mock('../contexts/MessagesContext', () => ({
+    useMessagesContext: jest.fn(() => ({})),
+}))
+
+jest.mock('../contexts/SettingsContext', () => ({
+    useSettingsContext: jest.fn(() => ({})),
+}))
+
 jest.mock('../contexts/PlaygroundContext', () => ({
     PlaygroundProvider: ({ children }: any) => <div>{children}</div>,
 }))
@@ -37,10 +45,6 @@ jest.mock(
         PlaygroundInputSection: () => <div>PlaygroundInputSection</div>,
     }),
 )
-
-jest.mock('../components/PlaygroundMessageList/PlaygroundMessageList', () => ({
-    PlaygroundMessageList: () => <div>PlaygroundMessageList</div>,
-}))
 
 jest.mock('../components/PlaygroundSettings/PlaygroundSettings', () => ({
     PlaygroundSettings: ({ onClose, withFooter, withModesSwitcher }: any) => (
@@ -218,9 +222,6 @@ describe('AiAgentPlayground', () => {
         it('should render playground when all prerequisites are met', () => {
             renderComponent()
 
-            expect(
-                screen.getByText('PlaygroundMessageList'),
-            ).toBeInTheDocument()
             expect(
                 screen.getByText('PlaygroundInputSection'),
             ).toBeInTheDocument()

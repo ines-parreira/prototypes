@@ -16,10 +16,13 @@ import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 
+import { InboundContentView } from './components/PlaygroundContentView/InboundContentView'
+import { OutboundContentView } from './components/PlaygroundContentView/OutboundContentView'
 import { PlaygroundInputSection } from './components/PlaygroundInputSection/PlaygroundInputSection'
-import { PlaygroundMessageList } from './components/PlaygroundMessageList/PlaygroundMessageList'
 import { PlaygroundMissingKnowledgeAlert } from './components/PlaygroundMissingKnowledgeAlert/PlaygroundMissingKnowledgeAlert'
+import { useMessagesContext } from './contexts/MessagesContext'
 import { PlaygroundProvider } from './contexts/PlaygroundContext'
+import { useSettingsContext } from './contexts/SettingsContext'
 import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from './hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from './hooks/usePlaygroundTracking'
@@ -92,7 +95,71 @@ const ContextConsumer = ({
     return null
 }
 
-type Props = {
+type AiAgentPlaygroundContent = {
+    accountId: number
+    userId: number
+    onGuidanceClick?: (guidanceArticleId: number) => void
+    shouldDisplayReasoning?: boolean
+    inplaceSettingsOpen?: boolean
+    onInplaceSettingsOpenChange?: (isOpen: boolean) => void
+    hasMultipleModes?: boolean
+    withResetButton: boolean
+    handleInplaceSettingsClose?: () => void
+}
+
+export const AiAgentPlaygroundContent = ({
+    accountId,
+    userId,
+    onGuidanceClick,
+    shouldDisplayReasoning,
+    hasMultipleModes,
+    withResetButton,
+    inplaceSettingsOpen,
+    handleInplaceSettingsClose,
+}: AiAgentPlaygroundContent) => {
+    const { messages } = useMessagesContext()
+    const mode = useSettingsContext().mode
+
+    return (
+        <div className={css.container}>
+            {inplaceSettingsOpen ? (
+                <PlaygroundSettings
+                    onClose={handleInplaceSettingsClose}
+                    withFooter={false}
+                    withModesSwitcher={hasMultipleModes}
+                />
+            ) : (
+                <>
+                    {mode === 'inbound' && (
+                        <InboundContentView
+                            accountId={accountId}
+                            userId={userId}
+                            onGuidanceClick={onGuidanceClick}
+                            shouldDisplayReasoning={shouldDisplayReasoning}
+                            messages={messages}
+                        />
+                    )}
+                    {mode === 'outbound' && (
+                        <OutboundContentView
+                            accountId={accountId}
+                            userId={userId}
+                            onGuidanceClick={onGuidanceClick}
+                            shouldDisplayReasoning={shouldDisplayReasoning}
+                            messages={messages}
+                        />
+                    )}
+                    <div className={css.inputContainer}>
+                        <PlaygroundInputSection
+                            withResetButton={withResetButton}
+                        />
+                    </div>
+                </>
+            )}
+        </div>
+    )
+}
+
+type AiagentPlaygroundProps = {
     arePlaygroundActionsAllowed?: boolean
     resetPlayground?: boolean
     shopName?: string
@@ -116,7 +183,7 @@ export const AiAgentPlayground = ({
     onGuidanceClick,
     onInplaceSettingsOpenChange,
     supportedModes,
-}: Props) => {
+}: AiagentPlaygroundProps) => {
     const shouldDisplayReasoning = useFlag(
         FeatureFlagKey.ShowAiReasoningInPlayground,
     )
@@ -196,29 +263,17 @@ export const AiAgentPlayground = ({
                     shopName={shopName}
                     withSettingsOnSidePanel={withSettingsOnSidePanel}
                 />
-                <div className={css.container}>
-                    {inplaceSettingsOpen ? (
-                        <PlaygroundSettings
-                            onClose={handleInplaceSettingsClose}
-                            withFooter={false}
-                            withModesSwitcher={hasMultipleModes}
-                        />
-                    ) : (
-                        <>
-                            <PlaygroundMessageList
-                                accountId={accountId}
-                                userId={userId}
-                                onGuidanceClick={onGuidanceClick}
-                                shouldDisplayReasoning={shouldDisplayReasoning}
-                            />
-                            <div className={css.inputContainer}>
-                                <PlaygroundInputSection
-                                    withResetButton={withResetButton}
-                                />
-                            </div>
-                        </>
-                    )}
-                </div>
+                <AiAgentPlaygroundContent
+                    accountId={accountId}
+                    userId={userId}
+                    onGuidanceClick={onGuidanceClick}
+                    shouldDisplayReasoning={shouldDisplayReasoning}
+                    hasMultipleModes={hasMultipleModes}
+                    withResetButton={withResetButton}
+                    handleInplaceSettingsClose={handleInplaceSettingsClose}
+                    inplaceSettingsOpen={inplaceSettingsOpen}
+                    onInplaceSettingsOpenChange={onInplaceSettingsOpenChange}
+                />
             </PlaygroundProvider>
         )
     }

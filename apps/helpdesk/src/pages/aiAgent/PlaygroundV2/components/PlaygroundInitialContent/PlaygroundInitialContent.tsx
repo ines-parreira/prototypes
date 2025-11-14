@@ -1,23 +1,42 @@
-import React from 'react'
-
-import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
+import { Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import css from './PlaygroundInitialContent.less'
 
-export const PlaygroundInitialContent = () => {
+type PlaygroundInitialContentProps = {
+    onStartClick?: () => void
+    isLoading?: boolean
+}
+
+export const PlaygroundInitialContent = ({
+    onStartClick,
+    isLoading,
+}: PlaygroundInitialContentProps) => {
     return (
         <div className={css.container}>
-            <div className={css.avatarContainer}>
-                <Avatar isAIAgent={true} isAgent={true} name="AI Agent" />
+            <div className={css.icon}>
+                <Icon name="ai-alt-1" size="md" />
             </div>
-            <div>
-                <h2 className={css.title}>Preview customer experience</h2>
-                <h3 className={css.subtitle}>
-                    Ask questions like a customer would and see exactly how AI
-                    Agent responds. Use this to fine-tune knowledge, tone, and
-                    accuracy.
-                </h3>
+            <div className={css.content}>
+                <Heading className={css.title} size="sm">
+                    Preview shopper experience
+                </Heading>
+                <Text as="p" align="center" className={css.text}>
+                    AI Agent will use your stores&apos; resources and order
+                    history to respond. <br /> Preview conversations won&apos;t
+                    send messages or take any real actions.
+                </Text>
             </div>
+            {onStartClick && (
+                <div className={css.actions}>
+                    <Button
+                        variant="primary"
+                        onClick={onStartClick}
+                        isLoading={isLoading}
+                    >
+                        Start Conversation
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

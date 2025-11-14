@@ -5,6 +5,8 @@ import {
     AiAgentResponse,
     MessageType,
     PlaygroundMessage,
+    PlaygroundTextMessage,
+    PlaygroundTicketEventMessage,
     TestSessionLog,
     TestSessionLogType,
     TicketOutcome,
@@ -172,9 +174,20 @@ export const handleAiAgentResponse = ({
     return getChatChannelMessagesFromResponse(aiAgentResponse)
 }
 
-export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
+export const handleAiAgentTestSessionLog = (
+    log: TestSessionLog,
+    previousLog?: TestSessionLog,
+) => {
     switch (log.type) {
         case TestSessionLogType.AI_AGENT_REPLY:
+            let isReasoningEligible = true
+            if (
+                previousLog?.type === TestSessionLogType.SHOPPER_MESSAGE &&
+                previousLog?.data.message === 'AI Journey triggered'
+            ) {
+                isReasoningEligible = false
+            }
+
             return {
                 id: log.id,
                 sender: AI_AGENT_SENDER,
@@ -185,15 +198,15 @@ export const handleAiAgentTestSessionLog = (log: TestSessionLog) => {
                     : AgentSkill.SUPPORT,
                 createdDatetime: log.createdDatetime,
                 executionId: log.aiAgentExecutionId,
-            }
+                isReasoningEligible,
+            } satisfies PlaygroundTextMessage
         case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
             return {
-                id: log.id,
                 sender: AI_AGENT_SENDER,
                 type: MessageType.TICKET_EVENT as const,
                 createdDatetime: log.createdDatetime,
                 outcome: log.data.outcome,
-            }
+            } satisfies PlaygroundTicketEventMessage
         default:
             return null
     }

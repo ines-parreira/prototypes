@@ -4,33 +4,37 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: var(--layout-spacing-s);
+        max-width: 600px;
     }
 
-    .title {
-        text-align: center;
-        font-kerning: none;
-        font-variant-numeric: lining-nums tabular-nums;
-        font-family: Inter;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 600;
-        margin-bottom: 0px;
-        line-height: 25px;
+    .icon {
+        color: white;
+        border-radius: 100%;
+        padding: 2px;
+        background: linear-gradient(
+            90deg,
+            #fed1c7 -20%,
+            #f78671 30%,
+            #905bd2 90%,
+            #c8b1f9 200%
+        );
+
+        box-shadow: 1px 4px 4px 0 rgba(255, 255, 255, 0.6) inset;
+
+        margin-bottom: var(--layout-spacing-s);
     }
 
-    .subtitle {
-        color: var(--Content-content-neutral-secondary, #5c6370);
-        text-align: center;
-        font-kerning: none;
-        font-variant-numeric: lining-nums tabular-nums;
-        font-family: Inter;
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 16px;
-        letter-spacing: 0.12px;
-        max-width: 300px;
-        margin-bottom: 0px;
+    .content {
+        .title {
+            margin-bottom: var(--layout-spacing-xxs);
+        }
+
+        .text {
+            margin-bottom: 0;
+        }
+    }
+
+    .actions {
+        margin-top: var(--layout-spacing-m);
     }
 }
