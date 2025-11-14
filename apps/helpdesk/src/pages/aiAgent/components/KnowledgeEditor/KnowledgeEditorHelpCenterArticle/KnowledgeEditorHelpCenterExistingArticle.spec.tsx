@@ -10,6 +10,7 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticleTranslation,
@@ -37,6 +38,9 @@ let onChangeCallback: (value: string) => void = jest.fn()
 
 jest.mock('hooks/useNotify')
 const useNotifyMock = assumeMock(useNotify)
+
+jest.mock('core/flags/hooks/useFlag')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor',
@@ -135,6 +139,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         jest.resetAllMocks()
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
+        useFlagMock.mockReturnValue(false)
 
         updateArticleTranslationMock.mockImplementation((o) =>
             Promise.resolve({ data: o }),
@@ -1017,5 +1022,55 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         await waitFor(() => {
             expect(onClose).toHaveBeenCalled()
         })
+    })
+
+    it('renders impact section when performance stats flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.READ}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.getByText('Impact')).toBeInTheDocument()
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.getByText('Settings')).toBeInTheDocument()
+    })
+
+    it('does not render impact section when performance stats flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.READ}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                />
+            </Wrapper>,
+        )
+
+        expect(screen.queryByText('Impact')).not.toBeInTheDocument()
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.getByText('Settings')).toBeInTheDocument()
     })
 })

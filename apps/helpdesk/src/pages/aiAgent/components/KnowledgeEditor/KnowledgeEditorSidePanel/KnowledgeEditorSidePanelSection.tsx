@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { Icon, IconSize } from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import css from './KnowledgeEditorSidePanelSection.less'
 
@@ -10,6 +11,7 @@ type Props = {
     header: {
         title: string | React.ReactNode
         subtitle?: string
+        tooltip?: string
     }
     bottomLink?: {
         text: string
@@ -35,7 +37,18 @@ export const KnowledgeEditorSidePanelSection = ({
                     )}
                 >
                     <div className={css.titleAndSubtitle}>
-                        <div className={css.title}>{header.title}</div>
+                        <div className={css.title}>
+                            {header.tooltip ? (
+                                <div className={css.titleWithTooltip}>
+                                    {header.title}
+                                    <IconTooltip className={css.tooltip}>
+                                        {header.tooltip}
+                                    </IconTooltip>
+                                </div>
+                            ) : (
+                                header.title
+                            )}
+                        </div>
                         {header.subtitle && (
                             <div className={css.subtitle}>
                                 {header.subtitle}

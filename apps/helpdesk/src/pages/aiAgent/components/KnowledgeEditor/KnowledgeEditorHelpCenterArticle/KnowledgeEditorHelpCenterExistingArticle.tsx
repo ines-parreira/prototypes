@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { LoadingSpinner } from '@gorgias/axiom'
 
+import useFlag from 'core/flags/hooks/useFlag'
 import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticleTranslation,
@@ -73,6 +76,9 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     props: Props & { article: ArticleWithLocalTranslation },
 ) => {
     const { error: notifyError } = useNotify()
+    const isPerformanceStatsEnabled = useFlag(
+        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+    )
 
     const { modal, openUnsavedChangesModal, openConfirmDeleteModal } =
         useKnowledgeEditorHelpCenterArticleModal()
@@ -542,6 +548,28 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     {article && isDetailsView && (
                         <KnowledgeEditorSidePanelHelpCenterArticle
                             details={details}
+                            impact={
+                                isPerformanceStatsEnabled
+                                    ? {
+                                          tickets: {
+                                              value: 40,
+                                              onClick: () => {},
+                                          },
+                                          handoverTickets: {
+                                              value: 3,
+                                              onClick: () => {},
+                                          },
+                                          csat: {
+                                              value: 4.1,
+                                              onClick: () => {},
+                                          },
+                                          intents: [
+                                              'Orders/Returns',
+                                              'Product/Issues',
+                                          ],
+                                      }
+                                    : undefined
+                            }
                             settings={settings}
                         />
                     )}
