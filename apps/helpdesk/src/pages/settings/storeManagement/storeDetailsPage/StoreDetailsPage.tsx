@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import classNames from 'classnames'
 import {
     Link,
     NavLink,
@@ -45,7 +46,7 @@ export default function StoreDetailsPage() {
     const store = data?.data as unknown as StoreIntegration
 
     return (
-        <div className="full-width">
+        <div className={classNames('full-width', css.wrapper)}>
             <PageHeader
                 title={
                     <Breadcrumb>
@@ -60,7 +61,7 @@ export default function StoreDetailsPage() {
             >
                 <StoreManagementStoreSelector />
             </PageHeader>
-            <SecondaryNavbar>
+            <SecondaryNavbar className={css.metafieldsNavbar}>
                 <NavLink
                     to={`/app/settings/store-management/${id}/settings`}
                     exact
