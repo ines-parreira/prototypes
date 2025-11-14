@@ -18,6 +18,7 @@ import { Application } from 'services/applications'
 import { Channel } from 'services/channels'
 import { BillingProducts } from 'state/billing/types'
 import { Account } from 'state/currentAccount/types'
+import { CompanyTier } from 'state/currentCompany/types'
 
 export type KeysMatching<T, V> = {
     [K in keyof T]-?: T[K] extends V ? K : never
@@ -50,7 +51,7 @@ export type GorgiasInitialState = {
     }
     currentAccount: Account
     currentCompany: {
-        fixed_gmv_band: string
+        fixed_gmv_band: CompanyTier | null
     }
     currentUser: User
     integrations: {

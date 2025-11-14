@@ -7,6 +7,7 @@ import {
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
+import { CompanyTier } from 'state/currentCompany/types'
 import { GorgiasInitialState } from 'types'
 
 import { account } from './account'
@@ -37,7 +38,7 @@ export const initialState: GorgiasInitialState = {
     },
     currentAccount: account,
     currentCompany: {
-        fixed_gmv_band: 'tier_3',
+        fixed_gmv_band: CompanyTier.Tier3,
     },
     currentUser: user,
     integrations: {
