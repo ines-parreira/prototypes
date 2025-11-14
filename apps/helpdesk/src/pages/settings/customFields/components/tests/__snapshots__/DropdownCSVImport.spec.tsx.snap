@@ -61,7 +61,7 @@ exports[`<DropdownCSVImport/> should render when open 1`] = `
                   Download a
                    
                   <a
-                    to="#"
+                    href="/"
                   >
                     CSV template
                   </a>

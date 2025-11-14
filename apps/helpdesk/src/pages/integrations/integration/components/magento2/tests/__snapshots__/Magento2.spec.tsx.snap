@@ -18,7 +18,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -37,16 +37,12 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/magento2/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/magento2/connections"
     >
       Connections
@@ -203,7 +199,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
         >
           <a
             class="connectButtonWrapper"
-            to="/app/settings/integrations/magento2/new"
+            href="/app/settings/integrations/magento2/new"
           >
             <button
               aria-disabled="false"
@@ -309,7 +305,7 @@ exports[`<Magento2/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -318,7 +314,7 @@ exports[`<Magento2/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/magento2/connections"
+            href="/app/settings/integrations/magento2/connections"
           >
             Magento 2
           </a>
@@ -484,7 +480,7 @@ exports[`<Magento2/> List should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -500,7 +496,7 @@ exports[`<Magento2/> List should render 1`] = `
     <div>
       <a
         class="connectButtonWrapper"
-        to="/app/settings/integrations/magento2/new"
+        href="/app/settings/integrations/magento2/new"
       >
         <button
           aria-disabled="false"
@@ -522,16 +518,12 @@ exports[`<Magento2/> List should render 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/magento2/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/magento2/connections"
     >
       Connections
@@ -545,7 +537,7 @@ exports[`<Magento2/> List should render 1`] = `
     >
       <a
         class="link"
-        to="/app/settings/integrations/magento2/1"
+        href="/app/settings/integrations/magento2/1"
       >
         <span>
           myShop1
@@ -579,7 +571,7 @@ exports[`<Magento2/> New should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -588,7 +580,7 @@ exports[`<Magento2/> New should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/magento2/connections"
+            href="/app/settings/integrations/magento2/connections"
           >
             Magento 2
           </a>

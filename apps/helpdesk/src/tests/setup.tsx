@@ -4,7 +4,6 @@ import MutationObserver from '@sheerun/mutationobserver-shim'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'
 import { MomentTimezone } from 'moment-timezone'
-import { NavLinkProps } from 'react-router-dom'
 import { setImmediate } from 'timers'
 import { TextDecoder, TextEncoder } from 'util'
 
@@ -140,33 +139,6 @@ jest.mock(
                 'US/Pacific',
                 'Australia/AUR',
             ]),
-        }) as Record<string, unknown>,
-)
-
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            /* eslint-disable jsx-a11y/anchor-has-content */
-            Link: (props: Record<string, unknown>) => <a {...props} />,
-            NavLink: ({
-                to,
-                activeClassName,
-                exact,
-                ...rest
-            }: NavLinkProps) => (
-                <>
-                    {/* @ts-ignore */}
-                    <a
-                        href={to.toString()}
-                        data-active-class-name={activeClassName}
-                        data-exact={exact}
-                        {...rest}
-                    />
-                </>
-            ),
-            /* eslint-enable */
         }) as Record<string, unknown>,
 )
 

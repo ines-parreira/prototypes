@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
 import {
@@ -11,6 +11,7 @@ import {
 } from 'config/integrations'
 import { FACEBOOK_LANGUAGE_DEFAULT } from 'config/integrations/facebook'
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
+import { renderWithRouter } from 'utils/testing'
 
 import { FacebookIntegrationPreferences } from '../FacebookIntegrationPreferences'
 
@@ -24,7 +25,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('componentWillMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const { getByText, queryByRole } = render(
+            const { getByText, queryByRole } = renderWithRouter(
                 <FacebookIntegrationPreferences {...minProps} />,
             )
 
@@ -51,7 +52,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 },
             })
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
@@ -71,7 +72,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('componentDidUpdate()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const { getByText, queryByRole, rerender } = render(
+            const { getByText, queryByRole, rerender } = renderWithRouter(
                 <FacebookIntegrationPreferences {...minProps} />,
             )
 
@@ -104,7 +105,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-            const { getByText, rerender } = render(
+            const { getByText, rerender } = renderWithRouter(
                 <FacebookIntegrationPreferences {...minProps} />,
             )
             rerender(
@@ -127,7 +128,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderEnabled()', () => {
         it('should set passed value in the state', () => {
-            const { getByRole } = render(
+            const { getByRole } = renderWithRouter(
                 <FacebookIntegrationPreferences {...minProps} />,
             )
             const checkbox = getByRole('checkbox')
@@ -158,7 +159,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
@@ -179,7 +180,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('form submission', () => {
         it('should submit the form with defaults', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <FacebookIntegrationPreferences {...minProps} />,
             )
 
@@ -216,7 +217,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
@@ -242,7 +243,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('render()', () => {
         it('should render the Facebook preferences', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({
@@ -257,7 +258,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
         })
 
         it('should render loading buttons because the integration is being updated', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({

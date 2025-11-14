@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react'
 
 import { Meta, StoryFn } from '@storybook/react'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 
 import { SettingsFeatureRow } from './SettingsFeatureRow'
 

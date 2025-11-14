@@ -6,6 +6,7 @@ import { ChannelWithMetadata } from '../../../../types'
 import { useChannels } from '../useChannels'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 jest.mock('../../../../StoreManagementProvider')

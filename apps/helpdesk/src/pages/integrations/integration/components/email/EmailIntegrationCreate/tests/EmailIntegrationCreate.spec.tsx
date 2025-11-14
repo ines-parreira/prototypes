@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationCreate from '../EmailIntegrationCreate'
 
@@ -13,7 +14,7 @@ describe('<EmailIntegrationCreate/>', () => {
     beforeEach(() => {
         window.open = jest.fn()
 
-        render(<EmailIntegrationCreate />)
+        renderWithRouter(<EmailIntegrationCreate />)
         useAppSelectorMock
             .mockReturnValueOnce('testGmail')
             .mockReturnValueOnce('testOutlook')
@@ -22,11 +23,11 @@ describe('<EmailIntegrationCreate/>', () => {
     it('should have correct link for email forwarding when email forwarding card is clicked', () => {
         const emailForwardingCard = screen.getByText('Email forwarding')
 
-        const linkContainer = emailForwardingCard.closest('a[to]')
+        const linkContainer = emailForwardingCard.closest('a[href]')
 
         expect(linkContainer).not.toBeNull()
         expect(linkContainer).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/email/new/onboarding',
         )
     })

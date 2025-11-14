@@ -13,6 +13,7 @@ import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Macros } from '../Macros'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn(() => <div>redirect</div>),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),

@@ -446,7 +446,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                     >
                       <a
                         class="viewLink"
-                        to="[object Object]"
+                        href="/app/tickets/new/public"
                       >
                         134
                       </a>

@@ -1,8 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router'
-import { StaticRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { view } from 'fixtures/views'
@@ -55,12 +54,12 @@ describe('TicketNavbarViewLink', () => {
 
     it('should render a default link', () => {
         render(
-            <StaticRouter location="/app">
+            <MemoryRouter initialEntries={['/app']}>
                 <TicketNavbarViewLink view={defaultView} />
-            </StaticRouter>,
+            </MemoryRouter>,
         )
         const el = screen.getByText('Inbox').closest('a')
-        expect(el).toHaveAttribute('to', '/app/tickets/123/inbox')
+        expect(el).toHaveAttribute('href', '/app/tickets/123/inbox')
     })
 
     it('should render a split ticket view link', () => {
@@ -68,23 +67,23 @@ describe('TicketNavbarViewLink', () => {
             isEnabled: true,
         } as SplitTicketViewContext)
         render(
-            <StaticRouter location="/app">
+            <MemoryRouter initialEntries={['/app']}>
                 <TicketNavbarViewLink view={defaultView} />
-            </StaticRouter>,
+            </MemoryRouter>,
         )
         const el = screen.getByText('Inbox').closest('a')
-        expect(el).toHaveAttribute('to', '/app/views/123')
+        expect(el).toHaveAttribute('href', '/app/views/123')
     })
 
     it('should render the new ticket link format with the feature flag', () => {
         useFlagMock.mockReturnValue(true)
         render(
-            <StaticRouter location="/app">
+            <MemoryRouter initialEntries={['/app']}>
                 <TicketNavbarViewLink view={defaultView} />
-            </StaticRouter>,
+            </MemoryRouter>,
         )
         const el = screen.getByText('Inbox').closest('a')
-        expect(el).toHaveAttribute('to', '/app/tickets/123')
+        expect(el).toHaveAttribute('href', '/app/tickets/123')
     })
 
     it('renders the candu link with the correct data-candu-id attribute', () => {
@@ -99,9 +98,9 @@ describe('TicketNavbarViewLink', () => {
         } as unknown as View
 
         const { container } = render(
-            <StaticRouter location="/app">
+            <MemoryRouter initialEntries={['/app']}>
                 <TicketNavbarViewLink view={view} viewCount={5} />
-            </StaticRouter>,
+            </MemoryRouter>,
         )
 
         const expectedDataCanduId = 'ticket-navbar-ai-agent-view-link-handover'

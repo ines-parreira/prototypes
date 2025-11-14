@@ -5,7 +5,6 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
     fireEvent,
-    render,
     RenderResult,
     screen,
     waitFor,
@@ -33,6 +32,7 @@ import {
 } from 'pages/integrations/integration/components/email/helpers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/integrations/integration/components/email/helpers')
 
@@ -131,7 +131,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
     })
 
     const renderWithStore = (props = {}) =>
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <EmailIntegrationUpdateContainer

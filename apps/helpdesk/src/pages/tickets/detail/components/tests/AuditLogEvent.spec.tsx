@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
@@ -14,6 +14,7 @@ import {
     TicketEventType,
 } from 'models/event/types'
 import { RuleEvent } from 'state/rules/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { AuditLogEventContainer } from '../AuditLogEvent'
 
@@ -150,7 +151,7 @@ describe('<AuditLogEvent/>', () => {
                 [SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveySent, null],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -169,7 +170,7 @@ describe('<AuditLogEvent/>', () => {
                 ],
             ])('with event type %s and several tags', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -188,7 +189,7 @@ describe('<AuditLogEvent/>', () => {
                 ],
             ])('with event type %s and missing assignee', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -206,7 +207,7 @@ describe('<AuditLogEvent/>', () => {
                     triggering_event_type: RuleEvent.TicketCreated,
                 })
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -230,7 +231,7 @@ describe('<AuditLogEvent/>', () => {
                     ]),
                 })
 
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -250,7 +251,7 @@ describe('<AuditLogEvent/>', () => {
                     },
                 )
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -264,7 +265,7 @@ describe('<AuditLogEvent/>', () => {
             it('when the event is the last component to display before the reply area', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketReopened)
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -293,7 +294,7 @@ describe('<AuditLogEvent/>', () => {
                         created_datetime: '2019-11-15 19:00:00.500000',
                     },
                 )
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         events={fromJS([ruleExecutedEvent, event])}
@@ -314,7 +315,7 @@ describe('<AuditLogEvent/>', () => {
                     },
                     { user_id: null },
                 )
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -331,7 +332,7 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketMerged, null, {
                     user_id: null,
                 })
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -346,7 +347,7 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketMerged, null, {
                     user_id: 1234567890,
                 })
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -374,7 +375,7 @@ describe('<AuditLogEvent/>', () => {
                     },
                 )
 
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -402,7 +403,7 @@ describe('<AuditLogEvent/>', () => {
                     },
                 )
 
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -416,7 +417,7 @@ describe('<AuditLogEvent/>', () => {
 
             it('when the ticket subject updated data is null', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated)
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -431,7 +432,7 @@ describe('<AuditLogEvent/>', () => {
                     ...getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated),
                     user_id: 3,
                 }
-                const { getByText } = render(
+                const { getByText } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -454,7 +455,7 @@ describe('<AuditLogEvent/>', () => {
                     ),
                     user_id: 3,
                 }
-                const { getByText, getByTitle } = render(
+                const { getByText, getByTitle } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -483,7 +484,7 @@ describe('<AuditLogEvent/>', () => {
                         TICKET_EVENT_TYPES.TicketSatisfactionSurveySkipped,
                         data,
                     )
-                    const { container } = render(
+                    const { container } = renderWithRouter(
                         <AuditLogEventContainer
                             {...minProps}
                             event={fromJS(event)}
@@ -500,7 +501,7 @@ describe('<AuditLogEvent/>', () => {
             it('when the content is missing', () => {
                 const event = getEvent('invalid' as any)
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -516,7 +517,7 @@ describe('<AuditLogEvent/>', () => {
                     type: SYSTEM_RULE_TYPE,
                 })
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
@@ -532,7 +533,7 @@ describe('<AuditLogEvent/>', () => {
                     [TAGS_ADDED_KEY]: [999],
                 })
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}

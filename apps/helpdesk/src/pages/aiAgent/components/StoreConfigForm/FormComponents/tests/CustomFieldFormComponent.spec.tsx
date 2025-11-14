@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, within } from '@testing-library/react'
+import { fireEvent, within } from '@testing-library/react'
 
 import {
     CustomFieldCondition,
@@ -11,6 +11,7 @@ import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomF
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { CustomField } from 'custom-fields/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import { CustomFieldsFormComponent, Props } from '../CustomFieldsFormComponent'
 
@@ -77,7 +78,7 @@ describe('CustomFieldsFormComponent', () => {
         })
 
         test('Should automatically render store configuration stored custom fields', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent {...mockProps} />,
                 </QueryClientProvider>,
@@ -91,7 +92,7 @@ describe('CustomFieldsFormComponent', () => {
             expect(inputs[0]).toHaveValue('Returns')
         })
         test('Each store configuration custom field can be delete through the delete button next to it', () => {
-            const { container, queryByTestId, rerender } = render(
+            const { container, queryByTestId, rerender } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent {...mockProps} />,
                 </QueryClientProvider>,
@@ -123,7 +124,7 @@ describe('CustomFieldsFormComponent', () => {
             ).not.toBeInTheDocument()
         })
         test('Non currently stored custom fields but that are required should be auto selected on store creation', () => {
-            render(
+            renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent
                         {...mockProps}
@@ -142,7 +143,7 @@ describe('CustomFieldsFormComponent', () => {
     })
     describe('Select filter', () => {
         test('The select filter component is rendered with "Add Ticket Fields" as its title"', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent {...mockProps} />,
                 </QueryClientProvider>,
@@ -153,7 +154,7 @@ describe('CustomFieldsFormComponent', () => {
             ).toBeInTheDocument()
         })
         test('The search placeholder should be "Search Ticket Fields"', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent {...mockProps} />,
                 </QueryClientProvider>,
@@ -169,7 +170,7 @@ describe('CustomFieldsFormComponent', () => {
             ).toBeInTheDocument()
         })
         test('The select filter should not show selected count', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent
                         {...mockProps}
@@ -190,7 +191,7 @@ describe('CustomFieldsFormComponent', () => {
 
         describe('On close', () => {
             test('Selected fields should be appended to the store configuration custom fields', () => {
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <CustomFieldsFormComponent {...mockProps} />,
                     </QueryClientProvider>,
@@ -214,7 +215,7 @@ describe('CustomFieldsFormComponent', () => {
                 )
             })
             test('Selected fields should not re-appear in available selectable custom fields', () => {
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <CustomFieldsFormComponent {...mockProps} />,
                     </QueryClientProvider>,
@@ -225,7 +226,7 @@ describe('CustomFieldsFormComponent', () => {
         })
         describe('All selectable custom fields have been checked', () => {
             test('The add button should be disabled', () => {
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <CustomFieldsFormComponent
                             {...mockProps}
@@ -290,7 +291,7 @@ describe('CustomFieldsFormComponent', () => {
                     isLoading: false,
                     isError: false,
                 })
-                const { getAllByTestId } = render(
+                const { getAllByTestId } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <CustomFieldsFormComponent
                             {...mockProps}
@@ -320,7 +321,7 @@ describe('CustomFieldsFormComponent', () => {
             useCustomFieldDefinitionsMock.mockReturnValue({
                 error: 'Something bad happened',
             })
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <CustomFieldsFormComponent
                         {...mockProps}

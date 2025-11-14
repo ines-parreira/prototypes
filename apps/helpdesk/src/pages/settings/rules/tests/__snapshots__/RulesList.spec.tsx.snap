@@ -46,7 +46,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
             </div>
           </div>
           <a
-            to="/app/settings/rules/library"
+            href="/app/settings/rules/library"
           >
             <button
               aria-disabled="false"

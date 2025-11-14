@@ -1,6 +1,6 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 
 import { initDraftOrderPayload } from 'business/shopify/draftOrder'
@@ -17,6 +17,7 @@ import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSea
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getDuplicateOrderPayload } from 'state/infobarActions/shopify/createOrder/actions'
+import { renderWithRouter } from 'utils/testing'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
@@ -192,7 +193,7 @@ const minProps = {
 
 describe('<EditOrderModal/>', () => {
     it('should not render when the modal is closed', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer {...minProps} isOpen={false} />
@@ -204,7 +205,7 @@ describe('<EditOrderModal/>', () => {
     })
 
     it('should render a spinner when missing data', () => {
-        render(
+        renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer {...minProps} />
@@ -216,7 +217,7 @@ describe('<EditOrderModal/>', () => {
     })
 
     it('should render with a populated order table when data is populated', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -239,7 +240,7 @@ describe('<EditOrderModal/>', () => {
         const products = fromJS([])
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        render(
+        renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -261,7 +262,7 @@ describe('<EditOrderModal/>', () => {
             .setIn([0, 'meta', 'currency'], null)
             .toJS()
         const defaultCurrency = 'YEN'
-        render(
+        renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -281,7 +282,7 @@ describe('<EditOrderModal/>', () => {
     })
 
     it('should call onInit when modal is opened', () => {
-        const { rerender } = render(
+        const { rerender } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -320,7 +321,7 @@ describe('<EditOrderModal/>', () => {
         const item = integrationDataItemProductFixture()
         const product = item.data
         const variant = product.variants[0]
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -345,7 +346,7 @@ describe('<EditOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const lineItem = fromJS(shopifyCustomLineItemFixture())
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -364,7 +365,7 @@ describe('<EditOrderModal/>', () => {
     it('should cancel when closing the modal"', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -389,7 +390,7 @@ describe('<EditOrderModal/>', () => {
     it('should cancel when clicking on "Cancel"', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
@@ -419,7 +420,7 @@ describe('<EditOrderModal/>', () => {
         )
             .setIn([0, 'meta', 'oauth', 'scope'], 'foo')
             .toJS()
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer

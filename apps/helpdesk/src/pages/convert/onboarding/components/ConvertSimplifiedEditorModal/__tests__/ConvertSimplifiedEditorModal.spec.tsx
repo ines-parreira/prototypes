@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -31,6 +29,7 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
@@ -112,7 +111,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a template', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -134,7 +133,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a existing campaign', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -165,7 +164,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
             ]),
         )
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -197,7 +196,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
             data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
         })
 
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal

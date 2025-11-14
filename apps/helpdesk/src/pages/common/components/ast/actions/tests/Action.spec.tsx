@@ -1,7 +1,8 @@
-import React, { ComponentType } from 'react'
+import { ComponentType } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { ActionType } from 'models/rule/types'
 
@@ -39,7 +40,11 @@ describe('Action', () => {
                     ...minProps,
                     value: actionValue,
                 }
-                render(<Action {...props} />)
+                render(
+                    <MemoryRouter>
+                        <Action {...props} />
+                    </MemoryRouter>,
+                )
 
                 expect(
                     screen.getByText(
@@ -50,7 +55,11 @@ describe('Action', () => {
         )
 
         it('should render an error saying an action cannot be empty', () => {
-            render(<Action {...minProps} value="" />)
+            render(
+                <MemoryRouter>
+                    <Action {...minProps} value="" />
+                </MemoryRouter>,
+            )
 
             expect(
                 screen.getByText('An action cannot be empty'),
@@ -58,7 +67,11 @@ describe('Action', () => {
         })
 
         it('should render a warning regarding team assignment', () => {
-            render(<Action {...minProps} value="setTeamAssignee" />)
+            render(
+                <MemoryRouter>
+                    <Action {...minProps} value="setTeamAssignee" />
+                </MemoryRouter>,
+            )
 
             expect(
                 screen.getByText(/To set up team auto-assignment, go to the/),
@@ -67,16 +80,18 @@ describe('Action', () => {
 
         it('should not render error', () => {
             render(
-                <Action
-                    {...minProps}
-                    value="setTags"
-                    properties={[
-                        {
-                            key: { name: 'tags' },
-                            value: { value: 'tag' },
-                        },
-                    ]}
-                />,
+                <MemoryRouter>
+                    <Action
+                        {...minProps}
+                        value="setTags"
+                        properties={[
+                            {
+                                key: { name: 'tags' },
+                                value: { value: 'tag' },
+                            },
+                        ]}
+                    />
+                </MemoryRouter>,
             )
 
             expect(
@@ -86,16 +101,18 @@ describe('Action', () => {
 
         it('should render single error', () => {
             render(
-                <Action
-                    {...minProps}
-                    value="setTags"
-                    properties={[
-                        {
-                            key: { name: 'tags' },
-                            value: { value: '' },
-                        },
-                    ]}
-                />,
+                <MemoryRouter>
+                    <Action
+                        {...minProps}
+                        value="setTags"
+                        properties={[
+                            {
+                                key: { name: 'tags' },
+                                value: { value: '' },
+                            },
+                        ]}
+                    />
+                </MemoryRouter>,
             )
 
             expect(screen.getByText('Tags cannot be empty')).toBeInTheDocument()
@@ -103,16 +120,19 @@ describe('Action', () => {
 
         it('should render multiple errors', () => {
             render(
-                <Action
-                    {...minProps}
-                    value="sendEmail"
-                    properties={[
-                        {
-                            key: { name: 'title' },
-                            value: { value: '' },
-                        },
-                    ]}
-                />,
+                <MemoryRouter>
+                    {' '}
+                    <Action
+                        {...minProps}
+                        value="sendEmail"
+                        properties={[
+                            {
+                                key: { name: 'title' },
+                                value: { value: '' },
+                            },
+                        ]}
+                    />{' '}
+                </MemoryRouter>,
             )
 
             expect(screen.getByText('Body must be filled')).toBeInTheDocument()
@@ -122,7 +142,11 @@ describe('Action', () => {
         })
 
         it('should render a warning about reply to ticket action', () => {
-            render(<Action {...minProps} value="replyToTicket" />)
+            render(
+                <MemoryRouter>
+                    <Action {...minProps} value="replyToTicket" />
+                </MemoryRouter>,
+            )
             expect(screen.getByText('warning')).toBeInTheDocument()
         })
     })

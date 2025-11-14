@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +8,7 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
 
@@ -61,7 +59,7 @@ describe('GorgiasChatIntegrationLanguages', () => {
     })
 
     it('should render', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <GorgiasChatIntegrationLanguages
                     loading={fromJS({})}

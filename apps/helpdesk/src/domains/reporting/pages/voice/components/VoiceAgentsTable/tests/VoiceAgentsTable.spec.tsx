@@ -2,6 +2,7 @@ import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
@@ -108,7 +109,12 @@ describe('VoiceCallTable', () => {
     })
 
     const renderComponent = (store: any = {}) =>
-        renderWithStore(<VoiceAgentsTable />, store)
+        renderWithStore(
+            <MemoryRouter>
+                <VoiceAgentsTable />
+            </MemoryRouter>,
+            store,
+        )
 
     it('should render table with all cells', () => {
         const { getByText, getAllByText } = renderComponent()

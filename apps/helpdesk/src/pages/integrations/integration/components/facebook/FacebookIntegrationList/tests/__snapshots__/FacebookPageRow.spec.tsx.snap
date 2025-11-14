@@ -20,7 +20,7 @@ exports[`FacebookPageRow component should render facebook integration 1`] = `
     class="link-full-td"
   >
     <a
-      to="/app/settings/integrations/facebook/1/overview"
+      href="/app/settings/integrations/facebook/1/overview"
     >
       <div>
         <b
@@ -45,7 +45,7 @@ exports[`FacebookPageRow component should render facebook integration 1`] = `
     class="smallest align-middle"
   >
     <a
-      to="/app/settings/integrations/facebook/1/overview"
+      href="/app/settings/integrations/facebook/1/overview"
     >
       <i
         class="material-icons md-2 align-middle icon-go-forward"

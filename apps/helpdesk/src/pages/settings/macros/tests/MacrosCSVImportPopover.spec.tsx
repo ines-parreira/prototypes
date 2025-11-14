@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,6 +8,7 @@ import { uploadFiles } from 'common/utils'
 import client from 'models/api/resources'
 import { createJob } from 'models/job/resources'
 import { saveFileAsDownloaded } from 'utils/file'
+import { renderWithRouter } from 'utils/testing'
 
 import { MacrosCSVImportPopover } from '../MacrosCSVImportPopover'
 
@@ -41,7 +40,7 @@ describe('<MacrosCSVImportPopover/>', () => {
     }
 
     it.each([false, true])('should render', (isOpen) => {
-        const { baseElement } = render(
+        const { baseElement } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...{ ...minProps, isOpen }} />
             </Provider>,
@@ -50,7 +49,7 @@ describe('<MacrosCSVImportPopover/>', () => {
     })
 
     it('should close when cancel clicked', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
             </Provider>,
@@ -62,7 +61,7 @@ describe('<MacrosCSVImportPopover/>', () => {
     it('should download template when clicked', async () => {
         mockedServer.onGet('/api/macros/import/template/').reply(200, {})
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
             </Provider>,
@@ -78,7 +77,7 @@ describe('<MacrosCSVImportPopover/>', () => {
                     type: 'text/csv',
                 }),
         }
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
             </Provider>,
@@ -104,7 +103,7 @@ describe('<MacrosCSVImportPopover/>', () => {
                     type: 'text/csv',
                 }),
         }
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
             </Provider>,

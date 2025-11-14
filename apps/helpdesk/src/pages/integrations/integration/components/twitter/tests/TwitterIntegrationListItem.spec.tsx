@@ -1,7 +1,6 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
 import TwitterIntegrationListItem from '../TwitterIntegrationListItem'
@@ -29,7 +28,7 @@ describe('<TwitterIntegrationListItem/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <TwitterIntegrationListItem integration={integration} />,
             )
             expect(container.firstChild).toMatchSnapshot()

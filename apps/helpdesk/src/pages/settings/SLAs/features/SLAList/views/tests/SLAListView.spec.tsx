@@ -1,11 +1,8 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import {
     UISLAPolicy1,
     UISLAPolicy2,
 } from 'pages/settings/SLAs/fixtures/fixtures'
+import { renderWithRouter } from 'utils/testing'
 
 import { TableColumn } from '../../types'
 import * as SLATableConfig from '../config'
@@ -35,7 +32,7 @@ describe('<SLAListView/>', () => {
             (column: TableColumn) => () => <div>{column}</div>,
         )
 
-        const { getByText, getAllByText } = render(
+        const { getByText, getAllByText } = renderWithRouter(
             <SLAListView
                 data={SLAPolicies}
                 onTogglePolicy={jest.fn()}

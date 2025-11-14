@@ -2,7 +2,7 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -28,7 +28,7 @@ import { RootState } from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import { InitialRootState } from 'types'
 import { getSortByName } from 'utils/getSortByName'
-import { renderWithStore } from 'utils/testing'
+import { renderWithRouter, renderWithStore } from 'utils/testing'
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -122,7 +122,7 @@ describe('<HelpCenterStats />', () => {
 
     const renderComponent = () => {
         const store = configureStore({} as InitialRootState)
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <HelpCenterStats />
             </Provider>,

@@ -23,6 +23,7 @@ import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { UsersSettingsItem } from '../UsersSettingsItem'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Link: jest.fn(({ children }) => <div data-testid="link">{children}</div>),
 }))
 

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,6 +9,7 @@ import { tags as tagsFixtures } from 'fixtures/tag'
 import { fetchTags } from 'models/tag/resources'
 import * as tagActions from 'state/tags/actions'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ManageTags from '../ManageTags'
 
@@ -60,7 +61,7 @@ describe('ManageTags component', () => {
     it('should render a loader while fetching data', async () => {
         jest.useFakeTimers()
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>,
@@ -74,7 +75,7 @@ describe('ManageTags component', () => {
     })
 
     it('should render the list of tags', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>,
@@ -85,7 +86,7 @@ describe('ManageTags component', () => {
     })
 
     it('should display create field when create button is toggled', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>,
@@ -98,7 +99,7 @@ describe('ManageTags component', () => {
     })
 
     it('delete all tags when select-all is checked', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>,
@@ -117,7 +118,7 @@ describe('ManageTags component', () => {
     })
 
     it('merge all tags when select-all is checked', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
             </Provider>,
@@ -136,7 +137,7 @@ describe('ManageTags component', () => {
     })
 
     it('should untoggle select-all checkbox after merge if the checkbox was toggled', async () => {
-        render(
+        renderWithRouter(
             <Provider
                 store={mockStore({
                     tags: fromJS({
@@ -163,7 +164,7 @@ describe('ManageTags component', () => {
     })
 
     it('should untoggle select-all checkbox after deletion if the checkbox was toggled', async () => {
-        render(
+        renderWithRouter(
             <Provider
                 store={mockStore({
                     tags: fromJS({

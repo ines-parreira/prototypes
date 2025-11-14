@@ -18,7 +18,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/channels/email"
+            href="/app/settings/channels/email"
           >
             Email
           </a>
@@ -188,7 +188,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           Using GMail or G Suite?
            
           <a
-            to="/app/settings/channels/email/new"
+            href="/app/settings/channels/email/new"
           >
             Connect your account in one click.
           </a>
@@ -228,7 +228,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/channels/email"
+            href="/app/settings/channels/email"
           >
             Email
           </a>
@@ -398,7 +398,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           Using GMail or G Suite?
            
           <a
-            to="/app/settings/channels/email/new"
+            href="/app/settings/channels/email/new"
           >
             Connect your account in one click.
           </a>

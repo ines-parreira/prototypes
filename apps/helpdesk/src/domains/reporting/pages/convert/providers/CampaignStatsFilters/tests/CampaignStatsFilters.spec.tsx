@@ -21,6 +21,7 @@ import { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ({
         CONVERT_ROUTE_PARAM_NAME: '1',
     }),
@@ -400,6 +401,7 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
 
         // simulate missing shop_integration_id to force fallback logic
         jest.mock('react-router-dom', () => ({
+            ...jest.requireActual('react-router-dom'),
             useParams: () => ({
                 CONVERT_ROUTE_PARAM_NAME: '1',
             }),
@@ -448,6 +450,7 @@ describe('CampaignStatsFilters without storeIntegrationId', () => {
 
         // simulate missing shop_integration_id to force fallback logic
         jest.mock('react-router-dom', () => ({
+            ...jest.requireActual('react-router-dom'),
             useParams: () => ({
                 CONVERT_ROUTE_PARAM_NAME: '',
             }),

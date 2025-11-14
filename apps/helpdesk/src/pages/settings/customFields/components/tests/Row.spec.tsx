@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
@@ -12,6 +10,7 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
+import { renderWithRouter } from 'utils/testing'
 
 import Row from '../Row'
 
@@ -71,7 +70,7 @@ describe('<Row />', () => {
                 canReorder,
             }
 
-            render(
+            renderWithRouter(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -105,7 +104,7 @@ describe('<Row />', () => {
             },
         }
 
-        render(
+        renderWithRouter(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -121,7 +120,7 @@ describe('<Row />', () => {
             customField: aiManagedTicketInputFieldDefinition,
         }
 
-        render(
+        renderWithRouter(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -152,7 +151,7 @@ describe('<Row />', () => {
                 },
             }
 
-            const { queryByTitle } = render(
+            const { queryByTitle } = renderWithRouter(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -186,7 +185,7 @@ describe('<Row />', () => {
                 },
             }
 
-            const { queryByTitle } = render(
+            const { queryByTitle } = renderWithRouter(
                 <table>
                     <tbody>
                         <Row {...props} />
@@ -215,7 +214,7 @@ describe('<Row />', () => {
             },
         }
 
-        const { findByTitle, findByText } = render(
+        const { findByTitle, findByText } = renderWithRouter(
             <table>
                 <tbody>
                     <Row {...props} />
@@ -275,7 +274,7 @@ describe('<Row />', () => {
             },
         }
 
-        const { findByTitle } = render(
+        const { findByTitle } = renderWithRouter(
             <table>
                 <tbody>
                     <Row {...props} />

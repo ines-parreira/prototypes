@@ -3,13 +3,15 @@ import { useLocation } from 'react-router-dom'
 
 import { useSearch } from '../useSearch'
 
-jest.mock('react-router')
-;(useLocation as jest.MockedFunction<typeof useLocation>).mockReturnValue({
-    pathname: '',
-    search: '?foo=1&bar=baz',
-    state: '',
-    hash: '',
-})
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn().mockReturnValue({
+        pathname: '',
+        search: '?foo=1&bar=baz',
+        state: '',
+        hash: '',
+    }),
+}))
 
 describe('useSearch hook', () => {
     it('should provide the parsed query', () => {

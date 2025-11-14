@@ -18,7 +18,7 @@ exports[`<AddCustomField/> should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/ticket-fields/active"
+            href="/app/settings/ticket-fields/active"
           >
             Ticket
              fields

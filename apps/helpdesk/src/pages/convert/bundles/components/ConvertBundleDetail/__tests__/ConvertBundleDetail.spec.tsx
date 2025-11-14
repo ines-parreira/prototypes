@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +10,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ConvertBundleDetail from '../ConvertBundleDetail'
 
@@ -23,7 +22,7 @@ describe('ConvertBundleDetail', () => {
         queryClient.clear()
     })
     it('renders chat integration details if provided', () => {
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <ConvertBundleDetail
@@ -47,7 +46,7 @@ describe('ConvertBundleDetail', () => {
     })
 
     it('renders store integration details if provided', () => {
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <ConvertBundleDetail
@@ -67,7 +66,7 @@ describe('ConvertBundleDetail', () => {
     })
 
     it('renders campaign bundle installation method section', () => {
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <ConvertBundleDetail

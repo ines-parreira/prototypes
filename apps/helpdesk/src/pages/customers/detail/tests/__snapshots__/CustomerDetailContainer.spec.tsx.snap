@@ -17,7 +17,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
     >
       <a
         class="d-inline-flex"
-        to="[object Object]"
+        href="/app/ticket/new?customer=1"
       >
         <button
           aria-disabled="false"

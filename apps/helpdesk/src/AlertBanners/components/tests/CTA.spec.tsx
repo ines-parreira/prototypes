@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { CTA } from '../CTA'
 
@@ -32,7 +31,11 @@ describe('<CTA/>', () => {
     const CTATypesProps = [externalCTAProps, internalCTAProps, buttonCTAProps]
 
     it.each(CTATypesProps)('should render CTA with %p', (props) => {
-        render(<CTA {...props} />)
+        render(
+            <MemoryRouter>
+                <CTA {...props} />
+            </MemoryRouter>,
+        )
 
         const CTAElement = screen.getByText(props.text)
         fireEvent.click(CTAElement)
@@ -55,7 +58,11 @@ describe('<CTA/>', () => {
     })
 
     it('should not have target _blank when opensInNewTab is false', () => {
-        render(<CTA {...externalCTAProps} opensInNewTab={false} />)
+        render(
+            <MemoryRouter>
+                <CTA {...externalCTAProps} opensInNewTab={false} />
+            </MemoryRouter>,
+        )
 
         const CTAElement = screen.getByText(externalCTAProps.text)
         expect(CTAElement).not.toHaveAttribute('target', '_blank')

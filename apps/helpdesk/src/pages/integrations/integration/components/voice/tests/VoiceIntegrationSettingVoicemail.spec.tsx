@@ -1,11 +1,11 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
+import { renderWithRouter } from 'utils/testing'
 
 import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'
 import VoiceIntegrationSettingVoicemail from '../VoiceIntegrationSettingVoicemail'
@@ -28,7 +28,8 @@ jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('VoiceIntegrationSettingVoicemail', () => {
-    const renderComponent = () => render(<VoiceIntegrationSettingVoicemail />)
+    const renderComponent = () =>
+        renderWithRouter(<VoiceIntegrationSettingVoicemail />)
 
     beforeEach(() => {
         FormFieldMock.mockImplementation(({ label, caption }: any) => (

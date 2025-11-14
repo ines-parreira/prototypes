@@ -301,7 +301,7 @@ describe('EmailSelectSearch', () => {
                     .getByText('Add new email')
                     .closest('a')
                 expect(addNewEmailLink).toHaveAttribute(
-                    'to',
+                    'href',
                     '/app/settings/channels/email',
                 )
             })

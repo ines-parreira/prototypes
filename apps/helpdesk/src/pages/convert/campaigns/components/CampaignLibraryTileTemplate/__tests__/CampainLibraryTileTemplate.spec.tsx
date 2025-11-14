@@ -1,11 +1,8 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
+import { renderWithRouter } from 'utils/testing'
 
 import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'
 
@@ -21,7 +18,7 @@ describe('CampaignLibraryTileTemplate', () => {
     }
 
     it('renders campaign library template correctly', () => {
-        const { getByText, getByAltText } = render(
+        const { getByText, getByAltText } = renderWithRouter(
             <CampainLibraryTileTemplate
                 template={template}
                 integrationId={1}

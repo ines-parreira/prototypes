@@ -22,7 +22,10 @@ import { Statuses } from '../Statuses'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('react-router')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
 jest.mock('hooks/useAppSelector')
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')

@@ -4,7 +4,7 @@ exports[`<SpotlightRow/> should highlight the row 1`] = `
 <div>
   <a
     class="container selected"
-    to="/app/foo"
+    href="/app/foo"
   >
     <div
       class="infoContent"
@@ -40,7 +40,7 @@ exports[`<SpotlightRow/> should render with icon 1`] = `
 <div>
   <a
     class="container"
-    to="/app/foo"
+    href="/app/foo"
   >
     <div
       class="infoContent"
@@ -76,7 +76,7 @@ exports[`<SpotlightRow/> should render with minimal props 1`] = `
 <div>
   <a
     class="container"
-    to="/app/foo"
+    href="/app/foo"
   >
     <div
       class="infoContent"
@@ -107,7 +107,7 @@ exports[`<SpotlightRow/> should shrink info flex container 1`] = `
 <div>
   <a
     class="container shrinkInfo"
-    to="/app/foo"
+    href="/app/foo"
   >
     <div
       class="infoContent"

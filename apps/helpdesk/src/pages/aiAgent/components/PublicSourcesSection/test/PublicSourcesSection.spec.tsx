@@ -35,6 +35,7 @@ jest.mock('hooks/useSearchParam', () => ({
 }))
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)

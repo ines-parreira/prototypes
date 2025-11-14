@@ -1,10 +1,7 @@
-import React from 'react'
-
 import { flushPromises } from '@repo/testing'
 import {
     act,
     fireEvent,
-    render,
     screen,
     waitFor,
     waitForElementToBeRemoved,
@@ -26,6 +23,7 @@ import { fetchEvents } from 'models/event/resources'
 import { Event } from 'models/event/types'
 import { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import UserAuditList from '../UserAuditList'
 
@@ -73,7 +71,7 @@ describe('<UserAuditList/>', () => {
     })
 
     it('should fetch events on mount and render a loading spinner', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>,
@@ -86,7 +84,7 @@ describe('<UserAuditList/>', () => {
     })
 
     it('should render a message to inform the user no events are available', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>,
@@ -104,7 +102,7 @@ describe('<UserAuditList/>', () => {
 
     it('should debounce and re-fetch events on filter update', async () => {
         jest.useFakeTimers()
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>,
@@ -140,7 +138,7 @@ describe('<UserAuditList/>', () => {
                 meta: eventsMetaFixtures,
             },
         } as AxiosResponse<ApiListResponseCursorPagination<Event[]>>)
-        const { container, rerender } = render(
+        const { container, rerender } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
             </Provider>,
@@ -184,7 +182,7 @@ describe('<UserAuditList/>', () => {
             fetchedEvents[event.id.toString()] = event
         })
 
-        render(
+        renderWithRouter(
             <Provider
                 store={mockStore({
                     ...defaultState,

@@ -136,6 +136,7 @@ describe('<ImportZendeskDataList/>', () => {
         it('should redirect to detailed page after user clicked on particular import row', () => {
             const mockedPush = jest.fn()
             jest.mock('react-router-dom', () => ({
+                ...jest.requireActual('react-router-dom'),
                 useHistory: () => ({
                     push: mockedPush,
                 }),

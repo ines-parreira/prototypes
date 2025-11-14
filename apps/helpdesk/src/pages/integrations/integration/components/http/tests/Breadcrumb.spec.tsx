@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -18,11 +18,12 @@ import {
     NEW_INTEGRATION_PATH,
 } from '../constants'
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router'),
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-const useParamsMock = jest.spyOn(ReactRouterDom, 'useParams')
+
+const useParamsMock = useParams as jest.Mock
 
 const httpConfig = getIntegrationConfig(IntegrationType.Http)
 
@@ -71,9 +72,11 @@ describe('Breadcrumb', () => {
         (routeParams, expectedLinks, expectedTexts) => {
             useParamsMock.mockReturnValue(routeParams)
             const { queryByRole, queryByText } = render(
-                <Provider store={store}>
-                    <Breadcrumb />
-                </Provider>,
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <Breadcrumb />
+                    </Provider>
+                </MemoryRouter>,
             )
             expectedLinks.forEach((name) => {
                 expect(queryByRole('link', { name }))

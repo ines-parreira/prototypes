@@ -1,12 +1,11 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyIntegration } from 'models/integration/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { AutomateLandingPageTopQuestions } from '../AutomateLandingPageTopQuestions'
 import { useHasEmailToStoreConnection } from '../useHasEmailToStoreConnection'
@@ -153,7 +152,7 @@ describe('AutomateLandingPageTopQuestions', () => {
     })
 
     it('renders top questions', () => {
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(screen.getByText('AI Article 1')).toBeInTheDocument()
         expect(screen.getByText('AI Article 2')).toBeInTheDocument()
@@ -167,7 +166,7 @@ describe('AutomateLandingPageTopQuestions', () => {
     it('displays new badge', () => {
         mockUseViewedOnPage.mockReturnValue(false)
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(screen.getByText('5 new')).toBeInTheDocument()
     })
@@ -178,7 +177,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             isLoading: true,
         })
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(screen.queryByText('AI Article 1')).not.toBeInTheDocument()
         expect(screen.queryByText('AI Article 2')).not.toBeInTheDocument()
@@ -192,7 +191,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             isLoading: true,
         })
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(screen.queryByText('AI Article 1')).not.toBeInTheDocument()
         expect(screen.queryByText('AI Article 2')).not.toBeInTheDocument()
@@ -206,13 +205,13 @@ describe('AutomateLandingPageTopQuestions', () => {
             isLoading: false,
         })
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(screen.getByText('Connect store to email')).toBeInTheDocument()
     })
 
     it('creates article', async () => {
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         act(() => {
             fireEvent.click(screen.getAllByText('Create Article')[0])
@@ -229,7 +228,7 @@ describe('AutomateLandingPageTopQuestions', () => {
     })
 
     it('dismisses article', async () => {
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         act(() => {
             fireEvent.click(screen.getAllByText('close')[0])
@@ -248,7 +247,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             articles: [],
         })
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(
             screen.getByText('You have no recommendations for this store yet.'),
@@ -275,7 +274,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             articles: [],
         })
 
-        render(<AutomateLandingPageTopQuestions />)
+        renderWithRouter(<AutomateLandingPageTopQuestions />)
 
         expect(
             screen.queryByText(
@@ -295,7 +294,9 @@ describe('AutomateLandingPageTopQuestions', () => {
             dismissArticle: async () => Promise.resolve(),
         })
 
-        const { rerender } = render(<AutomateLandingPageTopQuestions />)
+        const { rerender } = renderWithRouter(
+            <AutomateLandingPageTopQuestions />,
+        )
 
         act(() => {
             fireEvent.click(screen.getAllByText('close')[0])
@@ -339,7 +340,9 @@ describe('AutomateLandingPageTopQuestions', () => {
             dismissArticle: async () => Promise.resolve(),
         })
 
-        const { rerender } = render(<AutomateLandingPageTopQuestions />)
+        const { rerender } = renderWithRouter(
+            <AutomateLandingPageTopQuestions />,
+        )
 
         act(() => {
             fireEvent.click(screen.getAllByText('close')[0])

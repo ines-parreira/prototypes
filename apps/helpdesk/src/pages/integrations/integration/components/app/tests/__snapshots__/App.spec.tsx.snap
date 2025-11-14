@@ -56,7 +56,7 @@ exports[`App should render 2`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>

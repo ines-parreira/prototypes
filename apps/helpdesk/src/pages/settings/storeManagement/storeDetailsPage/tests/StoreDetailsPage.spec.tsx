@@ -149,7 +149,7 @@ describe('StoreDetailsPage', () => {
 
         const storeManagementLink = screen.getByText('Store Management')
         expect(storeManagementLink.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/store-management',
         )
 

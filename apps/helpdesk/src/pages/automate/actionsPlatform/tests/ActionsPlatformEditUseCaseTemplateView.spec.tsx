@@ -27,6 +27,14 @@ jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
 jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 
+const mockPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockPush,
+    }),
+}))
+
 const queryClient = mockQueryClient()
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
@@ -188,6 +196,7 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
         mockServerValidationErrors.mapServerErrorsToGraph = jest
             .fn()
             .mockReturnValue(null)
+        mockPush.mockClear()
     })
 
     const renderApp = (template: ActionTemplate) => {
@@ -312,11 +321,6 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
     })
 
     it('should navigate back when clicking back button', () => {
-        const mockPush = jest.fn()
-        jest.spyOn(require('react-router-dom'), 'useHistory').mockReturnValue({
-            push: mockPush,
-        })
-
         renderApp(template as ActionTemplate)
 
         act(() => {
@@ -329,11 +333,6 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
     })
 
     it('should navigate back when clicking cancel button', () => {
-        const mockPush = jest.fn()
-        jest.spyOn(require('react-router-dom'), 'useHistory').mockReturnValue({
-            push: mockPush,
-        })
-
         renderApp(template as ActionTemplate)
 
         act(() => {

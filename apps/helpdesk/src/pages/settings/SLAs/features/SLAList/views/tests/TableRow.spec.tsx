@@ -1,10 +1,7 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
 import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
+import { renderWithRouter } from 'utils/testing'
 
 import * as SLATableConfig from '../config'
 import { columnOrder } from '../config'
@@ -29,7 +26,7 @@ describe('<TableRow />', () => {
             (column: TableColumn) => () => <div>{column}</div>,
         )
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <TableRow
                 policy={UISLAPolicy1}
                 onToggle={jest.fn()}

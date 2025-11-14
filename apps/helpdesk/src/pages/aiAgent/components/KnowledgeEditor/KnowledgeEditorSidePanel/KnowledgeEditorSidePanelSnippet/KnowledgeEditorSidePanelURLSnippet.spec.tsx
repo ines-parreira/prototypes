@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { KnowledgeEditorSidePanelURLSnippet } from './KnowledgeEditorSidePanelURLSnippet'
 
 describe('KnowledgeEditorSidePanelURLSnippet', () => {
     it('renders', () => {
-        render(
+        renderWithRouter(
             <KnowledgeEditorSidePanelURLSnippet
                 details={{
                     aiAgentStatus: {

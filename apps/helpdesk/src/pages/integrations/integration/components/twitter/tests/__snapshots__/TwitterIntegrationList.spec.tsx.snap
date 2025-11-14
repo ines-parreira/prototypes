@@ -18,7 +18,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -63,7 +63,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <div>
               <img
@@ -82,7 +82,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -119,7 +119,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -182,7 +182,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
             integrations. To add more, you must
             <a
               class="ml-1 mr-1"
-              to="/app/settings/billing"
+              href="/app/settings/billing"
             >
               upgrade
             </a>
@@ -201,7 +201,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <div>
               <img
@@ -220,7 +220,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -257,7 +257,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -309,7 +309,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
             integrations. To add more, you must
             <a
               class="ml-1 mr-1"
-              to="/app/settings/billing"
+              href="/app/settings/billing"
             >
               upgrade
             </a>
@@ -328,7 +328,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <div>
               <img
@@ -347,7 +347,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/twitter/1"
+            href="/app/settings/integrations/twitter/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -384,7 +384,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>

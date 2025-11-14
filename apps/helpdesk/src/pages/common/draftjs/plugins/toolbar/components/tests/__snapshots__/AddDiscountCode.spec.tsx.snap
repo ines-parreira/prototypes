@@ -111,7 +111,7 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
                       Missing Shopify permissions. To use this new feature, please go to the
                        
                       <a
-                        to="/app/settings/integrations/shopify/8"
+                        href="/app/settings/integrations/shopify/8"
                       >
                         settings page of your Shopify integration 
                       </a>

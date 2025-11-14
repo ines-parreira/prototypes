@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -9,6 +7,7 @@ import thunk from 'redux-thunk'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import * as notificationActions from 'state/notifications/actions'
 import * as fileUtils from 'utils/file'
+import { renderWithRouter } from 'utils/testing'
 
 import { DropdownCSVImport } from '../DropdownCSVImport'
 
@@ -42,7 +41,7 @@ describe('<DropdownCSVImport/>', () => {
     }
 
     it('should render when open', () => {
-        const { baseElement } = render(
+        const { baseElement } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -51,7 +50,7 @@ describe('<DropdownCSVImport/>', () => {
     })
 
     it('should not render when closed', () => {
-        const { baseElement } = render(
+        const { baseElement } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} isOpen={false} />
             </Provider>,
@@ -60,7 +59,7 @@ describe('<DropdownCSVImport/>', () => {
     })
 
     it('should call onClose() when the close icon is clicked', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -73,7 +72,7 @@ describe('<DropdownCSVImport/>', () => {
         const saveFileAsDownloaded = jest
             .spyOn(fileUtils, 'saveFileAsDownloaded')
             .mockReturnValue()
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -83,7 +82,7 @@ describe('<DropdownCSVImport/>', () => {
     })
 
     it('should render footer when a file is set', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -98,7 +97,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should call onImport() and onClose() on successful import', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -124,7 +123,7 @@ describe('<DropdownCSVImport/>', () => {
     })
 
     it('should allow escaping commas using quotes', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -144,7 +143,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should fail to import invalid CSV files', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -173,7 +172,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should fail to import on duplicated values', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -201,7 +200,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should fail to import on values with more than 5 levels of nesting', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -230,7 +229,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should fail to import more than 2,000 values', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -259,7 +258,7 @@ describe('<DropdownCSVImport/>', () => {
     it('should use a list for errors when there is more than one', async () => {
         const notify = jest.spyOn(notificationActions, 'notify')
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport {...props} />
             </Provider>,
@@ -286,7 +285,7 @@ describe('<DropdownCSVImport/>', () => {
     })
 
     it("should not call log events if objectType is not 'Ticket'", async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore}>
                 <DropdownCSVImport
                     {...props}

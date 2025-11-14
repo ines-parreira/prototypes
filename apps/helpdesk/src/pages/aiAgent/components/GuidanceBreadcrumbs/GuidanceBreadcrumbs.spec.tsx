@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
-import { StaticRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 import { GUIDANCE } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -30,14 +30,14 @@ describe('GuidanceBreadcrumbs', () => {
         mockFlags({})
 
         render(
-            <StaticRouter location="/app/">
+            <MemoryRouter>
                 <GuidanceBreadcrumbs {...defaultProps} />
-            </StaticRouter>,
+            </MemoryRouter>,
         )
 
         const rootBreadcrumb = screen.getByText(GUIDANCE)
         expect(rootBreadcrumb).toBeInTheDocument()
-        expect(rootBreadcrumb.closest('a')).toHaveAttribute('to', '/guidance')
+        expect(rootBreadcrumb.closest('a')).toHaveAttribute('href', '/guidance')
 
         expect(screen.getByText(defaultProps.title)).toBeInTheDocument()
     })

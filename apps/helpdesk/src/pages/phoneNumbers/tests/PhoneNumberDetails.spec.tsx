@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,6 +6,7 @@ import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { IntegrationType } from 'models/integration/types'
 import { PhoneNumber } from 'models/phoneNumber/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { PhoneNumberDetails } from '../PhoneNumberDetails'
 
@@ -25,7 +23,7 @@ const store = mockStore({
 describe('<PhoneNumberDetails/>', () => {
     describe('render()', () => {
         it('should render with a local US number', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
                 </Provider>,
@@ -34,7 +32,7 @@ describe('<PhoneNumberDetails/>', () => {
         })
 
         it('should render with a toll-free CA number', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
                 </Provider>,
@@ -43,7 +41,7 @@ describe('<PhoneNumberDetails/>', () => {
         })
 
         it('should render with a mobile GB number', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[2]} />
                 </Provider>,
@@ -61,7 +59,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as RootState)
 
-            const { container, queryByText } = render(
+            const { container, queryByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
                 </Provider>,
@@ -92,7 +90,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = render(
+            const { container, queryAllByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -116,7 +114,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = render(
+            const { container, queryAllByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,
@@ -140,7 +138,7 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const { container, queryAllByText } = render(
+            const { container, queryAllByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>,

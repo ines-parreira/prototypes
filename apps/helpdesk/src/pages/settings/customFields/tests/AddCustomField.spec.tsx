@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -19,13 +20,19 @@ describe('<AddCustomField/>', () => {
 
     it('should render', () => {
         const { container } = render(
-            <AddCustomField objectType={OBJECT_TYPES.TICKET} />,
+            <MemoryRouter>
+                <AddCustomField objectType={OBJECT_TYPES.TICKET} />
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call AddFieldForm with correct props', () => {
-        render(<AddCustomField objectType={OBJECT_TYPES.TICKET} />)
+        render(
+            <MemoryRouter>
+                <AddCustomField objectType={OBJECT_TYPES.TICKET} />
+            </MemoryRouter>,
+        )
 
         expect(AddFieldForm).toHaveBeenCalledWith(
             {

@@ -7,6 +7,7 @@ import useHandleTicketDraft from '../useHandleTicketDraft'
 
 // Mock dependencies
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
 }))
 jest.mock('../useHandleTicketDraft')

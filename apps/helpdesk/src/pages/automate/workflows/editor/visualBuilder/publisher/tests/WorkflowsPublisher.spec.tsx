@@ -18,6 +18,7 @@ jest.mock(
     'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels',
 )
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ({ shopType: 'shopify', shopName: 'test-shop' }),
 }))
 

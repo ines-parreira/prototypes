@@ -1,7 +1,8 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { EmailIntegrationCreateForwarding } from '../EmailIntegrationCreateForwarding'
 
@@ -20,7 +21,7 @@ const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
 
 describe('EmailIntegrationCreateForwarding component', () => {
     it('should render', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <EmailIntegrationCreateForwarding {...commonProps} />,
         )
 
@@ -28,7 +29,7 @@ describe('EmailIntegrationCreateForwarding component', () => {
     })
 
     it('should render -copied!- button because the email address has just been copied', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <EmailIntegrationCreateForwarding {...commonProps} />,
         )
 

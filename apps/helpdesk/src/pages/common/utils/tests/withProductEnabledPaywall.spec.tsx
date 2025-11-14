@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +13,7 @@ import { ProductType } from 'models/billing/types'
 import * as billingSelectors from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import withProductEnabledPaywall from '../withProductEnabledPaywall'
 
@@ -48,7 +49,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => true) as any)
 
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,
@@ -66,7 +67,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => false) as any)
 
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,
@@ -92,7 +93,7 @@ describe('withProductEnabledPaywall', () => {
 
         currentAccountHasProductSpy.mockReturnValueOnce((() => false) as any)
 
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,

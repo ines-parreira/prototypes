@@ -18,7 +18,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -37,16 +37,12 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/bigcommerce/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/bigcommerce/connections"
     >
       Connections
@@ -291,7 +287,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -300,7 +296,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/bigcommerce/connections"
+            href="/app/settings/integrations/bigcommerce/connections"
           >
             BigCommerce
           </a>
@@ -440,7 +436,7 @@ exports[`<BigCommerce/> List should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -479,16 +475,12 @@ exports[`<BigCommerce/> List should render 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/bigcommerce/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/bigcommerce/connections"
     >
       Connections
@@ -502,7 +494,7 @@ exports[`<BigCommerce/> List should render 1`] = `
     >
       <a
         class="link"
-        to="/app/settings/integrations/bigcommerce/1"
+        href="/app/settings/integrations/bigcommerce/1"
       >
         <span>
           myShop1

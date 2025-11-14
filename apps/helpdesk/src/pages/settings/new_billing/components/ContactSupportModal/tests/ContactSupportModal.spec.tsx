@@ -19,6 +19,7 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         block: jest.fn(),
         push: mockHistoryPush,

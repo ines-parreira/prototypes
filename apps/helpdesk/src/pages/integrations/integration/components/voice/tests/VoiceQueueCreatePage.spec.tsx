@@ -103,7 +103,7 @@ describe('VoiceQueueCreatePage', () => {
         renderComponent()
 
         expect(screen.getByText('Cancel').closest('a')).toHaveAttribute(
-            'to',
+            'href',
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
         )
     })

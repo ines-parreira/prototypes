@@ -5,7 +5,7 @@ import { render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { section } from 'fixtures/section'

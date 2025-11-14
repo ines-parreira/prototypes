@@ -1033,7 +1033,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
               >
                 <a
                   class="fit-cell"
-                  to="/app/customer/12345"
+                  href="/app/customer/12345"
                 >
                   Go to customer
                 </a>
@@ -1111,7 +1111,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 class="cell-wrapper cell-content"
               >
                 <a
-                  to="/app/ticket/5243423#satisfactionSurvey"
+                  href="/app/ticket/5243423#satisfactionSurvey"
                 >
                   Go to ticket
                 </a>

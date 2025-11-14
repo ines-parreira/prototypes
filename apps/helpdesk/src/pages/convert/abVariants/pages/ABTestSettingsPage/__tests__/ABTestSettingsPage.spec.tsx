@@ -2,6 +2,7 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { channelConnection } from 'fixtures/channelConnection'
@@ -28,13 +29,15 @@ jest.mock('hooks/useGetDateAndTimeFormat')
 describe('<ABTestSettingPage />', () => {
     it('renders', () => {
         const { getByText } = render(
-            <ABTestSettingPage
-                canCreateDeleteObjects={true}
-                campaign={campaignWithABGroup as Campaign}
-                integrationId={4}
-                onDelete={jest.fn()}
-                onDuplicate={jest.fn()}
-            />,
+            <MemoryRouter>
+                <ABTestSettingPage
+                    canCreateDeleteObjects={true}
+                    campaign={campaignWithABGroup as Campaign}
+                    integrationId={4}
+                    onDelete={jest.fn()}
+                    onDuplicate={jest.fn()}
+                />
+            </MemoryRouter>,
         )
         expect(getByText('Back to Campaigns list')).toBeInTheDocument()
     })
@@ -49,21 +52,23 @@ describe('<ABTestSettingPage />', () => {
         })
 
         const { getByText } = renderWithStore(
-            <ABTestSettingPage
-                canCreateDeleteObjects={true}
-                campaign={
-                    {
-                        ...campaignWithABGroup,
-                        ab_group: {
-                            ...campaignWithABGroup.ab_group,
-                            status: ABGroupStatus.Completed,
-                        },
-                    } as Campaign
-                }
-                integrationId={4}
-                onDelete={jest.fn()}
-                onDuplicate={jest.fn()}
-            />,
+            <MemoryRouter>
+                <ABTestSettingPage
+                    canCreateDeleteObjects={true}
+                    campaign={
+                        {
+                            ...campaignWithABGroup,
+                            ab_group: {
+                                ...campaignWithABGroup.ab_group,
+                                status: ABGroupStatus.Completed,
+                            },
+                        } as Campaign
+                    }
+                    integrationId={4}
+                    onDelete={jest.fn()}
+                    onDuplicate={jest.fn()}
+                />
+            </MemoryRouter>,
             {},
         )
         expect(getByText('New Campaign From Winner')).toBeInTheDocument()

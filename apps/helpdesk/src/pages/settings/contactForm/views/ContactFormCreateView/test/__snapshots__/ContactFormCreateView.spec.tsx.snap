@@ -19,7 +19,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/contact-form"
+              href="/app/settings/contact-form"
             >
               Contact Form
             </a>

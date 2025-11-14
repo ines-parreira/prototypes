@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { history } from '@repo/routing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,6 +8,7 @@ import thunk from 'redux-thunk'
 import { user } from 'fixtures/users'
 import { createJob } from 'models/job/resources'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { MacrosCreateDropdown } from '../MacrosCreateDropdown'
 
@@ -23,7 +22,7 @@ describe('<MacrosCreateDropdown/>', () => {
     } as RootState)
 
     it('should render', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
             </Provider>,
@@ -32,7 +31,7 @@ describe('<MacrosCreateDropdown/>', () => {
     })
 
     it('should start job when download clicked', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
             </Provider>,
@@ -42,7 +41,7 @@ describe('<MacrosCreateDropdown/>', () => {
     })
 
     it('should show popup when import clicked', async () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
             </Provider>,
@@ -57,7 +56,7 @@ describe('<MacrosCreateDropdown/>', () => {
         )
     })
     it('should redirect when creating new macro', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
             </Provider>,

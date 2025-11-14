@@ -72,7 +72,7 @@ describe('<StoreInformationForm />', () => {
 
         const link = screen.getByText('My Apps.')
         expect(link).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/shopify/123',
         )
     })

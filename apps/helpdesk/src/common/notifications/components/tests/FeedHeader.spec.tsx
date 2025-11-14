@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FilterStatus } from '@knocklabs/react'
 import {
     logEvent,
@@ -8,6 +6,7 @@ import {
 } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import useCount from '../../hooks/useCount'
 import FeedHeader from '../FeedHeader'
@@ -56,7 +55,11 @@ describe('<FeedHeader />', () => {
     })
 
     it('should render feed header', () => {
-        render(<FeedHeader {...props} />)
+        render(
+            <MemoryRouter>
+                <FeedHeader {...props} />
+            </MemoryRouter>,
+        )
 
         expect(screen.getByText('Mark all as read')).toBeInTheDocument()
     })
@@ -64,7 +67,11 @@ describe('<FeedHeader />', () => {
     it('should trigger Mark all as read action', () => {
         useCountMock.mockReturnValue(1)
 
-        render(<FeedHeader {...props} />)
+        render(
+            <MemoryRouter>
+                <FeedHeader {...props} />
+            </MemoryRouter>,
+        )
 
         screen.getByText('Mark all as read').click()
 
@@ -78,7 +85,11 @@ describe('<FeedHeader />', () => {
         useCountMock.mockReturnValue(1)
         const newStatus = 'unread'
 
-        render(<FeedHeader {...props} />)
+        render(
+            <MemoryRouter>
+                <FeedHeader {...props} />
+            </MemoryRouter>,
+        )
 
         screen.getByText('all').click()
 
@@ -98,7 +109,11 @@ describe('<FeedHeader />', () => {
     })
 
     it('should trigger the redirect to settings', () => {
-        render(<FeedHeader {...props} />)
+        render(
+            <MemoryRouter>
+                <FeedHeader {...props} />
+            </MemoryRouter>,
+        )
 
         screen.getByText('settings').click()
 

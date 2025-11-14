@@ -1,20 +1,23 @@
 import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { FeatureSettings } from '../components/FeatureSettings'
 
 describe('FeatureSettings', () => {
     test('renders the component with all props', () => {
         render(
-            <FeatureSettings
-                enabled={true}
-                title="Feature Title"
-                externalLinkUrl="http://example.com"
-                subtitle="Feature Subtitle"
-                label="Toggle Label"
-                labelSubtitle="Label Subtitle"
-            />,
+            <MemoryRouter>
+                <FeatureSettings
+                    enabled={true}
+                    title="Feature Title"
+                    externalLinkUrl="http://example.com"
+                    subtitle="Feature Subtitle"
+                    label="Toggle Label"
+                    labelSubtitle="Label Subtitle"
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Feature Title')).toBeInTheDocument()
@@ -79,13 +82,15 @@ describe('FeatureSettings', () => {
 
     test('should render configuration required alert when showConfigurationRequiredAlert is true', () => {
         render(
-            <FeatureSettings
-                enabled={false}
-                title="Feature Title"
-                label="Toggle Label"
-                showConfigurationRequiredAlert
-                externalLinkUrl="http://example.com"
-            />,
+            <MemoryRouter>
+                <FeatureSettings
+                    enabled={false}
+                    title="Feature Title"
+                    label="Toggle Label"
+                    showConfigurationRequiredAlert
+                    externalLinkUrl="http://example.com"
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Toggle Label')).toBeInTheDocument()

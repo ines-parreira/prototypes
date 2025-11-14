@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,6 +8,7 @@ import thunk from 'redux-thunk'
 import { dummyAppListData as appData } from 'fixtures/apps'
 import client from 'models/api/resources'
 import { IntegrationType } from 'models/integration/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { CARD_LINK_TEST_ID } from '../../Card'
 import Mine, { LOCAL_STORAGE_KEY } from '../Mine'
@@ -30,7 +29,7 @@ describe('<Mine />', () => {
     })
 
     it('should show a loader while fetching data', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Mine />
             </Provider>,
@@ -50,7 +49,7 @@ describe('<Mine />', () => {
         mockApi
             .onGet('/api/apps/installed/')
             .reply(200, { data: [installedAppData] })
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Mine />
             </Provider>,
@@ -72,7 +71,7 @@ describe('<Mine />', () => {
 
         mockApi.onGet('/api/apps/').reply(200, { data: [] })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Mine />
             </Provider>,
@@ -85,7 +84,7 @@ describe('<Mine />', () => {
     })
 
     it('should show a notification', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Mine />
             </Provider>,
@@ -96,7 +95,7 @@ describe('<Mine />', () => {
     it('should show not show a notification', () => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(true))
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Mine />
             </Provider>,

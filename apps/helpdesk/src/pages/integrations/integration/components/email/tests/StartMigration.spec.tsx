@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Moment } from 'moment'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import * as resources from 'models/integration/resources/email'
@@ -34,20 +32,19 @@ jest.spyOn(migrationBannerHook, 'default').mockImplementation(
 const mockHistoryPush = jest.fn()
 const mockHistoryGoBack = jest.fn()
 
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useLocation: jest.fn(),
-            useHistory: () => ({
-                block: jest.fn(),
-                push: mockHistoryPush,
-                goBack: mockHistoryGoBack,
-            }),
-        }) as Record<string, any>,
-)
-const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+    useHistory: jest.fn(),
+}))
+
+const useLocationMock = useLocation as jest.Mock
+const { useHistory } = jest.requireMock('react-router-dom')
+useHistory.mockReturnValue({
+    block: jest.fn(),
+    push: mockHistoryPush,
+    goBack: mockHistoryGoBack,
+})
 
 jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
     <div data-testid="integrations-table" />
@@ -99,14 +96,14 @@ describe('StartMigration', () => {
     })
 
     it('should navigate back when clicking "Migrate later" if page is not entry point', () => {
-        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
+        useLocationMock.mockReturnValue({ key: 'abc' } as any)
         renderComponent()
         fireEvent.click(screen.getByText('Migrate later'))
         expect(mockHistoryGoBack).toHaveBeenCalled()
     })
 
     it('should navigate to email settings when clicking "Migrate later" if page is entry point', () => {
-        useLocationSpy.mockReturnValue({
+        useLocationMock.mockReturnValue({
             key: undefined,
         } as any)
         renderComponent()

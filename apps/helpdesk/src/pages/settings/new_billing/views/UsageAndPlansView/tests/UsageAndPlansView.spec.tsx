@@ -242,7 +242,7 @@ describe('UsageAndPlansView', () => {
 
         // and the merchant can update its plan cadence
         expect(screen.getByText('Update')).toHaveAttribute(
-            'to',
+            'href',
             BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })
@@ -456,7 +456,7 @@ describe('UsageAndPlansView', () => {
 
         // and the merchant can update its plan cadence
         expect(screen.getByText('Update')).toHaveAttribute(
-            'to',
+            'href',
             BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })
@@ -650,7 +650,7 @@ describe('UsageAndPlansView', () => {
                 alteredStore,
             )
             expect(screen.getByText('Update').closest('a')).toHaveAttribute(
-                'to',
+                'href',
                 BILLING_PAYMENT_FREQUENCY_PATH,
             )
         },
@@ -768,7 +768,7 @@ describe('UsageAndPlansView', () => {
 
         // and the merchant can update its plan cadence
         expect(screen.getByText('Update')).toHaveAttribute(
-            'to',
+            'href',
             BILLING_PAYMENT_FREQUENCY_PATH,
         )
     })

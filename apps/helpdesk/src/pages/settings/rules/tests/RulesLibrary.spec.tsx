@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { render, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory, Location } from 'history'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, Router, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -21,26 +19,17 @@ import { RulesState } from '../../../../state/entities/rules/types'
 import { RootState, StoreDispatch } from '../../../../state/types'
 import { RulesLibraryContainer } from '../RulesLibrary'
 
-const { Router } = ReactRouterDom
-
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../models/ruleRecipe/resources')
 jest.mock('../../../../state/entities/ruleRecipes/actions')
 
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useLocation: jest.fn(),
-        }) as Record<string, any>,
-)
-const useLocationSpy = (
-    jest.spyOn(ReactRouterDom, 'useLocation') as jest.SpyInstance<
-        Partial<Location>,
-        []
-    >
-).mockReturnValue({
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+}))
+
+const useLocationMock = useLocation as jest.Mock
+useLocationMock.mockReturnValue({
     search: '',
 })
 
@@ -78,35 +67,41 @@ describe('<RulesLibrary/>', () => {
 
     it('should render the rules library view', () => {
         const { container } = render(
-            <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(populateStore(5))}>
+                    <RulesLibraryContainer />
+                </Provider>
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the rule library view', () => {
-        useLocationSpy.mockReturnValue({
+        useLocationMock.mockReturnValue({
             hash: '#rule-library',
         })
 
         const { container } = render(
-            <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(populateStore(5))}>
+                    <RulesLibraryContainer />
+                </Provider>
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render create custom rule footer', async () => {
-        useLocationSpy.mockReturnValue({
+        useLocationMock.mockReturnValue({
             hash: '#rule-library',
         })
 
         render(
-            <Provider store={mockStore(populateStore(5))}>
-                <RulesLibraryContainer />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(populateStore(5))}>
+                    <RulesLibraryContainer />
+                </Provider>
+            </MemoryRouter>,
         )
 
         await waitFor(() => {
@@ -116,24 +111,28 @@ describe('<RulesLibrary/>', () => {
 
     it('should fetch rules', () => {
         render(
-            <Provider store={mockStore(populateStore(1))}>
-                <RulesLibraryContainer />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(populateStore(1))}>
+                    <RulesLibraryContainer />
+                </Provider>
+            </MemoryRouter>,
         )
         expect(fetchRulesMock).toHaveBeenCalled()
     })
 
     it('should fetch rule recipes', () => {
         render(
-            <Provider store={mockStore(populateStore(1))}>
-                <RulesLibraryContainer />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(populateStore(1))}>
+                    <RulesLibraryContainer />
+                </Provider>
+            </MemoryRouter>,
         )
         expect(fetchRuleRecipesMock).toHaveBeenCalled()
     })
 
     it('it should redirect to rule page if managed rule installed', () => {
-        useLocationSpy.mockReturnValue({
+        useLocationMock.mockReturnValue({
             search: `?${emptyManagedRule.settings.slug}`,
         })
         const rules = {

@@ -3,8 +3,8 @@
 exports[`ArrowLink component should render with a to attribute 1`] = `
 <a
   class="link "
+  href="/here"
   role="link"
-  to="/here"
 >
   Hello
   <span

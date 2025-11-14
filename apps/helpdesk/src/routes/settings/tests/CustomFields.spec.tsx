@@ -16,6 +16,7 @@ import { CustomFields } from '../CustomFields'
 import { renderAppSettings } from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),

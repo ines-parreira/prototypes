@@ -11,6 +11,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { useCheckStoreAlreadyConfigured } from '../useCheckStoreAlreadyConfigured'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
     useHistory: jest.fn(),
 }))

@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { render } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
 import type { Notification } from 'common/notifications'
+import { renderWithRouter } from 'utils/testing'
 
 import type { ImportNotification } from '../../types'
 import ImportEmailSuccessNotification from '../ImportEmailSuccessNotification'
@@ -30,7 +30,7 @@ describe('ImportEmailSuccessNotification', () => {
 
     it('should render the notification with correct content', () => {
         const notification = createMockNotification()
-        const { getByText, container } = render(
+        const { getByText, container } = renderWithRouter(
             <ImportEmailSuccessNotification notification={notification} />,
         )
 
@@ -51,7 +51,7 @@ describe('ImportEmailSuccessNotification', () => {
             id: 456,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailSuccessNotification
                 notification={notification}
                 onClick={mockOnClick}
@@ -82,7 +82,7 @@ describe('ImportEmailSuccessNotification', () => {
             },
         }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailSuccessNotification notification={notification} />,
         )
 
@@ -101,7 +101,7 @@ describe('ImportEmailSuccessNotification', () => {
             },
         }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailSuccessNotification notification={notification} />,
         )
 
@@ -110,7 +110,7 @@ describe('ImportEmailSuccessNotification', () => {
 
     it('should render with email icon', () => {
         const notification = createMockNotification()
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailSuccessNotification notification={notification} />,
         )
 

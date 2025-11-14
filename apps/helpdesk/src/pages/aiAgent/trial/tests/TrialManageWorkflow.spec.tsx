@@ -36,6 +36,7 @@ jest.mock('models/billing/queries', () => ({
 
 // Mock React Router hooks
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
     useLocation: jest.fn(),
 }))

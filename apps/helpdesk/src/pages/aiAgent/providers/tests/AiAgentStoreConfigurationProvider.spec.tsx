@@ -20,6 +20,7 @@ import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvi
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const useParamsMock = assumeMock(useParams)

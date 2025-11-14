@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
+import { renderWithRouter } from 'utils/testing'
 
 import type { TicketPayload } from '../../types'
 import MessageFailedNotification from '../MessageFailedNotification'
@@ -46,7 +46,7 @@ describe('<MessageFailedNotification />', () => {
     })
 
     it('should render message failed content with error icon', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <MessageFailedNotification
                 notification={notification}
                 headerExtra="extra"
@@ -71,7 +71,7 @@ describe('<MessageFailedNotification />', () => {
             },
         }
 
-        const { getByText, queryByText } = render(
+        const { getByText, queryByText } = renderWithRouter(
             <MessageFailedNotification
                 notification={notificationWithoutName}
             />,
@@ -86,7 +86,7 @@ describe('<MessageFailedNotification />', () => {
     it('should track segment event when notification is clicked', async () => {
         const user = userEvent.setup()
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <MessageFailedNotification notification={notification} />,
         )
 
@@ -103,7 +103,7 @@ describe('<MessageFailedNotification />', () => {
     it('should call onClick when notification is clicked', async () => {
         const user = userEvent.setup()
         const mockOnClick = jest.fn()
-        const { container } = render(
+        const { container } = renderWithRouter(
             <MessageFailedNotification
                 notification={notification}
                 onClick={mockOnClick}

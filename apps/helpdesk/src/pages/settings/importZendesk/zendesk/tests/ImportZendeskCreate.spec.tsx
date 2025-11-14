@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import { fireEvent, RenderResult, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
+
+import { renderWithRouter } from 'utils/testing'
 
 import {
     IntegrationType,
@@ -19,7 +21,7 @@ interface ImportZendeskCreateProps {
     ): (dispatch: StoreDispatch) => Promise<unknown>
 }
 const renderComponent = (props: ImportZendeskCreateProps): RenderResult => {
-    return render(<ImportZendeskCreate {...props} />)
+    return renderWithRouter(<ImportZendeskCreate {...props} />)
 }
 
 describe('<ImportZendeskCreate/>', () => {

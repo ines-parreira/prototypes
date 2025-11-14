@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
+import { renderWithRouter } from 'utils/testing'
 
 import { UISLAPolicy } from '../../types'
 import DatetimeCell from '../DatetimeCell'
@@ -14,7 +12,9 @@ jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'MM/DD/YYYY')
 
 describe('<DatetimeCell />', () => {
     it('should render a datetime', () => {
-        const { getByText } = render(<DatetimeCell policy={mockUISLAPolicy} />)
+        const { getByText } = renderWithRouter(
+            <DatetimeCell policy={mockUISLAPolicy} />,
+        )
 
         expect(getByText('12/31/2021')).toBeInTheDocument()
     })

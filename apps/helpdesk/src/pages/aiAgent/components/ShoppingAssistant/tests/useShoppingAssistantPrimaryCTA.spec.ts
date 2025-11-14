@@ -27,6 +27,7 @@ jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan', () => ({
 
 const mockPush = jest.fn()
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         push: mockPush,
     }),

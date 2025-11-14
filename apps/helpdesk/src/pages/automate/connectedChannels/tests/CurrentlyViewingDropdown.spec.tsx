@@ -125,7 +125,7 @@ describe('CurrentlyViewingDropdown', () => {
 
         expect(screen.getByText('Chat Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/gorgias_chat/123',
         )
     })
@@ -145,7 +145,7 @@ describe('CurrentlyViewingDropdown', () => {
         )
         expect(screen.getByText('Help Center Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/help-center/123/articles',
         )
     })
@@ -165,7 +165,7 @@ describe('CurrentlyViewingDropdown', () => {
         )
         expect(screen.getByText('Contact Form Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/contact-form/123',
         )
     })

@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
@@ -8,6 +5,7 @@ import thunk from 'redux-thunk'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import PhoneEvent from '../PhoneEvent'
 
@@ -31,7 +29,7 @@ describe('<PhoneEvent/>', () => {
                 type: eventType,
                 customer: { name: 'Michael Gorgias' },
             })
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>,
@@ -45,7 +43,7 @@ describe('<PhoneEvent/>', () => {
                 type: PhoneIntegrationEvent.ConversationStarted,
                 data: { phone_ticket_id: 123 },
             })
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>,
@@ -62,7 +60,7 @@ describe('<PhoneEvent/>', () => {
                     customer: { name: 'Customer' },
                 },
             })
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>,

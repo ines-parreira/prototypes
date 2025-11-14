@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { merge } from 'lodash'
 import { Provider } from 'react-redux'
@@ -17,6 +17,7 @@ import {
 } from 'models/integration/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { FacebookIntegrationDetail } from '../FacebookIntegrationDetail'
 import {
@@ -158,7 +159,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             },
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
@@ -191,7 +192,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             type: FACEBOOK_INTEGRATION_TYPE,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
@@ -205,7 +206,7 @@ describe('<FacebookIntegrationDetail/>', () => {
     })
 
     it('should render nothing because the passed integration is empty', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail {...minProps} />
             </Provider>,
@@ -242,7 +243,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             },
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
@@ -286,7 +287,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             },
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
@@ -333,7 +334,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -385,7 +386,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -439,7 +440,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -495,7 +496,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -539,7 +540,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             },
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
@@ -586,7 +587,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}
@@ -669,7 +670,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             }
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <FacebookIntegrationDetail
                         {...minProps}

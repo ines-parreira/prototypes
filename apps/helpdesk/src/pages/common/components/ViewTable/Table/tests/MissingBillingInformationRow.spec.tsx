@@ -10,6 +10,7 @@ import {
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import client from 'models/api/resources'
@@ -79,7 +80,9 @@ describe('<MissingBillingInformationRow />', () => {
 
     it('should render a row when conditions are met', async () => {
         renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+            <MemoryRouter>
+                <MissingBillingInformationRow />
+            </MemoryRouter>,
             initialState,
         )
 
@@ -135,7 +138,9 @@ describe('<MissingBillingInformationRow />', () => {
         ],
     ])('should not render a row when %s', (testName, state) => {
         const { container } = renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+            <MemoryRouter>
+                <MissingBillingInformationRow />
+            </MemoryRouter>,
             state,
         )
 
@@ -144,7 +149,9 @@ describe('<MissingBillingInformationRow />', () => {
 
     it('should open the modal when clicking on update button', async () => {
         renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+            <MemoryRouter>
+                <MissingBillingInformationRow />
+            </MemoryRouter>,
             initialState,
         )
 
@@ -157,7 +164,9 @@ describe('<MissingBillingInformationRow />', () => {
 
     it('should submit the billing information when submiting the modal form', async () => {
         renderWithStoreAndQueryClientProvider(
-            <MissingBillingInformationRow />,
+            <MemoryRouter>
+                <MissingBillingInformationRow />
+            </MemoryRouter>,
             initialState,
         )
 

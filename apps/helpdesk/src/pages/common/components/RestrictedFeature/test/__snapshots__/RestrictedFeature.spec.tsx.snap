@@ -20,7 +20,7 @@ exports[`RestrictedFeature component should render alert with a link and an acti
       >
         <a
           class="actionLink"
-          to="/app/settings/billing/plans"
+          href="/app/settings/billing/plans"
         >
           Upgrade here.
         </a>
@@ -122,7 +122,7 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
       >
         <a
           class="actionLink"
-          to="#"
+          href="/"
         />
       </div>
     </div>

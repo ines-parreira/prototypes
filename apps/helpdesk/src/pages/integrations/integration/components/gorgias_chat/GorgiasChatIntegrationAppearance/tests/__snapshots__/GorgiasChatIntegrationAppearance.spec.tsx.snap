@@ -19,7 +19,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -1407,7 +1407,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -1628,7 +1628,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -2908,7 +2908,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -3129,7 +3129,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -4378,7 +4378,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -4599,7 +4599,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -5848,7 +5848,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -6069,7 +6069,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -7318,7 +7318,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -7539,7 +7539,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -8788,7 +8788,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -10156,7 +10156,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -10377,7 +10377,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/1/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/1/appearance/texts"
                       >
                         Customize Copy
                       </a>
@@ -11626,7 +11626,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -13111,7 +13111,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -14529,7 +14529,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/channels/gorgias_chat"
+              href="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -14750,7 +14750,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     >
                       <a
                         class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/1/appearance/texts"
+                        href="/app/settings/channels/gorgias_chat/1/appearance/texts"
                       >
                         Customize Copy
                       </a>

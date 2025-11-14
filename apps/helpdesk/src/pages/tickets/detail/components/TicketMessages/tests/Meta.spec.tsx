@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -13,6 +11,7 @@ import { ManagedRuleDisplayName } from 'state/rules/constants'
 import { ManagedRule, ManagedRulesSlugs, RuleType } from 'state/rules/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import Meta from '../Meta'
 
@@ -30,7 +29,7 @@ jest.mock('models/rule/resources')
 
 describe('ticket message meta', () => {
     it('should add a -sent via rule- label because the message was sent by a rule', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId="4" />
             </Provider>,
@@ -47,7 +46,7 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId={rule.id} />
             </Provider>,
@@ -74,7 +73,7 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta
                     messageId="some-id"
@@ -101,7 +100,7 @@ describe('ticket message meta', () => {
             return Promise.resolve(rule as any)
         })
 
-        const { rerender } = render(
+        const { rerender } = renderWithRouter(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId={rule.id} />
             </Provider>,
@@ -119,7 +118,7 @@ describe('ticket message meta', () => {
     })
 
     it('should display rule suggestion', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta
                     messageId="some-id"
@@ -134,7 +133,7 @@ describe('ticket message meta', () => {
     })
 
     it('should display AI suggestion', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta
                     messageId="some-id"
@@ -148,7 +147,7 @@ describe('ticket message meta', () => {
     })
 
     it('should display AI sales agent help on search', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Meta
                     messageId="some-id"
@@ -172,7 +171,7 @@ describe('ticket message meta', () => {
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',
         () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -199,7 +198,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
                 </Provider>,
@@ -227,7 +226,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId={`${postId}_${commentId}`}
@@ -267,7 +266,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <Meta
@@ -301,7 +300,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container, getByText } = render(
+            const { container, getByText } = renderWithRouter(
                 <Provider store={store}>
                     <Meta via="facebook" meta={meta} />
                 </Provider>,
@@ -333,7 +332,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${userId}`, name: 'Foo Bar' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId={`${postId}_${replyId}`}
@@ -360,7 +359,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
                 </Provider>,
@@ -383,7 +382,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
                 </Provider>,
@@ -413,7 +412,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -444,7 +443,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -479,7 +478,7 @@ describe('ticket message meta', () => {
                 to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -507,7 +506,7 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.InstagramMedia,
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta via="instagram" integrationId={118} source={source} />
                 </Provider>,
@@ -533,7 +532,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <Meta
@@ -575,7 +574,7 @@ describe('ticket message meta', () => {
                     type: type,
                 }
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <Provider store={store}>
                         <Meta
                             via={TicketChannel.Twitter}
@@ -606,7 +605,7 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.TwitterTweet,
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         externalId={tweetId}
@@ -655,7 +654,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         externalId={tweetId}
@@ -680,7 +679,7 @@ describe('ticket message meta', () => {
 
     describe('live-chat-message', () => {
         it('should add a `from https://...` with because the message was sent via live chat', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -699,7 +698,7 @@ describe('ticket message meta', () => {
 
     describe('chat-contact-form', () => {
         it('should add a `via contact form from https://...` because the message was sent via chat contact form', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -720,7 +719,7 @@ describe('ticket message meta', () => {
         })
 
         it('should add a `via contact form` because the message was sent via chat contact form (but no current_url metadata)', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -740,7 +739,7 @@ describe('ticket message meta', () => {
         })
 
         it('should add sms deflection details', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"

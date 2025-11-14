@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-import * as ReactRouterDom from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { account } from 'fixtures/account'
@@ -15,7 +13,12 @@ import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
-const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+}))
+
+const useLocationMock = useLocation as jest.Mock
 
 const mockedDispatch = jest.fn()
 const mockedServer = new MockAdapter(client)
@@ -58,7 +61,7 @@ describe('ConvertSubscriptionModal', () => {
     }
 
     beforeEach(() => {
-        useLocationSpy.mockReturnValue({ pathname: defaultLocation } as any)
+        useLocationMock.mockReturnValue({ pathname: defaultLocation } as any)
     })
 
     it('should not render', () => {

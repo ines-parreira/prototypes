@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 
 import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
@@ -8,19 +8,19 @@ import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioItem'
 const mockHistoryPush = jest.fn()
 const mockHistoryGoBack = jest.fn()
 
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useLocation: jest.fn(),
-            useHistory: () => ({
-                block: jest.fn(),
-                push: mockHistoryPush,
-                goBack: mockHistoryGoBack,
-            }),
-        }) as Record<string, any>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+    useHistory: jest.fn(),
+}))
+
+const useLocationMock = useLocation as jest.Mock
+const { useHistory } = jest.requireMock('react-router-dom')
+useHistory.mockReturnValue({
+    block: jest.fn(),
+    push: mockHistoryPush,
+    goBack: mockHistoryGoBack,
+})
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
         useReorderDnD: jest.fn().mockResolvedValue({
@@ -40,7 +40,7 @@ jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
-const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+
 describe('ReportOrderIssueScenarioItem component', () => {
     const item = {
         title: 'Refunded',
@@ -83,50 +83,54 @@ describe('ReportOrderIssueScenarioItem component', () => {
         ],
     }
     it('should render warning if all the issue type are configured', () => {
-        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
+        useLocationMock.mockReturnValue({ key: 'abc' } as any)
 
         const { getByLabelText } = render(
-            <table>
-                <tbody>
-                    <ReportOrderIssueScenarioItem
-                        id={'propsData.id'}
-                        item={item as SelfServiceReportIssueCase}
-                        position={1}
-                        onMove={() => null}
-                        onDrop={() => null}
-                        onCancel={() => null}
-                        onMouseEnter={() => null}
-                        onMouseLeave={() => null}
-                        isDraggable
-                    />
-                </tbody>
-            </table>,
+            <MemoryRouter>
+                <table>
+                    <tbody>
+                        <ReportOrderIssueScenarioItem
+                            id={'propsData.id'}
+                            item={item as SelfServiceReportIssueCase}
+                            position={1}
+                            onMove={() => null}
+                            onDrop={() => null}
+                            onCancel={() => null}
+                            onMouseEnter={() => null}
+                            onMouseLeave={() => null}
+                            isDraggable
+                        />
+                    </tbody>
+                </table>
+            </MemoryRouter>,
         )
 
         expect(getByLabelText(/Icon for response not configured/i))
     })
     it('should not render warning if all the issue type are configured', () => {
-        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
+        useLocationMock.mockReturnValue({ key: 'abc' } as any)
         item.newReasons[1].action.responseMessageContent = {
             html: 'hello',
             text: 'wold',
         }
         const { queryByText } = render(
-            <table>
-                <tbody>
-                    <ReportOrderIssueScenarioItem
-                        id={'propsData.id'}
-                        item={item as SelfServiceReportIssueCase}
-                        position={1}
-                        onMove={() => null}
-                        onDrop={() => null}
-                        onCancel={() => null}
-                        onMouseEnter={() => null}
-                        onMouseLeave={() => null}
-                        isDraggable
-                    />
-                </tbody>
-            </table>,
+            <MemoryRouter>
+                <table>
+                    <tbody>
+                        <ReportOrderIssueScenarioItem
+                            id={'propsData.id'}
+                            item={item as SelfServiceReportIssueCase}
+                            position={1}
+                            onMove={() => null}
+                            onDrop={() => null}
+                            onCancel={() => null}
+                            onMouseEnter={() => null}
+                            onMouseLeave={() => null}
+                            isDraggable
+                        />
+                    </tbody>
+                </table>
+            </MemoryRouter>,
         )
         expect(
             queryByText(/Icon for response not configured/i),

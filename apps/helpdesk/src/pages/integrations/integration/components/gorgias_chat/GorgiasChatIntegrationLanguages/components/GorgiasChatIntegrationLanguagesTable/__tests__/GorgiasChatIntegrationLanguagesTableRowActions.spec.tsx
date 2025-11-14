@@ -1,7 +1,8 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
 
@@ -54,11 +55,13 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         } as LanguageItemRow
 
         const { getByText } = render(
-            <GorgiasChatIntegrationLanguagesTableRowActions
-                language={language}
-                onClickDelete={onDeleteMock}
-                onClickSetDefault={onSetDefaultMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatIntegrationLanguagesTableRowActions
+                    language={language}
+                    onClickDelete={onDeleteMock}
+                    onClickSetDefault={onSetDefaultMock}
+                />
+            </MemoryRouter>,
         )
 
         getByText('Customize')
@@ -79,11 +82,13 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         } as LanguageItemRow
 
         const { queryByText } = render(
-            <GorgiasChatIntegrationLanguagesTableRowActions
-                language={language}
-                onClickDelete={onDeleteMock}
-                onClickSetDefault={onSetDefaultMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatIntegrationLanguagesTableRowActions
+                    language={language}
+                    onClickDelete={onDeleteMock}
+                    onClickSetDefault={onSetDefaultMock}
+                />
+            </MemoryRouter>,
         )
 
         queryByText('Customize')
@@ -104,11 +109,13 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         } as LanguageItemRow
 
         const { getByText } = render(
-            <GorgiasChatIntegrationLanguagesTableRowActions
-                language={language}
-                onClickDelete={onDeleteMock}
-                onClickSetDefault={onSetDefaultMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatIntegrationLanguagesTableRowActions
+                    language={language}
+                    onClickDelete={onDeleteMock}
+                    onClickSetDefault={onSetDefaultMock}
+                />
+            </MemoryRouter>,
         )
 
         userEvent.click(getByText('more_vert'))
@@ -128,11 +135,13 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         } as LanguageItemRow
 
         const { getByText, queryByText } = render(
-            <GorgiasChatIntegrationLanguagesTableRowActions
-                language={language}
-                onClickDelete={onDeleteMock}
-                onClickSetDefault={onSetDefaultMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatIntegrationLanguagesTableRowActions
+                    language={language}
+                    onClickDelete={onDeleteMock}
+                    onClickSetDefault={onSetDefaultMock}
+                />
+            </MemoryRouter>,
         )
 
         userEvent.click(getByText('more_vert'))
@@ -160,11 +169,13 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         } as LanguageItemRow
 
         const { getByText, queryByText } = render(
-            <GorgiasChatIntegrationLanguagesTableRowActions
-                language={language}
-                onClickDelete={onDeleteMock}
-                onClickSetDefault={onSetDefaultMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatIntegrationLanguagesTableRowActions
+                    language={language}
+                    onClickDelete={onDeleteMock}
+                    onClickSetDefault={onSetDefaultMock}
+                />
+            </MemoryRouter>,
         )
 
         userEvent.click(getByText('more_vert'))

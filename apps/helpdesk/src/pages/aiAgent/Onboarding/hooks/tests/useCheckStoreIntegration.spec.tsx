@@ -14,6 +14,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppSelector')
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
     useHistory: jest.fn(),
 }))

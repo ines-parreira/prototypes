@@ -39,7 +39,7 @@ exports[`UpgradeButton should display with custom props 1`] = `
     class="d-flex align-items-center upgradeLink"
   >
     <a
-      to="[object Object]"
+      href="/app/settings/billing"
     >
       <button
         aria-disabled="false"
@@ -72,7 +72,7 @@ exports[`UpgradeButton should display with default props 1`] = `
     class="d-flex align-items-center upgradeLink"
   >
     <a
-      to="[object Object]"
+      href="/app/settings/billing"
     >
       <button
         aria-disabled="false"

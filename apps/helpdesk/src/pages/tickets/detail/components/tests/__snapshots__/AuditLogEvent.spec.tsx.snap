@@ -156,10 +156,10 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 2
         Rule
          "
         <a
+          href="/app/settings/rules/library?rule_suggestion"
           rel="noreferrer"
           target="_blank"
           title="Rule"
-          to="/app/settings/rules/library?rule_suggestion"
         >
           rule_suggestion
         </a>
@@ -199,10 +199,10 @@ exports[`<AuditLogEvent/> render() should render with event type rule-suggestion
         Gorgias Tip suggested rule
          "
         <a
+          href="/app/settings/rules/library?rule_suggestion"
           rel="noreferrer"
           target="_blank"
           title="Rule"
-          to="/app/settings/rules/library?rule_suggestion"
         >
           rule_suggestion
         </a>

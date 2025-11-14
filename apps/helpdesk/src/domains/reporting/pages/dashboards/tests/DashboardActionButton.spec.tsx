@@ -23,6 +23,7 @@ function getBaseURL() {
 const liveOverviewURL = `${getBaseURL()}/live-overview`
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useLocation: jest
         .fn()
         .mockReturnValue({ pathname: `${getBaseURL()}/dashboards` }),

@@ -1,11 +1,10 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import Tip from '../Tip'
 
@@ -18,7 +17,7 @@ const defaultState = {
 } as RootState
 
 const renderTip = () =>
-    render(
+    renderWithRouter(
         <Provider store={mockStore(defaultState)}>
             <Tip icon={true} actionLabel="Got It" storageKey="test">
                 test

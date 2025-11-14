@@ -1,9 +1,7 @@
-import React from 'react'
-
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -17,11 +15,12 @@ import {
 } from '../constants'
 import { useRouteParser } from '../useRouteParser'
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router'),
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-const useParamsMock = jest.spyOn(ReactRouterDom, 'useParams')
+
+const useParamsMock = useParams as jest.Mock
 
 const integration = { ...integrationBase, type: IntegrationType.Http }
 const integrationBaseId = integrationBase.id.toString()
@@ -113,7 +112,9 @@ describe('useRouteParser', () => {
         useParamsMock.mockReturnValue(routeParams)
         const { result } = renderHook(() => useRouteParser(), {
             wrapper: ({ children }) => (
-                <Provider store={store}>{children}</Provider>
+                <MemoryRouter>
+                    <Provider store={store}>{children}</Provider>
+                </MemoryRouter>
             ),
         })
 

@@ -30,7 +30,7 @@ exports[`ConnectLink should render a span with a tooltip if disabled 1`] = `
 exports[`ConnectLink should render an internal link if not an app or not external 1`] = `
 <a
   class="connectButtonWrapper"
-  to="https://iamconnecting.com"
+  href="/https://iamconnecting.com"
 >
   <span>
     click

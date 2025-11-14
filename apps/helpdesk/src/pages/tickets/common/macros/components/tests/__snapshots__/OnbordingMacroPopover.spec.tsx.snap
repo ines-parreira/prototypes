@@ -31,7 +31,7 @@ exports[`<OnbordingMacroPopover /> should display popover 1`] = `
                   You’re currently in the macro search view. You can change this in your
                    
                   <a
-                    to="/app/settings/profile"
+                    href="/app/settings/profile"
                   >
                     macro preferences
                   </a>

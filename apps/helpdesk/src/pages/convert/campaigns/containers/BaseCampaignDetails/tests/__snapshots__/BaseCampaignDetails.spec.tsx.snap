@@ -19,7 +19,7 @@ exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/convert/1/campaigns"
+              href="/app/convert/1/campaigns"
             >
               Campaigns
             </a>

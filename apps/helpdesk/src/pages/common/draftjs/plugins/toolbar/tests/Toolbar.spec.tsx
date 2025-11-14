@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
@@ -10,7 +10,7 @@ import { useFlag } from 'core/flags'
 import { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
-import { mockStore } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
@@ -92,7 +92,7 @@ describe('Toolbar', () => {
     })
 
     it('should render character count if max length is specified', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ToolbarProvider
                 canAddProductCard={true}
                 onAddProductCardAttachment={jest.fn()}
@@ -129,7 +129,7 @@ describe('Toolbar', () => {
         }
 
         it('should not render tooltip tour', () => {
-            const { queryByText } = render(
+            const { queryByText } = renderWithRouter(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -151,7 +151,7 @@ describe('Toolbar', () => {
         })
 
         it('should render tooltip tour', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -178,7 +178,7 @@ describe('Toolbar', () => {
 
         it('should should use "getWorkflowVariables" prop when passed and link is clicked', () => {
             const getWorkflowVariablesMock = jest.fn()
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <ToolbarProvider
                         canAddProductCard={true}
@@ -214,7 +214,7 @@ describe('Toolbar', () => {
 
             mockUseFlag.mockReturnValue(true)
 
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <ToolbarProvider
                         canAddProductCard={true}
@@ -249,7 +249,7 @@ describe('Toolbar', () => {
         it('should display guidance action picker disabled with a tooltip when there is no action', async () => {
             mockUseFlag.mockReturnValue(true)
 
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <ToolbarProvider
                         canAddProductCard={true}

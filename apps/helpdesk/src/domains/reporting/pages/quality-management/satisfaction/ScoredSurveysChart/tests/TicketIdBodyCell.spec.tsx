@@ -1,43 +1,46 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import TicketIdBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/TicketIdBodyCell'
 
 describe('<TicketIdBodyCell>', () => {
     it('should render link', () => {
         const { container } = render(
-            <table>
-                <tbody>
-                    <tr>
-                        <TicketIdBodyCell ticketId={'123'} />
-                    </tr>
-                </tbody>
-            </table>,
+            <MemoryRouter>
+                <table>
+                    <tbody>
+                        <tr>
+                            <TicketIdBodyCell ticketId={'123'} />
+                        </tr>
+                    </tbody>
+                </table>
+            </MemoryRouter>,
         )
 
         const link = container.querySelector('a')
 
         expect(link).toBeInTheDocument()
-        expect(link?.getAttribute('to')).toEqual(
+        expect(link?.getAttribute('href')).toEqual(
             '/app/ticket/123#satisfactionSurvey',
         )
     })
 
     it('should open in new tab', () => {
         const { getByRole } = render(
-            <table>
-                <tbody>
-                    <tr>
-                        <TicketIdBodyCell ticketId={'123'} />
-                    </tr>
-                </tbody>
-            </table>,
+            <MemoryRouter>
+                <table>
+                    <tbody>
+                        <tr>
+                            <TicketIdBodyCell ticketId={'123'} />
+                        </tr>
+                    </tbody>
+                </table>
+            </MemoryRouter>,
         )
 
         const link = getByRole('link')
 
-        expect(link?.getAttribute('to')).toEqual(
+        expect(link?.getAttribute('href')).toEqual(
             '/app/ticket/123#satisfactionSurvey',
         )
         expect(link?.getAttribute('target')).toEqual('_blank')
@@ -46,13 +49,15 @@ describe('<TicketIdBodyCell>', () => {
 
     it('should render icon', () => {
         const { getByText } = render(
-            <table>
-                <tbody>
-                    <tr>
-                        <TicketIdBodyCell ticketId={'123'} />
-                    </tr>
-                </tbody>
-            </table>,
+            <MemoryRouter>
+                <table>
+                    <tbody>
+                        <tr>
+                            <TicketIdBodyCell ticketId={'123'} />
+                        </tr>
+                    </tbody>
+                </table>
+            </MemoryRouter>,
         )
 
         const icon = getByText('open_in_new')

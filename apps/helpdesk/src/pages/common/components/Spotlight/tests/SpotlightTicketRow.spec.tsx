@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,6 +13,7 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { PickedTicket } from 'models/search/types'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -42,7 +43,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render ticket information', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
@@ -50,7 +51,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render closed icon', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
@@ -64,7 +65,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render the open ticket info tooltip on hover', async () => {
         jest.useFakeTimers()
-        const { getByText, getByRole } = render(
+        const { getByText, getByRole } = renderWithRouter(
             <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
@@ -77,7 +78,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render the closed ticket info tooltip on hover', async () => {
         jest.useFakeTimers()
-        const { getByText, getByRole } = render(
+        const { getByText, getByRole } = renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
@@ -94,7 +95,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render without customer name', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
@@ -110,7 +111,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render without customer name and without email', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
@@ -134,7 +135,7 @@ describe('<SpotlightTicketRow/>', () => {
             new Date(ticket.created_datetime).getTime(),
         )
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
@@ -148,7 +149,7 @@ describe('<SpotlightTicketRow/>', () => {
             new Date(mockDate).getTime(),
         )
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
@@ -164,7 +165,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should call onClick when ticket row is clicked', async () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WrappedSpotlightTicketRow {...defaultProps} />,
         )
         if (container.firstChild) {
@@ -177,7 +178,7 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render title with item.excerpt value form props', () => {
         const exceptValue = 'Excerpt test'
-        render(
+        renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...{
                     ...defaultProps,
@@ -194,7 +195,7 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render title as empty string', () => {
-        render(
+        renderWithRouter(
             <WrappedSpotlightTicketRow
                 {...{
                     ...defaultProps,
@@ -222,7 +223,9 @@ describe('<SpotlightTicketRow/>', () => {
                 },
             },
         }
-        const { getByText } = render(<WrappedSpotlightTicketRow {...props} />)
+        const { getByText } = renderWithRouter(
+            <WrappedSpotlightTicketRow {...props} />,
+        )
 
         expect(
             getByText(`#${props.item.customer.id}`, { exact: false }),
@@ -244,7 +247,7 @@ describe('<SpotlightTicketRow/>', () => {
                 },
             },
         }
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <WrappedSpotlightTicketRow {...defaultProps} item={item} />,
         )
 

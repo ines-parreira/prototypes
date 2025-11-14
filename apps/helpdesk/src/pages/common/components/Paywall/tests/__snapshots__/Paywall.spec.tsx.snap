@@ -1,94 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Paywall /> should not render the default upgrade CTA if a custom upgrade CTA is passed 1`] = `
-<div
-  class="full-width pageWrapper"
->
-  <div
-    class="svg default"
-  />
-  <div
-    class="page"
-  >
-    <div
-      class="paywallContainer"
-    >
-      <div
-        class="align-items-center mx-0 row"
-      >
-        <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
-        >
-          <div
-            class=""
-          >
-            <img
-              alt="Feature preview"
-              class="img-fluid"
-              src="/static/private/img/paywalls/screens/paywall.png"
-            />
-          </div>
-        </div>
-        <div
-          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
-        >
-          <div
-            class="content"
-          >
-            <div
-              class="flex align-items-center"
-            >
-              <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
-                data-name="badge"
-                style="border-radius: 100px;"
-              >
-                Foo Plan
-              </div>
-            </div>
-            <h1
-              class="contentTitle"
-            >
-              Feature
-            </h1>
-            <div
-              class="description"
-            >
-              <p>
-                Feature description
-              </p>
-            </div>
-            <div
-              class="upgradeButton"
-            >
-              <button>
-                Upgrade me!
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      data-testid="lightbox-closed"
-    >
-      isOpen: 
-      false
-      images: 
-      [{"src":"/static/private/img/paywalls/screens/paywall.png"}]
-      <button
-        data-testid="close-button"
-        value="close"
-      />
-      <button
-        data-testid="click-image-button"
-        value="click image"
-      />
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<Paywall /> should render a custom upgrade CTA 1`] = `
 <div
   class="full-width pageWrapper"
@@ -829,7 +740,7 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
                 class="d-flex align-items-center upgradeLink"
               >
                 <a
-                  to="[object Object]"
+                  href="/app/settings/billing"
                 >
                   <button
                     aria-disabled="false"

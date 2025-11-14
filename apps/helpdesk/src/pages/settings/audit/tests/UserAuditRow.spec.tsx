@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,6 +6,7 @@ import thunk from 'redux-thunk'
 import { events } from 'fixtures/event'
 import { EventObjectType, EventType } from 'models/event/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import UserAuditRow from '../UserAuditRow'
 
@@ -27,7 +25,7 @@ const defaultState: Partial<RootState> = {
 
 describe('<UserAuditRow/>', () => {
     it('should render with a user, event type and object type', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditRow eventItem={events[1]} />
             </Provider>,
@@ -37,7 +35,7 @@ describe('<UserAuditRow/>', () => {
     })
 
     it('should not render user when no agents are in store', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore({ agents: fromJS({}) })}>
                 <UserAuditRow eventItem={events[1]} />
             </Provider>,
@@ -51,7 +49,7 @@ describe('<UserAuditRow/>', () => {
         EventObjectType.Customer,
         EventObjectType.User,
     ])('should render with a link to %s object type', (objectType) => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditRow
                     eventItem={{
@@ -67,7 +65,7 @@ describe('<UserAuditRow/>', () => {
     })
 
     it('should fallback to user email when user has no name set', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditRow
                     eventItem={{

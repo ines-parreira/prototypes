@@ -62,7 +62,7 @@ describe('General', () => {
         const link = myApps.closest('a')
 
         expect(link).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/shopify/123',
         )
     })

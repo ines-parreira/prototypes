@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
@@ -15,7 +14,9 @@ const mockUISLAPolicy = {
 describe('<ChannelList />', () => {
     it('should render a list of channels', () => {
         const { getByText } = render(
-            <ChannelListCell policy={mockUISLAPolicy} />,
+            <MemoryRouter>
+                <ChannelListCell policy={mockUISLAPolicy} />
+            </MemoryRouter>,
         )
 
         expect(getByText(TicketChannel.Email)).toBeInTheDocument()
@@ -32,7 +33,9 @@ describe('<ChannelList />', () => {
             TicketChannel.Twitter,
         ]
         const { getByText } = render(
-            <ChannelListCell policy={{ ...mockUISLAPolicy, channels }} />,
+            <MemoryRouter>
+                <ChannelListCell policy={{ ...mockUISLAPolicy, channels }} />
+            </MemoryRouter>,
         )
 
         expect(getByText('+1')).toBeInTheDocument()

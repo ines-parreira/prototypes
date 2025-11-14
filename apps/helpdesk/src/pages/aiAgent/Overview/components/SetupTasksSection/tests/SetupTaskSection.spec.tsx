@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
@@ -10,7 +10,7 @@ import {
     useUpdateStepNotificationsPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { useGetSetupTasksConfigByCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/hooks/useGetSetupTasksConfigByCategory'
-import { mockStore } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { SetupTaskSection } from '../SetupTaskSection'
 import { mockSetupTasksConfigByCategory } from './fixtures/setupTasksConfigByCategory.fixture'
@@ -136,7 +136,7 @@ describe('SetupTaskSection', () => {
         const store = mockStore({
             currentAccount: fromJS({ id: 123 }),
         })
-        return render(
+        return renderWithRouter(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <SetupTaskSection shopName="test-shop" shopType="shopify" />

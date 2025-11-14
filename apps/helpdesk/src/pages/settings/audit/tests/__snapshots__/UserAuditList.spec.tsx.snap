@@ -269,7 +269,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           >
             <div>
               <a
-                to="/app/settings/users/1"
+                href="/app/settings/users/1"
               >
                 <div
                   class="component square d-inline-block"
@@ -305,7 +305,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
               class="cell-content"
             >
               <a
-                to="/app/ticket/10/"
+                href="/app/ticket/10/"
               >
                 Ticket #10
               </a>
@@ -333,7 +333,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           >
             <div>
               <a
-                to="/app/settings/users/1"
+                href="/app/settings/users/1"
               >
                 <div
                   class="component square d-inline-block"
@@ -393,7 +393,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           >
             <div>
               <a
-                to="/app/settings/users/1"
+                href="/app/settings/users/1"
               >
                 <div
                   class="component square d-inline-block"

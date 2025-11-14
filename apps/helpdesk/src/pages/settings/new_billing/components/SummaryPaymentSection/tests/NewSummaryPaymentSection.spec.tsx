@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import { MemoryRouter } from 'react-router-dom'
 
 import client from 'models/api/resources'
 import {
@@ -24,7 +23,12 @@ describe('NewSummaryPaymentSection', () => {
     it('should render the no-payment-method use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(
@@ -34,7 +38,7 @@ describe('NewSummaryPaymentSection', () => {
 
         // and merchant can change its payment method
         expect(screen.getByText('Add Payment Method')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/billing/payment/card',
         )
     })
@@ -42,7 +46,12 @@ describe('NewSummaryPaymentSection', () => {
     it('should render the credit-card use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(ignoreHTML(/Visa ending with 4321/)),
@@ -52,7 +61,7 @@ describe('NewSummaryPaymentSection', () => {
 
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/billing/payment/card',
         )
     })
@@ -62,7 +71,12 @@ describe('NewSummaryPaymentSection', () => {
             .onGet('/billing/state')
             .reply(200, payingWithExpiredCreditCard)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(
@@ -72,7 +86,7 @@ describe('NewSummaryPaymentSection', () => {
 
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/billing/payment/card',
         )
     })
@@ -80,7 +94,12 @@ describe('NewSummaryPaymentSection', () => {
     it('should render the ach-debit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(
@@ -92,7 +111,7 @@ describe('NewSummaryPaymentSection', () => {
 
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/billing/payment/card',
         )
     })
@@ -100,7 +119,12 @@ describe('NewSummaryPaymentSection', () => {
     it('should render the ach-credit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchCredit)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(ignoreHTML('Bank transfer (ACH credit)')),
@@ -117,7 +141,12 @@ describe('NewSummaryPaymentSection', () => {
             .onGet('/billing/state')
             .reply(200, payWithShopifyButNotActivated)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(/Payment with Shopify is inactive./),
@@ -126,13 +155,18 @@ describe('NewSummaryPaymentSection', () => {
         // and merchant can activate its Shopify Billing
         expect(
             screen.getByText('Activate Billing with Shopify'),
-        ).toHaveAttribute('to', '/integrations/shopify/billing/activate/')
+        ).toHaveAttribute('href', '/integrations/shopify/billing/activate/')
     })
 
     it('should render the activated-shopify-billing use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payWithShopify)
 
-        renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NewSummaryPaymentSection />
+            </MemoryRouter>,
+            {},
+        )
 
         expect(
             await screen.findByText(

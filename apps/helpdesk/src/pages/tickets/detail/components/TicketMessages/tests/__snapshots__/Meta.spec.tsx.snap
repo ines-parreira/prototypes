@@ -97,8 +97,8 @@ exports[`ticket message meta should add a -sent via campaign- label because the 
   >
     <b>
       <a
+        href="/app/convert/118/campaigns/123"
         title="Campaign"
-        to="/app/convert/118/campaigns/123"
       >
         <i
           class="material-icons mr-1"

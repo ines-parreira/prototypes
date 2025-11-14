@@ -6,7 +6,7 @@ exports[`<TwitterIntegrationListItem/> render() should render 1`] = `
     class="link-full-td"
   >
     <a
-      to="/app/settings/integrations/twitter/1"
+      href="/app/settings/integrations/twitter/1"
     >
       <div>
         <img
@@ -30,7 +30,7 @@ exports[`<TwitterIntegrationListItem/> render() should render 1`] = `
     class="smallest align-middle"
   >
     <a
-      to="/app/settings/integrations/twitter/1"
+      href="/app/settings/integrations/twitter/1"
     >
       <i
         class="material-icons md-2 align-middle icon-go-forward"

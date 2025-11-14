@@ -41,6 +41,7 @@ jest.mock('@repo/logging', () => ({
 const mockedUseGetCampaignsForStore = assumeMock(useGetCampaignsForStore)
 const mockedUseParamsReturnValue = jest.fn(() => ({ id: 1 }))
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => mockedUseParamsReturnValue(),
 }))
 

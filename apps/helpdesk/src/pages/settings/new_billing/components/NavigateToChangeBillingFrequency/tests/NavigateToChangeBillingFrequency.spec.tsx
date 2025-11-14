@@ -1,6 +1,7 @@
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -42,7 +43,9 @@ describe('NavigateToChangeBillingFrequency', () => {
 
     it('should render the correct button text', () => {
         renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
             store,
         )
 
@@ -51,7 +54,9 @@ describe('NavigateToChangeBillingFrequency', () => {
 
     it('should tell the user to upgrade if on a starter helpdesk plan', async () => {
         renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
             {
                 ...store,
                 currentAccount: fromJS({
@@ -81,7 +86,9 @@ describe('NavigateToChangeBillingFrequency', () => {
 
     it('should tell the user to upgrade if on a legacy automate plan', async () => {
         renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
             {
                 ...store,
                 currentAccount: fromJS({
@@ -112,7 +119,9 @@ describe('NavigateToChangeBillingFrequency', () => {
 
     it('should tell the user to contact us if their subscription is cancelled', async () => {
         renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
             {
                 ...store,
                 currentAccount: fromJS({
@@ -142,7 +151,9 @@ describe('NavigateToChangeBillingFrequency', () => {
 
     it('should tell the user to contact us if their subscription is scheduled to cancel', async () => {
         renderWithStoreAndQueryClientProvider(
-            <NavigateToChangeBillingFrequency {...props} />,
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
             {
                 ...store,
                 currentAccount: fromJS({
@@ -181,7 +192,9 @@ describe('NavigateToChangeBillingFrequency', () => {
         'should tell the user to contact us when downgrading billing frequency',
         async () => {
             renderWithStoreAndQueryClientProvider(
-                <NavigateToChangeBillingFrequency {...props} />,
+                <MemoryRouter>
+                    <NavigateToChangeBillingFrequency {...props} />
+                </MemoryRouter>,
                 {
                     ...store,
                     currentAccount: fromJS({

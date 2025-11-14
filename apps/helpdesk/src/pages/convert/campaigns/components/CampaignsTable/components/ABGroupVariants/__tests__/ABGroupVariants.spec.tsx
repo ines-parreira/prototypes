@@ -1,14 +1,11 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import { variants as variantFixture } from 'fixtures/abGroup'
+import { renderWithRouter } from 'utils/testing'
 
 import ABGroupVariants from '../ABGroupVariants'
 
 describe('<ABGroupVariants />', () => {
     it('renders', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <ABGroupVariants
                 variants={variantFixture}
                 integrationId="3"

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { EngagementSettingsCardLinkButton } from '../card/EngagementSettingsCardLinkButton'
 
@@ -11,7 +12,12 @@ describe('EngagementSettingsCardLinkButton', () => {
 
     it('should correctly render the button', () => {
         render(
-            <EngagementSettingsCardLinkButton href="/test" text="Test Link" />,
+            <MemoryRouter>
+                <EngagementSettingsCardLinkButton
+                    href="/test"
+                    text="Test Link"
+                />
+            </MemoryRouter>,
         )
 
         const button = screen.getByRole('button', {
@@ -25,10 +31,12 @@ describe('EngagementSettingsCardLinkButton', () => {
     describe('when no icon is provided', () => {
         it('should not render the icon', () => {
             render(
-                <EngagementSettingsCardLinkButton
-                    href="/test"
-                    text="Test Link"
-                />,
+                <MemoryRouter>
+                    <EngagementSettingsCardLinkButton
+                        href="/test"
+                        text="Test Link"
+                    />
+                </MemoryRouter>,
             )
 
             expect(getIcon()).not.toBeInTheDocument()
@@ -38,11 +46,13 @@ describe('EngagementSettingsCardLinkButton', () => {
     describe('when an icon is provided', () => {
         it('should render the icon', () => {
             render(
-                <EngagementSettingsCardLinkButton
-                    href="/test"
-                    icon={icon}
-                    text="Test Link"
-                />,
+                <MemoryRouter>
+                    <EngagementSettingsCardLinkButton
+                        href="/test"
+                        icon={icon}
+                        text="Test Link"
+                    />
+                </MemoryRouter>,
             )
 
             expect(getIcon()).toBeInTheDocument()

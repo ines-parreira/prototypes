@@ -1,8 +1,6 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import {
     apiListCursorPaginationResponse,
@@ -12,6 +10,7 @@ import { HttpMethod } from 'models/api/types'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
 import { HTTPIntegrationEvent } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import Events from '../Events'
 
@@ -66,7 +65,7 @@ describe('Events', () => {
             isLoading: false,
             isError: false,
         } as unknown as UseQueryResult)
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
             </QueryClientProvider>,
@@ -91,7 +90,7 @@ describe('Events', () => {
             isError: false,
         } as unknown as UseQueryResult)
 
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
             </QueryClientProvider>,
@@ -114,7 +113,7 @@ describe('Events', () => {
             isError: false,
         } as unknown as UseQueryResult)
 
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
             </QueryClientProvider>,
@@ -130,7 +129,7 @@ describe('Events', () => {
             isError: true,
         } as unknown as UseQueryResult)
 
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
             </QueryClientProvider>,
@@ -146,7 +145,7 @@ describe('Events', () => {
             isError: false,
         } as unknown as UseQueryResult)
 
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
             </QueryClientProvider>,

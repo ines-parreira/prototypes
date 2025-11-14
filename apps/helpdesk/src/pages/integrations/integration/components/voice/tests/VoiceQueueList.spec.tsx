@@ -1,11 +1,12 @@
 import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
+import { renderWithRouter } from 'utils/testing'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
@@ -44,7 +45,7 @@ describe('VoiceQueueList', () => {
     const renderComponent = (
         props = { queues: mockQueues, onScroll: mockOnScroll },
     ) => {
-        return render(<VoiceQueueList {...props} />)
+        return renderWithRouter(<VoiceQueueList {...props} />)
     }
 
     it('should render the list of queues when not fetching', () => {

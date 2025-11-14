@@ -1,6 +1,7 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 
 import { screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
@@ -14,7 +15,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 jest.mock(
     'pages/common/components/SecondaryNavbar/SecondaryNavbar',
     () =>
-        ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+        ({ children }: { children: ReactNode }) => <div>{children}</div>,
 )
 
 describe('AiAgentView', () => {
@@ -40,9 +41,11 @@ describe('AiAgentView', () => {
             { route: '/route2', title: 'Route 2', exact: false },
         ]
         renderWithQueryClientProvider(
-            <AiAgentView headerNavbarItems={navbarItems}>
-                <div>Content</div>
-            </AiAgentView>,
+            <MemoryRouter>
+                <AiAgentView headerNavbarItems={navbarItems}>
+                    <div>Content</div>
+                </AiAgentView>
+            </MemoryRouter>,
         )
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()

@@ -2,7 +2,6 @@ import { assumeMock, flushPromises } from '@repo/testing'
 import {
     act,
     fireEvent,
-    render,
     RenderResult,
     screen,
     waitFor,
@@ -33,6 +32,7 @@ import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
+import { renderWithRouter } from 'utils/testing'
 
 import { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
@@ -172,7 +172,7 @@ describe('<CampaignDetailsForm />', () => {
     }
 
     const renderComponent = (props: any) => {
-        return render(
+        return renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <CampaignDetailsForm {...props} />
             </Provider>,

@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -33,7 +34,7 @@ import {
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { RootState, StoreDispatch } from 'state/types'
-import { renderWithStore } from 'utils/testing'
+import { renderWithRouter, renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
 const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
@@ -131,7 +132,7 @@ describe('<AgentsTable>', () => {
 
     describe('AgentsTable component', () => {
         it('should render the table title, table header and rows', () => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AgentsTable
                         paginatedAgents={paginatedAgents}
@@ -159,7 +160,7 @@ describe('<AgentsTable>', () => {
         })
 
         it('should handle table scrolling', async () => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AgentsTable
                         paginatedAgents={paginatedAgents}
@@ -178,7 +179,7 @@ describe('<AgentsTable>', () => {
         })
 
         it('should handle table scrolling to the left border', async () => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AgentsTable
                         paginatedAgents={paginatedAgents}
@@ -201,7 +202,7 @@ describe('<AgentsTable>', () => {
 
     describe('Pagination', () => {
         it('should render if there are more agents then perPage', () => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AgentsTable
                         paginatedAgents={paginatedAgents}
@@ -221,7 +222,7 @@ describe('<AgentsTable>', () => {
                 perPage: agents.length + 1,
             }
 
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AgentsTable
                         paginatedAgents={notManyPaginatedAgentsMock}
@@ -243,7 +244,7 @@ describe('<AgentsTable>', () => {
                 perPage: 1,
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <AgentsTable
                         paginatedAgents={paginatedAgents}
@@ -303,7 +304,12 @@ describe('<AgentsTable>', () => {
         })
 
         it('should pass getPaginatedAgents selector and new statsFilters to the AgentsTable component', () => {
-            renderWithStore(<AgentsTableWithDefaultState />, {})
+            renderWithStore(
+                <MemoryRouter>
+                    <AgentsTableWithDefaultState />
+                </MemoryRouter>,
+                {},
+            )
 
             expect(getPaginatedAgentsMock).toHaveBeenCalled()
         })

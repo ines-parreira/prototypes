@@ -3,7 +3,7 @@
 exports[`<SpotlightTicketRow/> should render a date from the current year without the year 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"
@@ -89,7 +89,7 @@ exports[`<SpotlightTicketRow/> should render a date from the current year withou
 exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"
@@ -175,7 +175,7 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
 exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"
@@ -281,7 +281,7 @@ exports[`<SpotlightTicketRow/> should render the open ticket info tooltip on hov
 exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"
@@ -367,7 +367,7 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
 exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"
@@ -453,7 +453,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
 exports[`<SpotlightTicketRow/> should render without customer name and without email 1`] = `
 <a
   class="container"
-  to="/app/ticket/152"
+  href="/app/ticket/152"
 >
   <div
     class="infoContent"

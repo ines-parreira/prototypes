@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import ConvertLibraryBanner from '../ConvertLibraryBanner'
 
@@ -9,7 +8,9 @@ describe('ConvertLibraryBanner', () => {
 
     it('renders correctly with buttons', () => {
         const { getByText } = render(
-            <ConvertLibraryBanner integrationId={integrationId} />,
+            <MemoryRouter>
+                <ConvertLibraryBanner integrationId={integrationId} />
+            </MemoryRouter>,
         )
 
         expect(getByText('View campaign library')).toBeInTheDocument()
@@ -17,7 +18,9 @@ describe('ConvertLibraryBanner', () => {
 
     it('renders title and content', () => {
         const { getByText } = render(
-            <ConvertLibraryBanner integrationId={integrationId} />,
+            <MemoryRouter>
+                <ConvertLibraryBanner integrationId={integrationId} />
+            </MemoryRouter>,
         )
 
         expect(

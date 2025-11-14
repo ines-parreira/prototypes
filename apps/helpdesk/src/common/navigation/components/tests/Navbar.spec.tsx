@@ -10,6 +10,7 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import useAppSelector from 'hooks/useAppSelector'
+import { renderWithRouter } from 'utils/testing'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../../hooks/useShowGlobalNavFeatureFlag'
 import Navbar from '../Navbar'
@@ -65,7 +66,7 @@ describe('Navbar', () => {
     }
 
     const renderWithContext = (component: React.ReactNode) => {
-        return render(<NavBarProvider>{component}</NavBarProvider>)
+        return renderWithRouter(<NavBarProvider>{component}</NavBarProvider>)
     }
 
     beforeEach(() => {

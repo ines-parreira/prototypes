@@ -70,7 +70,7 @@ exports[`<MacrosCSVImportPopover/> should render 2`] = `
                   You can
                    
                   <a
-                    to="#"
+                    href="/"
                   >
                     download this CSV template
                   </a>

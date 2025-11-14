@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { History, Location } from 'history'
 import { fromJS } from 'immutable'
 import { match } from 'react-router-dom'
@@ -13,6 +13,7 @@ import {
 } from 'constants/integration'
 import { SmileIntegrationDetailComponent } from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 jest.useFakeTimers()
 
@@ -49,7 +50,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 name: 'foo',
             })
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
@@ -62,7 +63,7 @@ describe('<SmileIntegrationDetail/>', () => {
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({})}
@@ -84,7 +85,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 name: 'foo',
             })
 
-            const { container, rerender } = render(
+            const { container, rerender } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
@@ -116,7 +117,7 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = render(
+                const { container, rerender } = renderWithRouter(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
@@ -150,7 +151,7 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = render(
+                const { container, rerender } = renderWithRouter(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
@@ -189,7 +190,7 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = render(
+                const { container, rerender } = renderWithRouter(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
@@ -226,7 +227,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 })
                 const newName = 'bar'
 
-                render(
+                renderWithRouter(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
@@ -253,7 +254,7 @@ describe('<SmileIntegrationDetail/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -271,7 +272,7 @@ describe('<SmileIntegrationDetail/>', () => {
         })
 
         it('should render an alert because the import is in progress', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -288,7 +289,7 @@ describe('<SmileIntegrationDetail/>', () => {
         })
 
         it('should render a small paragraph because the import is over', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -305,7 +306,7 @@ describe('<SmileIntegrationDetail/>', () => {
         })
 
         it('should render buttons loading and disabled because a submit is in progress', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -323,7 +324,7 @@ describe('<SmileIntegrationDetail/>', () => {
         })
 
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -343,7 +344,7 @@ describe('<SmileIntegrationDetail/>', () => {
             'should not render anything about the import and render the re-activate button instead of the deactivate ' +
                 'button because the integration is deactivated',
             () => {
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({
@@ -364,7 +365,7 @@ describe('<SmileIntegrationDetail/>', () => {
         )
 
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
-            const { getByRole, getByText } = render(
+            const { getByRole, getByText } = renderWithRouter(
                 <SmileIntegrationDetailComponent
                     {...{
                         ...defaultProps,

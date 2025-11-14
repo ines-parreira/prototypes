@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
@@ -12,6 +12,7 @@ import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import { RootState, StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
+import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
@@ -71,7 +72,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies {...minProps} />
                 </Provider>,
@@ -86,7 +87,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 replies: ['foo', 'bar'],
             })
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies
                         {...minProps}
@@ -122,7 +123,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 replies: [' foo ', 'bar  '],
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickRepliesComponent
                         {...minProps}

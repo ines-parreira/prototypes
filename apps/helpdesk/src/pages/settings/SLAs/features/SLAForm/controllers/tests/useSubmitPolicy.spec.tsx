@@ -25,6 +25,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 }))
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 

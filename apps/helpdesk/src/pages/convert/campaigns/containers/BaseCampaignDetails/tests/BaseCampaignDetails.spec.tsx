@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { campaign as campaignFixture } from 'fixtures/campaign'
@@ -35,15 +34,17 @@ jest.mock(
 describe('<BaseCampaignDetails />', () => {
     it('matches snapshot', () => {
         const { container } = render(
-            <Provider store={store}>
-                <BaseCampaignDetails
-                    integration={integration}
-                    campaign={campaign}
-                    isEditMode={true}
-                >
-                    <div>content</div>
-                </BaseCampaignDetails>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <BaseCampaignDetails
+                        integration={integration}
+                        campaign={campaign}
+                        isEditMode={true}
+                    >
+                        <div>content</div>
+                    </BaseCampaignDetails>
+                </Provider>
+            </MemoryRouter>,
         )
 
         expect(container).toMatchSnapshot()

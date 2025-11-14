@@ -31,7 +31,7 @@ describe('InformationForm', () => {
 
         const link = screen.getByText(/my apps/i)
         expect(link).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/bigcommerce/123',
         )
         expect(

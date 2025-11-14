@@ -2,6 +2,7 @@ import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { MemoryRouter } from 'react-router-dom'
 
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
@@ -43,12 +44,14 @@ const baseProps = {
 describe('<CustomFieldRow />', () => {
     it('should render', () => {
         renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFieldRow
-                    {...baseProps}
-                    condition={customFieldCondition}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFieldRow
+                        {...baseProps}
+                        condition={customFieldCondition}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText(customFieldCondition.name)).toBeDefined()
@@ -56,13 +59,15 @@ describe('<CustomFieldRow />', () => {
 
     it('should create a new condition when clicking the duplicate button', () => {
         renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFieldRow
-                    {...baseProps}
-                    condition={customFieldCondition}
-                    canDuplicate
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFieldRow
+                        {...baseProps}
+                        condition={customFieldCondition}
+                        canDuplicate
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByTitle('Duplicate Condition'))
@@ -71,12 +76,14 @@ describe('<CustomFieldRow />', () => {
 
     it('should delete the condition with confirmation when clicking the delete button', () => {
         renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFieldRow
-                    {...baseProps}
-                    condition={customFieldCondition}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFieldRow
+                        {...baseProps}
+                        condition={customFieldCondition}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByTitle('Delete Condition'))
@@ -94,31 +101,33 @@ describe('<CustomFieldRow />', () => {
             deactivated_datetime: '2024-07-29T09:09:41.626092+00:00',
         }
         renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFieldRow
-                    {...baseProps}
-                    condition={deactivatedCondition}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFieldRow
+                        {...baseProps}
+                        condition={deactivatedCondition}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByRole('switch'))
         expect(mockUpdateCondition).toHaveBeenCalledWith({
             id: deactivatedCondition.id,
-            data: {
-                deactivated_datetime: null,
-            },
+            data: { deactivated_datetime: null },
         })
     })
 
     it('should disable the condition with confirmation when clicking the OFF toggle', () => {
         renderWithStoreAndQueryClientProvider(
-            <DndProvider backend={HTML5Backend}>
-                <ConditionalFieldRow
-                    {...baseProps}
-                    condition={customFieldCondition}
-                />
-            </DndProvider>,
+            <MemoryRouter>
+                <DndProvider backend={HTML5Backend}>
+                    <ConditionalFieldRow
+                        {...baseProps}
+                        condition={customFieldCondition}
+                    />
+                </DndProvider>
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByRole('switch'))

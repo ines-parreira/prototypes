@@ -1,7 +1,5 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
 
@@ -11,12 +9,12 @@ import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integratio
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {
     it('renders the breadcrumb items correctly without integration and not forced onboarding', () => {
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={null}
                     isForcedEmailOnboarding={false}
                 />
-            </BrowserRouter>,
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Email')).toBeInTheDocument()
@@ -24,22 +22,22 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
         expect(screen.getByText('Add new email')).toBeInTheDocument()
 
         expect(screen.getByText('Email').closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/email',
         )
         expect(
             screen.getByText('Add email address').closest('a'),
-        ).toHaveAttribute('to', '/app/settings/channels/email/new')
+        ).toHaveAttribute('href', '/app/settings/channels/email/new')
     })
 
     it('renders the breadcrumb items correctly without integration and forced onboarding', () => {
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={null}
                     isForcedEmailOnboarding={true}
                 />
-            </BrowserRouter>,
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Email')).toBeInTheDocument()
@@ -47,19 +45,19 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
         expect(screen.getByText('Add new email')).toBeInTheDocument()
 
         expect(screen.getByText('Email').closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/email',
         )
     })
 
     it('renders the breadcrumb items correctly with undefined integration', () => {
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={undefined}
                     isForcedEmailOnboarding={false}
                 />
-            </BrowserRouter>,
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Email')).toBeInTheDocument()
@@ -76,12 +74,12 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
             },
         } as EmailIntegration
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={integration}
                     isForcedEmailOnboarding={false}
                 />
-            </BrowserRouter>,
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Email')).toBeInTheDocument()
@@ -109,12 +107,12 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
             },
         } as EmailIntegration
         render(
-            <BrowserRouter>
+            <MemoryRouter>
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={integration}
                     isForcedEmailOnboarding={true}
                 />
-            </BrowserRouter>,
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Email')).toBeInTheDocument()

@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { hasRole } from 'utils'
+import { renderWithRouter } from 'utils/testing'
 
 import MultiLevelSelect, { EmptyHelper } from '../MultiLevelSelect'
 
@@ -51,7 +52,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should display all the items when focused and allow mouse navigation', async () => {
-        render(<MultiLevelSelect {...initialProps} value="" />)
+        renderWithRouter(<MultiLevelSelect {...initialProps} value="" />)
 
         userEvent.click(screen.getByRole('textbox'))
 
@@ -67,7 +68,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should call onChange with correct params and dismiss modal when selecting a value', async () => {
-        render(<MultiLevelSelect {...initialProps} />)
+        renderWithRouter(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
 
@@ -82,7 +83,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should call onChange with correct params and dismiss modal when clearing the value', async () => {
-        render(<MultiLevelSelect {...initialProps} />)
+        renderWithRouter(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
 
@@ -97,14 +98,16 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should not display a search input if not text choices', () => {
-        render(<MultiLevelSelect {...initialProps} choices={[1024, 2048]} />)
+        renderWithRouter(
+            <MultiLevelSelect {...initialProps} choices={[1024, 2048]} />,
+        )
 
         userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
     })
 
     it('should display results when searching', async () => {
-        render(<MultiLevelSelect {...initialProps} />)
+        renderWithRouter(<MultiLevelSelect {...initialProps} />)
 
         userEvent.click(screen.getByRole('textbox'))
 
@@ -121,12 +124,12 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should show a span instead of an input when autoWidth is true', () => {
-        render(<MultiLevelSelect {...initialProps} autoWidth />)
+        renderWithRouter(<MultiLevelSelect {...initialProps} autoWidth />)
         expect(screen.getByText('c2')).toBeVisible()
     })
 
     it('should show a span placeholder instead of an input when autoWidth is true when value is empty', () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 autoWidth
@@ -138,7 +141,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should render custom display value', () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 customDisplayValue={() => 'custom display value'}
@@ -148,7 +151,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should render multiple values correctly', () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 allowMultiValues
@@ -162,7 +165,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should render single item array value correctly', () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 allowMultiValues
@@ -174,7 +177,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should render mixed level array values correctly', () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 allowMultiValues
@@ -186,7 +189,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should call onChange with correct params when multiple values are selected, and keep textbox open', async () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 allowMultiValues
@@ -217,7 +220,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should exclude a value when reselected in multiple mode', async () => {
-        render(
+        renderWithRouter(
             <MultiLevelSelect
                 {...initialProps}
                 allowMultiValues
@@ -237,7 +240,7 @@ describe('<MultiLevelSelect />', () => {
     })
 
     it('should reset path and update active state when toggled', () => {
-        render(
+        renderWithRouter(
             <>
                 <MultiLevelSelect
                     {...initialProps}
@@ -270,7 +273,9 @@ describe('<MultiLevelSelect />', () => {
 
     describe('Empty helper', () => {
         it('should display an empty helper when they are no choices', async () => {
-            render(<MultiLevelSelect {...initialProps} choices={[]} />)
+            renderWithRouter(
+                <MultiLevelSelect {...initialProps} choices={[]} />,
+            )
 
             userEvent.hover(screen.getByDisplayValue('c2'))
             await waitFor(() => {
@@ -281,14 +286,16 @@ describe('<MultiLevelSelect />', () => {
         })
         it('should display an empty helper specific to admin when there are no choices', async () => {
             mockedHasRole.mockReturnValue(true)
-            render(<MultiLevelSelect {...initialProps} choices={[]} />)
+            renderWithRouter(
+                <MultiLevelSelect {...initialProps} choices={[]} />,
+            )
             userEvent.hover(screen.getByDisplayValue('c2'))
             await waitFor(() => {
                 expect(screen.getByText(/Go to Settings/)).toBeInTheDocument()
             })
         })
         it('should not display empty helper when id is undefined', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     id={undefined}
@@ -305,7 +312,7 @@ describe('<MultiLevelSelect />', () => {
         it('should render EmptyHelper component directly for non-admin', async () => {
             mockedHasRole.mockReturnValue(false)
             const targetRef = React.createRef<HTMLDivElement>()
-            render(
+            renderWithRouter(
                 <div>
                     <div ref={targetRef}>Target</div>
                     <EmptyHelper target={targetRef} id={1} />
@@ -326,7 +333,7 @@ describe('<MultiLevelSelect />', () => {
         it('should render EmptyHelper component directly for admin', async () => {
             mockedHasRole.mockReturnValue(true)
             const targetRef = React.createRef<HTMLDivElement>()
-            render(
+            renderWithRouter(
                 <div>
                     <div ref={targetRef}>Target</div>
                     <EmptyHelper target={targetRef} id={1} />
@@ -344,7 +351,7 @@ describe('<MultiLevelSelect />', () => {
     describe('Edge cases', () => {
         it('should call onFocus when focusing input if onFocus prop is provided', async () => {
             const onFocusMock = jest.fn()
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     onFocus={onFocusMock}
@@ -361,7 +368,7 @@ describe('<MultiLevelSelect />', () => {
 
         it('should not call onFocus when already active', async () => {
             const onFocusMock = jest.fn()
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     onFocus={onFocusMock}
@@ -382,7 +389,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show loading skeletons when isLoading is true', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     isLoading={true}
@@ -408,7 +415,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle clicking on skeleton items when loading', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     isLoading={true}
@@ -435,7 +442,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle clicking on search results', async () => {
-            render(<MultiLevelSelect {...initialProps} value="" />)
+            renderWithRouter(<MultiLevelSelect {...initialProps} value="" />)
 
             userEvent.click(screen.getByRole('textbox'))
 
@@ -455,7 +462,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show no results message when search has no matches', async () => {
-            render(<MultiLevelSelect {...initialProps} value="" />)
+            renderWithRouter(<MultiLevelSelect {...initialProps} value="" />)
 
             userEvent.click(screen.getByRole('textbox'))
 
@@ -472,7 +479,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show prediction icon when prediction is correct', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     value="s1::a1"
@@ -494,7 +501,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle prediction icon with confirmed false and modified false', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     value="s1::a1"
@@ -516,7 +523,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should not show prediction icon when prediction does not match value', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     value="s1::a1"
@@ -538,7 +545,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle outdated value properly', () => {
-            const { rerender } = render(
+            const { rerender } = renderWithRouter(
                 <MultiLevelSelect {...initialProps} value="outdated::value" />,
             )
 
@@ -554,7 +561,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle showCheckboxes prop', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={true}
@@ -572,7 +579,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle clicking on checkbox', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={true}
@@ -591,7 +598,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle clearing value with empty string', async () => {
-            render(<MultiLevelSelect {...initialProps} />)
+            renderWithRouter(<MultiLevelSelect {...initialProps} />)
 
             userEvent.click(screen.getByRole('textbox'))
 
@@ -606,7 +613,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle clicking on span when autoWidth is true and not disabled', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     autoWidth
@@ -622,7 +629,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should not handle clicking on span when autoWidth is true and disabled', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     autoWidth
@@ -641,7 +648,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show full value when showFullValue is true', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showFullValue={true}
@@ -656,7 +663,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle hideClearButton prop', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     hideClearButton={true}
@@ -685,7 +692,7 @@ describe('<MultiLevelSelect />', () => {
                 />
             ))
 
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     CustomInput={CustomInputComponent}
@@ -696,7 +703,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle placement prop', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect {...initialProps} placement="bottom-start" />,
             )
 
@@ -704,7 +711,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle dropdownMatchTriggerWidth prop', () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     dropdownMatchTriggerWidth={true}
@@ -715,7 +722,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle wrapperClassName and bodyClassName props', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     wrapperClassName="test-wrapper"
@@ -734,7 +741,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should render checkboxes with correct checked state for multiple values', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={true}
@@ -758,7 +765,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should render checkbox with correct checked state for single value when showCheckboxes is true', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={true}
@@ -782,7 +789,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show CheckIcon for selected single value when showCheckboxes is false', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={false}
@@ -804,7 +811,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should show CheckIcon for selected multiple values when showCheckboxes is false', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={false}
@@ -826,7 +833,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should handle checkbox value for nested multi-level selections', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={true}
@@ -863,7 +870,7 @@ describe('<MultiLevelSelect />', () => {
         })
 
         it('should not show CheckIcon when value does not match any option', async () => {
-            render(
+            renderWithRouter(
                 <MultiLevelSelect
                     {...initialProps}
                     showCheckboxes={false}

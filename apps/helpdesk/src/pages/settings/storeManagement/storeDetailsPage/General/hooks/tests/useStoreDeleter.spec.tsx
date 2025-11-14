@@ -12,6 +12,7 @@ import useStoreDeleter from '../useStoreDeleter'
 jest.mock('state/notifications/actions')
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
 }))
 

@@ -19,6 +19,7 @@ import { useStartSubscription } from '../useStartSubscription'
 jest.useFakeTimers()
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
 }))
 

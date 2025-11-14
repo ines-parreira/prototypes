@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,6 +8,7 @@ import { dummyAppListIntegrationItem, dummyAppListItem } from 'fixtures/apps'
 import { IntegrationType } from 'models/integration/constants'
 import { Category } from 'models/integration/types/app'
 import { Application, getApplicationById } from 'services/applications'
+import { renderWithRouter } from 'utils/testing'
 
 import Card, { CARD_LINK_TEST_ID, LOADING_TEST_ID, Pills } from '../Card'
 
@@ -22,13 +21,13 @@ jest.mock('services/applications', () => ({
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Pills item={{ ...dummyAppListIntegrationItem, count: 0 }} />,
         )
         expect(container.firstChild?.firstChild).toBeNull()
     })
     it('should render the upgrade button', () => {
-        render(
+        renderWithRouter(
             <Pills
                 item={{
                     ...dummyAppListIntegrationItem,
@@ -40,7 +39,7 @@ describe('<Pills />', () => {
     })
 
     it('should render the number of install', () => {
-        render(
+        renderWithRouter(
             <Pills
                 item={{
                     ...dummyAppListIntegrationItem,
@@ -52,14 +51,16 @@ describe('<Pills />', () => {
         expect(screen.getByText('2'))
     })
     it('should render with a "Featured" label', () => {
-        render(<Pills item={dummyAppListIntegrationItem} isFeatured />)
+        renderWithRouter(
+            <Pills item={dummyAppListIntegrationItem} isFeatured />,
+        )
         expect(screen.getByText('Featured'))
     })
 })
 
 describe('<Card />', () => {
     it('should render a basic link card with proper link', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -79,7 +80,7 @@ describe('<Card />', () => {
         const application = mockApplications[0]
         application.supports_multiple_connections = true
         mockedGetApplicationById.mockReturnValue(application)
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -92,7 +93,7 @@ describe('<Card />', () => {
             </Provider>,
         )
         expect(getByTestId('card-link')).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/integrations/app/${application.id}/connections`,
         )
     })
@@ -103,7 +104,7 @@ describe('<Card />', () => {
         const application = mockApplications[0]
         application.supports_multiple_connections = true
         mockedGetApplicationById.mockReturnValue(application)
-        const { getByTestId } = render(
+        const { getByTestId } = renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -116,13 +117,13 @@ describe('<Card />', () => {
             </Provider>,
         )
         expect(getByTestId('card-link')).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/integrations/app/${application.id}`,
         )
     })
 
     it('should render div card', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -136,7 +137,7 @@ describe('<Card />', () => {
     })
 
     it('should render a featured card with a featured pill', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -151,7 +152,7 @@ describe('<Card />', () => {
     })
 
     it('should render a featured card without a featured pill', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{
@@ -168,7 +169,7 @@ describe('<Card />', () => {
     })
 
     it('should render a loading card', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <Card
                     item={{

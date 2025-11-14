@@ -39,6 +39,7 @@ jest.mock('react-redux', () => ({
     ),
 }))
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Router: ({ children }: { children: ReactNode }) => (
         <div>
             <p>Router</p>

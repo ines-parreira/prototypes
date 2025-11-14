@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
 import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
+import { renderWithRouter } from 'utils/testing'
 
 describe('GlobalNavigationItem', () => {
     beforeEach(() => {
@@ -10,14 +11,14 @@ describe('GlobalNavigationItem', () => {
     })
 
     it('should render an inactive item', () => {
-        render(
+        renderWithRouter(
             <GlobalNavigationItem icon="home" url="/app/home" label="Home" />,
         )
         expect(screen.getByText('home').parentNode).not.toHaveClass(css.active)
     })
 
     it('should render an active item', () => {
-        render(
+        renderWithRouter(
             <GlobalNavigationItem
                 icon="home"
                 isActive
@@ -29,7 +30,7 @@ describe('GlobalNavigationItem', () => {
     })
 
     it('should render an link item', () => {
-        render(
+        renderWithRouter(
             <GlobalNavigationItem
                 as={Link}
                 icon="home"
@@ -42,7 +43,7 @@ describe('GlobalNavigationItem', () => {
     })
 
     it('should render an button item', () => {
-        render(
+        renderWithRouter(
             <GlobalNavigationItem
                 icon="home"
                 isActive

@@ -1,16 +1,14 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { RuleFormEditor } from '../RuleFormEditor'
 
@@ -27,15 +25,11 @@ describe('<RuleFormEditor />', () => {
         currentUser: fromJS(user),
     } as RootState)
 
-    const history = createMemoryHistory()
-
     it('should render editor for rule', () => {
-        const { baseElement } = render(
-            <Router history={history}>
-                <Provider store={store}>
-                    <RuleFormEditor {...minProps} />
-                </Provider>
-            </Router>,
+        const { baseElement } = renderWithRouter(
+            <Provider store={store}>
+                <RuleFormEditor {...minProps} />
+            </Provider>,
         )
 
         expect(baseElement.firstChild).toMatchSnapshot()
@@ -47,12 +41,10 @@ describe('<RuleFormEditor />', () => {
             rule: undefined,
         }
 
-        const { baseElement } = render(
-            <Router history={history}>
-                <Provider store={store}>
-                    <RuleFormEditor {...props} />
-                </Provider>
-            </Router>,
+        const { baseElement } = renderWithRouter(
+            <Provider store={store}>
+                <RuleFormEditor {...props} />
+            </Provider>,
         )
 
         expect(baseElement.firstChild).toMatchSnapshot()

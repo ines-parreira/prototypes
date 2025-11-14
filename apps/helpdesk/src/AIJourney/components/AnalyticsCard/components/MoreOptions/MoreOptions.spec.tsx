@@ -51,7 +51,7 @@ describe('<MoreOptions />', () => {
         fireEvent.click(screen.getByText('more_horiz'))
         const editLink = screen.getByText('Test').closest('a')
         expect(editLink).toHaveAttribute(
-            'to',
+            'href',
             `/app/ai-journey/${shopName}/${journeyType.replace('_', '-')}/test/${journeyId}`,
         )
     })

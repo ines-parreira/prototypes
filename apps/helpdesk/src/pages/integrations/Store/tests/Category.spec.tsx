@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -15,7 +13,7 @@ const store = mockStore({})
 
 describe('<Category />', () => {
     it('should render correctly', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <Category category={CategoryType.QUALITY} />
             </Provider>,
@@ -29,7 +27,7 @@ describe('<Category />', () => {
             </Provider>,
         )
         expect(
-            screen.getByText(/View All/).getAttribute('to'),
-        ).toMatchInlineSnapshot(`"?category=Quality%20Assurance"`)
+            screen.getByText(/View All/).getAttribute('href'),
+        ).toMatchInlineSnapshot(`"/?category=Quality%20Assurance"`)
     })
 })

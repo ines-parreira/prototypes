@@ -1,10 +1,9 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
 import { getIntegrationConfig } from 'state/integrations/helpers'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('state/integrations/helpers')
 jest.mock(
@@ -15,7 +14,7 @@ jest.mock(
 const getIntegrationConfigMock = assumeMock(getIntegrationConfig)
 
 describe('VoicePaywall', () => {
-    const renderComponent = () => render(<VoicePaywall />)
+    const renderComponent = () => renderWithRouter(<VoicePaywall />)
 
     it('should render all elements', () => {
         getIntegrationConfigMock.mockReturnValue({

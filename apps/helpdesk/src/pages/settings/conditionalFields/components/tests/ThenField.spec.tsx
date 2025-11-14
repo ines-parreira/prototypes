@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
 import { ExpressionFieldType } from '@gorgias/helpdesk-types'
@@ -85,7 +86,9 @@ const defaultProps = {
 describe('ThenField', () => {
     it('should render the empty component when no requirements are set', () => {
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} value={[]} />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} value={[]} />
+            </MemoryRouter>,
         )
 
         expect(
@@ -95,14 +98,20 @@ describe('ThenField', () => {
 
     it('should render the provided error message', () => {
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} error="Some error message" />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} error="Some error message" />
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Some error message')).toBeInTheDocument()
     })
 
     it('should render as many rows as there are values', () => {
-        renderWithStoreAndQueryClientProvider(<ThenField {...defaultProps} />)
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <ThenField {...defaultProps} />
+            </MemoryRouter>,
+        )
 
         expect(screen.getAllByRole('row').length).toBe(
             defaultProps.value.length + 1, // +1 for the table header
@@ -123,7 +132,9 @@ describe('ThenField', () => {
             { field_id: 4, type: ExpressionFieldType.Required },
         ]
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} value={allFields} />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} value={allFields} />
+            </MemoryRouter>,
         )
 
         expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
@@ -135,7 +146,9 @@ describe('ThenField', () => {
     it('should trigger onChange when adding a new field', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} onChange={onChange} />
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByRole('combobox'))
@@ -152,7 +165,9 @@ describe('ThenField', () => {
     it('should trigger onChange when clicking the checkbox (visible to required)', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} onChange={onChange} />
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getAllByLabelText('Required')[0]) // Check the first entry
@@ -180,7 +195,9 @@ describe('ThenField', () => {
     it('should trigger onChange without the clicked row when clicking the delete button', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />,
+            <MemoryRouter>
+                <ThenField {...defaultProps} onChange={onChange} />
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getAllByTitle('Remove field')[1]) // Delete the second field
@@ -228,7 +245,11 @@ describe('ThenField', () => {
         })
 
         it('should display the modal when the selected field has not a conditional requirement type', async () => {
-            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <ThenField {...props} />
+                </MemoryRouter>,
+            )
 
             fireEvent.click(screen.getByRole('combobox'))
             fireEvent.click(screen.getByText('Custom field #4'))
@@ -242,7 +263,11 @@ describe('ThenField', () => {
         })
 
         it('should cancel the modal', async () => {
-            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <ThenField {...props} />
+                </MemoryRouter>,
+            )
             fireEvent.click(screen.getByRole('combobox'))
             fireEvent.click(screen.getByText('Custom field #4'))
             await waitFor(() => {
@@ -262,7 +287,11 @@ describe('ThenField', () => {
         })
 
         it('should confirm the changes and close the modal', async () => {
-            renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <ThenField {...props} />
+                </MemoryRouter>,
+            )
             fireEvent.click(screen.getByRole('combobox'))
             fireEvent.click(screen.getByText('Custom field #4'))
             fireEvent.click(screen.getByRole('button', { name: 'Confirm' }))

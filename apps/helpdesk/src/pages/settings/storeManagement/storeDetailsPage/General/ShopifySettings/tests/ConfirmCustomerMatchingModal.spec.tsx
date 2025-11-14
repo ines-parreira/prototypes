@@ -1,11 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { fireEvent, screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import ConfirmCustomerMatchingModal from '../ConfirmCustomerMatchingModal'
-
-const renderWithRouter = (element: React.ReactElement) => {
-    return render(element, { wrapper: BrowserRouter })
-}
 
 describe('<ConfirmCustomerMatchingModal />', () => {
     const defaultProps = {
@@ -34,8 +31,8 @@ describe('<ConfirmCustomerMatchingModal />', () => {
 
         const learnMoreLink = screen.getByText('Learn more')
         expect(learnMoreLink).toHaveAttribute(
-            'to',
-            'https://docs.gorgias.com/en-US/shopify-faqs-81985',
+            'href',
+            '/https://docs.gorgias.com/en-US/shopify-faqs-81985',
         )
     })
 

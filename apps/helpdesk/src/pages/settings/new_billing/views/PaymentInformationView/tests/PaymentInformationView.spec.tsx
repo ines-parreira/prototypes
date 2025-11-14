@@ -1,6 +1,7 @@
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -34,7 +35,9 @@ describe('PaymentInformationView', () => {
             )
 
             renderWithStoreAndQueryClientProvider(
-                <PaymentInformationView {...defaultProps} />,
+                <MemoryRouter>
+                    <PaymentInformationView {...defaultProps} />
+                </MemoryRouter>,
                 {
                     billing: fromJS(billingState),
                     currentAccount: fromJS({
@@ -83,7 +86,9 @@ describe('PaymentInformationView', () => {
 
     it('should ask the user to upgrade helpdesk plan if starter', async () => {
         renderWithStoreAndQueryClientProvider(
-            <PaymentInformationView {...defaultProps} />,
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
             {
                 billing: fromJS(billingState),
                 currentAccount: fromJS({
@@ -109,7 +114,9 @@ describe('PaymentInformationView', () => {
 
     it('should ask the user to migrate to a non legacy automate plan', async () => {
         renderWithStoreAndQueryClientProvider(
-            <PaymentInformationView {...defaultProps} />,
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
             {
                 billing: fromJS(billingState),
                 currentAccount: fromJS({
@@ -137,7 +144,9 @@ describe('PaymentInformationView', () => {
 
     it('should ask the user to contact us to reactivate a cancelled subscription', async () => {
         renderWithStoreAndQueryClientProvider(
-            <PaymentInformationView {...defaultProps} />,
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
             {
                 billing: fromJS(billingState),
                 currentAccount: fromJS({

@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import { MemoryRouter } from 'react-router-dom'
 
 import client from 'models/api/resources'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
@@ -30,7 +29,11 @@ describe('BillingInformationSection', () => {
 
     describe('nominal case', () => {
         it('should render', async () => {
-            renderWithQueryClientProvider(<BillingInformationSection />)
+            renderWithQueryClientProvider(
+                <MemoryRouter>
+                    <BillingInformationSection />
+                </MemoryRouter>,
+            )
 
             expect(screen.getByText('Billing information')).toBeVisible()
 
@@ -56,7 +59,11 @@ describe('BillingInformationSection', () => {
             })
 
             it('should render', async () => {
-                renderWithQueryClientProvider(<BillingInformationSection />)
+                renderWithQueryClientProvider(
+                    <MemoryRouter>
+                        <BillingInformationSection />
+                    </MemoryRouter>,
+                )
 
                 expect(screen.getByText('Billing information')).toBeVisible()
 

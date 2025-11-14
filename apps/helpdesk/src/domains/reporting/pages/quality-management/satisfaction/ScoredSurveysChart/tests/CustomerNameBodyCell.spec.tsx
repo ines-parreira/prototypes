@@ -1,13 +1,10 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import CustomerNameBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
+import { renderWithRouter } from 'utils/testing'
 
 describe('<CustomerNameBodyCell>', () => {
     it('should render customer name', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <table>
                 <tbody>
                     <tr>
@@ -24,7 +21,7 @@ describe('<CustomerNameBodyCell>', () => {
     })
 
     it('should render link', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <table>
                 <tbody>
                     <tr>
@@ -40,11 +37,11 @@ describe('<CustomerNameBodyCell>', () => {
         const link = container.querySelector('a')
 
         expect(link).toBeInTheDocument()
-        expect(link?.getAttribute('to')).toEqual('/app/customer/1')
+        expect(link?.getAttribute('href')).toEqual('/app/customer/1')
     })
 
     it('should render NOT_AVAILABLE_PLACEHOLDER when customerName is not provided', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <table>
                 <tbody>
                     <tr>

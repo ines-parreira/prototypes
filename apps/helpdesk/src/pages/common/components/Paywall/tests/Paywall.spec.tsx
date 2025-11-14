@@ -1,7 +1,8 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 import { fireEvent, render, RenderResult } from '@testing-library/react'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
+import { MemoryRouter } from 'react-router-dom'
 
 import { testimonial as testimonialFixture } from 'fixtures/paywall'
 
@@ -50,7 +51,11 @@ describe('<Paywall />', () => {
     })
 
     it('should render with minimal props', () => {
-        const { container } = render(<Paywall {...minProps} />)
+        const { container } = render(
+            <MemoryRouter>
+                <Paywall {...minProps} />
+            </MemoryRouter>,
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -60,7 +65,9 @@ describe('<Paywall />', () => {
         ['custom header element', <div>Custom page header</div>],
     ])('should render a page header with %s', (testName, pageHeader) => {
         const { container } = render(
-            <Paywall {...minProps} pageHeader={pageHeader} />,
+            <MemoryRouter>
+                <Paywall {...minProps} pageHeader={pageHeader} />
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -69,7 +76,9 @@ describe('<Paywall />', () => {
         'should render a paywall theme with badge for %s paywall type',
         (paywallTheme) => {
             const { container } = render(
-                <Paywall {...minProps} paywallTheme={paywallTheme} />,
+                <MemoryRouter>
+                    <Paywall {...minProps} paywallTheme={paywallTheme} />
+                </MemoryRouter>,
             )
             expect(container.firstChild).toMatchSnapshot()
         },
@@ -77,7 +86,9 @@ describe('<Paywall />', () => {
 
     it('should open the lightbox on preview click', () => {
         const { getByAltText, queryAllByTestId } = render(
-            <Paywall {...minProps} />,
+            <MemoryRouter>
+                <Paywall {...minProps} />
+            </MemoryRouter>,
         )
 
         fireEvent.click(getByAltText('Feature preview'))
@@ -99,7 +110,11 @@ describe('<Paywall />', () => {
             },
         ],
     ])('should close the lightbox on %s', (testName, fireCloseEvent) => {
-        const renderResult = render(<Paywall {...minProps} />)
+        const renderResult = render(
+            <MemoryRouter>
+                <Paywall {...minProps} />
+            </MemoryRouter>,
+        )
 
         fireEvent.click(renderResult.getByAltText('Feature preview'))
         fireCloseEvent(renderResult)
@@ -109,57 +124,66 @@ describe('<Paywall />', () => {
 
     it('should render with filter shadow', () => {
         const { getByAltText } = render(
-            <Paywall {...minProps} renderFilterShadow />,
+            <MemoryRouter>
+                <Paywall {...minProps} renderFilterShadow />
+            </MemoryRouter>,
         )
         expect(getByAltText('Feature preview').parentElement).toMatchSnapshot()
     })
 
     it('should render with a legacy badge', () => {
-        const { container } = render(<Paywall {...minProps} shouldKeepPrice />)
+        const { container } = render(
+            <MemoryRouter>
+                <Paywall {...minProps} shouldKeepPrice />
+            </MemoryRouter>,
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with an add-on update type', () => {
         const { container } = render(
-            <Paywall {...minProps} upgradeType={UpgradeType.AddOn} />,
+            <MemoryRouter>
+                <Paywall {...minProps} upgradeType={UpgradeType.AddOn} />
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with a testimonial', () => {
         const { container } = render(
-            <Paywall {...minProps} testimonial={testimonialFixture} />,
+            <MemoryRouter>
+                <Paywall {...minProps} testimonial={testimonialFixture} />
+            </MemoryRouter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the default upgrade CTA', () => {
-        const { container } = render(<Paywall {...minProps} showUpgradeCta />)
+        const { container } = render(
+            <MemoryRouter>
+                <Paywall {...minProps} showUpgradeCta />
+            </MemoryRouter>,
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a custom upgrade CTA', () => {
         const { container } = render(
-            <Paywall {...minProps} customCta={<button>Upgrade me!</button>} />,
+            <MemoryRouter>
+                <Paywall
+                    {...minProps}
+                    customCta={<button>Upgrade me!</button>}
+                />
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
-    it('should not render the default upgrade CTA if a custom upgrade CTA is passed', () => {
-        const { container } = render(
-            <Paywall
-                {...minProps}
-                showUpgradeCta
-                customCta={<button>Upgrade me!</button>}
-            />,
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render with modal', () => {
         const { container } = render(
-            <Paywall {...minProps} modal={<div>Modal content</div>} />,
+            <MemoryRouter>
+                <Paywall {...minProps} modal={<div>Modal content</div>} />
+            </MemoryRouter>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,6 +5,7 @@ import thunk from 'redux-thunk'
 
 import { integrationBase } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 import List from '../List'
 
@@ -37,7 +35,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 
 describe('List', () => {
     it('should render a loader', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -54,7 +52,7 @@ describe('List', () => {
     })
 
     it('should render the list of HTTP integrations', () => {
-        const { queryAllByText } = render(
+        const { queryAllByText } = renderWithRouter(
             <Provider store={store}>
                 <List />
             </Provider>,
@@ -64,7 +62,7 @@ describe('List', () => {
     })
 
     it('should render a button to add a new integration', () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <List />
             </Provider>,

@@ -28,6 +28,7 @@ import { renderWithStore } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 jest.mock(

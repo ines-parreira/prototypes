@@ -4,7 +4,7 @@ import { act, fireEvent, render, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import { Store } from 'redux'
 
 import {

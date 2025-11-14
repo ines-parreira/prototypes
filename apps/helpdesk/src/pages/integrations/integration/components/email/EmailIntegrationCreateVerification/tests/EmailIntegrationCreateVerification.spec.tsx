@@ -1,11 +1,12 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { EmailIntegrationCreateVerification } from 'pages/integrations/integration/components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
 import * as helpers from 'pages/integrations/integration/components/email/helpers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')
 
@@ -31,7 +32,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should render the regular instructions', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <EmailIntegrationCreateVerification {...commonProps} />,
             )
 
@@ -49,7 +50,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
 
             isBaseEmailAddressSpy.mockImplementation(() => true)
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     integration={integration}
@@ -62,7 +63,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should render instructions for the activated forwarding email', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     emailForwardingActivated
@@ -75,7 +76,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should check the delete email message, it should not contain the text about "saved filters"', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     emailForwardingActivated
@@ -92,7 +93,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         it('should check the delete email message, it should contain the text about "saved filters" when feature flag is enabled', () => {
             isBaseEmailAddressSpy.mockImplementation(() => false)
 
-            const { getByText, getByRole } = render(
+            const { getByText, getByRole } = renderWithRouter(
                 <EmailIntegrationCreateVerification
                     {...{
                         ...commonProps,

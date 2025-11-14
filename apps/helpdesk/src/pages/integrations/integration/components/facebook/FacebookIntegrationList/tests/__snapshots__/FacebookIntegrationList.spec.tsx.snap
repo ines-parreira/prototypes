@@ -18,7 +18,7 @@ exports[`<FacebookIntegrationList /> should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>

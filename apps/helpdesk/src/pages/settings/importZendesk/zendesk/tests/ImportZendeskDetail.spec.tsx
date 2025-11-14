@@ -1,24 +1,21 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render, RenderResult } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useParams } from 'react-router-dom'
 
 import { mockStore } from 'utils/testing'
 
 import { ImportZendeskDetail } from '../ImportZendeskDetail'
 import { successImport } from './fixtures'
 
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useParams: jest.fn(),
-        }) as Record<string, any>,
-)
-const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
+
+const mockUseParams = useParams as jest.Mock
 
 const renderComponent = (
     props: ComponentProps<typeof ImportZendeskDetail> & {
@@ -28,13 +25,15 @@ const renderComponent = (
     mockUseParams.mockReturnValue({ integrationId: props.integrationId || '1' })
 
     return render(
-        <Provider
-            store={mockStore({
-                integrations: fromJS({}),
-            } as any)}
-        >
-            <ImportZendeskDetail {...props} />
-        </Provider>,
+        <MemoryRouter>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({}),
+                } as any)}
+            >
+                <ImportZendeskDetail {...props} />
+            </Provider>
+        </MemoryRouter>,
     )
 }
 
@@ -69,26 +68,28 @@ describe('<ImportZendeskDetail/>', () => {
                 }),
             )
             rerender(
-                <Provider
-                    store={mockStore({
-                        integrations: fromJS({}),
-                    } as any)}
-                >
-                    <ImportZendeskDetail
-                        {...{
-                            ...props,
-                            integrations: [
-                                {
-                                    ...successImport,
-                                    meta: {
-                                        ...successImport.meta,
-                                        continuous_import_enabled: true,
+                <MemoryRouter>
+                    <Provider
+                        store={mockStore({
+                            integrations: fromJS({}),
+                        } as any)}
+                    >
+                        <ImportZendeskDetail
+                            {...{
+                                ...props,
+                                integrations: [
+                                    {
+                                        ...successImport,
+                                        meta: {
+                                            ...successImport.meta,
+                                            continuous_import_enabled: true,
+                                        },
                                     },
-                                },
-                            ],
-                        }}
-                    />
-                </Provider>,
+                                ],
+                            }}
+                        />
+                    </Provider>
+                </MemoryRouter>,
             )
             expect(getByText('Pause')).toBeDefined()
         })

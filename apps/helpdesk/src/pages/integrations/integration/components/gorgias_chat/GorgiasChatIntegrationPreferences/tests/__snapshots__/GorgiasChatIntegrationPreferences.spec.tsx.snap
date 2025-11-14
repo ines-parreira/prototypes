@@ -98,7 +98,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/channels/gorgias_chat"
+            href="/app/settings/channels/gorgias_chat"
           >
             Chat
           </a>
@@ -140,7 +140,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   Choose when customers can send live chat messages to your team during
                    
                   <a
-                    to="/app/settings/business-hours"
+                    href="/app/settings/business-hours"
                   >
                     business hours
                   </a>
@@ -492,7 +492,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 During
                  
                 <a
-                  to="/app/settings/business-hours"
+                  href="/app/settings/business-hours"
                 >
                   business hours
                 </a>

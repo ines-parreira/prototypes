@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignTableStats } from 'domains/reporting/pages/convert/components/CampaignTableStats/CampaignTableStats'
@@ -83,14 +84,16 @@ describe('CampaignTableStats', () => {
 
     it('should render CampaignTableStats with campaigns and variants', () => {
         const { getByText, getByRole } = renderWithStore(
-            <CampaignTableStats
-                chatIntegrationId={8}
-                isLoading={false}
-                rows={rows}
-                offset={0}
-                onClickNextPage={jest.fn()}
-                onClickPrevPage={jest.fn()}
-            />,
+            <MemoryRouter>
+                <CampaignTableStats
+                    chatIntegrationId={8}
+                    isLoading={false}
+                    rows={rows}
+                    offset={0}
+                    onClickNextPage={jest.fn()}
+                    onClickPrevPage={jest.fn()}
+                />
+            </MemoryRouter>,
             {
                 integrations: fromJS(integrationsState),
             },
@@ -108,14 +111,16 @@ describe('CampaignTableStats', () => {
 
     it('should render the sorting arrow indicators properly when clicking header cell', () => {
         const { getByText } = renderWithStore(
-            <CampaignTableStats
-                chatIntegrationId={8}
-                isLoading={false}
-                rows={rows}
-                offset={0}
-                onClickNextPage={jest.fn()}
-                onClickPrevPage={jest.fn()}
-            />,
+            <MemoryRouter>
+                <CampaignTableStats
+                    chatIntegrationId={8}
+                    isLoading={false}
+                    rows={rows}
+                    offset={0}
+                    onClickNextPage={jest.fn()}
+                    onClickPrevPage={jest.fn()}
+                />
+            </MemoryRouter>,
             {},
         )
         const engagementSpan = getByText('Engagement')
@@ -143,14 +148,16 @@ describe('CampaignTableStats', () => {
 
     it('scroll sets isTableScrolled state correctly', () => {
         const { container, getByText } = renderWithStore(
-            <CampaignTableStats
-                chatIntegrationId={8}
-                isLoading={false}
-                rows={rows}
-                offset={0}
-                onClickNextPage={jest.fn()}
-                onClickPrevPage={jest.fn()}
-            />,
+            <MemoryRouter>
+                <CampaignTableStats
+                    chatIntegrationId={8}
+                    isLoading={false}
+                    rows={rows}
+                    offset={0}
+                    onClickNextPage={jest.fn()}
+                    onClickPrevPage={jest.fn()}
+                />
+            </MemoryRouter>,
             {},
         )
         const tableDiv = container.querySelector('.container')

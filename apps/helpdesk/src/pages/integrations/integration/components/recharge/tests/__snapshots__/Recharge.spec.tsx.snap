@@ -18,7 +18,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -37,16 +37,12 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/recharge/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/recharge/connections"
     >
       Connections
@@ -165,7 +161,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
         >
           <a
             class="connectButtonWrapper"
-            to="/app/settings/integrations/recharge/new"
+            href="/app/settings/integrations/recharge/new"
           >
             <button
               aria-disabled="false"
@@ -271,7 +267,7 @@ exports[`<Recharge/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -280,7 +276,7 @@ exports[`<Recharge/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/recharge/connections"
+            href="/app/settings/integrations/recharge/connections"
           >
             Recharge
           </a>
@@ -373,7 +369,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -382,7 +378,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/recharge/connections"
+            href="/app/settings/integrations/recharge/connections"
           >
             Recharge
           </a>
@@ -454,7 +450,7 @@ exports[`<Recharge/> List should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -470,7 +466,7 @@ exports[`<Recharge/> List should render 1`] = `
     <div>
       <a
         class="connectButtonWrapper"
-        to="/app/settings/integrations/recharge/new"
+        href="/app/settings/integrations/recharge/new"
       >
         <button
           aria-disabled="false"
@@ -492,16 +488,12 @@ exports[`<Recharge/> List should render 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/recharge/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/recharge/connections"
     >
       Connections
@@ -515,7 +507,7 @@ exports[`<Recharge/> List should render 1`] = `
     >
       <a
         class="link"
-        to="/app/settings/integrations/recharge/1"
+        href="/app/settings/integrations/recharge/1"
       >
         <span>
           myShop1

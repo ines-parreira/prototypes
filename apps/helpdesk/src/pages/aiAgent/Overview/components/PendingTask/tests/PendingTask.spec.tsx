@@ -1,8 +1,8 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { PendingTask } from '../PendingTask'
 
@@ -18,7 +18,7 @@ describe('PendingTask', () => {
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(
         'renders title, caption and type with value %s',
         (type) => {
-            render(
+            renderWithRouter(
                 <PendingTask
                     caption="caption_text"
                     ctaUrl="/"
@@ -36,7 +36,7 @@ describe('PendingTask', () => {
         },
     )
     it('render the loading state', () => {
-        render(<PendingTask isLoading={true} />)
+        renderWithRouter(<PendingTask isLoading={true} />)
 
         expect(screen.getAllByRole('link')[0]).toHaveAttribute(
             'aria-busy',
@@ -47,7 +47,7 @@ describe('PendingTask', () => {
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(
         'calls segment log with type %s on click',
         (type) => {
-            render(
+            renderWithRouter(
                 <PendingTask
                     caption="caption_text"
                     ctaUrl="/"

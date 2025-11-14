@@ -1,13 +1,12 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { user } from 'fixtures/users'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import OnboardingSidePanel from '../OnboardingSidePanel'
 
@@ -29,7 +28,7 @@ describe('OnboardingSidePanel', () => {
     } as RootState
 
     it(`should greet the user`, () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
             </Provider>,
@@ -50,7 +49,7 @@ describe('OnboardingSidePanel', () => {
     ])(
         'should log onboarding-widget-clicked:$eventName event on $linkText link click',
         ({ linkText, eventName }) => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
                 </Provider>,
@@ -82,7 +81,7 @@ describe('OnboardingSidePanel', () => {
         },
         { id: 'add-team-members', path: '/app/settings/users/' },
     ])('$id should send the user to $path', ({ id, path }) => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
             </Provider>,
@@ -90,12 +89,12 @@ describe('OnboardingSidePanel', () => {
 
         const link = screen.getByTestId(id)
 
-        expect(link.getAttribute('to')).toBe(path)
+        expect(link.getAttribute('href')).toBe(path)
     })
 
     it('should call onHide when skip is clicked', () => {
         const onHide = jest.fn()
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={onHide} />
             </Provider>,

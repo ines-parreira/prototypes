@@ -19,7 +19,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/help-center"
+              href="/app/settings/help-center"
             >
               Help Center
             </a>

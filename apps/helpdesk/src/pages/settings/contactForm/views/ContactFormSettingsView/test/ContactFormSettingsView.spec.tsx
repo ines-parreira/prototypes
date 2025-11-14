@@ -173,7 +173,7 @@ describe('<ContactFormSettingsView />', () => {
             })
 
             const headerLink = await screen.findByLabelText('base-path')
-            expect(headerLink.getAttribute('to')).toEqual(
+            expect(headerLink.getAttribute('href')).toEqual(
                 CONTACT_FORM_BASE_PATH,
             )
         },

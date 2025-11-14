@@ -1,6 +1,5 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -20,6 +19,7 @@ import {
 import { Product, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import FeaturePaywall from '../FeaturePaywall'
 
@@ -105,7 +105,7 @@ describe('<FeaturePaywall />', () => {
             defaultState,
         ],
     ])('should render empty page when %s', (testName, props, state) => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(state)}>
                 <FeaturePaywall {...props} />
             </Provider>,
@@ -115,7 +115,7 @@ describe('<FeaturePaywall />', () => {
     })
 
     it('should render paywall for the feature', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <FeaturePaywall {...minProps} />
             </Provider>,
@@ -130,7 +130,7 @@ describe('<FeaturePaywall />', () => {
             availablePlansWithLegacyPlans[0] as Product<ProductType.Helpdesk>
         helpdeskProduct.prices.push(legacyBasicHelpdeskPlan)
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -167,7 +167,7 @@ describe('<FeaturePaywall />', () => {
             availablePlanWithCustomPlan[0] as Product<ProductType.Helpdesk>
         helpdeskProduct.prices.push(customHelpdeskPlan)
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider
                 store={mockStore({
                     ...defaultState,

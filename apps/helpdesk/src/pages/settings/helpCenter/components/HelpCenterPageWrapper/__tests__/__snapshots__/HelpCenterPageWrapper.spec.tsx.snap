@@ -20,7 +20,7 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/help-center"
+              href="/app/settings/help-center"
             >
               Help Center
             </a>
@@ -90,15 +90,12 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
     >
       <a
         class="link"
-        data-active-class-name="active"
-        data-exact="true"
         href="/app/settings/help-center/1/articles"
       >
         Articles
       </a>
       <a
         class="link"
-        data-active-class-name="active"
         href="/app/settings/help-center/1/ai-library"
       >
         <i
@@ -110,37 +107,30 @@ exports[`<HelpCenterPageWrapper /> should render the component 1`] = `
       </a>
       <a
         class="link"
-        data-active-class-name="active"
         href="/app/settings/help-center/1/contact"
       >
         Contact
       </a>
       <a
         class="link"
-        data-active-class-name="active"
         href="/app/settings/help-center/1/appearance"
       >
         Appearance
       </a>
       <a
         class="link"
-        data-active-class-name="active"
-        data-exact="true"
         href="/app/settings/help-center/1/preferences"
       >
         Preferences
       </a>
       <a
         class="link"
-        data-active-class-name="active"
-        data-exact="true"
         href="/app/settings/help-center/1/customization"
       >
         Customization
       </a>
       <a
         class="link"
-        data-active-class-name="active"
         href="/app/settings/help-center/1/publish-track"
       >
         Publish & Track

@@ -1,11 +1,12 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { IntegrationType, PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
 
@@ -68,7 +69,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
+        renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -89,7 +90,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
+        renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -108,7 +109,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
+        renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -123,7 +124,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
+        renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,
@@ -160,7 +161,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return mockPhoneNumbers
         })
 
-        render(
+        renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
             />,

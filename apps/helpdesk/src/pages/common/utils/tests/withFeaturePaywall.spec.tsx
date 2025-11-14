@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +9,7 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { AccountFeature } from 'state/currentAccount/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { withFeaturePaywall } from '../withFeaturePaywall'
 
@@ -40,7 +39,7 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.InstagramComment,
         )(AnyComponent)
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,
@@ -53,7 +52,7 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics,
         )(AnyComponent)
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,
@@ -71,7 +70,7 @@ describe('withFeaturePaywall', () => {
             AccountFeature.RevenueStatistics,
             CustomPaywallComponent,
         )(AnyComponent)
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,
@@ -93,7 +92,7 @@ describe('withFeaturePaywall', () => {
             undefined,
             customPaywallConfigs,
         )(AnyComponent)
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
             </Provider>,

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { render, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { fromJS, List, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +15,7 @@ import {
     GorgiasChatStatusEnum,
 } from 'models/integration/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import * as hookGorgiasChatIntegrationStatusData from '../../../hooks/useGorgiasChatIntegrationStatusData'
 import GorgiasChatIntegrationListRow, {
@@ -93,7 +94,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: false,
         }))
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow {...defaultProps} />
@@ -114,7 +115,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: true,
         }))
 
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow {...defaultProps} />
@@ -135,7 +136,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: true,
         }))
 
-        const { container, queryByText } = render(
+        const { container, queryByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -169,7 +170,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: true,
         }))
 
-        const { container, queryByText } = render(
+        const { container, queryByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -206,7 +207,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: true,
         }))
 
-        const { container, queryByText } = render(
+        const { container, queryByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -271,7 +272,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                 isChatStatusError: false,
             }))
 
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <TestWrapper>
                         <GorgiasChatIntegrationListRow {...defaultProps} />
@@ -293,7 +294,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: false,
         }))
 
-        const { getByText, queryByText } = render(
+        const { getByText, queryByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -331,7 +332,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
             isChatStatusError: false,
         }))
 
-        const { getByText, queryByText } = render(
+        const { getByText, queryByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow

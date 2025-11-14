@@ -18,7 +18,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -37,16 +37,12 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/shopify/connections"
     >
       Connections
@@ -362,7 +358,7 @@ exports[`<Shopify/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -371,7 +367,7 @@ exports[`<Shopify/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/shopify/connections"
+            href="/app/settings/integrations/shopify/connections"
           >
             Shopify
           </a>
@@ -595,7 +591,7 @@ exports[`<Shopify/> List should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -635,16 +631,12 @@ exports[`<Shopify/> List should render 1`] = `
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/shopify/connections"
     >
       Connections
@@ -658,7 +650,7 @@ exports[`<Shopify/> List should render 1`] = `
     >
       <a
         class="link"
-        to="/app/settings/integrations/shopify/1"
+        href="/app/settings/integrations/shopify/1"
       >
         <span>
           myShop1

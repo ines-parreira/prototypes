@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import { submitSetting } from 'state/currentAccount/actions'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
+import { renderWithRouter } from 'utils/testing'
 
 import BusinessHoursLegacy from '../BusinessHoursLegacy'
 import { DEPRECATED_DAYS_OPTIONS } from '../constants'
@@ -23,7 +24,7 @@ describe('<BusinessHoursLegacy />', () => {
     })
 
     it('should render default values', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore()}>
                 <BusinessHoursLegacy />
             </Provider>,
@@ -48,7 +49,7 @@ describe('<BusinessHoursLegacy />', () => {
     })
 
     it('should render values from state', async () => {
-        render(
+        renderWithRouter(
             <Provider
                 store={mockStore({
                     currentAccount: fromJS({
@@ -120,7 +121,7 @@ describe('<BusinessHoursLegacy />', () => {
             },
         }
 
-        render(
+        renderWithRouter(
             <Provider
                 store={mockStore({
                     currentAccount: fromJS({

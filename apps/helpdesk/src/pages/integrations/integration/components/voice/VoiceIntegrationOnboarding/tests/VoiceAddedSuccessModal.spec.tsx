@@ -1,7 +1,8 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
+import { renderWithRouter } from 'utils/testing'
 
 import VoiceAddedSuccessModal from '../VoiceAddedSuccessModal'
 
@@ -42,7 +43,7 @@ describe('VoiceAddedSuccessModal', () => {
     })
 
     const renderComponent = () => {
-        return render(<VoiceAddedSuccessModal />)
+        return renderWithRouter(<VoiceAddedSuccessModal />)
     }
 
     it('should not render modal when no integration id in query param', () => {
@@ -103,13 +104,13 @@ describe('VoiceAddedSuccessModal', () => {
 
         const generalSettingsButton = screen.getByText('Go To General Settings')
         expect(generalSettingsButton.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/phone/123/preferences',
         )
 
         const editFlowButton = screen.getByText('Edit Call Flow')
         expect(editFlowButton.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/phone/123/flow',
         )
     })

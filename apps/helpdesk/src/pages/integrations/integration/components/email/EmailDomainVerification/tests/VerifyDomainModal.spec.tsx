@@ -51,7 +51,7 @@ describe('VerifyDomainModal', () => {
 
         const finishLaterButton = screen.getByText('Finish later')
         expect(finishLaterButton.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/email',
         )
     })

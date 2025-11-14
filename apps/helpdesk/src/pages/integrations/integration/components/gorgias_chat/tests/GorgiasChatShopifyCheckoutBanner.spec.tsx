@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
@@ -37,9 +36,11 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
     it('should render the banner with correct message and CTA', () => {
         // When
         render(
-            <GorgiasChatShopifyCheckoutChatBanner
-                integration={integrationMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatShopifyCheckoutChatBanner
+                    integration={integrationMock}
+                />
+            </MemoryRouter>,
         )
 
         // Then
@@ -51,7 +52,7 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
         const ctaLink = screen.getByText('Add To Checkout')
         expect(ctaLink).toBeInTheDocument()
         expect(ctaLink).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/channels/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
         )
     })
@@ -59,9 +60,11 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
     it('should call dispatch to hide the banner when onClose is triggered', () => {
         // When
         render(
-            <GorgiasChatShopifyCheckoutChatBanner
-                integration={integrationMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatShopifyCheckoutChatBanner
+                    integration={integrationMock}
+                />
+            </MemoryRouter>,
         )
 
         const closeButton = screen.getByRole('button', { name: /close/i })
@@ -79,9 +82,11 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
 
         // When
         render(
-            <GorgiasChatShopifyCheckoutChatBanner
-                integration={integrationMock}
-            />,
+            <MemoryRouter>
+                <GorgiasChatShopifyCheckoutChatBanner
+                    integration={integrationMock}
+                />
+            </MemoryRouter>,
         )
 
         // Then

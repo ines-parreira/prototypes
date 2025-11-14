@@ -38,7 +38,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
           class="avatar"
         >
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -65,7 +65,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
           class="ticketInfo"
         >
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -83,7 +83,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
         </td>
         <td>
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -94,7 +94,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
         </td>
         <td>
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -139,7 +139,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
           class="avatar"
         >
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -166,7 +166,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
           class="ticketInfo"
         >
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -184,7 +184,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
         </td>
         <td>
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"
@@ -195,7 +195,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
         </td>
         <td>
           <a
-            to="/app/ticket/152"
+            href="/app/ticket/152"
           >
             <div
               class="cellWrapper"

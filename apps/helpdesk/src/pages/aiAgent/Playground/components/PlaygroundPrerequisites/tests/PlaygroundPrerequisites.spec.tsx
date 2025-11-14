@@ -1,10 +1,11 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { renderWithRouter } from 'utils/testing'
 
 import { CheckPlaygroundPrerequisites } from '../PlaygroundPrerequisites'
 
@@ -23,7 +24,7 @@ const mockUsePublicResources = jest.mocked(usePublicResources)
 const renderComponent = (
     props?: Partial<ComponentProps<typeof CheckPlaygroundPrerequisites>>,
 ) => {
-    return render(
+    return renderWithRouter(
         <CheckPlaygroundPrerequisites shopName="it-shop" {...props}>
             <div>Child Component</div>
         </CheckPlaygroundPrerequisites>,
@@ -51,7 +52,7 @@ describe('CheckPlaygroundPrerequisites', () => {
         )
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
-            'to',
+            'href',
             '/app/ai-agent/shopify/it-shop/knowledge',
         )
     })

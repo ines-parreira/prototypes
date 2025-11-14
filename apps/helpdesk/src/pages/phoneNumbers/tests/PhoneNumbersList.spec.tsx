@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { within } from '@testing-library/dom'
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
@@ -25,7 +24,10 @@ describe('<PhoneNumbersList/>', () => {
         it('should render', () => {
             const { container } = render(
                 <Provider store={store}>
-                    <PhoneNumbersList />
+                    <MemoryRouter>
+                        <PhoneNumbersList />
+                    </MemoryRouter>
+                    ,
                 </Provider>,
             )
 
@@ -35,7 +37,10 @@ describe('<PhoneNumbersList/>', () => {
         it('should allow sorting by column header', () => {
             const { getByText, getAllByRole } = render(
                 <Provider store={store}>
-                    <PhoneNumbersList />
+                    <MemoryRouter>
+                        <PhoneNumbersList />
+                    </MemoryRouter>
+                    ,
                 </Provider>,
             )
 

@@ -53,7 +53,7 @@ describe('<SyncNotification />', () => {
 
         const button = screen.getByRole('button', { name: 'View Customers' })
         const link = button.closest('a')
-        expect(link).toHaveAttribute('to', '/app/customers')
+        expect(link).toHaveAttribute('href', '/app/customers')
     })
 
     it('should call setBannerClosed when close button is clicked', () => {

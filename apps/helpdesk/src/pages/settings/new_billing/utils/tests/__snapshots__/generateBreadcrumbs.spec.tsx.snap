@@ -15,7 +15,7 @@ exports[`generateBreadcrumbs should render a Breadcrumb component with a Billing
         >
           <a
             class="section"
-            to="/app/settings/billing"
+            href="/app/settings/billing"
           >
             Billing
           </a>

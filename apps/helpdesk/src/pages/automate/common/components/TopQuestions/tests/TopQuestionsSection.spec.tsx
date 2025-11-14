@@ -1,9 +1,8 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 import { TopQuestionsSection } from '../TopQuestionsSection'
 
@@ -17,7 +16,7 @@ describe('<TopQuestionsSection />', () => {
         const onCreateArticle = jest.fn().mockReturnValue(Promise.resolve())
         const onDismiss = jest.fn().mockReturnValue(Promise.resolve())
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <TopQuestionsSection
                 newQuestionsCount={5}
                 topQuestions={[
@@ -123,7 +122,7 @@ describe('<TopQuestionsSection />', () => {
         expect(onDismiss).toHaveBeenCalledWith('templateKey1')
 
         expect(screen.getByText('View All')).toHaveAttribute(
-            'to',
+            'href',
             '/app/automation/ai-recommendations?help_center_id=100&store_integration_id=1000',
         )
         act(() => {
@@ -136,7 +135,7 @@ describe('<TopQuestionsSection />', () => {
     })
 
     it('renders placeholders if there are less than 4 top questions', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <TopQuestionsSection
                 newQuestionsCount={5}
                 topQuestions={[

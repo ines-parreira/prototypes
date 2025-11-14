@@ -1,9 +1,6 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
+import { renderWithRouter } from 'utils/testing'
 
 import type { TicketPayload } from '../../types'
 import TicketNotification from '../TicketNotification'
@@ -33,7 +30,7 @@ const notification: Notification<TicketPayload> = {
 
 describe('<TicketNotification />', () => {
     it('should render notification content', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <TicketNotification
                 notification={notification}
                 headerExtra="extra"
@@ -46,7 +43,7 @@ describe('<TicketNotification />', () => {
     })
 
     it('should render regular notification icon', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <TicketNotification
                 notification={{
                     ...notification,

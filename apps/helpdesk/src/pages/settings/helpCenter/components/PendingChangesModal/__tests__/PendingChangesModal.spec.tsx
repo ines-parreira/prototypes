@@ -5,6 +5,7 @@ import { act, fireEvent, render } from '@testing-library/react'
 import PendingChangesModal from '../PendingChangesModal'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         block: jest.fn(),
         push: jest.fn(),

@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,6 +11,7 @@ import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
@@ -88,7 +87,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
             hasAccess: true,
             isLoading: false,
         })
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
@@ -99,7 +98,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should not render automation features tab', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
@@ -112,7 +111,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should call useAiAgentAccess with shopName from integration metadata', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
@@ -123,7 +122,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should render GorgiasChatIntegrationNavigation', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
@@ -135,7 +134,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should render GorgiasChatIntegrationNavigation with an installation issue icon', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={storeInstallationIssue}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}

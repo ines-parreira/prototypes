@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 
 import {
     AiAgentNotificationPayload,
@@ -10,6 +10,7 @@ import { getNotificationReceivedDatetimePayload } from 'automate/notifications/u
 import type { Notification } from 'common/notifications'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { renderWithRouter } from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 
@@ -118,7 +119,7 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-            const { getByText, container } = render(
+            const { getByText, container } = renderWithRouter(
                 <AiAgentNotification notification={notification} />,
             )
 
@@ -128,7 +129,9 @@ describe('AiAgentNotification', () => {
             const subtitleElement = getByText(subtitle)
             expect(subtitleElement).toBeInTheDocument()
 
-            const linkElement = container.querySelector(`a[to="${redirectTo}"]`)
+            const linkElement = container.querySelector(
+                `a[href="${redirectTo}"]`,
+            )
             expect(linkElement).toBeInTheDocument()
 
             fireEvent.click(linkElement as HTMLElement)
@@ -150,7 +153,7 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <AiAgentNotification notification={unsupportedNotification} />,
         )
 
@@ -176,7 +179,9 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-            render(<AiAgentNotification notification={notification} />)
+            renderWithRouter(
+                <AiAgentNotification notification={notification} />,
+            )
 
             expect(
                 defaultUseAiAgentOnboardingNotification.handleOnSave,
@@ -212,11 +217,13 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <AiAgentNotification notification={notification} />,
             )
 
-            const linkElement = container.querySelector(`a[to="${redirectTo}"]`)
+            const linkElement = container.querySelector(
+                `a[href="${redirectTo}"]`,
+            )
             expect(linkElement).toBeInTheDocument()
 
             fireEvent.click(linkElement as HTMLElement)
@@ -245,7 +252,7 @@ describe('AiAgentNotification', () => {
             },
         }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <AiAgentNotification
                 notification={notification}
                 onClick={mockOnClick}

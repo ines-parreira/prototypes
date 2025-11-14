@@ -23,6 +23,7 @@ import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import { Attachment } from 'models/ticket/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import { MacroEdit } from '../MacroEdit'
 
@@ -178,7 +179,7 @@ describe('MacroEdit component', () => {
     }
 
     const renderComponent = (props?: Partial<typeof defaultProps>) =>
-        render(
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({ integrations: fromJS(state) })}>
                     <MacroEdit {...defaultProps} {...props} />

@@ -15,6 +15,7 @@ jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 

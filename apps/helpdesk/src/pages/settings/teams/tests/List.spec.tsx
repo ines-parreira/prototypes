@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,6 +6,7 @@ import thunk from 'redux-thunk'
 
 import { teams } from 'fixtures/teams'
 import client from 'models/api/resources'
+import { renderWithRouter } from 'utils/testing'
 
 import TeamList from '../List'
 
@@ -23,7 +22,7 @@ describe('<TeamList />', () => {
     })
 
     it('should render without data', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <TeamList />
             </Provider>,
@@ -41,7 +40,7 @@ describe('<TeamList />', () => {
             meta: { next_cursor: null, prev_cursor: null },
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <TeamList />
             </Provider>,

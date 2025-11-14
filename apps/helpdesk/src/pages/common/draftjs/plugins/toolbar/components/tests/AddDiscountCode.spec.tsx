@@ -1,8 +1,7 @@
-import React from 'react'
-
 import { act, fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -26,21 +25,28 @@ describe('<AddDiscountCode/>', () => {
     })
 
     it('should not render when the popover is closed', () => {
-        const { container } = render(<AddDiscountCode {...minProps} />, {
-            container: document.body,
-        })
+        const { container } = render(
+            <MemoryRouter>
+                <AddDiscountCode {...minProps} />
+            </MemoryRouter>,
+            {
+                container: document.body,
+            },
+        )
         expect(container).toMatchSnapshot()
     })
 
     it('should render the discount picker when the popover is clicked and only one integration', () => {
         const { getByText, container } = render(
-            <Provider store={store}>
-                <ToolbarProvider
-                    shopifyIntegrations={fromJS([shopifyIntegration])}
-                >
-                    <AddDiscountCode {...minProps} />
-                </ToolbarProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <ToolbarProvider
+                        shopifyIntegrations={fromJS([shopifyIntegration])}
+                    >
+                        <AddDiscountCode {...minProps} />
+                    </ToolbarProvider>
+                </Provider>
+            </MemoryRouter>,
             {
                 container: document.body,
             },
@@ -53,17 +59,19 @@ describe('<AddDiscountCode/>', () => {
 
     it('should render the discount picker when there is a current shopify integration', () => {
         const { getByText, container } = render(
-            <Provider store={store}>
-                <ToolbarProvider
-                    shopifyIntegrations={fromJS([
-                        shopifyIntegration,
-                        shopifyIntegration,
-                    ])}
-                    currentShopifyIntegration={shopifyIntegration}
-                >
-                    <AddDiscountCode {...minProps} />
-                </ToolbarProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <ToolbarProvider
+                        shopifyIntegrations={fromJS([
+                            shopifyIntegration,
+                            shopifyIntegration,
+                        ])}
+                        currentShopifyIntegration={shopifyIntegration}
+                    >
+                        <AddDiscountCode {...minProps} />
+                    </ToolbarProvider>
+                </Provider>
+            </MemoryRouter>,
             {
                 container: document.body,
             },
@@ -76,16 +84,18 @@ describe('<AddDiscountCode/>', () => {
 
     it('should render the store picker because of multiple integrations', () => {
         const { getByText, container } = render(
-            <Provider store={store}>
-                <ToolbarProvider
-                    shopifyIntegrations={fromJS([
-                        shopifyIntegration,
-                        shopifyIntegration,
-                    ])}
-                >
-                    <AddDiscountCode {...minProps} />
-                </ToolbarProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <ToolbarProvider
+                        shopifyIntegrations={fromJS([
+                            shopifyIntegration,
+                            shopifyIntegration,
+                        ])}
+                    >
+                        <AddDiscountCode {...minProps} />
+                    </ToolbarProvider>
+                </Provider>
+            </MemoryRouter>,
             {
                 container: document.body,
             },

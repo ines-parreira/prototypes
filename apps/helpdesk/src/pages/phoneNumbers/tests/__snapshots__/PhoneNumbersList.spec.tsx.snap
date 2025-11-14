@@ -112,7 +112,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
           class="cellContent"
         >
           <a
-            to="/app/settings/phone-numbers/3"
+            href="/app/settings/phone-numbers/3"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -169,7 +169,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
           class="cellContent"
         >
           <a
-            to="/app/settings/phone-numbers/2"
+            href="/app/settings/phone-numbers/2"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -226,7 +226,7 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
           class="cellContent"
         >
           <a
-            to="/app/settings/phone-numbers/1"
+            href="/app/settings/phone-numbers/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"

@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { History, Location } from 'history'
 import { fromJS, Map } from 'immutable'
 import { match } from 'react-router-dom'
@@ -13,6 +13,7 @@ import {
 } from 'constants/integration'
 import { YotpoIntegrationDetailComponent } from 'pages/integrations/integration/components/yotpo/YotpoIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 type Integration = ComponentProps<
     typeof YotpoIntegrationDetailComponent
@@ -53,7 +54,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 name: 'test',
             })
 
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={integration}
@@ -66,7 +67,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent {...minProps} />,
             )
 
@@ -89,7 +90,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     },
                 })
 
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={integration}
@@ -114,7 +115,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 name: 'foo',
             })
 
-            const { container, rerender } = render(
+            const { container, rerender } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={integration}
@@ -153,7 +154,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = render(
+                const { container, rerender } = renderWithRouter(
                     <YotpoIntegrationDetailComponent {...minProps} />,
                 )
 
@@ -206,7 +207,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const { container, rerender } = render(
+                const { container, rerender } = renderWithRouter(
                     <YotpoIntegrationDetailComponent {...minProps} />,
                 )
 
@@ -255,7 +256,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                render(
+                renderWithRouter(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={integration}
@@ -298,7 +299,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -317,7 +318,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render an alert because the import is in progress', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -335,7 +336,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render a small paragraph because the import is over', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -353,7 +354,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render buttons loading and disabled because a submit is in progress', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -372,7 +373,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         })
 
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...minProps}
                     integration={fromJS({
@@ -393,7 +394,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             'should not render anything about the import and render the re-activate button instead of the deactivate ' +
                 'button because the integration is deactivated',
             () => {
-                const { container } = render(
+                const { container } = renderWithRouter(
                     <YotpoIntegrationDetailComponent
                         {...minProps}
                         integration={fromJS({
@@ -415,7 +416,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         )
 
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
-            const { getByRole, getByText } = render(
+            const { getByRole, getByText } = renderWithRouter(
                 <YotpoIntegrationDetailComponent
                     {...{
                         ...minProps,

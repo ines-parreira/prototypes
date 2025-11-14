@@ -1,7 +1,8 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { SUCCESS_AUTHENTICATION_STATUS } from 'constants/integration'
 import KlaviyoIntegrationDetail from 'pages/integrations/integration/components/klaviyo/KlaviyoIntegrationDetail'
@@ -23,18 +24,20 @@ describe('KlaviyoIntegrationDetail', () => {
 
     it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
         const { getByRole, getByText } = render(
-            <KlaviyoIntegrationDetail
-                {...{
-                    ...defaultProps,
-                }}
-                integration={fromJS({
-                    id: 1,
-                    meta: {
-                        oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
-                        sync_state: { is_initialized: false },
-                    },
-                })}
-            />,
+            <MemoryRouter>
+                <KlaviyoIntegrationDetail
+                    {...{
+                        ...defaultProps,
+                    }}
+                    integration={fromJS({
+                        id: 1,
+                        meta: {
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
+                        },
+                    })}
+                />
+            </MemoryRouter>,
         )
 
         fireEvent.click(getByRole('button', { name: /Delete App/i }))

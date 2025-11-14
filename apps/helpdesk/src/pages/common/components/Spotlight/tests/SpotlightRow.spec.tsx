@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { createBrowserHistory, History } from 'history'
 import { MemoryRouter, Router } from 'react-router-dom'
 
@@ -10,6 +10,7 @@ import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import * as platform from 'utils/platform'
+import { renderWithRouter } from 'utils/testing'
 
 describe('<SpotlightRow/>', () => {
     const mockOnClose = jest.fn()
@@ -24,19 +25,21 @@ describe('<SpotlightRow/>', () => {
     }
 
     it('should render with minimal props', () => {
-        const { container } = render(<SpotlightRow {...minProps} />)
+        const { container } = renderWithRouter(<SpotlightRow {...minProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render with icon', () => {
-        const { container } = render(<SpotlightRow {...minProps} icon={'🚀'} />)
+        const { container } = renderWithRouter(
+            <SpotlightRow {...minProps} icon={'🚀'} />,
+        )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should shrink info flex container', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <SpotlightRow {...minProps} shrinkInfo={true} />,
         )
 
@@ -44,7 +47,7 @@ describe('<SpotlightRow/>', () => {
     })
 
     it('should register search rank scenario event when user clicks on the row', () => {
-        render(
+        renderWithRouter(
             <SearchRankScenarioContext.Provider value={mockSearchRank}>
                 <SpotlightRow {...minProps} />
             </SearchRankScenarioContext.Provider>,
@@ -61,7 +64,7 @@ describe('<SpotlightRow/>', () => {
 
     it('should register search rank scenario when user triggers navigation with keyboard', () => {
         const history: History = createBrowserHistory()
-        render(
+        renderWithRouter(
             <Router history={history}>
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <SpotlightRow {...minProps} selected={true} />
@@ -81,14 +84,14 @@ describe('<SpotlightRow/>', () => {
     it('should call the onClick prop when user clicks on the row', () => {
         const mockOnClick = jest.fn()
 
-        render(<SpotlightRow {...minProps} onClick={mockOnClick} />)
+        renderWithRouter(<SpotlightRow {...minProps} onClick={mockOnClick} />)
         userEvent.click(screen.getByText(minProps.title))
 
         expect(mockOnClick).toHaveBeenCalled()
     })
 
     it('should close modal on click if user is not pressing on ctrl / cmd', () => {
-        render(<SpotlightRow {...minProps} />)
+        renderWithRouter(<SpotlightRow {...minProps} />)
 
         userEvent.click(screen.getByText(minProps.title))
 
@@ -101,7 +104,7 @@ describe('<SpotlightRow/>', () => {
             writable: true,
         })
 
-        render(<SpotlightRow {...minProps} />)
+        renderWithRouter(<SpotlightRow {...minProps} />)
         userEvent.click(screen.getByText(minProps.title), { ctrlKey: true })
 
         expect(mockOnClose).not.toHaveBeenCalled()
@@ -113,14 +116,14 @@ describe('<SpotlightRow/>', () => {
             writable: true,
         })
 
-        render(<SpotlightRow {...minProps} />)
+        renderWithRouter(<SpotlightRow {...minProps} />)
         userEvent.click(screen.getByText(minProps.title), { metaKey: true })
 
         expect(mockOnClose).not.toHaveBeenCalled()
     })
 
     it('should highlight the row', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <MemoryRouter>
                 <SpotlightRow {...minProps} selected={true} />
             </MemoryRouter>,
@@ -131,7 +134,7 @@ describe('<SpotlightRow/>', () => {
     it('should render the row with message', () => {
         const messageText = 'some message text'
 
-        render(<SpotlightRow {...minProps} message={messageText} />)
+        renderWithRouter(<SpotlightRow {...minProps} message={messageText} />)
 
         expect(screen.getByText(messageText)).toBeInTheDocument()
     })
@@ -140,7 +143,7 @@ describe('<SpotlightRow/>', () => {
         const messageText = '<em>text with highlight</em>'
         const messageWithoutEmTag = 'text with highlight'
 
-        render(<SpotlightRow {...minProps} message={messageText} />)
+        renderWithRouter(<SpotlightRow {...minProps} message={messageText} />)
 
         expect(screen.getByText(messageWithoutEmTag)).toBeInTheDocument()
         expect(
@@ -152,7 +155,7 @@ describe('<SpotlightRow/>', () => {
         const id = 'someId'
         const entityId = `Some ID: <em>${id}</em>`
 
-        render(<SpotlightRow {...minProps} entityId={entityId} />)
+        renderWithRouter(<SpotlightRow {...minProps} entityId={entityId} />)
 
         expect(screen.getByText(id).tagName.toLocaleLowerCase()).toEqual('em')
     })

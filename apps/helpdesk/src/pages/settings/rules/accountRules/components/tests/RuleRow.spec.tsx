@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -21,6 +21,7 @@ import {
 } from 'state/entities/rules/actions'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { RuleRow } from '../RuleRow'
 
@@ -87,15 +88,15 @@ describe('<RuleRow />', () => {
     })
 
     it('should render a row with a rule', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
-                <RuleRow {...minProps} />)
+                <RuleRow {...minProps} />
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with a managed rule tab', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow
                     {...minProps}
@@ -109,7 +110,7 @@ describe('<RuleRow />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with an error', () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow
                     {...minProps}
@@ -127,7 +128,7 @@ describe('<RuleRow />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should show description on hover', async () => {
-        const { getByText, queryByText } = render(
+        const { getByText, queryByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
             </Provider>,
@@ -141,7 +142,7 @@ describe('<RuleRow />', () => {
     it('should not show description on hover if rule has no description', async () => {
         const rule = { ...ruleFixture, description: '' }
 
-        const { getByText, queryByText } = render(
+        const { getByText, queryByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
             </Provider>,
@@ -154,7 +155,7 @@ describe('<RuleRow />', () => {
     })
     it('should duplicate rule ', async () => {
         createRuleMock.mockResolvedValue(ruleFixture)
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
             </Provider>,
@@ -166,7 +167,7 @@ describe('<RuleRow />', () => {
     })
     it('should prompt confirm and then delete rule on click', async () => {
         deleteRuleMock.mockResolvedValue()
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
             </Provider>,
@@ -178,7 +179,7 @@ describe('<RuleRow />', () => {
         })
     })
     it('should deactivate on toggle button', async () => {
-        const { getByText, getByRole } = render(
+        const { getByText, getByRole } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
             </Provider>,
@@ -194,7 +195,7 @@ describe('<RuleRow />', () => {
             ...ruleFixture,
             deactivated_datetime: '2020-01-01T00:00:00',
         }
-        const { getByRole } = render(
+        const { getByRole } = renderWithRouter(
             <Provider store={store}>
                 <RuleRow {...minProps} rule={deactivatedRule} />)
             </Provider>,

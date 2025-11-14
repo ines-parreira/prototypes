@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +12,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
 
@@ -79,7 +80,7 @@ describe('<AutoReplyWismoEditor/>', () => {
             }),
             billing: fromJS({ products: [] }),
         } as RootState)
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />
@@ -96,7 +97,7 @@ describe('<AutoReplyWismoEditor/>', () => {
             }),
             billing: fromJS({ products: [] }),
         } as RootState)
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />
@@ -132,7 +133,7 @@ describe('<AutoReplyWismoEditor/>', () => {
             isLoading: false,
         }))
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />

@@ -18,7 +18,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/channels/gorgias_chat"
+            href="/app/settings/channels/gorgias_chat"
           >
             Chat
           </a>
@@ -463,7 +463,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/channels/gorgias_chat"
+            href="/app/settings/channels/gorgias_chat"
           >
             Chat
           </a>

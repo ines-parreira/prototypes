@@ -1,13 +1,12 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('@gorgias/axiom', () => {
     const actual = jest.requireActual('@gorgias/axiom')
@@ -53,7 +52,7 @@ describe('<ScoredSurveysTable>', () => {
         SkeletonMock.mockImplementation(() => <div>Skeleton</div>)
     })
     it('should render table header', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -70,7 +69,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render table body content', () => {
-        const { getByText, getAllByText, container } = render(
+        const { getByText, getAllByText, container } = renderWithRouter(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -102,7 +101,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should trigger handle sort by clicking on header', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -120,7 +119,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render loading state while fetching', () => {
-        const { getAllByText } = render(
+        const { getAllByText } = renderWithRouter(
             <ScoredSurveysTable
                 data={data}
                 isFetching={true}

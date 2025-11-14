@@ -1,10 +1,11 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockBusinessHoursDetails } from '@gorgias/helpdesk-mocks'
 
 import { Form } from 'core/forms'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import { renderWithRouter } from 'utils/testing'
 
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
 import EditCustomBusinessHoursActions from '../EditCustomBusinessHoursActions'
@@ -23,7 +24,7 @@ const businessHours = mockBusinessHoursDetails()
 
 describe('EditCustomBusinessHoursActions', () => {
     it('should render all actions', () => {
-        render(
+        renderWithRouter(
             <Form onValidSubmit={jest.fn()}>
                 <EditCustomBusinessHoursActions businessHours={businessHours} />
             </Form>,
@@ -42,7 +43,7 @@ describe('EditCustomBusinessHoursActions', () => {
         ).toBeInTheDocument()
 
         expect(cancelButton.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             BUSINESS_HOURS_BASE_URL,
         )
     })
@@ -50,7 +51,7 @@ describe('EditCustomBusinessHoursActions', () => {
     it('should render the delete confirmation modal with correct content and call deleteBusinessHours when the button is clicked', async () => {
         const user = userEvent.setup()
 
-        render(
+        renderWithRouter(
             <Form onValidSubmit={jest.fn()}>
                 <EditCustomBusinessHoursActions businessHours={businessHours} />
             </Form>,

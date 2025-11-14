@@ -2,6 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
+import { MemoryRouter } from 'react-router-dom'
 
 import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
@@ -59,11 +60,13 @@ describe('ListCustomBusinessHoursTableRow', () => {
 
     it('should render ', () => {
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={businessHours}
-                />
-            </Form>,
+            <MemoryRouter>
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={businessHours}
+                    />
+                </Form>
+            </MemoryRouter>,
             {},
         )
 
@@ -83,14 +86,16 @@ describe('ListCustomBusinessHoursTableRow', () => {
     it('should render badge when integration_count is not 1', async () => {
         const { hover } = userEvent.setup()
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={{
-                        ...businessHours,
-                        integration_count: 2,
-                    }}
-                />
-            </Form>,
+            <MemoryRouter>
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={{
+                            ...businessHours,
+                            integration_count: 2,
+                        }}
+                    />
+                </Form>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('2 integrations')).toBeInTheDocument()
@@ -111,20 +116,22 @@ describe('ListCustomBusinessHoursTableRow', () => {
 
     it('should render integration only when count is 1 and store is not defined', () => {
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={{
-                        ...businessHours,
-                        first_integration: {
-                            integration_address: null,
-                            integration_id: 1,
-                            integration_name: 'Customer service',
-                            integration_type: IntegrationType.Phone,
-                            store: null,
-                        },
-                    }}
-                />
-            </Form>,
+            <MemoryRouter>
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={{
+                            ...businessHours,
+                            first_integration: {
+                                integration_address: null,
+                                integration_id: 1,
+                                integration_name: 'Customer service',
+                                integration_type: IntegrationType.Phone,
+                                store: null,
+                            },
+                        }}
+                    />
+                </Form>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Customer service')).toBeInTheDocument()
@@ -133,15 +140,17 @@ describe('ListCustomBusinessHoursTableRow', () => {
 
     it('should render dash when integration_count is 0', () => {
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={{
-                        ...businessHours,
-                        integration_count: 0,
-                        first_integration: null,
-                    }}
-                />
-            </Form>,
+            <MemoryRouter>
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={{
+                            ...businessHours,
+                            integration_count: 0,
+                            first_integration: null,
+                        }}
+                    />
+                </Form>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('-')).toBeInTheDocument()
@@ -151,11 +160,13 @@ describe('ListCustomBusinessHoursTableRow', () => {
         const user = userEvent.setup()
 
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={businessHours}
-                />
-            </Form>,
+            <MemoryRouter>
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={businessHours}
+                    />
+                </Form>
+            </MemoryRouter>,
         )
 
         await user.click(screen.getByText('delete'))
@@ -182,11 +193,14 @@ describe('ListCustomBusinessHoursTableRow', () => {
         } as any)
 
         renderWithStoreAndQueryClientProvider(
-            <Form onValidSubmit={jest.fn()}>
-                <ListCustomBusinessHoursTableRow
-                    businessHours={businessHours}
-                />
-            </Form>,
+            <MemoryRouter>
+                {' '}
+                <Form onValidSubmit={jest.fn()}>
+                    <ListCustomBusinessHoursTableRow
+                        businessHours={businessHours}
+                    />
+                </Form>
+            </MemoryRouter>,
         )
 
         await user.click(screen.getByText('delete'))

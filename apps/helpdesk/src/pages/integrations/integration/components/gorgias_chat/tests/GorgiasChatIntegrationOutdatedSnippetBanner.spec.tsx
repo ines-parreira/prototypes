@@ -38,7 +38,7 @@ describe('GorgiasChatIntegrationOutdatedSnippetBanner', () => {
 
         const linkElement = ctaButton.closest('a')
         expect(linkElement).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/channels/${IntegrationType.GorgiasChat}/test-integration-id/${Tab.Installation}`,
         )
     })

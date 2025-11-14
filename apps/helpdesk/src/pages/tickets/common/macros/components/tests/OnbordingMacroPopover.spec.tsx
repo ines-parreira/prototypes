@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import { logEvent } from '@repo/logging'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +11,7 @@ import { UserSetting, UserSettingType } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 
@@ -86,7 +87,7 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        const { baseElement } = render(
+        const { baseElement } = renderWithRouter(
             <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
         )
 
@@ -112,7 +113,9 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        renderWithRouter(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
+        )
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -135,7 +138,9 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        renderWithRouter(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
+        )
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -159,7 +164,9 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        renderWithRouter(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
+        )
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -183,7 +190,9 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        renderWithRouter(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
+        )
 
         expect(screen.queryByText('Got it')).toBeFalsy()
     })
@@ -210,7 +219,7 @@ describe('<OnbordingMacroPopover />', () => {
 
         const onClearMacro = jest.fn()
 
-        render(
+        renderWithRouter(
             <OnbordingMacroPopoverTestComp
                 props={{ onClearMacro }}
                 defaultState={defaultState}
@@ -245,7 +254,7 @@ describe('<OnbordingMacroPopover />', () => {
         }
 
         const onClearMacro = jest.fn()
-        render(
+        renderWithRouter(
             <OnbordingMacroPopoverTestComp
                 props={{ onClearMacro }}
                 defaultState={defaultState}
@@ -279,7 +288,9 @@ describe('<OnbordingMacroPopover />', () => {
             ticket: fromJS(ticket),
         }
 
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        renderWithRouter(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
+        )
 
         fireEvent.click(await screen.findByText('Got it'))
         fireEvent.click(await screen.findByText('Revert back'))
@@ -310,7 +321,7 @@ describe('<OnbordingMacroPopover />', () => {
 
         const onClearMacro = jest.fn()
 
-        const { rerender } = render(
+        const { rerender } = renderWithRouter(
             <OnbordingMacroPopoverTestComp
                 props={{ onClearMacro, macrosVisible: false }}
                 defaultState={defaultState}

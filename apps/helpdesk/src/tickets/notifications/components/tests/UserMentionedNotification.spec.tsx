@@ -1,9 +1,6 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
+import { renderWithRouter } from 'utils/testing'
 
 import type { TicketPayload } from '../../types'
 import UserMentionedNotification from '../UserMentionedNotification'
@@ -35,7 +32,7 @@ const notification = {
 
 describe('UserMentionedNotification', () => {
     it('should render the notification with a sender', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <UserMentionedNotification notification={notification} />,
         )
         expect(getByText('New mention')).toBeInTheDocument()
@@ -50,7 +47,7 @@ describe('UserMentionedNotification', () => {
     })
 
     it('should render the notification without a sender', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <UserMentionedNotification
                 notification={{
                     ...notification,

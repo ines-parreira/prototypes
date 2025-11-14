@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,6 +6,7 @@ import { UserSettingType } from 'config/types/user'
 import { view } from 'fixtures/views'
 import { ViewType } from 'models/view/types'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ViewNavbarView from '../ViewNavbarView'
 
@@ -27,7 +25,7 @@ describe('<ViewNavbarView />', () => {
     }
 
     it('should render view navbar', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ViewNavbarView
                     settingType={UserSettingType.CutomerViews}
@@ -42,7 +40,7 @@ describe('<ViewNavbarView />', () => {
     })
 
     it('should render view count', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({

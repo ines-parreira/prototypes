@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { capitalize } from 'lodash'
 
 import { integrationBase } from 'fixtures/integrations'
@@ -11,6 +9,7 @@ import {
     OutlookIntegration,
 } from 'models/integration/types'
 import { getOutboundEmailProviderSettingKey } from 'pages/integrations/integration/components/email/helpers'
+import { renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
@@ -24,7 +23,7 @@ type TestProps = {
 }
 
 const renderComponent = (props: TestProps) => {
-    return render(
+    return renderWithRouter(
         <EmailIntegrationDeliverabilitySettings
             integration={getIntegration(props)}
             onChange={onChange}
@@ -121,7 +120,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             ).toBeInTheDocument()
 
             expect(
-                screen.getByText(`verifying your domain`).getAttribute('to'),
+                screen.getByText(`verifying your domain`).getAttribute('href'),
             ).toBe('/app/settings/channels/email/1/outbound-verification')
 
             expect(nativeRadio).toBeInTheDocument()
@@ -277,7 +276,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('verifying your domain').getAttribute('to'),
+            screen.getByText('verifying your domain').getAttribute('href'),
         ).toBe('/app/settings/channels/email/1/outbound-verification')
     })
 
@@ -294,7 +293,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('verifying your domain').getAttribute('to'),
+            screen.getByText('verifying your domain').getAttribute('href'),
         ).toBe('/app/settings/channels/email/1/dns')
     })
 

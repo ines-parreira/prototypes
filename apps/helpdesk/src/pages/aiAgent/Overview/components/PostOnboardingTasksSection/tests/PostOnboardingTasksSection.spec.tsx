@@ -9,6 +9,7 @@ import { mockPostStoreInstallationStep } from 'pages/aiAgent/fixtures/post-store
 import { PostOnboardingTasksSection } from '../PostOnboardingTasksSection'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ({
         shopName: 'test-shop',
         shopType: 'shopify',

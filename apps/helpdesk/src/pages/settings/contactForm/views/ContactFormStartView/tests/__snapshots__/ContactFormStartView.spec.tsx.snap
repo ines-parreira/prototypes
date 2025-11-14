@@ -18,17 +18,14 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
       class="navbar navbar"
     >
       <a
-        class="link"
-        data-active-class-name="active"
-        data-exact="true"
+        aria-current="page"
+        class="link active"
         href="/app/settings/contact-form/about"
       >
         About
       </a>
       <a
         class="link"
-        data-active-class-name="active"
-        data-exact="true"
         href="/app/settings/contact-form/forms"
       >
         Forms
@@ -126,7 +123,7 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
             class="actionWrapper"
           >
             <a
-              to="/app/settings/contact-form/new"
+              href="/app/settings/contact-form/new"
             >
               <button
                 aria-disabled="false"

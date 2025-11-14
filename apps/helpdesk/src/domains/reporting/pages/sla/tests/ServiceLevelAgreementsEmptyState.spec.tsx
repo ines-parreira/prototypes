@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import {
     CONTENT_BODY_TEXT_PARAGRAPH_1,
@@ -12,10 +10,11 @@ import {
     SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
     ServiceLevelAgreementsEmptyState,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
+import { renderWithRouter } from 'utils/testing'
 
 describe('ServiceLevelAgreementsEmptyState', () => {
     it('renders page header title', () => {
-        render(<ServiceLevelAgreementsEmptyState />)
+        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
 
         expect(
             screen.getByRole('heading', { name: PAGE_TITLE }),
@@ -23,7 +22,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
     })
 
     it('renders banner with correct alt text', () => {
-        render(<ServiceLevelAgreementsEmptyState />)
+        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
 
         expect(screen.getByRole('img')).toHaveAttribute(
             'alt',
@@ -32,7 +31,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
     })
 
     it('renders correct text content', () => {
-        render(<ServiceLevelAgreementsEmptyState />)
+        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
 
         expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
         expect(
@@ -44,7 +43,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
     })
 
     it('renders link to SLA settings page with correct text and href', () => {
-        render(<ServiceLevelAgreementsEmptyState />)
+        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
         const linkButton = screen.getByRole('button', {
             name: CONTENT_SET_UP_BUTTON_TEXT,
         })
@@ -52,7 +51,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
 
         expect(linkButton).toBeInTheDocument()
         expect(linkElement).toHaveAttribute(
-            'to',
+            'href',
             SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
         )
     })

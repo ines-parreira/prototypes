@@ -66,7 +66,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
         To use the auto-embed feature for your help center,
          
         <a
-          to="/app/settings/integrations/shopify/3"
+          href="/app/settings/integrations/shopify/3"
         >
           update your Shopify app permissions
         </a>

@@ -11,6 +11,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import useStoreGetter from '../useStoreGetter'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
 }))
 

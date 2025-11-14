@@ -18,7 +18,7 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -27,7 +27,7 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -80,7 +80,7 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -163,7 +163,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -172,7 +172,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -225,7 +225,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -308,7 +308,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -317,7 +317,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -414,7 +414,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -423,7 +423,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -476,7 +476,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -559,7 +559,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -568,7 +568,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -621,7 +621,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -704,7 +704,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -713,7 +713,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -766,7 +766,7 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -849,7 +849,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -858,7 +858,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -982,7 +982,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -991,7 +991,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -1016,7 +1016,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           All your Smile customers have been imported. You can now see their info in the sidebar.
            
           <a
-            to="/app/customers"
+            href="/app/customers"
           >
             Review your customers.
           </a>
@@ -1097,7 +1097,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1106,7 +1106,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -1157,7 +1157,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -1240,7 +1240,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1249,7 +1249,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -1300,7 +1300,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>
@@ -1414,7 +1414,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1423,7 +1423,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/smile"
+            href="/app/settings/integrations/smile"
           >
             Smile
           </a>
@@ -1474,7 +1474,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             >
               <a
                 class="actionLink"
-                to="/app/customers"
+                href="/app/customers"
               >
                 Review imported customers
               </a>

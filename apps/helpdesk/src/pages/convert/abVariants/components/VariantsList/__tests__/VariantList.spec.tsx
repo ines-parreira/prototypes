@@ -3,6 +3,7 @@ import React from 'react'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { campaignWithABGroup } from 'fixtures/abGroup'
@@ -34,13 +35,15 @@ describe('<VariantsList />', () => {
         } as Campaign
 
         renderWithStore(
-            <VariantsList
-                integrationId={shopifyIntegration.id}
-                canPerformActions={true}
-                campaign={campaign}
-                onDelete={onDelete}
-                onDuplicate={onDuplicate}
-            />,
+            <MemoryRouter>
+                <VariantsList
+                    integrationId={shopifyIntegration.id}
+                    canPerformActions={true}
+                    campaign={campaign}
+                    onDelete={onDelete}
+                    onDuplicate={onDuplicate}
+                />
+            </MemoryRouter>,
             {
                 integrations: fromJS({
                     integrations: [
@@ -64,13 +67,15 @@ describe('<VariantsList />', () => {
 
     it('render and list actions should be disabled', () => {
         renderWithStore(
-            <VariantsList
-                integrationId={shopifyIntegration.id}
-                canPerformActions={true}
-                campaign={campaignWithABGroup as Campaign}
-                onDelete={onDelete}
-                onDuplicate={onDuplicate}
-            />,
+            <MemoryRouter>
+                <VariantsList
+                    integrationId={shopifyIntegration.id}
+                    canPerformActions={true}
+                    campaign={campaignWithABGroup as Campaign}
+                    onDelete={onDelete}
+                    onDuplicate={onDuplicate}
+                />
+            </MemoryRouter>,
             {
                 integrations: fromJS({
                     integrations: [
@@ -112,13 +117,15 @@ describe('<VariantsList />', () => {
         } as Campaign
 
         renderWithStore(
-            <VariantsList
-                integrationId={shopifyIntegration.id}
-                canPerformActions={true}
-                campaign={campaign}
-                onDelete={onDelete}
-                onDuplicate={onDuplicate}
-            />,
+            <MemoryRouter>
+                <VariantsList
+                    integrationId={shopifyIntegration.id}
+                    canPerformActions={true}
+                    campaign={campaign}
+                    onDelete={onDelete}
+                    onDuplicate={onDuplicate}
+                />
+            </MemoryRouter>,
             {
                 integrations: fromJS({
                     integrations: [
@@ -143,13 +150,15 @@ describe('<VariantsList />', () => {
         } as Campaign
 
         renderWithStore(
-            <VariantsList
-                integrationId={shopifyIntegration.id}
-                canPerformActions={true}
-                campaign={campaign}
-                onDelete={onDelete}
-                onDuplicate={onDuplicate}
-            />,
+            <MemoryRouter>
+                <VariantsList
+                    integrationId={shopifyIntegration.id}
+                    canPerformActions={true}
+                    campaign={campaign}
+                    onDelete={onDelete}
+                    onDuplicate={onDuplicate}
+                />
+            </MemoryRouter>,
             {
                 integrations: fromJS({
                     integrations: [

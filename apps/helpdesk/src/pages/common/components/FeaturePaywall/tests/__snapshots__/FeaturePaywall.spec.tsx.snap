@@ -133,7 +133,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                 class="d-flex align-items-center upgradeLink"
               >
                 <a
-                  to="[object Object]"
+                  href="/app/settings/billing"
                 >
                   <button
                     aria-disabled="false"
@@ -315,7 +315,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                 class="d-flex align-items-center upgradeLink"
               >
                 <a
-                  to="[object Object]"
+                  href="/app/settings/billing"
                 >
                   <button
                     aria-disabled="false"
@@ -484,7 +484,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                 class="d-flex align-items-center upgradeLink"
               >
                 <a
-                  to="[object Object]"
+                  href="/app/settings/billing"
                 >
                   <button
                     aria-disabled="false"

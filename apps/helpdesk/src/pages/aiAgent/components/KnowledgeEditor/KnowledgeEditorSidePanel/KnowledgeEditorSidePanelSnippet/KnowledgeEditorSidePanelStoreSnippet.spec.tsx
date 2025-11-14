@@ -1,10 +1,12 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { KnowledgeEditorSidePanelStoreSnippet } from './KnowledgeEditorSidePanelStoreSnippet'
 
 describe('KnowledgeEditorSidePanelStoreSnippet', () => {
     it('renders', () => {
-        render(
+        renderWithRouter(
             <KnowledgeEditorSidePanelStoreSnippet
                 details={{
                     aiAgentStatus: { value: true, onChange: jest.fn() },

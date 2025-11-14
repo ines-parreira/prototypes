@@ -1,6 +1,3 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,10 +6,10 @@ import { billingState } from 'fixtures/billing'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ContactFormFlowsBanner from '../ContactFormFlowsBanner'
 
-jest.mock('react-router-dom')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 
 const mockUseContactFormAutomationSettings =
@@ -38,7 +35,7 @@ describe('<ContactFormFlowsBanner />', () => {
             isFetchPending: false,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
             </Provider>,
@@ -56,7 +53,7 @@ describe('<ContactFormFlowsBanner />', () => {
             isFetchPending: false,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
             </Provider>,
@@ -71,7 +68,7 @@ describe('<ContactFormFlowsBanner />', () => {
             isFetchPending: true,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
             </Provider>,

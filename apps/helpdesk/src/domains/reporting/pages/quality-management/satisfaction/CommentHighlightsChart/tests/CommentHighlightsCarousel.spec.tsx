@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import CommentHighlightsCarousel, {
@@ -28,11 +27,13 @@ jest.mock('@gorgias/axiom', () => ({
 describe('CommentHighlightsCarousel', () => {
     it('renders skeletons when fetching', () => {
         const { getAllByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={true}
-                isError={false}
-                data={[]}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={true}
+                    isError={false}
+                    data={[]}
+                />
+            </MemoryRouter>,
         )
 
         expect(getAllByText('Skeleton').length).toEqual(2)
@@ -40,17 +41,19 @@ describe('CommentHighlightsCarousel', () => {
 
     it('renders slider with provided data when not fetching', () => {
         const { getByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyData}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyData}
+                />
+            </MemoryRouter>,
         )
 
         const viewTicketElement = getByText(VIEW_TICKET)
 
         expect(viewTicketElement.tagName).toBe('A')
-        expect(viewTicketElement).toHaveAttribute('to', '/app/ticket/1')
+        expect(viewTicketElement).toHaveAttribute('href', '/app/ticket/1')
         expect(getByText('Agent A')).toBeInTheDocument()
         expect(getByText('Customer A')).toBeInTheDocument()
         expect(getByText('This is a test comment.')).toBeInTheDocument()
@@ -69,11 +72,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         const { getByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyDataWithoutAgent}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyDataWithoutAgent}
+                />
+            </MemoryRouter>,
         )
 
         expect(getByText('Team A')).toBeInTheDocument()
@@ -93,11 +98,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         const { getByText, queryByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyDataWithoutAgent}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyDataWithoutAgent}
+                />
+            </MemoryRouter>,
         )
 
         const emojiElement = queryByText('👍')
@@ -119,11 +126,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         const { getByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyDataWithoutAgentAndTeam}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyDataWithoutAgentAndTeam}
+                />
+            </MemoryRouter>,
         )
 
         expect(getByText(UNASSIGNED_TICKET_LABEL)).toBeInTheDocument()
@@ -131,11 +140,13 @@ describe('CommentHighlightsCarousel', () => {
 
     it('renders default no-data item when data is empty', () => {
         const { getByText } = render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={[]}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={[]}
+                />
+            </MemoryRouter>,
         )
 
         expect(getByText(NO_DATA_COMMENT)).toBeInTheDocument()
@@ -155,11 +166,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={partialDummyData}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={partialDummyData}
+                />
+            </MemoryRouter>,
         )
 
         const placeholders = screen.getAllByText(NOT_AVAILABLE_PLACEHOLDER)
@@ -180,11 +193,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyNoTicketData}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyNoTicketData}
+                />
+            </MemoryRouter>,
         )
 
         const viewTicketElements = screen.getAllByText(VIEW_TICKET)
@@ -196,11 +211,13 @@ describe('CommentHighlightsCarousel', () => {
 
     it('renders View Ticket with link when ticketId is provided', () => {
         render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dummyData}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dummyData}
+                />
+            </MemoryRouter>,
         )
 
         const viewTicketElements = screen.getAllByText(VIEW_TICKET)
@@ -224,11 +241,13 @@ describe('CommentHighlightsCarousel', () => {
         ]
 
         render(
-            <CommentHighlightsCarousel
-                isFetching={false}
-                isError={false}
-                data={dataWithLongComment}
-            />,
+            <MemoryRouter>
+                <CommentHighlightsCarousel
+                    isFetching={false}
+                    isError={false}
+                    data={dataWithLongComment}
+                />
+            </MemoryRouter>,
         )
 
         const commentElement = screen.getByText((content) =>

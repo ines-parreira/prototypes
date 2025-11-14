@@ -13,7 +13,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link active"
-          to="?"
+          href="/"
         >
           All categories
         </a>
@@ -23,7 +23,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Featured"
+          href="/?category=Featured"
         >
           Featured
         </a>
@@ -33,7 +33,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Chat"
+          href="/?category=Chat"
         >
           Chat
         </a>
@@ -43,7 +43,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Phone"
+          href="/?category=Phone"
         >
           Phone
         </a>
@@ -53,7 +53,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=SMS"
+          href="/?category=SMS"
         >
           SMS
         </a>
@@ -63,7 +63,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Social%20Media"
+          href="/?category=Social%20Media"
         >
           Social media
         </a>
@@ -73,7 +73,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Ecommerce"
+          href="/?category=Ecommerce"
         >
           Ecommerce
         </a>
@@ -83,7 +83,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Subscriptions"
+          href="/?category=Subscriptions"
         >
           Subscriptions
         </a>
@@ -93,7 +93,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Shipping%20%26%20Fulfillment"
+          href="/?category=Shipping%20%26%20Fulfillment"
         >
           Shipping & fulfillment
         </a>
@@ -103,7 +103,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Returns%20%26%20Exchanges"
+          href="/?category=Returns%20%26%20Exchanges"
         >
           Returns & exchanges
         </a>
@@ -113,7 +113,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Loyalty%20%26%20Retention"
+          href="/?category=Loyalty%20%26%20Retention"
         >
           Loyalty & retention
         </a>
@@ -123,7 +123,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Reviews%20%26%20UGC"
+          href="/?category=Reviews%20%26%20UGC"
         >
           Reviews & UGC
         </a>
@@ -133,7 +133,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Marketing"
+          href="/?category=Marketing"
         >
           Marketing
         </a>
@@ -143,7 +143,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=BI%20%26%20Analytics"
+          href="/?category=BI%20%26%20Analytics"
         >
           BI & analytics
         </a>
@@ -153,7 +153,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Data%20Management"
+          href="/?category=Data%20Management"
         >
           Data management
         </a>
@@ -163,7 +163,7 @@ exports[`<CategoryFilter /> should render correctly 1`] = `
       >
         <a
           class="link"
-          to="?category=Quality%20Assurance"
+          href="/?category=Quality%20Assurance"
         >
           Quality assurance
         </a>

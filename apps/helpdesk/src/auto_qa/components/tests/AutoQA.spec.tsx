@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { renderWithRouter } from 'utils/testing'
 
 import useAutoQA from '../../hooks/useAutoQA'
 import AutoQA from '../AutoQA'
@@ -52,7 +52,7 @@ describe('AutoQA', () => {
     })
 
     it('should render the component', () => {
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(getByText('Auto QA Score')).toBeInTheDocument()
     })
 
@@ -68,7 +68,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -81,7 +81,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(
             getByText(
                 'Auto QA results will be available 12 hours after ticket closure.',
@@ -102,7 +102,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(
             getByText(
                 /Only tickets that meet certain requirements are scored by Auto QA./,
@@ -122,7 +122,7 @@ describe('AutoQA', () => {
             saveState: 'idle',
         })
 
-        const { getAllByText } = render(<AutoQA />)
+        const { getAllByText } = renderWithRouter(<AutoQA />)
         const els = getAllByText('Dimension')
         expect(els.length).toBe(2)
     })
@@ -146,14 +146,14 @@ describe('AutoQA', () => {
             ),
             saveState: 'idle',
         })
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(getByText('Last updated: Today at 9:00 PM')).toBeInTheDocument()
     })
 
     it('should render Unauthorized when SimplifyAiAgentFeedbackCollection is enabled and has no agent privileges', () => {
         useHasAgentPrivilegesMock.mockReturnValue(false)
 
-        const { getByText } = render(<AutoQA />)
+        const { getByText } = renderWithRouter(<AutoQA />)
         expect(getByText('Unauthorized')).toBeInTheDocument()
         expect(
             getByText('You do not have permission to view ticket feedback.'),
@@ -171,7 +171,7 @@ describe('AutoQA', () => {
                 saveState: 'saved',
             })
 
-            const { getByTestId } = render(<AutoQA />)
+            const { getByTestId } = renderWithRouter(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.SAVED.toString(),
             )
@@ -187,7 +187,7 @@ describe('AutoQA', () => {
                 saveState: 'saved',
             })
 
-            const { rerender, getByTestId } = render(<AutoQA />)
+            const { rerender, getByTestId } = renderWithRouter(<AutoQA />)
 
             // Verify initial state is SAVED
             expect(getByTestId('auto-save-badge').textContent).toBe(
@@ -220,7 +220,7 @@ describe('AutoQA', () => {
                 saveState: 'saving',
             })
 
-            const { getByTestId } = render(<AutoQA />)
+            const { getByTestId } = renderWithRouter(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.SAVING.toString(),
             )
@@ -236,7 +236,7 @@ describe('AutoQA', () => {
                 saveState: 'idle',
             })
 
-            const { getByTestId } = render(<AutoQA />)
+            const { getByTestId } = renderWithRouter(<AutoQA />)
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.INITIAL.toString(),
             )

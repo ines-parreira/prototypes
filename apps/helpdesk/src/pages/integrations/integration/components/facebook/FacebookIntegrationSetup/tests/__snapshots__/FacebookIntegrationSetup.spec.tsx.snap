@@ -18,7 +18,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -27,7 +27,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/facebook"
+            href="/app/settings/integrations/facebook"
           >
             Facebook
           </a>
@@ -356,7 +356,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -365,7 +365,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/facebook"
+            href="/app/settings/integrations/facebook"
           >
             Facebook
           </a>
@@ -704,7 +704,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -713,7 +713,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/facebook"
+            href="/app/settings/integrations/facebook"
           >
             Facebook
           </a>
@@ -1052,7 +1052,7 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1061,7 +1061,7 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/facebook"
+            href="/app/settings/integrations/facebook"
           >
             Facebook
           </a>

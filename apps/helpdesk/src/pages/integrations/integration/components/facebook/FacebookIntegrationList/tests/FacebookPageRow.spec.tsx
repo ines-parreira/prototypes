@@ -1,12 +1,10 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
 import {
     FACEBOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
+import { renderWithRouter } from 'utils/testing'
 
 import FacebookPageRow from '../FacebookPageRow'
 
@@ -19,7 +17,7 @@ describe('FacebookPageRow component', () => {
             created_datetime: '2018-01-01 00:00:00',
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <FacebookPageRow integration={integration} />,
         )
 
@@ -43,7 +41,7 @@ describe('FacebookPageRow component', () => {
             },
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <FacebookPageRow integration={integration} />,
         )
 

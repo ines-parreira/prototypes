@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import { Integration } from 'models/integration/types'
@@ -47,10 +46,12 @@ describe('ChannelsDrawerContent', () => {
 
     it('renders the component with initial assigned channels', () => {
         renderWithStore(
-            <DrawerContent
-                activeChannel={mockActiveChannel}
-                setChanges={mockSetChanges}
-            />,
+            <MemoryRouter>
+                <DrawerContent
+                    activeChannel={mockActiveChannel}
+                    setChanges={mockSetChanges}
+                />
+            </MemoryRouter>,
             {},
         )
 
@@ -68,10 +69,13 @@ describe('ChannelsDrawerContent', () => {
 
     it('initializes with assigned channel IDs from activeChannel', () => {
         renderWithStore(
-            <DrawerContent
-                activeChannel={mockActiveChannel}
-                setChanges={mockSetChanges}
-            />,
+            <MemoryRouter>
+                {' '}
+                <DrawerContent
+                    activeChannel={mockActiveChannel}
+                    setChanges={mockSetChanges}
+                />
+            </MemoryRouter>,
             {},
         )
 
@@ -88,10 +92,13 @@ describe('ChannelsDrawerContent', () => {
         }
 
         renderWithStore(
-            <DrawerContent
-                activeChannel={mockActiveChannelWithoutAssigned}
-                setChanges={mockSetChanges}
-            />,
+            <MemoryRouter>
+                {' '}
+                <DrawerContent
+                    activeChannel={mockActiveChannelWithoutAssigned}
+                    setChanges={mockSetChanges}
+                />
+            </MemoryRouter>,
             {},
         )
 

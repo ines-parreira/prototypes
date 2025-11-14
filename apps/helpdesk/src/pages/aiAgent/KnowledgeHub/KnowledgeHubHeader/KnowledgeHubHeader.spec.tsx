@@ -51,7 +51,7 @@ describe('KnowledgeHubHeader', () => {
             const knowledgeText = screen.getByText('Knowledge')
             expect(knowledgeText).toBeInTheDocument()
             expect(knowledgeText.closest('a')).toHaveAttribute(
-                'to',
+                'href',
                 mockRoutes.knowledge,
             )
         })

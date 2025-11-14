@@ -1,10 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClient, useQueryClient } from '@tanstack/react-query'
-import { act, render } from '@testing-library/react'
+import { act } from '@testing-library/react'
 
 import { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
 import { trackstarDefinitionKeys } from 'models/workflows/queries'
+import { renderWithRouter } from 'utils/testing'
 
 import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
 
@@ -41,7 +42,7 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
                 },
             }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <WorkflowConfigurationUpdatedNotification
                 notification={notification}
             />,

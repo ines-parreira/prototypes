@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/types'
 import TwitterIntegrationDetail from 'pages/integrations/integration/components/twitter/TwitterIntegrationDetail'
@@ -43,11 +42,16 @@ describe('<TwitterIntegrationDetail/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const { container } = render(
-                <TwitterIntegrationDetail
-                    integration={integration}
-                    actions={{ updateOrCreateIntegration, deleteIntegration }}
-                    redirectUri="https://this-is-an-url.com"
-                />,
+                <MemoryRouter>
+                    <TwitterIntegrationDetail
+                        integration={integration}
+                        actions={{
+                            updateOrCreateIntegration,
+                            deleteIntegration,
+                        }}
+                        redirectUri="https://this-is-an-url.com"
+                    />
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -55,11 +59,16 @@ describe('<TwitterIntegrationDetail/>', () => {
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
             const { getByRole, getByText } = render(
-                <TwitterIntegrationDetail
-                    integration={integration}
-                    actions={{ updateOrCreateIntegration, deleteIntegration }}
-                    redirectUri="https://this-is-an-url.com"
-                />,
+                <MemoryRouter>
+                    <TwitterIntegrationDetail
+                        integration={integration}
+                        actions={{
+                            updateOrCreateIntegration,
+                            deleteIntegration,
+                        }}
+                        redirectUri="https://this-is-an-url.com"
+                    />
+                </MemoryRouter>,
             )
             fireEvent.click(
                 getByRole('button', {

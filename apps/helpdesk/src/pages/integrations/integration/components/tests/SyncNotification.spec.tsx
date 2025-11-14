@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import SyncNotification from '../SyncNotification'
 
@@ -11,11 +10,13 @@ describe('<SyncNotification/>', () => {
 
     it('should show progress notification', () => {
         render(
-            <SyncNotification
-                platform={'Shopify'}
-                shopName={'Very Good Shop'}
-                isSyncComplete={false}
-            />,
+            <MemoryRouter>
+                <SyncNotification
+                    platform={'Shopify'}
+                    shopName={'Very Good Shop'}
+                    isSyncComplete={false}
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByText(/Import in progress/))
@@ -23,11 +24,13 @@ describe('<SyncNotification/>', () => {
 
     it('should show completed notification', () => {
         render(
-            <SyncNotification
-                platform={'Shopify'}
-                shopName={'Very Good Shop'}
-                isSyncComplete={true}
-            />,
+            <MemoryRouter>
+                <SyncNotification
+                    platform={'Shopify'}
+                    shopName={'Very Good Shop'}
+                    isSyncComplete={true}
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByText(/Import complete/))

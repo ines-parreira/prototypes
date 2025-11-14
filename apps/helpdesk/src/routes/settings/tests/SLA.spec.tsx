@@ -12,6 +12,7 @@ import { renderAppSettings } from '../helpers/settingsRenderer'
 import { SLA } from '../SLA'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),

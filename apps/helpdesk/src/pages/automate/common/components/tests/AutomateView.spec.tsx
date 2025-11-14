@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
@@ -20,12 +19,14 @@ jest.mock(
 describe('AutomateView', () => {
     test('renders with title and action', () => {
         renderWithQueryClientProvider(
-            <AutomateView
-                title={<div>Test Title</div>}
-                action={<button>Action</button>}
-            >
-                <div>Content</div>
-            </AutomateView>,
+            <MemoryRouter>
+                <AutomateView
+                    title={<div>Test Title</div>}
+                    action={<button>Action</button>}
+                >
+                    <div>Content</div>
+                </AutomateView>
+            </MemoryRouter>,
         )
 
         expect(screen.getByText('Test Title')).toBeInTheDocument()
@@ -40,9 +41,11 @@ describe('AutomateView', () => {
             { route: '/route2', title: 'Route 2', exact: false },
         ]
         renderWithQueryClientProvider(
-            <AutomateView headerNavbarItems={navbarItems}>
-                <div>Content</div>
-            </AutomateView>,
+            <MemoryRouter>
+                <AutomateView headerNavbarItems={navbarItems}>
+                    <div>Content</div>
+                </AutomateView>
+            </MemoryRouter>,
         )
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()
@@ -50,18 +53,22 @@ describe('AutomateView', () => {
 
     test('renders loading state', () => {
         renderWithQueryClientProvider(
-            <AutomateView isLoading>
-                <div>Content</div>
-            </AutomateView>,
+            <MemoryRouter>
+                <AutomateView isLoading>
+                    <div>Content</div>
+                </AutomateView>
+            </MemoryRouter>,
         )
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     test('renders children when not loading', () => {
         renderWithQueryClientProvider(
-            <AutomateView>
-                <div>Content</div>
-            </AutomateView>,
+            <MemoryRouter>
+                <AutomateView>
+                    <div>Content</div>
+                </AutomateView>
+            </MemoryRouter>,
         )
         expect(screen.getByText('Content')).toBeInTheDocument()
     })

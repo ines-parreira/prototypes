@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +10,7 @@ import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { STATS_ROUTES } from 'routes/constants'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -25,7 +24,7 @@ describe('<AgentNameCellContent>', () => {
     } as RootState
 
     it('should render agent name', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AgentNameCellContent agent={agent} />
             </Provider>,
@@ -36,7 +35,7 @@ describe('<AgentNameCellContent>', () => {
 
     it('should dispatch agent id on click agent name', () => {
         const store = mockStore(defaultState)
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <AgentNameCellContent agent={agent} />
             </Provider>,
@@ -54,20 +53,20 @@ describe('<AgentNameCellContent>', () => {
     })
 
     it('should redirect to support performance overview by default', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AgentNameCellContent agent={agent} />
             </Provider>,
         )
 
         expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(
-            'to',
+            'href',
             `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`,
         )
     })
 
     it('should redirect to custom route if provided', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AgentNameCellContent
                     agent={agent}
@@ -77,7 +76,7 @@ describe('<AgentNameCellContent>', () => {
         )
 
         expect(screen.getByText(agents[0].name).closest('a')).toHaveAttribute(
-            'to',
+            'href',
             `${STATS_ROUTE_PREFIX}${STATS_ROUTES.VOICE_OVERVIEW}`,
         )
     })

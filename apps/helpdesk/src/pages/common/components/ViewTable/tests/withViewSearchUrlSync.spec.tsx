@@ -5,7 +5,7 @@ import { Map } from 'immutable'
 import _noop from 'lodash/noop'
 import { compressToEncodedURIComponent } from 'lz-string'
 import { stringify } from 'qs'
-import reactRouterDom from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import * as viewsConfig from 'config/views'
 import { EntityType } from 'models/view/types'
@@ -15,10 +15,12 @@ import {
 } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 import { getLDClient } from 'utils/launchDarkly'
 
-jest.spyOn(reactRouterDom, 'useLocation')
-const mockedUseLocation = reactRouterDom.useLocation as jest.MockedFunction<
-    typeof reactRouterDom.useLocation
->
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+}))
+
+const mockedUseLocation = useLocation as jest.MockedFunction<typeof useLocation>
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock

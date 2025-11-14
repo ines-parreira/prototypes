@@ -1,13 +1,14 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { logEvent } from '@repo/logging'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ticket as ticketFixture } from 'fixtures/ticket'
 import { fetchTicketsByRuleId } from 'models/ticket/resources'
+import { renderWithRouter } from 'utils/testing'
 
 import { RuleTicketList } from '../RuleTicketList'
 
@@ -41,7 +42,7 @@ describe('<RuleTicketList/>', () => {
         fetchTicketsByRuleIdMock.mockResolvedValue(defaultApiResponse)
     })
     it('should render the rule ticket list', async () => {
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>,
@@ -53,7 +54,7 @@ describe('<RuleTicketList/>', () => {
     })
     it('should fetch the tickets on render', async () => {
         await waitFor(() =>
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <RuleTicketList {...minProps} />
                 </Provider>,
@@ -71,7 +72,7 @@ describe('<RuleTicketList/>', () => {
                 total_resources: null,
             },
         })
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>,
@@ -90,7 +91,7 @@ describe('<RuleTicketList/>', () => {
                 total_resources: null,
             },
         })
-        const { container, getByText } = render(
+        const { container, getByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>,
@@ -104,7 +105,7 @@ describe('<RuleTicketList/>', () => {
         )
     })
     it('should log segment event on click', async () => {
-        const { container, getByText } = render(
+        const { container, getByText } = renderWithRouter(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>,

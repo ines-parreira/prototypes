@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { AiAgentStatsEmptyState } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyState'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 const useStoreIntegrationsMock = useStoreIntegrations as jest.Mock
@@ -27,7 +26,7 @@ describe('AiAgentStatsEmptyState', () => {
         }>
     } = {}) => {
         useStoreIntegrationsMock.mockReturnValue(storeIntegrations)
-        return render(<AiAgentStatsEmptyState />)
+        return renderWithRouter(<AiAgentStatsEmptyState />)
     }
 
     it('correctly renders the component', () => {
@@ -49,7 +48,7 @@ describe('AiAgentStatsEmptyState', () => {
         expect(screen.getByText('AI Agent Statistics')).toBeInTheDocument()
         expect(button).toBeInTheDocument()
         expect(button.closest('a')).toHaveAttribute(
-            'to',
+            'href',
             '/app/automation/shopify/my-shopify-store/ai-agent',
         )
 
@@ -74,6 +73,6 @@ describe('AiAgentStatsEmptyState', () => {
         })
 
         const button = screen.getByRole('button', { name: /Set Up AI Agent/i })
-        expect(button.closest('a')).toHaveAttribute('to', '/app/automation/')
+        expect(button.closest('a')).toHaveAttribute('href', '/app/automation/')
     })
 })

@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -13,6 +10,7 @@ import { user } from 'fixtures/users'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { ConvertSetupBanner } from '../ConvertSetupBanner'
 
@@ -49,7 +47,7 @@ describe('ConvertSetupBanner', () => {
     it('should render correctly for everyone', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -62,7 +60,7 @@ describe('ConvertSetupBanner', () => {
     it('should not render because has bundle installed', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -84,7 +82,7 @@ describe('ConvertSetupBanner', () => {
             }),
         })
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={agentStore}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,
@@ -100,7 +98,7 @@ describe('ConvertSetupBanner', () => {
             channelConnection: channelConnection,
         } as any)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
             </Provider>,

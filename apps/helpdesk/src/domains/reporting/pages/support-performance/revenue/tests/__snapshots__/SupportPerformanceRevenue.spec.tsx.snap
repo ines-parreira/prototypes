@@ -750,7 +750,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                 class="cell-wrapper cell-content"
               >
                 <a
-                  to="/app/ticket/13198875"
+                  href="/app/ticket/13198875"
                 >
                   New customer message on December 16, 2021 at 1:33 pm
                 </a>

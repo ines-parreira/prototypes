@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { render } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
 import type { Notification } from 'common/notifications'
+import { renderWithRouter } from 'utils/testing'
 
 import type { ImportNotification } from '../../types'
 import ImportEmailFailedNotification from '../ImportEmailFailedNotification'
@@ -29,7 +29,7 @@ describe('ImportEmailFailedNotification', () => {
 
     it('should render the notification with correct content', () => {
         const notification = createMockFailedNotification()
-        const { getByText, container } = render(
+        const { getByText, container } = renderWithRouter(
             <ImportEmailFailedNotification notification={notification} />,
         )
 
@@ -50,7 +50,7 @@ describe('ImportEmailFailedNotification', () => {
             id: 456,
         })
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailFailedNotification
                 notification={notification}
                 onClick={mockOnClick}
@@ -81,7 +81,7 @@ describe('ImportEmailFailedNotification', () => {
             },
         }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailFailedNotification notification={notification} />,
         )
 
@@ -100,7 +100,7 @@ describe('ImportEmailFailedNotification', () => {
             },
         }
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <ImportEmailFailedNotification notification={notification} />,
         )
 

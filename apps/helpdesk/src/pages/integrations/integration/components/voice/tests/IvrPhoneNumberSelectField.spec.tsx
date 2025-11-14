@@ -12,6 +12,7 @@ import IvrPhoneNumberSelectField from '../IvrPhoneNumberSelectField'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const useParamsMock = useParams as jest.Mock

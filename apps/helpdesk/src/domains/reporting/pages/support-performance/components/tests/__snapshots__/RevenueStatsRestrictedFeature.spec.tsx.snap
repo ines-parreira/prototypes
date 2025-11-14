@@ -20,7 +20,7 @@ exports[`<RevenueStatsRestrictedFeature /> should render the restricted feature 
       >
         <a
           class="actionLink"
-          to="/app/settings/integrations/shopify/new"
+          href="/app/settings/integrations/shopify/new"
         >
           Add one here
         </a>

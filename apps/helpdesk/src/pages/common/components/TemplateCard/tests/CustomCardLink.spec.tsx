@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import CustomCardLink from '../CustomCardLink'
 
@@ -12,11 +11,15 @@ describe('<CustomCardLink />', () => {
     }
 
     it('should display a custom card wrapped in a link', () => {
-        const { getByText } = render(<CustomCardLink {...props} />)
+        const { getByText } = render(
+            <MemoryRouter>
+                <CustomCardLink {...props} />
+            </MemoryRouter>,
+        )
 
         expect(getByText(props.title).closest('a')).toHaveAttribute(
-            'to',
-            props.to,
+            'href',
+            `/${props.to}`,
         )
         expect(getByText('add_circle')).toBeInTheDocument()
         expect(getByText(props.description)).toBeInTheDocument()

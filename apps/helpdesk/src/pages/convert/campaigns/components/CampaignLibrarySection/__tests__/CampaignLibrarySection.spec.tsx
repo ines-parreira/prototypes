@@ -1,11 +1,8 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-
 import {
     CampaignTemplateLabelType,
     CampaignTemplateSectionType,
 } from 'pages/convert/campaigns/templates/types'
+import { renderWithRouter } from 'utils/testing'
 
 import CampaignLibrarySection from '../CampaignLibrarySection'
 
@@ -26,7 +23,7 @@ describe('CampaignLibrarySection', () => {
     }
 
     it('renders campaign template correctly', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <CampaignLibrarySection
                 section={sectionTemplate}
                 integrationId={1}

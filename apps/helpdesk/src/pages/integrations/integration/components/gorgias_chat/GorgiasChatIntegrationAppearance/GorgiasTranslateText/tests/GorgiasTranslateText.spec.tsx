@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -19,29 +19,18 @@ import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasTranslateText from '../GorgiasTranslateText'
 
-const mockHistoryPush = jest.fn()
-const mockHistoryReplace = jest.fn()
-
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useLocation: jest.fn(),
-            useHistory: () => ({
-                block: jest.fn(),
-                push: mockHistoryPush,
-                replace: mockHistoryReplace,
-            }),
-        }) as Record<string, any>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+    useHistory: jest.fn(),
+}))
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
 
-const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+const useLocationMock = useLocation as jest.Mock
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
@@ -86,21 +75,23 @@ describe('GorgiasTranslateText', () => {
     })
 
     it('renders without crashing', () => {
-        useLocationSpy.mockReturnValue({
+        useLocationMock.mockReturnValue({
             pathname: '/app/settings/channels/gorgias_chat/45/languages/it',
         } as any)
 
         render(
-            <Provider store={store}>
-                <GorgiasTranslateText integration={integration} />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <GorgiasTranslateText integration={integration} />
+                </Provider>
+            </MemoryRouter>,
         )
         expect(screen.getByText('Chat')).toBeInTheDocument()
     })
 
     // TODO. Finish the test by mocking the API calls, etc...
     // it.skip('handles language change', async () => {
-    //     useLocationSpy.mockReturnValue({
+    //     useLocationMock.mockReturnValue({
     //         pathname: '/app/settings/channels/gorgias_chat/45/languages/it',
     //     } as any)
 

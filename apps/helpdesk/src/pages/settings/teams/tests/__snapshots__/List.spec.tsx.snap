@@ -34,7 +34,7 @@ exports[`<TeamList /> should render with data 1`] = `
     </p>
     <a
       class="card p-3 card d-flex flex-row mb-3"
-      to="/app/settings/teams/33/members"
+      href="/app/settings/teams/33/members"
     >
       <div
         class="d-flex justify-content-center mr-3"
@@ -104,7 +104,7 @@ exports[`<TeamList /> should render with data 1`] = `
     </a>
     <a
       class="card p-3 card d-flex flex-row mb-3"
-      to="/app/settings/teams/34/members"
+      href="/app/settings/teams/34/members"
     >
       <div
         class="d-flex justify-content-center mr-3"
@@ -176,7 +176,7 @@ exports[`<TeamList /> should render with data 1`] = `
     </a>
     <a
       class="card p-3 card d-flex flex-row mb-3"
-      to="/app/settings/teams/35/members"
+      href="/app/settings/teams/35/members"
     >
       <div
         class="d-flex justify-content-center mr-3"
@@ -246,7 +246,7 @@ exports[`<TeamList /> should render with data 1`] = `
     </a>
     <a
       class="card p-3 card d-flex flex-row mb-3"
-      to="/app/settings/teams/36/members"
+      href="/app/settings/teams/36/members"
     >
       <div
         class="d-flex justify-content-center mr-3"

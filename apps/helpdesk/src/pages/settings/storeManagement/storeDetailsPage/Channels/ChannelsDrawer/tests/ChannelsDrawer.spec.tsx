@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { fireEvent, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { renderWithStore } from 'utils/testing'
 
@@ -28,35 +29,54 @@ const defaultProps = {
 describe('ChannelsDrawer', () => {
     it('renders nothing when activeChannel is not provided', () => {
         const { container } = renderWithStore(
-            <ChannelsDrawer {...defaultProps} activeChannel={null as any} />,
+            <MemoryRouter>
+                <ChannelsDrawer {...defaultProps} activeChannel={null as any} />
+            </MemoryRouter>,
             {},
         )
         expect(container.firstChild).toBeNull()
     })
 
     it('renders drawer with channel title', () => {
-        renderWithStore(<ChannelsDrawer {...defaultProps} />, {})
+        renderWithStore(
+            <MemoryRouter>
+                <ChannelsDrawer {...defaultProps} />
+            </MemoryRouter>,
+            {},
+        )
         expect(screen.getByText('Test Channel')).toBeInTheDocument()
     })
 
     it('calls onCloseDrawer when Cancel button is clicked', () => {
-        renderWithStore(<ChannelsDrawer {...defaultProps} />, {})
+        renderWithStore(
+            <MemoryRouter>
+                <ChannelsDrawer {...defaultProps} />
+            </MemoryRouter>,
+            {},
+        )
         fireEvent.click(screen.getByText('Cancel'))
         expect(defaultProps.onCloseDrawer).toHaveBeenCalled()
     })
 
     it('disables Save Changes button when no changes exist', () => {
-        renderWithStore(<ChannelsDrawer {...defaultProps} />, {})
+        renderWithStore(
+            <MemoryRouter>
+                <ChannelsDrawer {...defaultProps} />
+            </MemoryRouter>,
+            {},
+        )
         const saveButton = screen.getByRole('button', { name: 'Save Changes' })
         expect(saveButton).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('enables Save Changes button when changes exist', () => {
         renderWithStore(
-            <ChannelsDrawer
-                {...defaultProps}
-                changes={[{ channelId: 1, action: 'add' }]}
-            />,
+            <MemoryRouter>
+                <ChannelsDrawer
+                    {...defaultProps}
+                    changes={[{ channelId: 1, action: 'add' }]}
+                />
+            </MemoryRouter>,
             {},
         )
         expect(screen.getByText('Save Changes')).toBeEnabled()

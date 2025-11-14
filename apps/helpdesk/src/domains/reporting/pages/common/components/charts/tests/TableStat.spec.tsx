@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,6 +17,7 @@ import { Integration } from 'models/integration/types'
 import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import * as channelsService from 'services/channels'
 import { initialState } from 'state/tags/reducers'
+import { renderWithRouter } from 'utils/testing'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
@@ -294,7 +295,7 @@ describe('TableStat', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData.toObject() as ComponentProps<
@@ -314,7 +315,7 @@ describe('TableStat', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatNoData.toObject() as ComponentProps<
@@ -335,7 +336,7 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData
@@ -365,7 +366,7 @@ describe('TableStat', () => {
                 .toJS(),
             tableOptions: { showLines: 1 },
         }
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData
@@ -396,7 +397,7 @@ describe('TableStat', () => {
         const config = statsConfig.find(
             (config, key) => key === TICKETS_CLOSED_PER_AGENT,
         )
-        const { container } = render(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatDataOnlyWithOnlineState.toObject() as ComponentProps<

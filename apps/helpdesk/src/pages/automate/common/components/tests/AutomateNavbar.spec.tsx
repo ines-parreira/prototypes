@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
-import { StaticRouter } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
@@ -44,9 +44,9 @@ jest.mock('common/notifications/components/Button', () => ({
 }))
 
 const wrapper = ({ children }: { children?: ReactNode }) => (
-    <StaticRouter location="/app">
+    <MemoryRouter initialEntries={['/app']}>
         <NavBarProvider>{children}</NavBarProvider>
-    </StaticRouter>
+    </MemoryRouter>
 )
 
 describe('<AutomateNavbar />', () => {

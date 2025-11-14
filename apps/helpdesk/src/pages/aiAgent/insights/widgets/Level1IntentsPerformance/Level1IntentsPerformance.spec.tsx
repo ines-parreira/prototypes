@@ -40,6 +40,7 @@ jest.mock(
 )
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(() => ({ shopName: 'shopName' })),
 }))
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')

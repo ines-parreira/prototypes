@@ -1,6 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import GlobalNavigation from 'common/navigation/components/GlobalNavigation'
@@ -16,6 +15,7 @@ import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)
@@ -64,7 +64,7 @@ describe('GlobalNavigation', () => {
     }
 
     const renderWithContext = () =>
-        render(
+        renderWithRouter(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <GlobalNavigation />
             </NavBarContext.Provider>,

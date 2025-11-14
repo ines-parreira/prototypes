@@ -38,6 +38,7 @@ jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)

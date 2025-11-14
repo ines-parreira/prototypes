@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm } from 'react-hook-form'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 
 import { getLDClient } from 'utils/launchDarkly'
 

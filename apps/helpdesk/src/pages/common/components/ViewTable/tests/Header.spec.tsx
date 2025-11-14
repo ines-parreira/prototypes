@@ -21,7 +21,6 @@ jest.mock('state/views/actions.ts', () => {
         fetchViewItems: jest.fn(() => _identity),
     }
 })
-jest.mock('react-router-dom')
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
     history: {

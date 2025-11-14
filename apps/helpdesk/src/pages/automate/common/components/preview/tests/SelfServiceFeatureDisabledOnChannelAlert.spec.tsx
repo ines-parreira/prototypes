@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
@@ -16,10 +15,12 @@ describe('<SelfServiceFeatureDisabledOnChannelAlert />', () => {
     it('should render component', () => {
         useIsAutomateSettingsMock.mockReturnValue(false)
         render(
-            <SelfServiceFeatureDisabledOnChannelAlert
-                shopName="shop-name"
-                shopType="shop-type"
-            />,
+            <MemoryRouter>
+                <SelfServiceFeatureDisabledOnChannelAlert
+                    shopName="shop-name"
+                    shopType="shop-type"
+                />
+            </MemoryRouter>,
         )
         expect(
             screen.getByText(/this feature is currently disabled/i),
@@ -28,10 +29,12 @@ describe('<SelfServiceFeatureDisabledOnChannelAlert />', () => {
     it('should render in automate settings', () => {
         useIsAutomateSettingsMock.mockReturnValue(true)
         render(
-            <SelfServiceFeatureDisabledOnChannelAlert
-                shopName="shop-name"
-                shopType="shop-type"
-            />,
+            <MemoryRouter>
+                <SelfServiceFeatureDisabledOnChannelAlert
+                    shopName="shop-name"
+                    shopType="shop-type"
+                />
+            </MemoryRouter>,
         )
         expect(
             screen.getByText(/this feature is currently disabled/i),

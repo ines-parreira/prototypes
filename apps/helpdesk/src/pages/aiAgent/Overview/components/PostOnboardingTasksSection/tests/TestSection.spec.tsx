@@ -9,6 +9,7 @@ import { TestSection } from '../TestSection'
 import { PostOnboardingStepMetadata } from '../types'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ({
         shopName: 'test-shop',
     }),

@@ -27,7 +27,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         >
           <a
             class="link"
-            data-active-class-name="active"
             href="/app/automation"
           >
             <span>
@@ -40,7 +39,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         >
           <a
             class="link"
-            data-active-class-name="active"
             href="/app/automation/ai-agent-overview"
           >
             <span>
@@ -88,8 +86,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/ai-agent/shopify/gorgiastest"
             >
               <span
                 class="item-name"
@@ -111,8 +108,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/flows"
             >
               <span
                 class="item-name"
@@ -127,8 +123,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/order-management"
             >
               <span
                 class="item-name"
@@ -143,8 +138,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/article-recommendation"
             >
               <span
                 class="item-name"
@@ -159,8 +153,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/connected-channels"
             >
               <span
                 class="item-name"
@@ -205,8 +198,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/flows"
             >
               <span
                 class="item-name"
@@ -220,8 +212,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
             >
               <span
                 class="item-name"
@@ -235,8 +226,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
             >
               <span
                 class="item-name"
@@ -317,7 +307,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         >
           <a
             class="link"
-            data-active-class-name="active"
             href="/app/automation"
           >
             <span>
@@ -330,7 +319,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         >
           <a
             class="link"
-            data-active-class-name="active"
             href="/app/automation/ai-agent-overview"
           >
             <span>
@@ -378,8 +366,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/ai-agent/shopify/gorgiastest"
             >
               <span
                 class="item-name"
@@ -401,8 +388,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/flows"
             >
               <span
                 class="item-name"
@@ -417,8 +403,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/order-management"
             >
               <span
                 class="item-name"
@@ -433,8 +418,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/article-recommendation"
             >
               <span
                 class="item-name"
@@ -449,8 +433,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/shopify/gorgiastest/connected-channels"
             >
               <span
                 class="item-name"
@@ -495,8 +478,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/flows"
             >
               <span
                 class="item-name"
@@ -510,8 +492,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/article-recommendation"
             >
               <span
                 class="item-name"
@@ -525,8 +506,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           >
             <a
               class="link"
-              data-active-class-name="active"
-              href="[object Object]"
+              href="/app/automation/bigcommerce/xb107iaz1n/connected-channels"
             >
               <span
                 class="item-name"

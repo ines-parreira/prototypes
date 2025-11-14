@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -28,19 +28,23 @@ import { RootState } from 'state/types'
 
 import { RuleDetailForm } from '../RuleDetailForm'
 
-const { Router } = ReactRouterDom
-
 jest.mock('state/entities/rules/actions')
 jest.mock('models/rule/resources')
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useParams: jest.fn(),
-        }) as Record<string, any>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+}))
 
+jest.mock('@repo/routing', () => {
+    const actualRouting = jest.requireActual('@repo/routing')
+    return {
+        ...actualRouting,
+        history: {
+            ...actualRouting.history,
+            push: jest.fn(),
+        },
+    }
+})
 const mockStore = configureMockStore([thunk])
 const defaultStore: Partial<RootState> = {
     billing: fromJS(billingState),
@@ -50,8 +54,7 @@ const defaultStore: Partial<RootState> = {
 
 describe('<RuleDetailForm />', () => {
     const mockDate = jest.spyOn(global.Date, 'now').mockImplementation(() => 0)
-    const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
-
+    const mockUseParams = useParams as jest.Mock
     const ruleUpdatedMock = ruleUpdated as jest.MockedFunction<
         typeof ruleUpdated
     >
@@ -82,13 +85,13 @@ describe('<RuleDetailForm />', () => {
         props?: Partial<ComponentProps<typeof RuleDetailForm>>,
     ) =>
         render(
-            <Router history={history}>
+            <MemoryRouter initialEntries={['/app/settings/rules']}>
                 <Provider store={mockStore(defaultStore)}>
                     <QueryClientProvider client={appQueryClient}>
                         <RuleDetailForm {...minProps} {...props} />
                     </QueryClientProvider>
                 </Provider>
-            </Router>,
+            </MemoryRouter>,
         )
 
     beforeEach(() => {

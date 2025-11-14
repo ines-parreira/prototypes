@@ -31,7 +31,7 @@ exports[`<LimitWarning /> should render a limit warning 1`] = `
     >
       <a
         class="actionLink"
-        to="/app/settings/billing"
+        href="/app/settings/billing"
       >
         Upgrade your plan
       </a>

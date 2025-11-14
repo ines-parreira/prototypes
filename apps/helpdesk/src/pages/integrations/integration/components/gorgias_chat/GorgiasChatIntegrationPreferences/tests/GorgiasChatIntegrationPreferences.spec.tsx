@@ -1,11 +1,10 @@
 import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { history } from '@repo/routing'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -95,13 +94,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('componentDidMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
             const { getAllByRole } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             // chat title should be empty
@@ -129,14 +128,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getAllByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(getAllByText('Foo Chat')).toHaveLength(2)
@@ -167,27 +166,27 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 })
 
                 const { rerender, queryByText, getAllByText } = render(
-                    <Router history={history}>
+                    <MemoryRouter>
                         <Provider store={mockStore(defaultState)}>
                             {' '}
                             <GorgiasChatIntegrationPreferencesComponent
                                 {...minProps}
                             />
                         </Provider>
-                    </Router>,
+                    </MemoryRouter>,
                 )
 
                 expect(queryByText('Foo Chat')).toBeNull()
 
                 rerender(
-                    <Router history={history}>
+                    <MemoryRouter>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationPreferencesComponent
                                 {...minProps}
                                 integration={integration}
                             />
                         </Provider>
-                    </Router>,
+                    </MemoryRouter>,
                 )
 
                 expect(getAllByText('Foo Chat')).toHaveLength(2)
@@ -214,25 +213,25 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { rerender } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             rerender(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(mockGetTranslations).toHaveBeenCalledTimes(1)
@@ -240,23 +239,23 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
         it('should not initialize the state because the passed integration is empty', () => {
             const { rerender } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             rerender(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(mockGetTranslations).not.toHaveBeenCalled()
@@ -288,7 +287,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 })
 
                 const { getByRole } = render(
-                    <Router history={history}>
+                    <MemoryRouter>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationPreferencesComponent
                                 currentUser={minProps.currentUser}
@@ -300,7 +299,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 selfServiceConfigurationEnabled={false}
                             />
                         </Provider>
-                    </Router>,
+                    </MemoryRouter>,
                 )
 
                 const emailCaptureToggle = getByRole('checkbox', {
@@ -336,14 +335,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getByRole } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             const alwaysRequiredRadio = getByRole('radio', { name: 'Required' })
@@ -378,7 +377,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 })
 
                 const { getByText, queryByText, getByRole } = render(
-                    <Router history={history}>
+                    <MemoryRouter>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationPreferencesComponent
                                 currentUser={minProps.currentUser}
@@ -390,7 +389,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 selfServiceConfigurationEnabled={false}
                             />
                         </Provider>
-                    </Router>,
+                    </MemoryRouter>,
                 )
 
                 const autoResponderCheckbox = getByRole('switch', {
@@ -446,14 +445,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getByRole } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(
@@ -483,14 +482,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getByRole } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(
@@ -510,7 +509,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_setDisplayCampaignsChatHidden()', () => {
         it('should update the display campaigns with hidden chat in the state.', () => {
             const { getByRole } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
@@ -519,7 +518,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             }}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             const displayCampaignsChatHiddenToggle = getByRole('switch', {
@@ -537,7 +536,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_setLinkedEmailIntegration()', () => {
         it('should update the linked email integration in the state.', () => {
             const { getByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
@@ -561,7 +560,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             ]}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             fireEvent.click(getByText('Select an email integration'))
@@ -576,13 +575,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_setControlTicketVolume()', () => {
         it('should update the control ticket volume in the state.', () => {
             const component = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             const controlTicketVolumeToggle = component.getByRole('checkbox', {
@@ -610,13 +609,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             fireEvent.click(getByText('Save Changes'))
@@ -626,7 +625,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
         it('should submit the form with defaults', () => {
             const { getByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
@@ -640,7 +639,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             })}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             fireEvent.click(getByText('Save Changes'))
@@ -667,14 +666,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const { getByRole, getByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
                             integration={integration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             const autoResponderCheckbox = getByText(
@@ -697,7 +696,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('render()', () => {
         it('should render the Chat preferences', () => {
             const { container } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
@@ -716,7 +715,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             })}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -770,7 +769,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             }
 
             const { getByText } = render(
-                <Router history={history}>
+                <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <GorgiasChatIntegrationPreferencesComponent
                             {...minProps}
@@ -790,7 +789,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             selfServiceConfiguration={selfServiceConfiguration}
                         />
                     </Provider>
-                </Router>,
+                </MemoryRouter>,
             )
             const saveButton = getByText('Save Changes').parentElement!
 

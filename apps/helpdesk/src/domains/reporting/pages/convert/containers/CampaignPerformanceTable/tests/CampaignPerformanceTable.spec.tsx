@@ -40,7 +40,6 @@ jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
 const useGetTableStatMock = assumeMock(useGetTableStat)
 
 jest.mock('react-router-dom', () => ({
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
     useParams: jest.fn(),
 }))

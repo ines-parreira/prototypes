@@ -8,7 +8,7 @@ exports[`<UserAuditRow/> should fallback to user email when user has no name set
     >
       <div>
         <a
-          to="/app/settings/users/3"
+          href="/app/settings/users/3"
         >
           <div
             class="component square d-inline-block"
@@ -46,7 +46,7 @@ exports[`<UserAuditRow/> should fallback to user email when user has no name set
         class="cell-content"
       >
         <a
-          to="/app/ticket/10/"
+          href="/app/ticket/10/"
         >
           Ticket #10
         </a>
@@ -128,7 +128,7 @@ exports[`<UserAuditRow/> should render with a link to Customer object type 1`] =
     >
       <div>
         <a
-          to="/app/settings/users/1"
+          href="/app/settings/users/1"
         >
           <div
             class="component square d-inline-block"
@@ -164,7 +164,7 @@ exports[`<UserAuditRow/> should render with a link to Customer object type 1`] =
         class="cell-content"
       >
         <a
-          to="/app/customer/10/"
+          href="/app/customer/10/"
         >
           Customer #10
         </a>
@@ -197,7 +197,7 @@ exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
     >
       <div>
         <a
-          to="/app/settings/users/1"
+          href="/app/settings/users/1"
         >
           <div
             class="component square d-inline-block"
@@ -233,7 +233,7 @@ exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
         class="cell-content"
       >
         <a
-          to="/app/ticket/10/"
+          href="/app/ticket/10/"
         >
           Ticket #10
         </a>
@@ -266,7 +266,7 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
     >
       <div>
         <a
-          to="/app/settings/users/1"
+          href="/app/settings/users/1"
         >
           <div
             class="component square d-inline-block"
@@ -302,7 +302,7 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
         class="cell-content"
       >
         <a
-          to="/app/settings/users/10/"
+          href="/app/settings/users/10/"
         >
           User #10
         </a>
@@ -335,7 +335,7 @@ exports[`<UserAuditRow/> should render with a user, event type and object type 1
     >
       <div>
         <a
-          to="/app/settings/users/1"
+          href="/app/settings/users/1"
         >
           <div
             class="component square d-inline-block"

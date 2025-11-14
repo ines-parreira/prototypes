@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import { renderWithRouter } from 'utils/testing'
 
 import GuidanceActionTag from '../GuidanceActionTag'
 
@@ -55,7 +56,7 @@ describe('GuidanceActionTag', () => {
     it('renders the action', () => {
         const actionId = encodeAction(mockGuidanceActions[0])
 
-        const { container } = render(
+        const { container } = renderWithRouter(
             <GuidanceActionTag value={actionId}>
                 Action Content
             </GuidanceActionTag>,
@@ -75,7 +76,7 @@ describe('GuidanceActionTag', () => {
     it('handles invalid actions', () => {
         const actionId = 'something'
 
-        render(
+        renderWithRouter(
             <GuidanceActionTag value={actionId}>
                 Action Content
             </GuidanceActionTag>,
@@ -103,7 +104,7 @@ describe('GuidanceActionTag', () => {
 
         const actionValue = encodeAction(mockGuidanceActions[0])
 
-        render(
+        renderWithRouter(
             <GuidanceActionTag value={actionValue}>
                 Action Content
             </GuidanceActionTag>,
@@ -131,7 +132,7 @@ describe('GuidanceActionTag', () => {
 
         const actionValue = encodeAction(mockGuidanceActions[0])
 
-        render(
+        renderWithRouter(
             <GuidanceActionTag value={actionValue}>
                 Action Content
             </GuidanceActionTag>,

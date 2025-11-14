@@ -1,10 +1,9 @@
-import React from 'react'
-
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { createDragDropManager } from 'dnd-core'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { act } from 'react-dom/test-utils'
 
+import { renderWithRouter } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { FlowSettingsItem } from '../components/FlowSettingsItem'
@@ -13,7 +12,7 @@ const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 describe('FeatureSettings', () => {
     test('renders the component with all props', () => {
-        render(
+        renderWithRouter(
             <DndProvider manager={manager}>
                 <FlowSettingsItem
                     label="Feature Title"
@@ -37,7 +36,7 @@ describe('FeatureSettings', () => {
 
     it('should call onDelete when delete button is clicked', () => {
         const onDelete = jest.fn()
-        render(
+        renderWithRouter(
             <DndProvider manager={manager}>
                 <FlowSettingsItem
                     label="Feature Title"
@@ -60,7 +59,7 @@ describe('FeatureSettings', () => {
 
     it('should call onDrop when move button is clicked', () => {
         const onDrop = jest.fn()
-        render(
+        renderWithRouter(
             <DndProvider manager={manager}>
                 <FlowSettingsItem
                     label="Feature Title"

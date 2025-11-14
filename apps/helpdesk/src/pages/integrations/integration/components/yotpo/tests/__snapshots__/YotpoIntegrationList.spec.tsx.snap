@@ -18,7 +18,7 @@ exports[`<YotpoIntegrationList/> render() should not render an integration cause
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -103,7 +103,7 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -167,7 +167,7 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <div>
               <b>
@@ -190,7 +190,7 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -227,7 +227,7 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -291,7 +291,7 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <div>
               <b>
@@ -307,7 +307,7 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"
@@ -344,7 +344,7 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -408,7 +408,7 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
           class="link-full-td"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <div>
               <b>
@@ -424,7 +424,7 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
           class="smallest align-middle"
         >
           <a
-            to="/app/settings/integrations/yotpo/1"
+            href="/app/settings/integrations/yotpo/1"
           >
             <i
               class="material-icons md-2 align-middle icon-go-forward"

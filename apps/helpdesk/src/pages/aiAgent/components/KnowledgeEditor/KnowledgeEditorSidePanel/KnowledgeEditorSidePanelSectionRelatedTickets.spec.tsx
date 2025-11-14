@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from './KnowledgeEditorSidePanelSectionRelatedTickets'
@@ -7,7 +9,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
     it('renders', () => {
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
-        render(
+        renderWithRouter(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >

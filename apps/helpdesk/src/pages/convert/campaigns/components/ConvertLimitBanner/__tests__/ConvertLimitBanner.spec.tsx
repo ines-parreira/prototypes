@@ -1,7 +1,4 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -18,6 +15,7 @@ import { user } from 'fixtures/users'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import { ConvertLimitBanner } from '../ConvertLimitBanner'
 
@@ -55,7 +53,7 @@ describe('ConvertLimitBanner', () => {
     it('should render correctly limit reached', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -71,7 +69,7 @@ describe('ConvertLimitBanner', () => {
             convertStatusLimitReachedNotInstalled,
         )
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -86,7 +84,7 @@ describe('ConvertLimitBanner', () => {
     it('should not render because usage is ok', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -102,7 +100,7 @@ describe('ConvertLimitBanner', () => {
     it('should render warning', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -117,7 +115,7 @@ describe('ConvertLimitBanner', () => {
     it('should render warning', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -132,7 +130,7 @@ describe('ConvertLimitBanner', () => {
     it('should render warning for upgrade', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarningUpgrade)
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,
@@ -150,7 +148,7 @@ describe('ConvertLimitBanner', () => {
             estimated_reach_date: '2023-04-01T00:00:00.000Z',
         })
 
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <ConvertLimitBanner />
             </Provider>,

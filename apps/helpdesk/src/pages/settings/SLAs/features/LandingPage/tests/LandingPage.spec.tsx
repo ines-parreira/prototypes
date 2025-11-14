@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
+import { renderWithRouter } from 'utils/testing'
 
 import LandingPage from '../LandingPage'
 
@@ -12,7 +10,7 @@ jest.mock('../LandingBanner', () =>
 
 describe('<LandingPage />', () => {
     it('should display the landing page', () => {
-        const { getAllByText, getByText } = render(<LandingPage />)
+        const { getAllByText, getByText } = renderWithRouter(<LandingPage />)
 
         expect(getAllByText(/Create SLA/i)).toHaveLength(2)
         expect(getByText(/Create from template/i)).toBeInTheDocument()

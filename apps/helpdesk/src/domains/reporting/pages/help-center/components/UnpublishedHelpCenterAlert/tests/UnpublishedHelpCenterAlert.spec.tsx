@@ -1,12 +1,15 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import UnpublishedHelpCenterAlert from 'domains/reporting/pages/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 
 describe('<UnpublishedHelpCenterAlert />', () => {
     it('should render with correct text and link', () => {
-        render(<UnpublishedHelpCenterAlert helpCenterId={1} />)
+        render(
+            <MemoryRouter>
+                <UnpublishedHelpCenterAlert helpCenterId={1} />
+            </MemoryRouter>,
+        )
 
         expect(
             screen.getByText(
@@ -15,6 +18,6 @@ describe('<UnpublishedHelpCenterAlert />', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText('Manage Help Center').closest('a'),
-        ).toHaveAttribute('to', '/app/settings/help-center/1/publish-track')
+        ).toHaveAttribute('href', '/app/settings/help-center/1/publish-track')
     })
 })

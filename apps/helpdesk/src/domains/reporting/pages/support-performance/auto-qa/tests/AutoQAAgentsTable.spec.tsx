@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -29,6 +29,7 @@ import {
 } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import { agents } from 'fixtures/agents'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -118,7 +119,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should render the table title, table header and rows', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
             </Provider>,
@@ -145,7 +146,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should handle table scrolling', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
             </Provider>,
@@ -161,7 +162,7 @@ describe('<AutoQAAgentsTable />', () => {
     })
 
     it('should handle table scrolling to the left border', async () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
             </Provider>,
@@ -178,7 +179,7 @@ describe('<AutoQAAgentsTable />', () => {
 
     describe('Pagination', () => {
         it('should render if there are more agents then perPage', () => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AutoQAAgentsTable />
                 </Provider>,
@@ -195,7 +196,7 @@ describe('<AutoQAAgentsTable />', () => {
                 perPage: agents.length + 1,
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={mockStore({})}>
                     <AutoQAAgentsTable />
                 </Provider>,
@@ -214,7 +215,7 @@ describe('<AutoQAAgentsTable />', () => {
                 perPage: 1,
             })
 
-            render(
+            renderWithRouter(
                 <Provider store={store}>
                     <AutoQAAgentsTable />
                 </Provider>,

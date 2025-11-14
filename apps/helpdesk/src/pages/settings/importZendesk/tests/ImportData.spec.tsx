@@ -1,12 +1,12 @@
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { RootState } from 'state/types'
-import { mockStore } from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import ImportZendesk from '../ImportZendesk'
 
@@ -24,7 +24,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 
 describe('<ImportZendesk />', () => {
     const renderComponent = (state: RootState) =>
-        render(
+        renderWithRouter(
             <Provider store={mockStore(state)}>
                 <ImportZendesk />
             </Provider>,

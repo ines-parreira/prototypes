@@ -1,6 +1,4 @@
-import React, { ComponentProps } from 'react'
-
-import { render } from '@testing-library/react'
+import { ComponentProps } from 'react'
 
 import {
     SLAPolicyMetricType,
@@ -8,6 +6,7 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
+import { renderWithRouter } from 'utils/testing'
 
 import SLAFormView from '../SLAFormView'
 
@@ -73,7 +72,9 @@ describe('SLAFormView', () => {
     })
 
     it('renders the form', () => {
-        const { getByDisplayValue } = render(<SLAFormView {...defaultProps} />)
+        const { getByDisplayValue } = renderWithRouter(
+            <SLAFormView {...defaultProps} />,
+        )
 
         expect(getByDisplayValue('Foo SLA')).toBeInTheDocument()
         expect(getByDisplayValue('30')).toBeInTheDocument()
@@ -82,7 +83,9 @@ describe('SLAFormView', () => {
 
     it('renders the form with business_hours_only field when FF is ON', () => {
         mockUseFlag.mockReturnValue(true)
-        const { getByText } = render(<SLAFormView {...defaultProps} />)
+        const { getByText } = renderWithRouter(
+            <SLAFormView {...defaultProps} />,
+        )
 
         expect(
             getByText('Pause SLA timer outside of business hours'),

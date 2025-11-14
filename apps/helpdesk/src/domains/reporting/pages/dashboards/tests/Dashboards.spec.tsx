@@ -19,6 +19,7 @@ import { OverviewChart } from 'domains/reporting/pages/support-performance/overv
 import { useNotify } from 'hooks/useNotify'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
 }))
 const useHistoryMock = assumeMock(useHistory)

@@ -1,16 +1,9 @@
-import React from 'react'
-
-import { render } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { renderWithRouter } from 'utils/testing'
 
 import NoStoresPage from '../NoStoresPage'
 
 const renderComponent = () => {
-    return render(
-        <BrowserRouter>
-            <NoStoresPage />
-        </BrowserRouter>,
-    )
+    return renderWithRouter(<NoStoresPage />)
 }
 
 describe('NoStoresPage', () => {
@@ -25,7 +18,7 @@ describe('NoStoresPage', () => {
     it('should have correct link to integrations page', () => {
         const { container } = renderComponent()
         const link = container.querySelector(
-            'a[to="/app/settings/integrations?category=Ecommerce"]',
+            'a[href="/app/settings/integrations?category=Ecommerce"]',
         )
         expect(link).toBeInTheDocument()
     })

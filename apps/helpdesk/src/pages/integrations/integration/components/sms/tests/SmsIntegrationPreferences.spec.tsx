@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +9,7 @@ import SmsIntegrationPreferences from 'pages/integrations/integration/components
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -40,7 +39,7 @@ jest.mock('state/integrations/actions', () => ({
 describe('<SmsIntegrationPreferences/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const { container } = render(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
                 </Provider>,
@@ -50,7 +49,7 @@ describe('<SmsIntegrationPreferences/>', () => {
         })
 
         it('should submit a valid payload with the selected phone_number_id', () => {
-            const { container, getByText, getByLabelText } = render(
+            const { container, getByText, getByLabelText } = renderWithRouter(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
                 </Provider>,
@@ -77,7 +76,7 @@ describe('<SmsIntegrationPreferences/>', () => {
         })
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            const { getByRole, getByText } = render(
+            const { getByRole, getByText } = renderWithRouter(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
                 </Provider>,

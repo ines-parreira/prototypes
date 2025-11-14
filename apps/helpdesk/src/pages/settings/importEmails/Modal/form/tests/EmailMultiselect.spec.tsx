@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from '@gorgias/helpdesk-client'
 
@@ -20,12 +21,14 @@ const renderEmailMultiselect = (email = '', forwardingProvider = 'gmail') => {
     const handleProviderChange = jest.fn()
 
     const utils = renderWithQueryClientProvider(
-        <EmailMultiselect
-            email={email}
-            setEmail={setEmail}
-            handleProviderChange={handleProviderChange}
-            forwardingProvider={forwardingProvider}
-        />,
+        <MemoryRouter>
+            <EmailMultiselect
+                email={email}
+                setEmail={setEmail}
+                handleProviderChange={handleProviderChange}
+                forwardingProvider={forwardingProvider}
+            />
+        </MemoryRouter>,
     )
 
     return { ...utils, setEmail, handleProviderChange }

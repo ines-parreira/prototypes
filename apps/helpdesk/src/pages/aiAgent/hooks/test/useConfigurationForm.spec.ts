@@ -60,6 +60,7 @@ const INITIAL_FORM_VALUES: FormValues = {
 jest.mock('models/helpCenter/queries')
 jest.mock('state/notifications/actions')
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 jest.mock('hooks/useAppSelector')

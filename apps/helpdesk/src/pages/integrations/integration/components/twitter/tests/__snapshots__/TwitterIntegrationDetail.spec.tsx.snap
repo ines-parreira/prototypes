@@ -18,7 +18,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -27,7 +27,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/twitter"
+            href="/app/settings/integrations/twitter"
           >
             Twitter
           </a>

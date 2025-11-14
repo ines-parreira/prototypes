@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { MemoryRouter } from 'react-router-dom'
 
 import {
     VoiceCallDirection,
@@ -50,7 +51,9 @@ describe('<SpotlightCallRow/>', () => {
         )
 
         const { getByText } = renderWithStore(
-            <SpotlightCallRow {...defaultProps} />,
+            <MemoryRouter>
+                <SpotlightCallRow {...defaultProps} />
+            </MemoryRouter>,
             {},
         )
 
@@ -72,17 +75,21 @@ describe('<SpotlightCallRow/>', () => {
         )
 
         const { getByText } = renderWithStore(
-            <SpotlightCallRow
-                {...defaultProps}
-                item={{
-                    ...voiceCall,
-                    highlights: {
-                        phone_number_source: ['highlighted source'],
-                        phone_number_destination: ['highlighted destination'],
-                        transcripts: ['highlighted transcript'],
-                    },
-                }}
-            />,
+            <MemoryRouter>
+                <SpotlightCallRow
+                    {...defaultProps}
+                    item={{
+                        ...voiceCall,
+                        highlights: {
+                            phone_number_source: ['highlighted source'],
+                            phone_number_destination: [
+                                'highlighted destination',
+                            ],
+                            transcripts: ['highlighted transcript'],
+                        },
+                    }}
+                />
+            </MemoryRouter>,
             {},
         )
 
@@ -103,7 +110,9 @@ describe('<SpotlightCallRow/>', () => {
             created_datetime: new Date().toISOString(),
         }
         const { getByText } = renderWithStore(
-            <SpotlightCallRow {...defaultProps} />,
+            <MemoryRouter>
+                <SpotlightCallRow {...defaultProps} />
+            </MemoryRouter>,
             {},
         )
 
@@ -117,7 +126,9 @@ describe('<SpotlightCallRow/>', () => {
             created_datetime: new Date(`${currentYear}-01-01`).toISOString(),
         }
         const { getByText } = renderWithStore(
-            <SpotlightCallRow {...defaultProps} />,
+            <MemoryRouter>
+                <SpotlightCallRow {...defaultProps} />
+            </MemoryRouter>,
             {},
         )
 
@@ -135,7 +146,9 @@ describe('<SpotlightCallRow/>', () => {
             direction: VoiceCallDirection.Inbound,
         }
         const { getByText } = renderWithStore(
-            <SpotlightCallRow {...defaultProps} />,
+            <MemoryRouter>
+                <SpotlightCallRow {...defaultProps} />
+            </MemoryRouter>,
             {},
         )
 
@@ -158,7 +171,9 @@ describe('<SpotlightCallRow/>', () => {
             direction: VoiceCallDirection.Outbound,
         }
         const { getByText } = renderWithStore(
-            <SpotlightCallRow {...defaultProps} />,
+            <MemoryRouter>
+                <SpotlightCallRow {...defaultProps} />
+            </MemoryRouter>,
             {},
         )
 

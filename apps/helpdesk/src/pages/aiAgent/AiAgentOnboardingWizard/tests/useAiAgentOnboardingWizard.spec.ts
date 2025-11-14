@@ -38,6 +38,7 @@ jest.mock('@repo/routing', () => ({
 jest.mock('state/notifications/actions')
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 const mockUseParams = assumeMock(useParams)

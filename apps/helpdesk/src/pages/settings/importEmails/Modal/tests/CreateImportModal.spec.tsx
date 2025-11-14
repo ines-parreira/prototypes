@@ -1,10 +1,10 @@
-import React from 'react'
-
-import { render, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment-timezone'
 
 import { IntegrationType } from '@gorgias/helpdesk-client'
+
+import { renderWithRouter } from 'utils/testing'
 
 import CreateImportModal from '../CreateImportModal'
 
@@ -91,21 +91,23 @@ describe('CreateImportModal', () => {
 
     describe('Modal rendering', () => {
         it('should render modal when isOpen is true', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
             expect(screen.getByText('Import email history')).toBeInTheDocument()
         })
 
         it('should not render modal when isOpen is false', () => {
-            render(<CreateImportModal {...defaultProps} isOpen={false} />)
+            renderWithRouter(
+                <CreateImportModal {...defaultProps} isOpen={false} />,
+            )
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
 
         it('should call onClose when close button is clicked', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const closeButton = screen.getByRole('button', { name: '' })
             await user.click(closeButton)
@@ -116,13 +118,13 @@ describe('CreateImportModal', () => {
 
     describe('Content rendering', () => {
         it('should render the modal header with correct title', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(screen.getByText('Import email history')).toBeInTheDocument()
         })
 
         it('should render the description text', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(
                 screen.getByText(
@@ -132,7 +134,7 @@ describe('CreateImportModal', () => {
         })
 
         it('should render the help text section', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(
                 screen.getByText('What will be imported?'),
@@ -153,14 +155,14 @@ describe('CreateImportModal', () => {
         })
 
         it('should render form components', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(screen.getByText('Email')).toBeInTheDocument()
             expect(screen.getByText('Import timeframe')).toBeInTheDocument()
         })
 
         it('should render action buttons', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             const submitButton = screen.getByRole('button', {
@@ -175,7 +177,7 @@ describe('CreateImportModal', () => {
     describe('Form state management', () => {
         it('should have submit button disabled when form is empty', () => {
             mockUseEmailIntegrations.mockReturnValue([])
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
@@ -188,7 +190,7 @@ describe('CreateImportModal', () => {
     describe('Form interactions', () => {
         it('should call onClose when cancel button is clicked', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             await user.click(cancelButton)
@@ -199,7 +201,7 @@ describe('CreateImportModal', () => {
 
     describe('Error handling', () => {
         it('should not display error message initially', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             expect(
                 screen.queryByText(
@@ -211,14 +213,14 @@ describe('CreateImportModal', () => {
 
     describe('Form structure', () => {
         it('should have proper form structure', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const form = screen.getByRole('dialog').querySelector('form')
             expect(form).toBeInTheDocument()
         })
 
         it('should have proper button roles and labels', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const cancelButton = screen.getByRole('button', { name: 'Cancel' })
             const submitButton = screen.getByRole('button', {
@@ -232,7 +234,9 @@ describe('CreateImportModal', () => {
 
     describe('Component behavior', () => {
         it('should maintain modal state when props change', () => {
-            const { rerender } = render(<CreateImportModal {...defaultProps} />)
+            const { rerender } = renderWithRouter(
+                <CreateImportModal {...defaultProps} />,
+            )
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
 
@@ -242,7 +246,9 @@ describe('CreateImportModal', () => {
         })
 
         it('should handle isOpen prop changes correctly', async () => {
-            const { rerender } = render(<CreateImportModal {...defaultProps} />)
+            const { rerender } = renderWithRouter(
+                <CreateImportModal {...defaultProps} />,
+            )
 
             expect(screen.getByRole('dialog')).toBeInTheDocument()
 
@@ -262,7 +268,7 @@ describe('CreateImportModal', () => {
 
     describe('Loading states', () => {
         it('should show loading state when form submission is triggered', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const submitButton = screen.getByRole('button', {
                 name: 'Authenticate and import',
@@ -275,7 +281,7 @@ describe('CreateImportModal', () => {
     describe('Clear functionality', () => {
         it('should reset form state when clear is called', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const timeframeInput = screen.getByPlaceholderText(
                 'Please select a timeframe',
@@ -291,7 +297,7 @@ describe('CreateImportModal', () => {
 
     describe('Email integrations', () => {
         it('should work with email integrations from API', () => {
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             expect(emailLabel).toBeInTheDocument()
@@ -302,7 +308,7 @@ describe('CreateImportModal', () => {
         it('should pre-populate email field when selectedEmail is provided', () => {
             const selectedEmail = 'test@gmail.com'
 
-            render(
+            renderWithRouter(
                 <CreateImportModal
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -321,7 +327,9 @@ describe('CreateImportModal', () => {
                 },
             ])
 
-            render(<CreateImportModal {...defaultProps} selectedEmail={null} />)
+            renderWithRouter(
+                <CreateImportModal {...defaultProps} selectedEmail={null} />,
+            )
 
             const emailSelect = screen.getByRole('combobox')
             expect(emailSelect).toBeInTheDocument()
@@ -333,7 +341,7 @@ describe('CreateImportModal', () => {
         })
 
         it('should have empty email field when selectedEmail is undefined', async () => {
-            render(
+            renderWithRouter(
                 <CreateImportModal
                     {...defaultProps}
                     selectedEmail={undefined}
@@ -352,7 +360,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             const selectedEmail = 'test@gmail.com'
 
-            render(
+            renderWithRouter(
                 <CreateImportModal
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -382,7 +390,7 @@ describe('CreateImportModal', () => {
                 { provider: IntegrationType.Gmail, email: selectedEmail },
             ])
 
-            render(
+            renderWithRouter(
                 <CreateImportModal
                     {...defaultProps}
                     selectedEmail={selectedEmail}
@@ -428,7 +436,7 @@ describe('CreateImportModal', () => {
     describe('URL redirection', () => {
         it('should redirect to OAuth URL with correct parameters when form is submitted', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -474,7 +482,7 @@ describe('CreateImportModal', () => {
                 },
             ])
 
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -511,7 +519,7 @@ describe('CreateImportModal', () => {
 
         it('should parse timeframe correctly and set import window parameters', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -553,7 +561,7 @@ describe('CreateImportModal', () => {
             const user = userEvent.setup()
             const onCloseMock = jest.fn()
 
-            render(
+            renderWithRouter(
                 <CreateImportModal {...defaultProps} onClose={onCloseMock} />,
             )
 
@@ -596,7 +604,7 @@ describe('CreateImportModal', () => {
                 configurable: true,
             })
 
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -643,7 +651,7 @@ describe('CreateImportModal', () => {
                 configurable: true,
             })
 
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -676,7 +684,7 @@ describe('CreateImportModal', () => {
         it('should disable submit button during form submission', async () => {
             const user = userEvent.setup()
 
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =
@@ -711,7 +719,7 @@ describe('CreateImportModal', () => {
 
         it('should handle different timeframe formats correctly', async () => {
             const user = userEvent.setup()
-            render(<CreateImportModal {...defaultProps} />)
+            renderWithRouter(<CreateImportModal {...defaultProps} />)
 
             const emailLabel = screen.getByText('Email')
             const emailSelect =

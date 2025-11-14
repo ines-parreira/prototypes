@@ -1,19 +1,18 @@
-import React from 'react'
-
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import SecondaryNavigation from '../SecondaryNavigation'
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router'),
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-const useParamsMock = jest.spyOn(ReactRouterDom, 'useParams')
+
+const useParamsMock = useParams as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ integrations: fromJS({ integrations: [] }) })
@@ -31,9 +30,11 @@ describe('SecondaryNavigation', () => {
         (routeParams, expectedLinks) => {
             useParamsMock.mockReturnValue(routeParams)
             const { queryByRole } = render(
-                <Provider store={store}>
-                    <SecondaryNavigation />
-                </Provider>,
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <SecondaryNavigation />
+                    </Provider>
+                </MemoryRouter>,
             )
             expectedLinks.forEach((name) => {
                 expect(queryByRole('link', { name }))

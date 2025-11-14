@@ -31,7 +31,7 @@ describe('DrawerHeader', () => {
             ).toBeInTheDocument()
 
             expect(screen.getByText('Email settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/channels/email',
             )
         })
@@ -47,7 +47,7 @@ describe('DrawerHeader', () => {
             ).toBeInTheDocument()
 
             expect(screen.getByText('Chat settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/channels/gorgias_chat',
             )
         })
@@ -63,7 +63,7 @@ describe('DrawerHeader', () => {
             ).toBeInTheDocument()
 
             expect(screen.getByText('Help Center settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/help-center',
             )
         })
@@ -81,7 +81,7 @@ describe('DrawerHeader', () => {
             const linkElement = screen.getByText('Contact Form settings.')
             expect(linkElement).toBeInTheDocument()
             expect(linkElement).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/contact-form/forms',
             )
         })
@@ -90,7 +90,7 @@ describe('DrawerHeader', () => {
             const channel = createChannel('voice')
             renderWithRouter(<DrawerHeader channel={channel} />)
             expect(screen.getByText('Voice settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/phone-numbers',
             )
         })
@@ -99,7 +99,7 @@ describe('DrawerHeader', () => {
             const channel = createChannel('sms')
             renderWithRouter(<DrawerHeader channel={channel} />)
             expect(screen.getByText('SMS settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/channels/sms',
             )
         })
@@ -109,7 +109,7 @@ describe('DrawerHeader', () => {
             renderWithRouter(<DrawerHeader channel={channel} />)
 
             expect(screen.getByText('WhatsApp settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/integrations/whatsapp',
             )
         })
@@ -120,7 +120,7 @@ describe('DrawerHeader', () => {
 
             expect(
                 screen.getByText('Facebook, Messenger & Instagram settings.'),
-            ).toHaveAttribute('to', '/app/settings/integrations/facebook')
+            ).toHaveAttribute('href', '/app/settings/integrations/facebook')
         })
 
         it('renders tiktokShop channel info correctly', () => {
@@ -128,7 +128,7 @@ describe('DrawerHeader', () => {
             renderWithRouter(<DrawerHeader channel={channel} />)
 
             expect(screen.getByText('TikTok Shop settings.')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/integrations/app/653a626236234a4ec85eca67',
             )
         })

@@ -4,10 +4,9 @@ import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-import { Route, Router } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
@@ -115,7 +114,6 @@ describe('useTrialModalProps', () => {
         callback: (...args: any[]) => T,
         options?: any,
     ) {
-        const history = createMemoryHistory({ initialEntries: ['/'] })
         const queryClient = new QueryClient({
             defaultOptions: {
                 queries: { retry: false },
@@ -127,8 +125,8 @@ describe('useTrialModalProps', () => {
                 QueryClientProvider,
                 { client: queryClient },
                 React.createElement(
-                    Router,
-                    { history },
+                    MemoryRouter,
+                    { initialEntries: ['/'] },
                     React.createElement(Route, { path: '/' }, children),
                 ),
             )
@@ -2654,12 +2652,12 @@ describe('useTrialModalProps', () => {
                         'AI Agent must be set up for this store to start the trial. Make sure AI agent is',
                     )
                     expect(children?.[1]).toBe(' ')
-                    expect(children?.[2]?.type?.name).toBe('Link')
-                    expect(children?.[2]?.props?.children).toBe(
-                        'deployed on at least one channel',
-                    )
+                    // Check for Link component by checking for 'to' prop (unique to Link)
                     expect(children?.[2]?.props?.to).toBe(
                         '/app/ai-agent/shopify/test-store/deploy/chat',
+                    )
+                    expect(children?.[2]?.props?.children).toBe(
+                        'deployed on at least one channel',
                     )
                 })
 
@@ -2711,13 +2709,12 @@ describe('useTrialModalProps', () => {
                     const children = errorMessage?.props?.children
                     const linkElement = children?.[2] // Link is at index 2
 
-                    // Verify the Link component structure
-                    expect(linkElement?.type?.name).toBe('Link')
-                    expect(linkElement?.props?.children).toBe(
-                        'deployed on at least one channel',
-                    )
+                    // Verify the Link component structure by checking for 'to' prop (unique to Link)
                     expect(linkElement?.props?.to).toBe(
                         '/app/ai-agent/shopify/test-store/deploy/chat',
+                    )
+                    expect(linkElement?.props?.children).toBe(
+                        'deployed on at least one channel',
                     )
 
                     // Test the onClick handler

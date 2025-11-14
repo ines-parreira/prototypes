@@ -1,9 +1,9 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import { EmailIntegration } from '@gorgias/helpdesk-queries'
+
+import { renderWithRouter } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
@@ -17,7 +17,7 @@ const useDeleteEmailIntegrationMock = assumeMock(useDeleteEmailIntegration)
 
 describe('EmailDomainVerificationActionButtons', () => {
     const renderComponent = () =>
-        render(
+        renderWithRouter(
             <EmailDomainVerificationActionButtons
                 integration={
                     {
@@ -102,7 +102,7 @@ describe('EmailDomainVerificationActionButtons', () => {
             renderComponent()
 
             expect(screen.getByText('Close').closest('a')).toHaveAttribute(
-                'to',
+                'href',
                 '/app/settings/channels/email',
             )
         })

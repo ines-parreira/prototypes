@@ -17,7 +17,7 @@ exports[`<LinkAlert /> should render an alert with with an action label 1`] = `
     >
       <a
         class="actionLink"
-        to="#"
+        href="/"
       >
         Click here !
       </a>
@@ -71,7 +71,7 @@ exports[`<LinkAlert /> should render an alert with with an internal route 1`] = 
     >
       <a
         class="actionLink"
-        to="/app/settings/profile"
+        href="/app/settings/profile"
       >
         Click here !
       </a>

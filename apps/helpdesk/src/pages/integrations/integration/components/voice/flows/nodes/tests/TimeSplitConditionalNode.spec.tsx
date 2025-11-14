@@ -4,6 +4,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { MemoryRouter } from 'react-router-dom'
 
 import {
     mockCallRoutingFlow,
@@ -98,16 +99,18 @@ describe('TimeSplitConditionalNode', () => {
         } as ComponentProps<typeof TimeSplitConditionalNode>
 
         return renderWithStoreAndQueryClientProvider(
-            <FlowProvider>
-                <VoiceFlowProvider selectedNode={mockStep.id}>
-                    <Form
-                        defaultValues={mockFlowData}
-                        onValidSubmit={jest.fn()}
-                    >
-                        <TimeSplitConditionalNode {...props} />
-                    </Form>
-                </VoiceFlowProvider>
-            </FlowProvider>,
+            <MemoryRouter>
+                <FlowProvider>
+                    <VoiceFlowProvider selectedNode={mockStep.id}>
+                        <Form
+                            defaultValues={mockFlowData}
+                            onValidSubmit={jest.fn()}
+                        >
+                            <TimeSplitConditionalNode {...props} />
+                        </Form>
+                    </VoiceFlowProvider>
+                </FlowProvider>
+            </MemoryRouter>,
         )
     }
 

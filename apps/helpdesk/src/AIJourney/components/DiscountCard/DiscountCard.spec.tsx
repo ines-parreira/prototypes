@@ -49,7 +49,7 @@ describe('<DiscountCard />', () => {
         renderDiscountCard()
 
         const link = screen.getByRole('link', { name: 'here' })
-        expect(link.getAttribute('to')).toBe(
+        expect(link.getAttribute('href')).toBe(
             '/app/ai-journey/test-store/cart-abandoned/setup',
         )
     })

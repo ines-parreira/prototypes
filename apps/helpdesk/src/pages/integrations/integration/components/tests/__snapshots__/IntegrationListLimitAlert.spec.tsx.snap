@@ -31,7 +31,7 @@ exports[`<IntegrationListLimitAlert/> should render a warning message 1`] = `
         integrations. To add more, you must
         <a
           class="ml-1 mr-1"
-          to="/app/settings/billing"
+          href="/app/settings/billing"
         >
           upgrade
         </a>
@@ -71,7 +71,7 @@ exports[`<IntegrationListLimitAlert/> should render an error message 1`] = `
         integrations. To add more, you must
         <a
           class="ml-1 mr-1"
-          to="/app/settings/billing"
+          href="/app/settings/billing"
         >
           upgrade
         </a>

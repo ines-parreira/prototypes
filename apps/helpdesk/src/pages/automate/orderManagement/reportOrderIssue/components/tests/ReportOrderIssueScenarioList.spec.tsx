@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import * as ReactRouterDom from 'react-router-dom'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 
 import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
@@ -8,19 +8,19 @@ import ReportOrderIssueScenarioList from '../ReportOrderIssueScenarioList'
 const mockHistoryPush = jest.fn()
 const mockHistoryGoBack = jest.fn()
 
-jest.mock(
-    'react-router',
-    () =>
-        ({
-            ...jest.requireActual('react-router'),
-            useLocation: jest.fn(),
-            useHistory: () => ({
-                block: jest.fn(),
-                push: mockHistoryPush,
-                goBack: mockHistoryGoBack,
-            }),
-        }) as Record<string, any>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+    useHistory: jest.fn(),
+}))
+
+const useLocationMock = useLocation as jest.Mock
+const { useHistory } = jest.requireMock('react-router-dom')
+useHistory.mockReturnValue({
+    block: jest.fn(),
+    push: mockHistoryPush,
+    goBack: mockHistoryGoBack,
+})
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
         useReorderDnD: jest.fn().mockResolvedValue({
@@ -41,7 +41,7 @@ jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
-const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
+
 describe('<ReportOrderIssueScenarioList />', () => {
     const item = {
         title: 'Refunded',
@@ -84,14 +84,16 @@ describe('<ReportOrderIssueScenarioList />', () => {
         ],
     }
     it('should render component', () => {
-        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
+        useLocationMock.mockReturnValue({ key: 'abc' } as any)
 
         render(
-            <ReportOrderIssueScenarioList
-                items={[item as SelfServiceReportIssueCase]}
-                onHasHoveredItemChange={jest.fn()}
-                onReorder={jest.fn()}
-            />,
+            <MemoryRouter>
+                <ReportOrderIssueScenarioList
+                    items={[item as SelfServiceReportIssueCase]}
+                    onHasHoveredItemChange={jest.fn()}
+                    onReorder={jest.fn()}
+                />
+            </MemoryRouter>,
         )
         expect(screen.getByText(item.description)).toBeInTheDocument()
     })

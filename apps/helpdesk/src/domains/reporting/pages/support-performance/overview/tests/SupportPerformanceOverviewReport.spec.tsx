@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -39,6 +39,7 @@ import {
 } from 'fixtures/productPrices'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -181,7 +182,7 @@ describe('<SupportPerformanceOverview />', () => {
     ])(
         'should render customer experience section with TrendCards %#',
         (customerMetricTrend) => {
-            render(
+            renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -203,7 +204,7 @@ describe('<SupportPerformanceOverview />', () => {
             isLoading: false,
         })
 
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>,
@@ -220,7 +221,7 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render productivity section with OneTouchTickets TrendCard', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>,
@@ -235,7 +236,7 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render ZeroTouchTicketsTrendCard TrendCard', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>,
@@ -245,7 +246,7 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render MedianResponseTimeTrendCard TrendCard', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>,
@@ -255,7 +256,7 @@ describe('<SupportPerformanceOverview />', () => {
     })
 
     it('should render Messages Received TrendCard', () => {
-        render(
+        renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
             </Provider>,
@@ -266,7 +267,7 @@ describe('<SupportPerformanceOverview />', () => {
 
     describe('Performance Tips', () => {
         it('should show tips by default', () => {
-            const { queryAllByText } = render(
+            const { queryAllByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -278,7 +279,7 @@ describe('<SupportPerformanceOverview />', () => {
         it('should show tips and save the value to local storage on show tips button click', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'false')
 
-            const { getByText, queryAllByText } = render(
+            const { getByText, queryAllByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -293,7 +294,7 @@ describe('<SupportPerformanceOverview />', () => {
         it('should hide tips and save the value to local storage on hide tips button click ', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'true')
 
-            const { getByText, queryAllByText } = render(
+            const { getByText, queryAllByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -310,7 +311,7 @@ describe('<SupportPerformanceOverview />', () => {
 
     describe('FiltersHeader', () => {
         it('should show Filters Panel and render expected filters', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -323,7 +324,7 @@ describe('<SupportPerformanceOverview />', () => {
         })
 
         it('should show Filters Panel and render expected filters with score filter', () => {
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,
@@ -353,7 +354,7 @@ describe('<SupportPerformanceOverview />', () => {
                     },
                 }),
             }
-            const { getByText } = render(
+            const { getByText } = renderWithRouter(
                 <Provider store={mockStore(state)}>
                     <SupportPerformanceOverviewReport />
                 </Provider>,

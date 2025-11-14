@@ -18,7 +18,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -27,7 +27,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -149,7 +149,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -158,7 +158,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -280,7 +280,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -289,7 +289,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -409,7 +409,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -418,7 +418,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -540,7 +540,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -549,7 +549,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -671,7 +671,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -680,7 +680,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -802,7 +802,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -811,7 +811,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -947,7 +947,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -956,7 +956,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -1076,7 +1076,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1085,7 +1085,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -1205,7 +1205,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1214,7 +1214,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>
@@ -1336,7 +1336,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -1345,7 +1345,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/yotpo"
+            href="/app/settings/integrations/yotpo"
           >
             Yotpo
           </a>

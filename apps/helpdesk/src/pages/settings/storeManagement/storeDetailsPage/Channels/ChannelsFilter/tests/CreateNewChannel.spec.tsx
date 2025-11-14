@@ -26,7 +26,7 @@ describe('CreateNewChannel', () => {
         const activeChannel = createMockChannel('email')
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
         expect(screen.getByText(/add new email/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/email/new',
         )
     })
@@ -36,7 +36,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new chat/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/gorgias_chat/new/create-wizard',
         )
     })
@@ -46,7 +46,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new help center/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/help-center/new',
         )
     })
@@ -56,7 +56,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new contact form/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/contact-form/new',
         )
     })
@@ -66,7 +66,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new phone/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/phone/new',
         )
     })
@@ -76,7 +76,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new sms/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/channels/sms/new',
         )
     })
@@ -86,7 +86,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new whatsapp/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/whatsapp/integrations',
         )
     })
@@ -96,7 +96,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new facebook/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/facebook',
         )
     })
@@ -106,7 +106,7 @@ describe('CreateNewChannel', () => {
         renderWithRouter(<CreateNewChannel activeChannel={activeChannel} />)
 
         expect(screen.getByText(/add new tiktok shop/i)).toHaveAttribute(
-            'to',
+            'href',
             '/app/settings/integrations/app/653a626236234a4ec85eca67',
         )
     })

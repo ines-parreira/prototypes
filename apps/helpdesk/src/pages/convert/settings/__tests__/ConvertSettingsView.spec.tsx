@@ -20,6 +20,7 @@ jest.mock('pages/convert/bundles/hooks/useInstallBundle')
 const useInstallBundleMock = assumeMock(useInstallBundle)
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: () => ['1'],
 }))
 

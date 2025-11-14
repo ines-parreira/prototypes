@@ -3,7 +3,7 @@ import React, { ComponentProps } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -21,6 +21,7 @@ import {
 import { useFlag } from 'core/flags'
 import { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
@@ -66,7 +67,7 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
 
 const renderWithProviders = (ui: React.ReactElement, customStore = store) => {
     const queryClient = mockQueryClient()
-    return render(
+    return renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={customStore}>{ui}</Provider>
         </QueryClientProvider>,

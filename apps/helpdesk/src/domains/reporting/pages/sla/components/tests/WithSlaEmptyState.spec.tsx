@@ -1,11 +1,10 @@
-import React from 'react'
-
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import * as api from '@gorgias/helpdesk-queries'
 
 import { WithSlaEmptyState } from 'domains/reporting/pages/sla/components/WithSlaEmptyState'
 import { CONTENT_HEADER_TEXT } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')
 
@@ -16,7 +15,7 @@ describe('WithSlaEmptyState', () => {
             data: undefined,
         } as any)
 
-        render(<WithSlaEmptyState>something</WithSlaEmptyState>)
+        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
         expect(
             document.querySelector('.react-loading-skeleton'),
@@ -29,7 +28,7 @@ describe('WithSlaEmptyState', () => {
             data: { data: { data: [] } },
         } as any)
 
-        render(<WithSlaEmptyState>something</WithSlaEmptyState>)
+        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
         expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
     })
@@ -41,7 +40,7 @@ describe('WithSlaEmptyState', () => {
         } as any)
         const child = 'something'
 
-        render(<WithSlaEmptyState>{child}</WithSlaEmptyState>)
+        renderWithRouter(<WithSlaEmptyState>{child}</WithSlaEmptyState>)
 
         expect(screen.getByText(child)).toBeInTheDocument()
     })

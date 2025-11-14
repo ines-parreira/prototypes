@@ -20,6 +20,7 @@ import { ContactForm } from '../ContactForm'
 import { renderAppSettings } from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     Link: () => <div />,

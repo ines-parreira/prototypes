@@ -18,7 +18,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
+            href="/app/settings/integrations"
           >
             All apps
           </a>
@@ -27,7 +27,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/facebook"
+            href="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
           </a>
@@ -43,24 +43,18 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
   >
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/facebook/2/overview"
     >
       Overview
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/facebook/2/customer_chat"
     >
       Customer chat
     </a>
     <a
       class="link"
-      data-active-class-name="active"
-      data-exact="true"
       href="/app/settings/integrations/facebook/2/preferences"
     >
       Preferences
@@ -116,7 +110,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               During
                
               <a
-                to="/app/settings/business-hours"
+                href="/app/settings/business-hours"
               >
                 Business hours
               </a>
@@ -210,7 +204,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               Outside
                
               <a
-                to="/app/settings/business-hours"
+                href="/app/settings/business-hours"
               >
                 Business hours
               </a>

@@ -23,10 +23,12 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should display error message when isRequired is true and no chat is selected', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                monitoredChatIntegrations={[]}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[]}
+                />
+            </MemoryRouter>,
         )
 
         expect(
@@ -35,7 +37,11 @@ describe('ChatSettingsFormComponent', () => {
     })
 
     it('should render chat settings form when isSettingsRevamp is %s', () => {
-        render(<ChatSettingsFormComponent {...mockProps} />)
+        render(
+            <MemoryRouter>
+                <ChatSettingsFormComponent {...mockProps} />
+            </MemoryRouter>,
+        )
 
         expect(
             screen.getByText(/select one or more chats/i),
@@ -44,10 +50,12 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should use initial values when monitoredChatIntegrations is null', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                monitoredChatIntegrations={null}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={null}
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByRole('combobox')).toHaveTextContent(
@@ -57,11 +65,13 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should use initial values when monitoredChatIntegrations is null', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                isRequired={true}
-                monitoredChatIntegrations={null}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    isRequired={true}
+                    monitoredChatIntegrations={null}
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByRole('combobox')).toHaveTextContent(
@@ -71,10 +81,12 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should use monitoredChatIntegrations when provided', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                monitoredChatIntegrations={[1, 2]}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[1, 2]}
+                />
+            </MemoryRouter>,
         )
 
         expect(screen.getByRole('combobox')).toHaveTextContent('Chat 1, Chat 2')
@@ -82,11 +94,13 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should display error message when the chat integration is required and invalid', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                monitoredChatIntegrations={[]}
-                isRequired={true}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[]}
+                    isRequired={true}
+                />
+            </MemoryRouter>,
         )
 
         expect(
@@ -96,11 +110,13 @@ describe('ChatSettingsFormComponent', () => {
 
     it('should not display error message when the chat is not required', () => {
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                monitoredChatIntegrations={[]}
-                isRequired={false}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    monitoredChatIntegrations={[]}
+                    isRequired={false}
+                />
+            </MemoryRouter>,
         )
 
         expect(
@@ -113,13 +129,15 @@ describe('ChatSettingsFormComponent', () => {
         const updateValue = jest.fn()
 
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                updateValue={updateValue}
-                monitoredChatIntegrations={[]}
-                initialValue={initialValue}
-                shouldPrefillValue={true}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    updateValue={updateValue}
+                    monitoredChatIntegrations={[]}
+                    initialValue={initialValue}
+                    shouldPrefillValue={true}
+                />
+            </MemoryRouter>,
         )
 
         expect(updateValue).toHaveBeenCalledWith('monitoredChatIntegrations', [
@@ -132,13 +150,15 @@ describe('ChatSettingsFormComponent', () => {
         const updateValue = jest.fn()
 
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                updateValue={updateValue}
-                monitoredChatIntegrations={[1]}
-                initialValue={initialValue}
-                shouldPrefillValue={true}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    updateValue={updateValue}
+                    monitoredChatIntegrations={[1]}
+                    initialValue={initialValue}
+                    shouldPrefillValue={true}
+                />
+            </MemoryRouter>,
         )
 
         expect(updateValue).not.toHaveBeenCalled()
@@ -149,13 +169,15 @@ describe('ChatSettingsFormComponent', () => {
         const updateValue = jest.fn()
 
         render(
-            <ChatSettingsFormComponent
-                {...mockProps}
-                updateValue={updateValue}
-                monitoredChatIntegrations={null}
-                initialValue={initialValue}
-                shouldPrefillValue={true}
-            />,
+            <MemoryRouter>
+                <ChatSettingsFormComponent
+                    {...mockProps}
+                    updateValue={updateValue}
+                    monitoredChatIntegrations={null}
+                    initialValue={initialValue}
+                    shouldPrefillValue={true}
+                />
+            </MemoryRouter>,
         )
 
         expect(updateValue).not.toHaveBeenCalled()
@@ -256,7 +278,7 @@ describe('ChatSettingsFormComponent', () => {
 
         const installLink = screen.getByText('Install Chat').closest('a')
         expect(installLink).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/channels/gorgias_chat/${chatId}/installation`,
         )
     })
@@ -305,7 +327,7 @@ describe('ChatSettingsFormComponent', () => {
 
         const installLink = screen.getByText('Install Chat').closest('a')
         expect(installLink).toHaveAttribute(
-            'to',
+            'href',
             `/app/settings/channels/gorgias_chat/${firstUninstalledChatId}/installation`,
         )
     })

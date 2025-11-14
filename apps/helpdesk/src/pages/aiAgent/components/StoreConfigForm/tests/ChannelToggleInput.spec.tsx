@@ -3,6 +3,7 @@ import { ComponentProps } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 
 import {
     BannerText,
@@ -43,13 +44,15 @@ const renderComponent = (
     props?: Partial<ComponentProps<typeof ChannelToggleInput>>,
 ) => {
     renderWithStoreAndQueryClientProvider(
-        <ChannelToggleInput
-            isToggled={true}
-            onUpdate={jest.fn()}
-            channel="email"
-            type={SettingsBannerType.Chat}
-            {...props}
-        />,
+        <MemoryRouter>
+            <ChannelToggleInput
+                isToggled={true}
+                onUpdate={jest.fn()}
+                channel="email"
+                type={SettingsBannerType.Chat}
+                {...props}
+            />
+        </MemoryRouter>,
     )
 }
 

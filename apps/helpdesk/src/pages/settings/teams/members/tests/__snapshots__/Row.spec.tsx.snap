@@ -3,7 +3,7 @@
 exports[`<Row /> should render 1`] = `
 <a
   class="component"
-  to="/app/settings/users/1"
+  href="/app/settings/users/1"
 >
   <span
     class="d-flex align-items-center"

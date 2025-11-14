@@ -16,7 +16,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/rules"
+            href="/app/settings/rules"
           >
             Rules
           </a>
@@ -325,7 +325,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
             Start with a pre-made rule template and adapt it to fit your needs.
           </p>
           <a
-            to="/app/settings/rules/library"
+            href="/app/settings/rules/library"
           >
             <button
               aria-disabled="false"
@@ -362,7 +362,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/rules"
+            href="/app/settings/rules"
           >
             Rules
           </a>

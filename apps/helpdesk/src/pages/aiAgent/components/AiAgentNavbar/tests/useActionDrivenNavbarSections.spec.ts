@@ -10,6 +10,7 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import { useActionDrivenNavbarSections } from '../useActionDrivenNavbarSections'
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
     useHistory: jest.fn(),
     useLocation: jest.fn(),

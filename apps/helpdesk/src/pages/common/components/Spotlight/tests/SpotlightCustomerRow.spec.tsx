@@ -4,6 +4,7 @@ import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -18,9 +19,11 @@ const mockStore = configureMockStore([thunk])
 const WrappedSpotlightCustomerRow = (
     props: ComponentProps<typeof SpotlightCustomerRow>,
 ) => (
-    <Provider store={mockStore({ currentUser: fromJS(user) })}>
-        <SpotlightCustomerRow {...props} />
-    </Provider>
+    <MemoryRouter>
+        <Provider store={mockStore({ currentUser: fromJS(user) })}>
+            <SpotlightCustomerRow {...props} />
+        </Provider>
+    </MemoryRouter>
 )
 
 const mockOnClick = jest.fn()
