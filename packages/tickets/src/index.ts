@@ -1,4 +1,5 @@
 export { InfobarTicketDetails } from './components/InfobarTicketDetails/InfobarTicketDetails'
+export { InfobarTicketCustomer } from './components/InfobarTicketCustomer/InfobarTicketCustomer'
 export { TeamAssignee } from './components/TicketAssignee'
 export { TicketHeader } from './components/TicketHeader'
 export { TicketInfobarNavigation } from './components/TicketInfobarNavigation'

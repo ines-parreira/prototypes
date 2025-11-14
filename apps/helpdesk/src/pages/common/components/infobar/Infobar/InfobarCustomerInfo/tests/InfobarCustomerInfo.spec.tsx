@@ -63,6 +63,8 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
     sources: fromJS({}),
     widgets: fromJS({}),
     customer: fromJS({ id: 1, name: 'foo' }),
+    onEditCustomer: jest.fn(),
+    onSyncToShopify: jest.fn(),
 }
 
 const renderWithProviders = (ui: React.ReactElement, customStore = store) => {

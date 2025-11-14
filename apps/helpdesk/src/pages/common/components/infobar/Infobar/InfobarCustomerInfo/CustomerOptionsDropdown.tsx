@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 
 import { Map } from 'immutable'
+
+import { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
@@ -8,25 +10,22 @@ import IconButton from 'pages/common/components/button/IconButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
-
-import CustomerSyncForm from './CustomerSyncForm/CustomerSyncForm'
 
 import css from './CustomerOptionsDropdown.less'
 
 interface Props {
     activeCustomer: Map<string, any>
+    onEditCustomer: (customer: TicketCustomer) => void
+    onSyncToShopify: (customer: TicketCustomer) => void
 }
 
 export default function CustomerOptionsDropdownButton({
     activeCustomer,
+    onEditCustomer,
+    onSyncToShopify,
 }: Props) {
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
-    const [isCustomerEditFormOpen, setIsCustomerEditFormOpen] = useState(false)
-    const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
     const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
 
     const hasShopifyIntegration = hasIntegrationsOfTypes(
@@ -52,7 +51,11 @@ export default function CustomerOptionsDropdownButton({
                                 label: 'Edit Customer',
                                 value: 'edit',
                             }}
-                            onClick={() => setIsCustomerEditFormOpen(true)}
+                            onClick={() => {
+                                onEditCustomer(
+                                    activeCustomer.toJS() as TicketCustomer,
+                                )
+                            }}
                             shouldCloseOnSelect
                             className={css.item}
                         />
@@ -62,35 +65,17 @@ export default function CustomerOptionsDropdownButton({
                                     label: 'Sync profile to Shopify',
                                     value: 'sync',
                                 }}
-                                onClick={() => setIsCustomerSyncFormOpen(true)}
+                                onClick={() => {
+                                    onSyncToShopify(
+                                        activeCustomer.toJS() as TicketCustomer,
+                                    )
+                                }}
                                 shouldCloseOnSelect
                                 className={css.item}
                             />
                         )}
                     </DropdownBody>
                 </UncontrolledDropdown>
-
-                <Modal
-                    isOpen={isCustomerEditFormOpen}
-                    onClose={() => setIsCustomerEditFormOpen(false)}
-                >
-                    <ModalHeader
-                        title={`Update customer: ${
-                            activeCustomer.get('name') as string
-                        }`}
-                    />
-                    <CustomerForm
-                        customer={activeCustomer}
-                        closeModal={() => setIsCustomerEditFormOpen(false)}
-                    />
-                </Modal>
-                {isCustomerSyncFormOpen && (
-                    <CustomerSyncForm
-                        isCustomerSyncFormOpen={isCustomerSyncFormOpen}
-                        activeCustomer={activeCustomer}
-                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
-                    />
-                )}
             </>
         </>
     )

@@ -17,16 +17,18 @@ const state = {
     }),
 }
 
-describe('CustomerOptionsDropdownButton', () => {
-    const activeCustomer = Map({ name: 'John Doe' })
+const defaultProps = {
+    onEditCustomer: jest.fn(),
+    onSyncToShopify: jest.fn(),
+    activeCustomer: Map({ name: 'John Doe' }),
+}
 
+describe('CustomerOptionsDropdownButton', () => {
     test('renders dropdown button', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
-                    <CustomerOptionsDropdownButton
-                        activeCustomer={activeCustomer}
-                    />
+                    <CustomerOptionsDropdownButton {...defaultProps} />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -39,9 +41,7 @@ describe('CustomerOptionsDropdownButton', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
-                    <CustomerOptionsDropdownButton
-                        activeCustomer={activeCustomer}
-                    />
+                    <CustomerOptionsDropdownButton {...defaultProps} />
                 </Provider>
             </QueryClientProvider>,
         )
@@ -56,12 +56,14 @@ describe('CustomerOptionsDropdownButton', () => {
         ).not.toBeInTheDocument()
     })
 
-    test('opens edit customer modal on dropdown item click and then it closes it', () => {
-        const { container } = render(
+    test('calls onEditCustomer callback when Edit Customer is clicked', () => {
+        const mockOnEditCustomer = jest.fn()
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
                     <CustomerOptionsDropdownButton
-                        activeCustomer={activeCustomer}
+                        {...defaultProps}
+                        onEditCustomer={mockOnEditCustomer}
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -70,19 +72,17 @@ describe('CustomerOptionsDropdownButton', () => {
         fireEvent.click(screen.getByRole('button'))
         fireEvent.click(screen.getByText('Edit Customer'))
 
-        expect(
-            screen.getByText('Update customer: John Doe'),
-        ).toBeInTheDocument()
-
-        fireEvent.keyDown(container, { key: 'Escape' })
+        expect(mockOnEditCustomer).toHaveBeenCalledTimes(1)
     })
 
-    test('opens sync customer modal on dropdown item click', () => {
-        const { container } = render(
+    test('calls onSyncToShopify callback when Sync profile to Shopify is clicked', () => {
+        const mockOnSyncToShopify = jest.fn()
+        render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
                     <CustomerOptionsDropdownButton
-                        activeCustomer={activeCustomer}
+                        {...defaultProps}
+                        onSyncToShopify={mockOnSyncToShopify}
                     />
                 </Provider>
             </QueryClientProvider>,
@@ -91,11 +91,7 @@ describe('CustomerOptionsDropdownButton', () => {
         fireEvent.click(screen.getByRole('button'))
         fireEvent.click(screen.getByText('Sync profile to Shopify'))
 
-        expect(
-            screen.getByText('Sync John Doe profile to Shopify'),
-        ).toBeInTheDocument()
-
-        fireEvent.keyDown(container, { key: 'Escape' })
+        expect(mockOnSyncToShopify).toHaveBeenCalledTimes(1)
     })
 
     test('doesnt show sync options if there is no shopify integration at all', () => {
@@ -108,9 +104,7 @@ describe('CustomerOptionsDropdownButton', () => {
                         }),
                     })}
                 >
-                    <CustomerOptionsDropdownButton
-                        activeCustomer={activeCustomer}
-                    />
+                    <CustomerOptionsDropdownButton {...defaultProps} />
                 </Provider>
                 ,
             </QueryClientProvider>,

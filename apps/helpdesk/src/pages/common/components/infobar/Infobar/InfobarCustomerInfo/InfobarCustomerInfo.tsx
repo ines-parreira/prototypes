@@ -7,6 +7,7 @@ import { fromJS, List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { Box, Button, Separator } from '@gorgias/axiom'
+import { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -73,6 +74,8 @@ type OwnProps = {
     isEditing: boolean
     sources: Map<any, any>
     widgets: Map<any, any>
+    onEditCustomer: (customer: TicketCustomer) => void
+    onSyncToShopify: (customer: TicketCustomer) => void
 }
 
 const InfobarCustomerInfo = ({
@@ -81,6 +84,8 @@ const InfobarCustomerInfo = ({
     isEditing,
     sources,
     widgets,
+    onEditCustomer,
+    onSyncToShopify,
 }: OwnProps) => {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const dispatch = useAppDispatch()
@@ -301,6 +306,8 @@ const InfobarCustomerInfo = ({
                     <div className={css.customerOptions}>
                         <CustomerOptionsDropdownButton
                             activeCustomer={customer}
+                            onEditCustomer={onEditCustomer}
+                            onSyncToShopify={onSyncToShopify}
                         />
                     </div>
                 </div>

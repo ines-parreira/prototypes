@@ -1,10 +1,10 @@
-import { KeyboardEvent, useEffect, useMemo, useState } from 'react'
+import { KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { InfobarTicketDetails } from '@repo/tickets'
+import { InfobarTicketCustomer, InfobarTicketDetails } from '@repo/tickets'
 import classnames from 'classnames'
 import { fromJS, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
@@ -13,14 +13,17 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Customer } from 'models/customer/types'
+import { IntegrationType } from 'models/integration/constants'
 import IconButton from 'pages/common/components/button/IconButton'
 import css from 'pages/common/components/infobar/Infobar.less'
 import InfobarCustomerActions from 'pages/common/components/infobar/Infobar/InfobarCustomerActions'
+import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
@@ -31,10 +34,14 @@ import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import { areSourcesReady } from 'pages/common/components/infobar/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import MergeCustomersContainer from 'pages/common/components/MergeCustomers/MergeCustomersContainer'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Search from 'pages/common/components/Search'
+import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import TicketSummaryPopover from 'pages/tickets/detail/components/TicketSummaryPopover'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
@@ -73,6 +80,16 @@ export const Infobar = ({
         fromJS({}),
     )
     const prevCustomer = usePrevious(customer)
+
+    const [isCustomerEditFormOpen, setIsCustomerEditFormOpen] = useState(false)
+    const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
+    const [selectedCustomerForModal, setSelectedCustomerForModal] =
+        useState<TicketCustomer | null>(null)
+
+    const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
+    const hasShopifyIntegration = hasIntegrationsOfTypes(
+        IntegrationType.Shopify,
+    )
 
     const isWidgetEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
@@ -140,6 +157,27 @@ export const Infobar = ({
         isFetchingCustomer,
         isSearching,
     ])
+
+    const handleEditCustomer = useCallback((customer: TicketCustomer) => {
+        setSelectedCustomerForModal(customer)
+        setIsCustomerEditFormOpen(true)
+    }, [])
+
+    const handleSyncToShopify = useCallback((customer: TicketCustomer) => {
+        setSelectedCustomerForModal(customer)
+        setIsCustomerSyncFormOpen(true)
+    }, [])
+
+    const handleMergeClick = useCallback(() => {
+        logEvent(SegmentEvent.CustomerMergeClicked, {
+            location: 'infobar',
+            account_domain: window.GORGIAS_STATE.currentAccount.domain,
+            user_id: window.GORGIAS_STATE.currentAccount.id,
+            timestamp: Date.now(),
+        })
+        setShowMergeCustomerModal(true)
+    }, [])
+
     const defaultCustomerId = useMemo(
         () =>
             (sources.getIn(['ticket', 'customer', 'id']) ||
@@ -249,6 +287,19 @@ export const Infobar = ({
                         }
                     />
                 )}
+                {hasUIVisionMS1 && (
+                    <InfobarTicketCustomer
+                        onEditCustomer={handleEditCustomer}
+                        onSyncToShopify={handleSyncToShopify}
+                        hasShopifyIntegration={hasShopifyIntegration}
+                        showMergeButton={
+                            mode === 'default' &&
+                            !suggestedCustomer.isEmpty() &&
+                            !isWidgetEditing
+                        }
+                        onMergeClick={handleMergeClick}
+                    />
+                )}
                 <div className={css.infobarSearchWrapper}>
                     <Search
                         className={css.infobarSearch}
@@ -325,6 +376,8 @@ export const Infobar = ({
                                         )
                                         .set('customer', selectedCustomer)}
                                     customer={selectedCustomer}
+                                    onEditCustomer={handleEditCustomer}
+                                    onSyncToShopify={handleSyncToShopify}
                                 />
                                 <MergeCustomersContainer
                                     isTicketContext={
@@ -372,6 +425,8 @@ export const Infobar = ({
                                 widgets={widgets}
                                 sources={sources}
                                 customer={customer}
+                                onEditCustomer={handleEditCustomer}
+                                onSyncToShopify={handleSyncToShopify}
                             />
                             {!suggestedCustomer.isEmpty() &&
                                 !isWidgetEditing && (
@@ -399,30 +454,7 @@ export const Infobar = ({
                                                 </p>
                                                 <Button
                                                     className="mr-2"
-                                                    onClick={() => {
-                                                        logEvent(
-                                                            SegmentEvent.CustomerMergeClicked,
-                                                            {
-                                                                location:
-                                                                    'infobar',
-                                                                account_domain:
-                                                                    window
-                                                                        .GORGIAS_STATE
-                                                                        .currentAccount
-                                                                        .domain,
-                                                                user_id:
-                                                                    window
-                                                                        .GORGIAS_STATE
-                                                                        .currentAccount
-                                                                        .id,
-                                                                timestamp:
-                                                                    Date.now(),
-                                                            },
-                                                        )
-                                                        setShowMergeCustomerModal(
-                                                            true,
-                                                        )
-                                                    }}
+                                                    onClick={handleMergeClick}
                                                     leadingIcon="call_merge"
                                                 >
                                                     Merge
@@ -449,6 +481,12 @@ export const Infobar = ({
                                                     )}
                                                 customer={suggestedCustomer}
                                                 displayTabs={false}
+                                                onEditCustomer={
+                                                    handleEditCustomer
+                                                }
+                                                onSyncToShopify={
+                                                    handleSyncToShopify
+                                                }
                                             />
                                             <MergeCustomersContainer
                                                 isTicketContext={
@@ -483,6 +521,40 @@ export const Infobar = ({
                     />
                 )}
             </div>
+            {selectedCustomerForModal && (
+                <>
+                    <Modal
+                        isOpen={isCustomerEditFormOpen}
+                        onClose={() => {
+                            setIsCustomerEditFormOpen(false)
+                            setSelectedCustomerForModal(null)
+                        }}
+                    >
+                        <ModalHeader
+                            title={`Update customer: ${selectedCustomerForModal.name}`}
+                        />
+                        <CustomerForm
+                            customer={fromJS(selectedCustomerForModal)}
+                            closeModal={() => {
+                                setIsCustomerEditFormOpen(false)
+                                setSelectedCustomerForModal(null)
+                            }}
+                        />
+                    </Modal>
+                    {isCustomerSyncFormOpen && (
+                        <CustomerSyncForm
+                            isCustomerSyncFormOpen={isCustomerSyncFormOpen}
+                            activeCustomer={fromJS(selectedCustomerForModal)}
+                            setIsCustomerSyncFormOpen={(isOpen) => {
+                                setIsCustomerSyncFormOpen(isOpen)
+                                if (!isOpen) {
+                                    setSelectedCustomerForModal(null)
+                                }
+                            }}
+                        />
+                    )}
+                </>
+            )}
         </InfobarLayout>
     )
 }
