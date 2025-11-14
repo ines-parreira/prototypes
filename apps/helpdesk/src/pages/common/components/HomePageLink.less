@@ -8,13 +8,22 @@
         height: 28px;
 
         &:global:not(.active):hover {
-            color: var(--neutral-grey-2);
-            background-color: var(--neutral-grey-5);
+            color: var(--neutral-grey-2); // legacy
+            background-color: var(--neutral-grey-5); // legacy
         }
     }
 
     .title {
         align-items: center;
         display: flex;
+    }
+}
+
+.axiom :local {
+    .link {
+        &:global:not(.active):hover {
+            color: var(--elevation-neutral-mid);
+            background-color: var(--content-neutral-secondary);
+        }
     }
 }

@@ -9,8 +9,8 @@
         margin-right: 8px;
         margin-bottom: 8px;
 
-        background: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        background: var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         font-size: 12px;
         font-weight: 600;
@@ -32,8 +32,19 @@
     }
 
     .badge-icon {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 16px !important;
         margin-right: -4px;
+    }
+}
+
+.axiom :local {
+    .badge {
+        background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-default);
+    }
+
+    .badge-icon {
+        color: var(--content-neutral-default);
     }
 }

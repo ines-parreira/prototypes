@@ -9,13 +9,13 @@
         width: @size;
         height: @size;
 
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 50%;
         box-sizing: border-box;
 
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         letter-spacing: -0.01em;
     }
@@ -23,5 +23,13 @@
     .flag-emoji {
         display: inline;
         width: 20px;
+    }
+}
+
+.axiom :local {
+    .language-bullet-item {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
     }
 }

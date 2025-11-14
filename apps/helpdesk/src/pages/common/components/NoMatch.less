@@ -27,21 +27,36 @@
             align-items: center;
             gap: var(--layout-spacing-xxs);
             margin: var(--layout-spacing-l) 0;
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
             border-radius: var(--layout-spacing-xxs);
             padding: var(--layout-spacing-xs) var(--layout-spacing-xs);
-            border: 1px var(--main-primary-3) solid;
-            color: var(--neutral-grey-0);
+            border: 1px var(--main-primary-3) solid; // legacy
+            color: var(--neutral-grey-0); // legacy
 
             span {
                 font-size: var(--layout-spacing-m);
             }
 
             &:hover {
-                background-color: var(--main-primary-2);
-                border-color: var(--main-primary);
+                background-color: var(--main-primary-2); // legacy
+                border-color: var(--main-primary); // legacy
                 transition: all 0.2s linear;
                 box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .button {
+            background-color: var(--surface-accent-default);
+            border: 1px var(--border-accent-default) solid;
+            color: var(--content-inverted-default);
+
+            &:hover {
+                background-color: var(--surface-accent-default);
+                border-color: var(--border-accent-default);
             }
         }
     }

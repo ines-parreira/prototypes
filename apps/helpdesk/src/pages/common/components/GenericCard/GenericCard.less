@@ -2,10 +2,16 @@
     .genericCard {
         border-radius: 8px;
         margin: 8px;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         display: table;
         width: auto;
         min-width: 480px;
         height: auto;
+    }
+}
+
+.axiom :local {
+    .genericCard {
+        background-color: var(--surface-neutral-secondary);
     }
 }

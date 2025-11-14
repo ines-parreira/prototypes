@@ -11,15 +11,27 @@
         }
 
         .connected {
-            color: var(--feedback-success);
+            color: var(--feedback-success); // legacy
         }
 
         .disconnected {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
 
         span + span {
             margin-left: 8px;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .connected {
+            color: var(--content-success-primary);
+        }
+
+        .disconnected {
+            color: var(--content-error-primary);
         }
     }
 }

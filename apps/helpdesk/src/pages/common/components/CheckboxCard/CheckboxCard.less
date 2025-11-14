@@ -3,7 +3,7 @@
 :local {
     .checkbox {
         padding: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 8px;
         cursor: pointer;
         display: flex;
@@ -13,23 +13,23 @@
         margin-bottom: 0;
 
         &:hover {
-            border-color: var(--main-primary-1, #9ac8ff);
-            background: var(--main-primary-0, #f6faff);
+            border-color: var(--main-primary-1, #9ac8ff); // legacy
+            background: var(--main-primary-0, #f6faff); // legacy
         }
 
         &:focus-within {
-            outline: 2px solid var(--main-primary-1);
+            outline: 2px solid var(--main-primary-1); // legacy
             outline-offset: 2px;
         }
 
         &.checked {
-            border-color: var(--main-primary-1, #9ac8ff);
-            background: var(--main-primary-0, #f6faff);
+            border-color: var(--main-primary-1, #9ac8ff); // legacy
+            background: var(--main-primary-0, #f6faff); // legacy
 
             .checkIcon {
                 opacity: 1;
                 font-size: 16px;
-                color: var(--feedback-success-4);
+                color: var(--feedback-success-4); // legacy
             }
         }
 
@@ -40,13 +40,13 @@
 
             .title {
                 .body-medium();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 margin-bottom: 4px;
             }
 
             .description {
                 .body-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 margin-bottom: 0;
             }
         }
@@ -68,6 +68,40 @@
 
         .textContent {
             flex: 1;
+        }
+    }
+}
+
+.axiom :local {
+    .checkbox {
+        border: 1px solid var(--border-neutral-default);
+
+        &:hover {
+            border-color: var(--surface-accent-default);
+            background: var(--surface-accent-default);
+        }
+
+        &:focus-within {
+            outline: 2px solid var(--surface-accent-default);
+        }
+
+        &.checked {
+            border-color: var(--surface-accent-default);
+            background: var(--surface-accent-default);
+
+            .checkIcon {
+                color: var(--content-success-primary);
+            }
+        }
+
+        .content {
+            .title {
+                color: var(--content-neutral-default);
+            }
+
+            .description {
+                color: var(--content-neutral-secondary);
+            }
         }
     }
 }

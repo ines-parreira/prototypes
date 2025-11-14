@@ -12,78 +12,78 @@
         .codeWrapper {
             position: relative;
             border-radius: 4px;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             :global .ace_editor {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
 
                 z-index: 0;
                 border-radius: 4px;
                 .ace_gutter {
-                    background-color: var(--neutral-grey-1);
+                    background-color: var(--neutral-grey-1); // legacy
                 }
 
                 .ace_gutter-cell {
-                    color: var(--neutral-grey-5);
+                    color: var(--neutral-grey-5); // legacy
                 }
 
                 .ace_gutter-active-line {
-                    background-color: var(--neutral-grey-3);
+                    background-color: var(--neutral-grey-3); // legacy
                 }
 
                 .ace_content {
-                    background-color: var(--neutral-grey-1);
+                    background-color: var(--neutral-grey-1); // legacy
                     .ace_active-line {
-                        background-color: var(--neutral-grey-2);
+                        background-color: var(--neutral-grey-2); // legacy
                     }
                 }
                 .ace_scrollbar-v,
                 .ace_scrollbar-h {
                     &::-webkit-scrollbar {
-                        background-color: var(--neutral-grey-1);
+                        background-color: var(--neutral-grey-1); // legacy
                     }
                 }
 
                 .ace_meta.ace_tag {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                 }
 
                 .ace_string {
-                    color: var(--feedback-success-3);
+                    color: var(--feedback-success-3); // legacy
                 }
 
                 .ace_other,
                 .ace_text {
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                 }
 
                 .ace_marker-layer .ace_selection {
-                    background: var(--accessory-blue-1);
+                    background: var(--accessory-blue-1); // legacy
                 }
 
                 .ace_variable {
-                    color: var(--accessory-teal-3);
+                    color: var(--accessory-teal-3); // legacy
                 }
 
                 .ace_cursor {
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                 }
 
                 .ace_storage,
                 .ace_keyword {
-                    color: var(--main-primary-4);
+                    color: var(--main-primary-4); // legacy
                 }
 
                 .ace_support.ace_function {
-                    color: var(--main-primary-4);
+                    color: var(--main-primary-4); // legacy
                 }
 
                 .ace_constant.ace_numeric {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                 }
 
                 .ace_support.ace_type,
                 .ace_support.ace_class {
-                    color: var(--accessory-magenta-3);
+                    color: var(--accessory-magenta-3); // legacy
                 }
             }
 
@@ -91,7 +91,7 @@
                 z-index: 1;
                 position: absolute;
                 text-transform: uppercase;
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 user-select: none;
                 bottom: 5px;
                 right: 25px;
@@ -108,6 +108,89 @@
             /* for "disabled" effect */
             opacity: 0.5;
             background: #ccc;
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        .codeWrapper {
+            background-color: var(--surface-neutral-secondary);
+            :global .ace_editor {
+                color: var(--content-neutral-default);
+
+                .ace_gutter {
+                    background-color: var(--surface-neutral-secondary);
+                }
+
+                .ace_gutter-cell {
+                    color: var(--content-neutral-secondary);
+                }
+
+                .ace_gutter-active-line {
+                    background-color: var(--surface-neutral-tertiary);
+                }
+
+                .ace_content {
+                    background-color: var(--surface-neutral-secondary);
+                    .ace_active-line {
+                        background-color: var(--elevation-neutral-mid);
+                    }
+                }
+                .ace_scrollbar-v,
+                .ace_scrollbar-h {
+                    &::-webkit-scrollbar {
+                        background-color: var(--surface-neutral-secondary);
+                    }
+                }
+
+                .ace_meta.ace_tag {
+                    color: var(--content-accent-default);
+                }
+
+                .ace_string {
+                    color: var(--content-success-primary);
+                }
+
+                .ace_other,
+                .ace_text {
+                    color: var(--content-neutral-default);
+                }
+
+                .ace_marker-layer .ace_selection {
+                    background: var(--surface-additional-blue);
+                }
+
+                .ace_variable {
+                    color: var(--content-additional-teal);
+                }
+
+                .ace_cursor {
+                    color: var(--content-neutral-default);
+                }
+
+                .ace_storage,
+                .ace_keyword {
+                    color: var(--content-additional-blue);
+                }
+
+                .ace_support.ace_function {
+                    color: var(--content-additional-blue);
+                }
+
+                .ace_constant.ace_numeric {
+                    color: var(--content-accent-default);
+                }
+
+                .ace_support.ace_type,
+                .ace_support.ace_class {
+                    color: var(--content-additional-fuchsia);
+                }
+            }
+
+            .modeWrapper {
+                color: var(--content-neutral-secondary);
+            }
         }
     }
 }

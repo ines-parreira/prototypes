@@ -6,7 +6,7 @@
 
         margin-bottom: 8px;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         font-weight: 600;
         font-size: 14px;
@@ -16,6 +16,16 @@
     .help {
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
+    .help {
+        color: var(--content-neutral-secondary);
     }
 }

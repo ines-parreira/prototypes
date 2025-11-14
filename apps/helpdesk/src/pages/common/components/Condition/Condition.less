@@ -13,8 +13,8 @@
         align-items: center;
         height: 32px;
         border-radius: var(--layout-spacing-xxs);
-        background-color: var(--neutral-grey-2);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: 0 12px;
     }
 
@@ -42,13 +42,26 @@
     }
 
     .type {
-        color: var(--neutral-grey-6, #222) !important;
-        background: var(--neutral-grey-1, #f9f9f9) !important;
-        border: 1px solid var(--neutral-grey-1, #f9f9f9) !important;
+        color: var(--neutral-grey-6, #222) !important; // legacy
+        background: var(--neutral-grey-1, #f9f9f9) !important; // legacy
+        border: 1px solid var(--neutral-grey-1, #f9f9f9) !important; // legacy
     }
 
     .selectInput {
         width: auto;
         min-width: unset;
+    }
+}
+
+.axiom :local {
+    .labelWrapper {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .type {
+        color: var(--content-neutral-default) !important;
+        background: var(--surface-neutral-secondary) !important;
+        border: 1px solid var(--surface-neutral-secondary) !important;
     }
 }

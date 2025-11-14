@@ -50,7 +50,7 @@
 
     .dropdownItemSlug {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .pagePositionSelectionSection {
@@ -63,5 +63,11 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         column-gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .dropdownItemSlug {
+        color: var(--content-neutral-secondary);
     }
 }

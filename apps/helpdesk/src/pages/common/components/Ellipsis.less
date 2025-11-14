@@ -3,8 +3,8 @@
         width: 26px;
         height: 12px;
         border-radius: 1px;
-        background-color: var(--accessory-blue-1);
-        color: var(--neutral-grey-4);
+        background-color: var(--accessory-blue-1); // legacy
+        color: var(--neutral-grey-4); // legacy
         border: 0;
 
         margin-top: 5px;
@@ -22,5 +22,12 @@
                 calc(var(--accessory-blue-1-l) - 3%)
             );
         }
+    }
+}
+
+.axiom :local {
+    .btn-more {
+        background-color: var(--surface-additional-blue);
+        color: var(--content-neutral-secondary);
     }
 }

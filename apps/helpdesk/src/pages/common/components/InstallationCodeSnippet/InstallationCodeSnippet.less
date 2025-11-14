@@ -4,7 +4,7 @@
         flex-direction: column;
         padding: var(--layout-spacing-s);
         gap: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 4px;
         align-items: flex-start;
     }
@@ -16,6 +16,16 @@
         font-size: 12px;
         line-height: 20px;
         letter-spacing: -0.02em;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .code {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -13,7 +13,7 @@
 
         border-radius: 4px;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         transition: all 0.2s ease-in-out;
 
@@ -75,6 +75,8 @@
 
 .axiom :local {
     .item {
+        color: var(--content-neutral-secondary);
+
         &:hover {
             background-color: var(--hover-default);
         }
@@ -82,7 +84,7 @@
 
     .selected {
         background-color: var(--surface-neutral-tertiary);
-        color: var(--content-neutral-strong);
+        color: var(--content-neutral-default);
 
         &:hover {
             background-color: var(--surface-neutral-tertiary);

@@ -6,10 +6,10 @@
         width: min-content;
     }
     .container {
-        border: 2px dashed var(--neutral-grey-3);
+        border: 2px dashed var(--neutral-grey-3); // legacy
         border-radius: 10px;
 
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
 
         box-sizing: border-box;
 
@@ -46,13 +46,13 @@
         }
 
         &.accepted {
-            border-color: var(--feedback-success);
-            background-color: var(--feedback-success-0);
+            border-color: var(--feedback-success); // legacy
+            background-color: var(--feedback-success-0); // legacy
         }
 
         &.rejected {
-            border-color: var(--feedback-error);
-            background-color: var(--feedback-error-0);
+            border-color: var(--feedback-error); // legacy
+            background-color: var(--feedback-error-0); // legacy
         }
     }
 
@@ -69,6 +69,23 @@
 
         i {
             font-size: 20px;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 2px dashed var(--border-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+
+        &.accepted {
+            border-color: var(--border-success-primary);
+            background-color: var(--surface-success-primary);
+        }
+
+        &.rejected {
+            border-color: var(--border-error-primary);
+            background-color: var(--surface-error-primary);
         }
     }
 }

@@ -5,19 +5,19 @@
 
     .optionPickerToggleNone {
         background-color: transparent;
-        color: var(--neutral-grey-5, #6a6a6a);
+        color: var(--neutral-grey-5, #6a6a6a); // legacy
         display: flex;
         gap: 4px;
 
         &:hover,
         &:active,
         &:focus {
-            background: var(--neutral-grey-3, #ddd);
-            color: var(--neutral-grey-6);
+            background: var(--neutral-grey-3, #ddd); // legacy
+            color: var(--neutral-grey-6); // legacy
         }
 
         &:disabled {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             background-color: transparent;
             cursor: default;
         }
@@ -34,5 +34,22 @@
 
     .optionDropdownItem {
         padding: 8px 12px;
+    }
+}
+
+.axiom :local {
+    .optionPickerToggleNone {
+        color: var(--content-neutral-secondary);
+
+        &:hover,
+        &:active,
+        &:focus {
+            background: var(--border-neutral-default);
+            color: var(--content-neutral-default);
+        }
+
+        &:disabled {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

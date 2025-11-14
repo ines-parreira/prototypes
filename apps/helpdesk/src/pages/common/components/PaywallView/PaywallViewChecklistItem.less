@@ -6,8 +6,16 @@
         gap: var(--layout-spacing-xs);
 
         .checkIcon {
-            color: var(--feedback-success-3);
+            color: var(--feedback-success-3); // legacy
             font-size: 24px;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .checkIcon {
+            color: var(--content-success-primary);
         }
     }
 }

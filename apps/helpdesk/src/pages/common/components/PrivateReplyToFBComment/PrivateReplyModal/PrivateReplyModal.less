@@ -12,7 +12,7 @@
     }
 
     .modalFooter {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .privateReplyTextarea {
@@ -24,5 +24,11 @@
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
+    }
+}
+
+.axiom :local {
+    .modalFooter {
+        background-color: var(--elevation-neutral-mid);
     }
 }

@@ -9,7 +9,7 @@
 
         padding: 16px;
 
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
     }
 
     .preview {
@@ -26,7 +26,7 @@
         justify-content: center;
         flex-grow: 1;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .title {
@@ -34,11 +34,25 @@
 
         margin-bottom: 8px;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 16px;
     }
 
     .close {
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
     }
 }

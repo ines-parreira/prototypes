@@ -2,14 +2,24 @@
     .wrapper {
         border: 0;
         margin: 0;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         margin-bottom: 15px;
 
         .code {
             display: flex;
             min-height: 50px;
             max-height: 160px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background: var(--surface-neutral-secondary);
+
+        .code {
+            color: var(--content-neutral-default);
         }
     }
 }

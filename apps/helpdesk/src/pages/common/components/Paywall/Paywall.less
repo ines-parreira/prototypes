@@ -9,7 +9,7 @@
 
         :global(.page-header) {
             width: 100%;
-            background: var(--neutral-grey-0);
+            background: var(--neutral-grey-0); // legacy
             z-index: 1;
             flex-shrink: 0;
         }
@@ -83,14 +83,14 @@
                     .contentTitle {
                         margin: 20px 0 8px;
                         font-weight: 600;
-                        color: var(--neutral-grey-6);
+                        color: var(--neutral-grey-6); // legacy
                         @media @mobiles {
                             font-size: 20px;
                         }
                     }
 
                     .description {
-                        color: var(--neutral-grey-5);
+                        color: var(--neutral-grey-5); // legacy
                         font-size: 16px;
                         @media @mobiles {
                             font-size: 14px;
@@ -98,7 +98,7 @@
                     }
 
                     .upgradeChevron {
-                        color: var(--neutral-grey-4);
+                        color: var(--neutral-grey-4); // legacy
                         margin: 0 8px;
                     }
 
@@ -106,7 +106,7 @@
                         margin-top: 40px;
 
                         .testimonialText {
-                            color: var(--neutral-grey-5);
+                            color: var(--neutral-grey-5); // legacy
                             font-size: 14px;
                             font-style: italic;
                             letter-spacing: -0.01em;
@@ -132,12 +132,12 @@
                             .authorDetails {
                                 margin-bottom: 0;
                                 font-size: 12px;
-                                color: var(--neutral-grey-5);
+                                color: var(--neutral-grey-5); // legacy
                                 line-height: 16px;
 
                                 a {
                                     display: inline-block;
-                                    color: var(--main-primary);
+                                    color: var(--main-primary); // legacy
                                     transition: color 200ms;
                                     &:hover {
                                         color: hsl(
@@ -165,9 +165,55 @@
         position: absolute;
         mask-repeat: no-repeat;
         mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="auto" height="auto" viewBox="0 0 700 900"><path d="M0 0 H250 C522.528 0 700 201.472 700 450 C700 698.528 522.528 900 250 900 H0 V0Z"/></svg>');
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
 
         .circle-variant();
+    }
+}
+
+.axiom :local {
+    .pageWrapper {
+        :global(.page-header) {
+            background: var(--elevation-neutral-default);
+        }
+
+        .page {
+            .paywallContainer {
+                .content {
+                    .contentTitle {
+                        color: var(--content-neutral-default);
+                    }
+
+                    .description {
+                        color: var(--content-neutral-secondary);
+                    }
+
+                    .upgradeChevron {
+                        color: var(--content-neutral-secondary);
+                    }
+
+                    .testimonial {
+                        .testimonialText {
+                            color: var(--content-neutral-secondary);
+                        }
+
+                        .author {
+                            .authorDetails {
+                                color: var(--content-neutral-secondary);
+
+                                a {
+                                    color: var(--content-accent-default);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .svg {
+        background-color: var(--surface-neutral-secondary);
     }
 }
 
@@ -265,11 +311,11 @@
     .shadow-variant(@i + 1);
 }
 
-@defaultPaywallCircleColor: var(--neutral-grey-1);
-@basicPaywallCircleColor: var(--main-primary-0);
-@proPaywallCircleColor: var(--main-primary-0);
-@advancedPaywallCircleColor: var(--feedback-success-0);
-@enterprisePaywallCircleColor: var(--feedback-warning-0);
+@defaultPaywallCircleColor: var(--neutral-grey-1); // legacy
+@basicPaywallCircleColor: var(--main-primary-0); // legacy
+@proPaywallCircleColor: var(--main-primary-0); // legacy
+@advancedPaywallCircleColor: var(--feedback-success-0); // legacy
+@enterprisePaywallCircleColor: var(--feedback-warning-0); // legacy
 
 .circle-variant(@i:1) when (@i <= length(@paywall-type)) {
     @variantValue: extract(@paywall-type, @i);

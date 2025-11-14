@@ -20,7 +20,7 @@
         max-width: 180px;
         margin-top: 8px;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         text-align: center;
         font-size: 16px;
@@ -28,11 +28,21 @@
         line-height: 24px;
 
         .browseInput {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         span + span {
             margin-left: 4px;
+        }
+    }
+}
+
+.axiom :local {
+    .text {
+        color: var(--content-neutral-default);
+
+        .browseInput {
+            color: var(--content-accent-default);
         }
     }
 }

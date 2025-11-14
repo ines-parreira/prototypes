@@ -17,7 +17,15 @@
         ) !important;
 
         &[aria-disabled='true'] {
-            background: var(--neutral-grey-1) !important;
+            background: var(--neutral-grey-1) !important; // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .button {
+        &[aria-disabled='true'] {
+            background: var(--surface-neutral-secondary) !important;
         }
     }
 }

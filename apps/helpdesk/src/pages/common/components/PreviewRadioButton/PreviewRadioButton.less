@@ -1,8 +1,8 @@
 :local {
     .wrapper {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         cursor: pointer;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         box-sizing: border-box;
         padding: 16px;
@@ -11,12 +11,12 @@
 
         &:focus,
         &:hover:not(.selected):not(.disabled) {
-            box-shadow: inset 0px 0px 0px 1px var(--neutral-grey-3);
+            box-shadow: inset 0px 0px 0px 1px var(--neutral-grey-3); // legacy
         }
 
         &.selected:not(.disabled) {
-            border-color: var(--main-primary);
-            box-shadow: inset 0px 0px 0px 1px var(--main-primary);
+            border-color: var(--main-primary); // legacy
+            box-shadow: inset 0px 0px 0px 1px var(--main-primary); // legacy
         }
 
         &.disabled {
@@ -24,8 +24,8 @@
         }
 
         &.disabled.selected {
-            border-color: var(--neutral-grey-3);
-            box-shadow: inset 0px 0px 0px 1px var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
+            box-shadow: inset 0px 0px 0px 1px var(--neutral-grey-3); // legacy
         }
 
         &:focus {
@@ -35,5 +35,27 @@
 
     .preview {
         margin-bottom: 8px;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        color: var(--content-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+
+        &:focus,
+        &:hover:not(.selected):not(.disabled) {
+            box-shadow: inset 0px 0px 0px 1px var(--border-neutral-default);
+        }
+
+        &.selected:not(.disabled) {
+            border-color: var(--border-accent-default);
+            box-shadow: inset 0px 0px 0px 1px var(--border-accent-default);
+        }
+
+        &.disabled.selected {
+            border-color: var(--border-neutral-default);
+            box-shadow: inset 0px 0px 0px 1px var(--border-neutral-default);
+        }
     }
 }

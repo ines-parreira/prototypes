@@ -1,6 +1,6 @@
 :local {
     .pagination {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 500;
         display: flex;
         padding-left: 0;
@@ -15,7 +15,7 @@
         min-width: 32px;
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
@@ -29,7 +29,7 @@
         }
 
         &.disabled a {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         &.disabled .pageLink {
@@ -37,8 +37,31 @@
         }
 
         &.active .pageLink {
-            background-color: var(--neutral-grey-3);
-            color: var(--neutral-grey-6);
+            background-color: var(--neutral-grey-3); // legacy
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .pagination {
+        color: var(--content-neutral-secondary);
+    }
+
+    .pageLink {
+        &:hover {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .pageItem {
+        &.disabled a {
+            color: var(--content-neutral-secondary);
+        }
+
+        &.active .pageLink {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-default);
         }
     }
 }

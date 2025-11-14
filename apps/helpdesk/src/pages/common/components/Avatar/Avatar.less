@@ -1,7 +1,7 @@
 :local .component {
     position: relative;
-    background: var(--main-secondary);
-    color: var(--neutral-grey-0);
+    background: var(--main-secondary); // legacy
+    color: var(--neutral-grey-0); // legacy
 
     &.hasImage {
         background: transparent;
@@ -46,7 +46,7 @@
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        border: solid 2px var(--neutral-grey-1);
+        border: solid 2px var(--neutral-grey-1); // legacy
     }
 
     &.square .badge {
@@ -60,7 +60,7 @@
     }
 
     &.aiAgent {
-        background-color: var(--accessory-magenta-2);
+        background-color: var(--accessory-magenta-2); // legacy
         display: flex;
         justify-content: center;
         align-items: center;
@@ -68,6 +68,23 @@
 
     .aiAgentIcon {
         font-size: 24px;
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
+    }
+}
+
+.axiom :local .component {
+    background: var(--surface-additional-coral);
+    color: var(--content-inverted-default);
+
+    .badge {
+        border: solid 2px var(--surface-neutral-secondary);
+    }
+
+    &.aiAgent {
+        background-color: var(--surface-additional-fuchsia);
+    }
+
+    .aiAgentIcon {
+        color: var(--content-additional-fuchsia);
     }
 }

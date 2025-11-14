@@ -10,10 +10,10 @@
     }
 
     .instructionsCard {
-        border: var(--neutral-grey-3) 1px solid;
+        border: var(--neutral-grey-3) 1px solid; // legacy
 
         &[data-is-open='true'] {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
         }
     }
 
@@ -45,11 +45,11 @@
         }
 
         button:focus-visible {
-            outline: 2px solid var(--neutral-grey-6);
+            outline: 2px solid var(--neutral-grey-6); // legacy
         }
 
         i {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-size: 24px;
         }
     }
@@ -72,9 +72,9 @@
         .instruction-number {
             width: 24px;
             font-weight: bold;
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             border-radius: 50%;
-            background-color: var(--neutral-grey-6);
+            background-color: var(--neutral-grey-6); // legacy
             margin-right: 15px;
             margin-bottom: 0;
             text-align: center;
@@ -85,28 +85,71 @@
 
     .tabNavigation {
         display: flex;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .tabNavigationItem {
         .component-button-medium();
         padding: var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: pointer;
         position: relative;
 
         &.isActive {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
 
             &::after {
                 content: '';
                 display: block;
                 height: 2px;
                 border-radius: 50%;
-                background-color: var(--main-primary);
+                background-color: var(--main-primary); // legacy
                 width: calc(~'100% - 32px');
                 bottom: -1px;
                 position: absolute;
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .instructionsCard {
+        border: var(--border-neutral-default) 1px solid;
+
+        &[data-is-open='true'] {
+            border-color: var(--border-accent-default);
+        }
+    }
+
+    .instructionsCardHeader {
+        button:focus-visible {
+            outline: 2px solid var(--content-neutral-default);
+        }
+
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .instruction {
+        .instruction-number {
+            color: var(--content-inverted-default);
+            background-color: var(--surface-inverted-default);
+        }
+    }
+
+    .tabNavigation {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .tabNavigationItem {
+        color: var(--content-neutral-secondary);
+
+        &.isActive {
+            color: var(--content-neutral-default);
+
+            &::after {
+                background-color: var(--surface-accent-default);
             }
         }
     }

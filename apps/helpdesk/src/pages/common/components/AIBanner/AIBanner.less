@@ -5,21 +5,21 @@
         padding: 12px;
         display: flex;
         gap: var(--layout-spacing-xs);
-        border: 1px solid var(--accessory-magenta-3);
+        border: 1px solid var(--accessory-magenta-3); // legacy
         border-radius: var(--layout-spacing-xxs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         .icon {
             font-size: 20px !important;
-            color: var(--accessory-magenta-3);
+            color: var(--accessory-magenta-3); // legacy
             align-self: center;
         }
 
         &.hasError {
-            border: 1px solid var(--feedback-error);
+            border: 1px solid var(--feedback-error); // legacy
 
             .icon {
-                color: var(--feedback-error);
+                color: var(--feedback-error); // legacy
             }
         }
 
@@ -29,27 +29,27 @@
             border-radius: var(--layout-spacing-xs);
 
             &.hasError {
-                background-color: var(--accessory-red-1);
+                background-color: var(--accessory-red-1); // legacy
             }
 
             &:not(.hasError) {
-                background-color: var(--accessory-magenta-1);
-                color: var(--neutral-grey-6);
-                border-color: var(--accessory-magenta-2);
+                background-color: var(--accessory-magenta-1); // legacy
+                color: var(--neutral-grey-6); // legacy
+                border-color: var(--accessory-magenta-2); // legacy
 
                 .icon {
-                    color: var(--accessory-magenta-25);
+                    color: var(--accessory-magenta-25); // legacy
                 }
             }
         }
 
         &.success {
             background-color: #f4fdfa;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             border: none;
 
             .icon {
-                color: var(--feedback-success);
+                color: var(--feedback-success); // legacy
             }
         }
     }
@@ -62,7 +62,57 @@
 
         :global {
             .message-content {
-                background: var(--neutral-grey-0) !important;
+                background: var(--neutral-grey-0) !important; // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-additional-fuchsia);
+        background-color: var(--elevation-neutral-default);
+
+        .icon {
+            color: var(--content-additional-fuchsia);
+        }
+
+        &.hasError {
+            border: 1px solid var(--border-error-primary);
+
+            .icon {
+                color: var(--content-error-primary);
+            }
+        }
+
+        &.fill {
+            &.hasError {
+                background-color: var(--surface-error-primary);
+            }
+
+            &:not(.hasError) {
+                background-color: var(--surface-additional-fuchsia);
+                color: var(--content-neutral-default);
+                border-color: var(--border-additional-fuchsia);
+
+                .icon {
+                    color: var(--content-additional-fuchsia);
+                }
+            }
+        }
+
+        &.success {
+            color: var(--content-neutral-default);
+
+            .icon {
+                color: var(--content-success-primary);
+            }
+        }
+    }
+    .content {
+        :global {
+            .message-content {
+                background: var(--elevation-neutral-default) !important;
             }
         }
     }
