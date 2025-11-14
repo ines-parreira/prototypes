@@ -72,26 +72,40 @@ const getTimeSeriesHook =
     (
         filters: StatsFilters,
         timezone: string,
-        granularity: ReportingGranularity,
+        granularity: AggregationWindow,
     ) => {
         return useTimeSeries(
             query(filters, timezone, granularity),
             queryV2?.({
                 filters,
                 timezone,
-                granularity: granularity as AggregationWindow,
+                granularity: granularity,
             }),
         )
     }
 
 const getTimeSeriesFetch =
-    <TCube extends Cubes>(query: TimeSeriesQueryFactory<TCube>) =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: TimeSeriesQueryFactory<TCube>,
+        queryV2?: BuiltTimeSeriesQueryFactory<TMeta, TMetricName>,
+    ) =>
     (
         filters: StatsFilters,
         timezone: string,
-        granularity: ReportingGranularity,
+        granularity: AggregationWindow,
     ) => {
-        return fetchTimeSeries(query(filters, timezone, granularity))
+        return fetchTimeSeries(
+            query(filters, timezone, granularity),
+            queryV2?.({
+                filters,
+                timezone,
+                granularity: granularity,
+            }),
+        )
     }
 
 export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
@@ -100,6 +114,7 @@ export const useTicketsCreatedTimeSeries = getTimeSeriesHook(
 )
 export const fetchTicketsCreatedTimeSeries = getTimeSeriesFetch(
     ticketsCreatedTimeSeriesQueryFactory,
+    createdTicketsTimeseriesQueryV2Factory,
 )
 
 export const useTicketsClosedTimeSeries = getTimeSeriesHook(
@@ -108,6 +123,7 @@ export const useTicketsClosedTimeSeries = getTimeSeriesHook(
 )
 export const fetchTicketsClosedTimeSeries = getTimeSeriesFetch(
     closedTicketsTimeSeriesQueryFactory,
+    closedTicketsTimeseriesQueryV2Factory,
 )
 
 export const useTicketsRepliedTimeSeries = getTimeSeriesHook(
@@ -116,6 +132,7 @@ export const useTicketsRepliedTimeSeries = getTimeSeriesHook(
 )
 export const fetchTicketsRepliedTimeSeries = getTimeSeriesFetch(
     ticketsRepliedTimeSeriesQueryFactory,
+    ticketsRepliedTimeseriesQueryV2Factory,
 )
 
 export const useMessagesSentTimeSeries = getTimeSeriesHook(
@@ -125,6 +142,7 @@ export const useMessagesSentTimeSeries = getTimeSeriesHook(
 
 export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
     messagesSentTimeSeriesQueryFactory,
+    sentMessagesTimeseriesQueryV2Factory,
 )
 
 export const useMessagesReceivedTimeSeries = getTimeSeriesHook(

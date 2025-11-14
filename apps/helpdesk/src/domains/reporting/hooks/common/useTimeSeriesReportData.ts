@@ -6,7 +6,11 @@ import {
     TimeSeriesPerDimension,
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { Period, StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    AggregationWindow,
+    Period,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { NOT_AVAILABLE_LABEL } from 'domains/reporting/services/constants'
 import { TimeSeriesDataWithLabels } from 'domains/reporting/services/supportPerformanceReportingService'
@@ -14,7 +18,7 @@ import { TimeSeriesDataWithLabels } from 'domains/reporting/services/supportPerf
 export const useTimeSeriesReportData = (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
     timeSeriesReportSource: {
         fetchTimeSeries: TimeSeriesFetch
         title: string

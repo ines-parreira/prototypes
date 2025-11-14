@@ -9,6 +9,7 @@ import {
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
     fetchTotalTaggedTicketCountTimeSeries,
+    fetchZeroTouchTicketsTimeSeries,
     useAIIntentCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
@@ -32,6 +33,7 @@ import { closedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/qu
 import { messagesSentTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeTimeSeriesQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeTimeSeriesQueryFactory,
@@ -47,10 +49,22 @@ import {
     getCustomFieldValueSerializer,
     withDefaultLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import { sentMessagesTimeseries } from 'domains/reporting/models/scopes/messagesSent'
-import { closedTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsClosed'
-import { createdTicketsTimeseries } from 'domains/reporting/models/scopes/ticketsCreated'
-import { ticketsRepliedTimeseries } from 'domains/reporting/models/scopes/ticketsReplied'
+import {
+    sentMessagesTimeseries,
+    sentMessagesTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/messagesSent'
+import {
+    closedTicketsTimeseries,
+    closedTicketsTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/ticketsClosed'
+import {
+    createdTicketsTimeseries,
+    createdTicketsTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/ticketsCreated'
+import {
+    ticketsRepliedTimeseries,
+    ticketsRepliedTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/ticketsReplied'
 import {
     Sentiment,
     StatsFilters,
@@ -142,47 +156,89 @@ describe('time series', () => {
             'fetchTicketsClosedTimeSeries',
             fetchTicketsClosedTimeSeries,
             closedTicketsTimeSeriesQueryFactory,
+            closedTicketsTimeseriesQueryV2Factory,
         ],
         [
             'fetchTicketsCreatedTimeSeries',
             fetchTicketsCreatedTimeSeries,
             ticketsCreatedTimeSeriesQueryFactory,
+            createdTicketsTimeseriesQueryV2Factory,
         ],
         [
             'fetchTicketsRepliedTimeSeries',
             fetchTicketsRepliedTimeSeries,
             ticketsRepliedTimeSeriesQueryFactory,
+            ticketsRepliedTimeseriesQueryV2Factory,
         ],
         [
             'fetchMessagesSentTimeSeries',
             fetchMessagesSentTimeSeries,
             messagesSentTimeSeriesQueryFactory,
+            sentMessagesTimeseriesQueryV2Factory,
         ],
-    ])('%s', (_testName, fetchTimeSeriesFn, queryFactory) => {
-        it('should use fetchMethod $testName', async () => {
+        [
+            'fetchZeroTouchTicketsTimeSeries',
+            fetchZeroTouchTicketsTimeSeries,
+            zeroTouchTicketsTimeSeriesQueryFactory,
+        ],
+    ])(
+        '%s',
+        (_testName, fetchTimeSeriesFn, queryFactory, queryV2Factory?: any) => {
+            it('should use fetchMethod $testName', async () => {
+                const filters: StatsFilters = {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00+02:00',
+                        end_datetime: '2021-06-04T23:59:59+02:00',
+                    },
+                    channels: withDefaultLogicalOperator([
+                        TicketChannel.Email,
+                        TicketChannel.Chat,
+                    ]),
+                    integrations: withDefaultLogicalOperator([1]),
+                    agents: withDefaultLogicalOperator([2]),
+                    tags: [
+                        {
+                            ...withDefaultLogicalOperator([1, 2]),
+                            filterInstanceId: TagFilterInstanceId.First,
+                        },
+                    ],
+                }
+
+                await fetchTimeSeriesFn(filters, timezone, granularity)
+
+                expect(fetchTimeSeriesMock).toHaveBeenCalledWith(
+                    queryFactory(filters, timezone, granularity),
+                    queryV2Factory?.({ filters, timezone, granularity }),
+                )
+            })
+        },
+    )
+
+    describe('getTimeSeriesFetch queryV2', () => {
+        it('should call queryV2 with correct context when provided', async () => {
             const filters: StatsFilters = {
                 period: {
                     start_datetime: '2021-05-29T00:00:00+02:00',
                     end_datetime: '2021-06-04T23:59:59+02:00',
                 },
-                channels: withDefaultLogicalOperator([
-                    TicketChannel.Email,
-                    TicketChannel.Chat,
-                ]),
-                integrations: withDefaultLogicalOperator([1]),
-                agents: withDefaultLogicalOperator([2]),
-                tags: [
-                    {
-                        ...withDefaultLogicalOperator([1, 2]),
-                        filterInstanceId: TagFilterInstanceId.First,
-                    },
-                ],
             }
 
-            await fetchTimeSeriesFn(filters, timezone, granularity)
+            await fetchTicketsCreatedTimeSeries(filters, timezone, granularity)
+
+            const expectedQueryV2Result =
+                createdTicketsTimeseriesQueryV2Factory({
+                    filters,
+                    timezone,
+                    granularity,
+                })
 
             expect(fetchTimeSeriesMock).toHaveBeenCalledWith(
-                queryFactory(filters, timezone, granularity),
+                ticketsCreatedTimeSeriesQueryFactory(
+                    filters,
+                    timezone,
+                    granularity,
+                ),
+                expectedQueryV2Result,
             )
         })
     })

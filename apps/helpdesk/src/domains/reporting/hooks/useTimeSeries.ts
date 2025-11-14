@@ -16,7 +16,10 @@ import {
     ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    AggregationWindow,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -30,7 +33,7 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 export type TimeSeriesHook = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
 ) => Pick<
     UseQueryResult<TimeSeriesDataItem[][]>,
     'data' | 'isError' | 'isFetching'
@@ -45,7 +48,7 @@ export type TimeSeriesPerDimensionHook = (
 export type TimeSeriesFetch = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity,
+    granularity: AggregationWindow,
 ) => Promise<TimeSeriesDataItem[][]>
 
 export type TimeSeriesPerDimensionFetch = (
