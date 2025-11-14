@@ -255,7 +255,7 @@ const PlaygroundPlaceholderMessage = () => {
     return (
         <div className={css.messageContent}>
             <div className={css.aiAgentLoadingSkeletonContainer} role="status">
-                Loading...
+                Thinking...
             </div>
         </div>
     )

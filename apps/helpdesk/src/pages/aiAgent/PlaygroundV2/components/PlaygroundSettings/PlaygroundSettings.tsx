@@ -153,7 +153,7 @@ const InboundSettings: React.FC = () => {
             )}
             <ToggleField
                 value={areActionsEnabled}
-                label="Actions"
+                label="Actions &#9432;"
                 caption="Actions triggered in test mode will affect real customer data and can't be undone."
                 onChange={handleActionsToggle}
             />

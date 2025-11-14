@@ -109,10 +109,10 @@ describe('AIJourneySettings', () => {
         it('should allow changing journey type', async () => {
             renderComponent()
 
-            const selectButton = screen.getByRole('button', {
+            const selectField = screen.getByRole('textbox', {
                 name: /campaign \/ flow/i,
             })
-            fireEvent.click(selectButton)
+            fireEvent.click(selectField)
 
             const sessionAbandonedOption = await screen.findByRole('option', {
                 name: /session abandoned/i,
@@ -170,10 +170,10 @@ describe('AIJourneySettings', () => {
 
             renderComponent()
 
-            const selectButton = screen.getByRole('button', {
+            const selectField = screen.getByRole('textbox', {
                 name: /product/i,
             })
-            fireEvent.click(selectButton)
+            fireEvent.click(selectField)
 
             const anotherProductOption = await screen.findByRole('option', {
                 name: /another product/i,
@@ -283,7 +283,7 @@ describe('AIJourneySettings', () => {
             renderComponent()
 
             const followUpSelect = screen.getByRole('textbox', {
-                name: /total follow-up messages/i,
+                name: /total number of messages to send/i,
             })
             expect(followUpSelect).toBeInTheDocument()
             expect(followUpSelect).toHaveValue('1')
@@ -292,10 +292,10 @@ describe('AIJourneySettings', () => {
         it('should allow changing total follow-up messages', async () => {
             renderComponent()
 
-            const selectButton = screen.getByRole('button', {
-                name: /total follow-up messages/i,
+            const selectField = screen.getByRole('textbox', {
+                name: /total number of messages to send/i,
             })
-            fireEvent.click(selectButton)
+            fireEvent.click(selectField)
 
             const option3 = await screen.findByRole('option', {
                 name: '3',

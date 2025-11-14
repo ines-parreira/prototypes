@@ -475,7 +475,7 @@ describe('PlaygroundSettings', () => {
         it('should render actions toggle with caption', () => {
             renderComponent()
 
-            expect(screen.getByText('Actions')).toBeInTheDocument()
+            expect(screen.getByText('Actions ⓘ')).toBeInTheDocument()
             expect(screen.getByTestId('toggle-caption')).toHaveTextContent(
                 "Actions triggered in test mode will affect real customer data and can't be undone.",
             )
@@ -484,14 +484,14 @@ describe('PlaygroundSettings', () => {
         it('should have actions toggle disabled by default', () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
             expect(actionsToggle).not.toBeChecked()
         })
 
         it('should show warning modal when enabling actions toggle', async () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
 
             await act(() => userEvent.click(actionsToggle))
 
@@ -505,7 +505,7 @@ describe('PlaygroundSettings', () => {
         it('should enable actions when confirming modal', async () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
 
             await act(() => userEvent.click(actionsToggle))
 
@@ -531,7 +531,7 @@ describe('PlaygroundSettings', () => {
         it('should not enable actions when canceling modal', async () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
 
             await act(() => userEvent.click(actionsToggle))
 
@@ -555,7 +555,7 @@ describe('PlaygroundSettings', () => {
         it('should disable actions toggle without modal when already enabled', async () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
 
             await act(() => userEvent.click(actionsToggle))
 
@@ -728,7 +728,7 @@ describe('PlaygroundSettings', () => {
         it('should maintain settings when switching between modes', async () => {
             renderComponent()
 
-            const actionsToggle = screen.getByLabelText('Actions')
+            const actionsToggle = screen.getByLabelText('Actions ⓘ')
             await act(() => userEvent.click(actionsToggle))
 
             await waitFor(() => {
@@ -757,7 +757,7 @@ describe('PlaygroundSettings', () => {
             await act(() => userEvent.click(screen.getByText('Inbound')))
 
             await waitFor(() => {
-                expect(screen.getByLabelText('Actions')).toBeChecked()
+                expect(screen.getByLabelText('Actions ⓘ')).toBeChecked()
             })
         })
 

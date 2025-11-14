@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react'
 
+import classNames from 'classnames'
+
 import {
     Banner,
     Button,
@@ -189,23 +191,32 @@ export const AIJourneySettings: React.FC = () => {
                 )}
             </Select>
 
-            <span>Message settings</span>
-            <SelectField
-                value={FOLLOW_UP_OPTIONS.find(
-                    (option) => option.id === totalFollowUp,
-                )}
-                onChange={(value) => {
-                    setAIJourneySettings({
-                        totalFollowUp: value.id,
-                    })
-                }}
-                items={FOLLOW_UP_OPTIONS}
-                label="Total follow-up messages"
+            <span className={css.messageSettingsSeparator}>
+                Message settings
+            </span>
+            <div
+                className={classNames([
+                    css.inputFieldWrapper,
+                    css.followUpField,
+                ])}
             >
-                {(option: { id: number; label: string }) => (
-                    <ListItem label={option.label} />
-                )}
-            </SelectField>
+                <SelectField
+                    value={FOLLOW_UP_OPTIONS.find(
+                        (option) => option.id === totalFollowUp,
+                    )}
+                    onChange={(value) => {
+                        setAIJourneySettings({
+                            totalFollowUp: value.id,
+                        })
+                    }}
+                    items={FOLLOW_UP_OPTIONS}
+                    label="Total number of messages to send"
+                >
+                    {(option: { id: number; label: string }) => (
+                        <ListItem label={option.label} />
+                    )}
+                </SelectField>
+            </div>
             <div className={css.toggleFieldsContainer}>
                 <ToggleField
                     value={includeProductImage}
@@ -226,7 +237,12 @@ export const AIJourneySettings: React.FC = () => {
                     }}
                 />
             </div>
-            <div className={css.discountCodeField}>
+            <div
+                className={classNames([
+                    css.discountCodeField,
+                    css.inputFieldWrapper,
+                ])}
+            >
                 <TextField
                     label="Discount code value"
                     value={discountCodeValue.toString()}
@@ -245,7 +261,12 @@ export const AIJourneySettings: React.FC = () => {
                     trailingSlot={<Button icon="percent" variant="tertiary" />}
                 />
             </div>
-            <div className={css.discountCodeMessageIdxField}>
+            <div
+                className={classNames([
+                    css.discountCodeMessageIdxField,
+                    css.inputFieldWrapper,
+                ])}
+            >
                 <SelectField
                     value={FOLLOW_UP_OPTIONS.find(
                         (option) => option.id === discountCodeMessageIdx,

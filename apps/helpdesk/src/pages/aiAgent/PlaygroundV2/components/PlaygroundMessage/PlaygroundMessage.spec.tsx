@@ -132,7 +132,7 @@ describe('PlaygroundMessage', () => {
     it('should render placeholder message', () => {
         renderComponent({ message: playgroundPlaceholderMessageFixture })
 
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(screen.getByText('Thinking...')).toBeInTheDocument()
     })
 
     it('should render error message', () => {
