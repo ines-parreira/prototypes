@@ -220,7 +220,7 @@ describe('TranslationsOnboardingModal', () => {
             })
             expect(learnMoreLink).toHaveAttribute(
                 'href',
-                'https://docs.gorgias.com/en-US/languages-gorgias-can-detect-81768',
+                'https://docs.gorgias.com/en-US/2518007-0222a844fe7141adbd957eb1d8988e43',
             )
             expect(learnMoreLink).toHaveAttribute('target', '_blank')
             expect(learnMoreLink).toHaveAttribute('rel', 'noopener noreferrer')

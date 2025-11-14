@@ -76,7 +76,7 @@ export function TranslationsOnboardingModal() {
                     <Button
                         variant="secondary"
                         as="a"
-                        href="https://docs.gorgias.com/en-US/languages-gorgias-can-detect-81768"
+                        href="https://docs.gorgias.com/en-US/2518007-0222a844fe7141adbd957eb1d8988e43"
                     >
                         Learn more
                     </Button>
