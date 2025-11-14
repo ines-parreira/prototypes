@@ -4,22 +4,23 @@ import moment from 'moment'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallSummaryCube,
-    VoiceCallSummaryFiltersMembers,
     VoiceCallSummaryMeasure,
+    VoiceCallSummaryMember,
 } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
-import {
-    getAccountBusinessHoursTimezone,
-    getTicketPeriodFilters,
-    voiceCallDefaultFilters,
-} from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import {
     liveVoiceCallSummaryQueryFactory,
     voiceCallSummaryQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import {
+    ReportingFilterOperator,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+
+import { withDefaultLogicalOperator } from '../../utils'
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')
@@ -28,8 +29,6 @@ const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
 const getAccountBusinessHoursTimezoneMock = assumeMock(
     getAccountBusinessHoursTimezone,
 )
-const getTicketPeriodFiltersMock = assumeMock(getTicketPeriodFilters)
-const voiceCallDefaultFiltersMock = assumeMock(voiceCallDefaultFilters)
 
 describe('voiceCallSummary queries factories', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -39,9 +38,9 @@ describe('voiceCallSummary queries factories', () => {
             end_datetime: periodEnd,
             start_datetime: periodStart,
         },
+        voiceQueues: withDefaultLogicalOperator([1, 2]),
     }
-    const timezone = 'someTimeZone'
-    const mockFilters = ['mockFilter1', 'mockFilter2']
+    const timezone = 'utc'
 
     beforeEach(() => {
         getLiveVoicePeriodFilterMock.mockReturnValue({
@@ -49,8 +48,6 @@ describe('voiceCallSummary queries factories', () => {
             start_datetime: periodStart,
         })
         getAccountBusinessHoursTimezoneMock.mockReturnValue(timezone)
-        getTicketPeriodFiltersMock.mockReturnValue({} as any)
-        voiceCallDefaultFiltersMock.mockReturnValue(mockFilters as any)
     })
 
     describe('voiceCallSummaryQueryFactory', () => {
@@ -72,42 +69,66 @@ describe('voiceCallSummary queries factories', () => {
                 ],
                 dimensions: [],
                 timezone,
-                filters: mockFilters as any,
+                filters: [
+                    {
+                        member: VoiceCallSummaryMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallSummaryMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallSummaryMember.QueueId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                ],
                 metricName: METRIC_NAMES.VOICE_CALL_SUMMARY,
             })
-
-            expect(voiceCallDefaultFiltersMock).toHaveBeenCalledWith(
-                statsFilters,
-                false,
-                VoiceCallSummaryFiltersMembers,
-            )
         })
     })
 
     describe('liveVoiceCallSummaryQueryFactory', () => {
         it('should create a live query with correct period filters', () => {
-            const livePeriod = {
-                end_datetime: periodEnd,
-                start_datetime: periodStart,
-            }
-            const expectedFilters = {
-                ...statsFilters,
-                period: livePeriod,
-            }
+            const query = liveVoiceCallSummaryQueryFactory(statsFilters)
 
-            liveVoiceCallSummaryQueryFactory(statsFilters)
-
-            expect(getAccountBusinessHoursTimezoneMock).toHaveBeenCalled()
-            expect(getLiveVoicePeriodFilterMock).toHaveBeenCalledWith(timezone)
-            expect(getTicketPeriodFiltersMock).toHaveBeenCalledWith({
-                ...statsFilters,
-                period: livePeriod,
+            expect(query).toEqual({
+                measures: [
+                    VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
+                    VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
+                ],
+                dimensions: [],
+                timezone,
+                filters: [
+                    expect.objectContaining({
+                        member: VoiceCallSummaryMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    }),
+                    expect.objectContaining({
+                        member: VoiceCallSummaryMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    }),
+                    {
+                        member: VoiceCallSummaryMember.QueueId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                ],
+                metricName: METRIC_NAMES.VOICE_CALL_SUMMARY,
             })
-            expect(voiceCallDefaultFiltersMock).toHaveBeenCalledWith(
-                expectedFilters,
-                false,
-                VoiceCallSummaryFiltersMembers,
-            )
         })
     })
 })

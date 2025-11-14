@@ -4,14 +4,11 @@ import {
     VoiceCallSummaryFiltersMembers,
     VoiceCallSummaryMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
-import {
-    getAccountBusinessHoursTimezone,
-    getTicketPeriodFilters,
-    voiceCallDefaultFilters,
-} from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingQuery } from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
+import { statsFiltersToReportingFilters } from 'domains/reporting/utils/reporting'
 
 export const voiceCallSummaryQueryFactory = (
     filters: StatsFilters,
@@ -32,10 +29,9 @@ export const voiceCallSummaryQueryFactory = (
         ],
         dimensions: [],
         timezone,
-        filters: voiceCallDefaultFilters(
-            filters,
-            false,
+        filters: statsFiltersToReportingFilters(
             VoiceCallSummaryFiltersMembers,
+            filters,
         ),
         metricName: METRIC_NAMES.VOICE_CALL_SUMMARY,
     }
@@ -51,7 +47,6 @@ export const liveVoiceCallSummaryQueryFactory = (
         {
             ...filters,
             period,
-            ...getTicketPeriodFilters({ ...filters, period }),
         },
         timezone,
     )
