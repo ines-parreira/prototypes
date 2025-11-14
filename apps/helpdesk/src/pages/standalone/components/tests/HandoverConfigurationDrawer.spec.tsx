@@ -114,6 +114,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         helpCenterId: null,
         wizard: undefined,
         customFieldIds: null,
+        smsDisclaimer: null,
     }
 
     const mockStoreConfigurationParams = {

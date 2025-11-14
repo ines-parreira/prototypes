@@ -49,6 +49,7 @@ const dummyStoreActivation: StoreActivation = {
         useEmailIntegrationSignature: true,
         excludedTopics: [],
         signature: 'This response was created by AI',
+        smsDisclaimer: 'Powered by AI',
         tags: [],
         monitoredEmailIntegrations: [
             {

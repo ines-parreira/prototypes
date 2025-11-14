@@ -192,6 +192,7 @@ describe('ChannelsFormComponent', () => {
         isSmsChannelEnabled: true,
         smsChannelDeactivatedDatetime: null,
         updateSmsChannelDeactivatedDatetime: jest.fn(),
+        smsDisclaimer: null,
     }
 
     beforeEach(() => {

@@ -1,0 +1,33 @@
+@import (reference) '~css/typography';
+
+:local {
+    .formGroup {
+        margin-bottom: var(--spacing-lg);
+
+        .formGroupDescription {
+            margin-bottom: var(--spacing-sm);
+        }
+    }
+
+    .checkbox {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+    }
+    .label {
+        font-size: 16px;
+    }
+
+    .formInputEditor {
+        min-height: 64px;
+    }
+
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: var(--spacing-xxs);
+
+        &.error {
+            color: var(--feedback-error);
+        }
+    }
+}

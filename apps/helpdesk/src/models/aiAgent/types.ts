@@ -94,6 +94,7 @@ export type StoreConfiguration = {
     customToneOfVoiceGuidance: string | null
     aiAgentLanguage: string | null
     signature: string
+    smsDisclaimer?: string | null
     excludedTopics: string[]
     tags: Tag[]
     conversationBot: ConversationBot
@@ -154,6 +155,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'customToneOfVoiceGuidance'
     | 'aiAgentLanguage'
     | 'signature'
+    | 'smsDisclaimer'
     | 'useEmailIntegrationSignature'
     | 'monitoredChatIntegrations'
     | 'monitoredSmsIntegrations'

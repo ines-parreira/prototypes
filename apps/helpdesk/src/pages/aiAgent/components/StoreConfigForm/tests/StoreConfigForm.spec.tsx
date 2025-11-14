@@ -448,6 +448,7 @@ describe('<StoreConfigForm />', () => {
         handoverMethod: null,
         handoverEmailIntegrationId: null,
         handoverHttpIntegrationId: null,
+        smsDisclaimer: null,
     }
 
     const defaultUseConfigurationFormValues = {

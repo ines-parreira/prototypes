@@ -13,12 +13,14 @@ import {
 
 import { SmsIntegrationListSelection } from '../../SmsIntegrationListSelection/SmsIntegrationListSelection'
 import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
+import { SmsFooterFormComponent } from './SmsFooterFormComponent'
 
 import css from './SmsSettingsFormComponent.less'
 
 type SmsSettingsFormComponentProps = {
     updateValue: UpdateValue<FormValues>
     monitoredSmsIntegrations: number[] | null
+    smsDisclaimer: string | null
     initialValue?: number
     isFieldDirty?: boolean
     isRequired?: boolean
@@ -29,6 +31,7 @@ type SmsSettingsFormComponentProps = {
 
 export const SmsSettingsFormComponent = ({
     monitoredSmsIntegrations,
+    smsDisclaimer,
     updateValue,
     initialValue,
     isRequired,
@@ -125,6 +128,14 @@ export const SmsSettingsFormComponent = ({
                         </div>
                     </SettingsCardContent>
                 </SettingsCard>
+            </section>
+            <section>
+                <SmsFooterFormComponent
+                    smsDisclaimer={smsDisclaimer}
+                    updateValue={updateValue}
+                    setIsPristine={setIsPristine}
+                    isRequired={false}
+                />
             </section>
         </div>
     )

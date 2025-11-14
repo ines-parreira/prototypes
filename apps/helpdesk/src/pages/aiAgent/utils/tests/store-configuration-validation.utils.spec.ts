@@ -42,6 +42,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     handoverEmail: null,
     handoverEmailIntegrationId: null,
     handoverHttpIntegrationId: null,
+    smsDisclaimer: null,
 }
 
 const DEFAULT_OPTIONS = {

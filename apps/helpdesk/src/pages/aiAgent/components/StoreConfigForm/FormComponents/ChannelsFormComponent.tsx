@@ -40,6 +40,7 @@ type Props = {
     updateEmailChannelDeactivatedDatetime: (datetime: string | null) => void
 
     monitoredSmsIntegrations: number[] | null
+    smsDisclaimer: string | null
     isSmsChannelEnabled: boolean
     smsChannelDeactivatedDatetime: string | null | undefined
     updateSmsChannelDeactivatedDatetime: (datetime: string | null) => void
@@ -70,6 +71,7 @@ export const ChannelsFormComponent = ({
     updateEmailChannelDeactivatedDatetime,
 
     monitoredSmsIntegrations,
+    smsDisclaimer,
     isSmsChannelEnabled,
     smsChannelDeactivatedDatetime,
     updateSmsChannelDeactivatedDatetime,
@@ -268,6 +270,7 @@ export const ChannelsFormComponent = ({
                                 monitoredSmsIntegrations={
                                     monitoredSmsIntegrations
                                 }
+                                smsDisclaimer={smsDisclaimer}
                                 isRequired={
                                     smsChannelDeactivatedDatetime === null
                                 }

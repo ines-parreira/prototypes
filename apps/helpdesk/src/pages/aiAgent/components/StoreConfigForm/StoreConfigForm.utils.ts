@@ -64,6 +64,7 @@ export const getStoreConfigurationFromFormValues = (
                 ? formValues.customToneOfVoiceGuidance
                 : null,
         signature,
+        smsDisclaimer: formValues.smsDisclaimer ?? null,
         useEmailIntegrationSignature:
             formValues.useEmailIntegrationSignature ?? false,
         helpCenterId,

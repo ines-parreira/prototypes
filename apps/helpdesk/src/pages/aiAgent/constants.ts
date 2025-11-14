@@ -34,6 +34,7 @@ export const CHAT = 'Chat'
 export const EMAIL = 'Email'
 
 export const SIGNATURE_MAX_LENGTH = 250
+export const SMS_DISCLAIMER_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
 export const CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH = 5000
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
@@ -75,6 +76,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     },
     useEmailIntegrationSignature: true,
     signature: null,
+    smsDisclaimer: null,
     toneOfVoice: null,
     aiAgentLanguage: null,
     customToneOfVoiceGuidance: null,
@@ -176,6 +178,7 @@ export const INITIAL_FORM_VALUES = {
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
+    smsDisclaimer: 'Powered by AI',
     toneOfVoice: ToneOfVoice.Friendly,
     aiAgentLanguage: null,
     customToneOfVoiceGuidance: CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,

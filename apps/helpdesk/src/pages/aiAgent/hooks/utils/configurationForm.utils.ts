@@ -34,6 +34,7 @@ export const getFormValuesFromStoreConfiguration = (
     tags: storeConfig.tags,
     excludedTopics: storeConfig.excludedTopics,
     signature: storeConfig.signature,
+    smsDisclaimer: storeConfig.smsDisclaimer ?? null,
     toneOfVoice: storeConfig.toneOfVoice,
     aiAgentLanguage: storeConfig.aiAgentLanguage,
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,

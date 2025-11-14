@@ -799,6 +799,7 @@ export const StoreConfigForm = ({
                             monitoredSmsIntegrations={
                                 formValues.monitoredSmsIntegrations
                             }
+                            smsDisclaimer={formValues.smsDisclaimer}
                             isSmsChannelEnabled={isSmsChannelEnabled}
                             smsChannelDeactivatedDatetime={
                                 formValues.smsChannelDeactivatedDatetime

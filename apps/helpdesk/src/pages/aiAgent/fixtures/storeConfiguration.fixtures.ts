@@ -28,6 +28,7 @@ export const getStoreConfigurationFixture = (
     aiAgentLanguage: null,
     excludedTopics: [],
     signature: 'This response was created by AI',
+    smsDisclaimer: 'Powered by AI',
     tags: [],
     monitoredEmailIntegrations: [
         {

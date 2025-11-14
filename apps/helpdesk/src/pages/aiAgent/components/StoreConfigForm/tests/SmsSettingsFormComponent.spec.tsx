@@ -62,6 +62,7 @@ const defaultState = {
 
 const defaultProps = {
     monitoredSmsIntegrations: null,
+    smsDisclaimer: null,
     updateValue: mockUpdateValue,
     setIsPristine: mockSetIsPristine,
 }

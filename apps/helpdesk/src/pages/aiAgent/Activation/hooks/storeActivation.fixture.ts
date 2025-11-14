@@ -61,6 +61,7 @@ export const storeActivationFixture = (
             customToneOfVoiceGuidance: null,
             excludedTopics: [],
             signature: 'This response was created by AI',
+            smsDisclaimer: 'Powered by AI',
             tags: [],
             monitoredEmailIntegrations: [
                 {

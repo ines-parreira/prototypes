@@ -79,6 +79,7 @@ const createMockStoreConfiguration = (
     handoverEmail: null,
     handoverEmailIntegrationId: null,
     handoverHttpIntegrationId: null,
+    smsDisclaimer: null,
     ...overrides,
 })
 

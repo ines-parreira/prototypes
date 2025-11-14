@@ -20,6 +20,7 @@ export const getStoreConfigurationFormValuesFixture = (
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
+    smsDisclaimer: 'Powered by AI',
     useEmailIntegrationSignature: true,
     conversationBot: {
         name: 'AI Agent Name',
@@ -70,6 +71,7 @@ export const getOnboardingWizardFormValuesFixture = (
     ],
     excludedTopics: ['returns', 'refund'],
     signature: 'Thank you!\nNice ecommerce team',
+    smsDisclaimer: 'Powered by AI',
     toneOfVoice: ToneOfVoice.Friendly,
     conversationBot: {
         name: 'AI Agent Name',

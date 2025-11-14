@@ -100,6 +100,7 @@ describe('ChannelsFormComponent', () => {
         emailChannelDeactivatedDatetime: null,
         updateEmailChannelDeactivatedDatetime: jest.fn(),
         monitoredSmsIntegrations: [],
+        smsDisclaimer: null,
         isSmsChannelEnabled: false,
         smsChannelDeactivatedDatetime: null,
         updateSmsChannelDeactivatedDatetime: jest.fn(),

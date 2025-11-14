@@ -79,6 +79,7 @@ const createMockStoreConfiguration = (
     aiAgentLanguage: null,
     customToneOfVoiceGuidance: null,
     signature: '',
+    smsDisclaimer: null,
     excludedTopics: [],
     tags: [],
     conversationBot: { id: 1, email: 'bot@example.com', name: 'Test Bot' },

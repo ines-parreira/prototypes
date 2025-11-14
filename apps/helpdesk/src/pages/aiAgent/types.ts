@@ -47,6 +47,7 @@ export type FormValues = {
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
+    smsDisclaimer: string | null
     toneOfVoice: ToneOfVoice | null
     aiAgentLanguage: string | null
     customToneOfVoiceGuidance: string | null

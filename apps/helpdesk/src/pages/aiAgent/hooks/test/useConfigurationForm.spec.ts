@@ -55,6 +55,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     handoverEmail: null,
     handoverEmailIntegrationId: null,
     handoverHttpIntegrationId: null,
+    smsDisclaimer: null,
 }
 
 jest.mock('models/helpCenter/queries')
