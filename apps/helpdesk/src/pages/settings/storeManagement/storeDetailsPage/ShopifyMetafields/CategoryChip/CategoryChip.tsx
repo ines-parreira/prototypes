@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { Text } from '@gorgias/axiom'
 
 import { MetafieldCategory } from '../types'
-import getLabelFromCategory from './getLabelFromCategory'
+import { getCategoryLabel } from '../utils/getCategoryLabel'
 
 import styles from './CategoryChip.less'
 
@@ -20,7 +20,7 @@ export default function CategoryChip({ category }: CategoryChipProps) {
                 category === 'draft_order' && styles.draftOrder,
             )}
         >
-            <Text variant="bold">{getLabelFromCategory(category)}</Text>
+            <Text variant="bold">{getCategoryLabel(category)}</Text>
         </div>
     )
 }
