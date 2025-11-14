@@ -1,6 +1,8 @@
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 
+import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
 import { GroupedKnowledgeItem, KnowledgeType, typeConfig } from '../types'
+import { AddGuidanceTemplateModal } from './AddGuidanceTemplateModal'
 
 import css from './EmptyState.less'
 
@@ -22,7 +24,16 @@ export const EmptyStates = ({
             >
                 <Heading size={'sm'}>Create new content</Heading>
                 <Box flexDirection={'row'} gap="md">
-                    <Card className={css.card}>
+                    <div
+                        className={css.card}
+                        onClick={() => {
+                            document.dispatchEvent(
+                                new CustomEvent(
+                                    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+                                ),
+                            )
+                        }}
+                    >
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
@@ -35,12 +46,15 @@ export const EmptyStates = ({
                                     Guidance
                                 </Box>
                             </Text>
-                            <Text size={'sm'}>
-                                Instruct AI Agent to handle customer requests
-                                and follow internal processes.
-                            </Text>
+                            <div className={css.cardDescription}>
+                                <Text size={'sm'}>
+                                    Instruct AI Agent to handle customer
+                                    requests and follow internal processes.
+                                </Text>
+                            </div>
                         </Box>
-                    </Card>
+                        <AddGuidanceTemplateModal />
+                    </div>
                     <Card className={css.card}>
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
@@ -53,10 +67,12 @@ export const EmptyStates = ({
                                     {typeConfig[KnowledgeType.FAQ].label}
                                 </Box>
                             </Text>
-                            <Text size={'sm'}>
-                                Let AI Agent use published Help Center articles
-                                as knowledge.
-                            </Text>
+                            <div className={css.cardDescription}>
+                                <Text size={'sm'}>
+                                    Let AI Agent use published Help Center
+                                    articles as knowledge.
+                                </Text>
+                            </div>
                         </Box>
                     </Card>
                 </Box>
@@ -122,6 +138,12 @@ export const EmptyStates = ({
 }
 
 export const EmptyStateGuidance = () => {
+    const toggleModal = () => {
+        document.dispatchEvent(
+            new CustomEvent(OPEN_CREATE_GUIDANCE_ARTICLE_MODAL),
+        )
+    }
+
     return (
         <Box
             flexDirection="column"
@@ -137,8 +159,11 @@ export const EmptyStateGuidance = () => {
                     Instruct AI Agent to handle customer requests and follow
                     end-to-end processes with internal-facing Guidance.
                 </Text>
-                <Button variant="primary">Create Guidance</Button>
+                <Button variant="primary" onClick={toggleModal}>
+                    Create Guidance
+                </Button>
             </Box>
+            <AddGuidanceTemplateModal />
         </Box>
     )
 }
