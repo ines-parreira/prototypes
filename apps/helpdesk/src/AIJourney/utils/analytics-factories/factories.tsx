@@ -334,6 +334,31 @@ export const aiJourneyOptedOutQueryFactory = (
     }
 }
 
+export const aiJourneyOptedOutTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyOptedOutQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_OPTED_OUT_CONVERSATIONS_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}
+
 export const aiJourneyRepliedMessagesTimeSeriesQuery = (
     integrationId: string,
     filters: StatsFilters,
@@ -499,16 +524,12 @@ export const aiJourneyUniqClicksTimeSeriesQuery = (
 }
 
 export const aiJourneyTotalConversationsQueryFactory = (
+    integrationId: string,
     filters: StatsFilters,
     timezone: string,
     journeyId?: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const baseFilters = statsFiltersToReportingFilters(
-        aiSalesAgentConversationsDefaultFiltersMembers,
-        filters,
-    )
-
-    const journeyIdFilter = journeyId
+    const journeyFilter = journeyId
         ? [
               {
                   member: AiSalesAgentConversationsDimension.JourneyId,
@@ -523,15 +544,48 @@ export const aiJourneyTotalConversationsQueryFactory = (
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
         filters: [
-            ...journeyIdFilter,
-            ...baseFilters,
             {
                 member: AiSalesAgentConversationsDimension.Source,
                 operator: ReportingFilterOperator.Equals,
                 values: ['ai-journey'],
             },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
         ],
         timezone,
+    }
+}
+
+export const aiJourneyTotalConversationsTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyTotalConversationsQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
     }
 }
 
@@ -668,6 +722,72 @@ export const aiJourneyTotalContactsActiveTimeSeriesQuery = (
             journeyId,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_ACTIVE_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}
+
+export const aiJourneyTotalUniqueContactsQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyId?: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter = journeyId
+        ? [
+              {
+                  member: AiSalesAgentConversationsDimension.JourneyId,
+                  operator: ReportingFilterOperator.Equals,
+                  values: [journeyId],
+              },
+          ]
+        : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_UNIQUE_CONTACTS,
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyTotalUniqueContactsTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyTotalUniqueContactsQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyId,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_UNIQUE_CONTACTS_TIME_SERIES,
         timeDimensions: [
             {
                 dimension: AiSalesAgentConversationsDimension.PeriodStart,

@@ -152,6 +152,7 @@ describe('useAIJourneyKpis', () => {
             '123',
             'America/New_York',
             filters,
+            ReportingGranularity.Week,
             'shopName',
         )
     })
@@ -209,6 +210,7 @@ describe('useAIJourneyKpis', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            ReportingGranularity.Week,
             'shopName',
         )
     })

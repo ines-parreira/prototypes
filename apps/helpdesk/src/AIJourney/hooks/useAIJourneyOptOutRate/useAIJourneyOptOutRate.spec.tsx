@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import { useAIJourneyOptOutRate } from './useAIJourneyOptOutRate'
 
@@ -41,6 +42,35 @@ describe('useAIJourneyOptOutRate', () => {
                 isFetching: false,
             }
         })
+        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
+            if (
+                args.filters.find(
+                    (f: any) =>
+                        f.member ===
+                        AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                )
+            ) {
+                return {
+                    data: [
+                        [
+                            { dateTime: '2025-07-03', value: 10 },
+                            { dateTime: '2025-07-10', value: 20 },
+                        ],
+                    ],
+                    isFetching: false,
+                }
+            }
+
+            return {
+                data: [
+                    [
+                        { dateTime: '2025-07-03', value: 100 },
+                        { dateTime: '2025-07-10', value: 100 },
+                    ],
+                ],
+                isFetching: false,
+            }
+        })
 
         const userTimezone = 'America/New_York'
 
@@ -49,6 +79,7 @@ describe('useAIJourneyOptOutRate', () => {
                 '123',
                 userTimezone,
                 mockFilters,
+                ReportingGranularity.Week,
                 'shopName',
             ),
         )
@@ -60,6 +91,10 @@ describe('useAIJourneyOptOutRate', () => {
             interpretAs: 'less-is-better',
             metricFormat: 'percent-precision-1',
             prevValue: 40,
+            series: [
+                { dateTime: '2025-07-03', value: 10 },
+                { dateTime: '2025-07-10', value: 20 },
+            ],
             drilldown: {
                 integrationId: '123',
                 journeyId: undefined,
@@ -81,7 +116,13 @@ describe('useAIJourneyOptOutRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutRate('123', 'UTC', mockFilters, 'shopName'),
+            useAIJourneyOptOutRate(
+                '123',
+                'UTC',
+                mockFilters,
+                ReportingGranularity.Week,
+                'shopName',
+            ),
         )
 
         expect(result.current).toEqual({
@@ -91,6 +132,7 @@ describe('useAIJourneyOptOutRate', () => {
             metricFormat: 'percent-precision-1',
             prevValue: 0,
             value: 0,
+            series: [],
             drilldown: {
                 integrationId: '123',
                 journeyId: undefined,

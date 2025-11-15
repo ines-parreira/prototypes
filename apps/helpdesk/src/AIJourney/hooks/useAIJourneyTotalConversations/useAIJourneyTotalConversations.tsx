@@ -1,35 +1,58 @@
 import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
-import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
-import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import {
+    aiJourneyTotalConversationsQueryFactory,
+    aiJourneyTotalConversationsTimeSeriesQuery,
+} from 'AIJourney/utils/analytics-factories/factories'
+import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
-export type UseAIJourneyTotalConversationsParams = {
-    journeyId?: string
-    filters: FilterType
-}
-
-export const useAIJourneyTotalConversations = ({
-    journeyId,
-    filters,
-}: UseAIJourneyTotalConversationsParams): MetricProps => {
-    const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    // P2/P3
-    const { data, isFetching } = useMetric(
+export const useAIJourneyTotalConversations = (
+    integrationId: string,
+    userTimezone: string,
+    filters: FilterType,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): MetricProps => {
+    const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         aiJourneyTotalConversationsQueryFactory(
+            integrationId,
             filters,
+            userTimezone,
+            journeyId,
+        ),
+        aiJourneyTotalConversationsQueryFactory(
+            integrationId,
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
             userTimezone,
             journeyId,
         ),
     )
 
+    const { data: timeSeriesData, isFetching: isFetchingSeries } =
+        useTimeSeries(
+            aiJourneyTotalConversationsTimeSeriesQuery(
+                integrationId,
+                filters,
+                userTimezone,
+                granularity,
+                journeyId,
+            ),
+        )
+
     return {
         label: 'Total Conversations',
-        value: data?.value || 0,
+        value: trendData?.value || 0,
+        prevValue: trendData?.prevValue,
+        series: timeSeriesData?.[0] ?? [],
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
-        isLoading: isFetching,
+        isLoading: isFetchingTrend || isFetchingSeries,
     }
 }

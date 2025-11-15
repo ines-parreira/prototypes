@@ -16,7 +16,10 @@ import { useJourneyContext } from 'AIJourney/providers'
 import greenLightningIcon from 'assets/img/ai-journey/green-lightning.svg'
 import greyLightningIcon from 'assets/img/ai-journey/lightning.svg'
 import orangeLightningIcon from 'assets/img/ai-journey/orange-lightning.svg'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -43,6 +46,8 @@ export const AnalyticsCard = ({
     const dispatch = useAppDispatch()
     const filters = useFilters()
     const { shopName } = useParams<{ shopName: string }>()
+    const granularity = ReportingGranularity.Week
+    const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     const [journeyState, setJourneyState] = useState<JourneyStatusEnum>(
         journey.state || JourneyStatusEnum.Draft,
@@ -59,10 +64,13 @@ export const AnalyticsCard = ({
         filters,
     })
 
-    const totalConversations = useAIJourneyTotalConversations({
-        journeyId: journey.id,
+    const totalConversations = useAIJourneyTotalConversations(
+        integrationId.toString(),
+        userTimezone,
         filters,
-    })
+        granularity,
+        journey.id,
+    )
 
     const formattedTotalConversationsSent =
         totalConversations?.value > 1000

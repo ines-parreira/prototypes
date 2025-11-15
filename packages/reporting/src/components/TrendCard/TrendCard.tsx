@@ -26,7 +26,7 @@ export type TrendCardProps = {
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     isLoading?: boolean
     metricFormat?: MetricTrendFormat
-    timeSeriesData: TwoDimensionalDataItem[]
+    timeSeriesData?: TwoDimensionalDataItem[]
     trend: MetricTrend
     trendColor?: TrendColor
     withBorder?: boolean
@@ -78,7 +78,7 @@ export const TrendCard = memo<TrendCardProps>(
                             currency={currency}
                         />
                     </div>
-                    {timeSeriesData && (
+                    {!!timeSeriesData?.length && (
                         <TrendChart
                             trendColor={
                                 trendColor ??

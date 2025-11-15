@@ -1,0 +1,142 @@
+import { useMemo } from 'react'
+
+import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import {
+    aiJourneyGmvInfluencedQueryFactory,
+    aiJourneyGmvInfluencedTimeSeriesQuery,
+    aiJourneyTotalNumberOfOrderQueryFactory,
+    aiJourneyTotalNumberOfOrderTimeSeriesQuery,
+} from 'AIJourney/utils/analytics-factories/factories'
+import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+
+const calculateAverageOrderValue = ({
+    gmv,
+    orders,
+}: {
+    gmv: number | undefined | null
+    orders: number | undefined | null
+}): number => {
+    if (gmv && orders) {
+        return gmv / orders
+    }
+    return 0
+}
+
+export const useAverageOrderValue = (
+    integrationId: string,
+    userTimezone: string,
+    filters: FilterType,
+    granularity: ReportingGranularity,
+    journeyId?: string,
+): MetricProps => {
+    const { currency } = useCurrency()
+
+    const { data: gmvData, isFetching: isFetchingGmv } = useMetricTrend(
+        aiJourneyGmvInfluencedQueryFactory(
+            integrationId,
+            filters,
+            userTimezone,
+            journeyId,
+        ),
+        aiJourneyGmvInfluencedQueryFactory(
+            integrationId,
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            userTimezone,
+            journeyId,
+        ),
+    )
+
+    const { data: ordersData, isFetching: isFetchingOrders } = useMetricTrend(
+        aiJourneyTotalNumberOfOrderQueryFactory(
+            integrationId,
+            filters,
+            userTimezone,
+            journeyId,
+        ),
+        aiJourneyTotalNumberOfOrderQueryFactory(
+            integrationId,
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            userTimezone,
+            journeyId,
+        ),
+    )
+
+    const value = useMemo(() => {
+        return calculateAverageOrderValue({
+            gmv: gmvData?.value,
+            orders: ordersData?.value,
+        })
+    }, [gmvData, ordersData])
+
+    const prevValue = useMemo(() => {
+        return calculateAverageOrderValue({
+            gmv: gmvData?.prevValue,
+            orders: ordersData?.prevValue,
+        })
+    }, [gmvData, ordersData])
+
+    const { data: gmvTimeSeriesData, isFetching: isFetchingGmvSeries } =
+        useTimeSeries(
+            aiJourneyGmvInfluencedTimeSeriesQuery(
+                integrationId,
+                filters,
+                userTimezone,
+                granularity,
+                journeyId,
+            ),
+        )
+
+    const { data: ordersTimeSeriesData, isFetching: isFetchingOrdersSeries } =
+        useTimeSeries(
+            aiJourneyTotalNumberOfOrderTimeSeriesQuery(
+                integrationId,
+                filters,
+                userTimezone,
+                granularity,
+                journeyId,
+            ),
+        )
+
+    const series = useMemo(() => {
+        if (!gmvTimeSeriesData?.length || !ordersTimeSeriesData?.length) {
+            return []
+        }
+
+        return gmvTimeSeriesData[0].map((gmvDataPoint, index) => {
+            const ordersDataPoint = ordersTimeSeriesData[0][index]
+            return {
+                ...gmvDataPoint,
+                value: calculateAverageOrderValue({
+                    gmv: gmvDataPoint.value,
+                    orders: ordersDataPoint?.value,
+                }),
+            }
+        })
+    }, [gmvTimeSeriesData, ordersTimeSeriesData])
+
+    return {
+        label: 'Average Order Value',
+        value,
+        prevValue,
+        series,
+        interpretAs: 'more-is-better',
+        metricFormat: 'currency',
+        currency,
+        isLoading:
+            isFetchingGmv ||
+            isFetchingOrders ||
+            isFetchingGmvSeries ||
+            isFetchingOrdersSeries,
+    }
+}

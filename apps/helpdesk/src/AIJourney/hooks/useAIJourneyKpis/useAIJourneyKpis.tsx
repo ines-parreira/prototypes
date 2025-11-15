@@ -95,6 +95,7 @@ export const useAIJourneyKpis = ({
         integrationId,
         userTimezone,
         filters,
+        granularity,
         shopName,
     )
 

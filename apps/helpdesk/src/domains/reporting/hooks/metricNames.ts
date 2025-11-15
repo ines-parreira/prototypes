@@ -28,7 +28,11 @@ export const METRIC_NAMES = {
     AI_JOURNEY_FAILED_MESSAGES_TIME_SERIES:
         'ai-journey-failed-messages-time-series',
     AI_JOURNEY_OPTED_OUT_CONVERSATIONS: 'ai-journey-opted-out-conversations',
+    AI_JOURNEY_OPTED_OUT_CONVERSATIONS_TIME_SERIES:
+        'ai-journey-opted-out-conversations-time-series',
     AI_JOURNEY_TOTAL_CONVERSATIONS: 'ai-journey-total-conversations',
+    AI_JOURNEY_TOTAL_CONVERSATIONS_TIME_SERIES:
+        'ai-journey-total-conversations-time-series',
     AI_JOURNEY_TOTAL_NUMBER_OF_ORDER: 'ai-journey-total-number-of-order',
     AI_JOURNEY_TOTAL_NUMBER_OF_ORDER_TIME_SERIES:
         'ai-journey-total-number-of-order-time-series',
@@ -45,6 +49,9 @@ export const METRIC_NAMES = {
     AI_JOURNEY_TOTAL_CONTACTS_ACTIVE: 'ai-journey-total-contacts-active',
     AI_JOURNEY_TOTAL_CONTACTS_ACTIVE_TIME_SERIES:
         'ai-journey-total-contacts-active-time-series',
+    AI_JOURNEY_TOTAL_UNIQUE_CONTACTS: 'ai-journey-total-unique-contacts',
+    AI_JOURNEY_TOTAL_UNIQUE_CONTACTS_TIME_SERIES:
+        'ai-journey-total-unique-contacts-time-series',
 
     // AI Sales Agent
     AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:

@@ -39,6 +39,49 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations',
+    () => ({
+        useAIJourneyTotalConversations: jest.fn(),
+    }),
+)
+
+jest.mock(
+    'AIJourney/hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate',
+    () => ({
+        useAIJourneyOptOutRate: jest.fn(),
+    }),
+)
+
+jest.mock(
+    'AIJourney/hooks/useAIJourneyResponseRate/useAIJourneyResponseRate',
+    () => ({
+        useAIJourneyResponseRate: jest.fn(),
+    }),
+)
+
+jest.mock('AIJourney/hooks/useClickThroughRate/useClickThroughRate', () => ({
+    useClickThroughRate: jest.fn(),
+}))
+
+jest.mock('AIJourney/hooks/useAverageOrderValue/useAverageOrderValue', () => ({
+    useAverageOrderValue: jest.fn(),
+}))
+
+jest.mock(
+    'AIJourney/hooks/useRevenuePerRecipient/useRevenuePerRecipient',
+    () => ({
+        useRevenuePerRecipient: jest.fn(),
+    }),
+)
+
+jest.mock(
+    'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore',
+    () => ({
+        useGetNamespacedShopNameForStore: jest.fn(),
+    }),
+)
+
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -54,6 +97,27 @@ const mockUseAIJourneyGmvInfluenced =
 const mockUseAIJourneyConversionRate =
     require('AIJourney/hooks/useAIJourneyConversionRate/useAIJourneyConversionRate')
         .useAIJourneyConversionRate as jest.Mock
+const mockUseAIJourneyTotalConversations =
+    require('AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations')
+        .useAIJourneyTotalConversations as jest.Mock
+const mockUseAIJourneyOptOutRate =
+    require('AIJourney/hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate')
+        .useAIJourneyOptOutRate as jest.Mock
+const mockUseAIJourneyResponseRate =
+    require('AIJourney/hooks/useAIJourneyResponseRate/useAIJourneyResponseRate')
+        .useAIJourneyResponseRate as jest.Mock
+const mockUseClickThroughRate =
+    require('AIJourney/hooks/useClickThroughRate/useClickThroughRate')
+        .useClickThroughRate as jest.Mock
+const mockUseAverageOrderValue =
+    require('AIJourney/hooks/useAverageOrderValue/useAverageOrderValue')
+        .useAverageOrderValue as jest.Mock
+const mockUseRevenuePerRecipient =
+    require('AIJourney/hooks/useRevenuePerRecipient/useRevenuePerRecipient')
+        .useRevenuePerRecipient as jest.Mock
+const mockUseGetNamespacedShopNameForStore =
+    require('domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore')
+        .useGetNamespacedShopNameForStore as jest.Mock
 const mockUseAppSelector = require('hooks/useAppSelector').default as jest.Mock
 
 describe('<Analytics />', () => {
@@ -125,6 +189,70 @@ describe('<Analytics />', () => {
             metricFormat: 'percent',
             isLoading: false,
         })
+
+        mockUseAIJourneyTotalConversations.mockReturnValue({
+            label: 'Total Conversations',
+            value: 100,
+            prevValue: 80,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyOptOutRate.mockReturnValue({
+            label: 'Opt Out Rate',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'less-is-better',
+            metricFormat: 'percent',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyResponseRate.mockReturnValue({
+            label: 'Response Rate',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'percent',
+            isLoading: false,
+        })
+
+        mockUseClickThroughRate.mockReturnValue({
+            label: 'Click Through Rate',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'percent',
+            isLoading: false,
+        })
+
+        mockUseAverageOrderValue.mockReturnValue({
+            label: 'Average Order Value',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'currency',
+            currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseRevenuePerRecipient.mockReturnValue({
+            label: 'Revenue Per Recipient',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'currency',
+            currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseGetNamespacedShopNameForStore.mockReturnValue('shopify-store')
     })
 
     it('should render loading state', () => {
@@ -188,7 +316,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getAllByLabelText('Loading')).toHaveLength(2)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(4)
     })
 
     it('should render both metrics with values', () => {
@@ -233,9 +361,9 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('GMV Influenced')).toBeInTheDocument()
-        expect(screen.getByText('Conversion Rate')).toBeInTheDocument()
-        expect(screen.getByText('$15,000.5')).toBeInTheDocument()
-        expect(screen.getByText(/25\.5%/)).toBeInTheDocument()
+        expect(screen.getAllByText('GMV Influenced')).toHaveLength(2)
+        expect(screen.getAllByText('Conversion Rate')).toHaveLength(2)
+        expect(screen.getAllByText('$15,000.5')).toHaveLength(2)
+        expect(screen.getAllByText(/25\.5%/)).toHaveLength(2)
     })
 })

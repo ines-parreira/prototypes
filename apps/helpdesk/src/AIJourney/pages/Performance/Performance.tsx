@@ -14,12 +14,15 @@ import { useAIJourneyKpis } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyK
 import { useAIJourneyTotalConversations } from 'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations'
 import { useFilters } from 'AIJourney/hooks/useFilters/useFilters'
 import { useJourneyContext } from 'AIJourney/providers'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import {
     formatMetricTrend,
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
 import { useFlag } from '../../../core/flags'
 
@@ -123,10 +126,15 @@ export const Performance = () => {
     }, [currentIntegration])
 
     const filters = useFilters()
+    const granularity = ReportingGranularity.Week
+    const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
-    const totalConversations = useAIJourneyTotalConversations({
+    const totalConversations = useAIJourneyTotalConversations(
+        integrationId.toString(),
+        userTimezone,
         filters,
-    })
+        granularity,
+    )
     const formattedTotalConversationsSent =
         totalConversations?.value > 1000
             ? `${(totalConversations.value / 1000).toFixed(1)}k`
