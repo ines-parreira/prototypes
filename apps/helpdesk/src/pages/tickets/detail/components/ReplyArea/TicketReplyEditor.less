@@ -4,8 +4,10 @@
     }
 
     &.isReadOnly {
+        cursor: not-allowed;
+
         :global(.public-DraftEditor-content) {
-            cursor: not-allowed;
+            pointer-events: none;
         }
     }
 
