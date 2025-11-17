@@ -76,7 +76,7 @@ const ReasoningTitle = ({ status, onRetry, onToggle }: ReasoningTitleProps) => {
             <i className={classNames('material-icons', css.expandIcon)}>
                 {icon}
             </i>
-            <span className={css.text}>{label}</span>
+            <span className={css.titleButtonText}>{label}</span>
         </button>
     )
 }
