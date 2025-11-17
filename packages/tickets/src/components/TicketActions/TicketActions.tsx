@@ -1,4 +1,4 @@
-import { Button, IconName, Menu, MenuItem } from '@gorgias/axiom'
+import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
 
 import {
     DeleteTicket,
@@ -13,7 +13,7 @@ import {
 export function TicketActions() {
     return (
         <Menu
-            placement="bottom end"
+            placement={MenuPlacement.BottomRight}
             aria-label="More ticket options selection"
             trigger={
                 <Button
