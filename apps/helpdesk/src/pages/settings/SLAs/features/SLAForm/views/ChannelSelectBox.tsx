@@ -9,6 +9,7 @@ import React, {
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
+import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -36,7 +37,9 @@ export default forwardRef(function ChannelSelectBox(
     const targetRef = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => targetRef.current!)
     const [isOpen, setIsOpen] = useState(false)
+
     const channelsMap = getChannels()
+        .filter((channel) => channel.slug !== TicketChannel.Phone)
         .sort((a, b) => a.name.localeCompare(b.name))
         .reduce(
             (acc, channel) => {
