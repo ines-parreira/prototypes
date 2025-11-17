@@ -1,6 +1,8 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -11,6 +13,8 @@ import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/sta
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 
+import { ReportingGranularity } from '../../../domains/reporting/models/types'
+import { FiltersPanelComponent } from '../../../domains/reporting/pages/common/filters/FiltersPanel'
 import { Analytics } from './Analytics'
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
@@ -118,7 +122,11 @@ const mockUseRevenuePerRecipient =
 const mockUseGetNamespacedShopNameForStore =
     require('domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore')
         .useGetNamespacedShopNameForStore as jest.Mock
-const mockUseAppSelector = require('hooks/useAppSelector').default as jest.Mock
+const useAppSelectorMock = require('hooks/useAppSelector').default as jest.Mock
+jest.mock('domains/reporting/state/ui/stats/selectors')
+
+jest.mock('domains/reporting/pages/common/filters/FiltersPanel')
+const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
 
 describe('<Analytics />', () => {
     const mockStore = configureMockStore([thunk])({
@@ -127,6 +135,28 @@ describe('<Analytics />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        FiltersPanelComponentMock.mockImplementation(() => <div />)
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountState') {
+                return fromJS(account)
+            }
+
+            if (selector === getCleanStatsFiltersWithTimezone) {
+                return {
+                    cleanStatsFilters: {
+                        period: {
+                            end_datetime: moment().toISOString(),
+                            start_datetime: moment().toISOString(),
+                        },
+                    },
+                    userTimezone: 'America/New_York',
+                    granularity: ReportingGranularity.Day,
+                }
+            }
+
+            return null
+        })
 
         mockUseJourneyContext.mockReturnValue({
             journeyData: {
@@ -157,16 +187,6 @@ describe('<Analytics />', () => {
                 start_datetime: '2025-01-01T00:00:00Z',
                 end_datetime: '2025-01-31T23:59:59Z',
             },
-        })
-
-        mockUseAppSelector.mockImplementation((selector: any) => {
-            if (selector === getCleanStatsFiltersWithTimezone) {
-                return { userTimezone: 'America/New_York' }
-            }
-            if (selector.name === 'getCurrentAccountState') {
-                return fromJS(account)
-            }
-            return undefined
         })
 
         mockUseAIJourneyGmvInfluenced.mockReturnValue({
@@ -361,8 +381,8 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getAllByText('GMV Influenced')).toHaveLength(2)
-        expect(screen.getAllByText('Conversion Rate')).toHaveLength(2)
+        expect(screen.getAllByText('GMV Influenced')).toHaveLength(3)
+        expect(screen.getAllByText('Conversion Rate')).toHaveLength(3)
         expect(screen.getAllByText('$15,000.5')).toHaveLength(2)
         expect(screen.getAllByText(/25\.5%/)).toHaveLength(2)
     })

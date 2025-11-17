@@ -3,8 +3,8 @@ import {
     formatDuration,
     formatMetricTrend,
     formatMetricValue,
+    formatMetricValueOrString,
     getTrendColorFromValue,
-    renderTickLabelAsNumber,
 } from './helpers'
 
 describe('formatMetricValue', () => {
@@ -259,14 +259,24 @@ describe('formatDuration', () => {
     )
 })
 
-describe('renderTickLabelAsNumber', () => {
-    it.each([
-        [50, '50'],
-        [-50, '-50'],
-        [0, '0'],
-        [10_000, '10K'],
-        ['rainbow', 'rainbow'],
-    ])('should format %s as %s', (value, expected) => {
-        expect(renderTickLabelAsNumber(value)).toEqual(expected)
+describe('formatMetricValueOrString', () => {
+    describe('without options', () => {
+        it.each<[number, string]>([
+            [1234.56, '1,234.56'],
+            [0, '0'],
+            [1000, '1,000'],
+        ])('should format number %p as %s', (value, expected) => {
+            const formatter = formatMetricValueOrString()
+            expect(formatter(value)).toBe(expected)
+        })
+
+        it.each<[string, string]>([
+            ['custom text', 'custom text'],
+            ['100%', '100%'],
+            ['', ''],
+        ])('should return string %p unchanged', (value, expected) => {
+            const formatter = formatMetricValueOrString()
+            expect(formatter(value)).toBe(expected)
+        })
     })
 })

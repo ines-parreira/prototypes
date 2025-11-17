@@ -68,20 +68,56 @@ export type TimeSeriesDataItem = {
 }
 
 export const seriesToTwoDimensionalDataItem = (
-    series?: TimeSeriesDataItem[],
+    series: TimeSeriesDataItem[] | undefined,
+    options?: {
+        label?: string
+        dateFormatter?: (date: string) => string
+        withEndPeriod?: {
+            include: boolean
+            endDate: string
+        }
+    },
 ): TwoDimensionalDataItem[] => {
     if (!series) {
         return []
     }
 
-    const groupedByLabel = _groupBy(series, (item) => item.label || 'default')
+    const groupedByLabel = _groupBy(
+        series,
+        (item) => options?.label ?? item.label ?? 'default',
+    )
 
+    const dateFormatter = options?.dateFormatter ?? ((date) => date)
     return Object.entries(groupedByLabel).map(([label, items]) => ({
         label,
-        values: items.map((item) => ({
-            x: item.dateTime,
-            y: item.value,
-        })),
+        values: items.map((item, index) => {
+            const startDate = dateFormatter(item.dateTime)
+
+            let x: string
+            if (options?.withEndPeriod?.include) {
+                const nextStartDate = items[index + 1]?.dateTime
+                let endDate: string
+                if (nextStartDate) {
+                    endDate = dateFormatter(
+                        moment(nextStartDate).subtract(1, 'day').toISOString(),
+                    )
+                } else {
+                    endDate = dateFormatter(options.withEndPeriod.endDate)
+                }
+
+                x =
+                    startDate === endDate
+                        ? startDate
+                        : `${startDate} - ${endDate}`
+            } else {
+                x = startDate
+            }
+
+            return {
+                x,
+                y: item.value,
+            }
+        }),
     }))
 }
 

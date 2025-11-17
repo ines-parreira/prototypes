@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { AxiosResponse } from 'axios'
+import moment from 'moment/moment'
 
 import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
@@ -1647,6 +1648,136 @@ describe('seriesToTwoDimensionalDataItem', () => {
                     {
                         x: '2022-01-01T01:00:00.000',
                         y: 40,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should override the label based on option', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 20,
+                label: 'test-label',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series, {
+            label: 'Custom label',
+        })
+
+        expect(result).toEqual([
+            {
+                label: 'Custom label',
+                values: [
+                    {
+                        x: '2022-01-01T00:00:00.000',
+                        y: 20,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should format the date based on option', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 20,
+                label: 'test-label',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series, {
+            dateFormatter: (date) => moment(date).format('YYYY-MM-DD'),
+        })
+
+        expect(result).toEqual([
+            {
+                label: 'test-label',
+                values: [
+                    {
+                        x: '2022-01-01',
+                        y: 20,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should include end period in date', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 20,
+                label: 'test-label',
+            },
+            {
+                dateTime: '2022-01-08T00:00:00.000',
+                value: 30,
+                label: 'test-label',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series, {
+            dateFormatter: (date) => moment(date).format('YYYY-MM-DD'),
+            withEndPeriod: {
+                include: true,
+                endDate: '2022-01-10T00:00:00.000',
+            },
+        })
+
+        expect(result).toEqual([
+            {
+                label: 'test-label',
+                values: [
+                    {
+                        x: '2022-01-01 - 2022-01-07',
+                        y: 20,
+                    },
+                    {
+                        x: '2022-01-08 - 2022-01-10',
+                        y: 30,
+                    },
+                ],
+            },
+        ])
+    })
+
+    it('should include end period in date without duplicated end date', () => {
+        const series = [
+            {
+                dateTime: '2022-01-01T00:00:00.000',
+                value: 20,
+                label: 'test-label',
+            },
+            {
+                dateTime: '2022-01-08T00:00:00.000',
+                value: 30,
+                label: 'test-label',
+            },
+        ]
+
+        const result = seriesToTwoDimensionalDataItem(series, {
+            dateFormatter: (date) => moment(date).format('YYYY-MM-DD'),
+            withEndPeriod: {
+                include: true,
+                endDate: '2022-01-08T00:00:00.000',
+            },
+        })
+
+        expect(result).toEqual([
+            {
+                label: 'test-label',
+                values: [
+                    {
+                        x: '2022-01-01 - 2022-01-07',
+                        y: 20,
+                    },
+                    {
+                        x: '2022-01-08',
+                        y: 30,
                     },
                 ],
             },

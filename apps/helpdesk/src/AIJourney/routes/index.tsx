@@ -20,6 +20,8 @@ import {
 } from 'AIJourney/providers'
 import App from 'pages/App'
 
+import DefaultStatsFilters from '../../domains/reporting/pages/DefaultStatsFilters'
+
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
 
@@ -87,7 +89,11 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName/analytics`}
                                 exact
-                                render={() => <Analytics />}
+                                render={() => (
+                                    <DefaultStatsFilters>
+                                        <Analytics />
+                                    </DefaultStatsFilters>
+                                )}
                             />
                             <Route
                                 path={`${path}/:shopName/campaigns`}

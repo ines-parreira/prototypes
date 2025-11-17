@@ -16,40 +16,44 @@ import {
     Icon,
     ListItem,
     Select,
+    SizeValue,
     Skeleton,
 } from '@gorgias/axiom'
 
-import { TwoDimensionalDataItem } from '../../types'
-import { renderTickLabelAsNumber } from '../../utils/helpers'
+import { MetricTrendFormat, TwoDimensionalDataItem } from '../../types'
+import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
 import { toChartData } from './utils'
 
 import '@gorgias/axiom/tokens/typography.css'
 
 type LineChartProps = {
-    containerHeight?: number
-    containerWidth?: number
+    containerHeight?: SizeValue
+    containerWidth?: SizeValue
+    currency?: string
     data: TwoDimensionalDataItem[]
     isCurvedLine?: boolean
     isLoading?: boolean
     metrics?: { id: string; label: string }[]
+    metricFormat?: MetricTrendFormat
     onMetricChange?: (metric: string) => void
-    renderYTickLabel?: (value: number | string) => string
     skeletonHeight?: number
     title: string
 }
 export const LineChart = ({
     containerHeight,
     containerWidth,
+    currency,
     data,
     isCurvedLine = true,
     isLoading = false,
     metrics,
+    metricFormat,
     onMetricChange,
-    renderYTickLabel = renderTickLabelAsNumber,
     skeletonHeight = 250,
     title,
 }: LineChartProps) => {
+    const formatter = formatMetricValueOrString({ metricFormat, currency })
     const titleRef = useRef<HTMLDivElement>(null)
     if (isLoading) {
         return <Skeleton height={skeletonHeight} />
@@ -123,7 +127,7 @@ export const LineChart = ({
                 >
                     <CartesianGrid strokeDasharray="1.5 3" vertical={false} />
                     <XAxis dataKey="name" interval="preserveStartEnd" />
-                    <YAxis width="auto" tickFormatter={renderYTickLabel} />
+                    <YAxis width="auto" tickFormatter={formatter} />
                     <Tooltip
                         cursor={{
                             strokeDasharray: '1.5 3',
@@ -131,7 +135,7 @@ export const LineChart = ({
                             stroke: '#1E242E',
                         }}
                         content={ChartTooltip}
-                        formatter={renderYTickLabel}
+                        formatter={formatter}
                     />
                     {data.map((series) => (
                         <Line

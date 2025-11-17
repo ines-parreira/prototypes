@@ -267,6 +267,15 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     useJourneyContext: jest.fn(),
 }))
 
+jest.mock('AIJourney/pages/Analytics/Analytics', () => ({
+    Analytics: () => <div>AI Journey Analytics</div>,
+}))
+
+jest.mock('domains/reporting/pages/DefaultStatsFilters', () => ({
+    __esModule: true,
+    default: ({ children }: PropsWithChildren<any>) => <>{children}</>,
+}))
+
 jest.mock('rest_api/auth', () => ({
     ...jest.requireActual('rest_api/auth'),
     getAccessToken: jest.fn().mockResolvedValue('test-token'),
@@ -1476,7 +1485,9 @@ describe('<Routes/>', () => {
             )
 
             await waitFor(() => {
-                expect(screen.getByText('Analytics')).toBeInTheDocument()
+                expect(
+                    screen.getByText('AI Journey Analytics'),
+                ).toBeInTheDocument()
             })
         })
     })
