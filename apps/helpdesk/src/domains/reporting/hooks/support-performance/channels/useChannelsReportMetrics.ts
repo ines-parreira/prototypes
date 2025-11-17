@@ -1,6 +1,6 @@
+import type { TableDataSources } from 'domains/reporting/hooks/common/useTableReportData'
 import {
     fetchTableReportData,
-    TableDataSources,
     useTableReportData,
 } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -21,13 +21,13 @@ import { fetchPercentageOfCreatedTicketsMetricPerChannel } from 'domains/reporti
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { saveReport } from 'domains/reporting/services/channelsReportingService'
-import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { Channel } from 'models/channel/types'
+import type { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import type { Channel } from 'models/channel/types'
 
 export const CHANNELS_REPORT_FILE_NAME = 'channels-metrics'
 

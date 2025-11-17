@@ -6,11 +6,11 @@ import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpC
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {
+import type {
     AiAgentWelcomePageProps,
-    AIAgentWelcomePageView,
     DynamicItem,
 } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import { AIAgentWelcomePageView } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 export const AIAgentWelcomePageDynamic = ({
     accountDomain,

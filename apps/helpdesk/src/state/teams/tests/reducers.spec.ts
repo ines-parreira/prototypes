@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as constants from '../constants'
 import reducer, { initialState } from '../reducers'

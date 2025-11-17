@@ -1,11 +1,11 @@
 import { TicketChannel } from 'business/types/ticket'
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 import { IntegrationType } from 'models/integration/types'
 
+import type { OrderLineItem } from '../constants/integrations/types/shopify'
 import {
     CustomerState,
     FinancialStatus,
-    OrderLineItem,
 } from '../constants/integrations/types/shopify'
 
 export const customer: Customer = {

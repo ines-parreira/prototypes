@@ -2,7 +2,7 @@ import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getA
 import { NotificationStatus } from 'state/notifications/types'
 
 import { getGuidanceArticleFixture } from '../../fixtures/guidanceArticle.fixture'
-import { UpdateGuidanceArticle } from '../../types'
+import type { UpdateGuidanceArticle } from '../../types'
 import {
     handleGuidanceDuplicateError,
     mapArticleApiToGuidanceArticle,

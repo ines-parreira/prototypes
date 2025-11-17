@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { reportQueryErrorToSentry } from 'domains/reporting/models/resources'
@@ -29,8 +29,9 @@ import {
     ConvertMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { createJob } from 'models/job/resources'
-import { Job, JobType } from 'models/job/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Job } from 'models/job/types'
+import { JobType } from 'models/job/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('models/job/resources')
 const createJobMock = assumeMock(createJob)

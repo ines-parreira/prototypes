@@ -1,8 +1,9 @@
-import { ContentBlock, ContentState, EditorState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 
 import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
-import {
+import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'

@@ -1,9 +1,9 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 
-import { MacroAction } from '@gorgias/helpdesk-queries'
+import type { MacroAction } from '@gorgias/helpdesk-queries'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessageSourceType } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { MacroActionName } from 'models/macroAction/types'
 

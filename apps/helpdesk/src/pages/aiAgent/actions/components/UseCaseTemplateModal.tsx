@@ -14,13 +14,13 @@ import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-ne
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useHumanReadableOrderConditions from 'pages/aiAgent/actions/hooks/useHumanReadableOrderConditions'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
 import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
@@ -29,11 +29,11 @@ import {
     transformVisualBuilderGraphIntoWfConfiguration,
     walkVisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
-    isReusableLLMPromptCallNodeType,
+import type {
     LLMPromptTriggerNodeType,
     ReusableLLMPromptCallNodeType,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,

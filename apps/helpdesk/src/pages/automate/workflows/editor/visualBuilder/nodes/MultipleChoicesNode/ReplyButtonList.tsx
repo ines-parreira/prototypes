@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 import ReplyButtonItem from './ReplyButtonItem'
 

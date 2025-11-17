@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { FieldPresentation, ProductDropdown } from 'AIJourney/components'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 
 import css from './ProductSelect.less'
 

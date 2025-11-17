@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import ReturnOrderAction from '../ReturnOrderAction'
 

@@ -5,7 +5,7 @@ import {
     contactFormsFetched,
     contactFormUpdated,
 } from 'state/entities/contactForm/contactForms/actions'
-import { ContactFormsState } from 'state/entities/contactForm/contactForms/types'
+import type { ContactFormsState } from 'state/entities/contactForm/contactForms/types'
 
 export const initialState: ContactFormsState = {
     contactFormById: {},

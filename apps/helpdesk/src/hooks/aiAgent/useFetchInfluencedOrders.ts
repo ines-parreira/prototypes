@@ -1,18 +1,16 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersFilterMember,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { usePostReporting } from 'domains/reporting/models/queries'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'

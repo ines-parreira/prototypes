@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
 

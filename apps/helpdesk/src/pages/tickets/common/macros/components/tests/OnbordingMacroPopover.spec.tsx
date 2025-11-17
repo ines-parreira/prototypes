@@ -7,10 +7,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { UserSetting, UserSettingType } from 'config/types/user'
+import type { UserSetting } from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'

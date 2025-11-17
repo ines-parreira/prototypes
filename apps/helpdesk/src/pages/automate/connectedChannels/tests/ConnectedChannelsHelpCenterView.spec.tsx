@@ -15,15 +15,14 @@ import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtu
 import { useUpdateHelpCenter } from 'models/helpCenter/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceHelpCenterChannels, {
-    SelfServiceHelpCenterChannel,
-} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import type { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

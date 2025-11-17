@@ -4,7 +4,7 @@ import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import MessageSourceFields from '../MessageSourceFields'

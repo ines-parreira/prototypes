@@ -1,9 +1,9 @@
-import { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useTicketCountPerProductWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
-import { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useTicketsPerProductTrend = (
     statsFilters: StatsFilters,

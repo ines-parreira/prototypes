@@ -1,4 +1,4 @@
-import { KeyboardEvent } from 'react'
+import type { KeyboardEvent } from 'react'
 
 import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'

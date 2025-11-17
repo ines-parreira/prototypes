@@ -1,13 +1,13 @@
-import { MetricValueFormat } from '@repo/reporting'
+import type { MetricValueFormat } from '@repo/reporting'
 
-import { Metric } from 'domains/reporting/hooks/metrics'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { Metric } from 'domains/reporting/hooks/metrics'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceEventsByAgentMember } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -21,7 +21,7 @@ import {
     VoiceAgentsMetric,
     VoiceAgentsTableColumn,
 } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export type MetricQueryPerAgentQuery = (
     statsFilters: StatsFilters,

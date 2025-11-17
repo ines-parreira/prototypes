@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import _isEqual from 'lodash/isEqual'
 import { Form } from 'reactstrap'
@@ -7,11 +8,11 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { VOICEMAIL_DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
-import {
-    isPhoneIntegration,
+import type {
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
 } from 'models/integration/types'
+import { isPhoneIntegration } from 'models/integration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { updatePhoneVoicemailConfiguration } from 'pages/integrations/integration/components/phone/actions'

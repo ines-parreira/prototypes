@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import {
     Dropdown,
     DropdownItem,
@@ -10,12 +11,12 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import { Team } from 'models/team/types'
+import type { Team } from 'models/team/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { getHumanAgents } from 'state/agents/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from './AddMember.less'
 

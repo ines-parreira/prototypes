@@ -1,8 +1,9 @@
-import React, { Component, ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import createToolbarPlugin from '../../draftjs/plugins/toolbar/index'
-import { ActionName } from '../../draftjs/plugins/toolbar/types'
-import { Plugin } from '../../draftjs/plugins/types'
+import type { ActionName } from '../../draftjs/plugins/toolbar/types'
+import type { Plugin } from '../../draftjs/plugins/types'
 
 export type RequiredProps = {
     displayedActions?: ActionName[]

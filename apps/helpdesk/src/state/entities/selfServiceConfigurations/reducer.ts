@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { SelfServiceConfiguration } from '../../../models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from '../../../models/selfServiceConfiguration/types'
 import {
     selfServiceConfigurationFetched,
     selfServiceConfigurationsFetched,
     selfServiceConfigurationUpdated,
 } from './actions'
-import { SelfServiceConfigurationsState } from './types'
+import type { SelfServiceConfigurationsState } from './types'
 
 export const initialState: SelfServiceConfigurationsState = {}
 

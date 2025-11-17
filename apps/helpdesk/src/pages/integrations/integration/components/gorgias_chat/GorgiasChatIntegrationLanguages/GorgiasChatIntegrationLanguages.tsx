@@ -1,12 +1,11 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Language } from 'constants/languages'
+import type { Language } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
-import DropdownButtonWithSearch, {
-    Option as DropdownOption,
-} from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
+import type { Option as DropdownOption } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
+import DropdownButtonWithSearch from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { notUndefined } from 'utils/types'
 

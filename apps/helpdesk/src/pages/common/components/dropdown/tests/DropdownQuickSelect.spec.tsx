@@ -1,4 +1,5 @@
-import React, { ComponentProps, ContextType } from 'react'
+import type { ComponentProps, ContextType } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 

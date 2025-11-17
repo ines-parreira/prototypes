@@ -1,17 +1,17 @@
 import client from 'models/api/resources'
-import {
+import type {
     BillingState,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
     Plan,
     SubscriptionCycle,
 } from 'models/billing/types'
-import {
+import type {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
 } from 'state/billing/types'
 
-import { ApiListResponseCursorPagination } from '../api/types'
+import type { ApiListResponseCursorPagination } from '../api/types'
 
 export const fetchSubscription = async () => {
     const res = await client.get<SubscriptionCycle>('/api/billing/subscription')

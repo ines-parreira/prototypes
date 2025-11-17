@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListStoreMappings } from 'models/storeMapping/queries'
-import { StoreMapping } from 'models/storeMapping/types'
+import type { StoreMapping } from 'models/storeMapping/types'
 import { isGenericEmailIntegration } from 'pages/integrations/integration/components/email/helpers'
 import * as integrationsSelectors from 'state/integrations/selectors'
 

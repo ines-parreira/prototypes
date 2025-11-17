@@ -9,7 +9,7 @@ import {
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketDimension,
     TicketMeasure,
@@ -31,7 +31,7 @@ import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')

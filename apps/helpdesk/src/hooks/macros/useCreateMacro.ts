@@ -1,16 +1,19 @@
-import { UseMutationOptions, useQueryClient } from '@tanstack/react-query'
+import type { UseMutationOptions } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     CreateMacroBody,
     HttpError,
     HttpResponse,
     Macro,
+} from '@gorgias/helpdesk-queries'
+import {
     queryKeys,
     useCreateMacro as useCreateMacroPrimitive,
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'

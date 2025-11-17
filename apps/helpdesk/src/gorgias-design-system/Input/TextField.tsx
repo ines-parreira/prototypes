@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import styled from '@emotion/styled'
 

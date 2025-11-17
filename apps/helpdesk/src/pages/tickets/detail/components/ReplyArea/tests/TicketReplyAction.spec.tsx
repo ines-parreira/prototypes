@@ -1,15 +1,12 @@
-import {
-    QueryClientProvider,
-    QueryKey,
-    UseQueryResult,
-} from '@tanstack/react-query'
+import type { QueryKey, UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { createEvent, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { CustomField } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
 
 import { FORM_CONTENT_TYPE } from 'config'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'

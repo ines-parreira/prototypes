@@ -1,5 +1,5 @@
+import type { KeyboardEvent } from 'react'
 import {
-    KeyboardEvent,
     useCallback,
     useEffect,
     useLayoutEffect,
@@ -15,10 +15,11 @@ import {
     useSelectedIndex,
 } from '@repo/hooks'
 import { history } from '@repo/routing'
-import axios, { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
+import axios from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,15 +31,17 @@ import useSearchRankScenario, {
 } from 'hooks/useSearchRankScenario'
 import { ProductType } from 'models/billing/types'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
-import {
-    CUSTOMER_SEARCH_ORDERING,
-    isCustomer,
-    isTicket,
+import type {
     PickedCustomer,
     PickedCustomerWithHighlights,
     PickedTicket,
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,
+} from 'models/search/types'
+import {
+    CUSTOMER_SEARCH_ORDERING,
+    isCustomer,
+    isTicket,
     SearchEngine,
 } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'

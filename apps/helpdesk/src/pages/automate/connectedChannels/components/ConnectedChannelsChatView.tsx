@@ -13,10 +13,9 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChannels, {
-    SelfServiceChannel,
-} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'

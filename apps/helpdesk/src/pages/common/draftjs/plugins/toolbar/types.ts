@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 
 export enum ActionName {
     Translate = 'TRANSLATE',

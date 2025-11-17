@@ -3,10 +3,12 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import _sortBy from 'lodash/sortBy'
 
-import {
+import type {
     AnalyticsCustomReport,
     CreateAnalyticsCustomReportBody,
     HttpResponse,
+} from '@gorgias/helpdesk-queries'
+import {
     queryKeys,
     useCreateAnalyticsCustomReport,
     useDeleteAnalyticsCustomReport,
@@ -18,7 +20,7 @@ import {
     LIMIT_REACHED_MESSAGE,
     MAX_DASHBOARDS_ALLOWED,
 } from 'domains/reporting/pages/dashboards/constants'
-import {
+import type {
     DashboardInput,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'

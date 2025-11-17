@@ -6,8 +6,8 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
-import { Order } from 'constants/integrations/types/shopify'
-import { Customer } from 'models/customer/types'
+import type { Order } from 'constants/integrations/types/shopify'
+import type { Customer } from 'models/customer/types'
 import {
     Category,
     IntegrationType,

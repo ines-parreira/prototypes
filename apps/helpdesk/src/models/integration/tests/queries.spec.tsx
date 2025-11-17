@@ -21,7 +21,7 @@ import {
 } from 'models/integration/queries'
 import { fetchIntegrationProducts } from 'models/integration/resources'
 import { fetchShopifyCollections } from 'models/integration/resources/shopify'
-import { ShopifyCollectionResponse } from 'models/integration/types'
+import type { ShopifyCollectionResponse } from 'models/integration/types'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

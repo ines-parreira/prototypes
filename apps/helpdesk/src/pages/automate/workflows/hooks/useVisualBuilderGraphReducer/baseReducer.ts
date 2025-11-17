@@ -1,18 +1,18 @@
 import { produce } from 'immer'
 import _merge from 'lodash/merge'
 
-import { App } from 'pages/automate/actionsPlatform/types'
+import type { App } from 'pages/automate/actionsPlatform/types'
 import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     MessageContent,
     WorkflowConfiguration,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import { getWorkflowVariableListForNode } from '../../models/variables.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelSubscriptionNodeType,
     ChannelTriggerNodeType,

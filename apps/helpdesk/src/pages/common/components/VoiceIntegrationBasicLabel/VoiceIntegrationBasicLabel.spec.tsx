@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import VoiceIntegrationBasicLabel from './VoiceIntegrationBasicLabel'
 

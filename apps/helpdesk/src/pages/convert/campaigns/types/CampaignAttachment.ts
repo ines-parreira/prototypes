@@ -1,6 +1,6 @@
 import { AttachmentEnum } from 'common/types'
-import { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 /*
  * Campaign-prefixed interfaces and types are used in the context of communication

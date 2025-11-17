@@ -1,14 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { TicketChannel, TicketVia } from 'business/types/ticket'
-import {
-    InfluencedOrderData,
-    useFetchInfluencedOrders,
-} from 'hooks/aiAgent/useFetchInfluencedOrders'
+import type { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
+import { useFetchInfluencedOrders } from 'hooks/aiAgent/useFetchInfluencedOrders'
 import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
-import { ShopifyIntegration } from 'models/integration/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { useInsertShoppingAssistantEventElements } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 
 jest.mock('hooks/aiAgent/useGetTicketContext')

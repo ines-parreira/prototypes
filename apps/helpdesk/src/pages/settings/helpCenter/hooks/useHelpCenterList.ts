@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenter } from 'models/helpCenter/types'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 import {
     getHelpCenterFAQList,
     helpCentersFetched,

@@ -1,17 +1,16 @@
-import React, { Dispatch, useEffect } from 'react'
+import type { Dispatch } from 'react'
+import React, { useEffect } from 'react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundItemsPayload,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from '../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
+import { BigCommerceRefundActionType } from '../types'
 import OrderTable from './order-table/OrderTable'
 
 import cssRefundOrderModal from '../RefundOrderModal.less'

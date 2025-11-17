@@ -1,11 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import { Drawer } from 'pages/common/components/Drawer'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 import DrawerContent from './DrawerContent'
 
 import css from './ChannelsDrawer.less'

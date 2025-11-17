@@ -1,19 +1,13 @@
-import {
-    createContext,
-    Dispatch,
-    ReactNode,
-    SetStateAction,
-    useMemo,
-    useState,
-} from 'react'
+import type { Dispatch, ReactNode, SetStateAction } from 'react'
+import { createContext, useMemo, useState } from 'react'
 
 import { useSafeContext } from '@repo/hooks'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import useStoresWithMaps from './hooks/useStoresWithMaps'
 import { sortStoresByName } from './StoreManagementProvider.helpers'
-import { StoreWithAssignedChannels } from './types'
+import type { StoreWithAssignedChannels } from './types'
 
 type StoreManagementContextType = {
     stores: StoreWithAssignedChannels[]

@@ -9,14 +9,13 @@ import { useFlag } from 'core/flags'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { PageEmbedmentFixture } from 'pages/settings/contactForm/fixtures/pageEmbedment'
 import { useGetShopifyPages } from 'pages/settings/contactForm/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../ContactFormAutoEmbedCard'
-import ContactFormAutoEmbedPublishSection, {
-    ContactFormAutoEmbedPublishSectionProps,
-} from '../ContactFormAutoEmbedPublishSection'
+import type { ContactFormAutoEmbedPublishSectionProps } from '../ContactFormAutoEmbedPublishSection'
+import ContactFormAutoEmbedPublishSection from '../ContactFormAutoEmbedPublishSection'
 
 jest.mock('core/flags')
 

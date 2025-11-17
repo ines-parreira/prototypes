@@ -1,10 +1,12 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -16,12 +18,12 @@ import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const trackRect = {

@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import moment from 'moment'
 
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchDiscountCodesAppliedTrend,
     useDiscountCodesAppliedTrend,

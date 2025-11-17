@@ -48,11 +48,11 @@ import {
     useTicketsRepliedTimeSeries,
     useZeroTouchTicketsTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
+import type {
     MetricTrendFetch,
     MetricTrendHook,
 } from 'domains/reporting/hooks/useMetricTrend'
-import {
+import type {
     TimeSeriesFetch,
     TimeSeriesHook,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -72,13 +72,11 @@ import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'domains/reporting/
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import {
     AVERAGE_RESPONSE_TIME_LABEL,
     CREATED_VS_CLOSED_TICKETS_LABEL,

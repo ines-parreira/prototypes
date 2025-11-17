@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 
-import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 

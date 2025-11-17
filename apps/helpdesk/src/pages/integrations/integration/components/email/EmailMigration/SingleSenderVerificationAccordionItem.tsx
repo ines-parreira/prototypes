@@ -3,11 +3,11 @@ import classNames from 'classnames'
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     EmailMigrationOutboundVerification,
-    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
+import { EmailMigrationOutboundVerificationStatus } from 'models/integration/types'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'

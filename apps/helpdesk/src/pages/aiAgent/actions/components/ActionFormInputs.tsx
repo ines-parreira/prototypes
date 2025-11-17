@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { Input } from '../types'
+import type { Input } from '../types'
 import ActionFormInput from './ActionFormInput'
 
 import css from './ActionFormInputs.less'

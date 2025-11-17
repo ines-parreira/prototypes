@@ -1,12 +1,13 @@
-import React, { ReactNode, useCallback } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback } from 'react'
 
 import _noop from 'lodash/noop'
+import type { ModalProps } from 'reactstrap'
 import {
     Modal as BootstrapModal,
     ModalBody,
     ModalFooter,
     ModalHeader,
-    ModalProps,
 } from 'reactstrap'
 
 import { useAppNode } from 'appNode'

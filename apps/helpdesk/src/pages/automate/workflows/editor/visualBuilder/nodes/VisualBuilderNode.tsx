@@ -1,4 +1,5 @@
-import React, { MouseEvent, ReactNode, useCallback } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
+import React, { useCallback } from 'react'
 
 import { Handle, Position } from '@xyflow/react'
 import classnames from 'classnames'

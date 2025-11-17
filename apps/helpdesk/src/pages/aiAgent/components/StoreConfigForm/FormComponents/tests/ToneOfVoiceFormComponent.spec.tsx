@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 import { ToneOfVoiceFormComponent } from '../ToneOfVoiceFormComponent'

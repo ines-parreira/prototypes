@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
-import { Store } from 'redux'
+import type { Store } from 'redux'
 
 import {
     mockGetCurrentUserHandler,
@@ -20,7 +20,7 @@ import { ThemeProvider } from 'core/theme'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { CurrentUser } from '../types'
+import type { CurrentUser } from '../types'
 import YourProfileContainer from '../YourProfileContainer'
 
 const server = setupServer()

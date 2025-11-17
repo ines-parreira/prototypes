@@ -3,7 +3,7 @@ import { BillingInformationFields } from 'pages/settings/new_billing/components/
 import { BillingInformationSetupForm } from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import { PartnerFields } from 'pages/settings/new_billing/views/PaymentInformationView/components/PartnerFields'
-import { BillingContactDetailResponse } from 'state/billing/types'
+import type { BillingContactDetailResponse } from 'state/billing/types'
 
 import css from './FormContainer.less'
 

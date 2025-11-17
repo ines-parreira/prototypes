@@ -1,10 +1,5 @@
-import React, {
-    MutableRefObject,
-    ReactElement,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { MutableRefObject, ReactElement } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'

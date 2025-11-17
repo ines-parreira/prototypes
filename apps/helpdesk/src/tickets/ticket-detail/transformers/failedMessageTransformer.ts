@@ -1,7 +1,7 @@
 import { isFailed } from 'models/ticket/predicates'
-import { Action } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
 
-import { FailedFlag, TicketElement } from '../types'
+import type { FailedFlag, TicketElement } from '../types'
 import { integrationErrorTransformer } from './integrationErrorTransformer'
 
 export function failedMessageTransformer(

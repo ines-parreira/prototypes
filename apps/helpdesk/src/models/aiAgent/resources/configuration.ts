@@ -1,11 +1,12 @@
 import { isProduction, isStaging } from '@repo/utils'
-import axios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { AiAgentChannel } from 'pages/aiAgent/constants'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { AiAgentChannel } from 'pages/aiAgent/constants'
 
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
-import {
+import type {
     AccountConfiguration,
     AccountConfigurationResponse,
     CreateOnboardingNotificationStatePayload,

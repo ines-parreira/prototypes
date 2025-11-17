@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { teams } from 'fixtures/teams'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import {
     deleteTeamSuccess,

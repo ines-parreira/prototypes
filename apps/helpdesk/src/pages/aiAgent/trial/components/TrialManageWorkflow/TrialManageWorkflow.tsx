@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useFlag } from 'core/flags'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'

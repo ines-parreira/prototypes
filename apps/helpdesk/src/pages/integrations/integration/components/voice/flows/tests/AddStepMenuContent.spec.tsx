@@ -12,7 +12,7 @@ import { FlowProvider } from 'core/ui/flows'
 
 import AddStepMenuContent from '../AddStepMenuContent'
 import { VoiceFlowNodeType } from '../constants'
-import { VoiceFlowNode } from '../types'
+import type { VoiceFlowNode } from '../types'
 
 jest.mock('uuid', () => ({
     v4: jest.fn(() => 'new-node-id'),

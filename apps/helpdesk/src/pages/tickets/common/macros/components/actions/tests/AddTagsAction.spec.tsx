@@ -5,10 +5,10 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Tag, TicketTag } from '@gorgias/helpdesk-types'
+import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AddTagsAction from '../AddTagsAction'
 

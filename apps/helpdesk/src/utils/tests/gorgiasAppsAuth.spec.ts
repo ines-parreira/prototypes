@@ -1,4 +1,5 @@
-import axios, { AxiosInstance } from 'axios'
+import type { AxiosInstance } from 'axios'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
 

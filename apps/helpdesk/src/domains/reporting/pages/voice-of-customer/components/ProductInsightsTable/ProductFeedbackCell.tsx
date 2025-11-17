@@ -3,7 +3,7 @@ import { useTopIntentPerProduct } from 'domains/reporting/hooks/voice-of-custome
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import { CellWrapper } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/CellWrapper'
 import css from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent.less'
-import { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
+import type { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 
 const getFeedback = (intent: string) => {

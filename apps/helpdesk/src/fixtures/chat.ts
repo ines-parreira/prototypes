@@ -1,6 +1,6 @@
+import type { GorgiasChatIntegration } from '../models/integration/types'
 import {
     GorgiasChatEmailCaptureType,
-    GorgiasChatIntegration,
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
 } from '../models/integration/types'

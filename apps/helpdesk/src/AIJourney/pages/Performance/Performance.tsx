@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import {
     AnalyticsCard,

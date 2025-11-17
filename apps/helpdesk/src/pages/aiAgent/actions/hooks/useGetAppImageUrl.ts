@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
-import { ActionAppConfiguration } from '../types'
+import type { ActionAppConfiguration } from '../types'
 
 export default function useGetAppImageUrl(
     actionAppConfiguration?: ActionAppConfiguration,

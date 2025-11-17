@@ -1,5 +1,5 @@
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 
 export enum AIJourneyMetric {
     TotalOrders = 'aiJourneyTotalOrders',

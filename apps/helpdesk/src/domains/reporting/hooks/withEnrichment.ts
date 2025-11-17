@@ -1,4 +1,4 @@
-import { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
+import type { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
 
 export type IDRecord<IDKey extends string> = { [K in IDKey]: any }
 

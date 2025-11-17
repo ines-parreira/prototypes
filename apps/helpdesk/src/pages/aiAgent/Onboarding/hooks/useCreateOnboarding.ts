@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { createOnboardingData } from 'models/aiAgent/resources/configuration'
-import { OnboardingData } from 'models/aiAgent/types'
+import type { OnboardingData } from 'models/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

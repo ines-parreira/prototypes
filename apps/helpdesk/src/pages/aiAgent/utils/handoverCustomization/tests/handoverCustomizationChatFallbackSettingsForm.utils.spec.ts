@@ -1,9 +1,9 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { Language, LanguageChat } from 'constants/languages'
-import { GorgiasChatIntegration } from 'models/integration/types'
-import { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from 'pages/aiAgent/types'
-import { TextsMultiLanguage } from 'rest_api/gorgias_chat_protected_api/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import type { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from 'pages/aiAgent/types'
+import type { TextsMultiLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 import {
     getInitialFormValues,

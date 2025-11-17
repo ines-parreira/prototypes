@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
@@ -12,10 +12,8 @@ import {
 } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import { useVoiceCallList } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
-import {
-    VoiceCallFilterDirection,
-    VoiceCallFilterOptions,
-} from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallFilterOptions } from 'domains/reporting/pages/voice/models/types'
+import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import Pagination from 'pages/common/components/Pagination'
 
 type VoiceCallTableProps = {

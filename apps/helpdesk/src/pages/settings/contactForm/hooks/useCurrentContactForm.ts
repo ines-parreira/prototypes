@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 
 import { CurrentContactFormContext } from '../contexts/currentContactForm.context'
 

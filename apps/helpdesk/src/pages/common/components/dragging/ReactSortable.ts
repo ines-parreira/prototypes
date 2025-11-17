@@ -1,6 +1,8 @@
-import React, { Component, createRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component, createRef } from 'react'
 
-import Sortable, { MoveEvent, SortableEvent, SortableOptions } from 'sortablejs'
+import type { MoveEvent, SortableEvent, SortableOptions } from 'sortablejs'
+import Sortable from 'sortablejs'
 
 type Props = {
     children: ReactNode

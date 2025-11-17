@@ -5,7 +5,7 @@ import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { getRecommendedTriggerForScenario } from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
 import { assetsUrl } from 'utils'
 

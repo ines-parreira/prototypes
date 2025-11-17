@@ -9,7 +9,7 @@ import { convertStatusNotInstalled, convertStatusOk } from 'fixtures/convert'
 import { user } from 'fixtures/users'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { ConvertSetupBanner } from '../ConvertSetupBanner'

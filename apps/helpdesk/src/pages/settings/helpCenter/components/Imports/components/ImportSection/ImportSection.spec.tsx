@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -17,7 +18,7 @@ import { getAccessToken } from 'rest_api/auth'
 import { getMigrationClient } from 'rest_api/migration_api'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {

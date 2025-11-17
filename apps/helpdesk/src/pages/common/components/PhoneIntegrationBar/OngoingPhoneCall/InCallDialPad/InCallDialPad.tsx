@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import DialPad from 'pages/integrations/integration/components/phone/DialPad'

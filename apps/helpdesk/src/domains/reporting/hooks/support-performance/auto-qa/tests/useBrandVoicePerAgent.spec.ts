@@ -10,7 +10,7 @@ import {
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { brandVoicePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/brandVoiceQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

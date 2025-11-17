@@ -1,8 +1,5 @@
-import {
-    BusinessHoursDetails,
-    queryKeys,
-    useDeleteBusinessHours,
-} from '@gorgias/helpdesk-queries'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
+import { queryKeys, useDeleteBusinessHours } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'

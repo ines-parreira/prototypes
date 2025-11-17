@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
 import { getImageSrc } from 'utils/shopify'
 

@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
+import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
+import type { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
 
 type Props = {
     variantName: string

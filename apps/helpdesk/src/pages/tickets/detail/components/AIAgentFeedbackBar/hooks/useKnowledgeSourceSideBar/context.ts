@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import {
+import type {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResourcePreview,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

@@ -1,4 +1,5 @@
-import React, { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import classNames from 'classnames'
 import _compact from 'lodash/compact'
@@ -11,7 +12,7 @@ import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
 import { FormGroup } from 'reactstrap'
 
-import {
+import type {
     CustomerChannel,
     MultiSelectBinaryChoiceFieldOption,
 } from '../../../models/customerChannel/types'

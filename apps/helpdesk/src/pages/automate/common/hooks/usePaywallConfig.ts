@@ -1,5 +1,5 @@
 import { useTheme } from 'core/theme'
-import { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import type { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import { assetsUrl } from 'utils'
 
 import { AutomateFeatures } from '../types'

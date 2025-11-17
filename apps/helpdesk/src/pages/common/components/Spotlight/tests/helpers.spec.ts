@@ -2,8 +2,8 @@ import _pick from 'lodash/pick'
 
 import { TicketChannel } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
-import { Customer } from 'models/customer/types'
-import {
+import type { Customer } from 'models/customer/types'
+import type {
     CustomerHighlights,
     PickedTicket,
     TicketHighlights,

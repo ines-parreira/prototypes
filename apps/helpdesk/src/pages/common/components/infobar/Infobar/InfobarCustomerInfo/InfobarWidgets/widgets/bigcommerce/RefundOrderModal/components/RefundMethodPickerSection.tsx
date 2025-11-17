@@ -1,20 +1,19 @@
-import React, { Dispatch } from 'react'
+import type { Dispatch } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundMethod,
-    BigCommerceRefundType,
 } from 'models/integration/types'
+import { BigCommerceRefundType } from 'models/integration/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from '../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
+import { BigCommerceRefundActionType } from '../types'
 import { buildPaymentOptionLabel } from '../utils'
 
 import css from '../RefundOrderModal.less'

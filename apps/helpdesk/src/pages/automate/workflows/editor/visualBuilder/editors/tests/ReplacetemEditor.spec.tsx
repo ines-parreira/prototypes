@@ -8,7 +8,7 @@ import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { ReplaceItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ReplaceItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import ReplaceItemEditor from '../ReplaceItemEditor'
 

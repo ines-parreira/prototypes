@@ -14,7 +14,7 @@ import {
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { TasksCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { mockStore } from 'utils/testing'
 

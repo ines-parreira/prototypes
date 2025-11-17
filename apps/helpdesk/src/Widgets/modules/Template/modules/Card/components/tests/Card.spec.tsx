@@ -1,20 +1,21 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Action } from 'redux'
+import type { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 
 import { cardTemplate, listTemplate, shopifyWidget } from 'fixtures/widgets'
-import { CardTemplate, ListTemplate } from 'models/widget/types'
+import type { CardTemplate, ListTemplate } from 'models/widget/types'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
-import { Button as ButtonType } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import type { Button as ButtonType } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { renderInfobarTemplate } from 'pages/common/utils/infobar'
 import { renderTemplate } from 'pages/common/utils/template'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -28,7 +29,7 @@ import Card, { listMetaFields, NO_DATA_TEXT } from '../../components/Card'
 import UICard from '../../components/views'
 import { canDrop } from '../../helpers/canDrop'
 import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
-import { CardEditFormState } from '../../types'
+import type { CardEditFormState } from '../../types'
 
 const CHILDREN_TEST_ID = 'childrennnn'
 

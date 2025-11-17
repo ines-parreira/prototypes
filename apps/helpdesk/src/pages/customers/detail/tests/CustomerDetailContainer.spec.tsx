@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { createBrowserHistory } from 'history'
@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import Timeline from 'timeline/Timeline'
 import { renderWithRouter } from 'utils/testing'
 

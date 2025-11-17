@@ -14,7 +14,7 @@ import {
     searchResultRangeQueryFactory,
     searchResultTermsQueryFactory,
 } from 'domains/reporting/models/queryFactories/help-center/searchResult'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'

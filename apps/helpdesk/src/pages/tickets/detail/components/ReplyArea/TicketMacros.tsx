@@ -1,10 +1,5 @@
-import React, {
-    MouseEvent,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -18,21 +13,21 @@ import {
 } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
-import { TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessageSourceType } from 'business/types/ticket'
 import { UserRole } from 'config/types/user'
 import { useDeleteMacro } from 'hooks/macros'
 import useAppSelector from 'hooks/useAppSelector'
-import { Filters } from 'models/macro/types'
+import type { Filters } from 'models/macro/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import MacroList from 'pages/tickets/common/macros/components/MacroList'
 import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import { Preview } from 'pages/tickets/common/macros/Preview/Preview'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { CurrentUserState } from 'state/currentUser/types'
+import type { CurrentUserState } from 'state/currentUser/types'
 import { getNewMessageType } from 'state/newMessage/selectors'
 import { hasRole } from 'utils'
 

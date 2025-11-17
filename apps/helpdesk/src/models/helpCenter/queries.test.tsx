@@ -1,17 +1,17 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import { useGetKnowledgeHubArticles } from './queries'
 import * as resources from './resources'
-import {
-    KnowledgeHubArticleSourceType,
+import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
 } from './types'
+import { KnowledgeHubArticleSourceType } from './types'
 
 const mockClient = {} as HelpCenterClient
 

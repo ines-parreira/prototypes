@@ -1,9 +1,7 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import BaseDraggable, {
-    DraggableEventHandler,
-    DraggableProps,
-} from 'react-draggable'
+import type { DraggableEventHandler, DraggableProps } from 'react-draggable'
+import BaseDraggable from 'react-draggable'
 
 type Props = Partial<DraggableProps> & {
     children: ReactNode

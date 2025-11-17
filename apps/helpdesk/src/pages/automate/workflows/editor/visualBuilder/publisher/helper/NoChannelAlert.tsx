@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { ChannelConfig } from './utils'

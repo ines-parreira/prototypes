@@ -1,8 +1,8 @@
+import type { TestSessionLog } from 'models/aiAgentPlayground/types'
 import {
     AgentSkill,
     AiAgentMessageType,
     MessageType,
-    TestSessionLog,
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'

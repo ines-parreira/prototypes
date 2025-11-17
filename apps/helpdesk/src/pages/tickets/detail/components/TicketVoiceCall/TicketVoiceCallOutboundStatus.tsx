@@ -1,6 +1,6 @@
+import type { VoiceCall } from 'models/voiceCall/types'
 import {
     getOutboundDisplayStatus,
-    VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'

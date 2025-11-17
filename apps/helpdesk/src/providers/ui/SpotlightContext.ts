@@ -1,4 +1,5 @@
-import { createContext, Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { createContext } from 'react'
 
 import _noop from 'lodash/noop'
 

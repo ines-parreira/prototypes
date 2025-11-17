@@ -1,5 +1,5 @@
+import type { MouseEvent } from 'react'
 import {
-    MouseEvent,
     useCallback,
     useContext,
     useEffect,
@@ -19,7 +19,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import pluralize from 'pluralize'
 import {
@@ -45,9 +45,9 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { JobType } from 'models/job/types'
+import type { View } from 'models/view/types'
 import {
     EntityType,
-    View,
     ViewCategory,
     ViewField,
     ViewType,
@@ -59,9 +59,8 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from 'pages/common/utils/withCancellableRequest'
+import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
+import withCancellableRequest from 'pages/common/utils/withCancellableRequest'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -72,7 +71,7 @@ import {
 } from 'state/entities/views/actions'
 import { getSchemas } from 'state/schemas/selectors'
 import { getTickets } from 'state/tickets/selectors'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import {
     addFieldFilter,
@@ -94,7 +93,7 @@ import {
     getPristineActiveView,
     getViewIdToDisplay,
 } from 'state/views/selectors'
-import { FetchViewItemsOptions } from 'state/views/types'
+import type { FetchViewItemsOptions } from 'state/views/types'
 import { fieldPath, getDefaultOperator, slugify } from 'utils'
 import { reportError } from 'utils/errors'
 

@@ -1,4 +1,4 @@
-import { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
+import type { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 import isEqualTextsPerLanguage from '../CompareTextsPerLanguage'
 

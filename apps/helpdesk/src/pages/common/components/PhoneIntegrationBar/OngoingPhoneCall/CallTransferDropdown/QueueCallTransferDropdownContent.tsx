@@ -1,11 +1,8 @@
 import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
-import {
-    useListVoiceQueues,
-    VoiceQueue,
-    VoiceQueueStatus,
-} from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useListVoiceQueues, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

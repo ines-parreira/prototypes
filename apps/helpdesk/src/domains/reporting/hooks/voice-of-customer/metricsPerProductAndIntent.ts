@@ -1,20 +1,20 @@
+import type { MetricWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
-    MetricWithEnrichment,
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
+import type {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
+import type { TicketsPerIntentOrderField } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
 import {
     ticketCountForIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
-    TicketsPerIntentOrderField,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useTicketCountPerIntentForProduct = (
     statsFilters: StatsFilters,

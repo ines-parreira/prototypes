@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 export function handleError(
     error: unknown,

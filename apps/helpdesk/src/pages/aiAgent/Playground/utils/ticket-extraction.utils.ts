@@ -1,6 +1,6 @@
-import { Ticket, TicketMessage } from '@gorgias/helpdesk-client'
+import type { Ticket, TicketMessage } from '@gorgias/helpdesk-client'
 
-import { PlaygroundCustomer } from '../types'
+import type { PlaygroundCustomer } from '../types'
 
 export type TicketExtractionResult = {
     customer: PlaygroundCustomer

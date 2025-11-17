@@ -1,7 +1,9 @@
 import { useCallback, useContext } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, List, Map } from 'immutable'
+import type { SegmentEvent } from '@repo/logging'
+import { logEvent } from '@repo/logging'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'

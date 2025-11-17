@@ -1,6 +1,7 @@
-import React, { KeyboardEventHandler, RefObject } from 'react'
+import type { KeyboardEventHandler, RefObject } from 'react'
+import type React from 'react'
 
-import { Placement } from '@floating-ui/react'
+import type { Placement } from '@floating-ui/react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

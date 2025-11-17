@@ -1,24 +1,16 @@
-import { ChannelsReportData } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
+import type { ChannelsReportData } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { nonEmptyChannels } from 'domains/reporting/hooks/support-performance/nonEmptyChannel'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HandleTimeCube,
-    HandleTimeMeasure,
-} from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
-import {
-    HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
-    HelpdeskCustomerMessagesReceivedEnrichedMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
+import type { HandleTimeCube } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
+import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
+import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
-import {
-    TicketFirstHumanAgentResponseTimeCube,
-    TicketFirstHumanAgentResponseTimeMeasure,
-} from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import type { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import { TicketFirstHumanAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMeasure } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -34,7 +26,7 @@ import {
     LeadColumn,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 import { createCsv } from 'utils/file'
 
 export type ChannelsReportMetrics =

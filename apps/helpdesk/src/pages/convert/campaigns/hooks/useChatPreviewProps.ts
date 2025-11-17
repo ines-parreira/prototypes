@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,

@@ -1,12 +1,12 @@
 import { produce } from 'immer'
 
-import {
+import type {
     ConditionSchema,
     DoesNotExistSchema,
     ExistsSchema,
     NumberSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariableFormat } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableFormat } from 'pages/automate/workflows/models/variables.types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 
 import css from '../ConditionsNodeEditor.less'

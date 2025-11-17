@@ -3,7 +3,7 @@ import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
-import { BranchOptions } from '@gorgias/helpdesk-types'
+import type { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { FormField, useWatch } from 'core/forms'
 

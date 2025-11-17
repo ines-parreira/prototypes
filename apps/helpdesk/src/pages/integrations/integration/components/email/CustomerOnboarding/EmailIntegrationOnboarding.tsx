@@ -5,7 +5,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

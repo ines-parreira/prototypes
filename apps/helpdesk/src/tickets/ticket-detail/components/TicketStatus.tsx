@@ -1,8 +1,5 @@
-import {
-    Ticket,
-    TicketCompact,
-    TicketStatus as TicketStatusType,
-} from '@gorgias/helpdesk-types'
+import type { Ticket, TicketCompact } from '@gorgias/helpdesk-types'
+import { TicketStatus as TicketStatusType } from '@gorgias/helpdesk-types'
 
 import { StatusLabel } from 'pages/common/utils/labels'
 

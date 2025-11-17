@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { EcommerceStore } from 'models/customerEcommerceData/types'
+import type { EcommerceStore } from 'models/customerEcommerceData/types'
 
 import { shopperCustomization } from '../Shopper'
 

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 
 import TextInputWithVariables from '../components/variables/TextInputWithVariables'

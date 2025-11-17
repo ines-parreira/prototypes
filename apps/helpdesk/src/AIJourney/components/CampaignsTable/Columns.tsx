@@ -1,14 +1,15 @@
-import { Box, ColumnDef, createSortableColumn } from '@gorgias/axiom'
-import {
+import type { ColumnDef } from '@gorgias/axiom'
+import { Box, createSortableColumn } from '@gorgias/axiom'
+import type {
     JourneyApiDTO,
     JourneyCampaignStateEnum,
 } from '@gorgias/convert-client'
 
-import { UpdatableJourneyCampaignState } from '../../constants'
+import type { UpdatableJourneyCampaignState } from '../../constants'
 import CampaignName from './CampaignName/CampaignName'
 import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'
-import { CampaignsTableMeta } from './types'
+import type { CampaignsTableMeta } from './types'
 
 export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
     createSortableColumn<JourneyApiDTO>('campaign.title', 'Title', (info) => {

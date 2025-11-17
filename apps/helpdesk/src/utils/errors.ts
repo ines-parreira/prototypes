@@ -1,15 +1,11 @@
-import {
-    GorgiasUIEnv,
-    isDevelopment,
-    isProduction,
-    isStaging,
-} from '@repo/utils'
+import type { GorgiasUIEnv } from '@repo/utils'
+import { isDevelopment, isProduction, isStaging } from '@repo/utils'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
-import { ScopeContext } from '@sentry/types'
+import type { ScopeContext } from '@sentry/types'
 
-import { User } from 'config/types/user'
-import { Account } from 'state/currentAccount/types'
+import type { User } from 'config/types/user'
+import type { Account } from 'state/currentAccount/types'
 
 export const TRACE_SAMPLE_RATE = 0
 export const IGNORED_ERRORS = [

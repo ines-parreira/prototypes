@@ -15,7 +15,7 @@ import {
 } from 'fixtures/productPrices'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import useStoreIntegrations from '../useStoreIntegrations'

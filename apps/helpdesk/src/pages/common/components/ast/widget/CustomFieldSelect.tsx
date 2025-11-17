@@ -1,6 +1,7 @@
-import { ComponentProps, useEffect, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { ObjectType } from '@gorgias/helpdesk-types'
+import type { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'

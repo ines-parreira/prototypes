@@ -1,11 +1,11 @@
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
 } from 'models/integration/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
-import {
+import type {
     HandoverCustomizationChatOfflineSettingsFormValues,
     HandoverCustomizationChatOnlineSettingsFormValues,
 } from 'pages/aiAgent/types'

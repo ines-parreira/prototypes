@@ -1,10 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, render } from '@testing-library/react'
 
-import { RealtimeProvider } from '@gorgias/realtime'
+import type { RealtimeProvider } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { useFlag } from 'core/flags'

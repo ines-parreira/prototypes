@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
@@ -13,17 +13,17 @@ import {
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
-import { MetricFetch } from 'domains/reporting/hooks/useMetric'
-import { MetricWithDecileFetch } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricFetch } from 'domains/reporting/hooks/useMetric'
+import type { MetricWithDecileFetch } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
+import type { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import { ReportFetch } from 'domains/reporting/pages/dashboards/types'
+import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import { getSelectedMetric } from 'domains/reporting/state/ui/stats/busiestTimesSlice'

@@ -1,4 +1,4 @@
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 export const tags = [
     {

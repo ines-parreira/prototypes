@@ -1,26 +1,21 @@
-import React, {
-    createContext,
-    Dispatch,
-    SetStateAction,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     Article,
     CreateArticleDto,
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import { HelpCenterArticleModalState } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
+import type { HelpCenterArticleModalState } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import { changeViewLanguage } from 'state/ui/helpCenter'
 import { getViewLanguage } from 'state/ui/helpCenter/selectors'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import { ArticleTemplateKey } from '../../types/articleTemplates'
+import type { ArticleTemplateKey } from '../../types/articleTemplates'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {

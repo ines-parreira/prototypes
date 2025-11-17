@@ -1,7 +1,7 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import { CharacterMetadata, ContentBlock, ContentState } from 'draft-js'
+import type { CharacterMetadata, ContentBlock, ContentState } from 'draft-js'
 
 import { getTypeByTrigger } from './utils'
 

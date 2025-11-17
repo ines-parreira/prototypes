@@ -4,14 +4,14 @@ import {
     fetchPostReporting,
     usePostReporting,
 } from 'domains/reporting/models/queries'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
     getCampaignOrderPerformanceData,
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import {
+import type {
     CampaignCubeFilterParams,
     CubeData,
     CubeMetric,
@@ -22,7 +22,7 @@ import {
     getMetricFromCubeData,
     transformToCampaignsPerformanceTable,
 } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
-import { CampaignsPerformanceDataset } from 'domains/reporting/pages/convert/services/types'
+import type { CampaignsPerformanceDataset } from 'domains/reporting/pages/convert/services/types'
 
 const OVERRIDES = {
     select: getDataFromResult,

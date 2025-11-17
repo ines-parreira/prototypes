@@ -9,7 +9,7 @@ import {
     setSubjectAction,
     snoozeTicketAction,
 } from 'fixtures/macro'
-import { MacroAction } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
 
 import { SimpleActionPreview } from '../SimpleActionPreview'
 

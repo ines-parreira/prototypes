@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

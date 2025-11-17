@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import css from 'domains/reporting/pages/common/AgentAvatar.less'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 

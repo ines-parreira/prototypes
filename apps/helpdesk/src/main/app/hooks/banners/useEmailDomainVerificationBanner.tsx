@@ -1,15 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import {
-    AlertBannerTypes,
-    BannerCategories,
-    ContextBanner,
-    useBanners,
-} from 'AlertBanners'
+import type { ContextBanner } from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {

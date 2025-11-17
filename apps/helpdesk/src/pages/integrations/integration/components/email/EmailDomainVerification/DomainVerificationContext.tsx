@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { EmailDomain, HttpError } from '@gorgias/helpdesk-queries'
+import type { EmailDomain, HttpError } from '@gorgias/helpdesk-queries'
 
 type DomainVerificationErrors = {
     createDomain: HttpError | null

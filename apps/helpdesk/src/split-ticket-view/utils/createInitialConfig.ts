@@ -1,4 +1,4 @@
-import { Config } from 'panels/types'
+import type { Config } from 'panels/types'
 import { createConfig } from 'panels/utils'
 
 import { LayoutKeys } from '../constants'

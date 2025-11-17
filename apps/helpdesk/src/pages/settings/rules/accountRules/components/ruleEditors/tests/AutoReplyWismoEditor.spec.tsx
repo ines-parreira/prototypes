@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { IntegrationType } from 'models/integration/constants'
 import { ManagedRulesSlugs } from 'state/rules/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

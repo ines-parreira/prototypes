@@ -2,7 +2,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'

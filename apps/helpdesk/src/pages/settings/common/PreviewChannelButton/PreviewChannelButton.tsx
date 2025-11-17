@@ -8,7 +8,7 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import styles from './PreviewChannelButton.less'
 

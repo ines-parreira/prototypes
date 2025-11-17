@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { getLDClient } from 'utils/launchDarkly'
 
-import { CampaignProduct } from '../../types/CampaignProduct'
+import type { CampaignProduct } from '../../types/CampaignProduct'
 import {
     attachUtmToCampaignProduct,
     attachUtmToUrl,

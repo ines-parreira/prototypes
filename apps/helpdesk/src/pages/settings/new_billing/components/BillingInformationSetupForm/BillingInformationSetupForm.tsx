@@ -1,15 +1,17 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
-import { SubmitHandler } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-import { Form, FormProps } from 'core/forms'
+import type { FormProps } from 'core/forms'
+import { Form } from 'core/forms'
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { useSubmitBillingAddress } from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
-import {
+import type {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
 } from 'state/billing/types'

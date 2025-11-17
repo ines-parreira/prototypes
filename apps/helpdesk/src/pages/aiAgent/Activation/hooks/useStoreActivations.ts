@@ -9,13 +9,16 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import useAppSelector from 'hooks/useAppSelector'
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import {
+import type {
     ACTION_TYPE,
     State,
-    stateToUpdatedStoreConfiguration,
     StoreActivation,
+} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import {
+    stateToUpdatedStoreConfiguration,
     updatePricing,
     useStoreActivationReducer,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'

@@ -3,11 +3,11 @@ import { capitalize } from 'lodash'
 
 import { integrationBase } from 'fixtures/integrations'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
-import {
+import type {
     GmailIntegration,
-    OutboundVerificationStatusValue,
     OutlookIntegration,
 } from 'models/integration/types'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getOutboundEmailProviderSettingKey } from 'pages/integrations/integration/components/email/helpers'
 import { renderWithRouter } from 'utils/testing'
 

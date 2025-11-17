@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import AiAgentStoreConfigurationContext from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { mockStore } from 'utils/testing'
 

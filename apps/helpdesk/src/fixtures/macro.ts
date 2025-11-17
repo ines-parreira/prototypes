@@ -1,15 +1,12 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
-import { User } from 'config/types/user'
-import { Team } from 'models/team/types'
+import type { User } from 'config/types/user'
+import type { Team } from 'models/team/types'
 
 import { HttpMethod } from '../models/api/types'
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from '../models/macroAction/types'
+import type { MacroAction } from '../models/macroAction/types'
+import { MacroActionName, MacroActionType } from '../models/macroAction/types'
 
 export const macros: Macro[] = [
     {

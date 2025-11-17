@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { BigCommerceOrderProduct } from 'models/integration/types'
+import type { BigCommerceOrderProduct } from 'models/integration/types'
 import bigcommerceLineItemRowCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/order-table/OrderLineItemRow.less'
 
 type Props = {

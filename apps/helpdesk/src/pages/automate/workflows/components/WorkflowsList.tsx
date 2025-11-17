@@ -5,7 +5,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {
+import type {
     LanguageCode,
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'

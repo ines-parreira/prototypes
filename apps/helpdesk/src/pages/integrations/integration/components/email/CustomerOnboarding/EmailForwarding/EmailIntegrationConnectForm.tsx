@@ -9,10 +9,8 @@ import FormRow from 'pages/common/forms/FormRow'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { isEmail } from 'utils'
 
-import {
-    ConnectIntegrationPayload,
-    useEmailOnboarding,
-} from '../../hooks/useEmailOnboarding'
+import type { ConnectIntegrationPayload } from '../../hooks/useEmailOnboarding'
+import { useEmailOnboarding } from '../../hooks/useEmailOnboarding'
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
 import EmailPreview from './EmailPreview'
 

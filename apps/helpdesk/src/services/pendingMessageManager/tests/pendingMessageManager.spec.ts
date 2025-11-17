@@ -8,9 +8,9 @@ import {
 } from 'state/newMessage/actions'
 import { applyMacro, messageDeleted } from 'state/ticket/actions'
 
+import type { SendMessageArgs } from '../pendingMessageManager'
 import pendingMessageManager, {
     PendingMessageManager,
-    SendMessageArgs,
 } from '../pendingMessageManager'
 
 type fromJSType = typeof fromJS

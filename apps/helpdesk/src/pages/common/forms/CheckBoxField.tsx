@@ -1,4 +1,5 @@
-import React, { ComponentProps, ForwardedRef, forwardRef } from 'react'
+import type { ComponentProps, ForwardedRef } from 'react'
+import React, { forwardRef } from 'react'
 
 import CheckBox from './CheckBox'
 

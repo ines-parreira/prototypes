@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'

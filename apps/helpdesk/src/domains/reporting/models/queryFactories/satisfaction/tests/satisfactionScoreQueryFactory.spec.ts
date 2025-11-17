@@ -11,7 +11,7 @@ import {
     satisfactionScoreDrillDownQueryFactory,
     satisfactionScoreQueryFactory,
 } from 'domains/reporting/models/queryFactories/satisfaction/satisfactionScoreQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,

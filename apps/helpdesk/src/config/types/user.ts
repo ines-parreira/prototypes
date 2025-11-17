@@ -1,5 +1,5 @@
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
-import { SoundValue } from 'services/NotificationSounds'
+import type { DateFormatType, TimeFormatType } from 'constants/datetime'
+import type { SoundValue } from 'services/NotificationSounds'
 
 export enum UserRole {
     ObserverAgent = 'observer-agent',

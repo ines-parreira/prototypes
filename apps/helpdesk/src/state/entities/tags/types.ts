@@ -1,8 +1,8 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import {
+import type {
     TAG_CREATED,
     TAG_DELETED,
     TAG_FETCHED,

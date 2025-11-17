@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { ActionsApp, App } from '../types'
+import type { ActionsApp, App } from '../types'
 
 export type GetAppFromActionsApp = (
     actionsApp: Pick<ActionsApp, 'id'>,

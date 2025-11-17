@@ -1,6 +1,8 @@
-import { AlertBannerTypes, ContextBanner } from '../types'
+import type { ContextBanner } from '../types'
+import { AlertBannerTypes } from '../types'
 import { getBannerInsertionIndex } from './helpers/getBannerInsertionIndex'
-import { BannerActions, BannerActionTypes } from './types'
+import type { BannerActions } from './types'
+import { BannerActionTypes } from './types'
 
 function isInState(
     banners: ContextBanner[],

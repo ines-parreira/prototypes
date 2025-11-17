@@ -1,5 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { Metric } from 'domains/reporting/hooks/metrics'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
 import {
     VoiceCallMember,
@@ -14,11 +14,9 @@ import {
     declinedVoiceCallsCountQueryFactory,
     transferredInboundVoiceCallsCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { withFilter } from 'domains/reporting/utils/reporting'
 
 export const ignoreCallsWithNoAgentsFilter: ReportingFilter = {

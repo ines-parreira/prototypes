@@ -3,21 +3,20 @@ import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _omit from 'lodash/omit'
 import _words from 'lodash/words'
+import type { Notification as ReapopNotification } from 'reapop'
 import {
     notify as addNotification,
     dismissNotification,
     POSITIONS,
-    Notification as ReapopNotification,
 } from 'reapop'
 
 import { AlertBannerTypes } from 'AlertBanners/types'
 
-import { RootState, StoreDispatch } from '../types'
+import type { RootState, StoreDispatch } from '../types'
+import type { HandleUsageBanner, Notification } from './types'
 import {
-    HandleUsageBanner,
     isAlertNotification,
     isBannerNotification,
-    Notification,
     NotificationStatus,
     NotificationStyle,
 } from './types'

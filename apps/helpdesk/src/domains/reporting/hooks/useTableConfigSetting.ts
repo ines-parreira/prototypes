@@ -1,17 +1,17 @@
 import { useCallback, useMemo } from 'react'
 
-import { CombinedState } from 'redux'
-import { Selector } from 'reselect'
+import type { CombinedState } from 'redux'
+import type { Selector } from 'reselect'
 
-import {
+import type {
     TableColumnSet,
     TableRowSet,
     TableView,
 } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { AccountSettingTableConfig } from 'state/currentAccount/types'
-import { RootState, StoreDispatch, StoreState } from 'state/types'
+import type { AccountSettingTableConfig } from 'state/currentAccount/types'
+import type { RootState, StoreDispatch, StoreState } from 'state/types'
 
 export const getActiveViewFromTableSetting = <
     T extends TableColumnSet,

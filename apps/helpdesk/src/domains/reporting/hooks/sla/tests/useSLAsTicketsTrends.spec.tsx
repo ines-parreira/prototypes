@@ -16,7 +16,7 @@ import {
     useSatisfiedSlaTicketsTrend,
 } from 'domains/reporting/hooks/sla/useSLAsTicketsTrends'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

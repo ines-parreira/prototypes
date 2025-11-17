@@ -1,21 +1,21 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { Expression, Identifier } from 'estree'
+import type { Expression, Identifier } from 'estree'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
-import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import type CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { OBJECT_PATHS } from 'custom-fields/constants'
-import { IntegrationType } from 'models/integration/constants'
-import { IntegrationFromType } from 'models/integration/types'
+import type { IntegrationType } from 'models/integration/constants'
+import type { IntegrationFromType } from 'models/integration/types'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
 import { FEEDBACK_VALUE_TYPE_FILTER_OPTIONS } from 'pages/common/components/ViewTable/Filters/utils/feedbackValueTypeFilterOptions'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import type MultiSelectField from 'pages/common/forms/MultiSelectField'
 import { CHANNELS } from 'tickets/common/config'
 
 jest.mock('moment-timezone', () => () => {

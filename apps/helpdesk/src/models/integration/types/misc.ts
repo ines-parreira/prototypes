@@ -1,5 +1,5 @@
 import { IntegrationType } from '../constants'
-import { Integration } from './index'
+import type { Integration } from './index'
 
 type AuthenticationStatus = 'pending' | 'success' | 'error' | ''
 

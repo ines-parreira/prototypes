@@ -11,10 +11,8 @@ import {
     DOWNLOAD_REPORT_LABEL,
     getDeleteConfirmationTitle,
 } from 'domains/reporting/pages/dashboards/DashboardsPageActions'
-import {
-    DashboardChildType,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 const mockPush = jest.fn()
 function getBaseURL() {

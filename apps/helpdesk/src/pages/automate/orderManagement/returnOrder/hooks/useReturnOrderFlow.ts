@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { IntegrationType } from 'models/integration/constants'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { DEFAULT_RETURN_ACTION } from '../constants'

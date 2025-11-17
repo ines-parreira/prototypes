@@ -1,6 +1,6 @@
-import { QueryKey, UseQueryOptions } from '@tanstack/react-query'
+import type { QueryKey, UseQueryOptions } from '@tanstack/react-query'
 
-import {
+import type {
     FindAiReasoningAiReasoningResult,
     FindAllGuidancesKnowledgeResourcesParams,
     FindAllGuidancesKnowledgeResourcesResult,

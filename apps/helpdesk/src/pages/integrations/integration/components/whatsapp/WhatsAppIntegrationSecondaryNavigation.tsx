@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom'
 
-import { IntegrationType, WhatsAppIntegration } from 'models/integration/types'
+import type { WhatsAppIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {

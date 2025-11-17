@@ -6,7 +6,7 @@ import {
     optimisticUserSettingsReset,
     optimisticUserSettingsSet,
 } from './actions'
-import { TicketNavbarState } from './types'
+import type { TicketNavbarState } from './types'
 
 const initialOptimisticSettings = {
     views: {},

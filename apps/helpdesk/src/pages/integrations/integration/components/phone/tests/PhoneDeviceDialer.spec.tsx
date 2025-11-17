@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 import { Provider } from 'react-redux'
 
-import { PhoneIntegration } from 'models/integration/types'
-import { UserSearchResult } from 'models/search/types'
+import type { PhoneIntegration } from 'models/integration/types'
+import type { UserSearchResult } from 'models/search/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 

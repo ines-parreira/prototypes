@@ -3,7 +3,7 @@ import intercomLogo from 'assets/img/integrations/intercom.png'
 import reamazeLogo from 'assets/img/integrations/reamaze.png'
 import zendeskLogo from 'assets/img/integrations/zendesk.png'
 
-import {
+import type {
     HelpCenterMigrationConfig,
     MigrationProvider,
     MigrationProviderField,

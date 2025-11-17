@@ -1,4 +1,4 @@
-import { Field } from '../../MetafieldsTable/types'
+import type { Field } from '../../MetafieldsTable/types'
 
 export const mockImportableFields: Field[] = [
     {

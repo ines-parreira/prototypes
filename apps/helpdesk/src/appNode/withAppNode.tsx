@@ -1,6 +1,7 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React from 'react'
 
-import { AppNodeContextType } from './AppNodeContext'
+import type { AppNodeContextType } from './AppNodeContext'
 import useAppNode from './useAppNode'
 
 export type WithAppNodeProps = {

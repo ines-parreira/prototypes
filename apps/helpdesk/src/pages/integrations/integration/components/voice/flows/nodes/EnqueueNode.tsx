@@ -1,11 +1,10 @@
-import {
-    LegacyCheckBoxField as CheckBoxField,
-    LegacyCheckBoxFieldProps as CheckBoxFieldProps,
-} from '@gorgias/axiom'
-import { CustomRecordingType, EnqueueStep } from '@gorgias/helpdesk-types'
+import type { LegacyCheckBoxFieldProps as CheckBoxFieldProps } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
+import type { EnqueueStep } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { FormField, useFormContext, useWatch } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import {
     StaticVerticalStep,
     StaticVerticalStepper,

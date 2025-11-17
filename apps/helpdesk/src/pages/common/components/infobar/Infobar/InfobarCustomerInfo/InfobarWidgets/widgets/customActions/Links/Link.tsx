@@ -3,10 +3,10 @@ import React, { useCallback, useContext } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Source } from 'models/widget/types'
+import type { Source } from 'models/widget/types'
 import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {
+import type {
     Link as LinkType,
     RemoveLink,
     SubmitLink,

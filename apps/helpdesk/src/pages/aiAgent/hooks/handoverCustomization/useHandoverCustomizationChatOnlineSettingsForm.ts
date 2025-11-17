@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
     getHandoverConfigurationFormDataFragment,
@@ -17,7 +17,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationChatOnlineSettingsFormValues } from '../../types'
+import type { HandoverCustomizationChatOnlineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 

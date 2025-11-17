@@ -1,8 +1,6 @@
+import type { ForwardedRef, KeyboardEvent, ReactNode } from 'react'
 import React, {
-    ForwardedRef,
     forwardRef,
-    KeyboardEvent,
-    ReactNode,
     useCallback,
     useContext,
     useImperativeHandle,

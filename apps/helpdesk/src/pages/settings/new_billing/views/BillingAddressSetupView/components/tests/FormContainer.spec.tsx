@@ -2,7 +2,7 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
-import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 

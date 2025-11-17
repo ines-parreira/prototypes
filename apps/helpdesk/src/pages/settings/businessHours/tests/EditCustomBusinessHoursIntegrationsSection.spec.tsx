@@ -5,7 +5,7 @@ import { Form, FormField } from 'core/forms'
 import Modal from 'pages/common/components/modal/Modal'
 
 import EditCustomBusinessHoursIntegrationsSection from '../EditCustomBusinessHoursIntegrationsSection'
-import { EditCustomBusinessHoursFormValues } from '../types'
+import type { EditCustomBusinessHoursFormValues } from '../types'
 
 jest.mock('../AssignIntegrationsModal', () => (props: any) => (
     <Modal {...props}>

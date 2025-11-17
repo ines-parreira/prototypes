@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { EditorState } from 'draft-js'
 
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 import LiquidFilterPopover from '../LiquidFilterPopover'

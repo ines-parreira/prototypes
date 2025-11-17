@@ -1,4 +1,5 @@
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 export default function getStoreTypeName(
     integration?: StoreIntegration | null,

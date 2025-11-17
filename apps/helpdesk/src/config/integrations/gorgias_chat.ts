@@ -1,15 +1,18 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
 
 import { Language } from '../../constants/languages'
+import type {
+    GorgiasChatIntegrationMeta,
+    GorgiasChatPosition,
+    Integration,
+} from '../../models/integration/types'
 import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
-    GorgiasChatIntegrationMeta,
-    GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
-    Integration,
     IntegrationType,
 } from '../../models/integration/types'
 import gorgiasChatSSPTexts from './ssp_texts.json'

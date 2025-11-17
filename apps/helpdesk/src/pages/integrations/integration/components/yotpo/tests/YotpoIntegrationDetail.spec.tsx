@@ -1,10 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { History, Location } from 'history'
-import { fromJS, Map } from 'immutable'
-import { match } from 'react-router-dom'
+import type { History, Location } from 'history'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { match } from 'react-router-dom'
 
 import {
     PENDING_AUTHENTICATION_STATUS,

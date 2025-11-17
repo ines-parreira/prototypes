@@ -1,10 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import {
-    GroupedKnowledgeItem,
-    KnowledgeType,
-    KnowledgeVisibility,
-} from '../types'
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeType, KnowledgeVisibility } from '../types'
 import {
     EmptyStateDocument,
     EmptyStateDomain,

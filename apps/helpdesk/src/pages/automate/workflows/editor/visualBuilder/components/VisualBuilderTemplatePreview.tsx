@@ -1,4 +1,6 @@
-import React, { PropsWithChildren, useCallback } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import {
     ControlButton,
@@ -25,7 +27,7 @@ import {
     createWorkflowEditorContextForPreview,
     WorkflowEditorContext,
 } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {
+import type {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

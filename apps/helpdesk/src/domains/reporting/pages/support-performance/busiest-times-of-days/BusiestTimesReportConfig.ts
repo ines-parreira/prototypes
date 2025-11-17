@@ -4,10 +4,10 @@ import {
 } from 'domains/reporting/models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { BusiestTimesOfDaysTableChart } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
 import { fetchAggregatedBusiestTimesOfDayReportData } from 'domains/reporting/services/busiestTimesOfDaysReportingService'

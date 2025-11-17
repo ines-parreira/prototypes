@@ -3,12 +3,13 @@ import { userEvent } from '@testing-library/user-event'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
+import type { View, ViewCategoryNavbar } from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { TicketNavbarBlock } from '../TicketNavbarBlock'
-import { TicketNavbarElement } from '../TicketNavbarContent'
+import type { TicketNavbarElement } from '../TicketNavbarContent'
 
 describe('<TicketNavbarBlock/>', () => {
     const minProps = {

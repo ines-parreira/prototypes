@@ -1,4 +1,5 @@
-import React, { Ref, RefObject } from 'react'
+import type { Ref, RefObject } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
@@ -6,14 +7,14 @@ import _noop from 'lodash/noop'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
-import {
+import type {
     OnDropPolicyFn,
     OnMovePolicyFn,
     OnTogglePolicyFn,
     PolicyDragItem,
-    TableColumn,
     UISLAPolicy,
 } from 'pages/settings/SLAs/features/SLAList/types'
+import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
 
 import CellLinkWrapper from './CellLinkWrapper'
 import { columnOrder, getTableCell } from './config'

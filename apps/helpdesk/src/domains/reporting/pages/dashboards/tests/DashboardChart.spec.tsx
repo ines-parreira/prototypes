@@ -3,10 +3,8 @@ import { assumeMock } from '@repo/testing'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { DashboardChart } from 'domains/reporting/pages/dashboards/DashboardChart'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import {
-    DashboardChartSchema,
-    DashboardChildType,
-} from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,

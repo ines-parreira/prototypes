@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { defaultCell, getConfigByName } from 'config/views'
-import { EntityType } from 'models/view/types'
+import type { defaultCell } from 'config/views'
+import { getConfigByName } from 'config/views'
+import type { EntityType } from 'models/view/types'
 import css from 'pages/common/components/ViewTable/Table.less'
 import { RenderLabel } from 'pages/common/utils/labels'
 

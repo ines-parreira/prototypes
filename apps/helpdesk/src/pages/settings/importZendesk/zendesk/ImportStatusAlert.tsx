@@ -1,4 +1,4 @@
-import { ZendeskIntegrationMeta } from '../../../../models/integration/types'
+import type { ZendeskIntegrationMeta } from '../../../../models/integration/types'
 import Alert, { AlertType } from '../../../common/components/Alert/Alert'
 import { ImportStatus } from './types'
 

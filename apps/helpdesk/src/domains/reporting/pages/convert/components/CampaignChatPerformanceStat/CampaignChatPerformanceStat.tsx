@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { TooltipItem } from 'chart.js'
+import type { TooltipItem } from 'chart.js'
 
 import { Skeleton } from '@gorgias/axiom'
 

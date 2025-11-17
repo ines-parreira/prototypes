@@ -6,7 +6,7 @@ import {
 } from '@gorgias/axiom'
 
 import { Label } from 'gorgias-design-system/Input/Label'
-import { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'
+import type { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'

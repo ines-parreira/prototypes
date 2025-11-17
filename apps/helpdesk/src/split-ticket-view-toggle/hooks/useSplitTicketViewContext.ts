@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { TicketIds } from '../Context'
+import type { TicketIds } from '../Context'
 
 export default function useSplitTicketViewContext() {
     const [prevNextTicketIds, setPrevNextTicketIds] = useState<TicketIds>({

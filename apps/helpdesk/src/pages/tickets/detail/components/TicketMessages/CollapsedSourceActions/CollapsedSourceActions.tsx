@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'

@@ -22,11 +22,9 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { account } from 'fixtures/account'
 import { submitAgentTableConfigView } from 'state/currentAccount/actions'
-import {
-    AccountSettingAgentsTableConfig,
-    AccountSettingType,
-} from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { AccountSettingAgentsTableConfig } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 jest.mock('state/currentAccount/actions')

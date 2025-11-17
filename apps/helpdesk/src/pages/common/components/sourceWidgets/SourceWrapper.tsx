@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { fromJS, List, Map, Set } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS, Set } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { IntegrationType } from 'models/integration/types/'
 import {
     areSourcesReady,

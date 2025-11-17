@@ -5,9 +5,8 @@ import { fireEvent, render } from '@testing-library/react'
 import { analyseCsvResponse } from '../../../../../fixtures/analyseCsvResponse.fixture'
 import { getSingleHelpCenterResponseFixture as helpCenter } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
-import CsvColumnMatching, {
-    Props as CsvColumnMatchingProps,
-} from '../CsvColumnMatching'
+import type { Props as CsvColumnMatchingProps } from '../CsvColumnMatching'
+import CsvColumnMatching from '../CsvColumnMatching'
 
 const props: CsvColumnMatchingProps = {
     helpCenter,

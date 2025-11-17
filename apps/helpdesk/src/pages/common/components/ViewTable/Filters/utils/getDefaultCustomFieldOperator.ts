@@ -1,5 +1,5 @@
-import { CustomField } from 'custom-fields/types'
-import { Schemas } from 'types'
+import type { CustomField } from 'custom-fields/types'
+import type { Schemas } from 'types'
 
 import getCustomFieldOperators from './getCustomFieldOperators'
 

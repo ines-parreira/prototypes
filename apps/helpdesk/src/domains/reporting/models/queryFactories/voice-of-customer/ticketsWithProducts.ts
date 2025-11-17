@@ -3,15 +3,11 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import {
-    TicketCubeWithJoins,
-    TicketDimension,
-} from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,

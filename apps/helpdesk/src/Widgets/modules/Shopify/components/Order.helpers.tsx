@@ -1,4 +1,4 @@
-import { Order } from '@gorgias/helpdesk-types'
+import type { Order } from '@gorgias/helpdesk-types'
 
 type OrderWithReturns = Order & {
     returns?: {

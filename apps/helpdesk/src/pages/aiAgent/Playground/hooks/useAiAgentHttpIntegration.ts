@@ -5,7 +5,7 @@ import { isProduction } from '@repo/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { createBaseUrl } from 'models/aiAgent/resources/message-processing'
 import { IntegrationType } from 'models/integration/constants'
-import { HttpIntegration } from 'models/integration/types'
+import type { HttpIntegration } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 export const useAiAgentHttpIntegration = () => {

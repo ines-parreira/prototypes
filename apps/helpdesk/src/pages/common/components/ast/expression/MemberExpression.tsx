@@ -2,10 +2,12 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { Expression } from 'estree'
-import { fromJS, List } from 'immutable'
+import type { Expression } from 'estree'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { CustomField, ObjectType } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
+import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -16,19 +18,17 @@ import {
     IDENTIFIER_CATEGORIES,
     IDENTIFIER_VARIABLES_BY_CATEGORY,
 } from 'models/rule/constants'
-import {
-    CustomFieldTreePath,
-    IdentifierCategoryKey,
-    IdentifierElement,
-} from 'models/rule/types'
+import type { IdentifierElement } from 'models/rule/types'
+import { CustomFieldTreePath, IdentifierCategoryKey } from 'models/rule/types'
 import {
     generateExpression,
     getAstPath,
     getCategoryFromPath,
 } from 'models/rule/utils'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
-import { ObjectExpressionPropertyKey, RuleOperation } from 'state/rules/types'
+import type { ObjectExpressionPropertyKey } from 'state/rules/types'
+import { RuleOperation } from 'state/rules/types'
 import { getIconFromUrl } from 'utils'
 
 import { getFieldSchemaDefinitionKey } from '../../ViewTable/Filters/utils'

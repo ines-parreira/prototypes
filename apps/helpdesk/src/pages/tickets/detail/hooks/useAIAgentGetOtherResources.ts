@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import _flatten from 'lodash/flatten'
 
-import { ResourceFeedbackOnMessage } from 'models/aiAgentFeedback/types'
+import type { ResourceFeedbackOnMessage } from 'models/aiAgentFeedback/types'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useGetAICompatibleMacros } from 'models/macro/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'

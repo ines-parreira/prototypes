@@ -4,7 +4,7 @@ import { useDeepEffect } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 
 import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
-import { TicketPartial } from 'ticket-list-view/types'
+import type { TicketPartial } from 'ticket-list-view/types'
 
 export const DEBOUNCED_VIEW_TICKETS_DELAY = 1000
 

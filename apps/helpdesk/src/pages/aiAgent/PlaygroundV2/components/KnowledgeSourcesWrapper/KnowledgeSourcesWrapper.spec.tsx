@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

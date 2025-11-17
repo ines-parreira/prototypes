@@ -11,7 +11,7 @@ import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import { ChannelIdentifier } from 'services/channels'
+import type { ChannelIdentifier } from 'services/channels'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import ChannelSelect from '../ChannelSelect'

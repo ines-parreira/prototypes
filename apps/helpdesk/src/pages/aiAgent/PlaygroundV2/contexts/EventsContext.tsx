@@ -1,18 +1,18 @@
+import type { ReactNode } from 'react'
 import {
     createContext,
-    ReactNode,
     useCallback,
     useContext,
     useEffect,
     useMemo,
 } from 'react'
 
-import {
+import type {
     EventCallback,
     EventHandlers,
-    PlaygroundEvent,
     PlaygroundEventEmitter,
 } from '../types'
+import { PlaygroundEvent } from '../types'
 
 const EventsContext = createContext<PlaygroundEventEmitter | undefined>(
     undefined,

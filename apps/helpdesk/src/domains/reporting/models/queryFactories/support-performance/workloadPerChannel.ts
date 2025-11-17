@@ -1,5 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -7,11 +7,9 @@ import {
     TicketSegment,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST } from 'domains/reporting/models/queryFactories/support-performance/openTickets'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,

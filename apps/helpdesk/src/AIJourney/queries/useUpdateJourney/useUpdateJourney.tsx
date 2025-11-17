@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     JourneyConfigurationApiDTO,
-    patchJourney,
     UpdateJourneyApiDTO,
 } from '@gorgias/convert-client'
+import { patchJourney } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'

@@ -11,7 +11,7 @@ import {
     LoadingSpinner,
     Text,
 } from '@gorgias/axiom'
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

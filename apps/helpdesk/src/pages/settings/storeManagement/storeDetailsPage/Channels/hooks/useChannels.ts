@@ -15,7 +15,7 @@ import {
     isWhatsAppChannel,
 } from '../../../helpers/isIntegration'
 import { useStoreManagementState } from '../../../StoreManagementProvider'
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 
 export const useChannels = (): ChannelWithMetadata[] => {
     const { id } = useParams<{ id: string }>()

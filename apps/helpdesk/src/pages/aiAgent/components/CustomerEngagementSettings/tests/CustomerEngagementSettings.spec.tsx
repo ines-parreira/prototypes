@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'

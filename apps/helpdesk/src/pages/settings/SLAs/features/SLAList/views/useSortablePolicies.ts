@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { PolicyDragItem, UISLAPolicy } from '../types'
+import type { PolicyDragItem, UISLAPolicy } from '../types'
 
 export default function useSortablePolicies(
     data: UISLAPolicy[],

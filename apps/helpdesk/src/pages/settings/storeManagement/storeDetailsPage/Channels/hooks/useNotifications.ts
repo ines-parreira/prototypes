@@ -1,6 +1,6 @@
 import { useNotify } from 'hooks/useNotify'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 import { getIntegrationLabels } from '../helpers/getIntegrationLabels'
 
 interface NotificationError {

@@ -1,5 +1,5 @@
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { ReportingFilterOperator } from 'domains/reporting/models/types'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export type DateFilter = {
     member: FilterName

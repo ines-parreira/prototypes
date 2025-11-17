@@ -6,7 +6,8 @@ import { createBrowserHistory } from 'history'
 import type { History } from 'history'
 import { Route, Router } from 'react-router-dom'
 
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { useStoreSelector } from '../useStoreSelector'

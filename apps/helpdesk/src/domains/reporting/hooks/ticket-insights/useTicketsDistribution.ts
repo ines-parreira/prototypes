@@ -7,12 +7,12 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'

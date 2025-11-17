@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {
+import type {
     Chart,
     ChartArea,
     ChartData,
@@ -9,25 +9,26 @@ import {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Line } from 'react-chartjs-2'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/Chart.less'
 import { ChartLegend } from 'domains/reporting/pages/common/components/charts/ChartLegend'
-import { GreyArea } from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
+import type { GreyArea } from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 import { ChartTooltip } from 'domains/reporting/pages/common/components/charts/ChartTooltip'
 import { ChartTooltipContent } from 'domains/reporting/pages/common/components/charts/ChartTooltipContent'
 import {
     chartColorsFallbackTokens,
     OPTIONS,
 } from 'domains/reporting/pages/common/components/charts/config'
-import { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
+import type { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
 import type { AnalyticsTheme } from 'domains/reporting/pages/common/theme'
 import { withAnalyticsTheme } from 'domains/reporting/pages/common/theme'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
-import { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
 import {
     getGradient,
     renderTickLabelAsNumber,

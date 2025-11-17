@@ -1,10 +1,10 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 import { getShowShopifyCheckoutChatBanner } from 'state/integrations/selectors'
 
-import { Tab } from '../../types'
+import type { Tab } from '../../types'
 import GorgiasChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import GorgiasChatIntegrationNotInstalledBanner from './GorgiasChatIntegrationNotInstalledBanner'
 import GorgiasChatIntegrationOutdatedSnippetBanner from './GorgiasChatIntegrationOutdatedSnippetBanner'

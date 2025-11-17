@@ -1,16 +1,17 @@
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 
 import {
     withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
-    StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { StatsState } from 'domains/reporting/state/stats/statsSlice'
 import {
     initialState,
     mergeCustomFieldsFilter,
@@ -20,7 +21,6 @@ import {
     setStatsFilters,
     setStatsFiltersWithLogicalOperators,
     statsSlice,
-    StatsState,
 } from 'domains/reporting/state/stats/statsSlice'
 import {
     fromLegacyStatsFilters,

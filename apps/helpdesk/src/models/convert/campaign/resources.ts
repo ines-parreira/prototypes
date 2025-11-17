@@ -1,7 +1,7 @@
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
-import {
+import type {
     CampaignCreatePayload,
     CampaignListOptions,
     CampaignListParams,

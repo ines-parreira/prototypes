@@ -16,8 +16,8 @@ import {
 } from 'common/notifications'
 import { declineCall, getToken } from 'hooks/integrations/phone/api'
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import { StoreDispatch } from 'state/types'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
 import { getLDClient } from 'utils/launchDarkly'
 

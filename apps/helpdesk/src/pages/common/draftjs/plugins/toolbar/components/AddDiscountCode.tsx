@@ -3,31 +3,33 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
 import { AttachmentEnum } from 'common/types'
 import { useModalManager } from 'hooks/useModalManager'
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNT_MODAL_NAME,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
+import type { DiscountCode } from 'models/discountCodes/types'
 import {
-    DiscountCode,
     discountCodeIsGeneric,
     discountCodeIsUnique,
 } from 'models/discountCodes/types'
 import { DiscountCodeResultsWrapper } from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
-import { DiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { DiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { getIconFromType } from 'state/integrations/helpers'
 import { insertText } from 'utils'
 
 import { addDiscountCodeLink } from '../../utils'
 import { useToolbarContext } from '../ToolbarContext'
-import { ActionInjectedProps, ActionName } from '../types'
+import type { ActionInjectedProps } from '../types'
+import { ActionName } from '../types'
 import { getTooltipTourConfiguration } from '../utils'
 import Popover from './ButtonPopover'
 

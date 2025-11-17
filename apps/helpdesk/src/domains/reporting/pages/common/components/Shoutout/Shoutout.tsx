@@ -1,4 +1,5 @@
-import React, { Fragment, ReactNode, useMemo, useRef } from 'react'
+import type { ReactNode } from 'react'
+import React, { Fragment, useMemo, useRef } from 'react'
 
 import classNames from 'classnames'
 import isNil from 'lodash/isNil'
@@ -8,7 +9,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/Shoutout/Shoutout.less'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 type Props = {

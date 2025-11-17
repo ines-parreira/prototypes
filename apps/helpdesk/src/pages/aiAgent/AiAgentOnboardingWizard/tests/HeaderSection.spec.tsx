@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { AiAgentChannel, DEFAULT_WIZARD_FORM_VALUES } from '../../constants'
-import { WizardFormValues } from '../../types'
+import type { WizardFormValues } from '../../types'
 import { HeaderSection } from '../HeaderSection'
 
 describe('HeaderSection', () => {

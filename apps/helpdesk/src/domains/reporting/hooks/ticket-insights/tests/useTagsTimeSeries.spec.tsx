@@ -26,8 +26,8 @@ import {
 } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { ticketInsightsSlice } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import { TagsState } from 'state/entities/tags/types'
-import { RootState } from 'state/types'
+import type { TagsState } from 'state/entities/tags/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

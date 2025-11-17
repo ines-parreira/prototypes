@@ -1,8 +1,7 @@
-import React, {
+import type { CSSProperties, FunctionComponent, ReactNode } from 'react'
+import type React from 'react'
+import {
     createContext,
-    CSSProperties,
-    FunctionComponent,
-    ReactNode,
     useCallback,
     useContext,
     useEffect,

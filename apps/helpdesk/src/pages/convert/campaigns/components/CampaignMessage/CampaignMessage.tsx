@@ -1,21 +1,22 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import objectHash from 'object-hash'
 
 import { UploadType } from 'common/types'
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Option, Value } from 'pages/common/forms/SelectField/types'
+import type { Option, Value } from 'pages/common/forms/SelectField/types'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { AICopyAssistant } from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
 import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
@@ -24,12 +25,14 @@ import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBan
 import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import type {
+    AttachmentType,
+    CampaignFormExtra,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {
     attachmentIsDiscountOffer,
     attachmentIsProduct,
     attachmentIsProductRecommendation,
-    AttachmentType,
-    CampaignFormExtra,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { checkShopifyProductAvailabity } from 'pages/convert/campaigns/utils/checkProductAvailability'

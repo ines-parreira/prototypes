@@ -13,7 +13,7 @@ import {
     useGetHelpCenterArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import {
+import type {
     ArticleWithLocalTranslation,
     Category,
     HelpCenter,
@@ -21,7 +21,7 @@ import {
     LocaleCode,
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
-import {
+import type {
     ActionType as LocaleActionType,
     OptionItem,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
@@ -32,8 +32,8 @@ import {
     defaultProps as defaultTopBarProps,
     KnowledgeEditorTopBar,
 } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
+import type { ArticleMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
 import {
-    ArticleMode,
     ArticleModes,
     KnowledgeEditorTopBarHelpCenterArticlesControls,
 } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
@@ -44,8 +44,8 @@ import { useKnowledgeEditorHelpCenterArticleSettings } from './hooks/useKnowledg
 import { KnowledgeEditorHelpCenterArticleEditView } from './KnowledgeEditorHelpCenterArticleEditView'
 import { KnowledgeEditorHelpCenterArticleReadView } from './KnowledgeEditorHelpCenterArticleReadView'
 import { KnowledgeEditorHelpCenterArticleUnsavedChangesModal } from './KnowledgeEditorHelpCenterArticleUnsavedChangesModal'
+import type { ArticleState } from './KnowledgeEditorHelpCenterExistingArticle.utils'
 import {
-    ArticleState,
     editModeFromVisibilityStatus,
     mergeResponseContentAndTitleInArticle,
     mergeResponseSettingsInArticle,

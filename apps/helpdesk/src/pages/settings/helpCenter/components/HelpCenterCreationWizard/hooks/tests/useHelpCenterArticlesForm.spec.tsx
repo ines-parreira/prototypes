@@ -3,10 +3,8 @@ import 'tests/__mocks__/editionManagerContextMock'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import {
-    ArticleTemplateType,
-    HelpCenterArticleItem,
-} from 'models/helpCenter/types'
+import type { HelpCenterArticleItem } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 import { getArticleFixture } from 'pages/aiAgent/fixtures/article.fixture'
 import { AIArticlesGroupedFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { ArticleTemplatesGroupedByCategoryFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'

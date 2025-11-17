@@ -14,7 +14,7 @@ import {
 } from 'domains/reporting/pages/automate/overview/utils'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
 import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 

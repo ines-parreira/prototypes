@@ -1,8 +1,8 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { View } from 'models/view/types'
+import type { View } from 'models/view/types'
 
-import {
+import type {
     VIEW_CREATED,
     VIEW_DELETED,
     VIEW_UPDATED,

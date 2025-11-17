@@ -1,11 +1,11 @@
-import {
-    FilterKey,
+import type {
     SavedFilter,
     SavedFilterDraft,
     SavedFilterSupportedFilters,
     SavedFilterWithLogicalOperator,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import {
@@ -14,6 +14,7 @@ import {
     statFiltersDirty,
     statFiltersWithLogicalOperatorsCleanWithPayload,
 } from 'domains/reporting/state/ui/stats/actions'
+import type { FiltersSliceState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import {
     applyPinnedFilter,
     applySavedFilter,
@@ -22,7 +23,6 @@ import {
     COPY_OF_DRAFT_NAME,
     duplicateSavedFilterDraftFromSavedFilter,
     filtersSlice,
-    FiltersSliceState,
     getCanSaveFilter,
     getHasSavedFilterDraft,
     getHideFiltersPanelOptionalFilters,
@@ -38,7 +38,7 @@ import {
     upsertSavedFilterCustomFieldFilter,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('filtersSlice', () => {
     describe('statFiltersDirty action', () => {

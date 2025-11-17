@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
@@ -10,7 +10,7 @@ import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { useHelpCenterList } from '../useHelpCenterList'

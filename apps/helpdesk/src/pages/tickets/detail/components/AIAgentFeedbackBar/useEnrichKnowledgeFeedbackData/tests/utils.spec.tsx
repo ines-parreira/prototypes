@@ -1,12 +1,12 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import {
+import type {
     FeedbackExecutionsItem,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { getLDClient } from 'utils/launchDarkly'

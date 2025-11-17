@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getCallMonitorability } from 'hooks/integrations/phone/monitoring.utils'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { renderWithStore } from 'utils/testing'

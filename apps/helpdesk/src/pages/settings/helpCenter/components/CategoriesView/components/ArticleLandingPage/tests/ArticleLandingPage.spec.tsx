@@ -15,7 +15,7 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ArticleLandingPage from '../ArticleLandingPage'

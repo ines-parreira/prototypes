@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useListIngestedResources } from 'models/helpCenter/queries'
 
 import { PAGINATED_ITEMS_PER_PAGE } from '../constant'
-import { IngestedResourceWithArticleId } from '../types'
+import type { IngestedResourceWithArticleId } from '../types'
 
 interface UsePaginatedIngestedResourceProps {
     helpCenterId: number

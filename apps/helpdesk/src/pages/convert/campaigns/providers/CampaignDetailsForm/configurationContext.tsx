@@ -1,6 +1,7 @@
-import React, { createContext, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext } from 'react'
 
-import {
+import type {
     ToolbarActionConfiguration,
     UtmConfiguration,
     WizardConfiguration,

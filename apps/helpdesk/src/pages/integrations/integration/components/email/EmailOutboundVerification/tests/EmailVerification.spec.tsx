@@ -11,13 +11,12 @@ import { merge } from 'lodash'
 import { Provider } from 'react-redux'
 
 import { integrationsState } from 'fixtures/integrations'
-import {
-    EmailIntegration,
-    OutboundVerificationStatusValue,
-} from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 
-import EmailVerification, { Props } from '../EmailVerification'
+import type { Props } from '../EmailVerification'
+import EmailVerification from '../EmailVerification'
 
 const integration = integrationsState.integrations.find(
     (integration) => integration.meta.address === 'sendgrid@gorgias.io',

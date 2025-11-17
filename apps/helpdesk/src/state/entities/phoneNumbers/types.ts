@@ -1,4 +1,4 @@
-import {
+import type {
     NewPhoneNumber,
     OldPhoneNumber,
 } from '../../../models/phoneNumber/types'

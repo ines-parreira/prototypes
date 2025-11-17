@@ -1,17 +1,19 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
+import type { QueryKey } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 
-import { Product, ProductStatus } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
+import { ProductStatus } from 'constants/integrations/types/shopify'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
 import { integrationDataItemProductFixture } from 'fixtures/shopify'
 import * as resources from 'models/integration/resources'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {

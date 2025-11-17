@@ -1,17 +1,17 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { TicketFeedback } from 'models/aiAgentFeedback/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketFeedback } from 'models/aiAgentFeedback/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 import { getAIAgentMessages } from 'state/ticket/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AIAgentTicketFeedback from '../AIAgentTicketFeedback'
 import { TicketEventEnum } from '../types'

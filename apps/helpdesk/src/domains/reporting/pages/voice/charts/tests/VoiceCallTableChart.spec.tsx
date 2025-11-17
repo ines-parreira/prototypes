@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallTableChart } from 'domains/reporting/pages/voice/charts/VoiceCallTableChart'
 import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'

@@ -1,8 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import PhoneSearchResultsContent from '../PhoneSearchResultsContent'
 

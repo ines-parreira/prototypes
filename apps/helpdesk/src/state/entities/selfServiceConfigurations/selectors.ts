@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
 
-import { RootState } from '../../types'
+import type { RootState } from '../../types'
 
 export const getSelfServiceConfigurations = createSelector(
     (state: RootState) => state.entities.selfServiceConfigurations,

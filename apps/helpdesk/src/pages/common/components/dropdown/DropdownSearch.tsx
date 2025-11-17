@@ -1,6 +1,5 @@
+import type { ComponentProps, ForwardedRef } from 'react'
 import {
-    ComponentProps,
-    ForwardedRef,
     forwardRef,
     useContext,
     useImperativeHandle,

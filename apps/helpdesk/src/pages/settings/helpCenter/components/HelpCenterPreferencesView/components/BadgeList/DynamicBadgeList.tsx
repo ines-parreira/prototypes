@@ -9,7 +9,7 @@ import {
     Input,
 } from 'reactstrap'
 
-import { BadgeItemProps } from 'pages/common/components/BadgetItem'
+import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
 import { BadgeList } from './BadgeList'
 

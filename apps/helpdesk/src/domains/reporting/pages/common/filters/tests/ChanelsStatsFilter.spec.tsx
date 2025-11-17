@@ -12,7 +12,7 @@ import {
 } from 'domains/reporting/state/stats/statsSlice'
 import { channels } from 'fixtures/channels'
 import * as channelsService from 'services/channels'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

@@ -1,6 +1,6 @@
 import { createElement, memo } from 'react'
 
-import {
+import type {
     DashboardSchema,
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'

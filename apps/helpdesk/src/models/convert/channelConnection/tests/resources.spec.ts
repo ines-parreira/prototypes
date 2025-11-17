@@ -2,7 +2,7 @@ import {
     channelConnection,
     channelConnectionId,
 } from 'fixtures/channelConnection'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { AiAgentKnowledgeResourceTypeEnum } from '../types'
+import type { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 interface UseFeedbackTrackingProps {
     ticketId: number

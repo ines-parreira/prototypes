@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import _get from 'lodash/get'
 
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
-import {
+import type {
     VoiceMessage as ApiVoiceMessage,
-    VoiceMessageType as ApiVoiceMessageType,
     CustomRecordingType,
 } from '@gorgias/helpdesk-types'
+import { VoiceMessageType as ApiVoiceMessageType } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiResponseDataError } from 'models/api/types'
+import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
-import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
+import type { VoiceMessage } from 'models/integration/types'
+import { VoiceMessageType } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

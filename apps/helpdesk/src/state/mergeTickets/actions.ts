@@ -1,14 +1,14 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { defaultMergeTicketsView } from 'config/views'
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import { TicketSearchSortableProperties } from 'models/search/types'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
-import { Ticket } from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { createErrorNotification } from 'state/utils'
 
 export const LIMIT = 5

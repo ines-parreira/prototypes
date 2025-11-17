@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import { ChannelLanguage } from 'pages/automate/common/types'
+import type { ChannelLanguage } from 'pages/automate/common/types'
 
 import useLanguagesMismatchWarnings from '../useLanguagesMismatchWarnings'
 

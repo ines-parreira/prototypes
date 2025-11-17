@@ -1,22 +1,22 @@
-import { List, Map } from 'immutable'
-import { AnyAction } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
+import type { List, Map } from 'immutable'
+import type { AnyAction } from 'redux'
+import type { ThunkDispatch } from 'redux-thunk'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
-import { StatsState } from 'domains/reporting/state/stats/statsSlice'
-import { LegacyPaginationMeta, OrderDirection } from 'models/api/types'
-import { Customer } from 'models/customer/types'
-import {
+import type { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
+import type { StatsState } from 'domains/reporting/state/stats/statsSlice'
+import type { LegacyPaginationMeta, OrderDirection } from 'models/api/types'
+import type { Customer } from 'models/customer/types'
+import type {
     EcommerceStore,
     Shopper,
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
-import { CustomerExternalData } from 'models/customerExternalData/types'
-import { DiscountCode } from 'models/discountCodes/types'
-import {
+import type { CustomerExternalData } from 'models/customerExternalData/types'
+import type { DiscountCode } from 'models/discountCodes/types'
+import type {
     EmailDomain,
     EmailMigrationBannerStatus,
     EmailMigrationInboundVerification,
@@ -25,25 +25,25 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import { TicketEvent } from 'models/ticket/types'
-import { EntityType, ViewType } from 'models/view/types'
-import { InTicketSuggestionState } from 'state/entities/rules/types'
-import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import type { TicketEvent } from 'models/ticket/types'
+import type { EntityType, ViewType } from 'models/view/types'
+import type { InTicketSuggestionState } from 'state/entities/rules/types'
+import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 
-import { BillingContact } from './billing/types'
-import { AccountSetting } from './currentAccount/types'
-import { CurrentCompanyState } from './currentCompany/types'
-import { AuditLogEventsAction } from './entities/auditLogEvents/types'
-import { MacrosAction } from './entities/macros/types'
-import { EntitiesState } from './entities/reducers'
-import { InfobarActionsState } from './infobarActions/types'
-import { Message } from './newMessage/types'
-import { Notification } from './notifications/types'
-import { QueriesState } from './queries/types'
-import rootReducer from './reducers'
-import { Rule, RuleOperation, RulePriority } from './rules/types'
-import { UIState } from './ui/reducers'
-import { Widget, WidgetEnvironment, WidgetType } from './widgets/types'
+import type { BillingContact } from './billing/types'
+import type { AccountSetting } from './currentAccount/types'
+import type { CurrentCompanyState } from './currentCompany/types'
+import type { AuditLogEventsAction } from './entities/auditLogEvents/types'
+import type { MacrosAction } from './entities/macros/types'
+import type { EntitiesState } from './entities/reducers'
+import type { InfobarActionsState } from './infobarActions/types'
+import type { Message } from './newMessage/types'
+import type { Notification } from './notifications/types'
+import type { QueriesState } from './queries/types'
+import type rootReducer from './reducers'
+import type { Rule, RuleOperation, RulePriority } from './rules/types'
+import type { UIState } from './ui/reducers'
+import type { Widget, WidgetEnvironment, WidgetType } from './widgets/types'
 
 export type StoreState = {
     agents: Map<any, any>

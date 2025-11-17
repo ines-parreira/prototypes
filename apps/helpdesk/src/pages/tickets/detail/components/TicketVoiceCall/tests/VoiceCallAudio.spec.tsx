@@ -2,9 +2,8 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
+import type { VoiceCall, VoiceCallRecording } from 'models/voiceCall/types'
 import {
-    VoiceCall,
-    VoiceCallRecording,
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'

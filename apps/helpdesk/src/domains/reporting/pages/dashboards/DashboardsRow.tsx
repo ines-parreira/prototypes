@@ -1,11 +1,10 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { DashboardSectionWrapper } from 'domains/reporting/pages/common/layout/DashboardSection'
-import {
-    DroppableGridRow,
-    MoveHandler,
-} from 'domains/reporting/pages/dashboards/DraggableGridCell'
-import { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
+import type { MoveHandler } from 'domains/reporting/pages/dashboards/DraggableGridCell'
+import { DroppableGridRow } from 'domains/reporting/pages/dashboards/DraggableGridCell'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 
 export type DashboardsRowProps = {
     children: ReactNode

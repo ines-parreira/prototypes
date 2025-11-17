@@ -1,11 +1,13 @@
 import { isEmpty } from 'lodash'
 
-import {
+import type {
     EmailMigrationInboundVerification,
-    EmailMigrationInboundVerificationStatus,
     EmailMigrationOutboundVerification,
-    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
+} from 'models/integration/types'
+import {
+    EmailMigrationInboundVerificationStatus,
+    EmailMigrationOutboundVerificationStatus,
 } from 'models/integration/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 

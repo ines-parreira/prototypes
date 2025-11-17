@@ -4,7 +4,7 @@ import { useUpdateEffect } from '@repo/hooks'
 import isEqual from 'lodash/isEqual'
 
 import { useNotify } from 'hooks/useNotify'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
     getInitialFormValues,
@@ -13,7 +13,7 @@ import {
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from '../../types'
+import type { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from '../../types'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from './useHandoverCustomizationChatLanguageTextsConfiguration'
 
 type Props = {

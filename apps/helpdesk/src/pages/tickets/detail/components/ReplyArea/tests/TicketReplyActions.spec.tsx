@@ -1,17 +1,15 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import {
-    QueryClientProvider,
-    QueryKey,
-    UseQueryResult,
-} from '@tanstack/react-query'
+import type { QueryKey, UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { CustomField } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
 
 import { ACTION_TEMPLATES } from '../../../../../../config'
 import { useCustomFieldDefinition } from '../../../../../../custom-fields/hooks/queries/useCustomFieldDefinition'
@@ -21,7 +19,7 @@ import {
 } from '../../../../../../fixtures/customField'
 import { integrationsState } from '../../../../../../fixtures/integrations'
 import { MacroActionName } from '../../../../../../models/macroAction/types'
-import { RootState } from '../../../../../../state/types'
+import type { RootState } from '../../../../../../state/types'
 import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
 import TicketReplyActions from '../TicketReplyActions'
 

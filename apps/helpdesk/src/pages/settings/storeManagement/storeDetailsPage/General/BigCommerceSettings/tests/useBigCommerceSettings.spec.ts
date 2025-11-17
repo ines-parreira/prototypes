@@ -1,9 +1,7 @@
 import { renderHook } from '@repo/testing'
 
-import {
-    BigCommerceIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { BigCommerceIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
 
 import { useBigCommerceSettings } from '../useBigCommerceSettings'

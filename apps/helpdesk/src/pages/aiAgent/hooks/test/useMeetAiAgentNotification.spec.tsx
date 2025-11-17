@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreate
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useAiAgentOnboardingNotification } from '../useAiAgentOnboardingNotification'

@@ -4,7 +4,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 

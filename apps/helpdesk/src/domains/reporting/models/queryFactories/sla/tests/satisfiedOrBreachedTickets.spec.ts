@@ -18,7 +18,7 @@ import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,

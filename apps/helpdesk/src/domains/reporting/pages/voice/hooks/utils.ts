@@ -2,15 +2,15 @@ import { cloneDeep, merge } from 'lodash'
 import debounce from 'lodash/debounce'
 import moment from 'moment/moment'
 
-import {
+import type {
     ListLiveCallQueueAgentsResult,
     ListLiveCallQueueVoiceCallsParams,
     ListLiveCallQueueVoiceCallsResult,
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
-    queryKeys,
 } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import { AgentStatus } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'

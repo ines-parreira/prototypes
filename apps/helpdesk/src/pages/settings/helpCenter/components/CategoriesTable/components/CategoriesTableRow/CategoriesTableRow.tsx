@@ -1,10 +1,6 @@
-import React, {
-    MouseEvent,
-    ReactElement,
-    useCallback,
-    useMemo,
-    useState,
-} from 'react'
+import type { MouseEvent, ReactElement } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
@@ -16,22 +12,17 @@ import { LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import { Article, NonRootCategory } from 'models/helpCenter/types'
+import type { Article, NonRootCategory } from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {
-    DroppableTableBodyRow,
-    RowEventListeners,
-} from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
+import type { RowEventListeners } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
+import { DroppableTableBodyRow } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
 import { TableActions } from 'pages/settings/helpCenter/components/TableActions'
-import {
-    ARTICLES_PER_PAGE,
-    CategoryRowActionTypes,
-    MODALS,
-} from 'pages/settings/helpCenter/constants'
+import type { CategoryRowActionTypes } from 'pages/settings/helpCenter/constants'
+import { ARTICLES_PER_PAGE, MODALS } from 'pages/settings/helpCenter/constants'
 import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import { useCategoriesActions } from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'

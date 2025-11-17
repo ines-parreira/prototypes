@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 
-import { Field } from '../../../MetafieldsTable/types'
+import type { Field } from '../../../MetafieldsTable/types'
 import { useFieldSelection } from '../useFieldSelection'
 
 describe('useFieldSelection', () => {

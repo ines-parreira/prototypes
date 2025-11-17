@@ -1,4 +1,4 @@
-import { Paths } from 'rest_api/ssp_api/client.generated'
+import type { Paths } from 'rest_api/ssp_api/client.generated'
 
 export const articleRecommendationPredictionsResponseFixture: Paths.GetArticleRecommendationPredictions.Responses.$200 =
     {

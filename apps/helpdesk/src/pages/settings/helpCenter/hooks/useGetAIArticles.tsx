@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { doNotRetry40XErrorsHandler } from 'api/utils'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useGetAIArticlesByHelpCenterAndStore } from '../queries'
-import { getAIGeneratedArticlesByHelpCenterAndStore } from '../resources'
+import type { getAIGeneratedArticlesByHelpCenterAndStore } from '../resources'
 
 type AIArticlesByHelpCenterAndStore = Awaited<
     ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>

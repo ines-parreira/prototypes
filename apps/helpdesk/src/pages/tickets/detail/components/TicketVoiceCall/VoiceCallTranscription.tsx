@@ -1,5 +1,5 @@
+import type { VoiceCallRecording } from 'models/voiceCall/types'
 import {
-    VoiceCallRecording,
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'

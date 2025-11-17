@@ -2,7 +2,7 @@ import { produce } from 'immer'
 import { ulid } from 'ulidx'
 
 import { buildConditionSchemaByVariableType } from '../../editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import { ConditionSchema } from '../../models/conditions.types'
+import type { ConditionSchema } from '../../models/conditions.types'
 import {
     extractVariablesFromText,
     getWorkflowVariableListForNode,
@@ -13,7 +13,7 @@ import {
     cleanConditionsFromEmptyVariables,
     walkVisualBuilderGraph,
 } from '../../models/visualBuilderGraph.model'
-import {
+import type {
     HttpRequestNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,

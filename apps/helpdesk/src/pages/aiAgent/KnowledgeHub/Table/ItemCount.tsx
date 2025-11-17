@@ -1,6 +1,7 @@
-import { Table, Text } from '@gorgias/axiom'
+import type { Table } from '@gorgias/axiom'
+import { Text } from '@gorgias/axiom'
 
-import { GroupedKnowledgeItem } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
 
 import css from './ItemCount.less'
 

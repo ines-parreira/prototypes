@@ -2,7 +2,8 @@ import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import mockedVirtuoso from 'tests/mockedVirtuoso'

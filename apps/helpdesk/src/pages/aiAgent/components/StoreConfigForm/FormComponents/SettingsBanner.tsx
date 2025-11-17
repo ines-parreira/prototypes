@@ -4,7 +4,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
-import { BannerText, SettingsBannerType } from '../constants'
+import type { SettingsBannerType } from '../constants'
+import { BannerText } from '../constants'
 
 import css from '../StoreConfigForm.less'
 

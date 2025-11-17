@@ -1,4 +1,4 @@
-import { AutomatePlan } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
 
 import {
     convertSecondsToHours,

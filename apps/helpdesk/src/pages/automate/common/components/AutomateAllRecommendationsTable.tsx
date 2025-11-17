@@ -17,8 +17,8 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 
 import { useAIArticlePublishedPreviewUrl } from '../hooks/useAIArticlePublishedPreviewUrl'
-import { AIArticleRecommendationItem } from '../hooks/useAIArticleRecommendationItems'
-import { AllRecomendationsColumn } from './AutomateAllRecommendationsCard'
+import type { AIArticleRecommendationItem } from '../hooks/useAIArticleRecommendationItems'
+import type { AllRecomendationsColumn } from './AutomateAllRecommendationsCard'
 
 import css from './AutomateAllRecommendationsTable.less'
 

@@ -1,4 +1,5 @@
-import moment, { Moment } from 'moment'
+import type { Moment } from 'moment'
+import moment from 'moment'
 import { useParams } from 'react-router-dom'
 
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'

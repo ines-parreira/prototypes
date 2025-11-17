@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react'
 
-import { TooltipItem } from 'chart.js'
+import type { TooltipItem } from 'chart.js'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     AiSalesAgentChart,
@@ -16,8 +16,8 @@ import {
     formatCurrency,
     formatTimeSeriesData,
 } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 const useNullTimeSeries = () => {

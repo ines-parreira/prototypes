@@ -21,7 +21,7 @@ import {
 } from 'fixtures/macro'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
-import { Attachment } from 'models/ticket/types'
+import type { Attachment } from 'models/ticket/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

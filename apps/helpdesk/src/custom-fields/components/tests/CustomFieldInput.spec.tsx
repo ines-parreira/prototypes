@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import StealthInput from 'custom-fields/components/StealthInput'
-import { CustomField, CustomFieldPrediction } from 'custom-fields/types'
+import type { CustomField, CustomFieldPrediction } from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,

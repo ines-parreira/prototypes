@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { fetchRule } from 'models/rule/resources'
@@ -11,7 +12,7 @@ import { ruleFetched } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { RuleFormEditor } from './components/RuleFormEditor'
 

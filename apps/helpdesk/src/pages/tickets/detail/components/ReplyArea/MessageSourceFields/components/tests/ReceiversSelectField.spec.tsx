@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { SearchEngine } from 'models/search/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import MultiSelectAsyncField from '../ReceiversSelectField'
 

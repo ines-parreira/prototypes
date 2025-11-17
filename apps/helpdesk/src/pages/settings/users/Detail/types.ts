@@ -1,4 +1,4 @@
-import { UserRole } from 'config/types/user'
+import type { UserRole } from 'config/types/user'
 
 export type AgentState = {
     name: string

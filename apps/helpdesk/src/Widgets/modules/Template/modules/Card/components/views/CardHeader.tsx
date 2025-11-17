@@ -1,9 +1,5 @@
-import React, {
-    ComponentProps,
-    ReactNode,
-    SyntheticEvent,
-    useState,
-} from 'react'
+import type { ComponentProps, ReactNode, SyntheticEvent } from 'react'
+import React, { useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
@@ -15,7 +11,7 @@ import {
     TARGET_CLOSED_MARKER,
 } from 'Widgets/modules/Template/config/template'
 
-import { CardEditFormState } from '../../types'
+import type { CardEditFormState } from '../../types'
 import CardEditForm from './CardEditForm'
 import { CardHeaderIcon } from './CardHeaderIcon'
 

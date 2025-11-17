@@ -1,4 +1,4 @@
-import { FormattedProductRecommendationRules } from './format-product-recommendation-rules'
+import type { FormattedProductRecommendationRules } from './format-product-recommendation-rules'
 
 export const getProductStatusData = (
     product: { id: string; tags?: string[]; vendor?: string; status?: string },

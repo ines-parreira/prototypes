@@ -1,10 +1,8 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import {
-    attachmentIsDiscountOffer,
-    AttachmentType,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { AttachmentType } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { attachmentIsDiscountOffer } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 
 export const transformAttachmentsToDiscountOffers = (
     attachments: List<any>,

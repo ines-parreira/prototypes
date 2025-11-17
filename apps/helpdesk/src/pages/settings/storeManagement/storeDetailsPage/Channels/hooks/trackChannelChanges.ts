@@ -1,4 +1,4 @@
-import { ChannelChange, ChannelWithMetadata } from '../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 
 export const trackChannelChanges = (
     assignedChannelIds: number[],

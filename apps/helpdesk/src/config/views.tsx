@@ -1,7 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import { TicketPriority, TicketTag } from '@gorgias/helpdesk-types'
+import type { TicketTag } from '@gorgias/helpdesk-types'
+import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'

@@ -4,7 +4,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { useGetHelpCenterCategoryTree } from 'models/helpCenter/queries'
-import { Category } from 'models/helpCenter/types'
+import type { Category } from 'models/helpCenter/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useHelpCenterArticleTree from '../useHelpCenterArticleTree'

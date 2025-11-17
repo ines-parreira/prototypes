@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 
 import { store } from 'common/store'
 import { TopProductRecommendationTableStats } from 'domains/reporting/pages/automate/aiSalesAgent/components/TopProductRecommendationTableStats'
-import { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
+import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 
 const product = {
     id: 1,

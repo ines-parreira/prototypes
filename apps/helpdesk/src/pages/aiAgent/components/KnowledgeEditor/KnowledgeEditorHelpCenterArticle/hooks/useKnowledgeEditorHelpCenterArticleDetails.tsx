@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import {
+import type {
     HelpCenter,
     LocaleCode,
     VisibilityStatus,
@@ -10,7 +10,7 @@ import {
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
-import { Props as HelpCenterArticleDetailsProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
+import type { Props as HelpCenterArticleDetailsProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 
 type Props = {
     article?: {

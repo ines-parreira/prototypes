@@ -1,11 +1,12 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { DEPRECATED_getActiveCustomer } from 'state/customers/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
-import { WidgetEnvironment, WidgetsState } from './types'
+import type { WidgetEnvironment, WidgetsState } from './types'
 import { itemsWithContext } from './utils'
 
 export const getWidgetsState = (state: RootState): WidgetsState =>

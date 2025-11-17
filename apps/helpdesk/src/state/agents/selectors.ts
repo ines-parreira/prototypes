@@ -1,14 +1,16 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import { User, UserRole } from 'config/types/user'
-import { Agent, Agents, AgentsState } from 'state/agents/types'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
+import type { Agent, Agents, AgentsState } from 'state/agents/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getDisplayName } from 'state/customers/helpers'
-import { CurrentUser, RootState } from 'state/types'
+import type { CurrentUser, RootState } from 'state/types'
 import { createImmutableSelector, makeGetPlainJS } from 'utils'
 
-import {
+import type {
     FeedbackStatus,
     ResourceSection,
 } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'

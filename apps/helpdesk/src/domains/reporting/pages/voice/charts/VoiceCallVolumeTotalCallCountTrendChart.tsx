@@ -1,5 +1,5 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import {
     TOTAL_CALLS_METRIC_HINT,

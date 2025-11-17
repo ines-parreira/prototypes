@@ -1,6 +1,7 @@
-import { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback } from 'react'
 
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'

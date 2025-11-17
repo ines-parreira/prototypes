@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { Banner } from 'pages/common/components/Banner'
 
 import {

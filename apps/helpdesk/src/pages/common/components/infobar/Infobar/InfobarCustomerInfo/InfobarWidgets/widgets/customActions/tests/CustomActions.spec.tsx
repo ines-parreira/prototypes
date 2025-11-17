@@ -3,12 +3,12 @@ import React from 'react'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { CardTemplate } from 'models/widget/types'
+import type { CardTemplate } from 'models/widget/types'
 
 import ActionButtons from '../ActionButtons/ActionButtons'
 import CustomActions from '../index'
 import Links from '../Links/Links'
-import { Action } from '../types'
+import type { Action } from '../types'
 
 jest.mock('../Links/Links', () => jest.fn(() => null))
 jest.mock('../ActionButtons/ActionButtons', () => jest.fn(() => null))

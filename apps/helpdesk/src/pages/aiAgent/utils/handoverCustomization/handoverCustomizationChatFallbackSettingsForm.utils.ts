@@ -1,13 +1,13 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
-import { LanguageChat } from 'constants/languages'
-import { GorgiasChatIntegration } from 'models/integration/types'
-import {
+import type { LanguageChat } from 'constants/languages'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import type {
     HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues,
     HandoverCustomizationChatFallbackSettingsFormValues,
 } from 'pages/aiAgent/types'
-import {
+import type {
     TextsMultiLanguage,
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'

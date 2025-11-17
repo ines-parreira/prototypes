@@ -1,7 +1,7 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import useOrderDates from './hooks/useOrderDates'
 

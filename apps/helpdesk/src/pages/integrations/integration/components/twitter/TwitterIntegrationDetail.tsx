@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
 import {
@@ -20,7 +22,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
-import {
+import type {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'

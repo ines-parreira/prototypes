@@ -1,7 +1,5 @@
-import {
-    LegacyTooltip as Tooltip,
-    LegacyTooltipProps as TooltipProps,
-} from '@gorgias/axiom'
+import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 type Props = {
     id: string

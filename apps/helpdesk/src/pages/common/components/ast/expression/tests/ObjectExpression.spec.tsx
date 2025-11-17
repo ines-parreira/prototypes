@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import ObjectExpression from '../ObjectExpression'
 

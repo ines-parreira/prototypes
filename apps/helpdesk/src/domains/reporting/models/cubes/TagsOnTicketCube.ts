@@ -1,4 +1,4 @@
-import { Cube } from 'domains/reporting/models/types'
+import type { Cube } from 'domains/reporting/models/types'
 
 enum Dimensions {
     TicketId = 'TagsOnTicketEnriched.ticketId',

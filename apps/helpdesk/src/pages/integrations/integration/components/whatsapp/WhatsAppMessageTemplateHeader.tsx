@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 
 import WhatsAppMessageTemplateLine from './WhatsAppMessageTemplateLine'
 

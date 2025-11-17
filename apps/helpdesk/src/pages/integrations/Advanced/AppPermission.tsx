@@ -2,7 +2,7 @@ import { useId } from '@repo/hooks'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { AppOAuthPermission } from 'config/oauthPermissions'
+import type { AppOAuthPermission } from 'config/oauthPermissions'
 
 import css from './AppPermission.less'
 

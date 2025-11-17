@@ -1,8 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as constants from './constants'
-import { InfobarState } from './types'
+import type { InfobarState } from './types'
 
 export const initialState: InfobarState = fromJS({
     _internal: {

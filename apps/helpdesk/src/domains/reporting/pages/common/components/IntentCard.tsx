@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'

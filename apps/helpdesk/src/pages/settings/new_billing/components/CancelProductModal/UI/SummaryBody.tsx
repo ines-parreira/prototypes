@@ -1,8 +1,8 @@
-import { Cadence } from 'models/billing/types'
+import type { Cadence } from 'models/billing/types'
 
 import SummaryLineItem from './SummaryLineItem'
 import SummaryTotal from './SummaryTotal'
-import { SummaryItemData } from './types'
+import type { SummaryItemData } from './types'
 
 import css from './SummaryBody.less'
 

@@ -9,11 +9,9 @@ import {
 import { account } from 'fixtures/account'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatStatusEnum } from 'models/integration/types'
-import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
-import {
-    AccountSettingBusinessHours,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 import { isWellKnownEcomIntegrationIdMisMatch } from '../helpers'
 import * as helpers from '../helpers'

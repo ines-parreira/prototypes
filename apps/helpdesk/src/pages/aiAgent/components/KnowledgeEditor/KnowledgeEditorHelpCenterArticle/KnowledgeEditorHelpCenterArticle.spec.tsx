@@ -4,7 +4,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
-import { InitialArticleMode } from './KnowledgeEditorHelpCenterExistingArticle'
+import type { InitialArticleMode } from './KnowledgeEditorHelpCenterExistingArticle'
 
 jest.mock('./KnowledgeEditorHelpCenterExistingArticle', () => ({
     KnowledgeEditorHelpCenterExistingArticle: ({

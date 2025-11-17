@@ -1,4 +1,5 @@
-import { IntegrationType, ZendeskIntegration } from 'models/integration/types'
+import type { ZendeskIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 import { ImportStatus } from '../types'
 

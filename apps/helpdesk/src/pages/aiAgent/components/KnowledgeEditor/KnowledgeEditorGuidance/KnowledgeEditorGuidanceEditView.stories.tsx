@@ -1,7 +1,8 @@
-import React, { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useState } from 'react'
 
 import { history } from '@repo/routing'
-import { Meta, StoryFn, StoryObj } from '@storybook/react'
+import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'

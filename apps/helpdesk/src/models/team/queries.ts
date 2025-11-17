@@ -1,7 +1,8 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { fetchTeams } from './resources'
-import { FetchTeamsOptions } from './types'
+import type { FetchTeamsOptions } from './types'
 
 const teamQueryKeys = {
     all: () => ['teams'] as const,

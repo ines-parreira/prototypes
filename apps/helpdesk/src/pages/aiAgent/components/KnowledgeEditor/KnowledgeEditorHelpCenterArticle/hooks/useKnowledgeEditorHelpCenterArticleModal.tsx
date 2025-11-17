@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { OptionItem } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
+import type { OptionItem } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 
 export type Resource =
     | {

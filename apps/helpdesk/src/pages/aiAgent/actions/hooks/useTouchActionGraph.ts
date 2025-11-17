@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { produce } from 'immer'
 
-import { ActionsApp } from 'pages/automate/actionsPlatform/types'
+import type { ActionsApp } from 'pages/automate/actionsPlatform/types'
 import {
     getConditionsNodeTouched,
     getGraphAppAppTouched,
@@ -10,7 +10,7 @@ import {
     getHTTPRequestNodeTouched,
     getLLMPromptTriggerNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
     return useCallback(

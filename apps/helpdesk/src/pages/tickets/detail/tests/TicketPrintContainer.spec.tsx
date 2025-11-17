@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'

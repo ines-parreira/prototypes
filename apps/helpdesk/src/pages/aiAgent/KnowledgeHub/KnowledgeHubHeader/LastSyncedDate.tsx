@@ -1,6 +1,6 @@
 import { getFormattedDate } from 'utils/date'
 
-import { GroupedKnowledgeItem } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
@@ -8,7 +9,7 @@ import { useSearch } from 'hooks/useSearch'
 
 import { fetchCustomer } from '../../../state/customers/actions'
 import { fetchTicket } from '../../../state/ticket/actions'
-import { RootState } from '../../../state/types'
+import type { RootState } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
 import { getSourcesWithCustomer } from '../../../state/widgets/selectors'
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'

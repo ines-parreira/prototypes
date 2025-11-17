@@ -1,13 +1,10 @@
-import React, {
+import type {
     ChangeEvent,
-    createRef,
     FunctionComponent,
     ReactChild,
     RefObject,
-    useCallback,
-    useEffect,
-    useState,
 } from 'react'
+import React, { createRef, useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 import _toArray from 'lodash/toArray'

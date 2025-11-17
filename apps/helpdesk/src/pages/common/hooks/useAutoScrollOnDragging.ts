@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useDragDropManager } from 'react-dnd'
-import { Unsubscribe } from 'redux'
+import type { Unsubscribe } from 'redux'
 
 const useAutoScrollOnDragging = (speedRatio = 30) => {
     const [isDragging, setIsDragging] = useState<boolean>(false)

@@ -1,5 +1,5 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     AVERAGE_TALK_TIME_METRIC_HINT,

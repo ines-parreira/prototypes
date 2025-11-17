@@ -3,7 +3,7 @@ import {
     mockBusinessHoursCreate,
     mockBusinessHoursUpdate,
 } from '@gorgias/helpdesk-mocks'
-import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from '../constants'
 import {

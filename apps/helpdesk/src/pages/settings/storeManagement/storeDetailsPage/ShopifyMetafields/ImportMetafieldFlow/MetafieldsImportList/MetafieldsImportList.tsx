@@ -2,12 +2,12 @@ import { useMemo } from 'react'
 
 import cn from 'classnames'
 
+import type { RowSelectionState } from '@gorgias/axiom'
 import {
     Box,
     Button,
     HeaderRowGroup,
     Heading,
-    RowSelectionState,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -16,8 +16,8 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import { Field } from '../../MetafieldsTable/types'
-import { MetafieldCategory } from '../../types'
+import type { Field } from '../../MetafieldsTable/types'
+import type { MetafieldCategory } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { columns } from './Columns'

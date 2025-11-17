@@ -1,10 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import {
-    StoreInformationForm,
-    StoreInformationFormProps,
-} from '../StoreInformationForm'
+import type { StoreInformationFormProps } from '../StoreInformationForm'
+import { StoreInformationForm } from '../StoreInformationForm'
 
 const renderWithRouter = (element: React.ReactElement) => {
     return render(element, { wrapper: BrowserRouter })

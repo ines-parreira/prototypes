@@ -1,4 +1,5 @@
-import React, { HTMLProps, ReactNode } from 'react'
+import type { HTMLProps, ReactNode } from 'react'
+import type React from 'react'
 
 import classNames from 'classnames'
 

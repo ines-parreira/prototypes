@@ -1,6 +1,6 @@
-import { CustomFieldCondition } from '@gorgias/helpdesk-types'
+import type { CustomFieldCondition } from '@gorgias/helpdesk-types'
 
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 
 export function populateConditionalFieldIds(
     accountCustomFieldConditions: CustomFieldCondition[],

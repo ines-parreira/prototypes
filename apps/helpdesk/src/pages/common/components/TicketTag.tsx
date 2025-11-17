@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { UpdateTicketTag } from '@gorgias/helpdesk-types'
+import type { UpdateTicketTag } from '@gorgias/helpdesk-types'
 
 import { Tag } from 'components/Tag/Tag'
 import { isValidColor } from 'utils/colors'

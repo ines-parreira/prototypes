@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -11,9 +11,8 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import checkIsEnterpriseGMV from '../../utils/checkIsEnterpriseGMV'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
-import useIsCancellationAvailable, {
-    useIsCancellationAvailableProps,
-} from '../useIsCancellationAvailable'
+import type { useIsCancellationAvailableProps } from '../useIsCancellationAvailable'
+import useIsCancellationAvailable from '../useIsCancellationAvailable'
 
 jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-import { Category, NonRootCategory } from 'models/helpCenter/types'
+import type { Category, NonRootCategory } from 'models/helpCenter/types'
 import {
     CATEGORY_TREE_MAX_LEVEL,
     HELP_CENTER_ROOT_CATEGORY_ID,

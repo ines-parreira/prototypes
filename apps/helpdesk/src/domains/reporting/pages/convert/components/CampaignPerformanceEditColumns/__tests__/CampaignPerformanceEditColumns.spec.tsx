@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 import { UserRole } from 'config/types/user'
 import { EditTableColumns } from 'domains/reporting/pages/common/components/Table/EditTableColumns'
 import { CampaignPerformanceEditColumns } from 'domains/reporting/pages/convert/components/CampaignPerformanceEditColumns/CampaignPerformanceEditColumns'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)

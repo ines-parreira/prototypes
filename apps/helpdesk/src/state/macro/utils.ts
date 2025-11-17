@@ -1,10 +1,10 @@
 import _forEach from 'lodash/forEach'
 
-import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
+import type { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from '../../models/macroAction/types'
 import { getActionTemplate } from '../../utils'
-import { MacroApiError } from './types'
+import type { MacroApiError } from './types'
 
 export function generateDefaultAction(actionType: MacroActionName) {
     const actionTemplate = getActionTemplate(actionType)

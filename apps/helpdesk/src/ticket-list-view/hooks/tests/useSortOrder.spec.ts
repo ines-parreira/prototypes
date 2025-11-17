@@ -2,7 +2,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import useSortOrder from '../useSortOrder'
 

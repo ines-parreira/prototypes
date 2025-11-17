@@ -1,4 +1,5 @@
-import React, { ContextType } from 'react'
+import type { ContextType } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'

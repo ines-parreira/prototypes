@@ -1,8 +1,8 @@
 import { ProductType } from 'models/billing/types'
-import { ProductSubscriptionDescriptions } from 'pages/settings/new_billing/types'
+import type { ProductSubscriptionDescriptions } from 'pages/settings/new_billing/types'
 import { TaxIdType, VATCountries } from 'state/billing/types'
 
-import { Reason } from './components/CancelAAOModal/CancelAAOModal'
+import type { Reason } from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
 export const BILLING_INTERNAL_PATH = `${BILLING_BASE_PATH}/internal`

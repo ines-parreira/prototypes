@@ -5,11 +5,11 @@ import { Provider } from 'react-redux'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
-    GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
@@ -23,7 +23,7 @@ import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import { HandoverCustomizationChatOnlineSettingsFormValues } from '../../../types'
+import type { HandoverCustomizationChatOnlineSettingsFormValues } from '../../../types'
 import { useAiAgentHandoverConfigurationMutation } from '../useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from '../useFetchAiAgentHandoverConfiguration'
 import { useHandoverCustomizationChatOnlineSettingsForm } from '../useHandoverCustomizationChatOnlineSettingsForm'

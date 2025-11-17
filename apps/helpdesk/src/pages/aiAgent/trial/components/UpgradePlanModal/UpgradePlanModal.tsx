@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -8,7 +9,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { Cadence } from 'models/billing/types'
+import type { Cadence } from 'models/billing/types'
 import {
     ModalBodyWrapper,
     ModalHeaderWrapper,

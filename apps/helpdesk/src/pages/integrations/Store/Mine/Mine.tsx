@@ -12,7 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { fetchInstalledApps } from 'models/integration/resources'
-import { AppListItem } from 'models/integration/types'
+import type { AppListItem } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import { fetchIntegrations } from 'state/integrations/actions'
@@ -20,7 +20,7 @@ import {
     getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
-import { IntegrationListItem } from 'state/integrations/types'
+import type { IntegrationListItem } from 'state/integrations/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

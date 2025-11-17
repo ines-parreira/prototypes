@@ -1,4 +1,5 @@
-import { ComponentProps, useCallback, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import {
     useDebouncedEffect,
@@ -6,7 +7,7 @@ import {
     useEffectOnce,
     usePrevious,
 } from '@repo/hooks'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

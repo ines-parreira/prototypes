@@ -3,10 +3,8 @@ import React, { useMemo, useRef, useState } from 'react'
 import classnames from 'classnames'
 
 import loopReturns from 'assets/img/integrations/loop-returns.png'
-import {
-    ReturnAction,
-    ReturnActionType,
-} from 'models/selfServiceConfiguration/types'
+import type { ReturnAction } from 'models/selfServiceConfiguration/types'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

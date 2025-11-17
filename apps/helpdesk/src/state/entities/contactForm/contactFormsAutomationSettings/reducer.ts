@@ -6,7 +6,7 @@ import {
     contactFormsAutomationSettingsFetched,
 } from 'state/entities/contactForm/contactFormsAutomationSettings/actions'
 
-import { ContactFormsAutomationSettingsState } from './types'
+import type { ContactFormsAutomationSettingsState } from './types'
 
 export const initialState: ContactFormsAutomationSettingsState = {
     automationSettingsByContactFormId: {},

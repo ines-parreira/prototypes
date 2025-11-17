@@ -1,6 +1,6 @@
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
-    Metric,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useHumanResponseTimeAfterAiHandoffMetric,
@@ -36,7 +36,7 @@ import {
     useMessagesSentPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { useMessagesSentPerHourPerAgent } from 'domains/reporting/hooks/useMessagesSentPerHourPerAgent'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     useTicketsClosedPerHour,
     useTicketsClosedPerHourPerAgentTotalCapacity,
@@ -66,13 +66,11 @@ import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/report
 import { oneTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import {
     AVERAGE_RESPONSE_TIME_LABEL,
     CLOSED_TICKETS_PER_HOUR,
@@ -92,14 +90,14 @@ import {
     TICKETS_REPLIED_LABEL,
     ZERO_TOUCH_TICKETS_LABEL,
 } from 'domains/reporting/services/constants'
-import { AgentMetricColumn } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { AgentMetricColumn } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { TableSetting } from 'domains/reporting/state/ui/stats/types'
 import {
     AgentsTableColumn,
     AgentsTableRow,
     AgentsTableViewIdentifier,
-    TableSetting,
 } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import {
     isExtraLargeScreen,
     isMediumOrSmallScreen,

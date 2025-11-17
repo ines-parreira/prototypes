@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { ContactCaptureFormPreview } from '../ContactCaptureFormPreview'
-import { ContactCaptureStepProps } from '../ContactCaptureStep'
+import type { ContactCaptureStepProps } from '../ContactCaptureStep'
 
 jest.mock('../ContactCaptureStep', () => ({
     ContactCaptureStep: ({ onSubmit }: ContactCaptureStepProps) => (

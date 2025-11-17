@@ -1,14 +1,15 @@
-import { LegacyRef, useCallback, useEffect, useRef, useState } from 'react'
+import type { LegacyRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import bytes from 'bytes'
 import classnames from 'classnames'
 import { zip } from 'lodash'
-import FroalaEditorComponentType from 'react-froala-wysiwyg'
+import type FroalaEditorComponentType from 'react-froala-wysiwyg'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { replaceUploadUrls } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
@@ -23,7 +24,7 @@ import {
     HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
     validateFileAttachments,
 } from './HelpCenterEditor.utils'
-import { Editor } from './types'
+import type { Editor } from './types'
 
 import css from './HelpCenterEditor.less'
 

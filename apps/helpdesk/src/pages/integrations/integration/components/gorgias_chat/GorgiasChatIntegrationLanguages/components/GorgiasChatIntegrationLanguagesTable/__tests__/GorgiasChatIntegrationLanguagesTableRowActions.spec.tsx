@@ -1,13 +1,13 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import Modal from 'pages/common/components/modal/Modal'
+import type Modal from 'pages/common/components/modal/Modal'
 
 import { GorgiasChatIntegrationLanguagesTableRowActions } from '../GorgiasChatIntegrationLanguagesTableRowActions'
-import { LanguageItemRow } from '../types'
+import type { LanguageItemRow } from '../types'
 
 jest.mock('pages/common/components/modal/Modal', () => {
     return ({ children, isOpen, onClose }: ComponentProps<typeof Modal>) => (

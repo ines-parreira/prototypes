@@ -1,10 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import {
-    Edit_to_perform,
-    EditOrderAction,
-} from '../../constants/integrations/types/shopify'
+import type { Edit_to_perform } from '../../constants/integrations/types/shopify'
+import { EditOrderAction } from '../../constants/integrations/types/shopify'
 
 /*
     Takes the old payload before modification and the one after modification

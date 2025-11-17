@@ -7,7 +7,7 @@ import {
     mockListAccountSettingsHandler,
     mockListAccountSettingsResponse,
 } from '@gorgias/helpdesk-mocks'
-import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

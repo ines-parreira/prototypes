@@ -1,12 +1,12 @@
-import { AiAgentOnboardingWizardStep, Tag } from 'models/aiAgent/types'
-import { CreateArticleDto, LocaleCode } from 'models/helpCenter/types'
-import {
+import type { AiAgentOnboardingWizardStep, Tag } from 'models/aiAgent/types'
+import type { CreateArticleDto, LocaleCode } from 'models/helpCenter/types'
+import type {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
 } from 'models/integration/types'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
-import { AiAgentChannel, ToneOfVoice } from './constants'
+import type { AiAgentChannel, ToneOfVoice } from './constants'
 
 export type NonNullProperties<T> = {
     [P in keyof T]: NonNullable<T[P]>

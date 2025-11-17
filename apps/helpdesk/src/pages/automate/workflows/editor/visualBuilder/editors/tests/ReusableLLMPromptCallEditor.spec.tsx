@@ -6,7 +6,7 @@ import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGe
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { ReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ReusableLLMPromptCallEditor from '../ReusableLLMPromptCallEditor'

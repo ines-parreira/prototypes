@@ -1,15 +1,15 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { VoiceEventsByAgentCube } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import {
-    VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentFiltersMembers,
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentSegment,
 } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { getTicketPeriodFilters } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { statsFiltersToReportingFilters } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 

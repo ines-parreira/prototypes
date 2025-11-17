@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import colors from '@gorgias/design-tokens/tokens/colors'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
+import type { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
 import type { AnalyticsTheme } from 'domains/reporting/pages/common/theme'
 
 export const chartColorsFallbackTokens = {

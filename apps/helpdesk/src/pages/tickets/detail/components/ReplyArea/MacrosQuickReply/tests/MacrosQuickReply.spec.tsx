@@ -15,7 +15,7 @@ import {
 } from 'fixtures/macro'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosQuickReply } from '../MacrosQuickReply'
 

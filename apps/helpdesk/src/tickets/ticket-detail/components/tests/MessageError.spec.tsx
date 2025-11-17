@@ -6,7 +6,7 @@ import { ActionStatus } from 'models/ticket/types'
 import { getActionTemplate, stripErrorMessage } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
-import { FailedData } from '../../types'
+import type { FailedData } from '../../types'
 import { MessageError } from '../MessageError'
 
 jest.mock('utils', () => ({

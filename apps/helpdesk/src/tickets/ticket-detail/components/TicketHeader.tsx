@@ -1,6 +1,10 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { Ticket, TicketCompact, TicketPriority } from '@gorgias/helpdesk-types'
+import type {
+    Ticket,
+    TicketCompact,
+    TicketPriority,
+} from '@gorgias/helpdesk-types'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'

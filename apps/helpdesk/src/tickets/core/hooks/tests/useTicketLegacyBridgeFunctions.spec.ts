@@ -1,5 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { match as Match, useRouteMatch } from 'react-router'
+import type { match as Match } from 'react-router'
+import { useRouteMatch } from 'react-router'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

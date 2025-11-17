@@ -1,4 +1,5 @@
-import { RefObject, useCallback, useEffect, useMemo, useState } from 'react'
+import type { RefObject } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
@@ -20,16 +21,16 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
+import type {
     KnowledgeResource,
     SuggestedResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTicketState } from 'state/ticket/selectors'
 
 import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
+import type { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 import { getResourceMetadata } from './useEnrichKnowledgeFeedbackData/utils'
 import { knowledgeResourceShouldBeLink } from './utils'
 

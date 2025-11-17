@@ -1,6 +1,6 @@
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
-import { SourceAddress } from 'models/ticket/types'
+import type { SourceAddress } from 'models/ticket/types'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
 import Loader from 'pages/common/components/Loader/Loader'

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router'
 
-import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'

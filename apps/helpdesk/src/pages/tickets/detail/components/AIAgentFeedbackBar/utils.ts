@@ -1,12 +1,12 @@
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
-import {
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
+import type {
     Article,
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
 } from 'models/helpCenter/types'
-import { TicketMessage } from 'models/ticket/types'
-import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type { TicketMessage } from 'models/ticket/types'
+import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { replaceGuidanceVariablesPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidance-variables/utils'
 import { replaceActionPlaceholdersWithLabels } from 'pages/common/draftjs/plugins/guidanceActions/utils'

@@ -1,17 +1,17 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { CombinedState } from 'redux'
-import configureMockStore, { MockGetState } from 'redux-mock-store'
+import type { CombinedState } from 'redux'
+import type { MockGetState } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
-import { RootState, StoreDispatch, StoreState } from 'state/types'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import type { RootState, StoreDispatch, StoreState } from 'state/types'
 
 import { useStore } from '../useStore'
 

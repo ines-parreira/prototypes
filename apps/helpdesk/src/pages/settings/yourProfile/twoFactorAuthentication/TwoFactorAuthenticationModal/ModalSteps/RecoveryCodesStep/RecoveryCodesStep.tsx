@@ -1,17 +1,12 @@
-import React, {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { RecoveryCode } from 'models/twoFactorAuthentication/types'
+import type { RecoveryCode } from 'models/twoFactorAuthentication/types'
 import settingsCss from 'pages/settings/settings.less'
 
 import modalStepsCss from '../ModalSteps.less'

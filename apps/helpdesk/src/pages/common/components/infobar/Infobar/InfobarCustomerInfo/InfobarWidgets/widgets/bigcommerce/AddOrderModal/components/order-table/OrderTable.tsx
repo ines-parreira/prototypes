@@ -1,7 +1,7 @@
 import { Table } from 'reactstrap'
 
-import { OptionSelection } from 'models/integration/resources/bigcommerce'
-import {
+import type { OptionSelection } from 'models/integration/resources/bigcommerce'
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceProductsListType,

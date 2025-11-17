@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import { App } from '../../types'
+import type { App } from '../../types'
 import ActionsPlatformTemplatesFilters from '../ActionsPlatformTemplatesFilters'
 
 describe('<ActionsPlatformTemplatesFilters />', () => {

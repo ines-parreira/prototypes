@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    formatMetricValue,
-    MetricValueFormat,
-} from 'domains/reporting/pages/common/utils'
-import { FormattedTrendDataWithLabel } from 'domains/reporting/services/supportPerformanceReportingService'
+import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
+import type { FormattedTrendDataWithLabel } from 'domains/reporting/services/supportPerformanceReportingService'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 

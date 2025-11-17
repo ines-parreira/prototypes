@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
-import { MetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     getProducts,
     getProductsLoading,
@@ -20,7 +20,7 @@ import {
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { DrillDownReportingQuery } from 'models/job/types'
+import type { DrillDownReportingQuery } from 'models/job/types'
 
 export const useSortedProducts = () => {
     const { sorting } = useAppSelector(getSliceState)

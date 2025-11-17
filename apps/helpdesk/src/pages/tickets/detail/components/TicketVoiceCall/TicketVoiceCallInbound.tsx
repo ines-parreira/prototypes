@@ -1,4 +1,4 @@
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'

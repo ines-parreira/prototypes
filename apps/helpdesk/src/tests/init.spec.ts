@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import * as envUtils from '@repo/utils'
-import { fromJS } from 'immutable'
+import type { fromJS } from 'immutable'
 import { initApp } from 'init'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { GorgiasInitialState, InitialReactQueryState } from 'types'
+import type { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'

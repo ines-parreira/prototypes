@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { isEmpty } from 'lodash'
 
-import {
+import type {
     EmailIntegration as NEW_EmailIntegration,
     GmailIntegration as NEW_GmailIntegration,
 } from '@gorgias/helpdesk-queries'
@@ -11,15 +11,17 @@ import {
     EmailIntegrationDefaultProviderSetting,
     EmailProvider,
 } from 'models/integration/constants'
-import {
-    DNSRecordType,
+import type {
     DomainDNSRecord,
     EmailIntegration,
     GmailIntegration,
     Integration,
+    OutlookIntegration,
+} from 'models/integration/types'
+import {
+    DNSRecordType,
     IntegrationType,
     OutboundVerificationStatusValue,
-    OutlookIntegration,
 } from 'models/integration/types'
 
 import { commonDomains } from './EmailDomainVerification/constants'

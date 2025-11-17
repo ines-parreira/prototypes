@@ -1,10 +1,12 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import isUrl from 'validator/lib/isURL'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ABTest } from 'models/convert/abTest/types'
+import type { ABTest } from 'models/convert/abTest/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -1,9 +1,10 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as constants from './constants'
-import { ChatsState } from './types'
+import type { ChatsState } from './types'
 
 export const initialState: ChatsState = fromJS({
     tickets: [],

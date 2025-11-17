@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { SmartFollowUp } from 'models/ticket/types'
+import type { SmartFollowUp } from 'models/ticket/types'
 import { Pill } from 'pages/settings/conditionalFields/components/ExpressionField/Pill'
 import { getShouldDisplayAllFollowUps } from 'state/ticket/selectors'
 

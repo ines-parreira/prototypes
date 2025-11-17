@@ -1,10 +1,10 @@
-import {
+import type {
     MoneyShopifyMetafield,
     RatingShopifyMetafield,
     VolumeShopifyMetafield,
     WeightShopifyMetafield,
 } from '@gorgias/helpdesk-queries'
-import {
+import type {
     BooleanShopifyMetafield,
     CollectionReferenceListShopifyMetafield,
     CollectionReferenceShopifyMetafield,
@@ -45,28 +45,18 @@ import {
     WeightListShopifyMetafield,
 } from '@gorgias/helpdesk-types'
 
-import {
+import type {
     Address,
     AppliedDiscount,
     CalculatedEditOrder,
     CancelOrderPayload,
-    CancelReason,
     Customer,
-    CustomerState,
     DiscountAllocation,
-    DiscountAllocationMethod,
     DiscountApplication,
-    DiscountApplicationType,
-    DiscountTargetSelection,
-    DiscountTargetType,
-    DiscountType,
     DraftOrder,
     DraftOrderInvoice,
-    DraftStatus,
-    FinancialStatus,
     Image,
     InventoryManagement,
-    InventoryPolicy,
     LineItem,
     Order,
     OrderLineItem,
@@ -75,14 +65,26 @@ import {
     Refund,
     RefundLineItem,
     RefundOrderPayload,
-    RestockType,
     ShippingLine,
     TaxLine,
-    TransactionKind,
     Variant,
 } from '../constants/integrations/types/shopify'
 import {
-    IntegrationDataItem,
+    CancelReason,
+    CustomerState,
+    DiscountAllocationMethod,
+    DiscountApplicationType,
+    DiscountTargetSelection,
+    DiscountTargetType,
+    DiscountType,
+    DraftStatus,
+    FinancialStatus,
+    InventoryPolicy,
+    RestockType,
+    TransactionKind,
+} from '../constants/integrations/types/shopify'
+import type { IntegrationDataItem } from '../models/integration/types'
+import {
     IntegrationDataItemType,
     IntegrationType,
 } from '../models/integration/types'

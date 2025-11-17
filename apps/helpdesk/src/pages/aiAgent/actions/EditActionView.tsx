@@ -32,9 +32,9 @@ import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
@@ -51,7 +51,7 @@ import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
 import { useGuidanceReferenceContext } from './providers/GuidanceReferenceContext'
 import StoreAppsProvider from './providers/StoreAppsProvider'
-import { StoreWorkflowsConfiguration } from './types'
+import type { StoreWorkflowsConfiguration } from './types'
 
 import css from './CreateActionView.less'
 

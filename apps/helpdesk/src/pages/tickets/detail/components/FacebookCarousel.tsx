@@ -6,7 +6,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import Group from 'pages/common/components/layout/Group'
 import Slider from 'utils/wrappers/Slider'
 
-import { FacebookCarouselTemplate } from '../../../../models/ticket/types'
+import type { FacebookCarouselTemplate } from '../../../../models/ticket/types'
 
 import css from './FacebookCarousel.less'
 

@@ -13,7 +13,7 @@ import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormC
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { buildSDKMocks } from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'

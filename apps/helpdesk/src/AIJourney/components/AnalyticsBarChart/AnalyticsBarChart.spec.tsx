@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
 import { AnalyticsBarChart } from './AnalyticsBarChart'
 

@@ -1,12 +1,13 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import MockDate from 'mockdate'
 
-import { Macro, MacroAction } from '@gorgias/helpdesk-queries'
+import type { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import {
     useBulkArchiveMacros,
@@ -17,11 +18,11 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import type ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
 
-import { MacroEdit } from '../MacroEdit'
+import type { MacroEdit } from '../MacroEdit'
 import MacroModal from '../MacroModal'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

@@ -1,4 +1,4 @@
-import MockAdapter from 'axios-mock-adapter'
+import type MockAdapter from 'axios-mock-adapter'
 
 import {
     AIArticlesEmptyListFixture,
@@ -21,7 +21,7 @@ import {
     ShopifyPagesGeneric500ErrorFixture,
     ShopifyPagesListFixture,
 } from '../fixtures/shopifyPage'
-import * as helpCenterResourceMethods from '../resources'
+import type * as helpCenterResourceMethods from '../resources'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'
 export const mockResourceServerReplies = (

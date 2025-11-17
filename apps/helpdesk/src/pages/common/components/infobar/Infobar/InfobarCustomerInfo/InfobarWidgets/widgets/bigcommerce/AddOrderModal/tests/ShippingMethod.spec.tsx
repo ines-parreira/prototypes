@@ -1,10 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { renderHook, userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import {
     bigCommerceCartFixture,

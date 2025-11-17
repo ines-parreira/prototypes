@@ -1,10 +1,6 @@
-import React, {
-    ForwardedRef,
-    forwardRef,
-    useImperativeHandle,
-    useMemo,
-    useState,
-} from 'react'
+import type { ForwardedRef } from 'react'
+import type React from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { Map } from 'immutable'
@@ -12,20 +8,23 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     GorgiasChatInstallationVisibility,
     GorgiasChatInstallationVisibilityCondition,
+    GorgiasChatMetaInstallation,
+} from 'models/integration/types'
+import {
     GorgiasChatInstallationVisibilityConditionOperator,
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,
-    GorgiasChatMetaInstallation,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import GorgiasChatIntegrationVisibilityCondition from './GorgiasChatIntegrationVisibilityCondition'
-import validateUrl, { UrlValidationResult } from './utils/validateUrl'
+import type { UrlValidationResult } from './utils/validateUrl'
+import validateUrl from './utils/validateUrl'
 
 import css from './GorgiasChatIntegrationVisibilityControls.less'
 

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 import { render, screen } from '@testing-library/react'
@@ -10,8 +11,8 @@ import thunk from 'redux-thunk'
 import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
-import RestrictedPage from 'pages/common/components/RestrictedPage'
-import { RootState, StoreDispatch } from 'state/types'
+import type RestrictedPage from 'pages/common/components/RestrictedPage'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { rootWithUserRoleRequired } from '../withUserRoleRequired'
 

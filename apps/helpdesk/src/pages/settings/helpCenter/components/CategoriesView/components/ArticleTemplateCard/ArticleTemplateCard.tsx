@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ArticleTemplate } from 'models/helpCenter/types'
+import type { ArticleTemplate } from 'models/helpCenter/types'
 
 import { ArticleTemplateModal } from '../ArticleTemplateModal/ArticleTemplateModal'
 import { ARTICLE_TEMPLATE_CATEGORIES } from './constants'

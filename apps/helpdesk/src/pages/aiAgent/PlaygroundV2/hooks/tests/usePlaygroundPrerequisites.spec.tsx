@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 
 import { usePlaygroundPrerequisites } from '../usePlaygroundPrerequisites'
 

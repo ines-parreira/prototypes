@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useListABTests } from 'models/convert/abTest/queries'
-import {
+import type {
     ABTest,
     ABTestListOptions as ABTestListOptionsParams,
 } from 'models/convert/abTest/types'
@@ -15,7 +15,7 @@ import UpdateReportLinkModal from 'pages/convert/abTests/components/UpdateReport
 import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 

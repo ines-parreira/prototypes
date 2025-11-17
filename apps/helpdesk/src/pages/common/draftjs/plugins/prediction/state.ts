@@ -1,4 +1,4 @@
-import { SelectionState } from 'draft-js'
+import type { SelectionState } from 'draft-js'
 
 type State<T> = {
     current: T | null

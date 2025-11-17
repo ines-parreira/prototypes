@@ -5,9 +5,9 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
 

@@ -4,12 +4,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    CustomField,
-    queryKeys,
-    UpdateCustomField,
-    useUpdateCustomField,
-} from '@gorgias/helpdesk-queries'
+import type { CustomField, UpdateCustomField } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateCustomField } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AutomateSavingsCard } from '../AutomateSavingsCard'

@@ -1,6 +1,7 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { eventMaker } from './types'
+import type { eventMaker } from './types'
 
 const rechargeEvent = ({
     integration,

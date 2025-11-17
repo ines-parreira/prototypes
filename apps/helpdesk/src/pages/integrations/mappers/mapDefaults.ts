@@ -1,4 +1,4 @@
-import { AppDetail, Category } from 'models/integration/types/app'
+import type { AppDetail, Category } from 'models/integration/types/app'
 
 export const DEFAULT_VALUES = {
     title: 'App name',

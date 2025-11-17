@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { useCustomFieldsTicketCount } from 'domains/reporting/hooks/metricsPerCustomField'
 import { useTicketsDistribution } from 'domains/reporting/hooks/ticket-insights/useTicketsDistribution'
-import { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,
@@ -17,7 +17,7 @@ import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

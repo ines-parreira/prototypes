@@ -1,6 +1,6 @@
 import { ListItem, SelectField } from '@gorgias/axiom'
 
-import { VoiceMessageTextToSpeech } from 'models/integration/types'
+import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { GENDER_OPTIONS, LANGUAGE_OPTIONS } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'

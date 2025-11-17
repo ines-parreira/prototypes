@@ -14,7 +14,8 @@ import {
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
 import { useNotify } from 'hooks/useNotify'
 import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
-import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
 
 import MonitorCallButton from './MonitorCallButton'

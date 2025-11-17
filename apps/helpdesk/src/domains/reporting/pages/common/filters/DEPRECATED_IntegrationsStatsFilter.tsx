@@ -1,4 +1,5 @@
-import React, { ComponentProps, useCallback, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import aircallIcon from 'assets/img/integrations/aircall.png'
 import gmailIcon from 'assets/img/integrations/gmail.png'
@@ -6,7 +7,7 @@ import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
 import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/IntegrationsStatsFilter.less'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
@@ -17,7 +18,7 @@ import {
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
     IntegrationType,
 } from 'models/integration/constants'
-import { AppIntegration, Integration } from 'models/integration/types'
+import type { AppIntegration, Integration } from 'models/integration/types'
 
 export const IMAGE_ICONS = {
     [IntegrationType.Aircall]: aircallIcon,

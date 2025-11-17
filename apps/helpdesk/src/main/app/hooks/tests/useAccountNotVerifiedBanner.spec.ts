@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
+import type { ContextBanner } from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { resendVerificationEmail } from 'state/currentAccount/actions'

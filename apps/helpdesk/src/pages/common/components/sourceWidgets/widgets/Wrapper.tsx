@@ -1,9 +1,11 @@
-import React, { useContext } from 'react'
+import type React from 'react'
+import { useContext } from 'react'
 
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { isSourceRecord, Source, WrapperTemplate } from 'models/widget/types'
+import type { Source, WrapperTemplate } from 'models/widget/types'
+import { isSourceRecord } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { getIntegrationById } from 'state/integrations/selectors'

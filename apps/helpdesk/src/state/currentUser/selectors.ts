@@ -1,18 +1,17 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { DEFAULT_PREFERENCES } from 'config'
-import { UserSetting, UserSettingType } from 'config/types/user'
-import {
-    DateAndTimeFormatting,
-    DateFormatType,
-    TimeFormatType,
-} from 'constants/datetime'
+import type { UserSetting } from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
+import type { DateAndTimeFormatting } from 'constants/datetime'
+import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import { createImmutableSelector } from 'utils'
 import { getDateAndTimeFormat } from 'utils/datetime'
 
-import { RootState } from '../types'
-import { CurrentUserState } from './types'
+import type { RootState } from '../types'
+import type { CurrentUserState } from './types'
 
 //$TsFixMe replace with getViews selector once state/views/selectors are migrated
 const typeSafeGetViews = (state: RootState) =>

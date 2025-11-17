@@ -4,11 +4,11 @@ import moment from 'moment/moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     CouponSummary,
-    SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
+import { SubscriptionStatus } from 'models/billing/types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'

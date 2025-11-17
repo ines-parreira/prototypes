@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fromJS } from 'immutable'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { PaywallConfig } from 'config/paywalls'
+import type { PaywallConfig } from 'config/paywalls'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -16,9 +16,9 @@ import {
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import { Product, ProductType } from 'models/billing/types'
+import type { Product, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import FeaturePaywall from '../FeaturePaywall'

@@ -1,6 +1,6 @@
 import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
-import { SavedFilterAPI } from 'domains/reporting/models/stat/types'
+import type { SavedFilterAPI } from 'domains/reporting/models/stat/types'
 import { fromApiFormatted } from 'domains/reporting/pages/common/filters/helpers'
 
 export const useSavedFilterById = (savedFilterId: number) => {

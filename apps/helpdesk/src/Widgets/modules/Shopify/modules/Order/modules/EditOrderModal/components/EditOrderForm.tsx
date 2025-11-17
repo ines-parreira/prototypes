@@ -1,7 +1,8 @@
-import React, { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import { Col, Container, FormText, Row } from 'reactstrap'
 

@@ -1,11 +1,12 @@
-import React, { Component, SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import { Badge } from '@gorgias/axiom'
 
-import { Member } from 'models/team/types'
+import type { Member } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'

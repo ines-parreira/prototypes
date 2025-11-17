@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { triggerWidthResize } from '@repo/testing'
 import { render, screen } from '@testing-library/react'

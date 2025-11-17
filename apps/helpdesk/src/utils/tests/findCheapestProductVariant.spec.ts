@@ -1,4 +1,4 @@
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { findCheapestProductVariant } from 'utils/findCheapestProductVariant'
 
 describe('findCheapestProductVariant', () => {

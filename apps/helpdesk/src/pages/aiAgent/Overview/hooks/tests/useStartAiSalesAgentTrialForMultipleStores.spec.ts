@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useStartAiSalesAgentTrialForMultipleStores } from '../useStartAiSalesAgentTrialForMultipleStores'

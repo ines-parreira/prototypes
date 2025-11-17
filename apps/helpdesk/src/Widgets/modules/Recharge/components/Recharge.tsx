@@ -1,10 +1,8 @@
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import Template, {
-    CustomizationContext,
-    TemplateCustomization,
-} from 'Widgets/modules/Template'
+import type { TemplateCustomization } from 'Widgets/modules/Template'
+import Template, { CustomizationContext } from 'Widgets/modules/Template'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
-import { WidgetProps } from 'Widgets/modules/Widget'
+import type { WidgetProps } from 'Widgets/modules/Widget'
 
 import { formatRechargeDateTime } from '../helpers/formatRechargeDateTime'
 import { chargeCustomization } from './Charge'

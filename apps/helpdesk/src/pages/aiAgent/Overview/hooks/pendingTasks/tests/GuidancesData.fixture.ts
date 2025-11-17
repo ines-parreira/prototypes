@@ -1,6 +1,6 @@
-import { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { GuidancesData } from '../useFetchGuidancesData'
+import type { GuidancesData } from '../useFetchGuidancesData'
 
 type AllKeys = keyof GuidancesDataFixture
 type ConfiguredGuidancesDataFixture<

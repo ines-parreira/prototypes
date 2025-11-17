@@ -1,6 +1,7 @@
-import React, { FC, ReactNode, SyntheticEvent } from 'react'
+import type { FC, ReactNode, SyntheticEvent } from 'react'
+import React from 'react'
 
-import { LegacyButtonIntent } from '@gorgias/axiom'
+import type { LegacyButtonIntent } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getFacebookRedirectUri } from 'state/integrations/selectors'

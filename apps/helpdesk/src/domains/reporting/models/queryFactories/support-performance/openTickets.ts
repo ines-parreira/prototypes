@@ -1,15 +1,13 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -18,7 +16,7 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { subtractDaysFromDate } from 'utils/date'
 
 export const OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST = 180

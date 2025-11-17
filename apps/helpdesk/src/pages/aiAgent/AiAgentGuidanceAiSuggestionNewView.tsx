@@ -4,14 +4,14 @@ import { Redirect } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 import { useGuidanceAiSuggestions } from './hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
-import { GuidanceFormFields } from './types'
+import type { GuidanceFormFields } from './types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 import css from './AiAgentGuidanceContainer.less'

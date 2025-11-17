@@ -1,11 +1,9 @@
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
 
-import {
-    InfluencedOrderData,
-    useFetchInfluencedOrders,
-} from './useFetchInfluencedOrders'
+import type { InfluencedOrderData } from './useFetchInfluencedOrders'
+import { useFetchInfluencedOrders } from './useFetchInfluencedOrders'
 
 export const useFetchInfluencedOrdersForCurrentTicket = (): {
     influencedOrders: UseQueryResult<InfluencedOrderData[]>

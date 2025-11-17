@@ -1,12 +1,14 @@
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { User, UserRole } from 'config/types/user'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
-import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
 import {

@@ -1,7 +1,9 @@
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
@@ -25,10 +27,11 @@ import {
 import * as actions from 'state/currentAccount/actions'
 import * as constants from 'state/currentAccount/constants'
 import { initialState } from 'state/currentAccount/reducers'
-import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
+import type { AccountSetting } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 type MockedRootState = {
     currentAccount: Map<any, any>

@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
-import { ShopifyMetafield } from '@gorgias/helpdesk-types'
+import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import {
     Metafield,

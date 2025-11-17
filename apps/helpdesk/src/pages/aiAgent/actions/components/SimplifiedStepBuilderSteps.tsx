@@ -1,6 +1,7 @@
-import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
+import type { Dispatch } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import { Node } from '@xyflow/react'
+import type { Node } from '@xyflow/react'
 import _isEqual from 'lodash/isEqual'
 
 import {
@@ -11,29 +12,30 @@ import {
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import {
     getActionsAppFromTemplateApp,
     getGraphAppFromTemplateApp,
 } from 'pages/automate/actionsPlatform/utils'
 import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
-import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import type { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {
     getReusableLLMPromptCallNodeStatuses,
     walkVisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
-    isReusableLLMPromptCallNodeType,
+import type {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
-import { StepListItem, StepListItemProps } from './StepListItem'
+import type { StepListItemProps } from './StepListItem'
+import { StepListItem } from './StepListItem'
 
 import css from './SimplifiedStepBuilderSteps.less'
 

@@ -1,22 +1,20 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
-    AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
     AiSalesAgentConversationsFilterMember,
     AiSalesAgentConversationsMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
     ProductRecommendation,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import type { AiSalesAgentOrderCustomersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
+import { AiSalesAgentOrderCustomersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
+import type { ConvertTrackingEventsCube } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import {
-    AiSalesAgentOrderCustomersCube,
-    AiSalesAgentOrderCustomersMeasure,
-} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
-import {
-    ConvertTrackingEventsCube,
     ConvertTrackingEventsDimension,
     ConvertTrackingEventsMeasure,
 } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
@@ -27,11 +25,9 @@ import {
     aiSalesAgentOrdersDefaultFiltersMembers,
     clicksDefaultFilters,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,

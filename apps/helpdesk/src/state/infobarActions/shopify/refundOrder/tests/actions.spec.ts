@@ -1,7 +1,9 @@
-import { AnyAction } from '@reduxjs/toolkit'
+import type { AnyAction } from '@reduxjs/toolkit'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { initRefundOrderLineItems } from '../../../../../business/shopify/order'
@@ -12,7 +14,7 @@ import {
 } from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
 import { IntegrationType } from '../../../../../models/integration/types'
-import { StoreDispatch } from '../../../../types'
+import type { StoreDispatch } from '../../../../types'
 import * as actions from '../../refundOrder/actions'
 import { initialState } from '../reducers'
 

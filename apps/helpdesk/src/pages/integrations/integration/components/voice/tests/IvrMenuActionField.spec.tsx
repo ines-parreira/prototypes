@@ -5,14 +5,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
+import type {
     IvrForwardCallMenuAction,
     IvrMenuAction,
-    IvrMenuActionType,
     IvrPlayVoiceMessageAction,
     IvrSendToSmsMenuAction,
-    VoiceMessageType,
 } from 'models/integration/types'
+import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import IvrMenuActionField from '../IvrMenuActionField'

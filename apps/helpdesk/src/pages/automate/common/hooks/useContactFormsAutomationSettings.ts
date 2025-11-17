@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ContactFormAutomationSettings } from 'models/contactForm/types'
+import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {
     contactFormsAutomationSettingsFetched,

@@ -1,6 +1,6 @@
-import { ExpressionFieldType } from '@gorgias/helpdesk-types'
+import type { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
-import { CustomField, CustomFieldState } from 'custom-fields/types'
+import type { CustomField, CustomFieldState } from 'custom-fields/types'
 
 import { isCustomFieldValueEmpty } from './isCustomFieldValueEmpty'
 import { isFieldRequired } from './isFieldRequired'

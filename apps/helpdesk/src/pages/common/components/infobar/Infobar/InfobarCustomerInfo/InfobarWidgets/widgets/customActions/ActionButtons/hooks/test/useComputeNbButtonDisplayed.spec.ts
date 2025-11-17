@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import { Button } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import type { Button } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import { useComputeNbButtonDisplayed } from '../useComputeNbButtonDisplayed'
 

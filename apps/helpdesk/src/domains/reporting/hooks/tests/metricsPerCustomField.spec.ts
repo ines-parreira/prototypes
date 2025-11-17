@@ -17,8 +17,8 @@ import {
     customFieldsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
-    StatsFilters,
     TagFilterInstanceId,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

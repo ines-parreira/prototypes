@@ -1,5 +1,5 @@
+import type { CountryCode } from 'libphonenumber-js'
 import parsePhoneNumber, {
-    CountryCode,
     formatIncompletePhoneNumber,
     getCountryCallingCode,
     isValidPhoneNumber,
@@ -12,22 +12,23 @@ import {
     PHONE_TYPE_LABELS,
     phoneCountryConfig,
 } from 'business/twilio'
-import { State, states } from 'config/states'
+import type { State } from 'config/states'
+import { states } from 'config/states'
 import { IntegrationType } from 'models/integration/types'
-import {
+import type {
     CountryPhoneCapabilities,
     NewPhoneNumber,
     OldPhoneNumber,
     PhoneCapabilities,
     PhoneConnection,
-    PhoneConnectionType,
     PhoneCountry,
     PhoneNumber,
     PhoneType,
     TwilioPhoneConnection,
     WhatsAppPhoneConnection,
 } from 'models/phoneNumber/types'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import { PhoneConnectionType } from 'models/phoneNumber/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import { PHONE_NUMBER_TYPEFORM_URL } from './constants'
 

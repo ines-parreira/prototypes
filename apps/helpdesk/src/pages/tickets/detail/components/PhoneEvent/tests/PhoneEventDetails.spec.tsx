@@ -3,13 +3,14 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { user } from 'fixtures/users'
-import { Account } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Account } from 'state/currentAccount/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import PhoneEventDetails from '../PhoneEventDetails'
 

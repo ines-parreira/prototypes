@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual'
 
-import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 import { GoalOption } from './constants'
 import Goal from './Goal'

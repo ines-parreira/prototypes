@@ -1,4 +1,5 @@
-import { User, UserSettingType } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
 import { ADMIN_ROLE } from 'config/user'
 import { DateFormatType, TimeFormatType } from 'constants/datetime'
 

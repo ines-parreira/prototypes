@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { Meta } from 'models/ticket/types'
+import type { Meta } from 'models/ticket/types'
 
 import { SourceDetailsInfo } from '../SourceDetailsInfo'
 

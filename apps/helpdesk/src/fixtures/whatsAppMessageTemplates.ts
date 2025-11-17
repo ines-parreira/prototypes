@@ -1,5 +1,5 @@
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import {
-    WhatsAppMessageTemplate,
     WhatsAppMessageTemplateCategory,
     WhatsAppMessageTemplateStatus,
 } from 'models/whatsAppMessageTemplates/types'

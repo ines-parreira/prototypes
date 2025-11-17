@@ -1,4 +1,4 @@
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 

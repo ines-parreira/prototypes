@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     GorgiasChatIntegration,
-    IntegrationType,
     StoreIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

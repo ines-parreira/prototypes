@@ -2,11 +2,10 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
-import useSelfServiceHelpCenterChannels, {
-    SelfServiceHelpCenterChannel,
-} from '../useSelfServiceHelpCenterChannels'
+import type { SelfServiceHelpCenterChannel } from '../useSelfServiceHelpCenterChannels'
+import useSelfServiceHelpCenterChannels from '../useSelfServiceHelpCenterChannels'
 import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
 
 const mockHelpCenter = {

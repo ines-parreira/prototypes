@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { message } from 'models/ticket/tests/mocks'

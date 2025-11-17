@@ -1,12 +1,14 @@
-import React, {
-    Children,
+import type {
     ComponentProps,
     ComponentType,
-    createContext,
     KeyboardEvent,
     MouseEvent,
     ReactElement,
     ReactNode,
+} from 'react'
+import React, {
+    Children,
+    createContext,
     useCallback,
     useContext,
     useEffect,

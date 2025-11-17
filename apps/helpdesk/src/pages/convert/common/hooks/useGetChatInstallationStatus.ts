@@ -2,10 +2,8 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import {
-    GorgiasChatInstallationMethod,
-    GorgiasChatIntegration,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { GorgiasChatInstallationMethod } from 'models/integration/types'
 
 /*
  * This hook is used to determine the installation status of the chat integration.

@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 
-import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd'
+import type { DropTargetMonitor } from 'react-dnd'
+import { useDrag, useDrop } from 'react-dnd'
 
 export type DragItemRequired = {
     type: string

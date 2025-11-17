@@ -14,7 +14,7 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { IntegrationType } from 'models/integration/constants'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { useAIArticlePublishedPreviewUrl } from '../../hooks/useAIArticlePublishedPreviewUrl'
 import { useAIArticleRecommendationItems } from '../../hooks/useAIArticleRecommendationItems'

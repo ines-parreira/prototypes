@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { history } from '@repo/routing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,7 +10,7 @@ import {
     useGetCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
-import {
+import type {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
@@ -32,12 +33,12 @@ import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
 } from '../../../common/constants'
-import { ConvertRouteCampaignDetailParams } from '../../../common/types'
+import type { ConvertRouteCampaignDetailParams } from '../../../common/types'
 import { useCreateCampaign } from '../../hooks/useCreateCampaign'
 import { useDeleteCampaign } from '../../hooks/useDeleteCampaign'
 import { useUpdateCampaign } from '../../hooks/useUpdateCampaign'
 import { CampaignDetailsForm } from '../../providers/CampaignDetailsForm'
-import { Campaign } from '../../types/Campaign'
+import type { Campaign } from '../../types/Campaign'
 import { chatIsShopifyStore } from '../../utils/chatIsShopifyStore'
 import { duplicateCampaign } from '../../utils/duplicateCampaign'
 import { BaseCampaignDetails } from '../BaseCampaignDetails'

@@ -15,7 +15,7 @@ import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
-import { Notification } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
 
 import WorkflowAnalytics from './WorkflowAnalytics'
 import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'

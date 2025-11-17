@@ -1,9 +1,9 @@
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
 import type { User } from 'config/types/user'
-import { HttpMethod } from 'models/api/types'
+import type { HttpMethod } from 'models/api/types'
 import type { Team } from 'models/team/types'
-import { ApplyExternalTemplateActionArguments } from 'models/whatsAppMessageTemplates/types'
+import type { ApplyExternalTemplateActionArguments } from 'models/whatsAppMessageTemplates/types'
 
 // partial sync with g/utils/action/constants.py
 export enum MacroActionName {

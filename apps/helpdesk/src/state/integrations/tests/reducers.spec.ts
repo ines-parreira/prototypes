@@ -1,13 +1,14 @@
-import { fromJS, Map, Seq } from 'immutable'
+import type { Map, Seq } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { integrationsState } from '../../../fixtures/integrations'
+import type { EmailMigrationInboundVerification } from '../../../models/integration/types'
 import {
-    EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../models/integration/types'
-import { RootState } from '../../types'
+import type { RootState } from '../../types'
 import * as types from '../constants'
 import reducer, { initialState } from '../reducers'
 import {

@@ -2,14 +2,14 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     Article,
     ArticleTranslationWithRating,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {
+import type {
     ActionType,
     OptionItem,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
@@ -42,10 +42,10 @@ import { AddMissingKnowledgeCheckbox } from './AddMissingKnowledgeCheckbox'
 import { HelpCenterArticleDeleteModal } from './HelpCenterArticleDeleteModal'
 import { HelpCenterArticleDiscardModal } from './HelpCenterArticleDiscardModal'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import type { SuggestedResourceValue } from './types'
 import {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgePendingCloseType,
-    SuggestedResourceValue,
 } from './types'
 import { getHelpCenterArticleUrl } from './utils'
 

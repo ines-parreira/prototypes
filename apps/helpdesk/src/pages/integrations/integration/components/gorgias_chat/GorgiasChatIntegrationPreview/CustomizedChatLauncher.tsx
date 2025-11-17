@@ -5,9 +5,9 @@ import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgi
 import { useFlag } from 'core/flags'
 import { THEME_NAME } from 'core/theme'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import type { GorgiasChatPosition } from 'models/integration/types'
 import {
     GorgiasChatLauncherType,
-    GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'

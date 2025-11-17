@@ -1,10 +1,12 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
+import type { GorgiasChatInstallationVisibility } from 'models/integration/types'
 import {
-    GorgiasChatInstallationVisibility,
     GorgiasChatInstallationVisibilityConditionOperator,
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,

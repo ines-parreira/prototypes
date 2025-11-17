@@ -1,6 +1,8 @@
-import {
+import type {
     MetricWithBreakdown,
     MetricWithDecile,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import {
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
 } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -9,11 +11,9 @@ import {
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import {
-    StatsFilters,
-    TicketTimeReference,
-} from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TicketTimeReference } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useCustomFieldsTicketCount = (
     statsFilters: StatsFilters,

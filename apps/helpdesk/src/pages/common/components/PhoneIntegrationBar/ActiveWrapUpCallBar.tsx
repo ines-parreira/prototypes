@@ -1,11 +1,12 @@
-import { ReactNode, useEffect } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 
 import socketManager from 'services/socketManager'
-import {
+import type {
     ServerMessage,
-    SocketEventType,
     VoiceCallWrapUpTimeEndedEvent,
 } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 
 import PhoneBarContainer from './PhoneBarContainer/PhoneBarContainer'
 

@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import { Notification as ReapopNotification } from 'reapop'
+import type { Notification as ReapopNotification } from 'reapop'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { isAlertNotification } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 function getNotifications(state: RootState) {
     return state.notifications

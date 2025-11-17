@@ -1,13 +1,13 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import {
-    HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
     HelpdeskCustomerMessagesReceivedEnrichedMeasure,
     HelpdeskCustomerMessagesReceivedEnrichedMember,
 } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
@@ -21,7 +21,7 @@ import {
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const messagesReceivedQueryFactory = (
     filters: StatsFilters,

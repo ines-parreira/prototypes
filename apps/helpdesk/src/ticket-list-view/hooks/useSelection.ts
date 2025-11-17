@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { TicketCompact } from '../types'
+import type { TicketCompact } from '../types'
 
 export default function useSelection(tickets: TicketCompact[]) {
     const [hasSelectedAll, setHasSelectedAll] = useState(false)

@@ -1,4 +1,4 @@
-import { Components, Paths } from 'rest_api/migration_api/client.generated'
+import type { Components, Paths } from 'rest_api/migration_api/client.generated'
 
 interface ImportArticlesModalStateNoFileSelected {
     state: 'NO_FILE_SELECTED'

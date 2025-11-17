@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'

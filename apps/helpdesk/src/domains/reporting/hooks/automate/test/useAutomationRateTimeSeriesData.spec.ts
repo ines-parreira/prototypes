@@ -12,10 +12,10 @@ import {
     fetchAutomationRateTimeSeriesData,
     useAutomationRateTimeSeriesData,
 } from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
-import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
 

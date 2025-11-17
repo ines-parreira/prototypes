@@ -1,4 +1,5 @@
-import { Action, ActionSchema } from './components/Action'
+import type { ActionSchema } from './components/Action'
+import { Action } from './components/Action'
 
 import css from './TableActions.less'
 

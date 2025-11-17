@@ -1,9 +1,10 @@
-import { ComponentProps, useEffect } from 'react'
+import type { ComponentProps } from 'react'
+import { useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import {
     canMonitorCall,
@@ -12,8 +13,9 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import { Customer } from 'models/customer/types'
-import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import type { Customer } from 'models/customer/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import { VoiceCallRecordingType } from 'models/voiceCall/types'
 import {
     getInCallAgentId,
     isFinalVoiceCallStatus,

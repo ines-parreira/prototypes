@@ -1,5 +1,5 @@
 import { history } from '@repo/routing'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { IntegrationType } from 'models/integration/constants'
 

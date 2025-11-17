@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 
 import { TranslationsPreviewProvider } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
@@ -28,9 +28,8 @@ import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/S
 import SkipChargeEditor from './editors/SkipChargeEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
 import UpdateShippingAddressEditor from './editors/UpdateShippingAddressEditor'
-import NodeEditorDrawerContext, {
-    NodeEditorDrawerContextType,
-} from './NodeEditorDrawerContext'
+import type { NodeEditorDrawerContextType } from './NodeEditorDrawerContext'
+import NodeEditorDrawerContext from './NodeEditorDrawerContext'
 
 import css from './NodeEditorDrawer.less'
 

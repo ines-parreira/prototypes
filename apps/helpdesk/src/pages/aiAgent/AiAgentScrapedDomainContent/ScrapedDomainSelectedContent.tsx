@@ -8,10 +8,10 @@ import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
-import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import useFlag from 'core/flags/hooks/useFlag'
-import { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
-import { ArticleWithLocalTranslation } from 'models/helpCenter/types'
+import type { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
+import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
@@ -20,17 +20,14 @@ import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithToo
 import IconInput from 'pages/common/forms/input/IconInput'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
-import {
-    CONTENT_TYPE,
-    IngestedResourceStatus,
-    MODAL_TRANSITION_DURATION_MS,
-} from './constant'
+import type { IngestedResourceStatus } from './constant'
+import { CONTENT_TYPE, MODAL_TRANSITION_DURATION_MS } from './constant'
 import IngestionProductView from './IngestionProductView'
 import IntegrationProductView from './IntegrationProductView'
 import ProductAdditionalInfoView from './ProductAdditionalInfoView'
 import ScrapedDomainQuestion from './ScrapedDomainQuestion'
 import ScrapedDomainSelectedModal from './ScrapedDomainSelectedModal'
-import {
+import type {
     BaseArticle,
     IngestedProduct,
     IngestedResourceWithArticleId,

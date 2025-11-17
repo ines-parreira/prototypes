@@ -1,13 +1,12 @@
-import { CreateArticleDto } from 'models/helpCenter/types'
+import type { CreateArticleDto } from 'models/helpCenter/types'
 
-import {
+import type {
     ArticleModeModified,
     ArticleModeNew,
     ArticleModeUnchangedNotPublished,
     ArticleModeUnchangedPublished,
-    canDelete,
-    getArticleMode,
 } from '../articleMode'
+import { canDelete, getArticleMode } from '../articleMode'
 
 const mockedUpdateArticle = jest.fn()
 const mockedDeleteArticle = jest.fn()

@@ -1,16 +1,16 @@
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
-import { User } from 'config/types/user'
-import {
+import type { User } from 'config/types/user'
+import type {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { SatisfactionSurveysDimension } from 'domains/reporting/models/scopes/satisfactionSurveys'
+import type { SatisfactionSurveysDimension } from 'domains/reporting/models/scopes/satisfactionSurveys'
 import { NOT_AVAILABLE_TEXT } from 'domains/reporting/pages/common/utils'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 const DATASET_VISIBILITY_ITEMS = 3
 const TOP_AMOUNT = 10

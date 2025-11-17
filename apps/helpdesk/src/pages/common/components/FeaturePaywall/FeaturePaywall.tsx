@@ -7,13 +7,14 @@ import {
     getIsCurrentHelpdeskCustom,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
-import {
+import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 import { getCheapestPriceNameForFeature } from 'utils/paywalls'
 
-import Paywall, { PaywallTheme, UpgradeType } from '../Paywall/Paywall'
+import type { PaywallTheme } from '../Paywall/Paywall'
+import Paywall, { UpgradeType } from '../Paywall/Paywall'
 
 type Props = {
     feature: AccountFeature

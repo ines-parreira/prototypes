@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 import { Badge } from '@gorgias/axiom'
 import { useListAccountSettings } from '@gorgias/helpdesk-queries'
-import {
+import type {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
     Timezone,

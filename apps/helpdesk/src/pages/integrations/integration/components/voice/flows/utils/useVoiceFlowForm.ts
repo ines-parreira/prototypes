@@ -1,18 +1,15 @@
 import cloneDeep from 'lodash/cloneDeep'
 import omit from 'lodash/omit'
 
-import {
-    PhoneIntegration,
-    queryKeys,
-    useUpdateAllPhoneSettings,
-} from '@gorgias/helpdesk-queries'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateAllPhoneSettings } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
 import { VoiceFlowNodeType } from '../constants'
-import { VoiceFlowFormValues } from '../types'
+import type { VoiceFlowFormValues } from '../types'
 
 export function useVoiceFlowForm(integration: PhoneIntegration) {
     const notify = useNotify()

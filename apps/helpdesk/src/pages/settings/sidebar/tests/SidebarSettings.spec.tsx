@@ -3,7 +3,8 @@ import React from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,7 +13,7 @@ import { ViewCategory } from 'models/view/types'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import * as accountActions from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockViewsStore = fromJS({
     items: [

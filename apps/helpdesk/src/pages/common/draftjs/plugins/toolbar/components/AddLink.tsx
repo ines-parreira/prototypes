@@ -1,14 +1,17 @@
-import React, { Component, ContextType, KeyboardEvent, useEffect } from 'react'
+import type { ContextType, KeyboardEvent } from 'react'
+import type React from 'react'
+import { Component, useEffect } from 'react'
 
 import { closest } from '@repo/utils'
 import { EditorState, Modifier } from 'draft-js'
 import ReactPlayer from 'react-player'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import {
     addVideo,
@@ -18,7 +21,7 @@ import {
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
 import { linkEditionEnded, linkEditionStarted } from 'state/ui/editor/actions'
 import {
@@ -29,12 +32,10 @@ import {
 } from 'utils/editor'
 import { linkify } from 'utils/linkify'
 
-import {
-    ToolbarContext,
-    ToolbarContextType,
-    withToolbarContext,
-} from '../ToolbarContext'
-import { ActionInjectedProps, ActionName } from '../types'
+import type { ToolbarContextType } from '../ToolbarContext'
+import { ToolbarContext, withToolbarContext } from '../ToolbarContext'
+import type { ActionInjectedProps } from '../types'
+import { ActionName } from '../types'
 import { getTooltipTourConfiguration } from '../utils'
 import AddUtm from './AddUtm'
 import Popover from './ButtonPopover'

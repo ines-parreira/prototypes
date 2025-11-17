@@ -2,7 +2,7 @@ import _noop from 'lodash/noop'
 import { DropdownItem } from 'reactstrap'
 
 import MenuItem from 'pages/common/forms/MultiSelectOptionsField/MenuItem'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 type Props = {
     isLoading?: boolean

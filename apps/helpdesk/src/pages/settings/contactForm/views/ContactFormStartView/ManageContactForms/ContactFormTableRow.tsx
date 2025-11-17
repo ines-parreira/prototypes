@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { ContactForm } from 'models/contactForm/types'
-import { Locale } from 'models/helpCenter/types'
+import type { ContactForm } from 'models/contactForm/types'
+import type { Locale } from 'models/helpCenter/types'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

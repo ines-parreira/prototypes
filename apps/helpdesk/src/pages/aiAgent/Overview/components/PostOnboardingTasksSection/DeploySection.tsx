@@ -6,11 +6,9 @@ import { useParams } from 'react-router-dom'
 import { Text } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
-    PostStoreInstallationStepStatus,
-    StepConfiguration,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
@@ -18,7 +16,7 @@ import { useIsAiAgentDuringDeployment } from '../../hooks/useIsAiAgentDuringDepl
 import { ChatToggle } from '../AiAgentTasks/ChatToggle'
 import { EmailToggle } from '../AiAgentTasks/EmailToggle'
 import { SuccessModal } from '../AiAgentTasks/SuccessModal'
-import { PostOnboardingStepMetadata } from './types'
+import type { PostOnboardingStepMetadata } from './types'
 import { handleAiAgentConfigurationError } from './utils'
 
 import css from './DeploySection.less'

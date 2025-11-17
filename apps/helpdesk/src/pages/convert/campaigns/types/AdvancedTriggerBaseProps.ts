@@ -1,5 +1,5 @@
-import { CampaignTrigger } from './CampaignTrigger'
-import { CampaignTriggerType } from './enums/CampaignTriggerType.enum'
+import type { CampaignTrigger } from './CampaignTrigger'
+import type { CampaignTriggerType } from './enums/CampaignTriggerType.enum'
 
 export type CreateTriggerFn = (
     type: CampaignTriggerType,

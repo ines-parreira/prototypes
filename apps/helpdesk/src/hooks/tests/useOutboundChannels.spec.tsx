@@ -6,7 +6,7 @@ import React from 'react'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Store } from 'redux'
+import type { Store } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,14 +15,15 @@ import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import { Integration } from 'models/integration/types'
-import { SourceAddress } from 'models/ticket/types'
+import type { Integration } from 'models/integration/types'
+import type { SourceAddress } from 'models/ticket/types'
+import type { Application } from 'services/applications'
 import {
-    Application,
     getApplications,
     getApplicationsByChannel,
 } from 'services/applications'
-import { ChannelIdentifier, getChannelBySlug } from 'services/channels'
+import type { ChannelIdentifier } from 'services/channels'
+import { getChannelBySlug } from 'services/channels'
 
 import useOutboundChannels, {
     privateFunctions,

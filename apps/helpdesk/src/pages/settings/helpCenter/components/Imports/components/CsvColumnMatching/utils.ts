@@ -1,13 +1,11 @@
-import { Components } from 'rest_api/migration_api/client.generated'
+import type { Components } from 'rest_api/migration_api/client.generated'
 
-import {
-    isColumnSourceCsv,
-    LocaleCode,
-} from '../../../../../../../models/helpCenter/types'
+import type { LocaleCode } from '../../../../../../../models/helpCenter/types'
+import { isColumnSourceCsv } from '../../../../../../../models/helpCenter/types'
 import { slugify } from '../../../../utils/helpCenter.utils'
 import { CsvSourceSoftware } from '../../types'
 import { guessCsvSourceSoftware } from '../../utils/guess-csv-source-software'
-import {
+import type {
     CsvColumnsByName,
     GorgiasFields,
     GorgiasFieldsMappings,

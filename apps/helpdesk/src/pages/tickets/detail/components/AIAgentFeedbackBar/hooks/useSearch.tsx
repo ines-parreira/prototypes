@@ -6,7 +6,7 @@ import {
 } from '../Deprecated_MultiLevelSelect/constants'
 import { getFullValueFromCurrentPath } from '../Deprecated_MultiLevelSelect/helpers/getFullValueFromCurrentPath'
 import { getLabel } from '../Deprecated_MultiLevelSelect/helpers/getLabel'
-import {
+import type {
     ChoicesTree,
     SearchResults,
 } from '../Deprecated_MultiLevelSelect/types'

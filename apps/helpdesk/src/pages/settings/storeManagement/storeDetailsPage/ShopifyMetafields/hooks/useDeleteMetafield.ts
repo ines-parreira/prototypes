@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { Field } from '../MetafieldsTable/types'
+import type { Field } from '../MetafieldsTable/types'
 import { METAFIELDS_QUERY_KEY } from './useMetafields'
 
 type DeleteMetafieldParams = {

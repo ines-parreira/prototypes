@@ -1,4 +1,5 @@
-import React, { ComponentProps, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 

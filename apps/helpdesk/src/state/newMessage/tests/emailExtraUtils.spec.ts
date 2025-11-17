@@ -1,25 +1,31 @@
-import { ContentBlock, ContentState, SelectionState } from 'draft-js'
+import type { ContentBlock } from 'draft-js'
+import { ContentState, SelectionState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
-import { TicketMessage, TicketSatisfactionSurvey } from 'models/ticket/types'
+import type {
+    TicketMessage,
+    TicketSatisfactionSurvey,
+} from 'models/ticket/types'
 import {
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
 } from 'utils/editor'
 
+import type {
+    EmailExtraArgs,
+    ReplyThreadMessage,
+    Signature,
+} from '../emailExtraUtils'
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
-    EmailExtraArgs,
     getReplyThreadMessages,
     hasEmailExtraContent,
     hasOnlySignatureText,
     isSignatureTextAdded,
-    ReplyThreadMessage,
-    Signature,
     updateEmailExtraOnUserInput,
 } from '../emailExtraUtils'
 

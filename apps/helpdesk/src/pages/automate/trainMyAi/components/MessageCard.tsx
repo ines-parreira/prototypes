@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { Paths } from '../../../../rest_api/help_center_api/client.generated'
+import type { Paths } from '../../../../rest_api/help_center_api/client.generated'
 import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
 
 import css from './MessageCard.less'

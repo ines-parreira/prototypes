@@ -1,4 +1,4 @@
-import { Template } from 'models/widget/types'
+import type { Template } from 'models/widget/types'
 
 import { isDefaultOpen } from '../isDefaultOpen'
 

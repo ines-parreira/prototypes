@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

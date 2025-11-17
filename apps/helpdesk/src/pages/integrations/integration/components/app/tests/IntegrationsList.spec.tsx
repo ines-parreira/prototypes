@@ -5,9 +5,9 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Integration as IntegrationType } from 'models/integration/types'
+import type { Integration as IntegrationType } from 'models/integration/types'
 import IntegrationsList from 'pages/integrations/integration/components/app/IntegrationsList'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

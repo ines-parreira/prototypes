@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 import { getAiAgentCustomer } from 'models/aiAgentPlayground/resources'
-import { GetPlaygroundCustomerResponse } from 'models/aiAgentPlayground/types'
+import type { GetPlaygroundCustomerResponse } from 'models/aiAgentPlayground/types'
 
 import {
     CustomerHttpIntegrationDataMock,

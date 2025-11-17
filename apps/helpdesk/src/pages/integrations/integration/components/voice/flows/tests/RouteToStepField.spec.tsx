@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -12,7 +12,7 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 
 import { VoiceFlowNodeType } from '../constants'
 import { RouteToStepTypeField } from '../RouteToStepTypeField'
-import { VoiceFlowFormValues } from '../types'
+import type { VoiceFlowFormValues } from '../types'
 import { useDeleteNode } from '../utils/useDeleteNode'
 
 jest.mock('core/forms', () => ({

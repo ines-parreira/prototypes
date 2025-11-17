@@ -11,10 +11,8 @@ import { TicketChannel } from 'business/types/ticket'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import * as PerformanceTipHook from 'domains/reporting/hooks/usePerformanceTips'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { SupportPerformanceTip } from 'domains/reporting/pages/support-performance/components/SupportPerformanceTip'
@@ -27,7 +25,7 @@ import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { teams } from 'fixtures/teams'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

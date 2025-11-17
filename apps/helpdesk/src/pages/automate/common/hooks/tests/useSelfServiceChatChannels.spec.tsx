@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
 
 import useSelfServiceChatChannels, {

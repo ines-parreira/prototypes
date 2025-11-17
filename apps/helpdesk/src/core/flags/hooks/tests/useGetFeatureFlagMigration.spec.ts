@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { useGetFeatureFlagMigration } from 'core/flags/hooks/useGetFeatureFlagMigration'
-import { MigrationStage } from 'core/flags/utils/readMigration'
+import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { reportError } from 'utils/errors'
 
 jest.mock('core/flags/hooks/useFlag')

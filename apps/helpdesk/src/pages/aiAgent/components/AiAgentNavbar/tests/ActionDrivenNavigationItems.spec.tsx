@@ -7,7 +7,7 @@ import configureStore from 'redux-mock-store'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
-import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
 

@@ -1,22 +1,20 @@
-import { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
 import { Badge, LoadingSpinner, Skeleton } from '@gorgias/axiom'
 
 import error from 'assets/img/icons/error.svg'
-import {
-    MessageType,
-    PlaygroundMessage as PlaygroundMessageType,
-    ProcessingStatus,
-} from 'models/aiAgentPlayground/types'
+import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'
+import { MessageType, ProcessingStatus } from 'models/aiAgentPlayground/types'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
-import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
+import type { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
 
 import css from './PlaygroundMessage.less'
 

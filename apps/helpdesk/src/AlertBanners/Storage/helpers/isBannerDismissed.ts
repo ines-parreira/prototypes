@@ -1,5 +1,5 @@
-import { BannerCategory } from '../../types'
-import { AlertBannerStorage } from '../types'
+import type { BannerCategory } from '../../types'
+import type { AlertBannerStorage } from '../types'
 
 export function isBannerDismissed(
     storage: AlertBannerStorage,

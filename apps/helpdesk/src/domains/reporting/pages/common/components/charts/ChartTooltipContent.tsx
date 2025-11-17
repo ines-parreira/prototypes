@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TooltipLabelStyle, TooltipModel } from 'chart.js'
+import type { TooltipLabelStyle, TooltipModel } from 'chart.js'
 import classNames from 'classnames'
 
 import css from 'domains/reporting/pages/common/components/charts/ChartTooltipContent.less'

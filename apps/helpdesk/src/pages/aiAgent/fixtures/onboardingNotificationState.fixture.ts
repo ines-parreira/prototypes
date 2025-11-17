@@ -1,4 +1,4 @@
-import { OnboardingNotificationState } from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
 
 export const getOnboardingNotificationStateFixture = (
     props?: Partial<OnboardingNotificationState>,

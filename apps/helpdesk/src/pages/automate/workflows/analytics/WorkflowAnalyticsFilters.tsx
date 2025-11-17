@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { withSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { getWorkflowAnalyticsDateRange } from 'pages/automate/workflows/analytics/visualBuilder/utils'
-import { Notification } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
 
 import {
     useWorkflowEditorContext,

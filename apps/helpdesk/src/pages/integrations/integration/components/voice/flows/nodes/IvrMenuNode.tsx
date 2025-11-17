@@ -3,14 +3,15 @@ import { useMemo, useRef } from 'react'
 import { useWatch } from 'react-hook-form'
 
 import { Banner, LegacyLabel as Label } from '@gorgias/axiom'
-import { CustomRecordingType, IvrMenuStep } from '@gorgias/helpdesk-types'
+import type { IvrMenuStep } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import {
     validateBranchOptions,
     validateVoiceMessage,
 } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 

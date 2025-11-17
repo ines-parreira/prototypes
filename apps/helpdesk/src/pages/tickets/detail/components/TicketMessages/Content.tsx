@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player'
 
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
 import {

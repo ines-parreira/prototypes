@@ -10,8 +10,8 @@ import thunk from 'redux-thunk'
 
 import { abGroup, campaignWithABGroup } from 'fixtures/abGroup'
 import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ABGroupContainer from '../ABGroupContainer'

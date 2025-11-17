@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react'
 
-import { List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { ViewVisibility } from 'models/view/types'
 import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getTeams } from 'state/teams/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import Alert, { AlertType } from '../../Alert/Alert'
 import Loader from '../../Loader/Loader'

@@ -8,11 +8,11 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateProductAdditionalInfo } from 'models/ecommerce/queries'
+import type { ProductAdditionalInfo } from 'models/ecommerce/types'
 import {
     AdditionalInfoKey,
     AdditionalInfoObjectType,
     AdditionalInfoSourceType,
-    ProductAdditionalInfo,
 } from 'models/ecommerce/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

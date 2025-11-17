@@ -1,18 +1,18 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import client from '../../../../../models/api/resources'
-import {
-    IntegrationType,
+import type {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
 } from '../../../../../models/integration/types'
+import { IntegrationType } from '../../../../../models/integration/types'
 import { fetchIntegration } from '../../../../../state/integrations/actions'
 import * as constants from '../../../../../state/integrations/constants'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
 import { notify } from '../../../../../state/notifications/actions'
 import { NotificationStatus } from '../../../../../state/notifications/types'
-import { RootState, StoreDispatch } from '../../../../../state/types'
+import type { RootState, StoreDispatch } from '../../../../../state/types'
 
 export const updatePhoneVoicemailConfiguration =
     (

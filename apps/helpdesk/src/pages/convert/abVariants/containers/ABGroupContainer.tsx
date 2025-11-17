@@ -1,4 +1,6 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useDismissFlag } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -26,14 +28,14 @@ import {
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
+import type { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
 
 import css from './ABGroupContainer.less'
 

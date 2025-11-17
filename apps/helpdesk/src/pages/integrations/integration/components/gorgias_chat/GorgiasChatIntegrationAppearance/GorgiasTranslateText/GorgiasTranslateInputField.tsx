@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { Col, Container, Row } from 'reactstrap'
 
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import { convertToHTML } from 'utils/editor'
 import { sanitizeHtmlDefault } from 'utils/html'

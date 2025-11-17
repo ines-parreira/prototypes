@@ -1,4 +1,5 @@
-import React, { ReactNode, RefObject } from 'react'
+import type { ReactNode, RefObject } from 'react'
+import React from 'react'
 
 import cn from 'classnames'
 
@@ -6,7 +7,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import KnowledgeSourceIcon from './KnowledgeSourceIcon'
 import KnowledgeSourcePopover from './KnowledgeSourcePopover'
-import { AiAgentKnowledgeResourceTypeEnum } from './types'
+import type { AiAgentKnowledgeResourceTypeEnum } from './types'
 import { mapToKnowledgeSourceType } from './utils'
 
 import css from './KnowledgeSourceRenderer.less'

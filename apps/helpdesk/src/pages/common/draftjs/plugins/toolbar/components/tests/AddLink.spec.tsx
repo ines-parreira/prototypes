@@ -1,4 +1,5 @@
-import React, { ComponentProps, MouseEvent } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -11,7 +12,7 @@ import { utmConfiguration } from 'fixtures/utmConfiguration'
 import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
 import * as editorUtils from 'utils/editor'
 

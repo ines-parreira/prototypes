@@ -1,8 +1,7 @@
-import React, {
-    ForwardedRef,
+import type { ForwardedRef, ReactNode, TextareaHTMLAttributes } from 'react'
+import type React from 'react'
+import {
     forwardRef,
-    ReactNode,
-    TextareaHTMLAttributes,
     useCallback,
     useEffect,
     useImperativeHandle,

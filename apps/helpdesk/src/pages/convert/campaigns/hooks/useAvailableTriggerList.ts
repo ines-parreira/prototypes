@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import _pickBy from 'lodash/pickBy'
 
-import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import type { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import { CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG } from '../constants/triggers'
-import { TriggerConfigValue } from '../types/TriggerConfig'
+import type { TriggerConfigValue } from '../types/TriggerConfig'
 
 type FnArguments = {
     isConvertSubscriber?: boolean

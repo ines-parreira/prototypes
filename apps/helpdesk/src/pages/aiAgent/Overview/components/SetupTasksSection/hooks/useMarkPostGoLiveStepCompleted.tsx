@@ -6,10 +6,8 @@ import {
     postStoreInstallationStepsKeys,
     useUpdatePostStoreInstallationStepPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
-    PostStoreInstallationSteps,
-    PostStoreInstallationStepStatus,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 
 interface UseMarkPostGoLiveStepCompletedParams {
     postGoLiveStepId: string | undefined

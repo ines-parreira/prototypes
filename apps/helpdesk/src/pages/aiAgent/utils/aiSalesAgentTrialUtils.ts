@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
 import { getAiShoppingAssistantTrialExtensionEnabledFlag } from '../Activation/utils'
 

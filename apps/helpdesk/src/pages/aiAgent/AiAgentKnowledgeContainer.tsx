@@ -21,7 +21,7 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { ExternalFilesSection } from 'pages/aiAgent/components/Knowledge/ExternalFilesSection'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { FormValues } from 'pages/aiAgent/types'
+import type { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'

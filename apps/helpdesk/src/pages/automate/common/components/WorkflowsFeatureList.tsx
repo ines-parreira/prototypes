@@ -1,4 +1,5 @@
-import React, { ReactNode, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _isEqual from 'lodash/isEqual'
@@ -8,15 +9,15 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
+import type { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
 
 import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from '../../workflows/hooks/useWorkflowChannelSupport'
-import { SelfServiceChannelType } from '../hooks/useSelfServiceChannels'
-import { ChannelLanguage } from '../types'
+import type { SelfServiceChannelType } from '../hooks/useSelfServiceChannels'
+import type { ChannelLanguage } from '../types'
 import WorkflowItem from './WorkflowItem'
 
 import css from './WorkflowsFeatureList.less'

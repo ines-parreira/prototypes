@@ -1,4 +1,4 @@
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     getCompanyFixedGmvBandTier,

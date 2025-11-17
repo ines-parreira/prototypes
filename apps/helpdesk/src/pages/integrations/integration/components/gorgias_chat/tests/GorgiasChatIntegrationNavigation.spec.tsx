@@ -10,7 +10,7 @@ import {
 import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'

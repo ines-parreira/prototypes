@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 
 import { DiscountOfferPreview } from '../DiscountOfferPreview'
 

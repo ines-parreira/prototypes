@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Cadence } from 'models/billing/types'
+import type { Cadence } from 'models/billing/types'
 
 import { formatAmount } from '../../utils/formatAmount'
 

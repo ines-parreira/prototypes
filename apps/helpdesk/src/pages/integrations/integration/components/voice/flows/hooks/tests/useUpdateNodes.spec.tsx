@@ -11,7 +11,7 @@ import {
     INCOMING_CALL_NODE,
     VoiceFlowNodeType,
 } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import { useUpdateNodes } from '../useUpdateNodes'
 
 const firstStep = mockPlayMessageStep({ id: '1', next_step_id: null })

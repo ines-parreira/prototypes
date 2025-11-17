@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { MacroAction } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
 
 import { ActionTemplateExecution } from 'config'
 import { getIconFromActionType } from 'models/macroAction/helpers'

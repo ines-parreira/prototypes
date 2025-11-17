@@ -8,10 +8,8 @@ import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
@@ -19,17 +17,17 @@ import {
     emptyFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import { RemovableFilter } from 'domains/reporting/pages/common/filters/types'
+import type { RemovableFilter } from 'domains/reporting/pages/common/filters/types'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getStatsFiltersWithLogicalOperators,
     getStoreIntegrations,
 } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { Integration } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { Integration } from 'models/integration/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.StoreIntegrations]

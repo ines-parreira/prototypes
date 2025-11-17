@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getAggregatedBusiestTimesOfDayData } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 

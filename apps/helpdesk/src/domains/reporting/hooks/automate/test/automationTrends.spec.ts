@@ -20,17 +20,17 @@ import {
     useResolutionTimeExcludingAIAgent,
     useResolutionTimeResolvedByAIAgent,
 } from 'domains/reporting/hooks/automate/automationTrends'
+import type { MultipleMetricsData } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import {
     fetchMultipleMetricsTrends,
-    MultipleMetricsData,
     useMultipleMetricsTrends,
 } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { automationDatasetQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')

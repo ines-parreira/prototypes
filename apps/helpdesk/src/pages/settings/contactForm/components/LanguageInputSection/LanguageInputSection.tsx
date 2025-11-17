@@ -2,10 +2,10 @@ import React, { useMemo } from 'react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 

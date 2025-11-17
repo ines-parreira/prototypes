@@ -1,27 +1,27 @@
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import client from 'models/api/resources'
-import {
+import type {
     ApiListResponse,
     ApiListResponseCursorPagination,
     ApiPaginationParams,
     ApiPaginationParamsWithFilter,
 } from 'models/api/types'
 
-import {
+import type {
     Integration,
     IntegrationDataItem,
     IntegrationRequest,
-    IntegrationType,
 } from './types'
-import {
+import { IntegrationType } from './types'
+import type {
     AppData,
     AppDetail,
     AppErrorLog,
     AppListData,
     AppListItem,
-    Category,
     DisconnectResponse,
 } from './types/app'
+import { Category } from './types/app'
 
 export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
     const categories = data.categories || []

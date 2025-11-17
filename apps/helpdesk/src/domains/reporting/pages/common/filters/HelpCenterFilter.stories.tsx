@@ -1,15 +1,16 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import HelpCenterFilter from 'domains/reporting/pages/common/filters/HelpCenterFilter'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = {
     entities: {

@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,7 +12,7 @@ import AgentsFilter from 'domains/reporting/pages/common/filters/AgentsFilter'
 import { extendedAgents } from 'domains/reporting/pages/common/filters/tests/fixtures/agents'
 import { extendedTeams } from 'domains/reporting/pages/common/filters/tests/fixtures/teams'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const defaultState = {
     stats: initialState,

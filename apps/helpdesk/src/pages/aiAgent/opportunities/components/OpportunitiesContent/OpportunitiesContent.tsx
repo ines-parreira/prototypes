@@ -9,7 +9,7 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ArticleTemplateReviewAction } from 'models/helpCenter/types'
+import type { ArticleTemplateReviewAction } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
@@ -25,7 +25,7 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { GuidanceForm } from '../../../components/GuidanceForm/GuidanceForm'
 import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
-import { GuidanceFormFields } from '../../../types'
+import type { GuidanceFormFields } from '../../../types'
 import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
 import {
@@ -33,7 +33,7 @@ import {
     buildDismissPayload,
     useProcessOpportunity,
 } from '../../hooks/useProcessOpportunity'
-import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContentSkeleton } from '../OpportunitiesContentSkeleton/OpportunitiesContentSkeleton'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'

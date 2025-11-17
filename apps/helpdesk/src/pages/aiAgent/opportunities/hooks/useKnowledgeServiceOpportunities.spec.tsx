@@ -1,10 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useFindOpportunitiesOpportunity } from '@gorgias/knowledge-service-queries'
-import { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
+import type { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
 import { useKnowledgeServiceOpportunities } from './useKnowledgeServiceOpportunities'

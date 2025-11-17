@@ -8,8 +8,9 @@ import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from '../../hooks/useStoreConfiguration'

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -12,13 +13,12 @@ import {
     createPhoneNumber,
     fetchNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import {
+import type {
     AddressInformation,
-    AddressType,
     PhoneNumber,
     PhoneNumberMeta,
-    PhoneType,
 } from 'models/phoneNumber/types'
+import { AddressType, PhoneType } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
 import { notify } from 'state/notifications/actions'

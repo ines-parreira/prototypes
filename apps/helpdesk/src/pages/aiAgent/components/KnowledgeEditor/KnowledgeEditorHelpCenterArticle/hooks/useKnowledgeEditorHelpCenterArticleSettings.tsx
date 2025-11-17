@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 
 import { useNotify } from 'hooks/useNotify'
-import {
+import type {
     ArticleWithLocalTranslation,
     Category,
     HelpCenter,
@@ -13,7 +13,7 @@ import {
     VisibilityStatus,
 } from 'models/helpCenter/types'
 import { getCategoryOptions } from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/hooks/useCategoriesOptions'
-import {
+import type {
     ActionType as LocaleActionType,
     OptionItem as LocaleOption,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
@@ -21,7 +21,7 @@ import { isOneOfParentsUnlisted } from 'pages/settings/helpCenter/components/Hel
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import { Props as HelpCenterArticleSettingsProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
+import type { Props as HelpCenterArticleSettingsProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 export type Changes = Pick<
     UpdateArticleTranslationDto,

@@ -2,15 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { LocationDescriptor } from 'history'
+import type { LocationDescriptor } from 'history'
 import { useHistory } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    DRAFT_TICKET_STORE,
-    isTicketDraftEmpty,
-    TicketDraft,
-} from 'hooks/useTicketDraft'
+import type { TicketDraft } from 'hooks/useTicketDraft'
+import { DRAFT_TICKET_STORE, isTicketDraftEmpty } from 'hooks/useTicketDraft'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 

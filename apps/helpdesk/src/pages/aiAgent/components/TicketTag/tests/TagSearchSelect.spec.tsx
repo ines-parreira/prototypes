@@ -1,10 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { TagDropdownMenu } from 'tags'
+import type { TagDropdownMenu } from 'tags'
 
 import TagSearchSelect from '../TagSearchSelect'
 

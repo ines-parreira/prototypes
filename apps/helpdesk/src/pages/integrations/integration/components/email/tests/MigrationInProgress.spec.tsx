@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import client from 'models/api/resources'
-import { EmailMigrationInboundVerification } from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'

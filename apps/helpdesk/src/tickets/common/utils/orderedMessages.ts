@@ -1,7 +1,7 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { toImmutable } from 'common/utils'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { compare } from 'utils'
 
 /**

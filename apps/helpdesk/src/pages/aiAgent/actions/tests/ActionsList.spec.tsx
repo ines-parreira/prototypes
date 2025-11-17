@@ -18,11 +18,11 @@ import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionsList from '../components/ActionsList'
-import { StoresWorkflowConfiguration } from '../types'
+import type { StoresWorkflowConfiguration } from '../types'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 

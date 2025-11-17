@@ -4,7 +4,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import CheckBox from 'pages/common/forms/CheckBox'
-import { Paths } from 'rest_api/ssp_api/client.generated'
+import type { Paths } from 'rest_api/ssp_api/client.generated'
 
 import SelectInputBox, {
     SelectInputBoxContext,

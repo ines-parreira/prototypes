@@ -25,7 +25,7 @@ import {
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
 import * as currentAccount from 'state/currentAccount/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)

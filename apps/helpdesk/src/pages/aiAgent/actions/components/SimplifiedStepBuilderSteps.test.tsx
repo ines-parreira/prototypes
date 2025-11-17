@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
 
 import { useFlag } from 'core/flags'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
 

@@ -1,6 +1,5 @@
+import type { ComponentProps, ComponentType } from 'react'
 import React, {
-    ComponentProps,
-    ComponentType,
     createElement,
     useCallback,
     useEffect,
@@ -15,17 +14,19 @@ import { connect } from 'react-redux'
 
 import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import type {
+    StaticFilter,
+    StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StaticFilter,
-    StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { AddFilterButton } from 'domains/reporting/pages/common/filters/AddFilterButton'
-import { ChannelsFilterWithState } from 'domains/reporting/pages/common/filters/ChannelsFilter'
+import type { ChannelsFilterWithState } from 'domains/reporting/pages/common/filters/ChannelsFilter'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import { CustomFieldFilter } from 'domains/reporting/pages/common/filters/CustomFieldFilter'
+import type { CustomFieldFilter } from 'domains/reporting/pages/common/filters/CustomFieldFilter'
 import css from 'domains/reporting/pages/common/filters/FiltersPanel.less'
 import { FilterComponentMap } from 'domains/reporting/pages/common/filters/FiltersPanelConfig'
 import {
@@ -34,7 +35,7 @@ import {
     getFilteredFilterComponentKeys,
     getFilterSettings,
 } from 'domains/reporting/pages/common/filters/helpers'
-import { PeriodFilterWithState } from 'domains/reporting/pages/common/filters/PeriodFilter'
+import type { PeriodFilterWithState } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import { isFilterApplicable } from 'domains/reporting/pages/common/filters/utils'
 import {
     activeParams,
@@ -42,7 +43,7 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getCleanStatsFiltersWithLogicalOperators } from 'domains/reporting/state/ui/stats/selectors'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export type OptionalFilter = FilterKey | FilterComponentKey.PhoneIntegrations
 

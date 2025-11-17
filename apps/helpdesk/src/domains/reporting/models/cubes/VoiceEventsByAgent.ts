@@ -1,7 +1,7 @@
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
-import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { Cube } from 'domains/reporting/models/types'
-import { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
+import type { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { Cube } from 'domains/reporting/models/types'
+import type { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
 
 export enum VoiceEventsByAgentMeasure {
     VoiceEventsCount = 'VoiceEventsByAgent.count',

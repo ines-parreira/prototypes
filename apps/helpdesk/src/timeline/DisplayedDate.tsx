@@ -2,7 +2,7 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 
 import { SORTABLE_KEY_TO_LABEL } from './constants'
-import { SortOption, TimelineItem } from './types'
+import type { SortOption, TimelineItem } from './types'
 
 export default function DisplayedDate(
     sortOption: SortOption,

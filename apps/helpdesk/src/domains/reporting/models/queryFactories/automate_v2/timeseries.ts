@@ -1,19 +1,19 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import {
-    AIAgentAutomatedInteractionsCube,
     AIAgentInteractionsBySkillDatasetDimension,
     AIAgentInteractionsBySkillFilterMember,
     AIAgentInteractionsBySkillMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
-    AutomationDatasetCube,
     AutomationDatasetDimension,
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import type { BillableTicketDatasetCube } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
-    BillableTicketDatasetCube,
     BillableTicketDatasetDimension,
     BillableTicketDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
@@ -22,12 +22,12 @@ import {
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'domains/reporting/models/queryFactories/automate_v2/filters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     getFilterDateRange,
     statsFiltersToReportingFilters,

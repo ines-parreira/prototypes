@@ -1,11 +1,11 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { Set } from 'immutable'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { Set } from 'immutable'
 
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
-import {
+import type {
     FetchTeamMembersOptions,
     FetchTeamsOptions,
     Member,

@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
 import reducer, { initialState } from '../reducers'

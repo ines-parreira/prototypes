@@ -1,9 +1,10 @@
-import { ComponentProps, useCallback, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
 import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
-import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'

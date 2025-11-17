@@ -7,17 +7,17 @@ import {
 import { GorgiasUIEnv } from '@repo/utils'
 import { captureException, init, setTag, setUser } from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
-import { ScopeContext } from '@sentry/types'
+import type { ScopeContext } from '@sentry/types'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
+import type { InitErrorReporterParams } from 'utils/errors'
 import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
     ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
     IGNORED_ERRORS,
     initErrorReporter,
-    InitErrorReporterParams,
     LANGUAGE_TAG,
     LANGUAGE_TAG_VALUE,
     reportError,

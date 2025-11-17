@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
+import type { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import {
@@ -9,7 +9,7 @@ import {
     sortingLoading,
     sortingSet,
 } from 'domains/reporting/state/ui/stats/channelsSlice'
-import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import type { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'

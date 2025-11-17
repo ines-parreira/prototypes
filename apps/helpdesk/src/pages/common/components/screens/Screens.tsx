@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext, useMemo } from 'react'
 
 type Props = {
     activeScreen?: string

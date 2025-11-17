@@ -5,10 +5,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { message } from 'models/ticket/tests/mocks'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import client from '../../../../../../../models/api/resources'
-import { TicketMessageIntent } from '../../../../../../../models/ticket/types'
+import type { TicketMessageIntent } from '../../../../../../../models/ticket/types'
 import CollapsedSourceActions from '../CollapsedSourceActions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

@@ -1,6 +1,6 @@
-import { Integration } from '@gorgias/helpdesk-queries'
+import type { Integration } from '@gorgias/helpdesk-queries'
 
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import { getIntegrationName } from '../utils'
 

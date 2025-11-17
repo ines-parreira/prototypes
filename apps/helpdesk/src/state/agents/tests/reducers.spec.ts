@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
 import * as currentUserConstants from 'state/currentUser/constants'
-import { StoreAction } from 'state/types'
+import type { StoreAction } from 'state/types'
 
 import * as constants from '../constants'
 import reducer, { initialState } from '../reducers'

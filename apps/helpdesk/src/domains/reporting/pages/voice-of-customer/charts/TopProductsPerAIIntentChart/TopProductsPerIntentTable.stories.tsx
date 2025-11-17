@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -23,13 +23,11 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import {
-    reportingKeys,
-    UseEnrichedPostReportingQueryData,
-} from 'domains/reporting/models/queries'
+import type { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
+import { reportingKeys } from 'domains/reporting/models/queries'
 import { customFieldsTicketCountWithSortQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ticketCountForIntentQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { TopProductsPerIntentTable } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import { DEFAULT_SORTING_DIRECTION } from 'domains/reporting/pages/voice-of-customer/constants'

@@ -6,9 +6,8 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import SelectStore, {
-    HelpCenterContactFormIntegrationTypes,
-} from 'pages/settings/common/SelectStore/SelectStore'
+import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
+import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
 import settingsCss from 'pages/settings/settings.less'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

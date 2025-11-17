@@ -6,20 +6,22 @@ import {
     deleteBigCommerceCoupon,
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
-import {
-    BigCommerceActionType,
+import type {
     BigCommerceCart,
     BigCommerceCheckout,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
     BigCommerceErrorList,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
-    BigCommerceLineItemError,
-    BigCommerceLineItemErrorMessage,
     BigCommerceProductsListType,
     CreateOrderValidationResult,
+} from 'models/integration/types'
+import {
+    BigCommerceActionType,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
 } from 'models/integration/types'
 
 import {

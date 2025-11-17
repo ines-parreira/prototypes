@@ -1,9 +1,9 @@
+import type { DateTimeResultFormatType } from 'constants/datetime'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     DateTimeFormatMapper,
     DateTimeFormatType,
-    DateTimeResultFormatType,
     TimeFormatType,
 } from 'constants/datetime'
 

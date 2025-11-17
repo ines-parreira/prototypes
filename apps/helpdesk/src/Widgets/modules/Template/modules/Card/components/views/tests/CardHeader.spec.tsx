@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import type React from 'react'
 
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'

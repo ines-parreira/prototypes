@@ -1,9 +1,9 @@
 import { history } from '@repo/routing'
 
-import { UpdateCustomField } from '@gorgias/helpdesk-types'
+import type { UpdateCustomField } from '@gorgias/helpdesk-types'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import { CustomField, CustomFieldInput } from 'custom-fields/types'
+import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import FieldForm from './FieldForm'

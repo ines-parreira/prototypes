@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosInstance, CancelTokenSource } from 'axios'
+import type { AxiosInstance, CancelTokenSource } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { createClient } from 'models/api/resources'
 import { reportError } from 'utils/errors'

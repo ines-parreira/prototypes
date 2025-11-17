@@ -15,7 +15,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import GuidanceReferenceProvider from '../providers/GuidanceReferenceProvider'
 import StoreAppsProvider from '../providers/StoreAppsProvider'
 import StoreTrackstarProvider from '../providers/StoreTrackstarProvider'
-import {
+import type {
     StoresWorkflowConfiguration,
     StoreWorkflowsConfiguration,
 } from '../types'

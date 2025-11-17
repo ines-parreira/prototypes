@@ -4,13 +4,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useSyncPinnedFilter } from 'domains/reporting/hooks/filters/useSyncPinnedFilter'
-import { SavedFilter } from 'domains/reporting/models/stat/types'
+import type { SavedFilter } from 'domains/reporting/models/stat/types'
 import {
     actions,
     initialState as uiFiltersInitialState,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('hooks/useAppDispatch')
 

@@ -6,7 +6,7 @@ import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
-import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

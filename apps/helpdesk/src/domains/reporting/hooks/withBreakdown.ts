@@ -2,7 +2,7 @@ import _groupBy from 'lodash/groupBy'
 import _orderBy from 'lodash/orderBy'
 import _zip from 'lodash/zip'
 
-import {
+import type {
     TimeSeriesDataItem,
     TimeSeriesDataItemWithPercentageAndDecile,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -10,8 +10,8 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { UsePostReportingQueryData } from 'domains/reporting/models/queries'
-import { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { notUndefined } from 'utils/types'
 
 export const TAG_SEPARATOR = '::'

@@ -29,7 +29,7 @@ import {
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

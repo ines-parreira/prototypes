@@ -3,11 +3,11 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider as ReduxProvider } from 'react-redux'
-import { DeepPartial } from 'redux'
+import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Category } from 'models/helpCenter/types'
+import type { Category } from 'models/helpCenter/types'
 import { CategoriesTableBasicRow } from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {
     CATEGORY_ROW_ACTIONS,
@@ -19,7 +19,7 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { CategoriesTableRow } from '../CategoriesTableRow'

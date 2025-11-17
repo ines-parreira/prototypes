@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
@@ -13,9 +14,9 @@ import VoiceCallTableContent from 'domains/reporting/pages/voice/components/Voic
 import VoiceQueueProvider from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')

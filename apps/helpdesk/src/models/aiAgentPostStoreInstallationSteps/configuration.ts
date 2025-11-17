@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import {
+import type {
     CreatePostStoreInstallationStepPayload,
     GetPostStoreInstallationStepsParams,
     GetPostStoreInstallationStepsResponse,

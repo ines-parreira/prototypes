@@ -1,9 +1,10 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
-import {
+import type {
     EndNodeType,
     VisualBuilderNode,
 } from './models/visualBuilderGraph.types'

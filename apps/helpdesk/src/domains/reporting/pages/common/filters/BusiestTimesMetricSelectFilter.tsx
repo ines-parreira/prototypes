@@ -10,7 +10,7 @@ import {
     metricLabels,
     metrics,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getSelectedMetric,
     setSelectedMetric,

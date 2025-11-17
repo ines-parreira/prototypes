@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import _get from 'lodash/get'
@@ -6,18 +8,18 @@ import { DropdownItem } from 'reactstrap'
 
 import { Box, Label } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
-import {
+import type {
     VoiceMessage as ApiVoiceMessage,
     CustomRecordingType,
-    VoiceMessageType,
-    type VoiceMessageType as VoiceMessageTypeType,
+    VoiceMessageType as VoiceMessageTypeType,
 } from '@gorgias/helpdesk-types'
+import { VoiceMessageType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiResponseDataError } from 'models/api/types'
+import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
-import { VoiceMessage } from 'models/integration/types'
+import type { VoiceMessage } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Caption from 'pages/common/forms/Caption/Caption'

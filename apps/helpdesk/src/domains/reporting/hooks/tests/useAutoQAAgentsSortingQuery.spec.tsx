@@ -6,9 +6,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useAutoQAAgentsSortingQuery } from 'domains/reporting/hooks/useAutoQAAgentsSortingQuery'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
-import { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     AutoQAAgentsTableColumn,
     getQuery,
@@ -24,7 +24,7 @@ import {
 import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { opposite, OrderDirection } from 'models/api/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

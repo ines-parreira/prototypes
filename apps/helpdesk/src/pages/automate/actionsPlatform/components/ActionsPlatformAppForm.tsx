@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
 import { validateWebhookURL } from 'utils'
 
-import { ActionsApp, App } from '../types'
+import type { ActionsApp, App } from '../types'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
 import ActionsPlatformTrackstarIntegrationSelectBox from './ActionsPlatformTrackstarIntegrationSelectBox'

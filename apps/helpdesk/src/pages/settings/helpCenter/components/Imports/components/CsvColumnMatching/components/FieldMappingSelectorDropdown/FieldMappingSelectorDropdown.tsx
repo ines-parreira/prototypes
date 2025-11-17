@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 import {
@@ -8,7 +9,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import { Option } from './types'
+import type { Option } from './types'
 
 import css from './FieldMappingSelectorDropdown.less'
 

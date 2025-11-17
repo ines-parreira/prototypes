@@ -1,5 +1,5 @@
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
-import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 
 export const BUSINESS_HOURS_BASE_URL = '/app/settings/business-hours'
 

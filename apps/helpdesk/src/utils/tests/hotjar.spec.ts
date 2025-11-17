@@ -1,6 +1,7 @@
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { identifyUser, InitHotjarParams } from 'utils/hotjar'
+import type { InitHotjarParams } from 'utils/hotjar'
+import { identifyUser } from 'utils/hotjar'
 
 window.hj = jest.fn()
 

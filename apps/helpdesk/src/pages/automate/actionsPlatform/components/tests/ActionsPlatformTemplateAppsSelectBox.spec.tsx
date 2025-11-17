@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import { App } from '../../types'
+import type { App } from '../../types'
 import ActionsPlatformTemplateAppsSelectBox from '../ActionsPlatformTemplateAppsSelectBox'
 
 describe('<ActionsPlatformTemplateAppsSelectBox />', () => {

@@ -1,13 +1,15 @@
 import '@xyflow/react/dist/style.css'
 
-import React, { Dispatch, useCallback, useEffect, useMemo } from 'react'
+import type { Dispatch } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
+import type { ReactFlowInstance } from '@xyflow/react'
 import {
     ControlButton,
     Controls,
     MiniMap,
     ReactFlow,
-    ReactFlowInstance,
     ReactFlowProvider,
     useEdgesState,
     useNodesInitialized,
@@ -24,9 +26,9 @@ import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 
 import { TestFlowEditor } from '../../editor/visualBuilder/editors/TestFlowEditor'
 import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
-import { VisualBuilderGraphAction } from '../../hooks/useVisualBuilderGraphReducer'
+import type { VisualBuilderGraphAction } from '../../hooks/useVisualBuilderGraphReducer'
 import { useWorkflowEditorContext } from '../../hooks/useWorkflowEditor'
-import {
+import type {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,

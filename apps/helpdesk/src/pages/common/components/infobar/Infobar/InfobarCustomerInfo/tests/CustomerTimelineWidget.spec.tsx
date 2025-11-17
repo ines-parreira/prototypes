@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

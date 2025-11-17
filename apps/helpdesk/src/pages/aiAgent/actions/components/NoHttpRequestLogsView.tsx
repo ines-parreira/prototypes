@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
 
-import { ActionStepItem } from '../types'
+import type { ActionStepItem } from '../types'
 
 import css from './NoHttpRequestLogsView.less'
 

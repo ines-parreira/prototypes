@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 
 import {
     AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD,

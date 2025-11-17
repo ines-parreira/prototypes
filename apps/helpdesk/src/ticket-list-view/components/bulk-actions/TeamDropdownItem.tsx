@@ -4,8 +4,8 @@ import { Emoji } from 'emoji-mart'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { Item } from 'components/Dropdown'
-import { Team } from 'models/team/types'
+import type { Item } from 'components/Dropdown'
+import type { Team } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import css from './style.less'

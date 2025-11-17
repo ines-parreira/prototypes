@@ -1,5 +1,5 @@
-import { LanguageChat } from 'constants/languages'
-import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
+import type { LanguageChat } from 'constants/languages'
+import type { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 
 export type Translations = {
     texts: Record<string, string>

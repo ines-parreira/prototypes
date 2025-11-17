@@ -1,4 +1,4 @@
-import {
+import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'

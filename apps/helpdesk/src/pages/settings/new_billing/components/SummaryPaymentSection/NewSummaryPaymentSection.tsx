@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import {
-    type AchDebitBankAccount,
+import type {
+    AchDebitBankAccount,
     BillingState,
-    type CreditCard,
+    CreditCard as CreditCardType,
 } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
@@ -67,14 +67,14 @@ function PaymentState({ billingState }: { billingState: BillingState }) {
     return <NoPaymentMethod />
 }
 
-const CreditCard = ({ creditCard }: { creditCard: CreditCard }) =>
+const CreditCard = ({ creditCard }: { creditCard: CreditCardType }) =>
     isCardExpired(creditCard) ? (
         <CreditCardExpired creditCard={creditCard} />
     ) : (
         <CreditCardValid creditCard={creditCard} />
     )
 
-const CreditCardExpired = ({ creditCard }: { creditCard: CreditCard }) => (
+const CreditCardExpired = ({ creditCard }: { creditCard: CreditCardType }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.warningIcon)}>
@@ -87,7 +87,7 @@ const CreditCardExpired = ({ creditCard }: { creditCard: CreditCard }) => (
     </>
 )
 
-const CreditCardValid = ({ creditCard }: { creditCard: CreditCard }) => (
+const CreditCardValid = ({ creditCard }: { creditCard: CreditCardType }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.cardIcon)}>

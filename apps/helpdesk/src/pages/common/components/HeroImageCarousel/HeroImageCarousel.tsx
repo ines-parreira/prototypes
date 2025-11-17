@@ -5,7 +5,8 @@ import _isString from 'lodash/isString'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Slider, { SliderRef } from 'utils/wrappers/Slider'
+import type { SliderRef } from 'utils/wrappers/Slider'
+import Slider from 'utils/wrappers/Slider'
 
 import css from './HeroImageCarousel.less'
 

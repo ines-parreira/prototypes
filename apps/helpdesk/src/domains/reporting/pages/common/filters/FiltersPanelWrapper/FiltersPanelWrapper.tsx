@@ -1,14 +1,10 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
-import {
-    FiltersPanel,
-    FiltersPanelProps,
-} from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { FiltersPanelProps } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import { FiltersPanel } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import css from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
-import {
-    SavedFiltersActions,
-    SavedFiltersActionsProps,
-} from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
+import type { SavedFiltersActionsProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
+import { SavedFiltersActions } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
 import { SavedFiltersPanel } from 'domains/reporting/pages/common/filters/SavedFiltersPanel'
 import { getHideFiltersPanelOptionalFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,12 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import WrapperEditForm, {
-    CANCEL_TEXT,
-    FormData,
-    SUBMIT_TEXT,
-} from '../WrapperEditForm'
+import type { FormData } from '../WrapperEditForm'
+import WrapperEditForm, { CANCEL_TEXT, SUBMIT_TEXT } from '../WrapperEditForm'
 
 describe('WrapperEditForm', () => {
     const defaultData: FormData = {

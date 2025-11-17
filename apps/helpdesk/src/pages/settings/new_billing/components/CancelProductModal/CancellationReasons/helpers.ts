@@ -1,4 +1,4 @@
-import { CancellationReason, Reason } from '../types'
+import type { CancellationReason, Reason } from '../types'
 
 export const findSecondaryReasonsByPrimaryReason = (
     primaryReason: Reason | null,

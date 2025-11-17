@@ -1,4 +1,5 @@
-import React, { UIEventHandler, useEffect, useMemo, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
@@ -10,16 +11,14 @@ import { useCustomFieldsTicketCountPerCustomFields } from 'domains/reporting/hoo
 import { BREAKDOWN_FIELD } from 'domains/reporting/hooks/withBreakdown'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
-import {
-    CustomFieldsTicketCountDataRowContent,
+import type {
     DataRowProps,
     WithSelectedCustomField,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
+import { CustomFieldsTicketCountDataRowContent } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
 import { formatDates } from 'domains/reporting/pages/utils'
-import {
-    setOrder,
-    TicketInsightsOrder,
-} from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import { setOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { opposite } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'

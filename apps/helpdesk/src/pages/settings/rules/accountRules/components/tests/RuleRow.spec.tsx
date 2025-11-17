@@ -20,7 +20,7 @@ import {
     ruleUpdated,
 } from 'state/entities/rules/actions'
 import { ManagedRulesSlugs } from 'state/rules/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { RuleRow } from '../RuleRow'

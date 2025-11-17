@@ -1,15 +1,13 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import classNames from 'classnames'
 
 import gorgiasLogo from 'assets/img/icons/gorgias-icon-logo-black.png'
 
-import {
-    MigrationProviderMeta,
-    MigrationState,
-    MigrationStatus,
-} from '../../types'
-import { ParsedSessionStats } from '../../utils'
+import type { MigrationProviderMeta, MigrationState } from '../../types'
+import { MigrationStatus } from '../../types'
+import type { ParsedSessionStats } from '../../utils'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
 import MigrationProviderPair from '../MigrationProviderPair'

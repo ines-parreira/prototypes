@@ -9,11 +9,11 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     ContactFormIntegration,
     UpdateContactFormDto,
 } from 'models/contactForm/types'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

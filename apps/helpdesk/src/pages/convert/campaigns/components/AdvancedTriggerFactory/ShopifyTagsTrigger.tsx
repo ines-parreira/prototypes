@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { ShopifyCustomerTagsInput } from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 
-import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
-import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import type { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
 import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 

@@ -1,9 +1,9 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { IntegrationType } from '@gorgias/helpdesk-types'
+import type { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { PartialTemplate } from 'models/widget/types'
-import {
+import type { PartialTemplate } from 'models/widget/types'
+import type {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,

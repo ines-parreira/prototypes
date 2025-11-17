@@ -9,11 +9,11 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import { TriggerConfigValue } from 'pages/convert/campaigns/types/TriggerConfig'
+import type { TriggerConfigValue } from 'pages/convert/campaigns/types/TriggerConfig'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 
 import { useAvailableTriggerList } from '../../hooks/useAvailableTriggerList'
-import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import type { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 
 import css from './AdvancedTriggersSelect.less'
 

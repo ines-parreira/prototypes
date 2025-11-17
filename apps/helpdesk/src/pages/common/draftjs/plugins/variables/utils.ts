@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import { templateRegex } from 'pages/common/utils/template'
 import { getVariableWithValue } from 'tickets/common/utils'
 
-import { DecoratorComponentProps } from '../types'
+import type { DecoratorComponentProps } from '../types'
 
 /**
  * Transform variables (ex: {ticket.customer.name}) in visual tag

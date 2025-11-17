@@ -5,11 +5,11 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import {
-    AiAgentOnboardingState,
+import type {
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { useAiAgentCtas } from 'pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA'

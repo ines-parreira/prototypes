@@ -1,22 +1,21 @@
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
-import moment, { Moment } from 'moment'
+import type { Moment } from 'moment'
+import moment from 'moment'
 
-import { MetricName } from 'domains/reporting/hooks/metricNames'
-import {
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import type {
     MetricWithDecile,
     QueryReturnType,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { AgentTimeTrackingMember } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import { AutomationBillingEventMember } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import { AutomationDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { HelpCenterTrackingEventMember } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMember,
-} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketSLAMember } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import {
     TicketMeasure,
@@ -30,21 +29,23 @@ import {
     addOptionalFilter,
     hasFilter,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     AggregationWindow,
     FilterKey,
     Period,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import {
+import type {
     Cube,
     QueryFactory,
     ReportingFilter,
-    ReportingFilterOperator,
-    ReportingGranularity,
     ReportingQuery,
 } from 'domains/reporting/models/types'
-import { OrderDirection } from 'models/api/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'domains/reporting/models/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const formatReportingQueryDate = (date: string | Date | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')

@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import PhoneDeviceDialerBodyResultsList from '../PhoneDeviceDialerBodyResultsList'
 

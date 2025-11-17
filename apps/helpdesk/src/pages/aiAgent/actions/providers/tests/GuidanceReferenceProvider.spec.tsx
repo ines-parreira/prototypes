@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
+import type { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
 
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'

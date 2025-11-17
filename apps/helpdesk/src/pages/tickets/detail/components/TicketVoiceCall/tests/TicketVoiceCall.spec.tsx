@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import * as voiceCall from 'models/voiceCall/types'
 
 import TicketVoiceCall from '../TicketVoiceCall'

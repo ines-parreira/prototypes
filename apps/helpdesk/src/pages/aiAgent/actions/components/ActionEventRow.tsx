@@ -6,7 +6,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 import ActionStatus from './ActionsStatus'
 
 import css from './ActionEventRow.less'

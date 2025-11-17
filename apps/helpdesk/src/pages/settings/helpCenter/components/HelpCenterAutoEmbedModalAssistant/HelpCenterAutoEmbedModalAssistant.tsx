@@ -6,12 +6,12 @@ import { useHistory } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
+import type { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm'
 import PageEmbedmentForm, {
-    EmbeddablePage,
     EmbedMode,
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
     usePageEmbedmentForm,

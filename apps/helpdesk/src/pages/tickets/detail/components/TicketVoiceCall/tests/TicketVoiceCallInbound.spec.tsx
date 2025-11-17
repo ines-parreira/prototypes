@@ -2,7 +2,7 @@ import { userEvent } from '@repo/testing'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import { renderWithStore } from 'utils/testing'
 
 import TicketVoiceCallInbound from '../TicketVoiceCallInbound'

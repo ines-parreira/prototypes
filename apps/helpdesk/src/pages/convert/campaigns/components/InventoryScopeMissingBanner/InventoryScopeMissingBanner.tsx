@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
     getIntegrationByIdAndType,

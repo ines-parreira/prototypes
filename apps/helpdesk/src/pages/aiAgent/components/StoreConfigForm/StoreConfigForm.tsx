@@ -1,11 +1,5 @@
-import {
-    ComponentProps,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
@@ -20,12 +14,12 @@ import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { Tag } from 'models/aiAgent/types'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { Tag } from 'models/aiAgent/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentConfigurationModal } from 'pages/aiAgent/AiAgentConfigurationView/AiAgentConfigurationModal'
 import { TicketPreview } from 'pages/aiAgent/AiAgentOnboardingWizard/TicketPreview'
 import { PublicSourcesSection } from 'pages/aiAgent/components//PublicSourcesSection/PublicSourcesSection'
@@ -55,7 +49,7 @@ import { useStoreConfigurationForm } from 'pages/aiAgent/hooks/useStoreConfigura
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { FormValues } from 'pages/aiAgent/types'
+import type { FormValues } from 'pages/aiAgent/types'
 import { isHandoffEnabled } from 'pages/aiAgent/util'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {

@@ -2,7 +2,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useTicketCountPerProduct } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { useTicketCountPerIntentForProduct } from 'domains/reporting/hooks/voice-of-customer/metricsPerProductAndIntent'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { IntentCard } from 'domains/reporting/pages/common/components/IntentCard'
 import { useOpenDrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'

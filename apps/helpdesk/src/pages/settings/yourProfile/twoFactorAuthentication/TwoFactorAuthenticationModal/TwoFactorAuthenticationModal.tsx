@@ -1,13 +1,8 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { dismissNotification } from 'reapop'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -22,7 +17,7 @@ import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
 } from 'models/twoFactorAuthentication/resources'
-import {
+import type {
     AuthenticatorData,
     RecoveryCode,
 } from 'models/twoFactorAuthentication/types'

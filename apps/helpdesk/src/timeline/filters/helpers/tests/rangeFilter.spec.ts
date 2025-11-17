@@ -1,4 +1,4 @@
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import * as timelineItem from 'timeline/helpers/timelineItem'
 

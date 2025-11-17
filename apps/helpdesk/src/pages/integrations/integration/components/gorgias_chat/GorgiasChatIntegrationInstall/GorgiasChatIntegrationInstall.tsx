@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
@@ -14,7 +15,7 @@ import BackToConvertButton from 'pages/convert/onboarding/components/BackToConve
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
-import { deleteIntegration } from 'state/integrations/actions'
+import type { deleteIntegration } from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'

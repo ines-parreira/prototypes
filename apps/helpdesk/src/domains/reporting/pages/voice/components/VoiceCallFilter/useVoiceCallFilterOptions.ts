@@ -1,9 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import {
-    VoiceCallFilterDirection,
-    VoiceCallFilterOptions,
-} from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallFilterOptions } from 'domains/reporting/pages/voice/models/types'
+import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 const FULL_OUTBOUND_STATUS_FILTER = [

@@ -1,8 +1,8 @@
 import { ulid } from 'ulidx'
 
 import { TRIGGERS_CONFIG } from '../constants/triggers'
-import { CampaignTrigger } from '../types/CampaignTrigger'
-import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
+import type { CampaignTrigger } from '../types/CampaignTrigger'
+import type { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
 
 export function createTrigger(
     triggerType: CampaignTriggerType,

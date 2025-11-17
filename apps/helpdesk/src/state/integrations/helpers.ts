@@ -1,16 +1,18 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
-import { INTEGRATION_TYPE_CONFIG, IntegrationConfig } from 'config'
+import type { IntegrationConfig } from 'config'
+import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatStatusEnum,
     IntegrationDataItemType,
 } from 'models/integration/types'
-import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
+import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import GorgiasApi from 'services/gorgiasApi'
-import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { assetsUrl } from 'utils'
 
 export const getIntegrationsByTypes = (

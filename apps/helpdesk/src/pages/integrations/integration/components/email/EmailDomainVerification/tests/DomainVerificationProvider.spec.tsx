@@ -4,10 +4,9 @@ import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import type { EmailDomain, HttpResponse } from '@gorgias/helpdesk-client'
 import {
-    EmailDomain,
     getEmailIntegrationDomain,
-    HttpResponse,
     updateEmailIntegrationDomain,
     verifyEmailIntegrationDomain,
 } from '@gorgias/helpdesk-client'

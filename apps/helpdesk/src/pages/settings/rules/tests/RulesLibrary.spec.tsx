@@ -15,8 +15,8 @@ import {
 import { user } from '../../../../fixtures/users'
 import { fetchRules } from '../../../../models/rule/resources'
 import { fetchRuleRecipes } from '../../../../models/ruleRecipe/resources'
-import { RulesState } from '../../../../state/entities/rules/types'
-import { RootState, StoreDispatch } from '../../../../state/types'
+import type { RulesState } from '../../../../state/entities/rules/types'
+import type { RootState, StoreDispatch } from '../../../../state/types'
 import { RulesLibraryContainer } from '../RulesLibrary'
 
 jest.mock('../../../../models/rule/resources')

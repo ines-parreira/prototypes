@@ -1,4 +1,4 @@
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import {
     getAvailableChats,

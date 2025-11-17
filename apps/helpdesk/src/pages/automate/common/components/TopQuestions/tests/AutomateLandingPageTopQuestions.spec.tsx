@@ -2,9 +2,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { AutomateLandingPageTopQuestions } from '../AutomateLandingPageTopQuestions'

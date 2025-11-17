@@ -1,19 +1,19 @@
 import { cloneElement } from 'react'
 
+import type { IConvertFromHTMLConfig } from 'draft-convert'
 import {
     convertFromHTML as _convertFromHTML,
     convertToHTML as _convertToHTML,
-    IConvertFromHTMLConfig,
 } from 'draft-convert'
+import type { ContentBlock } from 'draft-js'
 import {
-    ContentBlock,
     ContentState,
     convertToRaw,
     EditorState,
     Modifier,
     SelectionState,
 } from 'draft-js'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import linkifyhtml from 'linkify-html'
 import _kebabeCase from 'lodash/kebabCase'
 

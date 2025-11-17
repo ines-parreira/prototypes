@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { history } from '@repo/routing'
 import { render } from '@testing-library/react'

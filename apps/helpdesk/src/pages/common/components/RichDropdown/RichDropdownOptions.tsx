@@ -1,6 +1,6 @@
 import { DropdownItem } from 'reactstrap'
 
-import { Option } from './types'
+import type { Option } from './types'
 
 import css from './RichDropdownOptions.less'
 

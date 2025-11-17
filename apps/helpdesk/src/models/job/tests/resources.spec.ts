@@ -2,7 +2,8 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import { createJob, JOBS_PATH } from 'models/job/resources'
-import { Job, JobRequestPayload, JobStatus, JobType } from 'models/job/types'
+import type { Job, JobRequestPayload } from 'models/job/types'
+import { JobStatus, JobType } from 'models/job/types'
 
 const mockedServer = new MockAdapter(client)
 describe('job resources', () => {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { ChannelTypes, ChannelWithMetadata } from '../../../types'
+import type { ChannelTypes, ChannelWithMetadata } from '../../../types'
 
 import css from './CreateNewChannel.less'
 

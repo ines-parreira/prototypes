@@ -1,6 +1,8 @@
-import React, { useEffect, useMemo, useReducer } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
 
-import { bindActionCreators, Dispatch } from '@reduxjs/toolkit'
+import type { Dispatch } from '@reduxjs/toolkit'
+import { bindActionCreators } from '@reduxjs/toolkit'
 import { Device } from '@twilio/voice-sdk'
 
 import { useErrorHandling } from 'hooks/integrations/phone/useErrorHandling'

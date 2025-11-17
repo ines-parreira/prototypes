@@ -1,5 +1,5 @@
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
-import { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
+import type { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
 
 import {
     GUIDANCE_ARTICLE_LIMIT,
@@ -7,7 +7,7 @@ import {
     NEW_GUIDANCE_ARTICLE_LIMIT,
     NEW_GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from './constants'
-import { NonNullProperties } from './types'
+import type { NonNullProperties } from './types'
 
 export const filterNonNull = <T extends object>(
     obj: T,

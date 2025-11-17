@@ -1,25 +1,24 @@
 import _flatten from 'lodash/flatten'
 
-import {
+import type {
     AnalyticsCustomReport,
     AnalyticsCustomReportChartSchema,
     AnalyticsCustomReportRowSchema,
     AnalyticsCustomReportSectionSchema,
 } from '@gorgias/helpdesk-queries'
+import type { CreateAnalyticsCustomReportBody } from '@gorgias/helpdesk-types'
 import {
     AnalyticsCustomReportChartSchemaType,
     AnalyticsCustomReportRowSchemaType,
     AnalyticsCustomReportSectionSchemaType,
-    CreateAnalyticsCustomReportBody,
 } from '@gorgias/helpdesk-types'
 import { validateAnalyticsCustomReport } from '@gorgias/helpdesk-validators'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import {
+import type {
     ChartConfig,
     DashboardChartSchema,
     DashboardChild,
-    DashboardChildType,
     DashboardInput,
     DashboardRowSchema,
     DashboardSchema,
@@ -27,6 +26,7 @@ import {
     ReportChildrenConfig,
     ReportsModalConfig,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { isGorgiasApiError } from 'models/api/types'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 import { reportError } from 'utils/errors'

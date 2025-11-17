@@ -1,9 +1,9 @@
 import uniq from 'lodash/uniq'
 
-import { StaticFilter } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { getChildrenOfTypeChart } from 'domains/reporting/pages/dashboards/utils'
 
 function getFiltersByConfigId(chartId: string) {

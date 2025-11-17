@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import client from 'models/api/resources'
 
-import {
+import type {
     BigCommerceAddressResponse,
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceCart,
@@ -13,8 +13,6 @@ import {
     BigCommerceCheckout,
     BigCommerceCheckoutErrorResponse,
     BigCommerceCheckoutResponse,
-    BigCommerceCouponError,
-    BigCommerceCouponErrorMessage,
     BigCommerceCreateConsignmentPayload,
     BigCommerceCustomAddress,
     BigCommerceCustomCartLineItem,
@@ -22,10 +20,6 @@ import {
     BigCommerceCustomProduct,
     BigCommerceDuplicateOrderErrorResponse,
     BigCommerceDuplicateOrderResponse,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
-    BigCommerceLineItemError,
-    BigCommerceLineItemErrorMessage,
     BigCommerceNestedCartResponse,
     BigCommerceNestedCheckoutResponse,
     BigCommerceRefundItemsPayload,
@@ -35,6 +29,14 @@ import {
     CalculateOrderRefundDataResponse,
     CalculateOrderRefundQuotesDataErrorResponse,
     CalculateOrderRefundQuotesDataResponse,
+} from '../types'
+import {
+    BigCommerceCouponError,
+    BigCommerceCouponErrorMessage,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
     ProductModifiersChangedError,
 } from '../types'
 

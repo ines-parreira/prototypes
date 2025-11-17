@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -12,7 +12,7 @@ import { isAiAgentEnabled } from 'pages/aiAgent/util'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { NavigationChannelType } from './utils'
+import type { NavigationChannelType } from './utils'
 
 const ACTION_DRIVEN_NAVBAR_SECTIONS_KEY =
     'ai-agent:action-driven-navbar:sections'

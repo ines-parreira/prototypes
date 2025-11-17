@@ -2,7 +2,7 @@ import { produce } from 'immer'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     ConditionSchema,
     DateSchema,
     DoesNotExistSchema,
@@ -18,7 +18,7 @@ import {
     getCurrentUser,
     getDateAndTimeFormatter,
 } from 'state/currentUser/selectors'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { formatDatetime } from 'utils'
 import { stringToDatetime } from 'utils/date'
 

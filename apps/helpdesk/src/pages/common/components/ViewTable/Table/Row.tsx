@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { EntityType } from 'models/view/types'
+import type { EntityType } from 'models/view/types'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import css from 'pages/common/components/ViewTable/Table.less'
 import CheckBox from 'pages/common/forms/CheckBox'

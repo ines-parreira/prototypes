@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import {
+import type {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
 } from 'models/helpCenter/types'

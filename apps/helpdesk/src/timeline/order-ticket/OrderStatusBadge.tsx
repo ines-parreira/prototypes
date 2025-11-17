@@ -1,6 +1,7 @@
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
-import { FinancialStatus } from 'constants/integrations/types/shopify'
+import type { FinancialStatus } from 'constants/integrations/types/shopify'
 
 const OrderStatusBadge = ({ status }: { status: FinancialStatus }) => {
     let statusLabel = 'unknown status'

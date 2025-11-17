@@ -2,7 +2,7 @@ import { createContext } from 'react'
 
 import { useSafeContext } from '@repo/hooks'
 
-import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
+import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 export type TextToSpeechContext = {
     integrationId: number

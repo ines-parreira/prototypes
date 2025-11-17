@@ -1,21 +1,23 @@
-import React, { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Options as InitialSettings } from 'daterangepicker'
+import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
-import { Moment } from 'moment/moment'
+import type { Moment } from 'moment/moment'
 import { connect } from 'react-redux'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
     FILTER_NAME_MAX_WIDTH,
     FILTER_VALUE_MAX_WIDTH,
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import css from 'domains/reporting/pages/common/filters/PeriodFilter.less'
-import { RemovableFilter } from 'domains/reporting/pages/common/filters/types'
+import type { RemovableFilter } from 'domains/reporting/pages/common/filters/types'
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
 import { getDateRangePickerLabel } from 'domains/reporting/pages/common/utils'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
@@ -25,7 +27,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import FilterName from 'pages/common/forms/FilterInput/FilterName'
 import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const MAX_SPAN = 90
 

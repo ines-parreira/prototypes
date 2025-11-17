@@ -8,7 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { integrationsState } from 'fixtures/integrations'
-import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
+import type { useModalManagerApi } from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useUpdateDiscountOffer,
@@ -21,10 +22,8 @@ import {
 import { setupValidModalParameters } from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {
-    UniqueDiscountOfferCreateModal,
-    UniqueDiscountOfferCreateModalProps,
-} from '../UniqueDiscountOfferCreateModal'
+import type { UniqueDiscountOfferCreateModalProps } from '../UniqueDiscountOfferCreateModal'
+import { UniqueDiscountOfferCreateModal } from '../UniqueDiscountOfferCreateModal'
 
 jest.mock('models/integration/queries')
 jest.mock('models/convert/discountOffer/queries')

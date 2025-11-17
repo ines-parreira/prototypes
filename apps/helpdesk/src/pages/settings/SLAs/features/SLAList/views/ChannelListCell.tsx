@@ -1,14 +1,14 @@
-import React, { PropsWithRef, useMemo } from 'react'
+import type { PropsWithRef } from 'react'
+import React, { useMemo } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import { getChannelBySlug } from 'services/channels'
 
-import { UISLAPolicy } from '../types'
+import type { UISLAPolicy } from '../types'
 import CellLinkWrapper from './CellLinkWrapper'
 
 import css from './ChannelListCell.less'

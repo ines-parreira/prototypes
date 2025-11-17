@@ -1,6 +1,6 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
@@ -26,7 +26,7 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
 import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
-import { FormValues } from '../../types'
+import type { FormValues } from '../../types'
 import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 

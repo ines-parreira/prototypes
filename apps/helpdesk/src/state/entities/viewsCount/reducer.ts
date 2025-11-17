@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { viewsCountFetched } from './actions'
-import { ViewsCountState } from './types'
+import type { ViewsCountState } from './types'
 
 const initialState: ViewsCountState = {}
 

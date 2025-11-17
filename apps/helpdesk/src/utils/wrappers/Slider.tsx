@@ -1,6 +1,8 @@
-import { forwardRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { forwardRef } from 'react'
 
-import BaseSlider, { Settings } from 'react-slick'
+import type { Settings } from 'react-slick'
+import BaseSlider from 'react-slick'
 
 export type SliderProps = Settings & {
     children: ReactNode

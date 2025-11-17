@@ -2,7 +2,7 @@ import { useCallback, useReducer } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 
 export type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean

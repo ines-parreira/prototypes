@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { ModalHeader } from 'reactstrap'
 
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
+import type { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,

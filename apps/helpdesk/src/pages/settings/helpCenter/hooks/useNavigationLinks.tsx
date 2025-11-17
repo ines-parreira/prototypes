@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Draft, produce } from 'immer'
+import type { Draft } from 'immer'
+import { produce } from 'immer'
 import { chain as _chain } from 'lodash'
 import _defaults from 'lodash/defaults'
 import isUrl from 'validator/lib/isURL'
 
-import {
+import type {
     LocaleCode,
     LocalNavigationLink,
     LocalSocialNavigationLink,

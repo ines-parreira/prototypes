@@ -1,11 +1,12 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import React, { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component } from 'react'
 
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 
-import { MentionPluginStore } from '../types'
+import type { MentionPluginStore } from '../types'
 
 type Props = {
     offsetKey: string

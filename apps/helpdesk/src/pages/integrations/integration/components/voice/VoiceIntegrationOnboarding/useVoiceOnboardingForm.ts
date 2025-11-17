@@ -1,12 +1,11 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
-import {
+import type {
     CreateIntegrationBody,
-    PhoneFunction,
     PhoneIntegration,
-    useCreateIntegration,
 } from '@gorgias/helpdesk-queries'
+import { PhoneFunction, useCreateIntegration } from '@gorgias/helpdesk-queries'
 import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
 import { useFlag } from 'core/flags'

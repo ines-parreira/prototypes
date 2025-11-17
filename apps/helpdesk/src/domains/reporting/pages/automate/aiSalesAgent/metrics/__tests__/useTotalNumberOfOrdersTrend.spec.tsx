@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
@@ -10,7 +11,7 @@ import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchTotalNumberOfOrdersTrend,
     useTotalNumberOfOrdersTrend,

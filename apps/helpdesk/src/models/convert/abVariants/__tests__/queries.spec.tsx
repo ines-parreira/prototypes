@@ -10,7 +10,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
-import { ABVariantParams } from '../types'
+import type { ABVariantParams } from '../types'
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(() => ({

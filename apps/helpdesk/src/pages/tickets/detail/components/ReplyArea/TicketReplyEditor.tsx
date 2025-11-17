@@ -1,4 +1,5 @@
-import { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { Component } from 'react'
 
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
@@ -7,20 +8,20 @@ import { ContentState, EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { humanize } from 'business/format'
 import { canAddAttachments } from 'business/ticket'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import withTypingActivity, {
-    TypingActivityProps,
-} from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
+import type { TypingActivityProps } from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
+import withTypingActivity from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { isNewChannel } from 'services/channels'
 import { getOtherAgents } from 'state/agents/selectors'
@@ -34,7 +35,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getContext } from 'state/prediction/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { isInternalNote, isRichType } from 'tickets/common/utils'
 import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 

@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
-    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'

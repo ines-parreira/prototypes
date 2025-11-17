@@ -1,17 +1,16 @@
-import React, { useEffect, useMemo } from 'react'
+import type React from 'react'
+import { useEffect, useMemo } from 'react'
 
 import cn from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { TicketOutcome } from 'models/aiAgentPlayground/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { ticketOutcomeToLabel } from 'pages/aiAgent/components/TicketEvent/TicketEvent'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    KnowledgeResource,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { KnowledgeResource } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'

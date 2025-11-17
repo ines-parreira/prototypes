@@ -12,8 +12,8 @@ import {
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { ContactFormPageEmbedment } from 'models/contactForm/types'
-import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
+import type { ContactFormPageEmbedment } from 'models/contactForm/types'
+import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import {
     insertContactFormIdParam,
     linkToContactFormPreferences,

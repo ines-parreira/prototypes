@@ -1,4 +1,5 @@
-import io, { Socket } from 'socket.io-client'
+import type { Socket } from 'socket.io-client'
+import io from 'socket.io-client'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -8,7 +9,8 @@ import {
 } from '../constants'
 import { FallbackWorker, fallbackWorkerAdapter } from '../fallbackWorkerAdapter'
 import IncrementalBackoff from '../incrementalBackoff'
-import { BroadcastChannelEvent, WSMessage } from '../types'
+import type { WSMessage } from '../types'
+import { BroadcastChannelEvent } from '../types'
 
 jest.mock('socket.io-client', () => {
     return jest.fn(() => {

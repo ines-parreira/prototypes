@@ -1,4 +1,6 @@
-import React, { RefObject, useEffect, useMemo, useState } from 'react'
+import type { RefObject } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -7,7 +9,7 @@ import {
     filterManyVariables,
     findManyVariables,
 } from 'pages/automate/workflows/models/variables.model'
-import {
+import type {
     WorkflowVariable,
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'

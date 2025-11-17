@@ -8,7 +8,7 @@ import {
     TicketSegment,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { workloadPerChannelDistributionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/workloadPerChannel'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,

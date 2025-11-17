@@ -1,16 +1,18 @@
 import { appQueryClient } from 'api/queryClient'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     applicationsQueryKeys,
     useListApplications,
 } from 'models/application/queries'
-import { listApplications } from 'models/application/resources'
-import {
+import type { listApplications } from 'models/application/resources'
+import type {
     Application,
     ApplicationMessagingConfig,
 } from 'models/application/types'
-import { Integration, isAppIntegration } from 'models/integration/types'
-import { ChannelLike, toChannel } from 'services/channels'
+import type { Integration } from 'models/integration/types'
+import { isAppIntegration } from 'models/integration/types'
+import type { ChannelLike } from 'services/channels'
+import { toChannel } from 'services/channels'
 
 export type {
     Application,

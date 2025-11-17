@@ -1,4 +1,5 @@
-import jsdom, { BaseOptions } from 'jsdom'
+import type { BaseOptions } from 'jsdom'
+import jsdom from 'jsdom'
 
 import {
     focusElement,

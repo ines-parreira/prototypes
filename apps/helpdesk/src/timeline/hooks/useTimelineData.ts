@@ -1,12 +1,12 @@
 import { isEmpty } from 'lodash'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicketCustomer } from 'state/ticket/selectors'
 import { extractOrders } from 'timeline/helpers/orders'
 import * as timelineItem from 'timeline/helpers/timelineItem'
-import { TimelineItem } from 'timeline/types'
+import type { TimelineItem } from 'timeline/types'
 
 import { useTicketList } from './useTicketList'
 

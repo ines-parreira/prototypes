@@ -1,5 +1,5 @@
 import client from 'models/api/resources'
-import { AlloyInitInfo } from 'models/integration/types/alloy'
+import type { AlloyInitInfo } from 'models/integration/types/alloy'
 
 export async function loadIntegration(
     integrationId: string,

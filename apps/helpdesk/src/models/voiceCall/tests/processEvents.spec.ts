@@ -1,11 +1,9 @@
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import {
-    hasFlowEndEvent,
-    ProcessedEvent,
-    processEvents,
-} from 'models/voiceCall/processEvents'
+import type { ProcessedEvent } from 'models/voiceCall/processEvents'
+import { hasFlowEndEvent, processEvents } from 'models/voiceCall/processEvents'
 
-import { VoiceCallEvent, VoiceCallSubjectType } from '../types'
+import type { VoiceCallEvent } from '../types'
+import { VoiceCallSubjectType } from '../types'
 
 describe('processEvents', () => {
     it('should return an empty array when passed an empty array', () => {

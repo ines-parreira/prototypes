@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { useDeleteVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useDeleteVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

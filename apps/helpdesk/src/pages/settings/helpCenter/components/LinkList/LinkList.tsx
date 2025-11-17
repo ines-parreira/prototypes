@@ -3,7 +3,8 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { LinkEntity, LinkItem, LinkItemEventHandlers } from './LinkItem'
+import type { LinkEntity, LinkItemEventHandlers } from './LinkItem'
+import { LinkItem } from './LinkItem'
 
 import css from './LinkList.less'
 

@@ -1,24 +1,22 @@
-import { User } from 'config/types/user'
-import { Metric } from 'domains/reporting/hooks/metrics'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { User } from 'config/types/user'
+import type { Metric } from 'domains/reporting/hooks/metrics'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import {
-    AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HandleTimeCube,
-    HandleTimeMeasure,
-} from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
-import {
-    HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins,
-    HelpdeskCustomerMessagesReceivedEnrichedMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
-import {
+import type { HandleTimeCube } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
+import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
+import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
+import type {
     HelpdeskMessageCubeWithJoins,
+    HelpdeskMessageMember,
+} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
-    HelpdeskMessageMember,
 } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
@@ -28,18 +26,18 @@ import {
     TicketFirstHumanAgentResponseTimeDimension,
     TicketFirstHumanAgentResponseTimeMeasure,
 } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import type { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
-    TicketMessagesMember,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     TicketMessagesEnrichedResponseTimesDimension,
     TicketMessagesEnrichedResponseTimesMeasure,
 } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import type { TicketsFirstAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import {
-    TicketsFirstAgentResponseTimeCube,
     TicketsFirstAgentResponseTimeDimension,
     TicketsFirstAgentResponseTimeMeasure,
 } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'

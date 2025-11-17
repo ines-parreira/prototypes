@@ -1,6 +1,10 @@
-import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import type {
+    EmailIntegration,
+    GmailIntegration,
+} from '@gorgias/helpdesk-queries'
 
-import { IntegrationType, OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 import {
     canIntegrationDomainBeVerified,

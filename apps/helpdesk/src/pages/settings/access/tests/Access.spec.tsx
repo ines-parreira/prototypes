@@ -11,7 +11,7 @@ import {
     AccountSettingAccessSignupMode,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { AccessContainer } from '../Access'
 

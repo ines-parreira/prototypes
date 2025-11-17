@@ -1,10 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
-    HttpResponse,
-    queryKeys,
-    useUpdateSlaPolicy,
-} from '@gorgias/helpdesk-queries'
+import type { HttpResponse } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'

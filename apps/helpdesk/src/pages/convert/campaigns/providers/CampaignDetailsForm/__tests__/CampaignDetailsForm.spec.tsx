@@ -1,18 +1,15 @@
 import { assumeMock, flushPromises } from '@repo/testing'
-import {
-    act,
-    fireEvent,
-    RenderResult,
-    screen,
-    waitFor,
-} from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { RenderResult } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { AttachmentEnum } from 'common/types'
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import {
     campaign as campaignFixture,
@@ -29,12 +26,12 @@ import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CampaignScheduleModeEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
-import { Campaign } from '../../../types/Campaign'
+import type { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
 
 jest.mock('utils/launchDarkly')

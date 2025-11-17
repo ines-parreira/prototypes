@@ -1,4 +1,4 @@
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 export enum KnowledgeType {
     Document = 'document',

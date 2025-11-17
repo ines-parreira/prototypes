@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { AiSalesMetricConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { AiSalesMetricConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 
 type Props = {
     chartId?: string

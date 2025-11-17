@@ -1,7 +1,8 @@
-import { MouseEvent, useEffect, useMemo } from 'react'
+import type { MouseEvent } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import Fuse from 'fuse.js'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
 import { Skeleton } from '@gorgias/axiom'
@@ -19,7 +20,7 @@ import { CampaignsTable } from '../../components/CampaignsTable'
 import { ConvertLimitBanner } from '../../components/ConvertLimitBanner/ConvertLimitBanner'
 import { QUICK_FILTERS } from '../../constants/filters'
 import { useCampaignListOptions } from '../../hooks/useCampaignListOptions'
-import { Campaign } from '../../types/Campaign'
+import type { Campaign } from '../../types/Campaign'
 import { quickFiltersInvoke } from '../../utils/filters'
 import { QuickFilters } from '../QuickFilters'
 

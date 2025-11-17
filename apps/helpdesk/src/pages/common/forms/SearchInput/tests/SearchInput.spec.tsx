@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -6,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import SearchInput from 'pages/common/forms/SearchInput/SearchInput'
-import {
+import type {
     SearchInputResultProps,
     SearchInputSubResultProps,
 } from 'pages/common/forms/SearchInput/types'

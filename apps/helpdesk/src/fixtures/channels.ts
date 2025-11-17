@@ -1,4 +1,4 @@
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 
 export const channels: Channel[] = [
     {

@@ -3,19 +3,19 @@ import moment from 'moment/moment'
 import { useTables } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useSatisfactionMetrics } from 'domains/reporting/hooks/quality-management/satisfaction/useSatisfactionMetrics'
+import type { ScoredSurveysData } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import {
     fetchScoredSurveys,
-    ScoredSurveysData,
     ScoredSurveySortDefaultValues,
     useScoredSurveys,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import { fetchSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { Period, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

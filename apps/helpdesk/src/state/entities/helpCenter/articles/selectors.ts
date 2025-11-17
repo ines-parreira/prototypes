@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-import { Article } from 'models/helpCenter/types'
+import type { Article } from 'models/helpCenter/types'
 
 import { getHelpCenterStore } from '../selectors'
 

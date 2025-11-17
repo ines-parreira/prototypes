@@ -1,10 +1,10 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 
 import AgentMessages from './AgentMessages'
 import AutoResponder from './AutoResponder'

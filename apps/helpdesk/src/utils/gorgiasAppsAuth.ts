@@ -1,4 +1,5 @@
-import { AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { AxiosHeaders } from 'axios'
 
 import gorgiasApiClient from 'models/api/resources'
 

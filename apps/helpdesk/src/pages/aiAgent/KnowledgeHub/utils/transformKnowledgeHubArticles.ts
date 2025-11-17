@@ -1,9 +1,8 @@
-import {
-    KnowledgeHubArticle,
-    KnowledgeHubArticleSourceType,
-} from 'models/helpCenter/types'
+import type { KnowledgeHubArticle } from 'models/helpCenter/types'
+import { KnowledgeHubArticleSourceType } from 'models/helpCenter/types'
 
-import { KnowledgeItem, KnowledgeType, KnowledgeVisibility } from '../types'
+import type { KnowledgeItem, KnowledgeVisibility } from '../types'
+import { KnowledgeType } from '../types'
 
 export function mapSourceTypeToKnowledgeType(
     sourceType: KnowledgeHubArticle['type'],

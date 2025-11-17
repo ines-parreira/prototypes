@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { FinancialStatus, Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
+import { FinancialStatus } from 'constants/integrations/types/shopify'
 import { shopifyOrderFixture } from 'fixtures/shopify'
 
 import OrderCard from '../OrderCard'

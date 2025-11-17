@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import AssignIntegrationsModal from './AssignIntegrationsModal'
-import { EditCustomBusinessHoursFormValues } from './types'
+import type { EditCustomBusinessHoursFormValues } from './types'
 import { getIntegrationsChangeSummary } from './utils'
 
 import css from './EditCustomBusinessHoursIntegrationsSection.less'

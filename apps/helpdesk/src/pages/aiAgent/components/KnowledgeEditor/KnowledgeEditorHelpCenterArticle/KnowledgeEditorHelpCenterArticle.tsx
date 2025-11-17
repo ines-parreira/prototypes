@@ -2,17 +2,15 @@ import { useCallback, useState } from 'react'
 
 import { SidePanel } from '@gorgias/axiom'
 
-import {
+import type {
     ArticleWithLocalTranslation,
     Category,
     HelpCenter,
     Locale,
 } from 'models/helpCenter/types'
 
-import {
-    InitialArticleMode,
-    KnowledgeEditorHelpCenterExistingArticle,
-} from './KnowledgeEditorHelpCenterExistingArticle'
+import type { InitialArticleMode } from './KnowledgeEditorHelpCenterExistingArticle'
+import { KnowledgeEditorHelpCenterExistingArticle } from './KnowledgeEditorHelpCenterExistingArticle'
 import { KnowledgeEditorHelpCenterNewArticle } from './KnowledgeEditorHelpCenterNewArticle'
 
 type Props = {

@@ -1,6 +1,7 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import { fireEvent, render, RenderResult } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 

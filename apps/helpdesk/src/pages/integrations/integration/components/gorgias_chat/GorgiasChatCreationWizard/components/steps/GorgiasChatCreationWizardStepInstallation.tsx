@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -16,10 +18,8 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import {
-    NavigatedSuccessModalLocationState,
-    NavigatedSuccessModalName,
-} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { Tab } from 'pages/integrations/integration/types'

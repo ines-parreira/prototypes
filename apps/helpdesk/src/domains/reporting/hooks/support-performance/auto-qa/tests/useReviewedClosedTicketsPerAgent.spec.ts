@@ -10,8 +10,8 @@ import {
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { reviewedClosedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

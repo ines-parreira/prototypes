@@ -1,4 +1,4 @@
-import { StoreWithAssignedChannels } from './types'
+import type { StoreWithAssignedChannels } from './types'
 
 export function sortStoresByName(
     stores: StoreWithAssignedChannels[],

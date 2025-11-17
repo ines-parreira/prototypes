@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { NavigationProvider } from '@repo/navigation'
 import { CookiesProvider } from 'react-cookie'

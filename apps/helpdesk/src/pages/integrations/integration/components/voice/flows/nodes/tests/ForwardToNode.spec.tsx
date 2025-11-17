@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,7 +10,7 @@ import {
     mockForwardToExternalNumberStep,
     mockListPhoneNumbersHandler,
 } from '@gorgias/helpdesk-mocks'
-import {
+import type {
     CallRoutingFlow,
     ForwardToExternalNumberStep,
     ListPhoneNumbers200DataItem,

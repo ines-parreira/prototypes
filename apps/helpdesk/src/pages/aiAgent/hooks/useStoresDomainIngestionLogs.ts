@@ -9,7 +9,7 @@ import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/
 import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 
-import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
+import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 import { useShopifyIntegrations } from '../Onboarding/hooks/useShopifyIntegrations'
 
 export const useStoresDomainIngestionLogs = ({

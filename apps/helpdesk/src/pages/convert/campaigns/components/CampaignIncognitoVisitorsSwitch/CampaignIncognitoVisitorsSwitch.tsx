@@ -1,4 +1,5 @@
-import { createRef, FC, useMemo, useState } from 'react'
+import type { FC } from 'react'
+import { createRef, useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
@@ -8,7 +9,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'
-import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './CampaignIncognitoVisitorsSwitch.less'

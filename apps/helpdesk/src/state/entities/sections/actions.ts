@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { Section } from '../../../models/section/types'
+import type { Section } from '../../../models/section/types'
 import {
     SECTION_CREATED,
     SECTION_DELETED,

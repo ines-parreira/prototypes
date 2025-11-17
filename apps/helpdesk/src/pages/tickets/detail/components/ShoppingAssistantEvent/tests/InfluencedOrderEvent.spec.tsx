@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import {
-    InfluencedOrderSource,
-    ShoppingAssistantEvent,
-} from '../../../hooks/useInsertShoppingAssistantEventElements'
+import type { ShoppingAssistantEvent } from '../../../hooks/useInsertShoppingAssistantEventElements'
+import { InfluencedOrderSource } from '../../../hooks/useInsertShoppingAssistantEventElements'
 import { InfluencedOrderEvent } from '../InfluencedOrderEvent'
 
 describe('InfluencedOrderEvent', () => {

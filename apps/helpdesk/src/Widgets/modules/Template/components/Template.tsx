@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 
 import { LEAF_TYPES } from 'models/widget/constants'
+import type { Source, Template as TemplateType } from 'models/widget/types'
 import {
     isCardTemplate,
     isLeafType,
@@ -8,8 +9,6 @@ import {
     isSourceArray,
     isSourceRecord,
     isWrapperTemplate,
-    Source,
-    Template as TemplateType,
 } from 'models/widget/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { STANDALONE_WIDGET_TYPE } from 'state/widgets/constants'

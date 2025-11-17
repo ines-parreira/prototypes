@@ -8,7 +8,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {
+import type {
     Components,
     Paths,
 } from '../../../../rest_api/help_center_api/client.generated'

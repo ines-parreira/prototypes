@@ -1,8 +1,10 @@
-import React, { ForwardedRef, forwardRef } from 'react'
+import type { ForwardedRef } from 'react'
+import React, { forwardRef } from 'react'
 
 import classnames from 'classnames'
 
-import BaseEdgeButton, { BaseEdgeButtonProps } from './BaseEdgeButton'
+import type { BaseEdgeButtonProps } from './BaseEdgeButton'
+import BaseEdgeButton from './BaseEdgeButton'
 
 import css from './EdgeIconButton.less'
 

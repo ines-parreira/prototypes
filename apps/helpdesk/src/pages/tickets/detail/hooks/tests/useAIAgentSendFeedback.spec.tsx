@@ -13,20 +13,18 @@ import {
     useDeleteAIAgentTicketMessagesFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
-import {
+import type {
     DeleteMessageFeedback,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {
-    FeedbackStatus,
-    ResourceSection,
-} from '../../components/AIAgentFeedbackBar/types'
+import type { ResourceSection } from '../../components/AIAgentFeedbackBar/types'
+import { FeedbackStatus } from '../../components/AIAgentFeedbackBar/types'
 import { useAIAgentSendFeedback } from '../useAIAgentSendFeedback'
 
 const queryClient = mockQueryClient()

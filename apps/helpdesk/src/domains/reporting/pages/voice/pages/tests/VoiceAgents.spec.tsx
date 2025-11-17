@@ -1,15 +1,14 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
@@ -29,7 +28,7 @@ import {
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock(

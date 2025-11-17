@@ -19,7 +19,7 @@ import {
 import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({

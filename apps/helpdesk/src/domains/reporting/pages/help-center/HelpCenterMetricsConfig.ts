@@ -1,5 +1,5 @@
-import { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { useArticleViewsTrend } from 'domains/reporting/pages/help-center/hooks/useArticleViewsTrend'
 import { useSearchRequestedTrend } from 'domains/reporting/pages/help-center/hooks/useSearchRequestedTrend'
 

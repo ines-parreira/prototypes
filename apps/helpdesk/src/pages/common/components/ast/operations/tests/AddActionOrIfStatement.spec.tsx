@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import AddActionOrIfStatement from '../AddActionOrIfStatement'
 

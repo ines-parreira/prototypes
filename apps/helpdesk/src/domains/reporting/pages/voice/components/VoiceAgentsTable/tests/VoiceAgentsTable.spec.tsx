@@ -1,11 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { VoiceAgentsTable } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTable'

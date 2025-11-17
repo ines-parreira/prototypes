@@ -1,5 +1,5 @@
 import { CONVERT_LIGHT_TRIGGERS } from '../constants/triggers'
-import { CampaignTrigger } from '../types/CampaignTrigger'
+import type { CampaignTrigger } from '../types/CampaignTrigger'
 
 export function isAllowedToUpdateTrigger(
     trigger: CampaignTrigger,

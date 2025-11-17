@@ -1,6 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import axios from 'axios'
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import {
@@ -9,7 +10,7 @@ import {
 } from 'business/shopify/order'
 import { getTotalQuantities } from 'business/shopify/refund'
 import GorgiasApi from 'services/gorgiasApi'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 
 import {

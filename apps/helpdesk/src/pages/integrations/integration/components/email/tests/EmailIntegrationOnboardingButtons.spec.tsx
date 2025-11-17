@@ -1,17 +1,17 @@
-import React from 'react'
+import type React from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
-    UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
 const FormContext = ({ children }: { children: React.ReactNode }) => {

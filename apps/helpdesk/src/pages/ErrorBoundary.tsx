@@ -1,11 +1,12 @@
-import React, { PureComponent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { PureComponent } from 'react'
 
 import { Emoji } from 'emoji-mart'
 import { Card, CardBody, Collapse } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SentryTeam } from 'common/const/sentryTeamNames'
+import type { SentryTeam } from 'common/const/sentryTeamNames'
 
 import { reportError } from '../utils/errors'
 

@@ -1,4 +1,4 @@
-import { MatcherContext, MatcherFunction } from '@jest/expect'
+import type { MatcherContext, MatcherFunction } from '@jest/expect'
 
 import {
     HtmlElementTypeError,

@@ -9,7 +9,7 @@ import {
     fetchSections,
     updateSection,
 } from '../resources'
-import { SectionDraft } from '../types'
+import type { SectionDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
 const sectionDraft: SectionDraft = _omit(section, [

@@ -1,7 +1,7 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 import SettingsContent from 'pages/settings/SettingsContent'

@@ -1,4 +1,4 @@
-import { MacroAction } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
 
 import { AgentLabel } from 'pages/common/utils/labels'
 

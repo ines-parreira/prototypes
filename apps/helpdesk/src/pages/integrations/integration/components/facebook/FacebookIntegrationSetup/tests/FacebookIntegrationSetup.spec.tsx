@@ -1,7 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import { AccountFeature } from 'state/currentAccount/types'

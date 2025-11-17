@@ -1,4 +1,4 @@
-import { HTMLProps, ReactNode } from 'react'
+import type { HTMLProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
@@ -6,9 +6,8 @@ import { OrderDirection } from '@gorgias/helpdesk-queries'
 
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
-import IconTooltip, {
-    IconTooltipProps,
-} from 'pages/common/forms/IconTooltip/IconTooltip'
+import type { IconTooltipProps } from 'pages/common/forms/IconTooltip/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode

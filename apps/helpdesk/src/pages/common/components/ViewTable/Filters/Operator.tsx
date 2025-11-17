@@ -9,7 +9,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import { OperatorType } from './types'
+import type { OperatorType } from './types'
 
 import css from './CallExpression.less'
 

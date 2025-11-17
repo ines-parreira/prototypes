@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { AxiosError } from 'axios'
-import { fromJS, List, Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import {
     Modal,
     ModalBody,
@@ -15,7 +16,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { View, ViewVisibility } from 'models/view/types'
+import type { View } from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import { notify } from 'state/notifications/actions'

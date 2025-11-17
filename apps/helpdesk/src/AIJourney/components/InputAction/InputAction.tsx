@@ -1,4 +1,5 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import { AsYouType } from 'libphonenumber-js'

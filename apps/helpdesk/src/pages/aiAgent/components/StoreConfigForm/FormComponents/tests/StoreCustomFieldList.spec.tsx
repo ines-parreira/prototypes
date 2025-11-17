@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
 
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 
 import {
     StoreCustomFieldComponent,

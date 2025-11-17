@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { LocaleCode } from 'models/helpCenter/types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { LocaleCode } from 'models/helpCenter/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
 import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
-import { GuidanceFormFields, GuidanceTemplate } from './types'
+import type { GuidanceFormFields, GuidanceTemplate } from './types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 type Props = {

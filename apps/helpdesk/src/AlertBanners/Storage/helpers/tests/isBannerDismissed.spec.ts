@@ -1,5 +1,5 @@
 import { BannerCategories } from '../../../types'
-import { AlertBannerStorage } from '../../types'
+import type { AlertBannerStorage } from '../../types'
 import { isBannerDismissed } from '../isBannerDismissed'
 
 describe('isBannerDismissed', () => {

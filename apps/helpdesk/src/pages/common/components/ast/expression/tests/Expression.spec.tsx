@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
@@ -6,7 +7,7 @@ import { fromJS } from 'immutable'
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 import { setNewMessageActions, setResponseText } from 'state/newMessage/actions'
 import {
@@ -24,7 +25,7 @@ import {
     createApplyExternalTemplateAction,
 } from './utils'
 import { Context } from './WhatsAppEditorContext'
-import { WhatsAppMessageTemplateSearchFilters } from './WhatsAppMessageTemplateSearch'
+import type { WhatsAppMessageTemplateSearchFilters } from './WhatsAppMessageTemplateSearch'
 
 export default function WhatsAppEditorProvider({
     children,

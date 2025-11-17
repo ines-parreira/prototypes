@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'

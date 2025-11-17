@@ -54,10 +54,8 @@ import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains
 import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useShouldIncludeBots')

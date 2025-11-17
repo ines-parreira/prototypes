@@ -3,13 +3,13 @@ import { useCallback, useMemo, useState } from 'react'
 import _merge from 'lodash/merge'
 
 import type { LegacySelectFieldOption as SelectFieldOption } from '@gorgias/axiom'
-import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
+import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'
 import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
-import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
+import type { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
 
 type DefaultFormValues = {
     name: string

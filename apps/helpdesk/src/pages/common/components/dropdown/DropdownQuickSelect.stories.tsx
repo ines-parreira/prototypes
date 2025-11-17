@@ -1,6 +1,6 @@
-import { ComponentProps, ContextType } from 'react'
+import type { ComponentProps, ContextType } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import _noop from 'lodash/noop'
 
 import { DropdownContext } from './Dropdown'

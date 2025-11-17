@@ -4,8 +4,8 @@ import { history } from '@repo/routing'
 import { Link, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
+import type { UpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import {
-    UpdateVoiceQueue,
     useGetVoiceQueue,
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'

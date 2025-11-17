@@ -1,22 +1,22 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { ListIntegrations200 } from '@gorgias/helpdesk-client'
+import type { ListIntegrations200 } from '@gorgias/helpdesk-client'
 import {
     mockCallRoutingFlow,
     mockListIntegrationsHandler,
     mockSendToSMSStep,
 } from '@gorgias/helpdesk-mocks'
-import { SendToSMSStep } from '@gorgias/helpdesk-types'
+import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { VoiceFlowFormValues } from '../../types'
+import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { SendToSMSNode } from '../SendToSMSNode'
 

@@ -1,5 +1,5 @@
 import { eventMatcher } from './matcher'
-import { eventMaker, integrationEvent } from './types'
+import type { eventMaker, integrationEvent } from './types'
 
 export const getEvent = (eventData: eventMaker): integrationEvent => {
     const emptyEvent = {

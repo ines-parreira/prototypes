@@ -43,7 +43,7 @@ import {
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { OrderConversionDimension } from 'domains/reporting/pages/convert/clients/constants'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
@@ -59,7 +59,7 @@ import { agents } from 'fixtures/agents'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const initialState = {
     ui: {

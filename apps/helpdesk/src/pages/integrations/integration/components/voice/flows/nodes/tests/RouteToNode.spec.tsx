@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
@@ -10,7 +10,7 @@ import {
     mockGetVoiceQueueHandler,
     mockRouteToInternalNumber,
 } from '@gorgias/helpdesk-mocks'
-import {
+import type {
     CallRoutingFlow,
     EnqueueStep,
     RouteToInternalNumber,

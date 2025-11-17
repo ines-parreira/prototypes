@@ -1,5 +1,5 @@
 import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
-import { HelpCenter, HelpCenterArticleItem } from 'models/helpCenter/types'
+import type { HelpCenter, HelpCenterArticleItem } from 'models/helpCenter/types'
 
 import { slugify } from '../utils/helpCenter.utils'
 

@@ -1,11 +1,12 @@
-import React, { MouseEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 import _kebabCase from 'lodash/kebabCase'
 
 import { formatNumber } from 'domains/reporting/pages/common/utils'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 type Props = {

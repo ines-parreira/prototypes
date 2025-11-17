@@ -4,7 +4,7 @@ import useMetricTrend, {
 } from 'domains/reporting/hooks/useMetricTrend'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useVoiceCallCountTrend = (

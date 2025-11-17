@@ -9,9 +9,9 @@ import {
     ORDER_STATUSES_OPTIONS,
     SHIPMENT_STATUSES_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
+import type { JsonLogicRuleOverVariable } from 'models/selfServiceConfiguration/types'
 import {
     JsonLogicOperator,
-    JsonLogicRuleOverVariable,
     ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -22,7 +22,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import css from './ReportOrderIssueScenarioConditionRule.less'
 

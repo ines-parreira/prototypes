@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
@@ -6,8 +6,8 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import type BodyCell from 'pages/common/components/table/cells/BodyCell'
+import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
 export const getVoiceDrillDownColumns = (
     metricName?: string,

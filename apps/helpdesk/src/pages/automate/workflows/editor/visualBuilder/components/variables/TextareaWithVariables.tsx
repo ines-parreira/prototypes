@@ -3,12 +3,13 @@ import 'draft-js/dist/Draft.css'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { ContentState, EditorState, Modifier } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState, Modifier } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
-import {
+import type {
     WorkflowVariable,
     WorkflowVariableList,
     WorkflowVariableType,

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 
 const useGenericTrend = (
     hooks: { [key: string]: MetricTrend },

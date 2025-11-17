@@ -1,20 +1,22 @@
-import React, { ComponentProps, ElementType, useContext, useMemo } from 'react'
+import type { ComponentProps, ElementType } from 'react'
+import type React from 'react'
+import { useContext, useMemo } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import {
+import type {
     CardMeta,
     CardTemplate,
-    isListTemplate,
-    isSourceRecord,
     ListMeta,
     PartialTemplate,
     Source,
     Template,
 } from 'models/widget/types'
+import { isListTemplate, isSourceRecord } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
@@ -40,7 +42,7 @@ import { StaticField } from 'Widgets/modules/Template/modules/Field'
 import UICard from '../components/views'
 import { canDrop } from '../helpers/canDrop'
 import { isDefaultOpen } from '../helpers/isDefaultOpen'
-import { CardEditFormState, HiddenField } from '../types'
+import type { CardEditFormState, HiddenField } from '../types'
 
 export const NO_DATA_TEXT = 'No data'
 

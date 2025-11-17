@@ -1,16 +1,20 @@
-import { ComponentProps, MouseEvent, useCallback, useMemo, useRef } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import { Components } from 'react-virtuoso'
+import type { Components } from 'react-virtuoso'
 
 import {
     LegacyCheckBoxField as CheckBoxField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { Language, TicketTranslationCompact } from '@gorgias/helpdesk-types'
+import type {
+    Language,
+    TicketTranslationCompact,
+} from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
@@ -21,7 +25,7 @@ import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
 import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
-import { TicketCompact, TicketPartial } from '../types'
+import type { TicketCompact, TicketPartial } from '../types'
 import TicketSkeleton from './TicketSkeleton'
 
 import css from './Ticket.less'

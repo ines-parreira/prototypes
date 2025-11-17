@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useLocalStorage, useTimeout } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'

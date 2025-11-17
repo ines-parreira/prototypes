@@ -1,4 +1,5 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 
 import {
     TicketProductsEnrichedDimension,
@@ -6,9 +7,9 @@ import {
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { PRODUCTS_PER_TICKET_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
-import { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
+import type { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export const PRODUCT_ID_FIELD = TicketProductsEnrichedDimension.ProductId
 export const TICKET_COUNT_FIELD = TicketProductsEnrichedMeasure.TicketCount

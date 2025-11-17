@@ -1,6 +1,6 @@
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
-import { ReplyMetaTicketMessage } from 'models/ticket/types'
+import type { ReplyMetaTicketMessage } from 'models/ticket/types'
 import { AgentLabel } from 'pages/common/utils/labels'
 
 import MetaLabel from './MetaLabel'

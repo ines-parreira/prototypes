@@ -1,5 +1,5 @@
 import Feature from '../UI/Feature'
-import { ProductFeature } from './types'
+import type { ProductFeature } from './types'
 
 import css from './ProductFeaturesFOMO.less'
 

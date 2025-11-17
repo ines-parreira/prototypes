@@ -1,8 +1,8 @@
 import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
 
+import type { NodeProps } from 'core/ui/flows'
 import {
-    NodeProps,
     NodeWrapper,
     StepCard,
     StepCardActionMenu,

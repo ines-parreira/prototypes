@@ -4,10 +4,8 @@ import { render, screen } from '@testing-library/react'
 import { Skeleton } from '@gorgias/axiom'
 
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
-import {
-    IntentCard,
-    IntentCardProps,
-} from 'domains/reporting/pages/common/components/IntentCard'
+import type { IntentCardProps } from 'domains/reporting/pages/common/components/IntentCard'
+import { IntentCard } from 'domains/reporting/pages/common/components/IntentCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 
 jest.mock('domains/reporting/pages/common/components/TrendBadge/TrendBadge')

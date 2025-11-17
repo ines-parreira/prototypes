@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { ProductSelectField } from './ProductSelect'

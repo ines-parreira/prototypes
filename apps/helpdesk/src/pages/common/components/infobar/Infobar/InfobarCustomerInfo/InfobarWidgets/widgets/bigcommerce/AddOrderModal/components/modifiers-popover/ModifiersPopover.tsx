@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceProduct,
 } from 'models/integration/types'
@@ -11,7 +11,7 @@ import { ModifierSelect } from './fields/ModifierSelect'
 import { ModifierSwatch } from './fields/ModifierSwatch'
 import { useModifierValues } from './hooks'
 import { ModifierProductComponent } from './ModifierProductComponent'
-import { ModifierErrors, ModifierValues } from './types'
+import type { ModifierErrors, ModifierValues } from './types'
 import { isCheckboxModifier, isSelectModifier, isSwatchModifier } from './utils'
 
 import css from './ModifiersPopoverComponent.less'

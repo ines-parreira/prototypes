@@ -1,5 +1,6 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const resolutionTimeScope = defineScope({
     scope: MetricScope.ResolutionTime,

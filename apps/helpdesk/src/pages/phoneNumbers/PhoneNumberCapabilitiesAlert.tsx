@@ -1,7 +1,7 @@
 import { Banner } from '@gorgias/axiom'
 
 import { usePhoneNumberCapabilities } from 'hooks/integrations/phone/usePhoneNumberCapabilities'
-import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
+import type { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
 
 import {
     getCountryCapabilityLimitationsMessage,

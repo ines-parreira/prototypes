@@ -1,16 +1,17 @@
 import { useMemo } from 'react'
 
-import { DefinedUseQueryResult } from '@tanstack/react-query'
+import type { DefinedUseQueryResult } from '@tanstack/react-query'
 import _keyBy from 'lodash/keyBy'
 
-import { INTEGRATION_TYPE_CONFIG, IntegrationConfig } from 'config'
+import type { IntegrationConfig } from 'config'
+import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
-import { AppData } from 'models/integration/types'
+import type { AppData } from 'models/integration/types'
 import { useListActionsApps } from 'models/workflows/queries'
 import { assetsUrl } from 'utils'
 
-import { App } from '../types'
+import type { App } from '../types'
 
 type NativeAppIntegrationConfig = Omit<IntegrationConfig, 'type' | 'image'> & {
     type: IntegrationType.Shopify | IntegrationType.Recharge

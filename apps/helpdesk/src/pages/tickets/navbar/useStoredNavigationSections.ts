@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import type { ViewCategoryNavbar } from 'models/view/types'
 
 import { ViewCategories } from './constants'

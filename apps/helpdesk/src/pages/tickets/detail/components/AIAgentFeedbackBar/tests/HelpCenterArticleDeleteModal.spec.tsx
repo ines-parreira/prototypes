@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { OptionItem } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
+import type { OptionItem } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
 import { setPendingDeleteLocaleOptionItem } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import { HelpCenterArticleDeleteModal } from '../HelpCenterArticleDeleteModal'

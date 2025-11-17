@@ -4,7 +4,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
 
 import TicketVoiceCallDuration from '../TicketVoiceCallDuration'

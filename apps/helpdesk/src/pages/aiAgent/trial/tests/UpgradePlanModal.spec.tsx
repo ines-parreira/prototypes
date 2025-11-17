@@ -3,11 +3,11 @@ import { userEvent } from '@testing-library/user-event'
 
 import { Cadence } from 'models/billing/types'
 
-import {
+import type {
     PlanDetails,
-    UpgradePlanModal,
     UpgradePlanModalProps,
 } from '../components/UpgradePlanModal/UpgradePlanModal'
+import { UpgradePlanModal } from '../components/UpgradePlanModal/UpgradePlanModal'
 
 describe('UpgradePlanModal', () => {
     const mockCurrentPlan: PlanDetails = {

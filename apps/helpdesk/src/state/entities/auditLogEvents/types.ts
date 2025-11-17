@@ -1,7 +1,7 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Event } from '../../../models/event/types'
-import { EVENTS_FETCHED } from './constants'
+import type { Event } from '../../../models/event/types'
+import type { EVENTS_FETCHED } from './constants'
 
 export type AuditLogEventsState = {
     [key: string]: Event

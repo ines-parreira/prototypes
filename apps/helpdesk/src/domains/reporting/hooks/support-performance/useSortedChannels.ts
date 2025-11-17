@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 
-import {
-    ChannelsSlice,
-    getChannelsSorting,
-} from 'domains/reporting/state/ui/stats/channelsSlice'
+import type { ChannelsSlice } from 'domains/reporting/state/ui/stats/channelsSlice'
+import { getChannelsSorting } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
-import { Channel, getChannels } from 'services/channels'
+import type { Channel } from 'services/channels'
+import { getChannels } from 'services/channels'
 
 const sortBySlugCustomOrderedWithEmptyLast =
     (order: string[]) =>

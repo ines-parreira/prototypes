@@ -6,13 +6,13 @@ import { Container } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
-import {
-    IntegrationType,
+import type {
     PhoneIntegration,
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { IntegrationType } from 'models/integration/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

@@ -1,6 +1,6 @@
-import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 
 export type PlaygroundTemplateMessage = {
     id: number

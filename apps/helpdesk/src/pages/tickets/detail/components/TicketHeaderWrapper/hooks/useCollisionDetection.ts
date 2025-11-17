@@ -1,6 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 

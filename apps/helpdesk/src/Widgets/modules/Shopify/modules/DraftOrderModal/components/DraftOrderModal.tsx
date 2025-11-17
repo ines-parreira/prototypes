@@ -2,22 +2,24 @@ import { useCallback, useContext, useMemo, useRef } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { shortcutManager } from '@repo/utils'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { Product, Variant } from 'constants/integrations/types/shopify'
-import {
+import type { Product, Variant } from 'constants/integrations/types/shopify'
+import type {
     IntegrationDataItem,
-    IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -38,10 +40,10 @@ import {
 } from 'state/infobarActions/shopify/createOrder/actions'
 import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import OrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
-import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import EmailInvoicePopover from './EmailInvoicePopover'
 import InventoryScopeMissingBanner from './InventoryScopeMissingBanner'

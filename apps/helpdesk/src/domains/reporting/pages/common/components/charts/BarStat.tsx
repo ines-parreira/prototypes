@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import { Bar } from 'react-chartjs-2'
 

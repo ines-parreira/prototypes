@@ -6,7 +6,7 @@ import {
     DEFAULT_REASON_ACTIONS,
     REASONS_DROPDOWN_SECTIONS_WITH_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
-import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
+import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

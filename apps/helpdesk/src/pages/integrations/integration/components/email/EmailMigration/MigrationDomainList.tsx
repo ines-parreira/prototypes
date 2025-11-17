@@ -4,13 +4,15 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
 import { useFlag } from 'core/flags'
-import {
+import type {
     EmailMigrationOutboundVerification,
-    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
+} from 'models/integration/types'
+import {
+    EmailMigrationOutboundVerificationStatus,
     OutboundVerificationType,
 } from 'models/integration/types'
-import { SenderInformation } from 'models/singleSenderVerification/types'
+import type { SenderInformation } from 'models/singleSenderVerification/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'

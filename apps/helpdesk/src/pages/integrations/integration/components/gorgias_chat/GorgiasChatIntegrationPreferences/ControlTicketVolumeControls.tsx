@@ -1,7 +1,8 @@
-import React, { useRef } from 'react'
+import type React from 'react'
+import { useRef } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import {
@@ -10,7 +11,7 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { ARTICLE_RECOMMENDATION } from 'pages/automate/common/components/constants'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 

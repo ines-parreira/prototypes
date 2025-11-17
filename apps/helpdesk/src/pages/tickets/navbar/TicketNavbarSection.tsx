@@ -1,8 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { DropTargetMonitor, useDrag } from 'react-dnd'
-import { connect, ConnectedProps } from 'react-redux'
+import type { DropTargetMonitor } from 'react-dnd'
+import { useDrag } from 'react-dnd'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import {
     Dropdown,
     DropdownItem,
@@ -14,16 +16,17 @@ import { Navigation } from 'components/Navigation/Navigation'
 import { UserRole } from 'config/types/user'
 import { ViewVisibility } from 'models/view/types'
 import navbarSectionCss from 'pages/common/components/navbar/NavbarSectionBlock.less'
-import TicketNavbarDropTarget, {
+import type {
     TicketNavbarDragObject,
     TicketNavbarDropDirection,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import { RootState } from 'state/types'
+import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import type { RootState } from 'state/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
 import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
-import { TicketNavbarSectionElement } from './TicketNavbarContent'
+import type { TicketNavbarSectionElement } from './TicketNavbarContent'
 import { TicketNavbarView } from './TicketNavbarView'
 
 import css from './TicketNavbarSection.less'

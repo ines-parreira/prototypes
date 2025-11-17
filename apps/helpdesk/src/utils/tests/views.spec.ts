@@ -1,6 +1,7 @@
 import { OrderDirection } from 'models/api/types'
-import { Section } from 'models/section/types'
-import { View, ViewType, ViewVisibility } from 'models/view/types'
+import type { Section } from 'models/section/types'
+import type { View } from 'models/view/types'
+import { ViewType, ViewVisibility } from 'models/view/types'
 import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 describe('addCanduLinkForValidViewOrSection', () => {

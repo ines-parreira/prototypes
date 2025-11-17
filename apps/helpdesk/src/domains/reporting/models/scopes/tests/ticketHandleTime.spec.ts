@@ -6,7 +6,7 @@ import {
     ticketAverageHandleTimePerAgentQueryV2Factory,
     ticketAverageHandleTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketHandleTime'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 describe('ticketHandleTimeScope', () => {

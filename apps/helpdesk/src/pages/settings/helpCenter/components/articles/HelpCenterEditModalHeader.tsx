@@ -1,16 +1,14 @@
-import React, {
-    ChangeEvent,
-    ReactChild,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ChangeEvent, ReactChild } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Article, LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
+import type {
+    Article,
+    LocaleCode,
+    VisibilityStatus,
+} from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
@@ -22,7 +20,7 @@ import {
 import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useEditionManager } from '../../providers/EditionManagerContext'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
-import { ArticleMode } from '../../types/articleMode'
+import type { ArticleMode } from '../../types/articleMode'
 import {
     getArticleUrl,
     getHomePageItemHashUrl,
@@ -33,11 +31,8 @@ import EditingState from '../EditingState/EditingState'
 import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import ArticleCategorySelect from './ArticleCategorySelect'
-import {
-    ActionType,
-    ArticleLanguageSelect,
-    OptionItem,
-} from './ArticleLanguageSelect'
+import type { ActionType, OptionItem } from './ArticleLanguageSelect'
+import { ArticleLanguageSelect } from './ArticleLanguageSelect'
 
 import css from './HelpCenterEditModalHeader.less'
 

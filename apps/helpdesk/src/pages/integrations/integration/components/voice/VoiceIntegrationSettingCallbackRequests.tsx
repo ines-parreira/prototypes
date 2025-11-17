@@ -3,10 +3,8 @@ import {
     LegacyCheckBoxField as CheckBoxField,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
-import {
-    CustomRecordingType,
-    UpdateAllPhoneIntegrationSettings,
-} from '@gorgias/helpdesk-types'
+import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { FormField, useFormContext } from 'core/forms'
 import { AlertType } from 'pages/common/components/Alert/Alert'

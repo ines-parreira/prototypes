@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { KnowledgeSourceSideBarProvider } from '../../KnowledgeSourceSideBarProvider'
 import { useKnowledgeSourceSideBar } from '../useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'

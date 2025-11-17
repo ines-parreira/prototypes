@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { CAMPAIGN_MAX_HEIGHT } from 'pages/convert/campaigns/constants/visuals'
-import { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
-import { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
+import type { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import type { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
 import { AgentDisplayName } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
 import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
 import { extractGorgiasVideoDivFromHtmlContent } from 'utils'

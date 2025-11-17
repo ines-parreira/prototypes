@@ -10,7 +10,7 @@ import {
     useResolutionTimeResolvedByAIAgent,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useDecreaseInResolutionTimeTrend = (
     filters: StatsFilters,

@@ -28,7 +28,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
-import {
+import type {
     deleteIntegration,
     klaviyoSyncHistoricalEvent,
     updateOrCreateIntegration,

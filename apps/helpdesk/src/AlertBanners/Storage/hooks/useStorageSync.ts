@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 import { useBannersContext } from '../../Context'
-import { BannerCategory } from '../../types'
-import { AlertBannerStorage } from '../types'
+import type { BannerCategory } from '../../types'
+import type { AlertBannerStorage } from '../types'
 
 export function useStorageSync(
     storage: AlertBannerStorage,

@@ -1,8 +1,8 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
-import {
+import type {
     HELPCENTER_CREATED,
     HELPCENTER_DELETED,
     HELPCENTER_FETCHED,

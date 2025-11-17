@@ -8,15 +8,13 @@ import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import {
-    NavigatedSuccessModalLocationState,
-    NavigatedSuccessModalName,
-} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 

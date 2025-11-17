@@ -1,12 +1,12 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { ActiveContent } from 'common/navigation'
+import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {
     NavBarContext,
-    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import useAppSelector from 'hooks/useAppSelector'

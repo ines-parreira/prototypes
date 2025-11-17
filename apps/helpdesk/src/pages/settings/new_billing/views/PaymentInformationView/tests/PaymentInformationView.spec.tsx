@@ -14,13 +14,13 @@ import {
     legacyAutomatePlan,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
-import { Cadence, HelpdeskPlan } from 'models/billing/types'
+import type { HelpdeskPlan } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import PaymentInformationView, {
-    PaymentInformationViewProps,
-} from '../PaymentInformationView'
+import type { PaymentInformationViewProps } from '../PaymentInformationView'
+import PaymentInformationView from '../PaymentInformationView'
 
 const defaultProps: PaymentInformationViewProps = {
     contactBilling: jest.fn(),

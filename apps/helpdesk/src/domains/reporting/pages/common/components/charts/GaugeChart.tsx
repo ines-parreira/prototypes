@@ -9,7 +9,7 @@ import {
     DEFAULT_LOCALE,
     formatNumber,
 } from 'domains/reporting/pages/common/utils'
-import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 
 const STAT_COLORS = Object.freeze([
     colors.classic.main.variations.primary_3.value,

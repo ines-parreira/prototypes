@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 
@@ -6,7 +6,10 @@ import {
     mockCallRoutingFlow,
     mockSendToVoicemailStep,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow, SendToVoicemailStep } from '@gorgias/helpdesk-types'
+import type {
+    CallRoutingFlow,
+    SendToVoicemailStep,
+} from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'

@@ -1,29 +1,27 @@
 import React from 'react'
 
-import { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
+import type { ProductEnrichmentFields } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     PRODUCT_ENRICHMENT_FIELDS,
-    ProductEnrichmentFields,
 } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { withEnrichment } from 'domains/reporting/hooks/withEnrichment'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import {
-    reportingKeys,
-    UseEnrichedPostReportingQueryData,
-} from 'domains/reporting/models/queries'
+import type { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
+import { reportingKeys } from 'domains/reporting/models/queries'
 import { PRODUCT_ID_DIMENSION } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { ChangeInTicketVolumeChart } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ChangeInTicketVolumeChart'
 import {

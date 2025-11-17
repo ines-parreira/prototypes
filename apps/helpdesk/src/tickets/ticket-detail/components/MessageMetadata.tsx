@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { MessageStatusIndicator } from 'tickets/ticket-detail/components/MessageStatusIndicator'
 import { SourceDetailsInfo } from 'tickets/ticket-detail/components/SourceDetailsInfo'

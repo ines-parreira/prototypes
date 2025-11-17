@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ArticleViewsGraphComponent } from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 
 const meta: Meta<typeof ArticleViewsGraphComponent> = {

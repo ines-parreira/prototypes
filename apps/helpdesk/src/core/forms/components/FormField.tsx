@@ -1,10 +1,8 @@
-import React, { ComponentProps, ComponentType, useCallback } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
+import React, { useCallback } from 'react'
 
-import {
-    ControllerRenderProps,
-    useController,
-    UseControllerProps,
-} from 'react-hook-form'
+import type { ControllerRenderProps, UseControllerProps } from 'react-hook-form'
+import { useController } from 'react-hook-form'
 
 import InputField from 'pages/common/forms/input/InputField'
 

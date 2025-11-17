@@ -1,12 +1,13 @@
-import { FormEvent, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
-import { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
+import type { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import IconButton from 'pages/common/components/button/IconButton'

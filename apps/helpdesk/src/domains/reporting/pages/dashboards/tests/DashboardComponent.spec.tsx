@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import {
+import type {
     DashboardChartProps,
     DashboardSchema,
     ReportConfig,

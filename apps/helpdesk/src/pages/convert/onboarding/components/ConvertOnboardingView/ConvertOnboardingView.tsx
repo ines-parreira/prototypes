@@ -17,17 +17,15 @@ import { bundleKeys } from 'models/convert/bundle/queries'
 import { BundleStatus } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
-import {
-    NavigatedSuccessModalLocationState,
-    NavigatedSuccessModalName,
-} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
 import {
     getIntegrationById,

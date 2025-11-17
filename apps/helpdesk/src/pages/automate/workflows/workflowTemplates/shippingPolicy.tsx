@@ -1,11 +1,11 @@
 import { ulid } from 'ulidx'
 
 import { WorkflowConfigurationBuilder } from '../models/workflowConfiguration.model'
-import {
+import type {
     WorkflowConfiguration,
     WorkflowTemplate,
-    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
+import { WorkflowTemplateLabelType } from '../models/workflowConfiguration.types'
 
 export const SHIPPING_POLICY: WorkflowTemplate = {
     slug: 'shipping-policy',

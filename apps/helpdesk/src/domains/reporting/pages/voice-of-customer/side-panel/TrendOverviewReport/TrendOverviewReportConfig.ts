@@ -1,8 +1,6 @@
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
-    ChartType,
-    ReportConfig,
-} from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { NegativeSentimentsPerProductKpiChart } from 'domains/reporting/pages/voice-of-customer/charts/NegativeSentimentsPerProductKpiChart/NegativeSentimentsPerProductKpiChart'
 import { PositiveSentimentsPerProductKpiChart } from 'domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpiChart'
 import { TopAIIntentsForProductOverTimeChart } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsOverTimeForProductChart'

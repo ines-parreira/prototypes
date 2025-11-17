@@ -1,7 +1,7 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { TicketChannel } from 'business/types/ticket'
-import {
+import type { TicketChannel } from 'business/types/ticket'
+import type {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
@@ -10,8 +10,8 @@ import {
     TableRowSet,
     TableSetting,
 } from 'domains/reporting/state/ui/stats/types'
-import { SubscriptionStatus } from 'models/billing/types'
-import { BannerNotificationFromBackend } from 'state/notifications/types'
+import type { SubscriptionStatus } from 'models/billing/types'
+import type { BannerNotificationFromBackend } from 'state/notifications/types'
 
 export type CurrentAccountState = Map<any, any>
 

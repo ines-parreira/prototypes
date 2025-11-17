@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import {
-    TicketCompact,
-    TicketStatus as TicketStatusType,
-} from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
+import { TicketStatus as TicketStatusType } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from '../TicketStatus'
 

@@ -7,7 +7,7 @@ import {
     isLiveCallRinging,
     isLiveInboundVoiceCallAnswered,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 
 type Props = {
     direction: VoiceCallDirection

@@ -1,4 +1,4 @@
-import { WorkflowTemplate } from '../models/workflowConfiguration.types'
+import type { WorkflowTemplate } from '../models/workflowConfiguration.types'
 import { ADD_EMAIL_TO_KLAVIYO_LIST } from './addEmailToKlaviyoList'
 import { AVAILABLE_DISCOUNTS } from './availableDiscounts'
 import { MANAGE_RECHARGE_SUBSCRIPTION } from './manageRechargeSubscription'

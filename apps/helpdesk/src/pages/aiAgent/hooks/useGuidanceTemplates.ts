@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { GuidanceTemplate } from '../types'
+import type { GuidanceTemplate } from '../types'
 
 const TAG_STYLES = {
     Shipping: { color: '#242F8C', background: '#EAF1FF' },

@@ -1,4 +1,4 @@
-import {
+import type {
     ConflictOpportunityDetail,
     KnowledgeGapOpportunityDetail,
 } from '@gorgias/knowledge-service-types'

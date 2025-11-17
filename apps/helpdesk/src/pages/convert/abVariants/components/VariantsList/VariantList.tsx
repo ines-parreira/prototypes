@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import _get from 'lodash/get'
 import moment from 'moment'
@@ -11,7 +12,7 @@ import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/comp
 import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
-import { ABGroup } from 'models/convert/campaign/types'
+import type { ABGroup } from 'models/convert/campaign/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -19,19 +20,17 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
-import {
-    ABGroupValueFormat,
-    TableColumn,
-} from 'pages/convert/abVariants/components/VariantsList/types'
+import type { TableColumn } from 'pages/convert/abVariants/components/VariantsList/types'
+import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
 import { getDataFromTableCell } from 'pages/convert/abVariants/components/VariantsList/utils'
 import { VARIANT_LIMIT } from 'pages/convert/abVariants/contants'
-import { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
+import type { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 

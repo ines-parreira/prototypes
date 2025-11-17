@@ -9,12 +9,14 @@ import {
     useUpdatePostStoreInstallationStepPure,
     useUpdateStepConfigurationPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
+import type {
     PostStoreInstallationSteps,
-    PostStoreInstallationStepStatus,
-    PostStoreInstallationStepType,
     StepName,
     UpdateStepRequest,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
+import {
+    PostStoreInstallationStepStatus,
+    PostStoreInstallationStepType,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 

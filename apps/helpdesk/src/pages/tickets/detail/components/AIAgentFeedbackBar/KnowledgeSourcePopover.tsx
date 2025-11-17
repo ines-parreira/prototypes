@@ -1,4 +1,5 @@
-import { memo, ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { memo, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 

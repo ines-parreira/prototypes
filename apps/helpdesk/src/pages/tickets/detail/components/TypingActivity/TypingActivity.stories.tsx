@@ -1,6 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import TypingActivity, { TypingActivityProps } from './TypingActivity'
+import type { TypingActivityProps } from './TypingActivity'
+import TypingActivity from './TypingActivity'
 
 const storyConfig: Meta<typeof TypingActivity> = {
     title: 'Chat/TypingActivity',

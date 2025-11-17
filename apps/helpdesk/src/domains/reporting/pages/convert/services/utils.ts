@@ -2,7 +2,7 @@ import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
 import _mapValues from 'lodash/mapValues'
 
-import { CubeMetric } from 'domains/reporting/pages/convert/clients/types'
+import type { CubeMetric } from 'domains/reporting/pages/convert/clients/types'
 
 export const getMetricValue = (
     data: CubeMetric,

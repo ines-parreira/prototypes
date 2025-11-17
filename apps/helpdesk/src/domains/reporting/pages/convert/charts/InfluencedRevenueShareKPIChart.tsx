@@ -2,7 +2,7 @@ import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumber
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { METRICS } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { useCampaignTotalStats } from 'domains/reporting/pages/convert/hooks/useCampaignTotalStats'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export const InfluencedRevenueShareKPIChart = ({
     chartId,

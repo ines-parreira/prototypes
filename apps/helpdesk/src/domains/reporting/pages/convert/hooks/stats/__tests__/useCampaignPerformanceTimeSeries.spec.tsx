@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'

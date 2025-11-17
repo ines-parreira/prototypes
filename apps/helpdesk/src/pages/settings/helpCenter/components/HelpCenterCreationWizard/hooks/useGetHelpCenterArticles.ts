@@ -2,11 +2,8 @@ import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import {
-    ArticleTemplateType,
-    HelpCenterArticleItem,
-    LocaleCode,
-} from 'models/helpCenter/types'
+import type { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 import { DEFAULT_ARTICLE_GROUP } from 'pages/settings/helpCenter/constants'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'

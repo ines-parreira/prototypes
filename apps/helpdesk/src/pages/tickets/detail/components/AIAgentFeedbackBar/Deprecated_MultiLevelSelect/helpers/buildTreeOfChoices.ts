@@ -1,5 +1,5 @@
 import { CHOICE_VALUES_SYMBOL, DROPDOWN_NESTING_DELIMITER } from '../constants'
-import { ChoicesTree } from '../types'
+import type { ChoicesTree } from '../types'
 
 export function buildTreeOfChoices(choices: string[]) {
     const tree: ChoicesTree = { [CHOICE_VALUES_SYMBOL]: new Set() }

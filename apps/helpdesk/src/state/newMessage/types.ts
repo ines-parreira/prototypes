@@ -1,13 +1,13 @@
-import { ContentState, SelectionState } from 'draft-js'
-import { List, Map } from 'immutable'
+import type { ContentState, SelectionState } from 'draft-js'
+import type { List, Map } from 'immutable'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
-import { GenericAttachment } from 'common/types'
-import { DiscountCode } from 'models/discountCodes/types'
-import { MacroAction } from 'models/macroAction/types'
-import { Source, SourceAddress } from 'models/ticket/types'
+import type { TicketMessageSourceType } from 'business/types/ticket'
+import type { GenericAttachment } from 'common/types'
+import type { DiscountCode } from 'models/discountCodes/types'
+import type { MacroAction } from 'models/macroAction/types'
+import type { Source, SourceAddress } from 'models/ticket/types'
 
 export enum ReceiverProperty {
     To = 'to',

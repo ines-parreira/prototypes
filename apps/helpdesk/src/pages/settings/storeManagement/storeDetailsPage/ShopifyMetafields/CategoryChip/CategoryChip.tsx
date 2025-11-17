@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 import { Text } from '@gorgias/axiom'
 
-import { MetafieldCategory } from '../types'
+import type { MetafieldCategory } from '../types'
 import { getCategoryLabel } from '../utils/getCategoryLabel'
 
 import styles from './CategoryChip.less'

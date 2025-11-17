@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react'
 
-import { NodeProps } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -9,11 +9,9 @@ import {
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import VisualBuilderNode from './VisualBuilderNode'

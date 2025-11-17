@@ -1,5 +1,5 @@
 // g/integrations/zendesk/schemas.py
-import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
+import type { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
 
 import { IntegrationType } from '../constants'
 import type { Integration } from './'

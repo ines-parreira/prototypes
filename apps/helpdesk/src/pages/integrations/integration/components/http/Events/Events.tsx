@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { HTTP_METHOD_GET } from 'config'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
-import { HTTPIntegrationEvent } from 'models/integration/types'
+import type { HTTPIntegrationEvent } from 'models/integration/types'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

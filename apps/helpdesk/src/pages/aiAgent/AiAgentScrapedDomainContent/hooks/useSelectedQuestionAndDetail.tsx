@@ -7,7 +7,7 @@ import {
     useGetHelpCenterArticle,
     useGetIngestedResource,
 } from 'models/helpCenter/queries'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

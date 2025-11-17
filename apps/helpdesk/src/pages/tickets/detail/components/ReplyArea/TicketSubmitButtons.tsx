@@ -1,9 +1,11 @@
-import { ReactNode, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _sample from 'lodash/sample'
 
 import {

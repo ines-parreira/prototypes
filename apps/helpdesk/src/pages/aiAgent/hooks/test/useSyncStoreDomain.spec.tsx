@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     ShopifyIntegration,
     ShopifyIntegrationMeta,
 } from 'models/integration/types'
@@ -18,7 +18,7 @@ import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/co
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'
 import { useIngestionLogMutation } from '../useIngestionLogMutation'

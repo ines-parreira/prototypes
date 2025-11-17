@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import {
@@ -17,19 +18,19 @@ import {
 import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
-import { Rating } from 'models/helpCenter/types'
+import type { Rating } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useRatingScore } from '../../hooks/useRatingScore'
-import {
+import type {
     ArticleMode,
     ArticleModeModified,
     ArticleModeNew,
     ArticleModeUnchangedNotPublished,
-    canDelete,
 } from '../../types/articleMode'
-import { articleRequiredFields } from '../../utils/helpCenter.utils'
+import { canDelete } from '../../types/articleMode'
+import type { articleRequiredFields } from '../../utils/helpCenter.utils'
 import { ConfirmationModal } from '../ConfirmationModal'
 
 import css from './HelpCenterEditModalFooter.less'

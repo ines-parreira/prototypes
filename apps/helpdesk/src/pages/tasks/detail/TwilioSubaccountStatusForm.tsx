@@ -1,4 +1,5 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'

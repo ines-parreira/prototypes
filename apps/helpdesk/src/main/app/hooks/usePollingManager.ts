@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import { Program } from 'estree'
-import { Map } from 'immutable'
+import type { Program } from 'estree'
+import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import pollingManager from 'services/pollingManager'

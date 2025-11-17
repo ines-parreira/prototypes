@@ -1,7 +1,7 @@
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
-import { Tag } from 'models/aiAgent/types'
-import { FormValues } from 'pages/aiAgent/types'
+import type { Tag } from 'models/aiAgent/types'
+import type { FormValues } from 'pages/aiAgent/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 

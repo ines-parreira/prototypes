@@ -1,4 +1,4 @@
-import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
+import type { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
 
 export type Metric = {
     name: string

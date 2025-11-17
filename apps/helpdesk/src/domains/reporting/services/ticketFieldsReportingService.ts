@@ -12,24 +12,20 @@ import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
-    getPeriodDateTimes,
-    TimeSeriesDataItem,
-} from 'domains/reporting/hooks/useTimeSeries'
-import {
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
+import type {
     Period,
     StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatDates } from 'domains/reporting/pages/utils'
-import {
-    getCustomFieldsOrder,
-    TicketInsightsOrder,
-} from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const TICKET_FIELDS_DOWNLOAD_FILE_NAME = 'ticket-fields'

@@ -1,4 +1,4 @@
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 export const getTrendProps = (metricTrend: MetricTrend) => ({

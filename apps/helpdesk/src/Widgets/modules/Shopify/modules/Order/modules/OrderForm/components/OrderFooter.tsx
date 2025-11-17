@@ -1,6 +1,7 @@
-import React, { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container, FormGroup, FormText, Input, Row } from 'reactstrap'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'

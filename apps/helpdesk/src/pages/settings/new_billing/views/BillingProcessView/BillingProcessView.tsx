@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import _capitalize from 'lodash/capitalize'
 import { useParams } from 'react-router-dom'
@@ -9,13 +10,13 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     AutomatePlan,
     ConvertPlan,
     HelpdeskPlan,
-    ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
@@ -23,7 +24,8 @@ import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
-import { CurrentProductsUsages, TicketPurpose } from 'state/billing/types'
+import type { CurrentProductsUsages } from 'state/billing/types'
+import { TicketPurpose } from 'state/billing/types'
 import {
     getCurrentSubscription,
     shouldPayWithShopify as getShouldPayWithShopify,

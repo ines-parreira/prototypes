@@ -2,14 +2,14 @@ import { fromJS } from 'immutable'
 
 import { emptyRule } from '../../../../fixtures/rule'
 import { RuleLimitStatus } from '../../../rules/types'
-import { RootState } from '../../../types'
+import type { RootState } from '../../../types'
 import {
     getMaxRuleLimit,
     getRulesLimitStatus,
     getSortedRules,
     RULE_MAX_NUMBER,
 } from '../selectors'
-import { RulesState } from '../types'
+import type { RulesState } from '../types'
 
 const RULE_MAX_NUMBER_WARNING = RULE_MAX_NUMBER - 5
 

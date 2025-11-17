@@ -1,11 +1,12 @@
-import { createSelector, Selector } from 'reselect'
+import type { Selector } from 'reselect'
+import { createSelector } from 'reselect'
 
-import {
+import type {
     CustomFieldSavedFilter,
-    FilterKey,
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { STATS_STORE_INTEGRATION_TYPES } from 'domains/reporting/state/stats/constants'
 import { statsSlice } from 'domains/reporting/state/stats/statsSlice'
@@ -15,14 +16,15 @@ import {
     statsFiltersWithLogicalOperatorsFromSavedFilters,
 } from 'domains/reporting/state/stats/utils'
 import { getSavedFilterDraft } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { Integration, IntegrationType } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getHasAutomate } from 'state/billing/selectors'
 import {
     DEPRECATED_getIntegrationsByTypes,
     getIntegrationsByTypes,
     getMessagingAndAppIntegrations,
 } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { makeGetPlainJS } from 'utils'
 
 export const getStats = (state: RootState) => state[statsSlice.name]

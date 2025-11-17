@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import {
     tagCreated,
@@ -9,7 +9,7 @@ import {
     tagsFetched,
     tagUpdated,
 } from './actions'
-import { TagsState } from './types'
+import type { TagsState } from './types'
 
 const initialState: TagsState = {}
 

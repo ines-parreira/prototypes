@@ -1,10 +1,13 @@
-import React, { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import _omit from 'lodash/omit'
 import _truncate from 'lodash/truncate'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
 
@@ -17,13 +20,15 @@ import {
     isSystemRuleEvent,
     isViaRuleEvent,
 } from 'models/event/predicates'
+import type {
+    SatisfactionSurveyEventType,
+    TicketEventType,
+} from 'models/event/types'
 import {
     EventType,
     rulesActionsFailures,
     SATISFACTION_SURVEY_EVENT_TYPES,
-    SatisfactionSurveyEventType,
     TICKET_EVENT_TYPES,
-    TicketEventType,
 } from 'models/event/types'
 import { actionsConfigWithManagedRules } from 'pages/common/components/ast/actions/config'
 import TicketTag from 'pages/common/components/TicketTag'
@@ -33,7 +38,7 @@ import { getHumanAgents } from 'state/agents/selectors'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { getTeams } from 'state/teams/selectors'
 import { getEvents } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import IconButton from '../../../common/components/button/IconButton'
 

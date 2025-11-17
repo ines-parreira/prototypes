@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 import { UserRole } from 'config/types/user'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import AutomateSubscriptionModal from '../AutomateSubscriptionModal'

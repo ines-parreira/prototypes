@@ -5,11 +5,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    queryKeys,
-    UpdateCustomFieldItem,
-    useUpdateCustomFields,
-} from '@gorgias/helpdesk-queries'
+import type { UpdateCustomFieldItem } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateCustomFields } from '@gorgias/helpdesk-queries'
 
 import {
     apiListCursorPaginationResponse,

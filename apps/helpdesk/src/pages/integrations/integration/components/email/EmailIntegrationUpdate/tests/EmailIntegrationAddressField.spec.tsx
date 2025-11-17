@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -9,10 +10,10 @@ import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { EmailIntegration } from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 

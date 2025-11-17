@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { history } from '@repo/routing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,11 +11,9 @@ import { IntegrationType } from 'models/integration/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { VARIANT_LIMIT } from 'pages/convert/abVariants/contants'
 import { abVariantsUrl } from 'pages/convert/abVariants/urls'
-import {
-    CampaignDetailsForm,
-    Props as CampaignDetailsFormProps,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Props as CampaignDetailsFormProps } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import { CampaignDetailsForm } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { Label } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
@@ -23,7 +23,7 @@ import {
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
+import type { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import {
     getIntegrationById,

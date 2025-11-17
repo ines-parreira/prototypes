@@ -1,21 +1,22 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
+import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import { appQueryClient } from 'api/queryClient'
 import { reportQueryErrorToSentry } from 'domains/reporting/models/resources'
-import {
+import type {
     Sentiment,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import { AiSalesAgentDrillDownMetrics } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
-import { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
-import {
+import type { AiSalesAgentDrillDownMetrics } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import type { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import type { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
+import type { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
+import type {
     AgentsTableColumn,
     AIInsightsMetric,
     AutoQAMetric,
@@ -31,17 +32,17 @@ import {
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { createJob } from 'models/job/resources'
-import {
+import type {
     ConvertJobContext,
     DrillDownReportingQuery,
     Job,
     JobContext,
-    JobType,
 } from 'models/job/types'
+import { JobType } from 'models/job/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 type CommonMetrics = {
     title?: string

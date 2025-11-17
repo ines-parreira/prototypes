@@ -1,7 +1,8 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
-import { Collapse } from 'reactstrap'
+import type { Collapse } from 'reactstrap'
 
 import { reportError } from 'utils/errors'
 

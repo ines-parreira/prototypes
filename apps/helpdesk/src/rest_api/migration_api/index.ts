@@ -1,10 +1,11 @@
 import { isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
+import type { Document } from 'openapi-client-axios'
+import OpenAPIClientAxios from 'openapi-client-axios'
 
 import { getAccessToken, getBearerAuthorizationHeader } from 'rest_api/auth'
 
-import { Client } from './client.generated'
+import type { Client } from './client.generated'
 import OpenAPIDoc from './migration.openapi.json'
 
 function getMigrationApiBaseUrl() {

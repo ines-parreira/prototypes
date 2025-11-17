@@ -1,6 +1,8 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'

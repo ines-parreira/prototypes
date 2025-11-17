@@ -1,11 +1,12 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 import _memoize from 'lodash/memoize'
-import { RouteComponentProps } from 'react-router-dom'
+import type { RouteComponentProps } from 'react-router-dom'
 
-import { PageSection } from 'config/pages'
-import { UserRole } from 'config/types/user'
+import type { PageSection } from 'config/pages'
+import type { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import RestrictedPage from 'pages/common/components/RestrictedPage'
 import { getCurrentUserState } from 'state/currentUser/selectors'

@@ -7,12 +7,12 @@ import { useParams } from 'react-router'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import { emailSortingCallback } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
     SettingsCardContent,

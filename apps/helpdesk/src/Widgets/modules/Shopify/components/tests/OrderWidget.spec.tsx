@@ -1,10 +1,10 @@
-import { QueryObserverSuccessResult } from '@tanstack/react-query'
+import type { QueryObserverSuccessResult } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
+import type { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import { IntegrationType } from 'models/integration/constants'
 import { EditionContext } from 'providers/infobar/EditionContext'

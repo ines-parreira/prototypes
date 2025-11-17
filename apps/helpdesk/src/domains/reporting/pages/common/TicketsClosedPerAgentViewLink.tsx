@@ -1,7 +1,8 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import { logEvent, SegmentEvent, StatViewLinkClickedStat } from '@repo/logging'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'
@@ -10,7 +11,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ViewField } from 'models/view/types'
 import { getHumanAgents } from 'state/agents/selectors'
 import { CollectionOperator, EqualityOperator } from 'state/rules/types'
-import { ViewFilter } from 'state/views/types'
+import type { ViewFilter } from 'state/views/types'
 
 type Props = {
     agentName: string

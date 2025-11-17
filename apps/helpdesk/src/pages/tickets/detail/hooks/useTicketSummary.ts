@@ -2,10 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 
-import {
-    TicketSummary,
-    useGenerateTicketSummary,
-} from '@gorgias/helpdesk-queries'
+import type { TicketSummary } from '@gorgias/helpdesk-queries'
+import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 
 import { isGorgiasApiError } from 'models/api/types'
 import socketManager from 'services/socketManager/socketManager'

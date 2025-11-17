@@ -15,7 +15,7 @@ import {
     AIAgentInteractionsBySkillMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { AIAgentInteractionsBySkillTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/timeseries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,

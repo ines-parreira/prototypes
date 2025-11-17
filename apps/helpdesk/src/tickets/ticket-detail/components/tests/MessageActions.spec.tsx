@@ -1,13 +1,14 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { MacroActionName } from 'models/macroAction/types'
 import {
     action as defaultAction,
     message as defaultMessage,
 } from 'models/ticket/tests/mocks'
-import { Action, ActionStatus } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import { MessageActions } from '../MessageActions'

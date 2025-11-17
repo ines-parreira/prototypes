@@ -1,4 +1,4 @@
-import { ContactFormAutomationSettings } from 'models/contactForm/types'
+import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 
 export enum ContactFormsAutomationSettingsActions {
     CONTACTFORM_AUTOMATION_SETTINGS_FETCHED = 'CONTACTFORM/CONTACTFORM_AUTOMATION_SETTINGS_FETCHED',

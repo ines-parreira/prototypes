@@ -1,12 +1,13 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import { User, UserSetting } from 'config/types/user'
+import type { User, UserSetting } from 'config/types/user'
 
 import * as agentConstants from '../agents/constants'
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as constants from './constants'
-import { CurrentUserState } from './types'
+import type { CurrentUserState } from './types'
 
 export const initialState: CurrentUserState = fromJS({
     settings: [],

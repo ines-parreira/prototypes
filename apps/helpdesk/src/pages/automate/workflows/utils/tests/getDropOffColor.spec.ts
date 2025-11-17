@@ -6,7 +6,7 @@ import {
     MID_TIERS_DROPOFF_BACKGROUND,
     MID_TIERS_DROPOFF_COLOR,
 } from '../../common/constants'
-import { WorkflowDropoffMetricTiers } from '../../hooks/useWorkflowDropoffMetricTiers'
+import type { WorkflowDropoffMetricTiers } from '../../hooks/useWorkflowDropoffMetricTiers'
 import { getDropoffColor } from '../getDropOffColor'
 
 describe('getDropoffColor', () => {

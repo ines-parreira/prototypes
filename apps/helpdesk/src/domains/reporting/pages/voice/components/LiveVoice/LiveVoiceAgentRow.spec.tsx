@@ -2,7 +2,7 @@ import { useInterval } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 
-import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import {

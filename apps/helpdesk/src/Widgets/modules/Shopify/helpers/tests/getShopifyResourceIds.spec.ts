@@ -1,7 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 
-import { Source } from 'models/widget/types'
+import type { Source } from 'models/widget/types'
 
 import { getShopifyResourceIds } from '../getShopifyResourceIds'
 

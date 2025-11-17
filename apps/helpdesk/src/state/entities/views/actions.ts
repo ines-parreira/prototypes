@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { View } from '../../../models/view/types'
+import type { View } from '../../../models/view/types'
 import {
     VIEW_CREATED,
     VIEW_DELETED,

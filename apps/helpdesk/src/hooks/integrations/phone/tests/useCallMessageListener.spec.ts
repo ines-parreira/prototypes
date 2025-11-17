@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
 
 import { useCallMessageListener } from '../useCallMessageListener'

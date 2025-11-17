@@ -1,7 +1,8 @@
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 

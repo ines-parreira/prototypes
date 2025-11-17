@@ -7,7 +7,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 
-import WrapperEditForm, { FormData } from './WrapperEditForm'
+import type { FormData } from './WrapperEditForm'
+import WrapperEditForm from './WrapperEditForm'
 
 export type { FormData } from './WrapperEditForm'
 

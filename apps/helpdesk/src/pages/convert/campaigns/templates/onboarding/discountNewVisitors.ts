@@ -1,10 +1,8 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { ulid } from 'ulidx'
 
-import {
-    TooltipActionType,
-    WizardConfiguration,
-} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { TooltipActionType } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
@@ -15,11 +13,8 @@ import { assetsUrl } from 'utils'
 import { PlanName } from 'utils/paywalls'
 
 import { CampaignConfigurationBuilder } from '../constructor'
-import {
-    CampaignConfiguration,
-    CampaignTemplate,
-    CampaignTemplateLabelType,
-} from '../types'
+import type { CampaignConfiguration, CampaignTemplate } from '../types'
+import { CampaignTemplateLabelType } from '../types'
 
 export const DISCOUNT_CODE = 'LUCKYGC10'
 

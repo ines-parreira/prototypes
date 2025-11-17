@@ -1,18 +1,10 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useSearch } from 'hooks/useSearch'
 
-import {
-    CampaignListOptionsContext,
-    defaultParams,
-    PartialOptionsParams,
-} from './context'
+import type { PartialOptionsParams } from './context'
+import { CampaignListOptionsContext, defaultParams } from './context'
 import { updateUrlWithSearchParams } from './utils'
 
 interface Props {

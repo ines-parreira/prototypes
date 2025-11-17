@@ -1,7 +1,7 @@
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 
-import { Application } from './types'
+import type { Application } from './types'
 
 export async function listApplications(): Promise<
     ApiListResponseCursorPagination<Application[]>

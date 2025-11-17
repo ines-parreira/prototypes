@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import {
@@ -12,10 +13,10 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { Action } from '../../../../../models/ticket/types'
+import type { Action } from '../../../../../models/ticket/types'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
 import * as TicketActions from '../../../../../state/ticket/actions'
-import { RootState } from '../../../../../state/types'
+import type { RootState } from '../../../../../state/types'
 import { getActionTemplate, stripErrorMessage } from '../../../../../utils'
 import { sanitizeHtmlDefault } from '../../../../../utils/html'
 

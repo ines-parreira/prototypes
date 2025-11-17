@@ -5,14 +5,11 @@ import {
     LegacySelectField as SelectField,
     type LegacySelectFieldTriggerProps as SelectFieldTriggerProps,
 } from '@gorgias/axiom'
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import type { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {
-    CustomField,
-    CustomFieldObjectTypes,
-    isCustomFieldAIManagedType,
-} from 'custom-fields/types'
+import type { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
+import { isCustomFieldAIManagedType } from 'custom-fields/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 const SelectTrigger = ({

@@ -1,50 +1,50 @@
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { User } from 'config/types/user'
-import { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
-import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
-import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
-import {
+import type { User } from 'config/types/user'
+import type { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
+import type { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
+import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
+import type {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
-import {
+import type {
     AggregationWindow,
     StaticFilter,
     StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import { AutomateAiAgentsChart } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
-import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import { AutomateOverviewChart } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { CampaignsLegacyChart } from 'domains/reporting/pages/convert/campaigns/CampaignsLegacyReportConfig'
-import { CampaignsChart } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
-import { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
-import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import { HelpCenterChart } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import { SatisfactionChart } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
-import { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
-import { AgentsChart } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import { AutoQAChart } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
-import { BusiestTimesChart } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
-import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
-import { ChannelsChart } from 'domains/reporting/pages/support-performance/channels/ChannelsReportConfig'
-import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { TicketInsightsTagsChart } from 'domains/reporting/pages/ticket-insights/tags/TagsReportConfig'
-import { TicketFieldsChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
-import { VoiceAgentsChart } from 'domains/reporting/pages/voice/pages/VoiceAgentsReportConfig'
-import { VoiceOverviewChart } from 'domains/reporting/pages/voice/pages/VoiceOverviewReportConfig'
-import { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
-import { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import {
+import type { AutomateAiAgentsChart } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
+import type { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { AutomateOverviewChart } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { CampaignsLegacyChart } from 'domains/reporting/pages/convert/campaigns/CampaignsLegacyReportConfig'
+import type { CampaignsChart } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
+import type { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
+import type { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { HelpCenterChart } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import type { SatisfactionChart } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
+import type { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import type { AgentsChart } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import type { AutoQAChart } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
+import type { BusiestTimesChart } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import type { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
+import type { ChannelsChart } from 'domains/reporting/pages/support-performance/channels/ChannelsReportConfig'
+import type { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import type { TicketInsightsTagsChart } from 'domains/reporting/pages/ticket-insights/tags/TagsReportConfig'
+import type { TicketFieldsChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import type { VoiceAgentsChart } from 'domains/reporting/pages/voice/pages/VoiceAgentsReportConfig'
+import type { VoiceOverviewChart } from 'domains/reporting/pages/voice/pages/VoiceOverviewReportConfig'
+import type { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
 } from 'domains/reporting/state/ui/stats/types'
-import { Channel } from 'models/channel/types'
-import { Integration } from 'models/integration/types'
+import type { Channel } from 'models/channel/types'
+import type { Integration } from 'models/integration/types'
 
 type FilterSettings = {
     optional: OptionalFilter[]

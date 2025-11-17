@@ -8,7 +8,7 @@ import CampaignLibrarySection from 'pages/convert/campaigns/components/CampaignL
 import TemplateNotFoundBanner from 'pages/convert/campaigns/components/TemplateNotFoundBanner'
 import { CAMPAIGN_SECTIONS } from 'pages/convert/campaigns/templates'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 
 import css from './CampaignLibraryView.less'
 

@@ -1,4 +1,5 @@
-import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import type { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
@@ -36,7 +37,7 @@ import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboa
 import Routes from 'routes/Routes'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

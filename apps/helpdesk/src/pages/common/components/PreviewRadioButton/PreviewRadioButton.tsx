@@ -1,4 +1,5 @@
-import React, { ComponentProps, MouseEvent, ReactChild } from 'react'
+import type { ComponentProps, MouseEvent, ReactChild } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 

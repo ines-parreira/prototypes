@@ -3,9 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import TrialFinishSetupModal, {
-    TrialFinishSetupFeature,
-} from '../TrialFinishSetupModal'
+import type { TrialFinishSetupFeature } from '../TrialFinishSetupModal'
+import TrialFinishSetupModal from '../TrialFinishSetupModal'
 
 jest.mock('assets/img/icons/check.svg', () => 'check.svg')
 jest.mock('assets/img/icons/bolt.svg', () => 'bolt.svg')

@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import {
+import type {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
@@ -14,9 +14,8 @@ import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
-import ReportOrderIssueScenarioFormContext, {
-    ReportOrderIssueScenarioFormContextType,
-} from './components/ReportOrderIssueScenarioFormContext'
+import type { ReportOrderIssueScenarioFormContextType } from './components/ReportOrderIssueScenarioFormContext'
+import ReportOrderIssueScenarioFormContext from './components/ReportOrderIssueScenarioFormContext'
 import { DEFAULT_SCENARIO } from './constants'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'

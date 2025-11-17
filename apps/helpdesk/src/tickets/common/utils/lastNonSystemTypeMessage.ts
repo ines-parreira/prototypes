@@ -1,6 +1,7 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { getLastMessage } from 'utils'
 
 import isForwardedMessage from './isForwardedMessage'

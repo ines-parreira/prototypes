@@ -1,4 +1,5 @@
-import { AutomatePlan, Cadence, ProductType } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 
 import { hasAutomatePlanAboveGen6 } from '../trial.utils'

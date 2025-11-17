@@ -1,7 +1,8 @@
 import { renderHook } from '@repo/testing'
 
 import { useAiAgentGeneration6Plan } from 'models/billing/queries'
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 
 import { useAiAgentUpgradePlan } from './useAiAgentUpgradePlan'
 

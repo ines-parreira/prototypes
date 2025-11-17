@@ -5,7 +5,7 @@ import { Form, FormField } from 'core/forms'
 
 import AssignIntegrationsModal from '../AssignIntegrationsModal'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
-import { EditCustomBusinessHoursFormValues } from '../types'
+import type { EditCustomBusinessHoursFormValues } from '../types'
 
 jest.mock(
     '../CustomBusinessHoursIntegrationsTable',

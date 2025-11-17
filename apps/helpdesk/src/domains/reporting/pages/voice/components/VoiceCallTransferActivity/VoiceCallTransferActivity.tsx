@@ -1,4 +1,4 @@
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getTransferTargetVoiceCallSubject } from 'models/voiceCall/utils'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 

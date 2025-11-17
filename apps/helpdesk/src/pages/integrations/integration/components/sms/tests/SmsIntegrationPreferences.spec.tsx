@@ -4,11 +4,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/phoneNumber'
-import { IntegrationType, SmsIntegration } from 'models/integration/types'
+import type { SmsIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

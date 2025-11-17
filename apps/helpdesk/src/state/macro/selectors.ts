@@ -1,8 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import { RootState } from '../types'
-import { State } from './types'
+import type { RootState } from '../types'
+import type { State } from './types'
 
 export const getMacrosState = (state: RootState): State =>
     state.macros || fromJS({})

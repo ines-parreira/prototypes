@@ -31,13 +31,11 @@ import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/
 import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { withFilter } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export type Metric = {
     isFetching: boolean

@@ -13,10 +13,8 @@ import {
 } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
-import {
-    PostStoreInstallationStepStatus,
-    StepConfiguration,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
     MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT,
     REFRESH_AI_AGENT_PLAYGROUND_EVENT,
@@ -25,7 +23,7 @@ import { AiAgentPlaygroundView } from 'pages/aiAgent/Playground/AiAgentPlaygroun
 import { AiAgentPlayground } from 'pages/aiAgent/PlaygroundV2/AiAgentPlayground'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 
-import { PostOnboardingStepMetadata } from './types'
+import type { PostOnboardingStepMetadata } from './types'
 
 import css from './TestSection.less'
 

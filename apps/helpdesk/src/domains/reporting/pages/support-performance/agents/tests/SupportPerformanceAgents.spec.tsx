@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -11,7 +12,7 @@ import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTa
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
@@ -35,7 +36,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.unmock('react-router-dom')

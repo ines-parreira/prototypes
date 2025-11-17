@@ -1,4 +1,5 @@
-import React, { memo, useState } from 'react'
+import type React from 'react'
+import { memo, useState } from 'react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 

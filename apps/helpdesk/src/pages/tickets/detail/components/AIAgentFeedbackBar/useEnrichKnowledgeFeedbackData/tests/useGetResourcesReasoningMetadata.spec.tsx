@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
+import type { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
 
-import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'

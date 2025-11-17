@@ -1,8 +1,9 @@
-import React, { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback } from 'react'
 
 import { DropdownItem } from 'reactstrap'
 
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/AgentsStatsFilter.less'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'

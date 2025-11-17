@@ -8,8 +8,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -18,11 +18,8 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { useTrialPromoCard } from '../hooks/useTrialPromoCard'
 import { ShoppingAssistantPromoCard } from '../ShoppingAssistantPromoCard'
-import {
-    PromoCardContent,
-    PromoCardVariant,
-    TrialType,
-} from '../types/ShoppingAssistant'
+import type { PromoCardContent } from '../types/ShoppingAssistant'
+import { PromoCardVariant, TrialType } from '../types/ShoppingAssistant'
 
 jest.mock('../hooks/useTrialPromoCard')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')

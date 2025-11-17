@@ -9,10 +9,8 @@ import {
 } from 'domains/reporting/hooks/distributions'
 import { useWorkloadChannelReport } from 'domains/reporting/hooks/support-performance/overview/useWorkloadChannelReport'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { WORKLOAD_BY_CHANNEL_LABEL } from 'domains/reporting/services/constants'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'

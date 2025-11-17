@@ -1,13 +1,8 @@
-import React, {
-    ComponentProps,
-    MouseEvent,
-    RefObject,
-    useRef,
-    useState,
-} from 'react'
+import type { ComponentProps, MouseEvent, RefObject } from 'react'
+import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import { BaseEmoji, EmojiData } from 'emoji-mart'
+import type { BaseEmoji, EmojiData } from 'emoji-mart'
 import { Popover } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

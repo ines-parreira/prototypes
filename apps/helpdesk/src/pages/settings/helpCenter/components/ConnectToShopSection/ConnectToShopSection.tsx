@@ -16,9 +16,8 @@ import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-import SelectStore, {
-    HelpCenterContactFormIntegrationTypes,
-} from 'pages/settings/common/SelectStore/SelectStore'
+import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
+import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
 import settingsCss from 'pages/settings/settings.less'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'

@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react'
 
-import { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
+import type { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
 import { STATIC_WAIT_MUSIC_LIBRARY } from '../waitMusicLibraryConstants'
 import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'

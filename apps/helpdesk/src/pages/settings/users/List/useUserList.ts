@@ -2,20 +2,20 @@ import { useCallback, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import {
+import type {
     ListUsersParams,
     ListUsersResult,
-    useListUsers,
 } from '@gorgias/helpdesk-queries'
+import { useListUsers } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-types'
 import {
     ListUsersOrderBy,
     ListUsersRelationshipsItem,
-    User,
 } from '@gorgias/helpdesk-types'
 
 import { UserRole } from 'config/types/user'
-import { OrderDirection } from 'models/api/types'
-import { UserSortableProperties } from 'models/user/types'
+import type { OrderDirection } from 'models/api/types'
+import type { UserSortableProperties } from 'models/user/types'
 import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 
 export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes (in ms)

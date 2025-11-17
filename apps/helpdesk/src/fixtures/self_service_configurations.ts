@@ -1,4 +1,4 @@
-import {
+import type {
     SelfServiceConfiguration,
     ShopType,
 } from '../models/selfServiceConfiguration/types'

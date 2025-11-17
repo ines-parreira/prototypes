@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { PreferenceSet } from '@knocklabs/client'
+import type { PreferenceSet } from '@knocklabs/client'
 import { useKnockClient } from '@knocklabs/react'
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -10,7 +10,8 @@ import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constant
 import { UserSettingType } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { defaultSound, SoundValue } from 'services/NotificationSounds'
+import type { SoundValue } from 'services/NotificationSounds'
+import { defaultSound } from 'services/NotificationSounds'
 import { submitSetting } from 'state/currentUser/actions'
 import { getNotificationSettings } from 'state/currentUser/selectors'
 

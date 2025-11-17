@@ -7,10 +7,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/constants'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 

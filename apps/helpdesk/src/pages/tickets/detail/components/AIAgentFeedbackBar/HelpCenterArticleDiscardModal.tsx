@@ -1,6 +1,6 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Article, CreateArticleDto } from 'models/helpCenter/types'
+import type { Article, CreateArticleDto } from 'models/helpCenter/types'
 import { CloseModal } from 'pages/settings/helpCenter/components/articles/CloseModal/CloseModal'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { isExistingArticle } from 'pages/settings/helpCenter/utils/helpCenter.utils'

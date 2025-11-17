@@ -1,4 +1,4 @@
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 // this empty check will need to be more elaborate
 // in the future as more types kick in

@@ -1,17 +1,18 @@
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import { DrillDownTable } from 'domains/reporting/pages/common/drill-down/DrillDownTable'
+import type { DrillDownHook } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import {
     DomainsConfig,
-    DrillDownHook,
     MetricsConfig,
 } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownMetricColumn } from 'domains/reporting/pages/common/drill-down/helpers'
-import { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     closeDrillDownModal,
-    DrillDownMetric,
     getDrillDownMetric,
     getDrillDownModalState,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'

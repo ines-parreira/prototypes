@@ -19,7 +19,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { getHasAutomate } from 'state/billing/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('state/billing/selectors', () => ({

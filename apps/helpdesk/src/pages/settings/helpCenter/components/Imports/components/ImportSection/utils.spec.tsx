@@ -1,4 +1,5 @@
-import { AxiosError, AxiosHeaders, AxiosResponse } from 'axios'
+import type { AxiosError, AxiosResponse } from 'axios'
+import { AxiosHeaders } from 'axios'
 
 import { axiosSuccessResponse } from '../../../../../../../fixtures/axiosResponse'
 import {
@@ -7,7 +8,11 @@ import {
     migrationStatsWithoutFailures,
     succeededMigrationStats,
 } from './fixtures/migration-sessions'
-import { DetailMessage, ErrorResponse, UnprocessableContent } from './types'
+import type {
+    DetailMessage,
+    ErrorResponse,
+    UnprocessableContent,
+} from './types'
 import { getErrorMessage, parseSessionStats } from './utils'
 
 describe('utils', () => {

@@ -1,10 +1,12 @@
+import type {
+    CreatePlaygroundMessage,
+    PlaygroundMessage,
+} from 'models/aiAgentPlayground/types'
 import {
     AgentSkill,
     AiAgentMessageType,
-    CreatePlaygroundMessage,
     isApiEligiblePlaygroundMessage,
     MessageType,
-    PlaygroundMessage,
     PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
 

@@ -1,4 +1,4 @@
-import { ValidatorType } from './types'
+import type { ValidatorType } from './types'
 import { ValidationError } from './validationError'
 
 export const countryCodeValidator: ValidatorType = (value) => {

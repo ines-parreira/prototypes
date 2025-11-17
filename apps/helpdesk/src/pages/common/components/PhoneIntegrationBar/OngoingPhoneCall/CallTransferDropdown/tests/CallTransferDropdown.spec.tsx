@@ -1,9 +1,10 @@
-import { ComponentProps, createRef } from 'react'
+import type { ComponentProps } from 'react'
+import { createRef } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'

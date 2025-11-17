@@ -1,17 +1,13 @@
-import {
-    createContext,
-    FunctionComponent,
-    ReactNode,
-    useContext,
-    useMemo,
-} from 'react'
+import type { FunctionComponent, ReactNode } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import {
+import type {
     FinancialStatus,
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
@@ -19,7 +15,7 @@ import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetch
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import OrderStatus from 'pages/common/components/OrderStatus/OrderStatus'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { EditionContext } from 'providers/infobar/EditionContext'
@@ -31,7 +27,7 @@ import CancelOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/Canc
 import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import { CustomizationContext } from '../../Template'

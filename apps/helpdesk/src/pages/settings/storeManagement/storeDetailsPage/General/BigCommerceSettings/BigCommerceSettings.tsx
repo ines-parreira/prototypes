@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { BigCommerceIntegration } from 'models/integration/types'
+import type { BigCommerceIntegration } from 'models/integration/types'
 
 import { ActionButtons } from './ActionButtons'
 import { InformationForm } from './InformationForm'

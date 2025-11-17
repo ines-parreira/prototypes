@@ -1,6 +1,6 @@
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../components/MultiLevelSelect/constants'
 

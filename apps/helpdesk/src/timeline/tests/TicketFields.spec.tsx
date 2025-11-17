@@ -2,10 +2,8 @@ import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import {
-    TicketCustomFieldValue,
-    useListCustomFields,
-} from '@gorgias/helpdesk-queries'
+import type { TicketCustomFieldValue } from '@gorgias/helpdesk-queries'
+import { useListCustomFields } from '@gorgias/helpdesk-queries'
 import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'

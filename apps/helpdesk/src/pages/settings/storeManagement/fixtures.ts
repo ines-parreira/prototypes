@@ -1,11 +1,8 @@
 import { EmailProvider } from 'models/integration/constants'
-import {
-    Integration,
-    IntegrationType,
-    StoreIntegration,
-} from 'models/integration/types'
+import type { Integration, StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import { StoreWithAssignedChannels } from './types'
+import type { StoreWithAssignedChannels } from './types'
 
 export const mockStoresWithAssignedChannels: StoreWithAssignedChannels[] = [
     {

@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/constants'
-import {
+import type {
     BigCommerceIntegration,
     Magento2Integration,
     ShopifyIntegration,
 } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 import StoreFilter from '../StoreFilter'

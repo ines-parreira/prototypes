@@ -5,7 +5,7 @@ import { useFlag } from 'core/flags'
 
 import { MetafieldsContainer } from '../../modules/Metafields'
 import { CustomerMetafields } from './CustomerMetafields'
-import { MetafieldProps } from './types'
+import type { MetafieldProps } from './types'
 
 export default function WrappedCustomerMetafields(props: MetafieldProps) {
     const showCustomerMetafields = useFlag(

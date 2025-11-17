@@ -17,12 +17,14 @@ import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeed
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
 import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
-import {
+import type {
     AiAgentBinaryFeedbackEnum,
+    KnowledgeResource,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import {
     AiAgentFeedbackTypeEnum,
     AiAgentKnowledgeResourceTypeEnum,
     AutoSaveState,
-    KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

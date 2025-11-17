@@ -2,15 +2,11 @@ import { AiSalesAgentConversationsFilterMember } from 'domains/reporting/models/
 import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { AiSalesAgentOrderCustomersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import { ConvertTrackingEventsDimension } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-} from 'domains/reporting/models/types'
-import {
-    formatReportingQueryDate,
-    StatsFiltersMembers,
-} from 'domains/reporting/utils/reporting'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import type { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 export const aiSalesAgentOrdersDefaultFiltersMembers: StatsFiltersMembers = {
     periodStart: AiSalesAgentOrdersFilterMember.PeriodStart,

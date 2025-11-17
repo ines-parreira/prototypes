@@ -1,6 +1,7 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,7 +10,8 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import cssSettings from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 const RemoveShopifyBilling = () => {
     const dispatch = useAppDispatch()

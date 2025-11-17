@@ -8,7 +8,7 @@ import {
     helpCenterKeys,
     useGetHelpCenterArticle,
 } from 'models/helpCenter/queries'
-import {
+import type {
     ArticleWithLocalTranslationAndRating,
     LocaleCode,
 } from 'models/helpCenter/types'

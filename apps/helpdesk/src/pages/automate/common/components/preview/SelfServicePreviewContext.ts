@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import {
+import type {
     PolicyKey,
     ReportIssueCaseReason,
     ResponseMessageContent,

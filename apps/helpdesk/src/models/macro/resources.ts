@@ -1,12 +1,12 @@
-import { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 
-import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
-import { MacroDraft } from './types'
+import type { MacroDraft } from './types'
 
 export const fetchMacros = async (
     options: ListMacrosParams = {},

@@ -14,7 +14,7 @@ import {
     initialState,
     mergeStatsFilters,
 } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { formatDatetime } from 'utils'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'

@@ -1,14 +1,15 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 import _isString from 'lodash/isString'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { createTag, fetchTags } from 'models/tag/resources'
-import { TagDraft } from 'models/tag/types'
+import type { TagDraft } from 'models/tag/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { tagCreated, tagsFetched } from 'state/entities/tags/actions'

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -8,7 +9,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import RadioButton from 'pages/common/components/RadioButton'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 import css from './StopABTestModal.less'
 

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 

@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import { Location } from 'history'
+import type { Location } from 'history'
 import { useLocation } from 'react-router-dom'
 
 import { useSearchParam } from '../useSearchParam'

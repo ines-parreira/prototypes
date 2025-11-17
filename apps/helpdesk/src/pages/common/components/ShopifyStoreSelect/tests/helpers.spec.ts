@@ -2,9 +2,9 @@ import { fromJS, List, Map } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
+import type { IntegrationWithDefaultFlag } from '../helpers'
 import {
     getDefaultStore,
-    IntegrationWithDefaultFlag,
     normalizeIntegrationsWithDefaultFlagResponse,
     selectNormalizedIntegrations,
 } from '../helpers'

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import { UIActions } from './types'
 

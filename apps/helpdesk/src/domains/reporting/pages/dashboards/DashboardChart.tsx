@@ -3,17 +3,17 @@ import { useGridSize } from '@repo/hooks'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import {
-    DraggableGridCell,
+import type {
     DropHandler,
     FindChartIndex,
     MoveHandler,
 } from 'domains/reporting/pages/dashboards/DraggableGridCell'
-import {
-    ChartType,
+import { DraggableGridCell } from 'domains/reporting/pages/dashboards/DraggableGridCell'
+import type {
     DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 
 export type DashboardChartProps = {
     findChartIndex: FindChartIndex

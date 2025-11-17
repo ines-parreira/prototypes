@@ -1,4 +1,4 @@
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export const PageEmbedmentFixture: Components.Schemas.PageEmbedmentDto = {
     id: 1,

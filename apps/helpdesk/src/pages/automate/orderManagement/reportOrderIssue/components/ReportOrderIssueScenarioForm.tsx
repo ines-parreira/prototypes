@@ -1,6 +1,6 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import {
+import type {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'

@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import {
     TicketDimension,
@@ -31,7 +31,7 @@ import {
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { personNames } from 'fixtures/personNames'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getSortByName } from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {

@@ -2,15 +2,13 @@ import { useMemo } from 'react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
-import {
-    UserLanguagePreferencesSetting,
-    UserSettingType,
-} from '@gorgias/helpdesk-types'
+import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
+import { UserSettingType } from '@gorgias/helpdesk-types'
 
 import { UserRole } from 'config/types/user'
 
 import { YourProfileView } from './components/YourProfileView'
-import { ApplicationUserPreferencesSettings, CurrentUser } from './types'
+import type { ApplicationUserPreferencesSettings, CurrentUser } from './types'
 
 function YourProfileContainer() {
     const { data: currentUser } = useGetCurrentUser<CurrentUser>()

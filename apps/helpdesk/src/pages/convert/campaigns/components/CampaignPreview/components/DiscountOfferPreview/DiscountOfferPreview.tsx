@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { getContrastColor } from 'gorgias-design-system/utils'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 
 import css from './DiscountOfferPreview.less'
 

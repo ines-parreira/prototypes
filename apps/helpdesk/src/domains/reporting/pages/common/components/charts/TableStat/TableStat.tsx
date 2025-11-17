@@ -1,29 +1,33 @@
-import React, { Component, ReactText } from 'react'
+import type { ReactText } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isFunction from 'lodash/isFunction'
 import _trim from 'lodash/trim'
 import _truncate from 'lodash/truncate'
 import moment from 'moment-timezone'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import type { RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
 import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
+import type {
+    StatConfigCallbacks,
+    StatMap,
+} from 'domains/reporting/config/stats'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
-    StatConfigCallbacks,
-    StatMap,
     StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
 } from 'domains/reporting/config/stats'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import DistributionVariantStat, {
     DistributionStatVariant,
 } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
@@ -37,12 +41,12 @@ import {
     formatCurrency,
     formatDuration,
 } from 'domains/reporting/pages/common/utils'
-import { Integration, StoreIntegration } from 'models/integration/types'
+import type { Integration, StoreIntegration } from 'models/integration/types'
 import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import withRouter from 'pages/common/utils/withRouter'
 

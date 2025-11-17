@@ -3,8 +3,9 @@ import { forwardRef, useImperativeHandle, useRef } from 'react'
 import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
-import { Badge, ColorType, LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
 import css from './PriorityLabel.less'
 

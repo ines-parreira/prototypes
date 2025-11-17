@@ -2,7 +2,8 @@ import { useContext } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { LegacyTheme, ThemeContext as UIKitThemeContext } from '@gorgias/axiom'
+import type { LegacyTheme } from '@gorgias/axiom'
+import { ThemeContext as UIKitThemeContext } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import AppThemeContext from '../ThemeContext'

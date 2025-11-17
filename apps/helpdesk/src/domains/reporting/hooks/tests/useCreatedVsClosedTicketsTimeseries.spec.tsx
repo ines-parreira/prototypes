@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
@@ -9,12 +10,12 @@ import {
     useTicketsCreatedTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import { useCreatedVsClosedTicketsTimeSeries } from 'domains/reporting/hooks/useCreatedVsClosedTicketsTimeSeries'
-import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { periodAndAggregationWindowToReportingGranularity } from 'domains/reporting/utils/reporting'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const mockedUseTicketsClosedTimeSeries = assumeMock(useTicketsClosedTimeSeries)

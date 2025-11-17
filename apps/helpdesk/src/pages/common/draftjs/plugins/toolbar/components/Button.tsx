@@ -1,4 +1,5 @@
-import React, { ForwardedRef, forwardRef, MouseEvent } from 'react'
+import type { ForwardedRef, MouseEvent } from 'react'
+import React, { forwardRef } from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'

@@ -20,8 +20,8 @@ import {
     totalTaggedTicketCountQueryFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
-    StatsFilters,
     TagFilterInstanceId,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

@@ -8,7 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { loadIntegration } from 'models/integration/resources/alloy'
-import { AlloyIntegration } from 'models/integration/types/alloy'
+import type { AlloyIntegration } from 'models/integration/types/alloy'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,

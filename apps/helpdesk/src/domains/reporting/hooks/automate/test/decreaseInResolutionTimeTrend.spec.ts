@@ -17,7 +17,7 @@ import {
     useDecreaseInResolutionTimeTrend,
 } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(

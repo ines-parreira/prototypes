@@ -6,12 +6,11 @@ import MockDate from 'mockdate'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {
+import type {
     CouponSummary,
-    ProductType,
-    SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
 import {
     payingWithCreditCard,

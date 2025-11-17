@@ -1,8 +1,9 @@
-import React, { createRef, useMemo } from 'react'
+import type React from 'react'
+import { createRef, useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { useOpenToggle } from 'pages/common/hooks/useOpenToggle'
 
 import { ActionButton } from './components/ActionButton'

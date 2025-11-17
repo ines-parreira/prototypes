@@ -16,7 +16,8 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { Sentiment } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { OrderDirection } from 'models/api/types'
 

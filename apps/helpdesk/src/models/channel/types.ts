@@ -1,4 +1,7 @@
-import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import type {
+    TicketChannel,
+    TicketMessageSourceType,
+} from 'business/types/ticket'
 
 export type Channel = {
     id: string

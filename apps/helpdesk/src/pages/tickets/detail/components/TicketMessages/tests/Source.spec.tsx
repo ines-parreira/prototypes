@@ -9,7 +9,7 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import { Source as MessageSource } from 'models/ticket/types'
+import type { Source as MessageSource } from 'models/ticket/types'
 import { assumeMock } from '@repo/testing'
 
 import Source from '../Source'

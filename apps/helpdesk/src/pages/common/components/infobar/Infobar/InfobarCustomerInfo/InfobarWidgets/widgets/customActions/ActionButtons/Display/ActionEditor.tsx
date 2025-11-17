@@ -1,15 +1,17 @@
-import React, { FormEvent, useCallback } from 'react'
+import type { FormEvent } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { get as _get } from 'lodash'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import {
+import type {
     Action,
     Parameter,
-    ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

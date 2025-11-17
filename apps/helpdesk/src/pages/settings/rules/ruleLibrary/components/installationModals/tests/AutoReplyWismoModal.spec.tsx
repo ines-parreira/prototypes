@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { emptyManagedRule } from 'fixtures/rule'
 import { IntegrationType } from 'models/integration/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { AutoReplyWismoModal } from '../AutoReplyWismoModal'
 

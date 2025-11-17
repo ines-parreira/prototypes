@@ -1,18 +1,17 @@
 import React, { useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Label } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
-    LanguageItem,
-} from 'config/integrations/gorgias_chat'
+import type { LanguageItem } from 'config/integrations/gorgias_chat'
+import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import { ChatContactInfoDto } from 'models/helpCenter/types'
+import type { ChatContactInfoDto } from 'models/helpCenter/types'
 import { useApplications } from 'models/integration/queries'
 import { IntegrationType } from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

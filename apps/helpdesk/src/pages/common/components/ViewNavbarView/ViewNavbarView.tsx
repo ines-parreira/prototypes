@@ -3,15 +3,16 @@ import React, { Component } from 'react'
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import { UserSettingType } from 'config/types/user'
+import type { UserSettingType } from 'config/types/user'
 import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
 import { ViewType } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
@@ -21,7 +22,7 @@ import ViewNavbarViewEditor from 'pages/common/components/ViewNavbarView/ViewNav
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import { makeGetSettingsByType } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     getActiveView,
     makeGetView,

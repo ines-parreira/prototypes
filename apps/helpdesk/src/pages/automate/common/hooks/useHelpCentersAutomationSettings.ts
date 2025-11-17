@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
+import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     getHelpCentersAutomationSettings,

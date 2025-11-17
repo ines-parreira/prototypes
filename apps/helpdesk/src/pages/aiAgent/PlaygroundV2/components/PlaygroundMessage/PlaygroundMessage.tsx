@@ -1,12 +1,10 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import classnames from 'classnames'
 
 import error from 'assets/img/icons/error.svg'
-import {
-    MessageType,
-    PlaygroundMessage as PlaygroundMessageType,
-} from 'models/aiAgentPlayground/types'
+import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'
+import { MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
@@ -17,7 +15,7 @@ import { assertUnreachable } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
-import { PlaygroundChannels } from '../../types'
+import type { PlaygroundChannels } from '../../types'
 
 import css from './PlaygroundMessage.less'
 

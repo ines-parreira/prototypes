@@ -1,23 +1,18 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 import { Tooltip } from 'reactstrap'
 
 import { useTheme } from 'core/theme'
-import {
-    type BaseDateRangePicker,
-    DateRangePicker,
-    type Props as DateRangeProps,
+import type {
+    BaseDateRangePicker,
+    Props as DateRangeProps,
     EventHandler,
 } from 'utils/wrappers/DateRangePicker'
+import { DateRangePicker } from 'utils/wrappers/DateRangePicker'
 
 import css from './DatePicker.less'
 

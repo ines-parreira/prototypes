@@ -2,13 +2,14 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AgentLabel } from 'pages/common/utils/labels'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,

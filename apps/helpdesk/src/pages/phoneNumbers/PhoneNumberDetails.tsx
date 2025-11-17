@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -20,16 +21,17 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { countryOptions } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import {
     deleteNewPhoneNumber,
     updateNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import { NewPhoneNumber, PhoneCountry } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
+import { PhoneCountry } from 'models/phoneNumber/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import {
     countryCode,
     getAvailableStates,

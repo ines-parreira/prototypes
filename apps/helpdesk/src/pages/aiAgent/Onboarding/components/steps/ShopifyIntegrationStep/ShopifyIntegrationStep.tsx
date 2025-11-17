@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { FormProvider, useForm } from 'react-hook-form'
 import { useHistory, useParams } from 'react-router-dom'
@@ -6,8 +7,9 @@ import { z } from 'zod'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
-import { OnboardingData } from 'models/aiAgent/types'
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { OnboardingData } from 'models/aiAgent/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
@@ -18,7 +20,7 @@ import StatusBadge, {
     StatusEnum,
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'

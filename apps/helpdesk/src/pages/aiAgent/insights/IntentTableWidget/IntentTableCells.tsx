@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
@@ -14,7 +15,7 @@ import {
     DEFAULT_LOCALE,
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { BadgeWithTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {
@@ -23,10 +24,8 @@ import {
     IntentRowConfig,
     IntentsColumnsConfig,
 } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
-import {
-    Intent,
-    IntentTableColumn,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { Intent } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 import intentTableCss from './IntentTable.less'

@@ -10,7 +10,7 @@ import {
 } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 

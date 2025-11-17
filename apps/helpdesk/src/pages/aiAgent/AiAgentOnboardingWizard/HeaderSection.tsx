@@ -2,8 +2,8 @@ import classnames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import { AiAgentChannel } from '../constants'
-import { FormValues, WizardFormValues } from '../types'
+import type { AiAgentChannel } from '../constants'
+import type { FormValues, WizardFormValues } from '../types'
 
 import css from './HeaderSection.less'
 

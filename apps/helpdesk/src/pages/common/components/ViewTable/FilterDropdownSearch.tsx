@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
-import { CancelToken } from 'axios'
-import { List, Map } from 'immutable'
+import type { CancelToken } from 'axios'
+import type { List, Map } from 'immutable'
 import { DropdownItem } from 'reactstrap'
 
 import useCancellableRequest from 'hooks/useCancellableRequest'

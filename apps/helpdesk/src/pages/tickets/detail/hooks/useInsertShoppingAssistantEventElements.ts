@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
-import { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
+import type { InfluencedOrderData } from 'hooks/aiAgent/useFetchInfluencedOrders'
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
-import { ShopifyIntegration } from 'models/integration/types'
-import { TicketElement, TicketMessage } from 'models/ticket/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import type { TicketElement, TicketMessage } from 'models/ticket/types'
 
 // Source https://github.com/gorgias/analytics/blob/main/schemas/ai_sales_agent/AiSalesAgentConversations.js#L68
 export enum InfluencedOrderSource {

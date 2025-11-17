@@ -1,7 +1,7 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { MacroAction } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
 import TicketTag from 'pages/common/components/TicketTag'
 import { getTags } from 'state/tags/selectors'
 

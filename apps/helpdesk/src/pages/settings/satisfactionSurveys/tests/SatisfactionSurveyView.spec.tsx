@@ -3,17 +3,16 @@ import React from 'react'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettings } from 'state/currentAccount/selectors'
-import {
-    AccountSettingSatisfactionSurvey,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { AccountSettingSatisfactionSurvey } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import SatisfactionSurveyView from '../SatisfactionSurveyView'

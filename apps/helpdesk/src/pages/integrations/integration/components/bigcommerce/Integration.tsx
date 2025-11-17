@@ -1,6 +1,7 @@
-import React, { FormEvent, useCallback } from 'react'
+import type { FormEvent } from 'react'
+import React, { useCallback } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'

@@ -1,7 +1,7 @@
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 
-import {
+import type {
     ListWhatsAppMessageTemplatesParams,
     WhatsAppMessageTemplate,
 } from './types'

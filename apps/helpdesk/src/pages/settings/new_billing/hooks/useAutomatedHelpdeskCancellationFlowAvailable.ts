@@ -1,4 +1,4 @@
-import { HelpdeskPlan } from 'models/billing/types'
+import type { HelpdeskPlan } from 'models/billing/types'
 import { isStarterTier } from 'models/billing/utils'
 
 const useAutomatedHelpdeskCancellationFlowAvailable = (

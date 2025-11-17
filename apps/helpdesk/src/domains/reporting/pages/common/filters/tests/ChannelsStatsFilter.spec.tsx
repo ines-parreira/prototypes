@@ -12,12 +12,12 @@ import { TicketChannel } from 'business/types/ticket'
 import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import DEPRECATED_ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
-import { Channel } from 'services/channels'
+import type { Channel } from 'services/channels'
 import {
     initialState,
     mergeStatsFilters,
 } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedValue, useElementSize, usePrevious } from '@repo/hooks'
 
-import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
+import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
@@ -10,7 +10,7 @@ import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
 import useTicketIds from '../hooks/useTicketIds'
-import { TicketPartial } from '../types'
+import type { TicketPartial } from '../types'
 import usePrevNextTicketId from './usePrevNextTicketId'
 import useScrollOffset from './useScrollOffset'
 import useStaleTickets from './useStaleTickets'

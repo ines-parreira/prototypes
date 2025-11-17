@@ -1,20 +1,22 @@
-import {
-    CompositeDecorator,
+import type {
     ContentBlock,
     ContentState,
     EditorChangeType,
-    EditorState,
     Entity,
-    Modifier,
     RawDraftEntity,
+} from 'draft-js'
+import {
+    CompositeDecorator,
+    EditorState,
+    Modifier,
     SelectionState,
 } from 'draft-js'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _noop from 'lodash/noop'
 
 import { convertFromHTML } from '../../../../utils/editor'
-import { PluginMethods } from '../plugins/types'
+import type { PluginMethods } from '../plugins/types'
 
 export const mockPluginMethods = (
     initialState?: EditorState,

@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import {
+import type {
     ReturnAction,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
@@ -19,9 +19,8 @@ import ReturnOrderEligibility from './components/ReturnOrderEligibility'
 import { DEFAULT_RETURN_ACTION } from './constants'
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
-import ReturnOrderFlowViewContext, {
-    ReturnOrderFlowViewContextType,
-} from './ReturnOrderFlowViewContext'
+import type { ReturnOrderFlowViewContextType } from './ReturnOrderFlowViewContext'
+import ReturnOrderFlowViewContext from './ReturnOrderFlowViewContext'
 
 const ReturnOrderFlowView = () => {
     const { shopName } = useParams<{ shopName: string }>()

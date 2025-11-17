@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import { ClassValue } from 'classnames/types'
+import type { ClassValue } from 'classnames/types'
 
 import {
     LegacyButton as Button,
@@ -14,7 +14,7 @@ import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 
 import { useTheme } from '../../../../core/theme'
-import { StoreIntegration } from '../../../../models/integration/types'
+import type { StoreIntegration } from '../../../../models/integration/types'
 import { useIsTruncated } from '../../hooks/useIsTruncated'
 import Dropdown from '../dropdown/Dropdown'
 import DropdownBody from '../dropdown/DropdownBody'

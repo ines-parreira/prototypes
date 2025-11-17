@@ -1,6 +1,6 @@
-import { Components } from 'rest_api/migration_api/client.generated'
+import type { Components } from 'rest_api/migration_api/client.generated'
 
-import { LocaleCode } from '../../../../../../../models/helpCenter/types'
+import type { LocaleCode } from '../../../../../../../models/helpCenter/types'
 
 export type ColumnDescription = Components.Schemas.ColumnDescription
 export type CSVColumnPreview = Components.Schemas.AnalysisColumn

@@ -1,6 +1,10 @@
-import { Article, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import type {
+    Article,
+    LocaleCode,
+    NonRootCategory,
+} from 'models/helpCenter/types'
 
-import {
+import type {
     AlgoliaHit,
     EntitiesArticleRecord,
     EntitiesCategoryRecord,

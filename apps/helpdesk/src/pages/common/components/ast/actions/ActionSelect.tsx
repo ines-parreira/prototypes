@@ -1,5 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -8,7 +8,7 @@ import {
 } from 'reactstrap'
 
 import { useFlag } from 'core/flags'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
 import { actionsConfig, isValidActionKey } from './config'

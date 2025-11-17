@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'

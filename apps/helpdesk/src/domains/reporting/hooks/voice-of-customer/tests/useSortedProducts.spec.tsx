@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
-import { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     useTicketCountPerProductWithEnrichment,
@@ -15,7 +15,8 @@ import {
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { PRODUCT_ID_DIMENSION } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import {
@@ -31,7 +32,7 @@ import {
     PRODUCT_THUMBNAIL_FIELD,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { assetsUrl } from 'utils'
 import { mockStore } from 'utils/testing'
 

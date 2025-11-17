@@ -1,11 +1,5 @@
-import React, {
-    Children,
-    createContext,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-    useMemo,
-} from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import React, { Children, createContext, isValidElement, useMemo } from 'react'
 
 import classnames from 'classnames'
 

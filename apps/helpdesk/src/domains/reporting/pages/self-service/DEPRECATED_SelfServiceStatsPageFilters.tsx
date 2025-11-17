@@ -8,7 +8,7 @@ import { getStatsFilters } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { PAST_YEAR } from '../constants'
 

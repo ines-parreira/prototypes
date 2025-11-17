@@ -9,12 +9,14 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
-import {
-    BigCommerceActionType,
+import type {
     BigCommerceCartResponse,
-    BigCommerceLineItemError,
     BigCommerceNestedCartResponse,
     BigCommerceProduct,
+} from 'models/integration/types'
+import {
+    BigCommerceActionType,
+    BigCommerceLineItemError,
     ProductModifiersChangedError,
 } from 'models/integration/types'
 

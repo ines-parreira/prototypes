@@ -1,17 +1,17 @@
-import { TicketChannel } from 'business/types/ticket'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { TicketChannel } from 'business/types/ticket'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     fetchPostReporting,
     usePostReporting,
-    UsePostReportingQueryData,
 } from 'domains/reporting/models/queries'
 import { workloadPerChannelDistributionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/workloadPerChannel'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { humanizeChannel } from 'state/ticket/utils'
 

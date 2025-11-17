@@ -1,8 +1,9 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -21,13 +22,12 @@ import {
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { Language } from 'constants/languages'
 import { user } from 'fixtures/users'
-import { IntegrationFromType, IntegrationType } from 'models/integration/types'
-import {
-    ReturnActionType,
-    SelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/types'
+import type { IntegrationFromType } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import * as IntegrationsActions from 'state/integrations/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { GorgiasChatIntegrationPreferencesComponent } from '../GorgiasChatIntegrationPreferences'

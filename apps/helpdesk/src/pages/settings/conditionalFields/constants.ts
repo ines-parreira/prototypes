@@ -4,7 +4,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { SUPPORTED_UI_DATA_TYPES } from 'custom-fields/constants'
-import { SupportedUIDataType } from 'custom-fields/types'
+import type { SupportedUIDataType } from 'custom-fields/types'
 
 export const EXPRESSION_OPERATORS_BY_UI_DATA_TYPE: Record<
     SupportedUIDataType,

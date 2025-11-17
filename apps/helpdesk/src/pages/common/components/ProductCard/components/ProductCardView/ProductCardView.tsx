@@ -7,11 +7,12 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import { getContrastColor } from 'gorgias-design-system/utils'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { useIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 
 import { BaseProductCard } from '../BaseProductCard'
-import { FeaturedImage, ImagePosition } from '../ImagePosition'
+import type { FeaturedImage } from '../ImagePosition'
+import { ImagePosition } from '../ImagePosition'
 
 import css from './ProductCardView.less'
 

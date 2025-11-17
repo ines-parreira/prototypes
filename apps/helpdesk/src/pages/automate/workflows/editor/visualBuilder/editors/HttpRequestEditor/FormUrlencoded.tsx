@@ -1,7 +1,7 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
 

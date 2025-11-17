@@ -1,10 +1,10 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
-import { ArticleTranslationResponseDto } from 'models/helpCenter/types'
+import type { ArticleTranslationResponseDto } from 'models/helpCenter/types'
 
 import { ArticleModes } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
+import type { ArticleState } from './KnowledgeEditorHelpCenterExistingArticle.utils'
 import {
-    ArticleState,
     editModeFromVisibilityStatus,
     mergeResponseContentAndTitleInArticle,
     mergeResponseSettingsInArticle,

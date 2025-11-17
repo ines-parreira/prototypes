@@ -4,11 +4,11 @@ import { render } from '@testing-library/react'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
-import {
+import type {
     DashboardChartSchema,
-    DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,

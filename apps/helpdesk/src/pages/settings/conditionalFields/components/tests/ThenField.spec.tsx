@@ -8,7 +8,7 @@ import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import {
     ticketBooleanFieldDefinition,
     ticketDropdownFieldDefinition,

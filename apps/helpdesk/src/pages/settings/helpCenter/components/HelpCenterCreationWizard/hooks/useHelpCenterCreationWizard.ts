@@ -13,18 +13,16 @@ import {
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,
-    HelpCenterCreationWizard,
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'

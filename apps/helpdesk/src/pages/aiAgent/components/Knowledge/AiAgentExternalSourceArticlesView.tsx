@@ -10,7 +10,7 @@ import {
     useGetArticleIngestionLogs,
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import AiAgentScrapedDomainContentLayout from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentLayout'
 import {
     HeaderType,
@@ -19,7 +19,7 @@ import {
     VisibilityStatus,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import ScrapedDomainContentView from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainContentView'
-import { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import AiAgentSelectedArticleContentWrapper from 'pages/aiAgent/components/Knowledge/AiAgentSelectedArticleContentWrapper'
 import {
     convertArticleIngestionStatus,
@@ -27,8 +27,8 @@ import {
 } from 'pages/aiAgent/components/PublicSourcesSection/utils'
 import { ARTICLE_INGESTION_LOGS_STATUS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useGetIngestedFileArticles } from 'pages/aiAgent/hooks/useGetIngestedFileArticles'
-import { useGetIngestedUrlArticles } from 'pages/aiAgent/hooks/useGetIngestedUrlArticles'
+import type { useGetIngestedFileArticles } from 'pages/aiAgent/hooks/useGetIngestedFileArticles'
+import type { useGetIngestedUrlArticles } from 'pages/aiAgent/hooks/useGetIngestedUrlArticles'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'

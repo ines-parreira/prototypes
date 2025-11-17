@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import { ChoiceOption } from '../../MissingKnowledgeSelect'
+import type { ChoiceOption } from '../../MissingKnowledgeSelect'
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useFeedbackActions } from '../useFeedbackActions'
 

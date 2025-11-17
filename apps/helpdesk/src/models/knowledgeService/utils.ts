@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 
-import {
+import type {
     FeedbackExecutionsItem,
     FeedbackExecutionsItemResourcesItem,
     FeedbackUpsertRequest,

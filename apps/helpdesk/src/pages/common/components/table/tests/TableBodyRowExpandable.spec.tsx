@@ -6,11 +6,11 @@ import {
 import { act, render, screen, waitFor, within } from '@testing-library/react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import {
     COLUMN_WIDTH,
     MOBILE_COLUMN_WIDTH,
     TableBodyRowExpandable,
-    WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
 
 type Data = {

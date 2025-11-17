@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -10,13 +11,13 @@ import { useAppNode } from 'appNode'
 import { triggerTicketFieldsRefreshAndInvalidation } from 'common/state'
 import { FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH } from 'config/integrations/facebook'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { Actor, Meta, Source } from 'models/ticket/types'
+import type { Actor, Meta, Source } from 'models/ticket/types'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import { COMMENT_TICKET_PRIVATE_REPLY_EVENT } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import * as infobarActions from 'state/infobar/actions'
 import { goToNextTicket, setStatus } from 'state/ticket/actions'
 import { TICKET_PARTIAL_UPDATE_ERROR } from 'state/ticket/constants'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 import css from './PrivateReplyModal.less'
 

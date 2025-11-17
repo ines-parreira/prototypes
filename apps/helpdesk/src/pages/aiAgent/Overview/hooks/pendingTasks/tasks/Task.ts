@@ -1,4 +1,4 @@
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 
 export abstract class Task {
     public readonly taskType?: string

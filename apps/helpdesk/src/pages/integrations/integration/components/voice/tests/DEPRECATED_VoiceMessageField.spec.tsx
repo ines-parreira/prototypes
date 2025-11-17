@@ -3,17 +3,16 @@ import { act, fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {
-    UploadedCustomRecording,
-    useUploadCustomVoiceRecording,
-} from '@gorgias/helpdesk-queries'
+import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
+import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
-import { Account } from 'state/currentAccount/types'
+import type { VoiceMessage } from 'models/integration/types'
+import { VoiceMessageType } from 'models/integration/types'
+import type { Account } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'

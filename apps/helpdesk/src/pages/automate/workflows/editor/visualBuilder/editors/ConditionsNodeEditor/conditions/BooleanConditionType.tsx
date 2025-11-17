@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 
-import {
+import type {
     ConditionSchema,
     EqualsSchema,
 } from 'pages/automate/workflows/models/conditions.types'

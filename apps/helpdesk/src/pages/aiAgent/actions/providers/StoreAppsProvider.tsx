@@ -1,4 +1,5 @@
-import React, { ReactNode, useEffect, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
@@ -6,7 +7,8 @@ import { useGetStoreApps } from 'models/workflows/queries'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import useAddStoreApp from '../hooks/useAddStoreApp'
-import StoreAppsContext, { StoreAppsContextType } from './StoreAppsContext'
+import type { StoreAppsContextType } from './StoreAppsContext'
+import StoreAppsContext from './StoreAppsContext'
 
 type Props = {
     storeName: string

@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, RenderResult } from '@testing-library/react'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import type { RenderResult } from '@testing-library/react'
+import { render } from '@testing-library/react'
+import type { MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
@@ -12,22 +14,20 @@ import { ulid } from 'ulidx'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import ActionsPlatformVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
-import {
-    VisualBuilderContext,
-    VisualBuilderContextType,
-} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockReactFlow } from 'tests/mockedReactFlow'
 
 import WorkflowVisualBuilder from '../editor/visualBuilder/WorkflowVisualBuilder'
-import { ConditionsSchema } from '../models/conditions.types'
+import type { ConditionsSchema } from '../models/conditions.types'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from '../models/visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelOrderNodeType,
     CancelSubscriptionNodeType,
@@ -59,7 +59,7 @@ import {
     VisualBuilderNode,
     VisualBuilderTriggerNode,
 } from '../models/visualBuilderGraph.types'
-import { LanguageCode } from '../models/workflowConfiguration.types'
+import type { LanguageCode } from '../models/workflowConfiguration.types'
 
 mockReactFlow()
 

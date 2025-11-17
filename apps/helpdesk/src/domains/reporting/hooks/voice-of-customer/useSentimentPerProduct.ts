@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import _get from 'lodash/get'
 
-import { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import {
     INTENT_DIMENSION,
@@ -12,9 +12,10 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { Sentiment } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export type SentimentData = {
     [PRODUCT_ID_DIMENSION]: string

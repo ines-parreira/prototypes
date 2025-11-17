@@ -9,7 +9,7 @@ import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigat
 import useIsTicketNavigationAvailable from 'pages/tickets/detail/components/TicketNavigation/hooks/useIsTicketNavigationAvailable'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import type { NotificationStatus } from 'state/notifications/types'
 import { getActiveView } from 'state/views/selectors'
 
 /**

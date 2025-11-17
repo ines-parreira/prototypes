@@ -1,10 +1,6 @@
-import React, {
-    createContext,
-    Dispatch,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react'
+import type { Dispatch } from 'react'
+import type React from 'react'
+import { createContext, useCallback, useContext, useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
@@ -18,17 +14,17 @@ import {
     findVariable,
     getWorkflowVariableListForNode,
 } from '../models/variables.model'
-import {
+import type {
     AvailableIntegrations,
     WorkflowVariable,
     WorkflowVariableList,
 } from '../models/variables.types'
 import { walkVisualBuilderGraph } from '../models/visualBuilderGraph.model'
-import {
+import type {
     VisualBuilderGraph,
     VisualBuilderTriggerNode,
 } from '../models/visualBuilderGraph.types'
-import { VisualBuilderGraphAction } from './useVisualBuilderGraphReducer'
+import type { VisualBuilderGraphAction } from './useVisualBuilderGraphReducer'
 
 export type VisualBuilderContextType<
     T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,

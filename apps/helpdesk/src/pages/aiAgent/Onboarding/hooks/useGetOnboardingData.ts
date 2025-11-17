@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
-import { OnboardingData } from 'models/aiAgent/types'
+import type { OnboardingData } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
-import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 import { useGetOnboardings } from './useGetOnboardings'
 

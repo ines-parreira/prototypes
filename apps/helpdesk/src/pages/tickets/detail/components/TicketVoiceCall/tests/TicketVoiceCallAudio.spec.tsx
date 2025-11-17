@@ -3,11 +3,8 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import * as voiceCallQueries from 'models/voiceCall/queries'
-import {
-    VoiceCall,
-    VoiceCallRecording,
-    VoiceCallRecordingType,
-} from 'models/voiceCall/types'
+import type { VoiceCall, VoiceCallRecording } from 'models/voiceCall/types'
+import { VoiceCallRecordingType } from 'models/voiceCall/types'
 
 import TicketVoiceCallAudios from '../TicketVoiceCallAudios'
 import VoiceCallAudio from '../VoiceCallAudio'

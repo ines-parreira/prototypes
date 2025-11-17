@@ -2,19 +2,17 @@ import { assumeMock } from '@repo/testing'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CampaignTableCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/CampaignTableCell/CampaignTableCell'
-import { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { CampaignTableValueFormat } from 'domains/reporting/pages/convert/types/enums/CampaignTableValueFormat.enum'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import { campaign } from 'fixtures/campaign'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    CampaignPreview,
-    InferredCampaignStatus,
-} from 'models/convert/campaign/types'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')

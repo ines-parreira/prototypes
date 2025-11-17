@@ -15,10 +15,8 @@ import {
     sortingSet,
 } from 'domains/reporting/state/ui/stats/insightsSlice'
 import { OrderDirection } from 'models/api/types'
-import {
-    Intent,
-    IntentTableColumn,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { Intent } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 
 describe('Intent Slice', () => {
     describe('Intent actions', () => {

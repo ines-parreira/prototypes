@@ -8,16 +8,14 @@ import thunk from 'redux-thunk'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useCreateTestSessionMutation,
     useTriggerAIJourney,
 } from 'models/aiAgent/queries'
-import {
-    GetTestSessionLogsResponse,
-    TestSessionLogType,
-} from 'models/aiAgentPlayground/types'
+import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
+import { TestSessionLogType } from 'models/aiAgentPlayground/types'
 import { usePlaygroundPolling } from 'pages/aiAgent/Playground/hooks/usePlaygroundPolling'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

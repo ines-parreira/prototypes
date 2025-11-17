@@ -1,6 +1,6 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Article, LocaleCode } from 'models/helpCenter/types'
+import type { Article, LocaleCode } from 'models/helpCenter/types'
 
 export enum ArticleActions {
     SAVE_ARTICLES = 'HELPCENTER/ARTICLES/SAVE_ARTICLES',

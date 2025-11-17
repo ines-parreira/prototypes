@@ -1,4 +1,4 @@
-import { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
+import type { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
 
 const infinityNanToZero = (value: number) => {
     return isNaN(value) || value === Infinity ? 0 : value

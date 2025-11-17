@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
@@ -17,7 +17,7 @@ import {
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
-import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import SupportPerformanceRevenue from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -35,12 +35,12 @@ import {
 import { teams } from 'fixtures/teams'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { IntegrationType } from 'models/integration/constants'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')

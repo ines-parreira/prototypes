@@ -5,9 +5,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

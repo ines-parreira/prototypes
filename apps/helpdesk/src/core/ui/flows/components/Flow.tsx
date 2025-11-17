@@ -1,4 +1,5 @@
-import { Edge, Node, ReactFlow, ReactFlowProps } from '@xyflow/react'
+import type { Edge, Node, ReactFlowProps } from '@xyflow/react'
+import { ReactFlow } from '@xyflow/react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
 

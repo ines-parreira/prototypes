@@ -8,7 +8,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import List from 'gorgias-design-system/List/List'
 import ListItem from 'gorgias-design-system/List/ListItem'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { ChevronRightIcon } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'

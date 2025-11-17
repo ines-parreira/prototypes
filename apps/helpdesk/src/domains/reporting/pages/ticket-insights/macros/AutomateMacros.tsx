@@ -5,7 +5,7 @@ import {
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
-import {
+import type {
     LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'

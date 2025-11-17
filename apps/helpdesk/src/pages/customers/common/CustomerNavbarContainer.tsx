@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
@@ -8,7 +9,7 @@ import { UserSettingType } from 'config/types/user'
 import { useSearch } from 'hooks/useSearch'
 import { ViewType } from 'models/view/types'
 
-import { RootState } from '../../../state/types'
+import type { RootState } from '../../../state/types'
 import { fetchViews } from '../../../state/views/actions'
 import { CustomersNavbarView } from './components/CustomersNavbarView'
 

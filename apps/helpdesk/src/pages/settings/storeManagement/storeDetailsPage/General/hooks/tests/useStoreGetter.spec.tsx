@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 
 import { useGetIntegration } from '@gorgias/helpdesk-queries'

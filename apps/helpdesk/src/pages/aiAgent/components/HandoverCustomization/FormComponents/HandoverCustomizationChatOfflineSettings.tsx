@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from 'react'
+import type React from 'react'
+import { useCallback, useEffect } from 'react'
 
 import cn from 'classnames'
 
 import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { HandoverCustomizationChatOfflineSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOfflineSettingsFields'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'

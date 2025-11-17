@@ -3,8 +3,9 @@ import React, { memo, useCallback, useMemo } from 'react'
 import { LegacyButton as BasicButton } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { isSourceRecord, Source } from 'models/widget/types'
-import {
+import type { Source } from 'models/widget/types'
+import { isSourceRecord } from 'models/widget/types'
+import type {
     Button as ButtonType,
     OnOpenForm,
     OnRemoveButton,

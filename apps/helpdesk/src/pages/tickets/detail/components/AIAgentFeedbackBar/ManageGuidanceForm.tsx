@@ -13,14 +13,14 @@ import {
 import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import { GuidanceArticle, GuidanceFormFields } from 'pages/aiAgent/types'
+import type { GuidanceArticle, GuidanceFormFields } from 'pages/aiAgent/types'
 import {
     handleGuidanceDuplicateError,
     mapGuidanceFormFieldsToGuidanceArticle,
@@ -31,10 +31,8 @@ import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import InputField from 'pages/common/forms/input/InputField'
 import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    SuggestedResourceValue,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { SuggestedResourceValue } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

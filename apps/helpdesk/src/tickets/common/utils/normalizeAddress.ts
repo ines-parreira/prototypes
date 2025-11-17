@@ -1,6 +1,7 @@
 import parsePhoneNumber from 'libphonenumber-js'
 
-import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketChannel } from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 
 import isPhoneBasedSource from './isPhoneBasedSource'
 

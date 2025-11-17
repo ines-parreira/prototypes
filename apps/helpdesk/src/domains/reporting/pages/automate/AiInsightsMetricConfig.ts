@@ -1,5 +1,5 @@
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { AIInsightsMetric } from 'domains/reporting/state/ui/stats/types'
 import { CSAT_DRILL_DOWN_LABEL } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 

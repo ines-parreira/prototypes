@@ -1,4 +1,6 @@
-import React, { ComponentProps, ReactNode, useRef } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import type React from 'react'
+import { useRef } from 'react'
 
 import classNames from 'classnames'
 

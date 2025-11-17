@@ -1,4 +1,5 @@
-import { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useState } from 'react'
 
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 

@@ -5,9 +5,9 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
+import type { TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile } from 'domains/reporting/hooks/withBreakdown'
 import {
     BREAKDOWN_FIELD,
-    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'

@@ -1,10 +1,8 @@
 import moment from 'moment/moment'
 
-import { User } from 'config/types/user'
-import {
-    fetchTableReportData,
-    TableDataSources,
-} from 'domains/reporting/hooks/common/useTableReportData'
+import type { User } from 'config/types/user'
+import type { TableDataSources } from 'domains/reporting/hooks/common/useTableReportData'
+import { fetchTableReportData } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { fetchAccuracyPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyPerAgent'
 import { useAutoQAMetrics } from 'domains/reporting/hooks/support-performance/auto-qa/useAutoQAMetrics'
@@ -15,15 +13,13 @@ import { fetchInternalCompliancePerAgent } from 'domains/reporting/hooks/support
 import { fetchLanguageProficiencyPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useLanguageProficiencyPerAgent'
 import { fetchResolutionCompletenessPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useResolutionCompletenessPerAgent'
 import { fetchReviewedClosedTicketsPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import {
-    TicketQAScoreCubeWithJoins,
-    TicketQAScoreMeasure,
-} from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { Period, StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -37,7 +33,7 @@ import {
 import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { DATE_TIME_FORMAT } from 'domains/reporting/services/constants'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
-import { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'

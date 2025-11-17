@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -7,7 +7,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { SavedFilter } from 'domains/reporting/models/stat/types'
+import type { SavedFilter } from 'domains/reporting/models/stat/types'
 
 export interface PinSavedFilterButtonProps
     extends Omit<

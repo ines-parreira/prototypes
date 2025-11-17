@@ -7,7 +7,8 @@ import {
     LegacyLabel as Label,
     Skeleton,
 } from '@gorgias/axiom'
-import { useGetVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

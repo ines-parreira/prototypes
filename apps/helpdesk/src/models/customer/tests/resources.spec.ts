@@ -6,14 +6,14 @@ import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
 
 import { customer } from 'fixtures/customer'
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     getCustomer,
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
-import { Customer } from 'models/customer/types'
-import { CustomerWithHighlightsResponse } from 'models/search/types'
+import type { Customer } from 'models/customer/types'
+import type { CustomerWithHighlightsResponse } from 'models/search/types'
 
 const mockedServer = new MockAdapter(client)
 

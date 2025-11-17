@@ -1,6 +1,6 @@
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
-import { SourceItem } from './types'
+import type { SourceItem } from './types'
 
 type ArticleIngestionLog = Components.Schemas.ArticleIngestionLogDto
 

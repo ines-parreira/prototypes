@@ -4,7 +4,8 @@ import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
 
 import { defined } from 'utils'
 
-import InputField, { InputFieldProps } from './DEPRECATED_InputField'
+import type { InputFieldProps } from './DEPRECATED_InputField'
+import InputField from './DEPRECATED_InputField'
 import Errors from './Errors'
 
 import css from './DEPRECATED_InputField.less'

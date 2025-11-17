@@ -1,15 +1,15 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Action } from 'redux'
+import type { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { IntegrationType } from 'models/integration/types'
-import { WrapperTemplate } from 'models/widget/types'
+import type { WrapperTemplate } from 'models/widget/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import * as actions from 'state/widgets/actions'
 import {
@@ -17,10 +17,11 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import { Widget, WidgetType } from 'state/widgets/types'
+import type { Widget, WidgetType } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
-import WrapperEditActions, { FormData } from '../views/WrapperEditActions'
+import type { FormData } from '../views/WrapperEditActions'
+import WrapperEditActions from '../views/WrapperEditActions'
 import Wrapper, { CUSTOMIZABLE_WIDGET_TYPES, useIntegration } from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')

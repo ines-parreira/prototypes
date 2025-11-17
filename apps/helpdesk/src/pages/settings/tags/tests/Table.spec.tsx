@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { tags } from 'fixtures/tag'
 
-import Row from '../Row'
+import type Row from '../Row'
 import Table from '../Table'
 
 const mockStore = configureMockStore()

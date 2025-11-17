@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { useListCampaigns } from 'models/convert/campaign/queries'
-import { CampaignListOptions } from 'models/convert/campaign/types'
+import type { CampaignListOptions } from 'models/convert/campaign/types'
 import { ONBOARDING_CAMPAIGN_TEMPLATES_LIST } from 'pages/convert/campaigns/templates'
-import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import ConvertOnboardingCampaignTemplate from 'pages/convert/onboarding/components/ConvertOnboardingCampaignTemplate'

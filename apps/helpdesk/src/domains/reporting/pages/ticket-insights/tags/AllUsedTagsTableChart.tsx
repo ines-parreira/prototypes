@@ -2,7 +2,7 @@ import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import { TableHeatmapSwitch } from 'domains/reporting/pages/common/components/Table/TableHeatmapSwitch'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AllUsedTagsTable } from 'domains/reporting/pages/ticket-insights/tags/AllUsedTagsTable'
 import {
     TicketInsightsTagsMetric,

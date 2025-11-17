@@ -1,13 +1,13 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketSegment,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,

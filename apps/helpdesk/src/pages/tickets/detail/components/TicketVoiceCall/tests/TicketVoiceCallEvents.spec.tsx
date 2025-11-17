@@ -6,7 +6,7 @@ import { cleanup, render, screen } from '@testing-library/react'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
 import * as flags from 'core/flags'
-import { ProcessedEvent } from 'models/voiceCall/processEvents'
+import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import * as queries from 'models/voiceCall/queries'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 

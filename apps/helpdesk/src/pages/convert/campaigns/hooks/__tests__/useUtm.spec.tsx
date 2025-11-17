@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
-import { ChannelConnection } from 'models/convert/channelConnection/types'
+import type { ChannelConnection } from 'models/convert/channelConnection/types'
 
 import { useUtm } from '../useUtm'
 

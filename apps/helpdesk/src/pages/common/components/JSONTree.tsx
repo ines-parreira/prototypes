@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react'
+import type { FC, ReactElement } from 'react'
 
 import { List, Map } from 'immutable'
 

@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
 
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import {
-    TimeSeriesDataItem,
-    useTimeSeries,
-} from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { gmvUsdTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/timeseries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 
 const useGmvUsdOverTimeSeries = (
     filters: StatsFilters,

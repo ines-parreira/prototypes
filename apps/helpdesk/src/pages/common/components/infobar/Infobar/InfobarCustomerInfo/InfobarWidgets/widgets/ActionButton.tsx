@@ -1,10 +1,12 @@
-import React, { Component, ComponentType, FormEvent, ReactNode } from 'react'
+import type { ComponentType, FormEvent, ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
 import {
@@ -13,24 +15,21 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { withAppNode, WithAppNodeProps } from 'appNode'
+import type { WithAppNodeProps } from 'appNode'
+import { withAppNode } from 'appNode'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {
-    CustomerContext,
-    CustomerContextType,
-} from 'providers/infobar/CustomerContext'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
+import type { CustomerContextType } from 'providers/infobar/CustomerContext'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { executeAction } from 'state/infobar/actions'
 import { getPendingActionCallbacks } from 'state/infobar/selectors'
 import { actionButtonHashForData } from 'state/infobar/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
-import { InfobarModalProps, Option, Parameter } from './types'
+import type { InfobarModalProps, Option, Parameter } from './types'
 
 import css from './ActionButtons.less'
 

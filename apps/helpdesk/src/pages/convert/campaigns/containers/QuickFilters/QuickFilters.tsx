@@ -1,8 +1,9 @@
-import { MouseEvent, useEffect, useState } from 'react'
+import type { MouseEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Chip } from '@gorgias/axiom'
 
-import { QuickFilterType } from '../../types/QuickFilter'
+import type { QuickFilterType } from '../../types/QuickFilter'
 
 import css from './QuickFilters.less'
 

@@ -1,11 +1,11 @@
 import { ulid } from 'ulidx'
 
 import { WorkflowConfigurationBuilder } from '../models/workflowConfiguration.model'
-import {
+import type {
     WorkflowConfiguration,
     WorkflowTemplate,
-    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
+import { WorkflowTemplateLabelType } from '../models/workflowConfiguration.types'
 
 export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
     slug: 'add-email-to-klaviyo-list',

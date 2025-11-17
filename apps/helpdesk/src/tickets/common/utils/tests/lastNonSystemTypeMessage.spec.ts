@@ -1,4 +1,4 @@
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
 import lastNonSystemTypeMessage from '../lastNonSystemTypeMessage'

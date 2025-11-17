@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import type { ComponentType, RefObject } from 'react'
 
-import { Placement } from '@floating-ui/react'
+import type { Placement } from '@floating-ui/react'
 import { useDimensions } from '@repo/hooks'
 import classNames from 'classnames'
 import _xor from 'lodash/xor'
@@ -20,7 +20,7 @@ import {
     getValueLabel,
 } from 'custom-fields/helpers/getValueLabels'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {
+import type {
     CustomFieldPrediction,
     CustomFieldState,
     CustomFieldValue,
@@ -49,7 +49,7 @@ import { LeafLevelOption } from './LeafLevelOption'
 import { LevelOption } from './LevelOption'
 import { SearchInput } from './search/SearchInput'
 import { SearchResult } from './search/SearchResult'
-import { CustomInputProps } from './types'
+import type { CustomInputProps } from './types'
 
 import css from './MultiLevelSelect.less'
 

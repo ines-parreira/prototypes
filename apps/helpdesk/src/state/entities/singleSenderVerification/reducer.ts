@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { removeVerification, setVerification } from './actions'
-import { SingleSenderVerificationsState } from './types'
+import type { SingleSenderVerificationsState } from './types'
 
 const initialState: SingleSenderVerificationsState = {}
 

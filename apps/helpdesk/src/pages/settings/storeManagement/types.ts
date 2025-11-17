@@ -1,6 +1,6 @@
-import { Integration, StoreIntegration } from 'models/integration/types'
+import type { Integration, StoreIntegration } from 'models/integration/types'
 
-import { StoreMapping } from '../../../models/storeMapping/types'
+import type { StoreMapping } from '../../../models/storeMapping/types'
 
 export interface ChannelChange {
     channelId: number

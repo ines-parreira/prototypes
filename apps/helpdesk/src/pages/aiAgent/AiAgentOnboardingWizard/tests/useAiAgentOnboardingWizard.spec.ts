@@ -22,7 +22,7 @@ import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavi
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { WIZARD_BUTTON_ACTIONS } from '../../constants'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'

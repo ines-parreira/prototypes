@@ -2,7 +2,7 @@ import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 
 import rootReducer from '../state/reducers'
-import { InitialRootState } from '../types'
+import type { InitialRootState } from '../types'
 import sentryCrashReporter from './middlewares/sentryCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'
 

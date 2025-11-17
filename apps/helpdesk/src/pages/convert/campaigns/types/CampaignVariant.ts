@@ -1,4 +1,4 @@
-import { CampaignAttachment } from './CampaignAttachment'
+import type { CampaignAttachment } from './CampaignAttachment'
 
 export type CampaignVariant = {
     id: string

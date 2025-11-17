@@ -1,7 +1,7 @@
-import { JobType } from '@gorgias/helpdesk-queries'
+import type { JobType } from '@gorgias/helpdesk-queries'
 
-import { Item } from 'components/Dropdown'
-import { Update } from 'jobs'
+import type { Item } from 'components/Dropdown'
+import type { Update } from 'jobs'
 
 export type Job = {
     label: string

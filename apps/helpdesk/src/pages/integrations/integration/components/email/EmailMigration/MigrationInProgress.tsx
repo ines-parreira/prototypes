@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { Col, Container } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'

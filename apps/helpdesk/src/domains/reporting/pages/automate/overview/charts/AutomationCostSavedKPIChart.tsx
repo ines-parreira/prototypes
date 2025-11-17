@@ -1,6 +1,6 @@
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomationCostSavedMetric } from 'pages/automate/automate-metrics'
 
 export const AutomationCostSavedKPIChart = ({

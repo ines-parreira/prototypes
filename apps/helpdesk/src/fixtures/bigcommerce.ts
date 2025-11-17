@@ -1,4 +1,4 @@
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceBillingAddress,
     BigCommerceCart,
@@ -7,7 +7,6 @@ import {
     BigCommerceConsignment,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomerAddress,
-    BigCommerceCustomerAddressType,
     BigCommerceCustomProduct,
     BigCommerceIntegration,
     BigCommerceIntegrationMeta,
@@ -15,6 +14,9 @@ import {
     BigCommerceProduct,
     BigCommerceProductVariant,
     CalculateOrderRefundDataResponse,
+} from 'models/integration/types'
+import {
+    BigCommerceCustomerAddressType,
     IntegrationType,
 } from 'models/integration/types'
 

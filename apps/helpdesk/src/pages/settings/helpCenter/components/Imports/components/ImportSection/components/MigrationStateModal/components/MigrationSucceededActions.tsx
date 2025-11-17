@@ -2,7 +2,7 @@ import { Progress } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SucceededMigrationState } from '../../../types'
+import type { SucceededMigrationState } from '../../../types'
 
 type Props = {
     state: SucceededMigrationState

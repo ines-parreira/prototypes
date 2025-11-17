@@ -1,6 +1,6 @@
 import { produce } from 'immer'
 
-import {
+import type {
     LiquidTemplateNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'

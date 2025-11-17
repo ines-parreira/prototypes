@@ -21,7 +21,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 import { notify } from 'state/notifications/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosSettingsContent } from '../MacrosSettingsContent'
 

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 import { ContactFormsActions } from 'state/entities/contactForm/contactForms/types'
 
 export const contactFormsFetched = createAction<ContactForm[]>(

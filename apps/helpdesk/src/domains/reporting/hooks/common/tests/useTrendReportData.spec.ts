@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useAIAgentUser } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import {
@@ -17,12 +17,10 @@ import {
 import { workloadReportSources } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { fetchOneTouchTicketsPercentageMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { fetchZeroTouchTicketsMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useZeroTouchTicketsMetricTrend'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import {
     OverviewMetric,

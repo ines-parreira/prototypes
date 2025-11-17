@@ -1,11 +1,11 @@
 // bypassing mocked values in setup.js
 import moment from 'moment'
 
+import type { getMomentTimezoneNames } from '../date'
 import {
     DETAILED_FORMATTED_DATE_OPTIONS,
     getDetailedFormattedDate,
     getFormattedDate,
-    getMomentTimezoneNames,
     shortenRelativeDurationLabel,
     subtractDaysFromDate,
 } from '../date'

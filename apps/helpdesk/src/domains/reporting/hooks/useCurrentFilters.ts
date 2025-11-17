@@ -9,10 +9,8 @@ import {
     isPeriodFilter,
     isTagFilter,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 
 export const CURRENT_FILTERS = 'current-filters'

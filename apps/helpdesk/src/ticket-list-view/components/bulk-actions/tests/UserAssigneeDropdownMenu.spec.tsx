@@ -1,4 +1,4 @@
-import { ComponentProps, ContextType } from 'react'
+import type { ComponentProps, ContextType } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -10,7 +10,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import useListUsers from 'users/useListUsers'
 
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
-import UserDropdownItem from '../UserDropdownItem'
+import type UserDropdownItem from '../UserDropdownItem'
 
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock

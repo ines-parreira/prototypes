@@ -1,4 +1,4 @@
-import { ElementType } from 'react'
+import type { ElementType } from 'react'
 
 export type CardEditFormState = {
     title: string

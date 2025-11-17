@@ -1,4 +1,4 @@
-import { Cube } from 'domains/reporting/models/types'
+import type { Cube } from 'domains/reporting/models/types'
 
 export enum RecommendedResourcesMeasure {
     NumRecommendedResources = 'RecommendedResources.numRecommendedResources',

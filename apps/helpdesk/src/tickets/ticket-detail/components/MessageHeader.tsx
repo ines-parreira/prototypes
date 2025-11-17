@@ -3,12 +3,13 @@ import { useRef } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import {
+import type {
     Meta as MetaType,
     Source as SourceType,
     TicketMessage as TicketMessage_DEPRECATED,

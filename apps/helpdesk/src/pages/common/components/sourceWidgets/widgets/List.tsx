@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 
-import { isSourceArray, Source, Template } from 'models/widget/types'
+import type { Source, Template } from 'models/widget/types'
+import { isSourceArray } from 'models/widget/types'
 
 type Props = {
     source: Source

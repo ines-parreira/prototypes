@@ -7,7 +7,7 @@ import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import useAppSelector from 'hooks/useAppSelector'

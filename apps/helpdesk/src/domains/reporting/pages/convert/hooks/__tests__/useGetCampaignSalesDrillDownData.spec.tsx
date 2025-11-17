@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 
-import { ConvertDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
+import type { ConvertDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { useGetCampaignSalesDrillDownData } from 'domains/reporting/pages/convert/hooks/useGetCampaignSalesDrillDownData'
 import { campaign, campaignId } from 'fixtures/campaign'
-import { CampaignPreview } from 'models/convert/campaign/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
 
 describe('useGetCampaignSalesDrillDownData', () => {
     const exampleRow = {

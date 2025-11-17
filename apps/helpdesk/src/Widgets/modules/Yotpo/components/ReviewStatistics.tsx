@@ -3,7 +3,7 @@ import { Component } from 'react'
 import type { Map } from 'immutable'
 
 import { toJS } from 'utils'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 
 import { CardContentYotpoReviewTopics } from './CardContentYotpoReviewTopics'
 import { CardHeaderYotpoReviewStatistics } from './CardHeaderYotpoReviewStatistics'

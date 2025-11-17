@@ -1,6 +1,6 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
-import {
+import type {
     ArticleTranslationResponseDto,
     ArticleWithLocalTranslation,
     LocalArticleTranslation,

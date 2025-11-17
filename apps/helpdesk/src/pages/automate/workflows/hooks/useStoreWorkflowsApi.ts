@@ -11,7 +11,7 @@ import {
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import { NotificationStatus } from 'state/notifications/types'
 
-import {
+import type {
     WorkflowConfiguration,
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'

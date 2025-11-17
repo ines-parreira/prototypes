@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { BackendFactory, DragDropManager } from 'dnd-core'
+import type { BackendFactory, DragDropManager } from 'dnd-core'
 import { DndProvider as BaseDndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 

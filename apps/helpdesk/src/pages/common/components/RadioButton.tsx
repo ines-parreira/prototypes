@@ -1,15 +1,10 @@
-import React, {
-    ForwardedRef,
-    forwardRef,
-    InputHTMLAttributes,
-    useImperativeHandle,
-    useRef,
-} from 'react'
+import type { ForwardedRef, InputHTMLAttributes } from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import Caption from '../forms/Caption/Caption'
-import { RadioFieldOption } from '../forms/RadioFieldSet'
+import type { RadioFieldOption } from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'
 

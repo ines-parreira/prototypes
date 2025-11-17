@@ -4,7 +4,7 @@ import { act } from '@testing-library/react'
 import { useSearch } from 'hooks/useSearch'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
-import { Campaign } from '../../types/Campaign'
+import type { Campaign } from '../../types/Campaign'
 import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
 import { useSortedCampaigns } from '../useSortedCampaigns'
 

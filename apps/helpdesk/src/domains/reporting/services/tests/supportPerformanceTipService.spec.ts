@@ -1,11 +1,11 @@
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { MetricName } from 'domains/reporting/services/constants'
+import type { Tip } from 'domains/reporting/services/supportPerformanceTipService'
 import {
     formatMetricValue,
     getPerformanceTip,
     MetricsBaselinesJSON,
     randomIndexGrade,
-    Tip,
     TipQualifier,
     tips,
 } from 'domains/reporting/services/supportPerformanceTipService'

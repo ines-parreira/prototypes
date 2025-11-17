@@ -12,7 +12,7 @@ import {
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useAIAgentAutomationRateTrend = (
     filters: StatsFilters,

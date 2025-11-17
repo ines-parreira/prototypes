@@ -1,4 +1,5 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import { Modal } from 'reactstrap'
@@ -8,7 +9,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 import { assetsUrl } from 'utils'
 import Slider from 'utils/wrappers/Slider'
 
-import { ProductDetail } from './types'
+import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 

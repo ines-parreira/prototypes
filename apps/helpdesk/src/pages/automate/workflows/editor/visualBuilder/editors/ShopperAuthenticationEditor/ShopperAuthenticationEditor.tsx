@@ -6,7 +6,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
 import InputField from 'gorgias-design-system/Input/TextField'
-import { ShopperAuthenticationNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ShopperAuthenticationNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import RadioButton from 'pages/common/components/RadioButton'
 import Caption from 'pages/common/forms/Caption/Caption'

@@ -8,7 +8,7 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 
 import TopElementsItem from './TopElementItem/TopElementItem'
-import { TopElement } from './types'
+import type { TopElement } from './types'
 
 import css from './TopElementsCard.less'
 

@@ -13,7 +13,7 @@ import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import { useListABTests, useUpdateABTest } from 'models/convert/abTest/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

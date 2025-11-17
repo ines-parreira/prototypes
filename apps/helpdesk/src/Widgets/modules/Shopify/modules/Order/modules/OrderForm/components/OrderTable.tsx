@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Table } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'

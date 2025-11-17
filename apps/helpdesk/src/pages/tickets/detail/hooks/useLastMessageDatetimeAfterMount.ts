@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import moment from 'moment'
 
 export default function useLastMessageDatetimeAfterMount(elements: List<any>) {

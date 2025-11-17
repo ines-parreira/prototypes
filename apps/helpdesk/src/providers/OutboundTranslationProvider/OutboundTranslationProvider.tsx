@@ -8,9 +8,10 @@ import {
     useState,
 } from 'react'
 
-import { ContentState, convertToRaw, EditorState } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { convertToRaw, EditorState } from 'draft-js'
 
-import { DomainEvent } from '@gorgias/events'
+import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -21,7 +22,7 @@ import { setTranslationState } from 'state/newMessage/actions'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { ExtractEvent } from 'tickets/core/hooks/translations/types'
+import type { ExtractEvent } from 'tickets/core/hooks/translations/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 export type OutboundTranslationData = {

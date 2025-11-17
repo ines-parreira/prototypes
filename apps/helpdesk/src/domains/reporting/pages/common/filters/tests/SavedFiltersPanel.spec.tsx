@@ -14,17 +14,17 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
-import {
-    FilterKey,
+import type {
     SavedFilter,
     SavedFilterAPI,
     SavedFilterDraft,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DEFAULT_BADGE_TEXT } from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 import { fromApiFormatted } from 'domains/reporting/pages/common/filters/helpers'
 import { SAVED_FILTER_ACTIONS_MENU_ICON } from 'domains/reporting/pages/common/filters/SavedFilterMenu'
-import { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import type { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import {
     CANCEL_BUTTON_LABEL,
     CANCEL_MODAL_BUTTON_LABEL,
@@ -58,7 +58,7 @@ import {
     initialState,
     updateSavedFilterDraftName,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 

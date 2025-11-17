@@ -1,4 +1,5 @@
-import React, { ComponentProps, ComponentType } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
+import React from 'react'
 
 import App from 'pages/App'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'

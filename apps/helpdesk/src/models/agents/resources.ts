@@ -1,8 +1,8 @@
-import { User, UserDraft } from 'config/types/user'
+import type { User, UserDraft } from 'config/types/user'
 import { USER_ROLES } from 'config/user'
-import { FetchAgentsOptions } from 'models/agents/types'
+import type { FetchAgentsOptions } from 'models/agents/types'
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
 export const fetchAgents = async (options: FetchAgentsOptions = {}) => {

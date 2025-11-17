@@ -1,4 +1,6 @@
-import React, { ComponentProps, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { DropdownMenu } from 'reactstrap'
 
@@ -11,7 +13,7 @@ import {
     getArraysIntersection,
     eventTypes as getEventTypes,
 } from '../../../../state/rules/helpers'
-import { RuleDraft } from '../../../../state/rules/types'
+import type { RuleDraft } from '../../../../state/rules/types'
 import Errors from '../../../common/components/ast/Errors'
 import SelectField from '../../../common/forms/MultiSelectField'
 

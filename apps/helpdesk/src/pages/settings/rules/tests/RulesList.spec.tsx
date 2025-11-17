@@ -10,8 +10,8 @@ import thunk from 'redux-thunk'
 import { emptyRule as ruleFixture } from '../../../../fixtures/rule'
 import { fetchRules } from '../../../../models/rule/resources'
 import { RULE_MAX_NUMBER } from '../../../../state/entities/rules/selectors'
-import { RulesState } from '../../../../state/entities/rules/types'
-import { RootState, StoreDispatch } from '../../../../state/types'
+import type { RulesState } from '../../../../state/entities/rules/types'
+import type { RootState, StoreDispatch } from '../../../../state/types'
 import { RulesList } from '../RulesList'
 
 jest.mock('../../../../models/rule/resources')

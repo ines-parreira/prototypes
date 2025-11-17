@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ActionStepItem, TransitionsState } from '../types'
+import type { ActionStepItem, TransitionsState } from '../types'
 import ActionStepAccordionItem from './ActionStepAccordionItem'
 
 jest.mock('./TransitionConditionsAccordion', () => ({

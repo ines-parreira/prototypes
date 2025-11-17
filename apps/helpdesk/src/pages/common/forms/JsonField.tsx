@@ -1,12 +1,14 @@
-import React, { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 
 import _omit from 'lodash/omit'
 import { FormGroup, Input } from 'reactstrap'
 
-import { HTTPForm } from 'models/integration/types/http'
-import { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import type { HTTPForm } from 'models/integration/types/http'
+import type { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import DEPRECATED_InputField, { InputFieldProps } from './DEPRECATED_InputField'
+import type { InputFieldProps } from './DEPRECATED_InputField'
+import DEPRECATED_InputField from './DEPRECATED_InputField'
 import Errors from './Errors'
 
 type Props = InputFieldProps<HTTPForm | JSONValue>

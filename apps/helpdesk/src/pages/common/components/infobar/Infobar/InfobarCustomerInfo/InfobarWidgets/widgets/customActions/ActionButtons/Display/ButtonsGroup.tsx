@@ -1,4 +1,5 @@
-import React, { ComponentProps, memo, useRef } from 'react'
+import type { ComponentProps } from 'react'
+import React, { memo, useRef } from 'react'
 
 import classnames from 'classnames'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
@@ -6,7 +7,7 @@ import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 import { MultiButton } from '@gorgias/axiom'
 
 import { ContentType } from 'models/api/types'
-import { Source } from 'models/widget/types'
+import type { Source } from 'models/widget/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import { mapTemplateParameters } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
 import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
@@ -15,7 +16,7 @@ import {
     applyCustomActionVariables,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {
+import type {
     Action,
     Button as ButtonType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

@@ -1,13 +1,13 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import { ImportItem } from '../types'
+import type { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'
 import EmptyState from './EmptyState'
 import { TableRow } from './TableRow'

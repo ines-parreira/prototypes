@@ -4,24 +4,20 @@ import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { getCustomFieldValueSerializer } from 'domains/reporting/models/queryFactories/utils'
-import {
-    CustomFieldFilter,
-    FilterKey,
-} from 'domains/reporting/models/stat/types'
+import type { CustomFieldFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
-import {
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import { customFieldsFilterLogicalOperators } from 'domains/reporting/pages/common/filters/constants'
 import {
     emptyCustomFieldFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import {
+import type {
     OptionalFilterProps,
     RemovableFilter,
 } from 'domains/reporting/pages/common/filters/types'
@@ -29,7 +25,7 @@ import {
     activeParams,
     selectDropdownTextFields,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getCustomFieldFilterById,
     getCustomFieldSavedFilterById,
@@ -43,7 +39,7 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterCustomFieldFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type DispatchProps = {
     dispatchUpdate: (value: CustomFieldFilter) => void

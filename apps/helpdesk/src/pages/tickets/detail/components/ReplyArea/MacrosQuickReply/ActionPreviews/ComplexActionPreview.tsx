@@ -2,7 +2,8 @@ import classnames from 'classnames'
 import { Badge } from 'reactstrap'
 
 import { getIconFromActionType } from 'models/macroAction/helpers'
-import { actionTypeToName, MacroAction } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { actionTypeToName } from 'models/macroAction/types'
 import { getSortedIntegrationActions } from 'pages/tickets/common/utils'
 
 import { BaseActionPreview } from './BaseActionPreview'

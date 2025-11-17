@@ -2,7 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessageSourceType } from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -25,7 +26,7 @@ import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { channels } from 'fixtures/channels'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { getChannels, toChannel } from 'services/channels'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
 import { renderWithStore } from 'utils/testing'
 

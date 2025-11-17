@@ -3,13 +3,11 @@ import { isEmpty } from 'lodash'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { EmailDomain } from '@gorgias/helpdesk-queries'
+import type { EmailDomain } from '@gorgias/helpdesk-queries'
 
 import { EmailProvider } from 'models/integration/constants'
-import {
-    EmailMigrationOutboundVerification,
-    EmailMigrationOutboundVerificationStatus,
-} from 'models/integration/types'
+import type { EmailMigrationOutboundVerification } from 'models/integration/types'
+import { EmailMigrationOutboundVerificationStatus } from 'models/integration/types'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'

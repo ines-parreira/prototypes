@@ -1,10 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
+import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'

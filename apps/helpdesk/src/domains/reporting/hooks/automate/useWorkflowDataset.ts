@@ -2,11 +2,13 @@ import {
     calculateSumOfAutomatedInteractions,
     calculateSumOfDropoff,
 } from 'domains/reporting/hooks/automate/automateStatsFormulae'
+import type {
+    WorkflowStats,
+    WorkflowStepMetricsMap,
+} from 'domains/reporting/hooks/automate/utils'
 import {
     computeWorkflowMetrics,
     computeWorkflowStepsMetrics,
-    WorkflowStats,
-    WorkflowStepMetricsMap,
 } from 'domains/reporting/hooks/automate/utils'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -14,9 +16,9 @@ import {
     workflowDatasetStepCountQueryFactory,
     workflowDatasetStepQueryFactory,
 } from 'domains/reporting/models/queryFactories/workflows/metrics'
-import { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
+import type { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 export const useWorkflowDataset = (
     filters: WorkflowStatsFilters,

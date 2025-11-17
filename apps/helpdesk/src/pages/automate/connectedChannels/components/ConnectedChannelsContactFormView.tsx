@@ -10,14 +10,13 @@ import { LoadingSpinner } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import useSelfServiceChannels, {
-    SelfServiceChannel,
-} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import type { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 

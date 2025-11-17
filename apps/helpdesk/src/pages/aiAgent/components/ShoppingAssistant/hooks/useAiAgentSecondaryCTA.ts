@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
+import type { ButtonConfig } from '../types/ShoppingAssistant'
 import {
-    ButtonConfig,
     PromoCardVariant,
     TrialEventType,
     TrialType,

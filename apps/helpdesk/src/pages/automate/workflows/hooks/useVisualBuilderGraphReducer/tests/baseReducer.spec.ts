@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep'
 
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelOrderNodeType,
     CancelSubscriptionNodeType,

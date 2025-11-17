@@ -3,7 +3,8 @@ import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 import CursorClickIcon from './icons/CursorClickIcon'
 import RocketIcon from './icons/RocketIcon'
 import StarIcon from './icons/StarIcon'
-import { GoalData, GoalType } from './types'
+import type { GoalData } from './types'
+import { GoalType } from './types'
 
 export const GoalOption: GoalData[] = [
     {

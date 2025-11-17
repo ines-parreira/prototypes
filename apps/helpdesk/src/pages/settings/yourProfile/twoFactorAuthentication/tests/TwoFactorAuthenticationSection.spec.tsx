@@ -8,10 +8,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
-import { OwnProps } from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import type { OwnProps } from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
 
 jest.mock(

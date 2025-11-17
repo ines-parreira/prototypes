@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/helpdesk-queries'
+import type { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/helpdesk-queries'
 
 import { getFormattedDurationTranscriptionStart } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'

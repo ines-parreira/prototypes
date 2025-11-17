@@ -1,4 +1,4 @@
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { getSelectedAIMessage } from '../selectors'
 

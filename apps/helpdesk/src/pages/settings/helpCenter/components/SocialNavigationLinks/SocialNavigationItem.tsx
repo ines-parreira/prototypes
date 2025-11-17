@@ -4,7 +4,7 @@ import type { ChangeEvent, FocusEvent } from 'react'
 import { FormFeedback, FormGroup, Input } from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 
-import { LinkEntity } from 'pages/settings/helpCenter/components/LinkList'
+import type { LinkEntity } from 'pages/settings/helpCenter/components/LinkList'
 import { isURLOptions } from 'pages/settings/helpCenter/utils/navigationLinks'
 
 import css from './SocialNavigationLinks.less'

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import {
     HELPCENTER_CREATED,

@@ -7,13 +7,16 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
-import { MessageFeedback, TicketFeedback } from 'models/aiAgentFeedback/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type {
+    MessageFeedback,
+    TicketFeedback,
+} from 'models/aiAgentFeedback/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ActionStatus } from '../../components/AIAgentFeedbackBar/types'
+import type { ActionWithFeedback } from '../useAIAgentResourcesWithFeedback'
 import {
-    ActionWithFeedback,
     useAIAgentResourcesWithFeedback,
     useAIAgentResourcesWithFeedbackUtil,
 } from '../useAIAgentResourcesWithFeedback'

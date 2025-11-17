@@ -1,9 +1,9 @@
-import {
+import type {
     AIArticle,
     AILibraryArticleItem,
-    ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 
 export const AIArticlesListFixture: AIArticle[] = [
     {

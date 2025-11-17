@@ -9,7 +9,7 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')

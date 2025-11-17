@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react'
 
 import { mockCustomerFieldsConditionalStep } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
+import type { CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import { CustomerLookupOptionNode } from '../CustomerLookupOptionNode'
 
 const firstStep = mockCustomerFieldsConditionalStep({

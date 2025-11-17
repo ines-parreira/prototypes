@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     getMessagingAndAppIntegrationsStatsFilter,
     getPageStatsFilters,
@@ -21,7 +21,7 @@ import * as billingFixtures from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { initialState as billingInitialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

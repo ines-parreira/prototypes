@@ -1,16 +1,17 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 
 import { getActiveViewFromTableSetting } from 'domains/reporting/hooks/useTableConfigSetting'
+import type { Product } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import {
     LeadColumn,
-    Product,
     productInsightsTableActiveView,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getSortByName } from 'utils/getSortByName'
 
 export type ProductInsightsSliceState = {

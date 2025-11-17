@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../../../types'
+import type { GorgiasAction } from '../../../types'
 import {
     SET_CALCULATED_EDIT_ORDER,
     SET_CALCULATED_ORDER_ID,
@@ -14,7 +14,7 @@ import {
     SET_REFUND_AMOUNT,
     SET_RESTOCK,
 } from './constants'
-import { EditOrderState } from './types'
+import type { EditOrderState } from './types'
 
 export const initialState: EditOrderState = fromJS({
     loading: false,

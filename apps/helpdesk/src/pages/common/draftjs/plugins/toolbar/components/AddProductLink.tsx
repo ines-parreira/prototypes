@@ -2,19 +2,21 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import { AttachmentEnum } from 'common/types'
+import type { AttachmentEnum } from 'common/types'
 import { IntegrationType } from 'models/integration/constants'
-import { ProductCardDetails } from 'models/integration/types'
+import type { ProductCardDetails } from 'models/integration/types'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
-import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { getIconFromType } from 'state/integrations/helpers'
 import { insertLink, insertText } from 'utils'
 
 import { useToolbarContext } from '../ToolbarContext'
-import { ActionInjectedProps, ActionName } from '../types'
+import type { ActionInjectedProps } from '../types'
+import { ActionName } from '../types'
 import {
     getTooltipTourConfiguration,
     mapIntegrationToPickedShopifyIntegration,

@@ -1,8 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import { RootState } from '../types'
-import { TagsState } from './types'
+import type { RootState } from '../types'
+import type { TagsState } from './types'
 
 export const getTagsState = (state: RootState): TagsState =>
     state.tags || fromJS({})

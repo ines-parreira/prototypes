@@ -1,13 +1,12 @@
-import { Component, ContextType } from 'react'
+import type { ContextType } from 'react'
+import { Component } from 'react'
 
 import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import {
-    CardCustomization,
-    ExpandAllButton,
-} from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { ExpandAllButton } from 'Widgets/modules/Template/modules/Card'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'

@@ -1,6 +1,7 @@
-import React, { ForwardedRef, forwardRef } from 'react'
+import type { ForwardedRef } from 'react'
+import React, { forwardRef } from 'react'
 
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import _debounce from 'lodash/debounce'
 
@@ -10,14 +11,13 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import { SearchResponse, SearchType } from 'models/search/types'
+import type { SearchResponse } from 'models/search/types'
+import { SearchType } from 'models/search/types'
 import { updatePotentialCustomers } from 'state/newMessage/actions'
+import type { Receiver, Receivers, ReceiverValue } from 'state/ticket/utils'
 import {
-    Receiver,
-    Receivers,
     receiversStateFromValue,
     receiversValueFromState,
-    ReceiverValue,
 } from 'state/ticket/utils'
 import {
     getValuePropFromSourceType,

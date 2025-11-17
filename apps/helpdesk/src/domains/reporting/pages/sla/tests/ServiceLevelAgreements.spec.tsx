@@ -1,4 +1,5 @@
-import React, { ComponentProps, PropsWithChildren } from 'react'
+import type { ComponentProps, PropsWithChildren } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -8,9 +9,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
-import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { AchievedAndBreachedTicketsChart } from 'domains/reporting/pages/sla/components/AchievedAndBreachedTicketsChart'
 import { AchievementRateTrendCard } from 'domains/reporting/pages/sla/components/AchievementRateTrendCard'
 import { BreachedTicketsRateTrendCard } from 'domains/reporting/pages/sla/components/BreachedTicketsRateTrendCard'
@@ -21,7 +22,7 @@ import {
     SERVICE_LEVEL_OPTIONAL_FILTERS,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

@@ -1,9 +1,10 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { getAIAgentMessages } from 'state/ticket/selectors'
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 import {
     deleteAIAgentTicketMessagesFeedback,

@@ -1,4 +1,4 @@
-import { AIGuidance } from '../types'
+import type { AIGuidance } from '../types'
 
 export const getAIGuidanceFixture = (
     key: string,

@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { createBrowserHistory, History } from 'history'
+import type { History } from 'history'
+import { createBrowserHistory } from 'history'
 import { MemoryRouter, Router } from 'react-router-dom'
 
 import { mockSearchRank } from 'fixtures/searchRank'

@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { omit } from 'lodash'
 
 import { appQueryClient } from 'api/queryClient'
@@ -18,23 +19,23 @@ import {
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
-import {
+import type {
     GorgiasContactFormTicketMeta,
     Source,
     TicketMessage,
 } from 'models/ticket/types'
-import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { UseListVoiceCalls } from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
+import type { VoiceCall } from 'models/voiceCall/types'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
 import * as channelsService from 'services/channels'
-import {
-    AccountSettingDefaultIntegration,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { AccountSettingDefaultIntegration } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { getEmailChannels } from 'state/integrations/selectors'
 import { TICKET_CHANNEL_NAMES } from 'state/ticket/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
+import type { Receivers, ReceiversValue } from '../utils'
 import {
     buildFirstTicketMessage,
     getNewMessageSender,
@@ -50,9 +51,7 @@ import {
     mergeActions,
     mergeInternalNoteActions,
     persistLastSenderChannel,
-    Receivers,
     receiversStateFromValue,
-    ReceiversValue,
     receiversValueFromState,
 } from '../utils'
 import {

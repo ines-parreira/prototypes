@@ -13,12 +13,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { Kpi } from 'pages/aiAgent/components/Kpi/Kpi'
 import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
-import {
-    AiAgentType,
-    useAiAgentTypeForAccount,
-} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
-import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import type { KpiMetric } from 'pages/aiAgent/Overview/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { STATS_ROUTES } from 'routes/constants'
 

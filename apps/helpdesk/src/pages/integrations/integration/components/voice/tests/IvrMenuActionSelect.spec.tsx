@@ -3,11 +3,8 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
-import {
-    IvrMenuAction,
-    IvrMenuActionType,
-    VoiceMessageType,
-} from 'models/integration/types'
+import type { IvrMenuAction } from 'models/integration/types'
+import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 
 import IvrMenuActionSelect from '../IvrMenuActionSelect'
 

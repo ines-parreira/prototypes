@@ -1,16 +1,14 @@
+import type { ReactNode } from 'react'
 import React, {
     createContext,
-    ReactNode,
     useContext,
     useEffect,
     useMemo,
     useState,
 } from 'react'
 
-import {
-    getRevenueAddonApiClient,
-    RevenueAddonClient,
-} from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import { getRevenueAddonApiClient } from 'rest_api/revenue_addon_api/client'
 
 type UseConvertApiInterface = {
     isReady: boolean

@@ -4,12 +4,12 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { filter, flatMap, map, mapValues } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    ArticleTemplateType,
+import type {
     HelpCenter,
     HelpCenterArticleItem,
     LocalArticleTranslation,
 } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { DEFAULT_ARTICLE_GROUP } from 'pages/settings/helpCenter/constants'
 import { useCreateArticleTranslationUsingTemplate } from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { FileUpload } from '../../../../hooks/useFileUpload'
+import type { FileUpload } from '../../../../hooks/useFileUpload'
 import { ImageUpload } from '../../../ImageUpload'
 
 import css from './CategoryImageEdit.less'

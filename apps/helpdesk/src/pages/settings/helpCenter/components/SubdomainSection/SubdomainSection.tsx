@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import {
-    SubdomainInput,
-    SubdomainInputProps,
-} from './components/SubdomainInput'
+import type { SubdomainInputProps } from './components/SubdomainInput'
+import { SubdomainInput } from './components/SubdomainInput'
 
 type Props = Pick<
     SubdomainInputProps,

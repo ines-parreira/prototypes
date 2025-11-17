@@ -8,7 +8,7 @@ import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import UpdateShippingAddressEditor from '../UpdateShippingAddressEditor'
 

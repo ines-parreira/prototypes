@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { useCallbackRef } from '@repo/hooks'
 
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/AutomateLandingPageDashboardV2'

@@ -3,8 +3,8 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { isValidNumber } from 'libphonenumber-js'
 import { debounce } from 'lodash'
 
-import { UserSearchResult } from 'models/search/types'
-import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import type { UserSearchResult } from 'models/search/types'
+import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
 

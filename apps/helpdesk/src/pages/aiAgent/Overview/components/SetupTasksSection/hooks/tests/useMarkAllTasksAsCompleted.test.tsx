@@ -2,9 +2,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useUpdatePostStoreInstallationStepPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 
-import { TaskConfig } from '../../types'
+import type { TaskConfig } from '../../types'
 import { useMarkAllTasksAsCompleted } from '../useMarkAllTasksAsCompleted'
 
 jest.mock('models/aiAgentPostStoreInstallationSteps/queries', () => ({

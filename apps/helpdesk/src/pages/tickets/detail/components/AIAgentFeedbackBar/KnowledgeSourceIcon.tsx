@@ -3,9 +3,9 @@ import cs from 'classnames'
 import { Badge } from '@gorgias/axiom'
 
 import shopifyLogo from 'assets/img/icons/shopifyStore.svg'
+import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {
     KNOWLEDGE_SOURCE_TYPE,
-    KnowledgeSourceType,
     KnowledgeSourceTypeIcon,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon.less'

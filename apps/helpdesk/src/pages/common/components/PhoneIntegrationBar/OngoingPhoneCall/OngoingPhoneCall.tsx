@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Call } from '@twilio/voice-sdk'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classNames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
@@ -21,21 +22,22 @@ import {
     TWILIO_CURRENT_ITEM,
 } from 'pages/common/components/PhoneIntegrationBar/constants'
 import { useConnectionParameters } from 'pages/common/components/PhoneIntegrationBar/hooks'
-import { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 import socketManager from 'services/socketManager'
-import {
+import type {
     ServerMessage,
-    SocketEventType,
     VoiceCallTransferFailedEvent,
 } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { notify as notifyAction } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
+import type { RootState } from 'state/types'
 
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'

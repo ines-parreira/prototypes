@@ -1,9 +1,5 @@
-import {
-    BaseEdge,
-    EdgeLabelRenderer,
-    EdgeProps,
-    getSmoothStepPath,
-} from '@xyflow/react'
+import type { EdgeProps } from '@xyflow/react'
+import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath } from '@xyflow/react'
 
 import { AddStepButton } from './AddStepButton'
 

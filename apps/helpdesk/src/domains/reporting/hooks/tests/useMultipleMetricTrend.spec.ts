@@ -1,20 +1,18 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchMultipleMetricsTrends,
     useMultipleMetricsTrends,
 } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import {
-    AutomationDatasetCube,
-    AutomationDatasetMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     fetchPostReporting,
     usePostReporting,
 } from 'domains/reporting/models/queries'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

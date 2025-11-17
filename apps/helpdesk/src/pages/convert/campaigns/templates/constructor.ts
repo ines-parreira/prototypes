@@ -1,16 +1,16 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import moment from 'moment-timezone'
 
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import client from 'models/api/resources'
-import { DiscountCode } from 'models/discountCodes/types'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { DiscountCode } from 'models/discountCodes/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 import { isProductAvailable } from 'pages/convert/campaigns/utils/checkProductAvailability'
 import { transformProductToCampaignAttachment } from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
 import GorgiasApi from 'services/gorgiasApi'
 
-import { CampaignConfiguration, CampaignTemplate } from './types'
+import type { CampaignConfiguration, CampaignTemplate } from './types'
 
 export class CannotCreateDiscountCode extends Error {
     constructor() {

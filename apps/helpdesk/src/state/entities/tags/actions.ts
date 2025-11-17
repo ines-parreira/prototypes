@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import {
     TAG_CREATED,

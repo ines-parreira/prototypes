@@ -1,7 +1,7 @@
-import React from 'react'
+import type React from 'react'
 
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 export type KpiMetric = {
     hidden?: boolean

@@ -6,8 +6,8 @@ import {
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { searchResultRangeQueryFactory } from 'domains/reporting/models/queryFactories/help-center/searchResult'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 
 type CubeJsDateItem = {
     label: string | null

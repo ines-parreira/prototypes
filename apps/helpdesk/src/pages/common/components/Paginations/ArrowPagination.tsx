@@ -1,5 +1,5 @@
 import { PaginationItem } from './components/PaginationItem'
-import { NavigationSize } from './types/NavigationSize'
+import type { NavigationSize } from './types/NavigationSize'
 
 import css from './style.less'
 

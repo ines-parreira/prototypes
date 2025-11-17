@@ -1,6 +1,6 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {
+import type {
     Category,
     CategoryTranslation,
     LocaleCode,

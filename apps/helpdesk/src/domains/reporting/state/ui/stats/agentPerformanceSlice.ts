@@ -1,11 +1,9 @@
-import { Slice } from '@reduxjs/toolkit'
+import type { Slice } from '@reduxjs/toolkit'
 
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
-import {
-    AgentPerformanceState,
-    createTableSlice,
-} from 'domains/reporting/state/ui/stats/createTableSlice'
+import type { AgentPerformanceState } from 'domains/reporting/state/ui/stats/createTableSlice'
+import { createTableSlice } from 'domains/reporting/state/ui/stats/createTableSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 
 export const agentPerformance = createTableSlice<AgentsTableColumn>({

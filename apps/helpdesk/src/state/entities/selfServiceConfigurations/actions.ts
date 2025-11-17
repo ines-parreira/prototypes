@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { SelfServiceConfiguration } from '../../../models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from '../../../models/selfServiceConfiguration/types'
 import {
     SELF_SERVICE_CONFIGURATION_FETCHED,
     SELF_SERVICE_CONFIGURATION_UPDATED,

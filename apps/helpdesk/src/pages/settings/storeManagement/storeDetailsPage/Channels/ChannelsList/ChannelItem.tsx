@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 import determineChannelLink from '../helpers/determineChannelLink'
 import {
     shouldShowDeleteButton,

@@ -1,11 +1,12 @@
-import React, { ComponentProps, MouseEvent } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { EmojiData } from 'emoji-mart'
+import type { EmojiData } from 'emoji-mart'
 import _noop from 'lodash/noop'
 
-import EmojiPicker from '../../../EmojiPicker/EmojiPicker'
+import type EmojiPicker from '../../../EmojiPicker/EmojiPicker'
 import EmojiSelect from '../EmojiSelect'
 
 import css from '../EmojiSelect.less'

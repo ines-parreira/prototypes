@@ -1,23 +1,14 @@
-import React, {
-    FC,
-    Ref,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { FC, Ref } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import {
-    GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
-} from 'models/integration/types'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
+import { GorgiasChatAvatarNameType } from 'models/integration/types'
 import TypingMessage from 'pages/aiAgent/Onboarding/components/TypingMessage/TypingMessage'
 import { removeATags } from 'pages/aiAgent/utils/removeATags'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import AgentMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import CustomerInitialMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomerInitialMessages'
 

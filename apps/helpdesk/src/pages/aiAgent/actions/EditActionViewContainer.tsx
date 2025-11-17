@@ -8,12 +8,12 @@ import {
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import EditActionView from './EditActionView'
 import GuidanceReferenceProvider from './providers/GuidanceReferenceProvider'
 import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
-import { StoresWorkflowConfiguration } from './types'
+import type { StoresWorkflowConfiguration } from './types'
 
 const EditActionViewContainer = () => {
     const queryClient = useQueryClient()

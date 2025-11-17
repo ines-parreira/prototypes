@@ -7,9 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
-import { OwnProps } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import type { OwnProps } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import { TWO_FA_REQUIRED_AFTER_DAYS } from 'state/currentUser/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',

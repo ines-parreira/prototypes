@@ -12,7 +12,7 @@ import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'domains/reporting/pages/common/components/NoDataAvailable'

@@ -7,8 +7,9 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
-import { GorgiasAction } from 'state/types'
+import type { AccountSetting } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
 import reducer, { initialState } from '../reducers'

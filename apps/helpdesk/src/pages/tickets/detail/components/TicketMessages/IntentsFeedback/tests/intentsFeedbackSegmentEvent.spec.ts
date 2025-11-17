@@ -1,7 +1,7 @@
 import { logEvent } from '@repo/logging'
 
+import type { DropdownOpenEventProps } from '../intentsFeedbackSegmentEvents'
 import {
-    DropdownOpenEventProps,
     logDropdownOpenEvent,
     logUserSubmissionEvent,
     UserSubmissionSubEventType,

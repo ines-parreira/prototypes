@@ -1,4 +1,5 @@
-import React, { ComponentType, CSSProperties } from 'react'
+import type { ComponentType, CSSProperties } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -7,7 +8,7 @@ import { TAGS_LIMIT } from 'models/integration/constants'
 
 import Dropdown from './Dropdown'
 import OptionTag from './Tag'
-import { Option } from './types'
+import type { Option } from './types'
 
 import css from './MultiSelectOptionsField.less'
 

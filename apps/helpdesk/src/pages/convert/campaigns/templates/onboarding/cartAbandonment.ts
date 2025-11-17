@@ -9,11 +9,8 @@ import { assetsUrl } from 'utils'
 import { PlanName } from 'utils/paywalls'
 
 import { CampaignConfigurationBuilder } from '../constructor'
-import {
-    CampaignConfiguration,
-    CampaignTemplate,
-    CampaignTemplateLabelType,
-} from '../types'
+import type { CampaignConfiguration, CampaignTemplate } from '../types'
+import { CampaignTemplateLabelType } from '../types'
 
 export const CART_ABANDONMENT: CampaignTemplate = {
     slug: 'offer-help-on-cart-abandonment',

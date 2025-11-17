@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import { useAIAgentMessageEvents } from '../../hooks/useAIAgentMessageEvents'

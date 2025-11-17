@@ -6,7 +6,7 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -18,11 +18,11 @@ import {
     eventsServerMeta as eventsMetaFixtures,
 } from 'fixtures/event'
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { fetchEvents } from 'models/event/resources'
-import { Event } from 'models/event/types'
-import { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Event } from 'models/event/types'
+import type { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import UserAuditList from '../UserAuditList'

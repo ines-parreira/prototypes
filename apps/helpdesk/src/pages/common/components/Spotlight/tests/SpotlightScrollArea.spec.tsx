@@ -1,10 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { Customer } from 'models/customer/types'
-import { PickedCustomer } from 'models/search/types'
+import type { Customer } from 'models/customer/types'
+import type { PickedCustomer } from 'models/search/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import SpotlightScrollArea, {

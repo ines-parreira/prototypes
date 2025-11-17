@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { LlmTriggeredExecution } from '../../types'
+import type { LlmTriggeredExecution } from '../../types'
 import ActionEventRow from '../ActionEventRow'
 
 describe('<ActionEventRow />', () => {

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import {
+import type {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'

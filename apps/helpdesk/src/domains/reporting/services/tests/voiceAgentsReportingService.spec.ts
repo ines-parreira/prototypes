@@ -2,16 +2,16 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME } from 'domains/reporting/pages/voice/constants/voiceAgents'
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsSummaryMetrics'
+import type { VoiceAgentsPerformanceReportData } from 'domains/reporting/services/voiceAgentsReportingService'
 import {
     createReport,
     useVoiceAgentsReportData,
-    VoiceAgentsPerformanceReportData,
 } from 'domains/reporting/services/voiceAgentsReportingService'
 import { agents } from 'fixtures/agents'
 import useAppSelector from 'hooks/useAppSelector'

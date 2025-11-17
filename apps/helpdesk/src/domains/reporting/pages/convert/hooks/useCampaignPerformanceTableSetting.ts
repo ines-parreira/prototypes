@@ -8,18 +8,16 @@ import {
 } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetChatForStore } from 'domains/reporting/pages/convert/hooks/useGetChatForStore'
-import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
-import { TableView } from 'domains/reporting/state/ui/stats/types'
+import type { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
+import type { TableView } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetSettingsList } from 'models/convert/settings/queries'
-import { SettingRequest } from 'models/convert/settings/types'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { SettingRequest } from 'models/convert/settings/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { useUpdateSetting } from 'pages/convert/settings/hooks/useUpdateSetting'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { PlaygroundCustomerSelection } from 'pages/aiAgent/Playground/components/PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { SenderTypeValues } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundCustomerSelection/PlaygroundCustomerSelection'
-import { PlaygroundCustomer } from 'pages/aiAgent/PlaygroundV2/types'
+import type { PlaygroundCustomer } from 'pages/aiAgent/PlaygroundV2/types'
 
 import css from './TargetSelection.less'
 

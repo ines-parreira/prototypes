@@ -13,7 +13,7 @@ import { AccuracyTrendCard } from 'domains/reporting/pages/support-performance/a
 import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

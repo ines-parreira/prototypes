@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import { ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { NotificationStatus } from 'state/notifications/types'

@@ -1,7 +1,10 @@
-import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import type {
+    EmailIntegration,
+    GmailIntegration,
+} from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { getIntegrationsLoading } from 'state/integrations/selectors'

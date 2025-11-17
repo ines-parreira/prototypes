@@ -1,6 +1,7 @@
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { FilterKey, TimelineItem, TimelineItemKind } from '../../../types'
+import type { FilterKey, TimelineItem } from '../../../types'
+import { TimelineItemKind } from '../../../types'
 import { filterTicketsByStatus, getOptionLabels } from '../statusFilter'
 
 describe('getOptionLabels', () => {

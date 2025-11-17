@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 
-import { CustomFieldCondition } from '@gorgias/helpdesk-queries'
+import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'

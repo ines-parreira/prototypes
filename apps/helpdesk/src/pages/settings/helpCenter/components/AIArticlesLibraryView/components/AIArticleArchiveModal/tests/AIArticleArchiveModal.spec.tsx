@@ -2,13 +2,11 @@ import React, { createRef } from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import { AIArticle } from 'models/helpCenter/types'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { AIArticle } from 'models/helpCenter/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
-import AIArticleArchiveModal, {
-    AIArticleArchiveModalHandle,
-    ArchiveReason,
-} from '../AIArticleArchiveModal'
+import type { AIArticleArchiveModalHandle } from '../AIArticleArchiveModal'
+import AIArticleArchiveModal, { ArchiveReason } from '../AIArticleArchiveModal'
 
 jest.mock('pages/common/forms/SelectField/SelectField', () => ({
     __esModule: true,

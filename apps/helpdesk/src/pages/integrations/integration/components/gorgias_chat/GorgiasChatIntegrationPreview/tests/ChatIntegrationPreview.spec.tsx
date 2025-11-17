@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -25,7 +26,7 @@ import {
 } from 'models/integration/types'
 import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'

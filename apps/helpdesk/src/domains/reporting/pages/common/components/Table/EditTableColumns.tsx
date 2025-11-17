@@ -5,7 +5,7 @@ import { useDeepEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
-import { Selector } from 'reselect'
+import type { Selector } from 'reselect'
 import { v4 as uuidv4 } from 'uuid'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -13,8 +13,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useFlag } from 'core/flags'
 import css from 'domains/reporting/pages/common/components/Table/EditColumns.less'
 import { EditColumnsItem } from 'domains/reporting/pages/common/components/Table/EditColumnsItem'
-import { TooltipData } from 'domains/reporting/pages/types'
-import {
+import type { TooltipData } from 'domains/reporting/pages/types'
+import type {
     TableColumnSet,
     TableRowSet,
     TableSetting,
@@ -23,8 +23,8 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import { AccountSettingTableConfig } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { AccountSettingTableConfig } from 'state/currentAccount/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 export const TOGGLE_LABEL = 'Edit table'
 export const SAVE_TOOLTIP =

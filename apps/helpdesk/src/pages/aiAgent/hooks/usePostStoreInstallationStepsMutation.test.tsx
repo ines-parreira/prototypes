@@ -1,12 +1,12 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import type { PostStoreInstallationStepsResponse } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
-    PostStoreInstallationStepsResponse,
     PostStoreInstallationStepStatus,
     PostStoreInstallationStepType,
     StepName,

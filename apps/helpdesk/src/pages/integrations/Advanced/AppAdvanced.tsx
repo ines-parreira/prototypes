@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { scopesToPermissions } from 'config/oauthPermissions'
 import { fetchAppErrorLogs } from 'models/integration/resources'
-import { AppDetail, AppErrorLog } from 'models/integration/types/app'
+import type { AppDetail, AppErrorLog } from 'models/integration/types/app'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import AppErrorRow from './AppErrorRow'

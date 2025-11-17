@@ -2,15 +2,16 @@ import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 
-import HandoverCustomizationChatSettingsDrawer, {
+import type {
     HandoverCustomizationChatSettingsDrawerContent,
     HandoverCustomizationChatSettingsDrawerProps,
 } from '../HandoverCustomizationChatSettingsDrawer'
+import HandoverCustomizationChatSettingsDrawer from '../HandoverCustomizationChatSettingsDrawer'
 
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',

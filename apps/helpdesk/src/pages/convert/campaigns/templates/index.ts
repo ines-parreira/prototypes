@@ -14,7 +14,7 @@ import { SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT } from './library/suggestSimilarP
 import { CART_ABANDONMENT } from './onboarding/cartAbandonment'
 import { DISCOUNT_NEW_VISITORS } from './onboarding/discountNewVisitors'
 import { PRODUCT_CARD_SHOWCASE } from './onboarding/productCards'
-import { CampaignTemplate, CampaignTemplateSectionType } from './types'
+import type { CampaignTemplate, CampaignTemplateSectionType } from './types'
 
 // Onboarding Templates
 

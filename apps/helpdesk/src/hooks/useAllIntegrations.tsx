@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { UseInfiniteQueryOptions } from '@tanstack/react-query'
+import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
 
-import { IntegrationType, listIntegrations } from '@gorgias/helpdesk-client'
-import { Integration, queryKeys } from '@gorgias/helpdesk-queries'
+import type { IntegrationType } from '@gorgias/helpdesk-client'
+import { listIntegrations } from '@gorgias/helpdesk-client'
+import type { Integration } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 

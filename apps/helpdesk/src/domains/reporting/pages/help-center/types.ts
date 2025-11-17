@@ -1,4 +1,4 @@
-import {
+import type {
     StatsFiltersWithLogicalOperator,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'

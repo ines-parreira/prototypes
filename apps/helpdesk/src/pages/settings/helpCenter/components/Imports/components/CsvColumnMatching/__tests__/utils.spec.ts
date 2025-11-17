@@ -1,4 +1,4 @@
-import { GorgiasFieldsMappingsLocalized } from '../types'
+import type { GorgiasFieldsMappingsLocalized } from '../types'
 import {
     CSV_MIGRATION_PROVIDER_TYPE,
     mapCSVLocalValuesToAPIPayload,

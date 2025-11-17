@@ -1,18 +1,14 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    TicketCubeWithJoins,
-    TicketDimension,
-} from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketFirstHumanAgentResponseTimeDimension,
     TicketFirstHumanAgentResponseTimeMeasure,
     TicketFirstHumanAgentResponseTimeMember,
 } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
@@ -20,7 +16,7 @@ import {
     statsFiltersToReportingFilters,
     TicketFirstHumanAgentResponseTimeMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export function humanResponseTimeAfterAiHandoffQueryFactory(
     statsFilters: StatsFilters,

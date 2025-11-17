@@ -5,7 +5,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import { MetafieldCategory } from '../../types'
+import type { MetafieldCategory } from '../../types'
 
 import styles from './ImportableCategories.less'
 

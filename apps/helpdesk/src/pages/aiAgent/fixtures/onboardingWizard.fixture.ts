@@ -1,7 +1,7 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
 import { ToneOfVoice } from '../constants'
-import { FormValues } from '../types'
+import type { FormValues } from '../types'
 
 export const getStoreConfigurationFormValuesFixture = (
     props?: Partial<FormValues>,

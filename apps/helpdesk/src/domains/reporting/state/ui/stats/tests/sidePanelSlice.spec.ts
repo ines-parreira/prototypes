@@ -9,7 +9,7 @@ import {
     sidePanelSlice,
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('sidePanelSlice', () => {
     it('should set the side panel data', () => {

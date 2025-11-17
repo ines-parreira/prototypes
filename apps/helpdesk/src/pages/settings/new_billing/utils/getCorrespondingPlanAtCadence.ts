@@ -1,4 +1,4 @@
-import { Cadence, Plan } from 'models/billing/types'
+import type { Cadence, Plan } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 
 export type Props<T extends Plan> = {

@@ -1,10 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useUpdateDashboardCache } from 'domains/reporting/hooks/dashboards/useUpdateDashboardCache'
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 
 jest.mock('@gorgias/helpdesk-queries')
 

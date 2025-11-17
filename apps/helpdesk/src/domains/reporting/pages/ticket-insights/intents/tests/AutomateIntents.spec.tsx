@@ -19,7 +19,7 @@ import {
     intentsOccurrence,
     intentsOverview,
 } from 'fixtures/stats'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')

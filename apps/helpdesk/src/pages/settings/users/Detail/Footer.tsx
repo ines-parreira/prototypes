@@ -5,11 +5,11 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 
 import { navigateBackToUserList } from './constants'
 import { DeleteModal } from './DeleteModal'
-import { AgentState } from './types'
+import type { AgentState } from './types'
 
 import css from './Detail.less'
 

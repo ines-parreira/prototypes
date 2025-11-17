@@ -5,14 +5,16 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import { HandoverConfigurationData } from 'models/aiAgent/types'
-import {
-    GorgiasChatAutoResponderReply,
-    GorgiasChatEmailCaptureType,
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
+import type {
     GorgiasChatIntegration,
     GorgiasChatIntegrationMeta,
 } from 'models/integration/types'
-import { HandoverCustomizationChatOnlineSettingsFormValues } from 'pages/aiAgent/types'
+import {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
+} from 'models/integration/types'
+import type { HandoverCustomizationChatOnlineSettingsFormValues } from 'pages/aiAgent/types'
 
 export const initialFormFieldValues: HandoverCustomizationChatOnlineSettingsFormValues =
     {

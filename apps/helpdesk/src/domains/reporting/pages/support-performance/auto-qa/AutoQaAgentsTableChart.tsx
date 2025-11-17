@@ -1,5 +1,5 @@
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
 import { AutoQAAgentsCardExtra } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsCardExtra'
 import { AutoQAAgentsTable } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTable'

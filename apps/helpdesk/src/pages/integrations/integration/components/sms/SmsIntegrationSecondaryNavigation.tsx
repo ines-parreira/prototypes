@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { SmsIntegration } from 'models/integration/types'
+import type { SmsIntegration } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { getSmsIntegrations } from 'state/integrations/selectors'
 

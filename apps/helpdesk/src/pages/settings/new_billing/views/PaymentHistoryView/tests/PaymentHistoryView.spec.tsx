@@ -6,8 +6,9 @@ import configureMockStore from 'redux-mock-store'
 
 import { invoices } from 'fixtures/invoices'
 import client from 'models/api/resources'
-import { Invoice, PaymentIntentStatus, PaymentType } from 'state/billing/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Invoice } from 'state/billing/types'
+import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import PaymentsHistoryView from '../PaymentsHistoryView'
 

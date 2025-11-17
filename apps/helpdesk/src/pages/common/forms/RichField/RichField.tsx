@@ -1,6 +1,8 @@
-import React, { Component, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React, { Component } from 'react'
 
-import { ContentState, EditorState } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import _isEqual from 'lodash/isEqual'
 
 import 'draft-js/dist/Draft.css'

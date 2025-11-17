@@ -1,10 +1,11 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import * as accountFixtures from 'fixtures/account'
 import { initialState } from 'state/currentAccount/reducers'
 import * as selectors from 'state/currentAccount/selectors'
 import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const DATE_TO_USE = new Date('2019-09-03')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())

@@ -1,11 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import DatePicker from 'pages/common/forms/DatePicker'
+import type DatePicker from 'pages/common/forms/DatePicker'
 import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
 
 const errorSpy = jest.spyOn(global.console, 'error')

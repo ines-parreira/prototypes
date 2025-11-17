@@ -7,7 +7,7 @@ import {
     useGetHelpCenterArticleList,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 
 import {
     GUIDANCE_ARTICLE_LIMIT,

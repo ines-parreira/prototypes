@@ -4,7 +4,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { CampaignDisplaysInSession } from 'pages/convert/campaigns/types/CampaignMeta'
+import type { CampaignDisplaysInSession } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import css from './MaximumCampaignDisplayed.less'
 

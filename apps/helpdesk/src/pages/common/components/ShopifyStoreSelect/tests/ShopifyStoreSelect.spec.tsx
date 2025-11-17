@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { FormState } from '../../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'
+import type { FormState } from '../../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'
 import { getDefaultStore } from '../helpers'
 import ShopifyStoreSelect from '../ShopifyStoreSelect'
 

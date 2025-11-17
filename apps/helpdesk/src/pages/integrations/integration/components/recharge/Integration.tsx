@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
 import { Col, Container, Label, Row } from 'reactstrap'
 

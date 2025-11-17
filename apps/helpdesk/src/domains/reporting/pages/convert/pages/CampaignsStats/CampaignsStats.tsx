@@ -23,7 +23,7 @@ import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscribe
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 
 type CampaignsStatsProps = {
     isConvertSubscriber: boolean

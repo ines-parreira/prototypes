@@ -23,7 +23,8 @@
  *
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
  */
-import io, { Socket } from 'socket.io-client'
+import type { Socket } from 'socket.io-client'
+import io from 'socket.io-client'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -36,12 +37,8 @@ import {
     SCOPED_BROADCAST_CHANNEL_NAME,
 } from './constants'
 import IncrementalBackoff from './incrementalBackoff'
-import {
-    BroadcastChannelEvent,
-    MessagePortEvent,
-    SocketEvent,
-    WSMessage,
-} from './types'
+import type { WSMessage } from './types'
+import { BroadcastChannelEvent, MessagePortEvent, SocketEvent } from './types'
 
 export class WebsocketSharedWorker {
     wsUrl: string | null = null

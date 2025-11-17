@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { CampaignSettingType } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
 import { useGetSettingsList } from 'models/convert/settings/queries'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {
+import type {
     CampaignFrequencySettings,
     CaptureFormDisclaimerSettings,
 } from 'pages/convert/settings/types'

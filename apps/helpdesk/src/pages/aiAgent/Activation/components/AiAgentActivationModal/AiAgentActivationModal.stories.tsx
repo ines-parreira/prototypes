@@ -1,8 +1,8 @@
 import { action } from '@storybook/addon-actions'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { AiAgentScope } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 import { AiAgentActivationModal } from './AiAgentActivationModal'

@@ -1,5 +1,5 @@
 import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
-import { MessageFeedback } from 'models/aiAgentFeedback/types'
+import type { MessageFeedback } from 'models/aiAgentFeedback/types'
 
 export const messageFeedback: MessageFeedback = {
     accountId: 1234,

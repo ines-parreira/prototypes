@@ -11,14 +11,11 @@ import {
     addVariant,
     initDraftOrderPayload,
 } from 'business/shopify/draftOrder'
-import {
-    EditOrderAction,
-    Product,
-    Variant,
-} from 'constants/integrations/types/shopify'
+import type { Product, Variant } from 'constants/integrations/types/shopify'
+import { EditOrderAction } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

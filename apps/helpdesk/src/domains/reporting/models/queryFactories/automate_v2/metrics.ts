@@ -1,12 +1,12 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
-    AutomationDatasetCube,
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import type { BillableTicketDatasetCube } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
-    BillableTicketDatasetCube,
     BillableTicketDatasetDimension,
     BillableTicketDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
@@ -15,11 +15,9 @@ import {
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'domains/reporting/models/queryFactories/automate_v2/filters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 
 export const automationDatasetQueryFactory = (
     filters: StatsFilters,

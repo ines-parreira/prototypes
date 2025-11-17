@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
-import { Plan, ProductType } from 'models/billing/types'
+import type { Plan, ProductType } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'

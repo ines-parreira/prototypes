@@ -1,4 +1,4 @@
-import { VoiceCallSummary } from 'models/voiceCall/types'
+import type { VoiceCallSummary } from 'models/voiceCall/types'
 
 import css from './TicketVoiceCallSummary.less'
 

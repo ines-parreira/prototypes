@@ -10,10 +10,8 @@ import {
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import {
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,
@@ -25,7 +23,7 @@ import {
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { useHelpCenterCreationWizard } from '../useHelpCenterCreationWizard'
 

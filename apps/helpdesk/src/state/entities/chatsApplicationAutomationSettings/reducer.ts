@@ -1,12 +1,12 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { ChatApplicationAutomationSettings } from '../../../models/chatApplicationAutomationSettings/types'
+import type { ChatApplicationAutomationSettings } from '../../../models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsFetched,
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
 } from './actions'
-import { ChatsApplicationAutomationSettingsState } from './types'
+import type { ChatsApplicationAutomationSettingsState } from './types'
 
 export const initialState: ChatsApplicationAutomationSettingsState = {}
 

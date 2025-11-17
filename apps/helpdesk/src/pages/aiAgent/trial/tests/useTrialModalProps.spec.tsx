@@ -25,10 +25,8 @@ import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useAiAgentTrialOnboarding } from 'pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
-import {
-    useShoppingAssistantTrialFlow,
-    UseShoppingAssistantTrialFlowReturn,
-} from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'

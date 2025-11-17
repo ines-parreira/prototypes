@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { useGetStoreHandoverConfigurations } from 'models/aiAgent/queries'
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
 
-import { AiAgentChannel } from '../../constants'
+import type { AiAgentChannel } from '../../constants'
 
 type ConfigurationsArgs = {
     accountDomain: string

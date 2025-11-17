@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { PublicSourcesItem } from '../PublicSourcesItem'
-import { SourceItem } from '../types'
+import type { SourceItem } from '../types'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

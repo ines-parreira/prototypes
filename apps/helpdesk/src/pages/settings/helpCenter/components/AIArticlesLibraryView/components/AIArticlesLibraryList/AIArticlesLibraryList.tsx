@@ -1,13 +1,12 @@
-import { Dispatch, SetStateAction, useMemo, useRef } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { useEffectOnce, useKey } from '@repo/hooks'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
-    AIArticleToggleOptionValue,
-    AILibraryArticleItem,
-} from 'models/helpCenter/types'
+import type { AILibraryArticleItem } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../constants'
 import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'

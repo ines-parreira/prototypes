@@ -5,7 +5,7 @@ import { useDebouncedValue } from '@repo/hooks'
 import noop from 'lodash/noop'
 
 import { useFlag } from 'core/flags'
-import { FilterOptionGroup } from 'domains/reporting/pages/types'
+import type { FilterOptionGroup } from 'domains/reporting/pages/types'
 
 function filterOptionsByQuery(
     filterOptionGroups: FilterOptionGroup[],

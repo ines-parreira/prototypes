@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import { TicketPresenceState } from './useCollisionDetection'
+import type { TicketPresenceState } from './useCollisionDetection'
 
 export default function useAblyRealtimePresence(
     ticketId: number,

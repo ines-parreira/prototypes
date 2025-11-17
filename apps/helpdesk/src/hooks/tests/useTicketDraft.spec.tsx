@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
@@ -8,7 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import useTicketDraft from '../useTicketDraft'
 

@@ -1,7 +1,8 @@
-import { ComponentType, KeyboardEvent, ReactNode } from 'react'
+import type { ComponentType, KeyboardEvent, ReactNode } from 'react'
 
 import decorateComponentWithProps from 'decorate-component-with-props'
-import { ContentBlock, EditorState, KeyBindingUtil } from 'draft-js'
+import type { ContentBlock, EditorState } from 'draft-js'
+import { KeyBindingUtil } from 'draft-js'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
@@ -10,14 +11,15 @@ import {
     getSelectedEntityKey,
     getSelectedText,
 } from '../../../../../utils/editor'
-import { Plugin, PluginMethods } from '../types'
+import type { Plugin, PluginMethods } from '../types'
 import { removeLink } from '../utils'
 import Image from './components/Image'
 import Video from './components/Video'
 import discountCodeLink from './decorators/discountCodeLink'
 import foundUrl from './decorators/foundUrl'
 import link from './decorators/link'
-import { ActionName, Config } from './types'
+import type { Config } from './types'
+import { ActionName } from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md

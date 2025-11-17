@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { AppOAuthPermission, oauthPermissions } from 'config/oauthPermissions'
+import type { AppOAuthPermission } from 'config/oauthPermissions'
+import { oauthPermissions } from 'config/oauthPermissions'
 import AppPermissions from 'pages/integrations/Advanced/AppPermissions'
 
 describe(`AppErrorRow`, () => {

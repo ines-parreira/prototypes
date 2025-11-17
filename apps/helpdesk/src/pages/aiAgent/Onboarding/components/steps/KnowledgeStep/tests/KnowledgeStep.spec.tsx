@@ -16,13 +16,13 @@ import {
     useGetStoresConfigurationForAccount,
     useStartSalesTrialMutation,
 } from 'models/aiAgent/queries'
-import { OnboardingNotificationState } from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useOnboardingNotificationState } from 'pages/aiAgent/hooks/useOnboardingNotificationState'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetHelpCentersByShopName'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgePreviewData'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'

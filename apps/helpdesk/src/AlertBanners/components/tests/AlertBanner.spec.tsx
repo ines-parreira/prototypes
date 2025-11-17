@@ -3,7 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { AlertBannerTypes } from '../../types'
-import { AlertBanner, AlertBannerProps } from '../AlertBanner'
+import type { AlertBannerProps } from '../AlertBanner'
+import { AlertBanner } from '../AlertBanner'
 import { CTA } from '../CTA'
 
 jest.mock('../CTA', () => ({

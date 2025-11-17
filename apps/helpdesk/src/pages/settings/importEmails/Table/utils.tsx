@@ -1,5 +1,6 @@
 import { Badge, LoadingSpinner } from '@gorgias/axiom'
-import { ImportProvider, ImportStatus } from '@gorgias/helpdesk-types'
+import type { ImportStatus } from '@gorgias/helpdesk-types'
+import { ImportProvider } from '@gorgias/helpdesk-types'
 
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import officeIcon from 'assets/img/integrations/office.svg'

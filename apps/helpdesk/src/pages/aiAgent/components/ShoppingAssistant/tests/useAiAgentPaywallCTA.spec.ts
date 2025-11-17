@@ -2,10 +2,8 @@ import { renderHook } from '@testing-library/react'
 
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
-import {
-    AiAgentCtasParams,
-    useAiAgentCtas,
-} from '../hooks/useAiAgentPaywallCTA'
+import type { AiAgentCtasParams } from '../hooks/useAiAgentPaywallCTA'
+import { useAiAgentCtas } from '../hooks/useAiAgentPaywallCTA'
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
 import { logInTrialEventFromPaywall } from '../utils/eventLogger'
 

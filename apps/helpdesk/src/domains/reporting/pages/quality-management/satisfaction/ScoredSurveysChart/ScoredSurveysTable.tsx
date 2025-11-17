@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import {
+import type {
     ScoredSurveyDataKey,
     ScoredSurveysData,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
@@ -11,7 +11,8 @@ import {
     SCORED_SURVEYS_TABLE_COLUMNS,
     SURVEYS_PER_PAGE,
 } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/utils'
-import { opposite, OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
+import { opposite } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

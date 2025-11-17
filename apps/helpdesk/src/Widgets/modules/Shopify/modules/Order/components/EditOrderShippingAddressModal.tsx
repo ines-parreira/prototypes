@@ -1,18 +1,14 @@
-import {
-    FormEvent,
-    MouseEvent,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-} from 'react'
+import type { FormEvent, MouseEvent } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import {
     Button,
     ButtonDropdown,
@@ -27,8 +23,9 @@ import {
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { states } from 'fixtures/states'
-import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
-import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -42,8 +39,8 @@ import {
 } from 'state/infobarActions/shopify/editShippingAddress/action'
 import { getShippingAddressState } from 'state/infobarActions/shopify/editShippingAddress/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
-import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import type { RootState } from 'state/types'
+import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './EditOrderShippingAddressModal.less'
 

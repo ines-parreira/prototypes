@@ -7,7 +7,8 @@ import {
     useTicketsPerProductDistribution,
 } from 'domains/reporting/hooks/voice-of-customer/useTicketsDistributionPerProduct'
 import { useTicketsPerProductTrend } from 'domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { PRODUCTS_PER_TICKET_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import {

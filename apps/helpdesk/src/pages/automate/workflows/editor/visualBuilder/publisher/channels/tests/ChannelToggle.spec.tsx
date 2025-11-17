@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
 
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ChannelToggle from '../ChannelToggle'

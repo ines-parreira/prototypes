@@ -1,13 +1,15 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isObject from 'lodash/isObject'
 import moment from 'moment'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { StatConfigMetric } from 'domains/reporting/config/stats'
+import type { StatConfigMetric } from 'domains/reporting/config/stats'
 import { StatType } from 'domains/reporting/models/stat/types'
 import DistributionKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat'
 import DonutKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'

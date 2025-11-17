@@ -2,17 +2,15 @@ import { useMemo } from 'react'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import {
-    MetricWithDecileData,
-    useMetricPerDimension,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecileData } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { customFieldsTicketCountWithSortQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const INTENT_VALUE = TicketCustomFieldsDimension.TicketCustomFieldsValue
 const TICKET_COUNT_VALUE =

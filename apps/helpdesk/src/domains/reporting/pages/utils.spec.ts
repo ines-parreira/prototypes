@@ -1,4 +1,4 @@
-import { WithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { WithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { isFilterEmpty } from 'domains/reporting/pages/utils'
 

@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { agents } from 'fixtures/agents'
 import {

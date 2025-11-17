@@ -25,7 +25,7 @@ import { useTicketsRepliedPerHourPerAgent } from 'domains/reporting/hooks/useTic
 import { initialState as agentPerformanceInitialState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')

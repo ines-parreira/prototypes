@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'

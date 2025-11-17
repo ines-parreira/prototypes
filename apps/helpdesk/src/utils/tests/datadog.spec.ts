@@ -9,6 +9,10 @@ import {
 } from 'config'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
+import type {
+    InitDatadogLoggerOptions,
+    InitDatadogRumOptions,
+} from 'utils/datadog'
 import {
     DATADOG_LOGS_SERVICE,
     DATADOG_LOGS_SESSION_SAMPLE_RATE,
@@ -17,9 +21,7 @@ import {
     DATADOG_RUM_SESSION_SAMPLE_RATE,
     DATADOG_SITE,
     initDatadogLogger,
-    InitDatadogLoggerOptions,
     initDatadogRum,
-    InitDatadogRumOptions,
 } from 'utils/datadog'
 
 jest.mock('@datadog/browser-logs')

@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import { Expander, ExpanderProps } from '../Expander'
+import type { ExpanderProps } from '../Expander'
+import { Expander } from '../Expander'
 
 const defaultProps = {
     isLoading: false,

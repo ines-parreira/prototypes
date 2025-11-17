@@ -1,11 +1,11 @@
-import { FC, PropsWithChildren, ReactElement } from 'react'
+import type { FC, PropsWithChildren, ReactElement } from 'react'
 
 import { renderHook } from '@repo/testing'
+import type { QueryKey } from '@tanstack/react-query'
 import {
     QueryCache,
     QueryClient,
     QueryClientProvider,
-    QueryKey,
 } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 

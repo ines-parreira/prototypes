@@ -1,10 +1,10 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import {
-    attachmentIsProductRecommendation,
+import type {
     AttachmentType,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { attachmentIsProductRecommendation } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 export const transformAttachmentsToProductRecommendations = (
     attachments: List<any>,

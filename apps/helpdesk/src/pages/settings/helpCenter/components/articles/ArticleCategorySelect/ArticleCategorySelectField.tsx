@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 
 import { NO_CATEGORY_OPTION } from './hooks/useCategoriesOptions'
 

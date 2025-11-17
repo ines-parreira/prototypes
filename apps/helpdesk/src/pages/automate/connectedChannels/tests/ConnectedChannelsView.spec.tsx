@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
+import type React from 'react'
 
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -19,7 +19,7 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'

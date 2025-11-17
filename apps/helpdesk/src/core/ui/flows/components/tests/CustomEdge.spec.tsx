@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
-import { EdgeProps, Position, ReactFlowProvider } from '@xyflow/react'
+import type { EdgeProps, Position } from '@xyflow/react'
+import { ReactFlowProvider } from '@xyflow/react'
 
 import { CustomEdge } from '../CustomEdge'
 

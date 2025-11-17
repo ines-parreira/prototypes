@@ -1,9 +1,8 @@
-import { Reducer } from 'react'
+import type { Reducer } from 'react'
 
 import { produce } from 'immer'
 
-import {
-    BigCommerceRefundableItemType,
+import type {
     BigCommerceRefundItemsPayloadComponent,
     BigCommerceRefundOrderState,
     GiftWrappingItemRefundData,
@@ -11,12 +10,11 @@ import {
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
+import { BigCommerceRefundableItemType } from 'models/integration/types'
 
 import { defaultBigCommerceRefundType } from './consts'
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from './types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from './types'
+import { BigCommerceRefundActionType } from './types'
 import { formatPrice } from './utils'
 
 export const initialBigCommerceRefundOrderState: BigCommerceRefundOrderState = {

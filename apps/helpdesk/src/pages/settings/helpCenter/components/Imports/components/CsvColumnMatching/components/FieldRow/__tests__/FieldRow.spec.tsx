@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render } from '@testing-library/react'
 
 import { FieldRow } from '..'
-import { Props as FieldRowProps } from '../FieldRow'
+import type { Props as FieldRowProps } from '../FieldRow'
 
 const props: FieldRowProps = {
     fieldName: 'Article Title',

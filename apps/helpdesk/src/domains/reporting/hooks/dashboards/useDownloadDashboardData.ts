@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { saveZippedFiles } from 'utils/file'
 
 const emptyDashboard: DashboardSchema = {

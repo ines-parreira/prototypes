@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { appQueryClient } from 'api/queryClient'
@@ -11,9 +11,8 @@ import {
     workflowsEntrypointsFixture,
 } from '../../fixtures/selfServiceConfiguration'
 import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
-import ContactFormEntrypointPreview, {
-    ContactFormEntrypointPreviewProps,
-} from './ContactFormEntrypointPreview'
+import type { ContactFormEntrypointPreviewProps } from './ContactFormEntrypointPreview'
+import type ContactFormEntrypointPreview from './ContactFormEntrypointPreview'
 
 const storyConfig: Meta = {
     title: 'Contact form/EntrypointPreview',

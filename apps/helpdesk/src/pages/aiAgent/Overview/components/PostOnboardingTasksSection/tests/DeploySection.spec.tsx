@@ -10,7 +10,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { mockStore } from 'utils/testing'
 
 import { DeploySection } from '../DeploySection'
-import { PostOnboardingStepMetadata } from '../types'
+import type { PostOnboardingStepMetadata } from '../types'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

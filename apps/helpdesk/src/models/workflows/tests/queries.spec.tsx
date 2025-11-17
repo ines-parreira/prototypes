@@ -3,10 +3,10 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
-import { Paths } from 'rest_api/workflows_api/client.generated'
+import type { Paths } from 'rest_api/workflows_api/client.generated'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import { TrackstarConnection } from '../../../pages/automate/workflows/types'
+import type { TrackstarConnection } from '../../../pages/automate/workflows/types'
 import {
     useCreateTrackstarLink,
     useCreateTrackstarToken,

@@ -1,14 +1,8 @@
 import { assumeMock } from '@repo/testing'
-import {
-    act,
-    fireEvent,
-    render,
-    RenderResult,
-    screen,
-    waitFor,
-} from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { PhoneIntegration } from '@gorgias/helpdesk-types'
+import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'

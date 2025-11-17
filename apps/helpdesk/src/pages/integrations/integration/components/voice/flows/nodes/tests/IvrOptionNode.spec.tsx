@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
 import { Form } from 'core/forms'
-import { Flow, FlowProvider, Node } from 'core/ui/flows'
+import type { Node } from 'core/ui/flows'
+import { Flow, FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
 import { IvrOptionNode } from '../IvrOptionNode'

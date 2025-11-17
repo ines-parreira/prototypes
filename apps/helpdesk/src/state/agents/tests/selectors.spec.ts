@@ -8,7 +8,7 @@ import { initialState } from 'state/agents/reducers'
 import * as selectors from 'state/agents/selectors'
 import { initialState as currentUserInitialState } from 'state/currentUser/reducers'
 import { getDisplayName } from 'state/customers/helpers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('agents selectors', () => {
     const automationBotAgent = {

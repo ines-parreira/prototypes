@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'domains/reporting/hooks/helpers'
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
     fetchOnlineTimeMetric,
     fetchTicketsRepliedMetric,
-    Metric,
     useOnlineTimeMetric,
     useTicketsRepliedMetric,
 } from 'domains/reporting/hooks/metrics'
@@ -18,7 +18,7 @@ import {
 import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
     let metricValue: number | null = null

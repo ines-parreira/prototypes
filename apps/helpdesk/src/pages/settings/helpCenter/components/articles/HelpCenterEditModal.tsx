@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'

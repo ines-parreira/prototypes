@@ -1,10 +1,8 @@
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import {
-    useAIIntentsForProductTimeSeries,
-    useAIIntentsTimeSeries,
-} from 'domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries'
+import type { useAIIntentsTimeSeries } from 'domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries'
+import { useAIIntentsForProductTimeSeries } from 'domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'

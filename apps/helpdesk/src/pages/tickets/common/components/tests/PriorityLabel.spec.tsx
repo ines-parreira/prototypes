@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { PriorityLabel } from '../PriorityLabel'
 

@@ -1,13 +1,15 @@
-import React, { RefObject, useEffect, useState } from 'react'
+import type { RefObject } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import Editor from 'draft-js-plugins-editor'
+import type Editor from 'draft-js-plugins-editor'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 

@@ -1,4 +1,4 @@
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import DialPad from './DialPad'
 import PhoneSearchResultsContent from './PhoneSearchResultsContent'

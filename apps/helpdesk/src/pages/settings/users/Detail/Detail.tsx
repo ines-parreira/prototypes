@@ -1,9 +1,11 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { UserDraft, UserRole } from 'config/types/user'
+import type { UserDraft } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import { useCreateAgent } from 'hooks/agents/useCreateAgent'
 import { useUpdateAgent } from 'hooks/agents/useUpdateAgent'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,7 +22,7 @@ import { useGetAgentWithEffects } from './hooks/useGetAgentWithEffect'
 import { Info } from './Info'
 import { Role } from './Role'
 import { Statuses } from './Statuses'
-import { AgentState } from './types'
+import type { AgentState } from './types'
 
 export const Detail = () => {
     const dispatch = useAppDispatch()

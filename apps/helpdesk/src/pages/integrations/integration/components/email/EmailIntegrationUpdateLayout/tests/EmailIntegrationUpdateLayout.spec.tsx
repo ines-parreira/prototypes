@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 
 import {

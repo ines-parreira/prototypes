@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 
 import { useFlag } from 'core/flags'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'domains/reporting/pages/ticket-insights/tags/AllUsedTagsTableChart'
 import { Tags } from 'domains/reporting/pages/ticket-insights/tags/Tags'
 import { TagsActionMenu } from 'domains/reporting/pages/ticket-insights/tags/TagsActionMenu'
@@ -34,7 +34,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('core/flags')

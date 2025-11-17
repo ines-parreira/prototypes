@@ -2,7 +2,7 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { WorkflowConfigurationShallow } from '../models/workflowConfiguration.types'
+import type { WorkflowConfigurationShallow } from '../models/workflowConfiguration.types'
 
 export type UseWorkflowsEntrypointsReturnType = {
     workflows: WorkflowConfigurationShallow[]

@@ -1,16 +1,12 @@
-import { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 
-import {
-    ListTagsOrderBy,
-    ListTagsParams,
-    OrderDirection,
-    Tag,
-} from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 
-import { OrderByOrderDir, TagDraft } from './types'
+import type { OrderByOrderDir, TagDraft } from './types'
 
 const USAGE_ORDER_BYS = [
     `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,

@@ -1,8 +1,8 @@
 import moment from 'moment'
 
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 
-import {
+import type {
     FilterKey,
     InteractionFilterType,
     SortableKey,

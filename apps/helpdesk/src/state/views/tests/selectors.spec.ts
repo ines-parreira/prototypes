@@ -6,9 +6,9 @@ import { defaultTicketView, getExpirationTimeForCount } from 'config/views'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { newViews } from 'models/view/mocks'
+import type { View } from 'models/view/types'
 import {
     EntityType,
-    View,
     ViewCategory,
     ViewType,
     ViewVisibility,
@@ -16,7 +16,7 @@ import {
 import { initialState as currentAccountInitialState } from 'state/currentAccount/reducers'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { initialState as currentUserInitialState } from 'state/currentUser/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { initialState as ticketNavbarInitialState } from 'state/ui/ticketNavbar/reducer'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { SYSTEM_VIEWS } from 'state/views/constants'

@@ -1,11 +1,12 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { JourneyApiDTO, JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { shopifyProductResult } from 'fixtures/shopify'
 
 import {

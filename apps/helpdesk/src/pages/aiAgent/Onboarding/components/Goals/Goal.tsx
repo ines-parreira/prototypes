@@ -1,9 +1,9 @@
 import cn from 'classnames'
 
 import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
-import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
-import { GoalData } from './types'
+import type { GoalData } from './types'
 
 import css from './Goals.less'
 

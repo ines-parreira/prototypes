@@ -1,15 +1,15 @@
 import { useHistory } from 'react-router-dom'
 
-import { ShopifyIntegration } from '@gorgias/helpdesk-types'
+import type { ShopifyIntegration } from '@gorgias/helpdesk-types'
 
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
 import { AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD } from '../constants/shoppingAssistant'
+import type { ButtonConfig } from '../types/ShoppingAssistant'
 import {
-    ButtonConfig,
     PromoCardVariant,
     TrialEventType,
     TrialType,

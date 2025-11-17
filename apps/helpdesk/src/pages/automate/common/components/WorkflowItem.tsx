@@ -1,4 +1,4 @@
-import { ReactNode, RefObject } from 'react'
+import type { ReactNode, RefObject } from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'

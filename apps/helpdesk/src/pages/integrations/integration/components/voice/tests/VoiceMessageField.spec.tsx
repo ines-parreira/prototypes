@@ -2,16 +2,15 @@ import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {
-    UploadedCustomRecording,
-    useUploadCustomVoiceRecording,
-} from '@gorgias/helpdesk-queries'
+import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
+import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
-import { Account } from 'state/currentAccount/types'
+import type { VoiceMessage } from 'models/integration/types'
+import { VoiceMessageType } from 'models/integration/types'
+import type { Account } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

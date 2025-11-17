@@ -8,7 +8,7 @@ import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-do
 import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import { getDrillDownConfig } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,

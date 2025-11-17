@@ -5,10 +5,10 @@ import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 import { AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL } from './constants'
-import { AutomateMetricProps } from './types'
+import type { AutomateMetricProps } from './types'
 import { getTrendProps, toPercentage } from './utils'
 
 export const AUTOMATION_RATE_TOOLTIP: TooltipData = {

@@ -1,10 +1,10 @@
-import { MutableRefObject } from 'react'
+import type { MutableRefObject } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
-import { VirtuosoHandle } from 'react-virtuoso'
+import type { VirtuosoHandle } from 'react-virtuoso'
 
-import { TicketCompact } from 'ticket-list-view/types'
+import type { TicketCompact } from 'ticket-list-view/types'
 
 import useScrollActiveTicketIntoView from '../useScrollActiveTicketIntoView'
 

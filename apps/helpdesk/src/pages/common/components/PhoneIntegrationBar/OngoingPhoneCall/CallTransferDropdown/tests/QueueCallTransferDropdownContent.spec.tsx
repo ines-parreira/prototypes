@@ -10,7 +10,8 @@ import {
     mockListVoiceQueuesHandler,
     mockVoiceQueue,
 } from '@gorgias/helpdesk-mocks'
-import { ListVoiceQueues200, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
+import type { ListVoiceQueues200 } from '@gorgias/helpdesk-queries'
+import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 

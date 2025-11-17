@@ -6,13 +6,13 @@ import { ulid } from 'ulidx'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { getDefaultTriggers } from 'pages/convert/campaigns/utils/getDefaultTriggers'
 
-import {
+import type {
     CreateTriggerFn,
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from '../types/AdvancedTriggerBaseProps'
-import { CampaignTrigger } from '../types/CampaignTrigger'
-import { CampaignTriggerMap } from '../types/CampaignTriggerMap'
+import type { CampaignTrigger } from '../types/CampaignTrigger'
+import type { CampaignTriggerMap } from '../types/CampaignTriggerMap'
 import { createTrigger } from '../utils/createTrigger'
 import { isAllowedToUpdateTrigger } from '../utils/isAllowedToUpdateTrigger'
 

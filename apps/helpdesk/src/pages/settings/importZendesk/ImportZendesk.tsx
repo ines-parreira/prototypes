@@ -12,7 +12,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 

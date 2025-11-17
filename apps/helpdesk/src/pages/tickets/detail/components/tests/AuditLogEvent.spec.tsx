@@ -1,17 +1,19 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { SYSTEM_RULE_TYPE, TAGS_ADDED_KEY } from 'models/event/constants'
-import {
+import type {
     EventData,
+    SatisfactionSurveyEventType,
+    TicketEventType,
+} from 'models/event/types'
+import {
     EventObjectType,
     SATISFACTION_SURVEY_EVENT_TYPES,
-    SatisfactionSurveyEventType,
     TICKET_EVENT_TYPES,
-    TicketEventType,
 } from 'models/event/types'
 import { RuleEvent } from 'state/rules/types'
 import { renderWithRouter } from 'utils/testing'

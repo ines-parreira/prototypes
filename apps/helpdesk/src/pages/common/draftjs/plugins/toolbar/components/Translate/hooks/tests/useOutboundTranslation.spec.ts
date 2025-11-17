@@ -2,7 +2,8 @@ import { act, renderHook } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { useParams } from 'react-router-dom'
 
-import { Language, useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
+import type { Language } from '@gorgias/helpdesk-queries'
+import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

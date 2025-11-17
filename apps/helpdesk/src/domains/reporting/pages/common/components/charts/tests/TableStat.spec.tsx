@@ -1,8 +1,9 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -13,8 +14,8 @@ import {
 } from 'domains/reporting/config/stats'
 import { TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
 import { channels } from 'fixtures/channels'
-import { Integration } from 'models/integration/types'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { Integration } from 'models/integration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import * as channelsService from 'services/channels'
 import { initialState } from 'state/tags/reducers'
 import { renderWithRouter } from 'utils/testing'

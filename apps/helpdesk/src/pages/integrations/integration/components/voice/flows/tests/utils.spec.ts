@@ -1,4 +1,4 @@
-import { Edge } from '@xyflow/react'
+import type { Edge } from '@xyflow/react'
 
 import {
     mockCustomerFieldBranchOption,
@@ -11,15 +11,17 @@ import {
     mockSendToVoicemailStep,
     mockTimeSplitConditionalStep,
 } from '@gorgias/helpdesk-mocks'
-import {
+import type {
     CallRoutingFlow,
     CallRoutingFlowSteps,
     CustomerFieldsConditionalStep,
     EnqueueStep,
     IvrMenuStep,
     PlayMessageStep,
-    TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
+} from '@gorgias/helpdesk-types'
+import {
+    TimeSplitConditionalRuleType,
     VoiceGender,
     VoiceLanguage,
 } from '@gorgias/helpdesk-types'
@@ -35,7 +37,7 @@ import {
     INCOMING_CALL_NODE,
     VoiceFlowNodeType,
 } from '../constants'
-import {
+import type {
     CustomerLookupNode,
     CustomerLookupOptionNode,
     EndCallNode,

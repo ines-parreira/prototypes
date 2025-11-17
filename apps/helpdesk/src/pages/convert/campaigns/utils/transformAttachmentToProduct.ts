@@ -1,7 +1,7 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import { AttachmentPosition } from '../types/CampaignAttachment'
-import { CampaignProduct } from '../types/CampaignProduct'
+import type { AttachmentPosition } from '../types/CampaignAttachment'
+import type { CampaignProduct } from '../types/CampaignProduct'
 
 type AttachmentImmutable = {
     content_type: string

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -11,7 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Event, useModalManager } from 'hooks/useModalManager'
 import { useSearchParam } from 'hooks/useSearchParam'
-import {
+import type {
     Article,
     ArticleTemplate,
     ArticleTranslationWithRating,
@@ -30,8 +31,8 @@ import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 import { unreachable } from 'utils'
 import { reportError } from 'utils/errors'
 
+import type { ArticleRowActionTypes } from '../constants'
 import {
-    ArticleRowActionTypes,
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE,
     HELP_CENTER_CREATE_ARTICLE_QUERY_KEY,
@@ -49,7 +50,8 @@ import {
     useGetArticleTemplate,
     useUpsertArticleTemplateReview,
 } from '../queries'
-import { ArticleMode, getArticleMode } from '../types/articleMode'
+import type { ArticleMode } from '../types/articleMode'
+import { getArticleMode } from '../types/articleMode'
 import { getGenericMessageFromError } from '../utils'
 import {
     articleRequiredFields,
@@ -61,7 +63,7 @@ import {
     isExistingArticle,
     slugify,
 } from '../utils/helpCenter.utils'
-import { ActionType, OptionItem } from './articles/ArticleLanguageSelect'
+import type { ActionType, OptionItem } from './articles/ArticleLanguageSelect'
 import { CloseModal } from './articles/CloseModal'
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'

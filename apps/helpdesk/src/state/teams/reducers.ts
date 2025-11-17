@@ -1,10 +1,10 @@
 import { fromJS } from 'immutable'
 
-import { Team } from 'models/team/types'
-import { GorgiasAction } from 'state/types'
+import type { Team } from 'models/team/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import { TeamsState } from './types'
+import type { TeamsState } from './types'
 
 export const initialState: TeamsState = fromJS({
     all: {},

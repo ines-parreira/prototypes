@@ -9,8 +9,8 @@ import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { PlanName } from 'utils/paywalls'
 

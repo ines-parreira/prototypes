@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 

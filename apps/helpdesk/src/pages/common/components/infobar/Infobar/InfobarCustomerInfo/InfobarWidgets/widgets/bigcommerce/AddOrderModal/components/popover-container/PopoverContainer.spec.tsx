@@ -1,4 +1,5 @@
-import React, { ComponentProps, PropsWithChildren, useRef } from 'react'
+import type { ComponentProps, PropsWithChildren } from 'react'
+import React, { useRef } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 

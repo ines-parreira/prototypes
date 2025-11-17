@@ -1,5 +1,5 @@
 import { useLocalStorage } from '@repo/hooks'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'

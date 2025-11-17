@@ -1,8 +1,9 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
 import { customer } from 'fixtures/customer'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

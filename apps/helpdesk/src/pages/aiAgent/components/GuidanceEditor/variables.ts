@@ -1,4 +1,4 @@
-import { GuidanceVariableGroup } from './variables.types'
+import type { GuidanceVariableGroup } from './variables.types'
 
 export const guidanceVariables: GuidanceVariableGroup[] = [
     {

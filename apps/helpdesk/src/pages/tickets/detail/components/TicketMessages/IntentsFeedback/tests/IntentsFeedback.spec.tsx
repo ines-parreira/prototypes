@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
@@ -11,7 +12,7 @@ import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import client from 'models/api/resources'
 import { message } from 'models/ticket/tests/mocks'
-import { TicketMessageIntent } from 'models/ticket/types'
+import type { TicketMessageIntent } from 'models/ticket/types'
 
 import { IntentsFeedback } from '../IntentsFeedback'
 

@@ -1,4 +1,5 @@
-import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
+import type { ComponentProps, ForwardedRef, Ref } from 'react'
+import React, { forwardRef } from 'react'
 
 import classnames from 'classnames'
 

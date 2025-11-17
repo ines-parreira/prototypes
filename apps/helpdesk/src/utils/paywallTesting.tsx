@@ -10,8 +10,8 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
-import { RootState } from 'state/types'
+import type { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
+import type { RootState } from 'state/types'
 
 export const getStateWithHelpdeskPlan = (
     helpdeskPlan: HelpdeskPlan = basicMonthlyHelpdeskPlan,

@@ -1,11 +1,5 @@
-import {
-    createContext,
-    ReactNode,
-    UIEventHandler,
-    useCallback,
-    useContext,
-    useState,
-} from 'react'
+import type { ReactNode, UIEventHandler } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 import classNames from 'classnames'
 

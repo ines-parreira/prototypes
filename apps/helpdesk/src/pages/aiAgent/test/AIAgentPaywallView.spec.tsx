@@ -23,10 +23,8 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import { useStoreActivations } from '../Activation/hooks/useStoreActivations'
-import {
-    AiAgentPaywallView,
-    AiAgentPaywallViewProps,
-} from '../AiAgentPaywallView'
+import type { AiAgentPaywallViewProps } from '../AiAgentPaywallView'
+import { AiAgentPaywallView } from '../AiAgentPaywallView'
 
 jest.mock('core/flags')
 const mockUseFlag = jest.mocked(useFlag)

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +10,7 @@ import thunk from 'redux-thunk'
 import { integrationsState } from 'fixtures/integrations'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { ManagedRulesSlugs } from 'state/rules/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AutoReplyReturnEditor from '../AutoReplyReturnEditor'
 

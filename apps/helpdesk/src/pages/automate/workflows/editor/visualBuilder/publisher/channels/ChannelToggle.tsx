@@ -8,13 +8,13 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 import { TicketChannel } from 'business/types/ticket'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import { MAX_ACTIVE_FLOWS } from 'pages/automate/common/components/constants'
-import {
+import type {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import { ChannelLanguage } from 'pages/automate/common/types'
+import type { ChannelLanguage } from 'pages/automate/common/types'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelWarning from '../helper/ChannelWarning'
 

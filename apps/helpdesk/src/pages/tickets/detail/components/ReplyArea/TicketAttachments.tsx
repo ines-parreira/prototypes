@@ -1,4 +1,5 @@
-import React, { Component, MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
+import React, { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'

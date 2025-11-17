@@ -10,13 +10,13 @@ import { Navigation } from 'components/Navigation/Navigation'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
-import { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
-import { NavigationChannelType } from './utils'
+import type { NavigationChannelType } from './utils'
 
 import css from '../AiAgentNavbar/AiAgentNavbar.less'
 

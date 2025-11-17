@@ -1,10 +1,8 @@
 import { renderHook } from '@testing-library/react'
 
-import {
-    CustomBusinessHoursContext,
-    CustomBusinessHoursContextState,
-} from '../CustomBusinessHoursContext'
-import { CustomBusinessHoursFormValues } from '../types'
+import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
+import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
+import type { CustomBusinessHoursFormValues } from '../types'
 import { useCustomBusinessHoursForm } from '../useCustomBusinessHoursForm'
 
 const renderHookWithContext = (integrationsToOverride: number[]) => {

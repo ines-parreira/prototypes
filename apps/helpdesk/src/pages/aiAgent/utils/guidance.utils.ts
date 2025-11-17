@@ -1,14 +1,14 @@
-import {
+import type {
     ArticleWithLocalTranslation,
     ArticleWithLocalTranslationAndRating,
     CreateArticleDto,
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { NotificationStatus } from 'state/notifications/types'
 
-import {
+import type {
     AIGuidance,
     CreateGuidanceArticle,
     GuidanceArticle,

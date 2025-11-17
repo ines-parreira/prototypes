@@ -1,9 +1,10 @@
-import React, { RefObject, useEffect, useMemo, useState } from 'react'
+import type { RefObject } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import logoShopify from 'assets/img/integrations/shopify.svg'
-import {
+import type {
     GuidanceVariable,
     GuidanceVariableGroup,
 } from 'pages/aiAgent/components/GuidanceEditor/variables.types'

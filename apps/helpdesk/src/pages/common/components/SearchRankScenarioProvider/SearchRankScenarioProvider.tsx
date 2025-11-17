@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
+import type { SearchRankSource } from 'hooks/useSearchRankScenario'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
 
 import SearchRankScenarioContext from './SearchRankScenarioContext'
 

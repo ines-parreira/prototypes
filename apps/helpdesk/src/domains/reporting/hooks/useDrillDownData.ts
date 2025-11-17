@@ -6,22 +6,23 @@ import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { IDRecord, MergedRecord } from 'domains/reporting/hooks/withEnrichment'
+import type {
+    IDRecord,
+    MergedRecord,
+} from 'domains/reporting/hooks/withEnrichment'
 import { TicketSLADimension } from 'domains/reporting/models/cubes/sla/TicketSLACube'
-import {
-    EnrichmentFields,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import {
+import type {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
 import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
-    DrillDownMetric,
     getDrillDownCurrentPage,
     setCurrentPage,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -36,7 +37,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
-import { DrillDownReportingQuery } from 'models/job/types'
+import type { DrillDownReportingQuery } from 'models/job/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 

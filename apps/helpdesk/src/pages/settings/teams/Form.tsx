@@ -1,8 +1,10 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { Emoji, EmojiData } from 'emoji-mart'
+import type { EmojiData } from 'emoji-mart'
+import { Emoji } from 'emoji-mart'
 import _cloneDeep from 'lodash/cloneDeep'
 import { NavLink, useParams } from 'react-router-dom'
 import {
@@ -22,7 +24,7 @@ import {
     LegacyIconButton as IconButton,
     LoadingSpinner,
 } from '@gorgias/axiom'
-import { Team } from '@gorgias/helpdesk-queries'
+import type { Team } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

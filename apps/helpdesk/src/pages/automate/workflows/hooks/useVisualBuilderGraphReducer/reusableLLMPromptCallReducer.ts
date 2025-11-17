@@ -2,13 +2,13 @@ import { produce } from 'immer'
 import { ulid } from 'ulidx'
 
 import { buildEdgeCommonProperties } from '../../models/visualBuilderGraph.model'
-import {
+import type {
     EndNodeType,
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
-import { WorkflowConfiguration } from '../../models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from '../../models/workflowConfiguration.types'
 import {
     buildEndNode,
     buildReusableLLMPromptCallNode,

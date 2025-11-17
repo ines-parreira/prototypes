@@ -1,4 +1,4 @@
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 
 export default function isChannelAlreadyMapped(
     activeChannel: ChannelWithMetadata,

@@ -1,4 +1,4 @@
-import { NavigationLinksListPage } from '../../../../models/helpCenter/types'
+import type { NavigationLinksListPage } from '../../../../models/helpCenter/types'
 
 export const getHelpCenterAllNavigationLinksEnglishFixture: NavigationLinksListPage =
     {

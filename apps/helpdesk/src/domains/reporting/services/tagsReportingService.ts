@@ -2,11 +2,11 @@ import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
+import type { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import {
     formatAndOrderTagTimeSeries,
     getOverallTicketTotals,
@@ -20,23 +20,23 @@ import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
-    getPeriodDateTimes,
+import type {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
-import {
+import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
+import type {
     Period,
     StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     getFormattedDelta,
     getFormattedPercentage,
 } from 'domains/reporting/pages/common/utils'
 import { formatDates } from 'domains/reporting/pages/utils'
-import { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
+import type { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import {
     getFilterDateRange,
     getPreviousPeriod,

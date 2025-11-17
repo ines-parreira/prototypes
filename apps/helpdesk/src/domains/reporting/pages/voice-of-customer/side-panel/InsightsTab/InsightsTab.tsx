@@ -8,10 +8,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTicketCountPerIntentForProduct } from 'domains/reporting/hooks/voice-of-customer/metricsPerProductAndIntent'
+import type { TicketsPerIntentOrderField } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
 import {
     INTENT_DIMENSION,
     TicketPerIntentSortingField,
-    TicketsPerIntentOrderField,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { LoadingSkeleton } from 'domains/reporting/pages/common/components/IntentCard'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
@@ -20,10 +20,8 @@ import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSec
 import { L3IntentCard } from 'domains/reporting/pages/voice-of-customer/components/L3IntentCard'
 import css from 'domains/reporting/pages/voice-of-customer/side-panel/InsightsTab/InsightsTab.less'
 import { formatDateRange } from 'domains/reporting/pages/voice-of-customer/utils'
-import {
-    getSidePanelProduct,
-    SidePanelProduct,
-} from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import { getSidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import {

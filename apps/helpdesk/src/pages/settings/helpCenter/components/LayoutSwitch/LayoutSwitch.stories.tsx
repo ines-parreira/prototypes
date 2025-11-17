@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { HelpCenterLayout } from '../../types/layout.enum'
-import { LayoutSwitch, LayoutSwitchProps } from './LayoutSwitch'
+import type { LayoutSwitchProps } from './LayoutSwitch'
+import { LayoutSwitch } from './LayoutSwitch'
 
 const storyConfig: Meta = {
     title: 'Help center/LayoutSwitch',

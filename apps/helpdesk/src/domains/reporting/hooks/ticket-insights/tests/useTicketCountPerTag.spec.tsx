@@ -13,10 +13,8 @@ import {
     useTotalTaggedTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
-import {
-    Period,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
@@ -28,7 +26,7 @@ import {
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('core/flags')
 const useFlagsMock = assumeMock(useFlag)

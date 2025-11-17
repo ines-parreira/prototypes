@@ -1,4 +1,5 @@
-import { Badge, ColorType, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { EditingStateEnum } from '../../constants'
 

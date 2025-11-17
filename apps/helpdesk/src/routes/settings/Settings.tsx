@@ -2,10 +2,8 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
 import { PageSection } from 'config/pages'
-import {
-    paywallConfigs as defaultPaywallConfigs,
-    PaywallConfig,
-} from 'config/paywalls'
+import type { PaywallConfig } from 'config/paywalls'
+import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import Access from 'pages/settings/access/Access'

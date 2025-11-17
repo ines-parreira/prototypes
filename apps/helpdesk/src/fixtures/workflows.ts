@@ -1,4 +1,4 @@
-import { WorkflowConfigurationShallow } from '../pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfigurationShallow } from '../pages/automate/workflows/models/workflowConfiguration.types'
 
 export const createWorkflowConfigurationShallow = (
     id: string,

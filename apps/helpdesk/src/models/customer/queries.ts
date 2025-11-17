@@ -1,5 +1,6 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 
 import { getCustomer } from 'models/customer/resources'
 

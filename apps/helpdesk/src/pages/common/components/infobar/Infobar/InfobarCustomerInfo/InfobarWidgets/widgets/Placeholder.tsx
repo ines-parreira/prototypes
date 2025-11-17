@@ -1,10 +1,11 @@
-import React, { MouseEvent, useContext } from 'react'
+import type { MouseEvent } from 'react'
+import React, { useContext } from 'react'
 
 import classnames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Template } from 'models/widget/types'
+import type { Template } from 'models/widget/types'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { removeEditedWidget } from 'state/widgets/actions'

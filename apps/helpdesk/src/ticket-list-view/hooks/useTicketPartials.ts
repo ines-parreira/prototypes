@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
-import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
-import { TicketPartial } from '../types'
+import type { TicketPartial } from '../types'
 
 type State = {
     cursor: CursorPaginationMeta['next_cursor']

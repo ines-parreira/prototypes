@@ -4,7 +4,7 @@ import {
     CHAT_INSTALLATION_STATUS_FETCHED,
     RESET_CHAT_INSTALLATION_STATUS,
 } from './constants'
-import { ChatInstallationStatusState } from './types'
+import type { ChatInstallationStatusState } from './types'
 
 export const chatInstallationStatusFetched =
     createAction<ChatInstallationStatusState>(CHAT_INSTALLATION_STATUS_FETCHED)

@@ -1,6 +1,6 @@
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomationDecreaseInFirstResponseTimeMetric } from 'pages/automate/automate-metrics'
 
 export const AutomationDecreaseInFirstResponseTimeTrendChart = ({

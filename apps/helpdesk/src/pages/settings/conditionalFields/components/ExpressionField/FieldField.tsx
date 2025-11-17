@@ -8,7 +8,7 @@ import {
     SUPPORTED_UI_DATA_TYPES,
 } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
-import { CustomField, SupportedUIDataType } from 'custom-fields/types'
+import type { CustomField, SupportedUIDataType } from 'custom-fields/types'
 
 import { EXPRESSION_OPERATORS_BY_UI_DATA_TYPE } from '../../constants'
 

@@ -1,7 +1,8 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { GorgiasChatIntegration } from 'models/integration/types'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

@@ -3,7 +3,7 @@ import { z, ZodIssueCode } from 'zod'
 import { isEmail } from 'utils'
 
 import { INTEGRATIONS_MAPPING } from './constants'
-import { HelpdeskIntegrationOptions } from './types'
+import type { HelpdeskIntegrationOptions } from './types'
 
 export type HandoverFormValues = {
     handoverMethod: string

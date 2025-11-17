@@ -1,4 +1,5 @@
-import { Handle, NodeProps, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position } from '@xyflow/react'
 
 import css from './NodeWrapper.less'
 

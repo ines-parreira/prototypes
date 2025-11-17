@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

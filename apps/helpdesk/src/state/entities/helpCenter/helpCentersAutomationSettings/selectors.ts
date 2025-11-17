@@ -1,6 +1,6 @@
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
-import { HelpCentersAutomationSettingsState } from './types'
+import type { HelpCentersAutomationSettingsState } from './types'
 
 export const getHelpCentersAutomationSettings = (
     state: StoreState,

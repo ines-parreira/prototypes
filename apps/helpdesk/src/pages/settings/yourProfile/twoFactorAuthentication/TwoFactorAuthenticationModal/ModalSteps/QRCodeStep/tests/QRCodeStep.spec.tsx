@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { authenticatorData } from 'fixtures/authenticatorData'
-import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
+import type { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 
 import QRCodeStep from '../QRCodeStep'
 

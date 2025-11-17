@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { LlmTriggeredExecution } from '../../types'
+import type { LlmTriggeredExecution } from '../../types'
 import ActionEventsList from '../ActionEventsList'
 
 describe('<ActionEventsList />', () => {

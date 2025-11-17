@@ -15,7 +15,7 @@ import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgent
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { ConnectedChannelsEmailView } from '../components/ConnectedChannelsEmailView'

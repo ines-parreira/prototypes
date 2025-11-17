@@ -6,11 +6,9 @@ import {
     liveDashboardWaitingTimeCallsListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const VoiceMetricsConfig: Record<

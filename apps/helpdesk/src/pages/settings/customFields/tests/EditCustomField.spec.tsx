@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import {
     aiManagedTicketInputFieldDefinition,
     managedCustomerInputFieldDefinition,

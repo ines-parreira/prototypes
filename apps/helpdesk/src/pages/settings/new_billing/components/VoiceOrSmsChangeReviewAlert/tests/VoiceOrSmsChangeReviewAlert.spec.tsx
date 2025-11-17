@@ -19,8 +19,8 @@ import {
     voicePlan0,
     voicePlan1,
 } from 'fixtures/productPrices'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import { RootState, StoreDispatch } from 'state/types'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import VoiceOrSmsChangeReviewAlert from '../VoiceOrSmsChangeReviewAlert'
 

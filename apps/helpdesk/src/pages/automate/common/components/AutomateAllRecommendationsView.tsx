@@ -4,19 +4,17 @@ import { Link } from 'react-router-dom'
 import { Card } from '@gorgias/analytics-ui-kit'
 
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
-import {
-    AllRecommendationsStatus,
-    useAIArticleRecommendationItems,
-} from '../hooks/useAIArticleRecommendationItems'
+import type { AllRecommendationsStatus } from '../hooks/useAIArticleRecommendationItems'
+import { useAIArticleRecommendationItems } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
+import type { TopQuestionsSectionProps } from './TopQuestions/TopQuestionsSection'
 import {
     HelpCenterFilter,
     StoreFilter,
-    TopQuestionsSectionProps,
 } from './TopQuestions/TopQuestionsSection'
 import { useTopQuestionsViewedOnPage } from './TopQuestions/useTopQuestionsViewedOnPage'
 

@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
+import type { ListCustomFieldConditionsResult } from '@gorgias/helpdesk-queries'
 import {
-    ListCustomFieldConditionsResult,
     queryKeys,
     useUpdateCustomFieldCondition as useUpdate,
 } from '@gorgias/helpdesk-queries'

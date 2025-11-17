@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import selectedIcon from 'assets/img/ai-journey/selected.svg'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import css from './Dropdown.less'
 

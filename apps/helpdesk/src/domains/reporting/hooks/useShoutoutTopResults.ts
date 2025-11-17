@@ -2,13 +2,11 @@ import { useMemo } from 'react'
 
 import _takeWhile from 'lodash/takeWhile'
 
-import { User } from 'config/types/user'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import {
-    formatMetricValue,
-    isMetricForAgent,
-} from 'domains/reporting/pages/common/utils'
+import type { User } from 'config/types/user'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { formatMetricValue } from 'domains/reporting/pages/common/utils'
+import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import useAppSelector from 'hooks/useAppSelector'

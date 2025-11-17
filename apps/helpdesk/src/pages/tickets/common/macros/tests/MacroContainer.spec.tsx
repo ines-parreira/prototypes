@@ -7,9 +7,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import { ModalProps } from '../components/MacroModal'
+import type { ModalProps } from '../components/MacroModal'
 import MacroContainer from '../MacroContainer'
 import { getDefaultSelectedMacroId } from '../utils'
 

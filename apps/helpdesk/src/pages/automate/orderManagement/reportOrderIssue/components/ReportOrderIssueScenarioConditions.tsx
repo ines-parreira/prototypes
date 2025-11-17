@@ -3,13 +3,15 @@ import React, { useRef, useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import shopify from 'assets/img/integrations/shopify.png'
-import {
-    JsonLogicOperator,
+import type {
     JsonLogicOrBlock,
     JsonLogicRuleOverVariable,
     ReportIssueRulesLogic,
-    ReportIssueVariable,
     SelfServiceReportIssueCase,
+} from 'models/selfServiceConfiguration/types'
+import {
+    JsonLogicOperator,
+    ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

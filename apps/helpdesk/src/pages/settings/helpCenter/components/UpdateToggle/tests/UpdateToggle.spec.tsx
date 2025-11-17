@@ -5,8 +5,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Components } from 'rest_api/help_center_api/client.generated'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Components } from 'rest_api/help_center_api/client.generated'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { UpdateToggle } from '../UpdateToggle'
 

@@ -8,7 +8,10 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import { AccountConfiguration, StoreConfiguration } from 'models/aiAgent/types'
+import type {
+    AccountConfiguration,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'

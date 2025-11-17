@@ -4,7 +4,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { SmsPhoneNumber } from '../../StoreConfigForm/types'
+import type { SmsPhoneNumber } from '../../StoreConfigForm/types'
 import { SmsIntegrationListSelection } from '../SmsIntegrationListSelection'
 
 jest.mock('../../StoreConfigForm/hooks/useSmsPhoneNumbers', () => ({

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -27,7 +28,7 @@ import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InputField from 'pages/common/forms/input/InputField'
 import { useGetPageEmbedments } from 'pages/settings/helpCenter/queries'
 import settingsCss from 'pages/settings/settings.less'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 import {
     helpCenterDeleted,
     helpCenterUpdated,

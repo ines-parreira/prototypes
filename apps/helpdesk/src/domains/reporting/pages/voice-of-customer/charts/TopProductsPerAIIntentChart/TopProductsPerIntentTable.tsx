@@ -3,14 +3,14 @@ import { useState } from 'react'
 import { useIntentTicketCountsAndDelta } from 'domains/reporting/hooks/voice-of-customer/useIntentTicketCountsAndDelta'
 import { TableWithNestedRows } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { IntentRows } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/IntentRows'
+import type { TopIntentsColumns } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import {
     LeadColumn,
     TOP_INTENTS_PER_PAGE,
-    TopIntentsColumns,
     TopProductsPerIntentColumnConfig,
     TopProductsTableColumnsForIntents,
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
-import {
+import type {
     TopIntentsRowProps,
     TopProductsPerIntentOrder,
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'

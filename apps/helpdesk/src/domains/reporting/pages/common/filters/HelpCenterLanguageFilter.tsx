@@ -3,14 +3,10 @@ import React, { useCallback, useMemo } from 'react'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
-import {
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'domains/reporting/pages/common/components/Filter/constants'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
 import {
     FilterLabels,
@@ -20,14 +16,14 @@ import {
     emptyFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.LocaleCodes]

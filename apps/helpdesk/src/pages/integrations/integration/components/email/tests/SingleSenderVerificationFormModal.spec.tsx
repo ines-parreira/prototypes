@@ -1,11 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import SingleSenderVerificationFormModal from '../EmailMigration/SingleSenderVerificationFormModal'
-import VerificationForm, {
-    FORM_ID,
-} from '../EmailOutboundVerification/VerificationForm/VerificationForm'
+import type VerificationForm from '../EmailOutboundVerification/VerificationForm/VerificationForm'
+import { FORM_ID } from '../EmailOutboundVerification/VerificationForm/VerificationForm'
 
 jest.mock(
     '../EmailOutboundVerification/VerificationForm/VerificationForm',

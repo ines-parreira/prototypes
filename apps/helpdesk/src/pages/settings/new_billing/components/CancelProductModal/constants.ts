@@ -1,6 +1,6 @@
 import { isProduction } from '@repo/utils'
 
-import { CancellationReason, ReasonsToCanduContent } from './types'
+import type { CancellationReason, ReasonsToCanduContent } from './types'
 
 export const CHURN_MITIGATION_OFFER_ZAPIER_URL = isProduction()
     ? 'https://hooks.zapier.com/hooks/catch/11610441/30s3nqr/'

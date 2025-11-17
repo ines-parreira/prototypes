@@ -6,13 +6,13 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
-import {
+import type {
     ActionStepItem,
     LlmTriggeredExecution,
     TemplateConfiguration,
 } from 'pages/aiAgent/actions/types'
 import { defaultNodeNames } from 'pages/automate/workflows/editor/visualBuilder/nodes/constants'
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import css from './AiAgentFailedWorkflowMessage.less'
 

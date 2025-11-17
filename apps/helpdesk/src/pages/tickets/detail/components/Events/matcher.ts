@@ -1,7 +1,7 @@
 import bigCommerceEvent from './bigcommerce'
 import rechargeEvent from './recharge'
 import shopifyEvent from './shopify'
-import { eventMaker, integrationEvent } from './types'
+import type { eventMaker, integrationEvent } from './types'
 
 export const eventMatcher = (
     eventData: eventMaker,

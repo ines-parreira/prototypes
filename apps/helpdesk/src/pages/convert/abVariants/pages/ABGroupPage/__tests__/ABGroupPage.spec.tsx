@@ -9,7 +9,7 @@ import {
     useGetCampaign,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

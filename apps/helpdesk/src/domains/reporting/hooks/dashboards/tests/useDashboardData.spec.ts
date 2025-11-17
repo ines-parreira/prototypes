@@ -13,14 +13,14 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useSanitizedDashboard } from 'domains/reporting/hooks/dashboards/useSanitizedDashboard'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import {
+import type {
     DashboardChartSchema,
-    DashboardChildType,
     DashboardRowSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import {
     OverviewChartConfig,

@@ -1,10 +1,12 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { createEvent, fireEvent, render } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
-import { fromJS, Map as ImmutableMap } from 'immutable'
+import type { Map as ImmutableMap } from 'immutable'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

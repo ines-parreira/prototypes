@@ -4,10 +4,9 @@ import { act, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import type { EmailDomain, HttpResponse } from '@gorgias/helpdesk-client'
 import {
-    EmailDomain,
     getEmailIntegrationDomain,
-    HttpResponse,
     verifyEmailIntegrationDomain,
 } from '@gorgias/helpdesk-client'
 
@@ -20,10 +19,8 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
 } from '../../helpers'
-import {
-    DEPRECATED_useDomainVerification,
-    UseDomainVerificationRequestHookOptions,
-} from '../DEPRECATED_useDomainVerification'
+import type { UseDomainVerificationRequestHookOptions } from '../DEPRECATED_useDomainVerification'
+import { DEPRECATED_useDomainVerification } from '../DEPRECATED_useDomainVerification'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')

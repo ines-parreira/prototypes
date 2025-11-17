@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
 import { CopyableTextField } from 'core/ui'
-import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
+import type { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 
 type OwnProps = {
     authenticatorData: AuthenticatorData

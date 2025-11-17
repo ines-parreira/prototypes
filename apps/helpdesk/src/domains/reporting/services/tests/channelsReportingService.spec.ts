@@ -1,4 +1,4 @@
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
 import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
@@ -13,12 +13,10 @@ import {
     ChannelsTableLabels,
     columnsOrder,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
-import {
-    ChannelsReportMetrics,
-    saveReport,
-} from 'domains/reporting/services/channelsReportingService'
+import type { ChannelsReportMetrics } from 'domains/reporting/services/channelsReportingService'
+import { saveReport } from 'domains/reporting/services/channelsReportingService'
 import { channels } from 'fixtures/channels'
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 import * as files from 'utils/file'
 
 jest.mock('utils/file')

@@ -1,21 +1,23 @@
 import { useCallback, useMemo } from 'react'
 
-import { AxiosError } from 'axios'
-import { Notification, notify as updateNotification } from 'reapop'
-import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+import type { AxiosError } from 'axios'
+import type { Notification } from 'reapop'
+import { notify as updateNotification } from 'reapop'
+import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { JobType, useCreateJob } from '@gorgias/helpdesk-queries'
+import type { JobType } from '@gorgias/helpdesk-queries'
+import { useCreateJob } from '@gorgias/helpdesk-queries'
 
 import { getConfigByType } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { View } from 'models/view/types'
+import type { View } from 'models/view/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getActiveView } from 'state/views/selectors'
 import { getMoment } from 'utils/date'
 
-import { Update } from './types'
+import type { Update } from './types'
 import useCancelJob from './useCancelJob'
 import useNotificationPayload from './useNotificationPayload'
 

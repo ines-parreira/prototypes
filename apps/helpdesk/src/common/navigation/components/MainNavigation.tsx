@@ -15,8 +15,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
 
+import type { MenuItem } from '../hooks/useMainNavigationItems'
 import {
-    MenuItem,
     MenuItemName,
     useMainNavigationItems,
 } from '../hooks/useMainNavigationItems'

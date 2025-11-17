@@ -3,10 +3,11 @@ import React from 'react'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { createStore, Store } from 'redux'
+import type { Store } from 'redux'
+import { createStore } from 'redux'
 
 import { IntegrationType } from 'models/integration/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { useCurrency } from '../useCurrency'
 

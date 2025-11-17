@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 
 import {
     LegacyButton as Button,
@@ -6,7 +7,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 

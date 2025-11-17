@@ -1,6 +1,6 @@
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
-import { SettingRequest, SettingsParams } from './types'
+import type { SettingRequest, SettingsParams } from './types'
 
 export const updateSettings = async (
     client: RevenueAddonClient | undefined,

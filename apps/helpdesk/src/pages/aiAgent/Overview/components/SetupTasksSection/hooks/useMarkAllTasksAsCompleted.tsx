@@ -6,9 +6,9 @@ import {
     postStoreInstallationStepsKeys,
     useUpdatePostStoreInstallationStepPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 
-import { TaskConfig } from '../types'
+import type { TaskConfig } from '../types'
 
 interface UseMarkAllTasksAsCompletedParams {
     postGoLiveStepId: string | undefined

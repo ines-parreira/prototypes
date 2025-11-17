@@ -1,5 +1,5 @@
+import type { FormEvent } from 'react'
 import {
-    FormEvent,
     useCallback,
     useContext,
     useEffect,
@@ -10,15 +10,16 @@ import {
 
 import { useAsyncFn, usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { BaseEmoji, EmojiData, emojiIndex } from 'emoji-mart'
-import { Map } from 'immutable'
+import type { BaseEmoji, EmojiData } from 'emoji-mart'
+import { emojiIndex } from 'emoji-mart'
+import type { Map } from 'immutable'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { createTeam } from 'models/team/resources'
-import { Team } from 'models/team/types'
+import type { Team } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Dropdown, {
     DropdownContext,
@@ -32,10 +33,8 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import Wizard, {
-    WizardContext,
-    WizardContextState,
-} from 'pages/common/components/wizard/Wizard'
+import type { WizardContextState } from 'pages/common/components/wizard/Wizard'
+import Wizard, { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'

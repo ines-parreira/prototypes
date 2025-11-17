@@ -2,7 +2,7 @@ import Skeleton from 'react-loading-skeleton'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 
 import { PerformanceBadge } from '../PerformanceBadge/PerformanceBadge'
 import { EmptyContent } from './components/EmptyContent/EmptyContent'

@@ -2,9 +2,8 @@ import { Container } from 'reactstrap'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import DEPRECATED_EmailDomainVerification, {
-    Props,
-} from './DEPRECATED_EmailDomainVerification'
+import type { Props } from './DEPRECATED_EmailDomainVerification'
+import DEPRECATED_EmailDomainVerification from './DEPRECATED_EmailDomainVerification'
 
 /**
  * @deprecated

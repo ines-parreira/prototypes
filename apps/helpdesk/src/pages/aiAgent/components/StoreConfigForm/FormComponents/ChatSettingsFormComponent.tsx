@@ -3,16 +3,14 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import {
-    ChatIntegrationListSelection,
-    InstallationStatusInjectedChatItem,
-} from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import type { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import {
     INITIAL_FORM_VALUES,
     StoreConfigFormSection,
 } from 'pages/aiAgent/constants'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
     SettingsCardContent,

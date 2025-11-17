@@ -1,4 +1,4 @@
-import { AccountFeatureMetadata } from '../state/currentAccount/types'
+import type { AccountFeatureMetadata } from '../state/currentAccount/types'
 
 export function isFeatureEnabled(
     featureMetadata: AccountFeatureMetadata,

@@ -1,16 +1,16 @@
-import React, { PropsWithRef } from 'react'
+import type { PropsWithRef } from 'react'
+import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import css from 'domains/reporting/pages/support-performance/agents/AgentCellContent.less'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import { STATS_ROUTES } from 'routes/constants'
 
 export type AgentNameCellContentProps = {

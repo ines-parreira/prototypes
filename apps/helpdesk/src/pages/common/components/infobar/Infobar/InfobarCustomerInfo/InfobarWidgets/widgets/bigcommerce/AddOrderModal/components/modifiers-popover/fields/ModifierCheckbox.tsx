@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 
-import { BigCommerceProductCheckboxModifier } from 'models/integration/types'
+import type { BigCommerceProductCheckboxModifier } from 'models/integration/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import { FieldProps } from './types'
+import type { FieldProps } from './types'
 
 import sharedCss from './Shared.less'
 

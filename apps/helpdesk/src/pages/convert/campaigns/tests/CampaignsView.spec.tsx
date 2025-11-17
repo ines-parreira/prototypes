@@ -23,14 +23,14 @@ import {
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { CONVERT_ROUTE_PARAM_NAME } from '../../common/constants'
 import { useGetOrCreateChannelConnection } from '../../common/hooks/useGetOrCreateChannelConnection'
 import { CampaignsView } from '../CampaignsView'
-import { Campaign } from '../types/Campaign'
+import type { Campaign } from '../types/Campaign'
 import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
 
 jest.mock('utils/launchDarkly')

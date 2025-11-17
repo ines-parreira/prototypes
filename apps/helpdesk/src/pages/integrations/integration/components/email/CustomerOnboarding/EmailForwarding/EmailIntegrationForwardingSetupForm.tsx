@@ -6,7 +6,7 @@ import {
     LegacyCheckBoxField as CheckBoxField,
     LoadingSpinner,
 } from '@gorgias/axiom'
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { Form } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'

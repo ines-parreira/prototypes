@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -6,7 +7,7 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 
 import ColorPanel from './views/ColorPanel'
 

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,9 +8,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { emptyManagedRule } from 'fixtures/rule'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { InstallationError } from '../../../constants'
 import { AutoReplyFAQModal } from '../AutoReplyFAQModal'

@@ -1,5 +1,5 @@
+import type { ForwardedRef } from 'react'
 import React, {
-    ForwardedRef,
     forwardRef,
     useCallback,
     useImperativeHandle,

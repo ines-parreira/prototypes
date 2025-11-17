@@ -10,7 +10,7 @@ import {
     PostStoreInstallationStepType,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { RuleEngineData } from 'pages/aiAgent/Overview/hooks/pendingTasks/ruleEngine'
+import type { RuleEngineData } from 'pages/aiAgent/Overview/hooks/pendingTasks/ruleEngine'
 import { CreateAnActionTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/CreateAnAction.task'
 import { EnableAIAgentOnChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAIAgentOnChat.task'
 import { VerifyYourEmailDomainTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/VerifyYourEmailDomain.task'

@@ -1,23 +1,28 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
-import axios, { AxiosError, CancelToken } from 'axios'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
 import _isEqual from 'lodash/isEqual'
 
 import { fetchStat } from 'domains/reporting/models/stat/resources'
-import { LegacyStatsFilters, Stat } from 'domains/reporting/models/stat/types'
+import type {
+    LegacyStatsFilters,
+    Stat,
+} from 'domains/reporting/models/stat/types'
 import {
     fetchStatEnded,
     fetchStatStarted,
 } from 'domains/reporting/state/ui/stats/fetchingMapSlice'
-import { StatsState as StatsUIState } from 'domains/reporting/state/ui/stats/reducer'
+import type { StatsState as StatsUIState } from 'domains/reporting/state/ui/stats/reducer'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { statFetched } from 'state/entities/stats/actions'
-import { StatsState } from 'state/entities/stats/types'
+import type { StatsState } from 'state/entities/stats/types'
 import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
 export const DEFAULT_ERROR_MESSAGE =

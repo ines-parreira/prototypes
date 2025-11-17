@@ -1,10 +1,9 @@
 import { fromJS } from 'immutable'
 
-import {
-    LeadColumn,
-    Product,
-} from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import type { Product } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
+import { LeadColumn } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { PRODUCT_INSIGHTS_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
+import type { ProductInsightsSliceState } from 'domains/reporting/state/ui/stats/productInsightsSlice'
 import {
     getProducts,
     getProductsLoading,
@@ -13,20 +12,17 @@ import {
     getSorting,
     initialState,
     productInsightsSlice,
-    ProductInsightsSliceState,
     productsLoading,
     setProducts,
     sortingLoaded,
     sortingLoading,
     sortingSet,
 } from 'domains/reporting/state/ui/stats/productInsightsSlice'
-import {
-    ProductInsightsTableColumns,
-    TableView,
-} from 'domains/reporting/state/ui/stats/types'
+import type { TableView } from 'domains/reporting/state/ui/stats/types'
+import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { opposite, OrderDirection } from 'models/api/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getSortByName } from 'utils/getSortByName'
 
 describe('productInsightsSlice', () => {

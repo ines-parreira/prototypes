@@ -5,7 +5,7 @@ import ActionFormMerchantInputValue from 'pages/aiAgent/actions/components/Actio
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
+import type {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraphAppApp,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

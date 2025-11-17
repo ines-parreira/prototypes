@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { TicketPurpose } from 'state/billing/types'
+import type { TicketPurpose } from 'state/billing/types'
 import { notify } from 'state/notifications/actions'
 
 import createBillingErrorNotification from '../utils/createBillingErrorNotification'

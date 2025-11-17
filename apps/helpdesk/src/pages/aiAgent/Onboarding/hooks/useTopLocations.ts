@@ -12,10 +12,10 @@ import {
     topLocationsRecommendationsQueryFactory,
     totalNumberOfOrderQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 

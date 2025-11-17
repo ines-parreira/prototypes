@@ -5,7 +5,8 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, useLocation } from 'react-router-dom'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { Language } from 'constants/languages'
@@ -15,7 +16,7 @@ import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasTranslateText from '../GorgiasTranslateText'
 

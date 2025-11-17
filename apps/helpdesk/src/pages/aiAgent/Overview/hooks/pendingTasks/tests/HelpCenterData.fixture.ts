@@ -1,4 +1,4 @@
-import { FaqHelpCentersData } from '../useFetchFaqHelpCentersData'
+import type { FaqHelpCentersData } from '../useFetchFaqHelpCentersData'
 
 type AllKeys = keyof HelpCenterDataFixture
 type ConfiguredHelpCenterDataFixture<

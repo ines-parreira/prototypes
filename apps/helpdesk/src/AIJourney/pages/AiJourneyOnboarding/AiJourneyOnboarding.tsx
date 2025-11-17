@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { OnboardingStepSelector } from 'AIJourney/components/OnboardingStepSelector/OnboardingStepSelector'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'

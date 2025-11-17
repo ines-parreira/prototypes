@@ -1,4 +1,4 @@
-import { Scale, TooltipItem } from 'chart.js'
+import type { Scale, TooltipItem } from 'chart.js'
 import difference from 'lodash/difference'
 import flatMap from 'lodash/flatMap'
 import groupBy from 'lodash/groupBy'
@@ -6,7 +6,8 @@ import keyBy from 'lodash/keyBy'
 import map from 'lodash/map'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
-import moment, { Moment } from 'moment'
+import type { Moment } from 'moment'
+import moment from 'moment'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 import { OrderDirection } from '@gorgias/helpdesk-queries'
@@ -17,33 +18,33 @@ import {
     workflowEndStepDropoff,
 } from 'domains/reporting/hooks/automate/automateStatsFormulae'
 import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
+import type {
+    EnrichedTicketCustomFieldsWithSuccessRate,
+    EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
+    GreyArea,
+    WorkflowTrendMetrics,
+} from 'domains/reporting/hooks/automate/types'
 import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
     DEFAULT_WORKFLOW_ANALYTICS_DATA,
-    EnrichedTicketCustomFieldsWithSuccessRate,
-    EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
     FLOW_ENDED_WITH_TICKET_HANDOVER,
     FLOW_HANDOVER_TICKET_CREATED,
     FLOW_PROMPT_NOT_HELPFUL,
     FLOW_STARTED,
     FLOW_STEP_ENDED,
     FLOW_STEP_STARTED,
-    GreyArea,
     TICKET_COUNT,
-    WorkflowTrendMetrics,
 } from 'domains/reporting/hooks/automate/types'
-import {
+import type {
     MetricWithDecile,
     QueryReturnType,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { Cubes } from 'domains/reporting/models/cubes'
-import {
-    AutomationBillingEventCubeWithJoins,
-    AutomationBillingEventMeasure,
-} from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { AutomationBillingEventCubeWithJoins } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
+import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesMeasure,
@@ -53,20 +54,20 @@ import {
     WorkflowDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/WorkflowDatasetCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import {
+import type {
     TicketCustomFieldsCube,
-    TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { Period, StatsFilters } from 'domains/reporting/models/stat/types'
+import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { SHORT_FORMAT } from 'domains/reporting/pages/common/utils'
-import {
+import type {
     AutomatedInteractionByFeatures,
     TwoDimensionalDataItem,
 } from 'domains/reporting/pages/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 export type WorkflowMetrics = {
     workflowStarted: number

@@ -1,8 +1,8 @@
 import { BASIC_OPERATORS } from 'config'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import { CustomFieldTreePath } from 'models/rule/types'
-import { OperatorType } from 'pages/common/components/ViewTable/Filters/types'
-import { Schemas } from 'types'
+import type { OperatorType } from 'pages/common/components/ViewTable/Filters/types'
+import type { Schemas } from 'types'
 import { findProperty } from 'utils'
 
 import getFieldSchemaDefinitionKey from './getFieldSchemaDefinitionKey'

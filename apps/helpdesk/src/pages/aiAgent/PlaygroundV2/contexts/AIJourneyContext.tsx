@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import {
     createContext,
-    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -8,11 +8,11 @@ import {
     useState,
 } from 'react'
 
-import {
+import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
-    JourneyTypeEnum,
 } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { TokenProvider } from 'AIJourney/providers'
@@ -21,13 +21,11 @@ import {
     useJourneys,
     useUpdateJourney,
 } from 'AIJourney/queries'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
-import {
-    AIJourneySettings,
-    PlaygroundEvent,
-} from 'pages/aiAgent/PlaygroundV2/types'
+import type { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
+import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {

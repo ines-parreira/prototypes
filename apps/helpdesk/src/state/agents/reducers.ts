@@ -1,16 +1,18 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 
-import {
+import type {
     FeedbackStatus,
     ResourceSection,
 } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import * as currentUserConstants from '../currentUser/constants'
-import { StoreAction } from '../types'
+import type { StoreAction } from '../types'
 import * as agentsConstants from './constants'
-import { AgentsState } from './types'
+import type { AgentsState } from './types'
 
 export type MessageFeedbackStatusAction = {
     resourceType: ResourceSection

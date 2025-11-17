@@ -9,12 +9,12 @@ import {
     useListAccountSettings,
     useUpdateAccountSetting,
 } from '@gorgias/helpdesk-queries'
-import { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
+import type { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { Drawer } from 'components/Drawer/Drawer'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

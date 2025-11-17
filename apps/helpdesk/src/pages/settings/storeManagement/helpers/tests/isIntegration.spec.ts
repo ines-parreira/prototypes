@@ -1,4 +1,5 @@
-import { Integration, IntegrationType } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 import {
     isChatChannel,

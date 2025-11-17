@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
-import {
+import type {
     ArticleTranslationWithRating,
     CreateArticleDto,
 } from 'models/helpCenter/types'

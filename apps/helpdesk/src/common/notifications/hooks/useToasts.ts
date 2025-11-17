@@ -5,7 +5,7 @@ import { notificationSounds } from 'services'
 import { defaultSound } from 'services/NotificationSounds'
 import { getNotificationSettings } from 'state/currentUser/selectors'
 
-import { Notification } from '../types'
+import type { Notification } from '../types'
 import getNotificationConfig from '../utils/getNotificationConfig'
 import useNotifications from './useNotifications'
 

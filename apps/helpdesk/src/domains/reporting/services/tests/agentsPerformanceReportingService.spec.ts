@@ -1,5 +1,6 @@
-import { User, UserRole, UserSettingType } from 'config/types/user'
-import { Metric } from 'domains/reporting/hooks/metrics'
+import type { User } from 'config/types/user'
+import { UserRole, UserSettingType } from 'config/types/user'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -8,8 +9,8 @@ import {
 } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { TableLabels } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import type { AgentsPerformanceReportData } from 'domains/reporting/services/agentsPerformanceReportingService'
 import {
-    AgentsPerformanceReportData,
     createAgentsReport,
     getData,
     SUMMARY_ROW_AGENT_COLUMN_LABEL,

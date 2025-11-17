@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 
 import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
 

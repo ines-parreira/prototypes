@@ -1,7 +1,8 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { Badge } from '@gorgias/axiom'
 

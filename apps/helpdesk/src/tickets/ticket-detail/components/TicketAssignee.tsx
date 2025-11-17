@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { Emoji } from 'emoji-mart'
 
 import { LegacyAvatar as Avatar } from '@gorgias/axiom'
-import { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
+import type { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { Avatar as NewAvatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'

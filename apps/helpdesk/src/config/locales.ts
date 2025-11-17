@@ -1,4 +1,4 @@
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 import { LanguageTimeFormat } from '../constants/languages'
 

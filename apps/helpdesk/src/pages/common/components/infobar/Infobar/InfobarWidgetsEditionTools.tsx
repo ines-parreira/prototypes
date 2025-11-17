@@ -1,13 +1,15 @@
 import { Component } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { startEditionMode, submitWidgets } from 'state/widgets/actions'
-import { WidgetEnvironment } from 'state/widgets/types'
+import type { WidgetEnvironment } from 'state/widgets/types'
 
 import css from '../Infobar.less'
 

@@ -1,4 +1,5 @@
-import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
+import type { ContentBlock, ContentState, SelectionState } from 'draft-js'
+import { Modifier } from 'draft-js'
 import { fromJS } from 'immutable'
 
 export const QUOTE_DEPTH_DATA_KEY = 'quoteDepth'

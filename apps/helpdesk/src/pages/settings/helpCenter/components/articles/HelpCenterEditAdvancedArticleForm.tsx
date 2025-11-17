@@ -7,7 +7,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
     LocalArticleTranslation,

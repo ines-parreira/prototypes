@@ -3,16 +3,16 @@ import { useCallback, useRef } from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import { POSITIONS } from 'reapop'
 
-import { JobType } from '@gorgias/helpdesk-queries'
+import type { JobType } from '@gorgias/helpdesk-queries'
 
+import type { AlertNotification } from 'state/notifications/types'
 import {
-    AlertNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
 import { buildJobMessage } from 'utils/notificationUtils'
 
-import { Update } from './types'
+import type { Update } from './types'
 
 type Props = {
     level: 'ticket' | 'view'

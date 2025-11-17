@@ -1,7 +1,9 @@
-import React, { Component, ContextType, RefObject } from 'react'
+import type { ContextType, RefObject } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import hash from 'object-hash'
 import { connect } from 'react-redux'
 
@@ -11,9 +13,9 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { onPayloadChange } from 'state/infobarActions/shopify/createOrder/actions'
 import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
-import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import ShippingPopover from './ShippingPopover'
 import TaxesPopover from './TaxesPopover'

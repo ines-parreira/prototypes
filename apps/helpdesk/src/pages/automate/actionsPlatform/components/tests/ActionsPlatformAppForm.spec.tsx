@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithRouter } from 'utils/testing'
 
-import { App } from '../../types'
+import type { App } from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'
 
 describe('<ActionsPlatformAppForm />', () => {

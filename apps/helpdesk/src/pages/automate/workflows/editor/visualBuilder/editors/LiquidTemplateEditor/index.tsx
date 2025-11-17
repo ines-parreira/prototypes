@@ -9,8 +9,8 @@ import {
     extractVariablesFromNode,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

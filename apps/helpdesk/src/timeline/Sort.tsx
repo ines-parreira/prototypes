@@ -3,17 +3,17 @@ import { useMemo, useRef, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
+import type { LegacySelectFieldTriggerProps as SelectFieldTriggerProps } from '@gorgias/axiom'
 import {
     LegacyIconButton as IconButton,
     LegacySelectField as SelectField,
-    LegacySelectFieldTriggerProps as SelectFieldTriggerProps,
 } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
-import { SortOption } from './types'
+import type { SortOption } from './types'
 
 import css from './Sort.less'
 

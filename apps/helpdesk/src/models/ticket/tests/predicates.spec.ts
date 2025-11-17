@@ -10,7 +10,8 @@ import {
     isTicketMessageSourceType,
     shouldMessagesBeGrouped,
 } from '../predicates'
-import { ActionStatus, MessageMetadataType, TicketMessage } from '../types'
+import type { TicketMessage } from '../types'
+import { ActionStatus, MessageMetadataType } from '../types'
 import { action as defaultAction, message as defaultMessage } from './mocks'
 
 describe('predicates', () => {

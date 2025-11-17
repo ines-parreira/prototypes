@@ -1,8 +1,8 @@
+import type { User } from '../config/types/user'
 import {
     AvailabilityStatusChannel,
     AvailabilityStatusDetailCode,
     AvailabilityStatusTag,
-    User,
     UserRole,
 } from '../config/types/user'
 

@@ -1,4 +1,5 @@
-import { PaymentElement, PaymentElementProps } from '@stripe/react-stripe-js'
+import type { PaymentElementProps } from '@stripe/react-stripe-js'
+import { PaymentElement } from '@stripe/react-stripe-js'
 
 export const StripePaymentElement: React.FC<PaymentElementProps> = ({
     options,

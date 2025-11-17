@@ -1,9 +1,9 @@
-import React from 'react'
+import type React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import AiAgentStatsFilters from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'

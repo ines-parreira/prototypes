@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import {
     fetchMessagesSentMetric,
     fetchOnlineTimeMetric,
@@ -29,10 +29,8 @@ import {
     HelpdeskMessageMeasure,
 } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/metrics')
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)

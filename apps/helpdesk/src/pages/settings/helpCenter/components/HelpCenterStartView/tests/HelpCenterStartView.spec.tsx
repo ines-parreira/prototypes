@@ -10,7 +10,7 @@ import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'

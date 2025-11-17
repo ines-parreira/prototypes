@@ -2,7 +2,7 @@ import {
     IngestedResourceStatus,
     PAGINATED_ITEMS_PER_PAGE,
 } from '../AiAgentScrapedDomainContent/constant'
-import {
+import type {
     IngestedResourceWithArticleId,
     IngestedResourceWithArticleIdList,
 } from '../AiAgentScrapedDomainContent/types'

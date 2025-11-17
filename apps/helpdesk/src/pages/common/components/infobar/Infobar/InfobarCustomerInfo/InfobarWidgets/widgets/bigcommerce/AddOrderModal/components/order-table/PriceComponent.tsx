@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'

@@ -1,4 +1,5 @@
-import { IdentifierCategoryKey, RuleObject } from '../types'
+import type { RuleObject } from '../types'
+import { IdentifierCategoryKey } from '../types'
 import { getAstPath, getCategoryFromPath } from '../utils'
 
 describe('rule utils', () => {

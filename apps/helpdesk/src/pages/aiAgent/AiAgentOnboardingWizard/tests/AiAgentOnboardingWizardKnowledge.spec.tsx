@@ -1,6 +1,6 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'

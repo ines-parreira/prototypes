@@ -5,14 +5,14 @@ import { uniq } from 'lodash'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Integration, IntegrationType } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { isSource, isTicketMessageSourceType } from 'models/ticket/predicates'
-import { Source, SourceAddress, Ticket } from 'models/ticket/types'
-import { Application, getApplications } from 'services/applications'
+import type { Source, SourceAddress, Ticket } from 'models/ticket/types'
+import type { Application } from 'services/applications'
+import { getApplications } from 'services/applications'
+import type { Channel, ChannelIdentifier, ChannelLike } from 'services/channels'
 import {
-    Channel,
-    ChannelIdentifier,
-    ChannelLike,
     getChannels,
     isChannel,
     isNewChannel,

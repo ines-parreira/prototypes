@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
@@ -10,14 +11,14 @@ import {
     getLanguagesFromChatConfig,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import type { Language } from 'constants/languages'
 import { Label } from 'gorgias-design-system/Input/Label'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
 import Caption from 'pages/common/forms/Caption/Caption'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
 import commonCss from './HandoverCommonSettings.less'

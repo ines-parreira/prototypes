@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect'
 
-import { BigCommerceCustomerAddress } from 'models/integration/types'
+import type { BigCommerceCustomerAddress } from 'models/integration/types'
 import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
 import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { toJS } from 'utils'
 
 export const getCustomerAddresses = (integrationId: Maybe<number>) =>

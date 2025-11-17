@@ -1,4 +1,4 @@
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 export const getFailedWorkflowData = (message: TicketMessage) => {
     const workflowData = extractFailedWorkflowMetaData(message)

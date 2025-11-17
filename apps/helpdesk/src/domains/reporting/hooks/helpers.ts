@@ -1,36 +1,36 @@
 import { flatMap } from 'lodash'
 
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
-import { MetricName } from 'domains/reporting/hooks/metricNames'
-import {
-    fetchMetricPerDimensionV2,
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import type {
     MetricWithDecileFetch,
     QueryReturnType,
     ReportingMetricItem,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import {
-    AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import {
-    TicketTagsEnrichedCube,
-    TicketTagsEnrichedDimension,
-} from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     MetricQueryFactory,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'domains/reporting/pages/utils'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const calculateTotalCapacity = (
     allAgentsMetricData:

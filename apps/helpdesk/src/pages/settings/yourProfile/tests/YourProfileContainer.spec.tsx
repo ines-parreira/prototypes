@@ -13,7 +13,7 @@ import { UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 
-import { CurrentUser } from '../types'
+import type { CurrentUser } from '../types'
 import YourProfileContainer from '../YourProfileContainer'
 
 jest.mock('../components/YourProfileView', () => ({

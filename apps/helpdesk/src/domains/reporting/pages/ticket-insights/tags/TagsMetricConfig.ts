@@ -1,6 +1,6 @@
 import { tagsTicketCountDrillDownByReferenceQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricConfig } from 'domains/reporting/pages/types'
+import type { MetricConfig } from 'domains/reporting/pages/types'
 import { TagsMetric } from 'domains/reporting/state/ui/stats/types'
 
 export enum TicketInsightsTagsMetric {

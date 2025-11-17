@@ -1,13 +1,15 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { fireEvent, render, RenderResult } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
 import { TicketChannel } from '../../../../../business/types/ticket'
 import { ticket } from '../../../../../fixtures/ticket'
-import { addEmailExtra } from '../../../../../state/newMessage/actions'
-import { ReplyThreadMessage } from '../../../../../state/newMessage/emailExtraUtils'
+import type { addEmailExtra } from '../../../../../state/newMessage/actions'
+import type { ReplyThreadMessage } from '../../../../../state/newMessage/emailExtraUtils'
 import { EmailExtraButtonContainer } from '../EmailExtraButton'
 
 // mock random key generation so they match from a snapshot to the other

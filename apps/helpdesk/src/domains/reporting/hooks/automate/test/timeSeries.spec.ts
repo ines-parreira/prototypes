@@ -21,7 +21,7 @@ import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/timeseries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')

@@ -4,13 +4,13 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { convertTriggerOperatorsToSelectOptions } from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { useIntegrationContext } from '../../containers/IntegrationProvider'
-import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
-import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import type { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 import { isTriggerValueNonNegative } from '../../utils/isTriggerValueNonNegative'
 

@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

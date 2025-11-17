@@ -1,6 +1,6 @@
 import { transformVisualBuilderGraphIntoWfConfiguration } from '../models/visualBuilderGraph.model'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
-import {
+import type {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStepChoices,

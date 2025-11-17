@@ -1,7 +1,8 @@
-import React, { SyntheticEvent, useMemo, useState } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import { Col, Row } from 'reactstrap'
 
@@ -22,16 +23,14 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import settingsCss from 'pages/settings/settings.less'
 import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getTicketAssignmentSettings } from 'state/currentAccount/selectors'
-import {
-    AccountSettingTicketAssignment,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { AccountSettingTicketAssignment } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getTeams } from 'state/teams/selectors'
 import { isAdmin } from 'utils'

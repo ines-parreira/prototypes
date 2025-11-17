@@ -1,10 +1,11 @@
-import axios, { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
+import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
-import { Store } from 'redux'
+import type { Store } from 'redux'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 const client = createClient()
 

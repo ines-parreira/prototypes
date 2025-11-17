@@ -1,14 +1,17 @@
-import { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { TagsOnTicketCube } from 'domains/reporting/models/cubes/TagsOnTicketCube'
-import { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
-import { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
-import { TicketSatisfactionSurveyCube } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import { TicketsFirstAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
-import { TicketTagsCube } from 'domains/reporting/models/cubes/TicketTagsCube'
-import { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
-import { Cube, JoinedCubesWithMapping } from 'domains/reporting/models/types'
+import type { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
+import type { TagsOnTicketCube } from 'domains/reporting/models/cubes/TagsOnTicketCube'
+import type { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import type { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import type { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
+import type { TicketSatisfactionSurveyCube } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
+import type { TicketsFirstAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
+import type { TicketTagsCube } from 'domains/reporting/models/cubes/TicketTagsCube'
+import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum TicketMeasure {
     TicketCount = 'TicketEnriched.ticketCount',

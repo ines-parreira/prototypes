@@ -3,12 +3,12 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 import { produce } from 'immer'
 
 import { RequirementType } from '@gorgias/helpdesk-queries'
-import {
+import type {
     CustomFieldConditionField,
     ExpressionFieldType,
 } from '@gorgias/helpdesk-types'
 
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'

@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import type { MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 

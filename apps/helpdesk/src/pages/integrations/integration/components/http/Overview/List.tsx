@@ -7,7 +7,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import { HttpIntegration } from 'models/integration/types'
+import type { HttpIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {
     activateIntegration,

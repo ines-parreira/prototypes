@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
-import { SLAPolicyMetricUnit } from '@gorgias/helpdesk-types'
+import type { SLAPolicyMetricUnit } from '@gorgias/helpdesk-types'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

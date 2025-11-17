@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { useCancelJob as useCancelJobQuery } from '@gorgias/helpdesk-queries'
 
@@ -6,7 +6,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useNotificationPayload from './useNotificationPayload'
+import type useNotificationPayload from './useNotificationPayload'
 
 type Props = {
     getNotificationPayload: ReturnType<

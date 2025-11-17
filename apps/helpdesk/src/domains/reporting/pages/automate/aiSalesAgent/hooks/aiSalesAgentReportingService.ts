@@ -8,8 +8,8 @@ import { useTimeSeriesReportData } from 'domains/reporting/hooks/common/useTimeS
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
@@ -17,15 +17,15 @@ import {
     type TimeSeriesMetric,
     type TrendMetric,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import {
     PRODUCT_TABLE_CELLS,
     ProductTableConfig,
-    ProductTableKeys,
 } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { fetchProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
 import {

@@ -2,7 +2,7 @@ import { useUpdateBillingContactWithSideEffects } from 'pages/settings/new_billi
 import { isStripeUserError } from 'pages/settings/new_billing/utils/isStripeUserError'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import { useSubmitPaymentMethod } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
-import { BillingContactUpdatePayload } from 'state/billing/types'
+import type { BillingContactUpdatePayload } from 'state/billing/types'
 
 export const useSubmitPaymentMethodWithBillingContact = (
     overrides?: Parameters<typeof useSubmitPaymentMethod>['0'],

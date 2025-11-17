@@ -5,7 +5,7 @@ import {
     decreaseInFirstResponseTime,
     decreaseInResolutionTime,
 } from 'domains/reporting/hooks/automate/automateStatsFormulae'
-import { TrendData } from 'domains/reporting/hooks/automate/types'
+import type { TrendData } from 'domains/reporting/hooks/automate/types'
 
 export const getAutomationRateUnfilteredDenominatorTrend = ({
     isFetching,

@@ -1,14 +1,14 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
-import { MacrosState } from 'state/entities/macros/types'
+import type { MacrosState } from 'state/entities/macros/types'
 
 import MoreActions from '../MoreActions'
 

@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import PhoneNumberListContainer from '../PhoneNumbersListContainer'
 

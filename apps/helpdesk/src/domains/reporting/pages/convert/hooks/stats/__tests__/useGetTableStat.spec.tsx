@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
@@ -16,7 +16,7 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'domains/reporting/pages/convert/clients/constants'
-import { GroupDimension } from 'domains/reporting/pages/convert/clients/types'
+import type { GroupDimension } from 'domains/reporting/pages/convert/clients/types'
 import {
     fetchGetTableStat,
     useGetTableStat,

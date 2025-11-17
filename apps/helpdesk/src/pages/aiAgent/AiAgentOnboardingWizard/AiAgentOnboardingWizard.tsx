@@ -5,10 +5,8 @@ import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import {
-    AiAgentOnboardingWizardStep,
-    StoreConfiguration,
-} from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'

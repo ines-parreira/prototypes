@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Reason, ReasonsToCanduContent } from '../types'
+import type { Reason, ReasonsToCanduContent } from '../types'
 
 const useFindChurnMitigationOfferId = (
     primaryReason: Reason | null,

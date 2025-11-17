@@ -1,14 +1,13 @@
-import { ReactElement, ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
 import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/common/HintTooltip.less'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { DOCUMENTATION_LINK_TEXT } from 'domains/reporting/services/constants'
-import IconTooltip, {
-    IconTooltipProps,
-} from 'pages/common/forms/IconTooltip/IconTooltip'
+import type { IconTooltipProps } from 'pages/common/forms/IconTooltip/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type Props = Omit<TooltipData, 'title'> & {
     title: string | ReactNode | ReactElement

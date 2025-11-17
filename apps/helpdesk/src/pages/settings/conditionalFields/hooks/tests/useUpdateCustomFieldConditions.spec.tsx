@@ -7,8 +7,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { ListCustomFieldConditionsResult } from '@gorgias/helpdesk-queries'
 import {
-    ListCustomFieldConditionsResult,
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
 } from '@gorgias/helpdesk-queries'

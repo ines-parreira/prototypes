@@ -1,8 +1,10 @@
-import { fromJS, List, Map } from 'immutable'
-import moment, { Moment } from 'moment-timezone'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 import { createSelector } from 'reselect'
 
-import {
+import type {
     AccountFeature,
     AccountSettingAgentCosts,
     AccountSettingAgentsTableConfig,
@@ -13,13 +15,15 @@ import {
     AccountSettingInTicketSuggestion,
     AccountSettingProductInsightsTableConfig,
     AccountSettingSatisfactionSurvey,
-    AccountSettingType,
     AccountSettingViewsVisibility,
-    ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
 } from 'state/currentAccount/types'
+import {
+    AccountSettingType,
+    ShopifyBillingStatus,
+} from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { toJS } from 'utils'
 import { isFeatureEnabled } from 'utils/account'
 

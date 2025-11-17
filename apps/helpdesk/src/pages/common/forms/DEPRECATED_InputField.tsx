@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
-import { InputProps } from 'reactstrap/lib/Input'
+import type { InputProps } from 'reactstrap/lib/Input'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationsHelpers from 'state/integrations/helpers'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { CampaignChatHiddenWarning } from '../CampaignChatHiddenWarning'

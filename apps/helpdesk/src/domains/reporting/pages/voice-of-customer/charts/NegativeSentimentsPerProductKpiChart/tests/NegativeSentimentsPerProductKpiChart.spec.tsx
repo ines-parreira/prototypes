@@ -7,7 +7,7 @@ import {
     sidePanelSlice,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

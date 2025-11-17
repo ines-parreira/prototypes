@@ -25,10 +25,10 @@ import {
     RETURN_MENTIONS_COLUMN_LABEL,
     TICKETS_VOLUME_COLUMN_LABEL,
 } from 'domains/reporting/pages/voice-of-customer/constants'
+import type { TableSetting } from 'domains/reporting/state/ui/stats/types'
 import {
     ProductInsightsTableColumns,
     ProductInsightsTableViewIdentifier,
-    TableSetting,
 } from 'domains/reporting/state/ui/stats/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 

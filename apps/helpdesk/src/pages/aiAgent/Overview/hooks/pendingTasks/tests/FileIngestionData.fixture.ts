@@ -1,4 +1,4 @@
-import { FileIngestionData } from '../useFetchFileIngestionData'
+import type { FileIngestionData } from '../useFetchFileIngestionData'
 
 type AllKeys = keyof FileIngestionDataFixture
 type ConfiguredFileIngestionDataFixture<

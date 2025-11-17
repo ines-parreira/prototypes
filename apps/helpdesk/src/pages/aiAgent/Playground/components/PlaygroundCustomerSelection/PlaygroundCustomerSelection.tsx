@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 
-import { Ticket } from '@gorgias/helpdesk-client'
+import type { Ticket } from '@gorgias/helpdesk-client'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { CustomerSearchDropdownSelectView } from '../../../components/CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import { TicketSearchDropdownSelectView } from '../../../components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView'
@@ -11,7 +11,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../../constants'
-import { PlaygroundCustomer } from '../../types'
+import type { PlaygroundCustomer } from '../../types'
 import { extractTicketData } from '../../utils/ticket-extraction.utils'
 
 import css from './PlaygroundCustomerSelection.less'

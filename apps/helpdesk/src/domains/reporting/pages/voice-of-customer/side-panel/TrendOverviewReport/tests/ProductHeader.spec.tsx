@@ -6,7 +6,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useTicketCountPerProduct } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductHeader } from 'domains/reporting/pages/voice-of-customer/components/ProductHeader'
-import { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { SHORT_DATE_WITH_YEAR_US, SHORT_DATE_WITH_YEAR_WORLD } from 'utils/date'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')

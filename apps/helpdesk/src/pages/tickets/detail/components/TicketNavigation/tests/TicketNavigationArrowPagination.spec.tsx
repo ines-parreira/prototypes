@@ -1,9 +1,9 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

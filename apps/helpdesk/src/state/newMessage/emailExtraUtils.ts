@@ -1,10 +1,16 @@
-import { ContentBlock, ContentState, Modifier } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { ContentBlock } from 'draft-js'
+import { ContentState, Modifier } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
 import { TicketChannel } from '../../business/types/ticket'
 import { isTicketMessage } from '../../models/ticket/predicates'
-import { Ticket, TicketElement, TicketMessage } from '../../models/ticket/types'
+import type {
+    Ticket,
+    TicketElement,
+    TicketMessage,
+} from '../../models/ticket/types'
 import { setQuoteDepth } from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
     ContentStateCounter,

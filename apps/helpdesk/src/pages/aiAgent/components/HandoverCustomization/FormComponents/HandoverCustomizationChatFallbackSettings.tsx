@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect } from 'react'
+import type React from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { HandoverCustomizationChatFallbackSettingsFields } from 'pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatFallbackSettingsFields'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import { Form } from 'reactstrap'

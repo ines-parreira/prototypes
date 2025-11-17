@@ -12,21 +12,21 @@ import {
     useUpdateAnalyticsFilter,
 } from '@gorgias/helpdesk-queries'
 
-import {
+import type {
     SavedFilter,
     SavedFilterAPI,
     SavedFilterDraft,
     StaticFilter,
 } from 'domains/reporting/models/stat/types'
 import { FiltersEditableTitle } from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { FiltersPanelWithSavedFiltersState } from 'domains/reporting/pages/common/filters/FiltersPanelWithSavedFiltersState'
 import {
     fromApiFormatted,
     toApiFormatted,
 } from 'domains/reporting/pages/common/filters/helpers'
 import { SavedFilterMenu } from 'domains/reporting/pages/common/filters/SavedFilterMenu'
-import { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import type { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import css from 'domains/reporting/pages/common/filters/SavedFiltersPanel.less'
 import {
     areFiltersApplicable,

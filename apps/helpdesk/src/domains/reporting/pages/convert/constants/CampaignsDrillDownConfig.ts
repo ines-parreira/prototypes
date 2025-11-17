@@ -1,11 +1,11 @@
 import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { formatConvertCampaignSalesDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const ConvertMetricsConfig = {

@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'

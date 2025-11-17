@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { Language as MockLanguage } from 'constants/languages'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { TermsAndConditionsSetting } from 'pages/convert/settings/components/TermsAndConditionsSetting'
-import { DisclaimerSettings } from 'pages/convert/settings/types'
+import type { DisclaimerSettings } from 'pages/convert/settings/types'
 import { mockStore } from 'utils/testing'
 
 const store = mockStore({})

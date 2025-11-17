@@ -1,6 +1,11 @@
 import { IntegrationType } from 'models/integration/constants'
-import { CardTemplate, LeafTemplate, ListTemplate } from 'models/widget/types'
-import { Widget, WidgetEnvironment } from 'state/widgets/types'
+import type {
+    CardTemplate,
+    LeafTemplate,
+    ListTemplate,
+} from 'models/widget/types'
+import type { Widget } from 'state/widgets/types'
+import { WidgetEnvironment } from 'state/widgets/types'
 
 export const cardTemplate: CardTemplate = {
     widgets: [

@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { CHOICE_VALUES_SYMBOL } from '../../Deprecated_MultiLevelSelect/constants'
-import { ChoicesTree } from '../../Deprecated_MultiLevelSelect/types'
+import type { ChoicesTree } from '../../Deprecated_MultiLevelSelect/types'
 import { useSearch } from '../useSearch'
 
 describe('useSearch', () => {

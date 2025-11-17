@@ -8,10 +8,8 @@ import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActi
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
-import {
-    useShoppingAssistantTrialFlow,
-    UseShoppingAssistantTrialFlowReturn,
-} from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialFinishSetupModal } from 'pages/aiAgent/trial/hooks/useTrialFinishSetupModal'
 import { renderHookWithRouter } from 'tests/renderHookWithRouter'
 

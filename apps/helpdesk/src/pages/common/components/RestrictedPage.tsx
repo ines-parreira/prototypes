@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import indefinite from 'indefinite'
 import _startCase from 'lodash/startCase'
 
-import { PageSection } from 'config/pages'
+import type { PageSection } from 'config/pages'
 import { roleRestrictionConfigs } from 'config/roleRestrictions'
 import { UserRole } from 'config/types/user'
 import { USER_ROLES_ORDERED_BY_PRIVILEGES } from 'config/user'

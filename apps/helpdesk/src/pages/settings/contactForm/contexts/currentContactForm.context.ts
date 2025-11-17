@@ -1,5 +1,5 @@
 import { createContext } from 'react'
 
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 
 export const CurrentContactFormContext = createContext<ContactForm | null>(null)

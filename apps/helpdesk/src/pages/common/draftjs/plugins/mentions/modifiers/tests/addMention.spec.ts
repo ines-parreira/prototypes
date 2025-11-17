@@ -1,4 +1,5 @@
-import { ContentState, EditorChangeType, EditorState } from 'draft-js'
+import type { EditorChangeType } from 'draft-js'
+import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
 import addMention from '../addMention'

@@ -12,8 +12,8 @@ import {
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
-import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
+import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import { linkToShopifyIntegration } from 'pages/settings/contactForm/utils/navigation'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
@@ -23,7 +23,7 @@ import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBu
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import { getIntegrationById } from 'state/integrations/selectors'
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'

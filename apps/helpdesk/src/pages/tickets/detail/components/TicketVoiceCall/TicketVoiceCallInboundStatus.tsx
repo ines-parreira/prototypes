@@ -6,10 +6,10 @@ import {
     useGetVoiceQueue,
 } from '@gorgias/helpdesk-queries'
 
+import type { VoiceCall } from 'models/voiceCall/types'
 import {
     getInboundDisplayStatus,
     getPrettyVoiceCallDisplayStatusName,
-    VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import {

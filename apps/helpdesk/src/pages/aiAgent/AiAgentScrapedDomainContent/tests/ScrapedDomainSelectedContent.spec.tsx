@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainSelectedContent from '../ScrapedDomainSelectedContent'
-import { IngestedProduct, IngestedResourceWithArticleId } from '../types'
+import type { IngestedProduct, IngestedResourceWithArticleId } from '../types'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(() => ({

@@ -4,7 +4,7 @@ import { Col } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { EmailMigrationInboundVerification } from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'

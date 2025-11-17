@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classnames from 'classnames'
 
 import { useIsHeadlessShopifyStore } from 'pages/convert/campaigns/hooks/useIsHeadlessShopifyStore'
-import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 
 import { ProductCard } from '../ProductCard'
 import { DEFAULT_CAROUSEL_CONFIGURATION } from './constants/visuals'

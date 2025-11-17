@@ -2,10 +2,10 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
+import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Button,
-    ColumnDef,
     HeaderRowGroup,
     TableBodyContent,
     TableHeader,
@@ -13,16 +13,11 @@ import {
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
-import {
-    JourneyApiDTO,
-    JourneyCampaignStateEnum,
-} from '@gorgias/convert-client'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
-import {
-    JOURNEY_TYPES,
-    STEPS_NAMES,
-    UpdatableJourneyCampaignState,
-} from 'AIJourney/constants'
+import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useAccessToken, useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
@@ -33,7 +28,7 @@ import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampa
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
 import SendCampaignConfirmation from './SendCampaignConfirmation/SendCampaignConfirmation'
-import { CampaignsTableMeta } from './types'
+import type { CampaignsTableMeta } from './types'
 
 import styles from './CampaignsTable.less'
 

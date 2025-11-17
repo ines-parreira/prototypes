@@ -3,7 +3,7 @@ import { formatVoiceDrillDownRowData } from 'domains/reporting/pages/common/dril
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { getVoiceDrillDownColumns } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 type Props = {
     metricData: DrillDownMetric

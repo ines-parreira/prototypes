@@ -1,4 +1,6 @@
-import React, { MouseEvent, useCallback } from 'react'
+import type { MouseEvent } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
@@ -7,11 +9,8 @@ import moment from 'moment'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-    Locale,
-} from 'models/helpCenter/types'
+import type { HelpCenter, Locale } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

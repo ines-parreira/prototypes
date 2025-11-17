@@ -4,8 +4,8 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import TextInput from 'pages/common/forms/input/TextInput'

@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -12,15 +12,15 @@ import { Route, Router } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
+import type { ComputeActivationPercentage } from '../useStoreActivations'
 import {
-    ComputeActivationPercentage,
     computeActivationPercentage,
     useStoreActivations,
     useStoreConfigurations,

@@ -1,12 +1,13 @@
-import React, { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Options as InitialSettings } from 'daterangepicker'
+import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'

@@ -7,7 +7,7 @@ import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
 import { COST_SAVED } from './constants'
-import { BaseAutomateMetricProps } from './types'
+import type { BaseAutomateMetricProps } from './types'
 import { getTrendProps } from './utils'
 
 export const COST_SAVED_TOOLTIP = {

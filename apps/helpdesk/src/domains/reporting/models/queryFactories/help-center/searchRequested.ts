@@ -1,6 +1,6 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     HelpCenterStatsFiltersMembers,
     statsFiltersToReportingFilters,

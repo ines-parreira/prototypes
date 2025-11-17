@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class GiveFeedbackAIAgentTask extends Task {

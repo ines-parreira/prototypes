@@ -3,7 +3,7 @@ import {
     useListUsers,
 } from '@gorgias/helpdesk-queries'
 
-import { AgentWithStatus } from 'config/types/user'
+import type { AgentWithStatus } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

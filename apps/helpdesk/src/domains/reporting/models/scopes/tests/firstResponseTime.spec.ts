@@ -8,7 +8,7 @@ import {
     medianFirstResponseTimePerChannelQueryV2Factory,
     medianFirstResponseTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/firstResponseTime'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'

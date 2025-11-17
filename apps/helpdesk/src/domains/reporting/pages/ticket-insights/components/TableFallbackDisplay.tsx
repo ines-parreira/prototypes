@@ -1,9 +1,9 @@
-import React from 'react'
+import type React from 'react'
 
 import Skeleton from 'react-loading-skeleton'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import { NestedTableColumnConfig } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
+import type { NestedTableColumnConfig } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import css from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

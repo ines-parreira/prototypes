@@ -5,13 +5,13 @@ import { render, screen } from '@testing-library/react'
 
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import DragAndResizeDashboardGrid from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
-import {
+import type {
     DashboardChartSchema,
-    DashboardChildType,
     DashboardRowSchema,
     DashboardSchema,
     DashboardSectionSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 jest.mock('react-grid-layout', () => {
     const MockResponsive = ({

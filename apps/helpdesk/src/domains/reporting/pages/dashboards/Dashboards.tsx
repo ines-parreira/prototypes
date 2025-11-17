@@ -12,10 +12,8 @@ import {
     StatsPageWrapper,
 } from 'domains/reporting/pages/common/layout/StatsPage'
 import { CreateDashboard } from 'domains/reporting/pages/dashboards/CreateDashboard/CreateDashboard'
-import {
-    DashboardName,
-    DashboardNameValue,
-} from 'domains/reporting/pages/dashboards/DashboardName'
+import type { DashboardNameValue } from 'domains/reporting/pages/dashboards/DashboardName'
+import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
 import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
 import { useNotify } from 'hooks/useNotify'

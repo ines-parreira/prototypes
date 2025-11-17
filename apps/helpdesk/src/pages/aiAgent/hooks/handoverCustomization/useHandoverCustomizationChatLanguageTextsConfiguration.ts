@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import axios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
 import {
     getPrimaryLanguageFromChatConfig,
     isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { parseToFriendlyErrorMessage } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import {
+import type {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,

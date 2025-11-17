@@ -1,7 +1,7 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { CampaignCreatePayload } from 'pages/convert/campaigns/types/Campaign'
-import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { CampaignCreatePayload } from 'pages/convert/campaigns/types/Campaign'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export type CampaignConfiguration = {
     template_id: string

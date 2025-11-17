@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import * as metricTrends from 'domains/reporting/hooks/metricTrends'
 import { billingState } from 'fixtures/billing'
 import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ROICalculator from '../ROICalculator'

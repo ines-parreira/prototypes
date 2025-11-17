@@ -1,6 +1,7 @@
-import { CSSProperties, useMemo } from 'react'
+import type { CSSProperties } from 'react'
+import { useMemo } from 'react'
 
-import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { Draggable, type DraggableEventHandler } from 'utils/wrappers/Draggable'
 
 import { getDraggableContainerBounds } from './utils'

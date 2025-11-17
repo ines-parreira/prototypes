@@ -4,7 +4,7 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { helpCenterKeys, useStartIngestion } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
 
-import { IngestionType } from '../AiAgentScrapedDomainContent/constant'
+import type { IngestionType } from '../AiAgentScrapedDomainContent/constant'
 
 export const useIngestionLogMutation = ({
     helpCenterId,

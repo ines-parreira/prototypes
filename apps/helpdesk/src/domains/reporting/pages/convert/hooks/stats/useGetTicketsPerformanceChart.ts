@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 
-import { TicketChannel } from 'business/types/ticket'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { TicketChannel } from 'business/types/ticket'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getTicketsPerformanceData } from 'domains/reporting/pages/convert/clients/RevenueAttributionClient'
-import { RevenueAttributionFilterParams } from 'domains/reporting/pages/convert/clients/types'
+import type { RevenueAttributionFilterParams } from 'domains/reporting/pages/convert/clients/types'
 import { getDataFromStatResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
-import { CampaignGraphData } from 'domains/reporting/pages/convert/services/types'
+import type { CampaignGraphData } from 'domains/reporting/pages/convert/services/types'
 
 export type GetTicketsPerformanceQuery = {
     isFetching: boolean

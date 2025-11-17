@@ -1,4 +1,5 @@
-import React, { ComponentProps, useCallback, useEffect, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import Dropdown from './Dropdown'
 

@@ -6,7 +6,8 @@ import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
@@ -14,15 +15,15 @@ import {
 import { campaign } from 'fixtures/campaign'
 import { shopifyProductFixture, shopifyVariantFixture } from 'fixtures/shopify'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 import { CampaignDetailsFormContext } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import * as integrationHelpers from 'state/integrations/helpers'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import { AddContactCaptureFormProps } from '../../ContactCaptureForm/AddContactCaptureForm'
+import type { AddContactCaptureFormProps } from '../../ContactCaptureForm/AddContactCaptureForm'
 import { CampaignMessage } from '../CampaignMessage'
 
 jest.mock('models/convert/campaign/queries')

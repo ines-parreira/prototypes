@@ -12,7 +12,7 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import { getChannels } from 'services/channels'
 import { EqualityOperator } from 'state/rules/types'
 import { humanizeChannel } from 'state/ticket/utils'
-import { ViewFilter } from 'state/views/types'
+import type { ViewFilter } from 'state/views/types'
 import { reportError } from 'utils/errors'
 
 const ASSIGNEE_FILTER_LEFT = getTicketViewFieldPath(

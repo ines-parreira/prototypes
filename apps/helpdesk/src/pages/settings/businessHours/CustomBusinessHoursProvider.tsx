@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
+import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
 
 import { CustomBusinessHoursContext } from './CustomBusinessHoursContext'
 

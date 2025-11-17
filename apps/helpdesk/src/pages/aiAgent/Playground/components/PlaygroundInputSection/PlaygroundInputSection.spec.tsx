@@ -12,7 +12,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,

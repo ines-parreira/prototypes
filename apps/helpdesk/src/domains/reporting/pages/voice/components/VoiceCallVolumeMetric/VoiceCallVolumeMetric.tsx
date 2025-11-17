@@ -1,16 +1,14 @@
 import moment from 'moment'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
-import {
-    comparedPeriodString,
-    MetricTrendFormat,
-} from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { comparedPeriodString } from 'domains/reporting/pages/common/utils'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'

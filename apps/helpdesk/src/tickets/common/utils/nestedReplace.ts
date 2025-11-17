@@ -1,6 +1,6 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { notify as notifyAction } from 'state/notifications/actions'
+import type { notify as notifyAction } from 'state/notifications/actions'
 
 import replaceVariables from './replaceVariables'
 

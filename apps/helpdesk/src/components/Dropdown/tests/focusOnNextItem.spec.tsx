@@ -1,8 +1,8 @@
-import React, {
+import type {
     KeyboardEvent as KeyboardEventType,
     MutableRefObject,
-    useRef,
 } from 'react'
+import React, { useRef } from 'react'
 
 import { render, waitFor } from '@testing-library/react'
 

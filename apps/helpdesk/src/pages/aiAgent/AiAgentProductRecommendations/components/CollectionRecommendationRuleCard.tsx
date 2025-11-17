@@ -4,7 +4,7 @@ import { useGetEcommerceProductCollections } from 'models/ecommerce/queries'
 
 import usePaginatedProductCollectionsByIds from '../hooks/usePaginatedProductCollectionsByIds'
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
-import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import type { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
 import { getProductStatusData } from '../utils/get-product-status-data'
 import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'

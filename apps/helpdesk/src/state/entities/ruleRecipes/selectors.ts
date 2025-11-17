@@ -2,8 +2,8 @@ import { createSelector } from 'reselect'
 
 import { RuleType } from 'models/rule/types'
 
-import { RootState } from '../../types'
-import { RuleRecipesState } from './types'
+import type { RootState } from '../../types'
+import type { RuleRecipesState } from './types'
 
 export const ruleRecipes = (state: RootState): RuleRecipesState =>
     state.entities.ruleRecipes || {}

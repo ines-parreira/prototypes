@@ -4,9 +4,11 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { omit } from 'lodash'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
@@ -31,12 +33,9 @@ import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { ticket } from 'fixtures/ticket'
 import client from 'models/api/resources'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from 'models/macroAction/types'
-import { PhoneNumber } from 'models/phoneNumber/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
+import type { PhoneNumber } from 'models/phoneNumber/types'
 import { SEARCH_ENDPOINT } from 'models/search/resources'
 import { SearchType } from 'models/search/types'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
@@ -58,7 +57,7 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { initialState, makeNewMessage } from 'state/newMessage/reducers'
-import { ReplyAreaState } from 'state/newMessage/types'
+import type { ReplyAreaState } from 'state/newMessage/types'
 import { initialState as ticketInitialState } from 'state/ticket/reducers'
 import {
     chatTicket,
@@ -66,7 +65,7 @@ import {
     instagramMedia,
 } from 'state/ticket/tests/fixtures'
 import { getLastSenderChannel, getPreferredChannel } from 'state/ticket/utils'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
 import * as LDUtils from 'utils/launchDarkly'

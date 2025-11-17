@@ -10,7 +10,7 @@ import {
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
 
-import { IngestedResourceStatus } from '../constant'
+import type { IngestedResourceStatus } from '../constant'
 
 export const useIngestedResourceMutation = ({
     helpCenterId,

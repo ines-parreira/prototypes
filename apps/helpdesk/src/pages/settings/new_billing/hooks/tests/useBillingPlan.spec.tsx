@@ -29,25 +29,20 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import {
-    Cadence,
-    HelpdeskPlan,
-    Plan,
-    ProductType,
-    SubscriptionStatus,
-} from 'models/billing/types'
+import type { HelpdeskPlan, Plan } from 'models/billing/types'
+import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
-import { Components } from 'rest_api/revenue_addon_api/client.generated'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { Components } from 'rest_api/revenue_addon_api/client.generated'
 import { notify } from 'state/notifications/actions'
+import type { Notification } from 'state/notifications/types'
 import {
-    Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { RootState, StoreDispatch, StoreState } from 'state/types'
+import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DATE_FORMAT, PRODUCT_INFO } from '../../constants'

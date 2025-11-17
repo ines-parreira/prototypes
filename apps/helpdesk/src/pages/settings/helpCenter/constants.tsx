@@ -3,12 +3,12 @@ import { isProduction, isStaging } from '@repo/utils'
 import { Language } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 
-import {
+import type {
     HelpCenterArticleItem,
-    HelpCenterCreationWizardStep,
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from '../../../models/helpCenter/types'
 import { HelpCenterTheme } from './types'
 import { HelpCenterLayout } from './types/layout.enum'
 import { emojiRegex } from './utils/emojiRegex'

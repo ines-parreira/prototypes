@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
 import UseCaseTemplateModal from './UseCaseTemplateModal'

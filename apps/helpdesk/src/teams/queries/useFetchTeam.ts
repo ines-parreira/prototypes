@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useGetTeam } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'

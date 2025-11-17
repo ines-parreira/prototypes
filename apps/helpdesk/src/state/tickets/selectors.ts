@@ -1,8 +1,9 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { createImmutableSelector } from '../../utils'
-import { RootState } from '../types'
-import { TicketsState } from './types'
+import type { RootState } from '../types'
+import type { TicketsState } from './types'
 
 export const getTicketsState = (state: RootState): TicketsState =>
     state.tickets || fromJS({})

@@ -1,5 +1,5 @@
 import { campaignTrigger } from 'fixtures/campaign'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import { isAllowedToUpdateTrigger } from '../isAllowedToUpdateTrigger'

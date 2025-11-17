@@ -1,22 +1,25 @@
 import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEqual from 'lodash/isEqual'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
-import { TagDraft } from 'models/tag/types'
+import type { TagDraft } from 'models/tag/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import { initialState } from 'state/tags/reducers'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(

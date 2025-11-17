@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Dictionary } from 'lodash'
+import type { Dictionary } from 'lodash'
 import _flatten from 'lodash/flatten'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
@@ -17,11 +17,11 @@ import {
     useCustomFieldsTicketCountTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     Sentiment,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

@@ -1,9 +1,11 @@
-import React, { memo } from 'react'
+import type React from 'react'
+import { memo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Link, NavLink } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -19,7 +21,7 @@ import {
     getSecondaryLanguages,
     getSecondaryLanguagesAsTooltipContent,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import type { Language } from 'constants/languages'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import BadgeItem from 'pages/common/components/BadgetItem'

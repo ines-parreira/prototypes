@@ -2,15 +2,14 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
-import {
-    DashboardChildType,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')

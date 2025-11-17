@@ -2,7 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-import { createMemoryHistory, History } from 'history'
+import type { History } from 'history'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,14 +18,12 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import {
-    AiAgentWelcomePageProps,
-    AIAgentWelcomePageView,
-} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
+import type { AiAgentWelcomePageProps } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
+import { AIAgentWelcomePageView } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 const MOCK_WIZARD_VALUES = {
     wizard: {

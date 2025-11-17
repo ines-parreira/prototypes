@@ -13,13 +13,13 @@ import {
     REPORTING_STATS_ENDPOINT,
     REPORTING_STATS_QUERY_ENDPOINT,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery } from 'domains/reporting/models/scopes/scope'
-import {
-    EnrichmentFields,
+import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
+import type {
     ReportingParams,
     ReportingQuery,
     ReportingResponse,
 } from 'domains/reporting/models/types'
+import { EnrichmentFields } from 'domains/reporting/models/types'
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'
 

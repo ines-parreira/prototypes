@@ -1,4 +1,4 @@
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 
 export const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
 

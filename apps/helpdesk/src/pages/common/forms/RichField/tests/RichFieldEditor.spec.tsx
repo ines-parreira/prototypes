@@ -1,9 +1,11 @@
-import React, { ComponentProps, LegacyRef } from 'react'
+import type { ComponentProps, LegacyRef } from 'react'
+import React from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import { fireEvent, render } from '@testing-library/react'
 import { convertToHTML } from 'draft-convert'
-import { ContentState, EditorState } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'

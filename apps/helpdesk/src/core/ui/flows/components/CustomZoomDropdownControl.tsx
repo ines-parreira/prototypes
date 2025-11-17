@@ -1,4 +1,5 @@
-import React, { useMemo, useRef } from 'react'
+import type React from 'react'
+import { useMemo, useRef } from 'react'
 
 import { useReactFlow, useViewport } from '@xyflow/react'
 

@@ -5,20 +5,15 @@ import type {
     PropsWithChildren,
 } from 'react'
 
-import {
+import type {
     FieldValues,
-    FormProvider,
-    useForm,
     UseFormHandleSubmit,
     UseFormProps,
 } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 
-import {
-    createResolver,
-    FormErrors,
-    FormValidator,
-    toFieldErrors,
-} from '../utils/validation'
+import type { FormErrors, FormValidator } from '../utils/validation'
+import { createResolver, toFieldErrors } from '../utils/validation'
 
 export type FormProps<TFieldValues extends FieldValues> = PropsWithChildren<
     Omit<UseFormProps<TFieldValues>, 'resolver' | 'errors'> &

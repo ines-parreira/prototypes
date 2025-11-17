@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { noop } from 'lodash'
@@ -10,11 +10,11 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
-import { FetchedProvidersState } from '../../types'
+import type { FetchedProvidersState } from '../../types'
 import ImportArticlesModal from './ImportArticlesModal'
 import { buildCsvColumnMatchingUrl, fileIsTooBig } from './utils'
 

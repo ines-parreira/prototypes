@@ -1,7 +1,7 @@
 import { ActionTemplateExecution } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
 
-import { MacroApiError } from '../types'
+import type { MacroApiError } from '../types'
 import {
     generateDefaultAction,
     getDefaultMacro,

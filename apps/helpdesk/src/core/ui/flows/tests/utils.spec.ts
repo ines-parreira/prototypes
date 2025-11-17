@@ -1,4 +1,4 @@
-import { Node } from '@xyflow/react'
+import type { Node } from '@xyflow/react'
 import { cloneDeep } from 'lodash'
 
 import { VoiceFlowNodeType } from 'pages/integrations/integration/components/voice/flows/constants'

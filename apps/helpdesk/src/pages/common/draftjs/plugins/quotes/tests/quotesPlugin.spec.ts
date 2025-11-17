@@ -1,4 +1,5 @@
-import { ContentBlock, ContentState, DraftBlockType } from 'draft-js'
+import type { ContentBlock, DraftBlockType } from 'draft-js'
+import { ContentState } from 'draft-js'
 
 import { selectWholeContentState } from '../../../../../../utils/editor'
 import { setQuoteDepth } from '../quotesEditorUtils'

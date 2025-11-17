@@ -1,11 +1,7 @@
-import {
-    useMutation,
-    useQuery,
-    useQueryClient,
-    UseQueryOptions,
-} from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { MutationOverrides } from '../../types/query'
+import type { MutationOverrides } from '../../types/query'
 import {
     deactivateAccount,
     extendTrial,

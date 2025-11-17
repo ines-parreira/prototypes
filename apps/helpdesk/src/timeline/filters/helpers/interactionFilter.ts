@@ -1,6 +1,6 @@
 import { ALL_FILTERS, INTERACTION_FILTER_OPTIONS } from '../../constants'
 import { isTicket } from '../../helpers/timelineItem'
-import { InteractionFilterType, TimelineItem } from '../../types'
+import type { InteractionFilterType, TimelineItem } from '../../types'
 
 export function getTypeOptionLabels(selectedType: InteractionFilterType[]) {
     return selectedType.length === INTERACTION_FILTER_OPTIONS.length

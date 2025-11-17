@@ -1,5 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import axios, { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
+import axios from 'axios'
 import { fromJS, List } from 'immutable'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -16,18 +17,18 @@ import {
 } from 'business/shopify/draftOrder'
 import { getDraftOrderTotalLineItemsPrice } from 'business/shopify/lineItem'
 import { formatPercentage, formatPrice } from 'business/shopify/number'
-import {
+import type {
     AppliedDiscount,
-    DiscountType,
     Product,
     Variant,
 } from 'constants/integrations/types/shopify'
+import { DiscountType } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
 import { executeAction } from 'state/infobar/actions'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

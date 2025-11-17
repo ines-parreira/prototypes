@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import client from 'models/api/resources'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import CreditShopifyBillingIntegration from '../CreditShopifyBillingIntegration'
 

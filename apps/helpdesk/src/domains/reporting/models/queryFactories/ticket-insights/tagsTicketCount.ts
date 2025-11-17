@@ -1,24 +1,22 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketCubeWithJoins,
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import {
-    TicketTagsEnrichedCube,
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
-import {
-    StatsFilters,
-    TicketTimeReference,
-} from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TicketTimeReference } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -27,7 +25,7 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const totalTaggedTicketCountQueryFactory = (
     filters: StatsFilters,

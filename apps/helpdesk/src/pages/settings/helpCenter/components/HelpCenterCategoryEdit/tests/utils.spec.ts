@@ -1,4 +1,4 @@
-import { Category } from '../../../../../../models/helpCenter/types'
+import type { Category } from '../../../../../../models/helpCenter/types'
 import { eligibleParentCategories } from '../utils'
 
 const rootCategory: Category = {

@@ -7,7 +7,7 @@ import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopif
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSteps } from '../useSteps'

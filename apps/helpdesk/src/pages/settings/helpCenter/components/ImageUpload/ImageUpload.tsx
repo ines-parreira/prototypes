@@ -1,11 +1,14 @@
-import React, { createRef, FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React, { createRef } from 'react'
 
+import type {
+    DropZoneProps,
+    HelpTextProps,
+} from '../../../../common/components/ImageUpload'
 import {
     DropText,
     DropZone,
-    DropZoneProps,
     HelpText,
-    HelpTextProps,
     Title,
 } from '../../../../common/components/ImageUpload'
 import { replaceUploadUrls } from '../../utils/helpCenter.utils'

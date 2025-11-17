@@ -2,7 +2,7 @@ import {
     IngestionLogStatus,
     IngestionType,
 } from '../AiAgentScrapedDomainContent/constant'
-import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
+import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 
 export const getIngestionLogFixture = (
     props?: Partial<IngestionLog>,

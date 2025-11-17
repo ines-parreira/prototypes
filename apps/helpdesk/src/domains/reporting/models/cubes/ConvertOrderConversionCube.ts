@@ -1,5 +1,5 @@
-import { Cube } from 'domains/reporting/models/types'
-import {
+import type { Cube } from 'domains/reporting/models/types'
+import type {
     OrderConversionDimension,
     OrderConversionMeasure,
 } from 'domains/reporting/pages/convert/clients/constants'

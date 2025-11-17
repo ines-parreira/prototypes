@@ -1,7 +1,7 @@
 import { Skeleton } from '@gorgias/axiom'
 
 import { useListRecordings } from 'models/voiceCall/queries'
-import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import type { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 
 import VoiceCallAudio from './VoiceCallAudio'
 import VoiceCallTranscription from './VoiceCallTranscription'

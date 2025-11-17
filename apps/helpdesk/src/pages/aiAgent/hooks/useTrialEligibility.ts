@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import {
     getStoresEligibleForTrial,

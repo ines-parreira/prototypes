@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { deleteVerification as deleteVerificationRequest } from 'models/singleSenderVerification/resources'

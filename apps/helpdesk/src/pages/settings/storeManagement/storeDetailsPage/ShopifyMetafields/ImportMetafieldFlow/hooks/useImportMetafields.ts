@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { METAFIELDS_QUERY_KEY } from '../../hooks/useMetafields'
-import { Field } from '../../MetafieldsTable/types'
+import type { Field } from '../../MetafieldsTable/types'
 
 type ImportMetafieldsParams = {
     fields: Field[]

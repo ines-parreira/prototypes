@@ -1,10 +1,12 @@
-import { PropsWithChildren, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
-import { Popover, PopoverProps } from 'reactstrap'
+import type { PopoverProps } from 'reactstrap'
+import { Popover } from 'reactstrap'
 
 import css from 'domains/reporting/pages/common/components/charts/ChartTooltip.less'
-import { TooltipStyle } from 'domains/reporting/pages/common/useCustomTooltip'
+import type { TooltipStyle } from 'domains/reporting/pages/common/useCustomTooltip'
 
 type Props = {
     title?: string | string[]

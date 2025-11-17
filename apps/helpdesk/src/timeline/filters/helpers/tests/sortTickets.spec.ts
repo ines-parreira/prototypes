@@ -1,6 +1,7 @@
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { SortOption, TimelineItem, TimelineItemKind } from '../../../types'
+import type { SortOption, TimelineItem } from '../../../types'
+import { TimelineItemKind } from '../../../types'
 import { sortTickets } from '../sortTickets'
 
 describe('sortTickets', () => {

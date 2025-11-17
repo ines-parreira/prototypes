@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import { useDismissFlag } from '@repo/hooks'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'

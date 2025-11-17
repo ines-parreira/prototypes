@@ -4,7 +4,7 @@ import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
 
 import { getStartEndDate } from '../../utils'
-import { ImportNotification } from '../types'
+import type { ImportNotification } from '../types'
 
 import css from './ImportEmailNotifications.less'
 

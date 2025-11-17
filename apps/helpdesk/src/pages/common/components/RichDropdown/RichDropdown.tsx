@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 import _identity from 'lodash/identity'
@@ -10,7 +11,8 @@ import {
 
 import RichDropdownOptionGroups from './RichDropdownOptionGroups'
 import RichDropdownOptions from './RichDropdownOptions'
-import { isOptionGroupArray, Option, OptionGroup } from './types'
+import type { Option, OptionGroup } from './types'
+import { isOptionGroupArray } from './types'
 
 import css from './RichDropdown.less'
 

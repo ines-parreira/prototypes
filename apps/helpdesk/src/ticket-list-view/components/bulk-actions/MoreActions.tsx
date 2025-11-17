@@ -1,15 +1,17 @@
-import { ComponentProps, useCallback, useMemo, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
-import { JobType, TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
+import { JobType } from '@gorgias/helpdesk-types'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 import { Popover } from 'components/Popover'
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import { Update } from 'jobs'
+import type { Update } from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -24,7 +26,8 @@ import { getMoment } from 'utils/date'
 import ApplyMacro from './ApplyMacro'
 import PriorityDropdownMenu from './PriorityDropdownMenu'
 import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
-import { Action, Job } from './types'
+import type { Job } from './types'
+import { Action } from './types'
 
 import css from './style.less'
 

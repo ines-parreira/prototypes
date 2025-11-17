@@ -1,6 +1,6 @@
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 
-import { Notification } from '../types'
+import type { Notification } from '../types'
 
 const baseNotification = {
     id: '1',

@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef } from 'react'
+import type { ForwardedRef } from 'react'
+import { forwardRef } from 'react'
 
-import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
+import type { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
 
 import css from './CustomDropdownInput.less'
 

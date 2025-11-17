@@ -1,6 +1,6 @@
-import { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
 
-import { SegmentedOptionValue } from './SegmentedOptionValue'
+import type { SegmentedOptionValue } from './SegmentedOptionValue'
 
 export type ChangeSegmentedOptionFn = (
     event: ChangeEvent<HTMLInputElement>,

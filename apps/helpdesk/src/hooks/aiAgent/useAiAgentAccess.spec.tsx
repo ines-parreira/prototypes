@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { AutomatePlan } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
 import * as useTrialAccessModule from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import * as billingSelectors from 'state/billing/selectors'
 

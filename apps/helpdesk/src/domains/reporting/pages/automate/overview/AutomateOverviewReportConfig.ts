@@ -32,10 +32,10 @@ import {
     DATES_WITHIN_PERIOD_LABEL,
 } from 'domains/reporting/pages/automate/overview/constants'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,

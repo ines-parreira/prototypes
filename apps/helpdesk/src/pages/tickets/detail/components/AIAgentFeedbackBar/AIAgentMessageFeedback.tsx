@@ -1,21 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
-import {
+import type { ReportIssueOption } from 'models/aiAgentFeedback/constants'
+import type {
     DeleteMessageFeedback,
     Feedback,
     FeedbackOnResource,
-    isIssueFeedbackOnMessage,
     MessageFeedback,
     NoteFeedbackOnMessage,
     ResourceFeedbackOnMessage,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
+import { isIssueFeedbackOnMessage } from 'models/aiAgentFeedback/types'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { getAgentMessageFeedbackStatus } from 'state/agents/selectors'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -34,7 +35,8 @@ import FeedbackReportIssue from './FeedbackReportIssue'
 import { FeedbackResourceSection } from './FeedbackResourceSection'
 import FeedbackStatusBadge from './FeedbackStatusBadge'
 import { useFeedbackTracking } from './hooks/useFeedbackTracking'
-import { FeedbackStatus, ResourceSection } from './types'
+import type { FeedbackStatus } from './types'
+import { ResourceSection } from './types'
 import { getActionUrl, getGuidanceUrl, getKnowledgeUrl } from './utils'
 
 import css from './AIAgentFeedbackBar.less'

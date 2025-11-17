@@ -17,7 +17,7 @@ import {
     returnMentionsPerProductDrillDownQueryFactory,
     returnMentionsPerProductQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/returnMentionsPerProduct'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     NotSpamNorTrashedTicketsFilter,

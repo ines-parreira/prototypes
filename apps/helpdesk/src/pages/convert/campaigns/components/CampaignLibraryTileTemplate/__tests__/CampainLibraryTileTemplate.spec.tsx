@@ -1,7 +1,5 @@
-import {
-    CampaignTemplate,
-    CampaignTemplateLabelType,
-} from 'pages/convert/campaigns/templates/types'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
 import { renderWithRouter } from 'utils/testing'
 
 import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'

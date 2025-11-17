@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -20,10 +20,8 @@ import {
     LoadingTableRows,
 } from 'pages/aiAgent/insights/IntentTableWidget/IntentTable'
 import { TableLabels } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
-import {
-    IntentTableColumn,
-    PaginatedIntents,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { PaginatedIntents } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

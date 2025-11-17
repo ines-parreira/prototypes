@@ -10,15 +10,13 @@ import { Form } from 'core/forms'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import {
-    ISubscriptionSummaryProps,
-    SubscriptionSummary,
-} from '../SubscriptionSummary'
+import type { ISubscriptionSummaryProps } from '../SubscriptionSummary'
+import { SubscriptionSummary } from '../SubscriptionSummary'
 
 jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
 jest.mock('@repo/hooks', () => ({

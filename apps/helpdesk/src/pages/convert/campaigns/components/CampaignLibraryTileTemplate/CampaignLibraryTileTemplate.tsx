@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 
 import css from './CampaignLibraryTileTemplate.less'
 

@@ -2,11 +2,8 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import {
-    NavBarContext,
-    NavBarContextType,
-    NavBarDisplayMode,
-} from '../useNavBar/context'
+import type { NavBarContextType } from '../useNavBar/context'
+import { NavBarContext, NavBarDisplayMode } from '../useNavBar/context'
 import { useNavBar } from '../useNavBar/useNavBar'
 
 const mockNavBarContextValues: NavBarContextType = {

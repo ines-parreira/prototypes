@@ -1,6 +1,6 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketCubeWithJoins,
     TicketDimension,
     TicketMember,
     TicketSegment,
@@ -11,11 +11,9 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -24,7 +22,7 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { subtractDaysFromDate } from 'utils/date'
 
 export const MESSAGES_MAX_DAYS_INTO_THE_PAST = 180

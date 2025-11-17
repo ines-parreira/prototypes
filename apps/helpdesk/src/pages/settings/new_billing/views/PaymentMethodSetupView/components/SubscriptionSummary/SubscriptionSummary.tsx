@@ -1,10 +1,6 @@
 import { useSessionStorage } from '@repo/hooks'
-import {
-    FieldValues,
-    SubmitHandler,
-    useFormContext,
-    useFormState,
-} from 'react-hook-form'
+import type { FieldValues, SubmitHandler } from 'react-hook-form'
+import { useFormContext, useFormState } from 'react-hook-form'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -15,7 +11,7 @@ import SummaryItem from 'pages/settings/new_billing/components/SummaryItem'
 import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
 import { SELECTED_PRODUCTS_SESSION_STORAGE_KEY } from 'pages/settings/new_billing/constants'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 
 import css from './SubscriptionSummary.less'

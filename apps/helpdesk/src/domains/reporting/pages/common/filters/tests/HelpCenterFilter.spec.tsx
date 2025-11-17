@@ -12,13 +12,13 @@ import HelpCenterFilter, {
 } from 'domains/reporting/pages/common/filters/HelpCenterFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data

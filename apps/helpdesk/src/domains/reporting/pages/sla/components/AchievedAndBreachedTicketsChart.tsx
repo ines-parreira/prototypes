@@ -7,7 +7,7 @@ import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACub
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export const CHART_TITLE = 'Achieved and breached tickets'
 export const HINT =

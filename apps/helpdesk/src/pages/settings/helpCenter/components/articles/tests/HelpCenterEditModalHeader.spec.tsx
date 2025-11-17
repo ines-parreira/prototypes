@@ -2,23 +2,22 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { DeepPartial } from 'redux'
+import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import { LocaleCode } from '../../../../../../models/helpCenter/types'
+import type { LocaleCode } from '../../../../../../models/helpCenter/types'
 import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.fixture'
 import { getLocalesResponseFixture } from '../../../fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from '../../../providers/SupportedLocales'
 import { getArticleUrl } from '../../../utils/helpCenter.utils'
 import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
-import HelpCenterEditModalHeader, {
-    Props as HelpCenterEditModalHeaderProps,
-} from '../HelpCenterEditModalHeader'
+import type { Props as HelpCenterEditModalHeaderProps } from '../HelpCenterEditModalHeader'
+import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
 
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),

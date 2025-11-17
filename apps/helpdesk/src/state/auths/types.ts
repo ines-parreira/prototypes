@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
 enum AuthItemType {
     ApiKey = 'api_key',

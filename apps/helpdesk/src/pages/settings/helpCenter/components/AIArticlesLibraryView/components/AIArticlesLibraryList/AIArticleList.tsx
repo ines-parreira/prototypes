@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 
-import {
+import type {
     AIArticleToggleOption,
-    AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'

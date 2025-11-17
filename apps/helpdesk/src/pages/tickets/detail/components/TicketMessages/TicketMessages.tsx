@@ -2,8 +2,9 @@ import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
-import { fromJS, Map } from 'immutable'
-import { Moment } from 'moment'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { Moment } from 'moment'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { useFlag } from 'core/flags'
@@ -13,8 +14,8 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
-import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
+import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
+import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

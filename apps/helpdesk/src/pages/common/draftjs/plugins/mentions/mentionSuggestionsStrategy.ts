@@ -1,7 +1,7 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import { ContentBlock } from 'draft-js'
+import type { ContentBlock } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _escapeRegExp from 'lodash/escapeRegExp'
 

@@ -1,11 +1,11 @@
 import { Component, type ComponentProps } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import Expression from 'pages/common/components/ast/expression/Expression'
-import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type Expression from 'pages/common/components/ast/expression/Expression'
+import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import AlternateStatement from './AlternateStatement'
 import { ConsequentStatement } from './ConsequentStatement'

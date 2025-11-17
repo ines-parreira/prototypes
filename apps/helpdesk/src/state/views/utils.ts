@@ -1,6 +1,7 @@
 import { Syntax } from 'esprima'
-import { BaseCallExpression, BaseNode } from 'estree'
-import { fromJS, List, Map, Seq } from 'immutable'
+import type { BaseCallExpression, BaseNode } from 'estree'
+import type { List, Map, Seq } from 'immutable'
+import { fromJS } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 import _isNumber from 'lodash/isNumber'
@@ -8,7 +9,7 @@ import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import moment from 'moment'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { fromAST } from 'common/utils'
 import { QaScoreDimensions } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
@@ -25,13 +26,13 @@ import {
     toJS,
 } from '../../utils'
 import { isTimedelta } from '../../utils/ast'
-import { Agents } from '../agents/types'
+import type { Agents } from '../agents/types'
 import {
     CollectionOperator,
     DatetimeOperator,
     TimedeltaOperator,
 } from '../rules/types'
-import { ViewFilter } from './types'
+import type { ViewFilter } from './types'
 
 export const rawify = (data: Maybe<string | number | boolean>): string => {
     if (typeof data === 'string') {

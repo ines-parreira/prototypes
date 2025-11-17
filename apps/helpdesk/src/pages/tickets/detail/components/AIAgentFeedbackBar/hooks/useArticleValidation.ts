@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 
-import {
+import type {
     Article,
     ArticleTranslationWithRating,
     CreateArticleDto,

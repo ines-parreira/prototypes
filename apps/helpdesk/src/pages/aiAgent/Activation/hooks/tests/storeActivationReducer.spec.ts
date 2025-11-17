@@ -1,16 +1,16 @@
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
+import type { Flags, State } from '../storeActivationReducer'
 import {
     checkIsMissingKnowledge,
-    Flags,
     getChatActivation,
     isSalesEnabledWithNewActivationXp,
     KNOWLEDGE_ALERT_KIND,
     reducer,
-    State,
     stateToUpdatedStoreConfiguration,
     storeConfigurationToState,
 } from '../storeActivationReducer'

@@ -1,4 +1,4 @@
-import { ToneOfVoice } from '../constants'
+import type { ToneOfVoice } from '../constants'
 
 export const CUSTOMER_NAME = 'Alex'
 export const CUSTOMER_LAST_NAME = 'Home'

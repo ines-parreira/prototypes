@@ -1,6 +1,6 @@
 import { AttachmentEnum } from 'common/types'
-import { CampaignDiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { CampaignDiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 
 export const transformDiscountOfferToAttachment = (
     offer: CampaignDiscountOffer,

@@ -2,7 +2,7 @@ import _keyBy from 'lodash/keyBy'
 
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState as contactFormInitialState } from 'state/entities/contactForm/reducer'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { initialState as uiState } from 'state/ui/contactForm/reducer'
 
 import { getContactFormById, getCurrentContactForm } from '../selectors'

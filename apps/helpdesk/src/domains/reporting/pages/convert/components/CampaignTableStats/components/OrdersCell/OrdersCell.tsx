@@ -1,7 +1,7 @@
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatNumber } from 'domains/reporting/pages/common/utils'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
-import { ConvertMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { ConvertMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 

@@ -13,8 +13,8 @@ import createMockStore from 'redux-mock-store'
 
 import { EmailProvider } from 'models/integration/constants'
 import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
-import { SenderVerification } from 'models/singleSenderVerification/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { SenderVerification } from 'models/singleSenderVerification/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import VerificationEmailSent from '../SingleSenderVerification/VerificationEmailSent'
 

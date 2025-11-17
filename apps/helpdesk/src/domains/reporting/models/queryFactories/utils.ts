@@ -1,17 +1,17 @@
 import _flatMap from 'lodash/flatMap'
 
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
-import {
+import type {
     CustomFieldFilter,
-    FilterKey,
     StatsFilters,
     TagFilter,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
 import {
-    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'

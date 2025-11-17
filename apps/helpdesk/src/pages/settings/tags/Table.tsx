@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { ListTagsOrderBy, Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { ORDER_BY, OrderBy } from 'models/tag/types'
+import type { OrderBy } from 'models/tag/types'
+import { ORDER_BY } from 'models/tag/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { getSelectAll, makeGetSelectedTagMeta } from 'state/tags/selectors'
 

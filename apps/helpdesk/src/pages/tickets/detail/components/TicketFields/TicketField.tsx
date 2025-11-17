@@ -1,13 +1,9 @@
 import { memo } from 'react'
 
-import {
-    CustomField,
-    CustomFieldState,
-    isCustomFieldSystemReadOnly,
-} from 'custom-fields/types'
-import NumberField, {
-    Props as NumberFieldProps,
-} from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
+import type { CustomField, CustomFieldState } from 'custom-fields/types'
+import { isCustomFieldSystemReadOnly } from 'custom-fields/types'
+import type { Props as NumberFieldProps } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
+import NumberField from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
 
 import DropdownField from './components/fields/DropdownField'
 import TextField from './components/fields/TextField'

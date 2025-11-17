@@ -1,4 +1,4 @@
-import { PlaygroundTemplateMessage } from '../../types'
+import type { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
 
 const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [

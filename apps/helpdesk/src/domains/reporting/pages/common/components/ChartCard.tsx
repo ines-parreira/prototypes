@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
@@ -7,8 +8,8 @@ import { Card } from '@gorgias/analytics-ui-kit'
 import css from 'domains/reporting/pages/common/components/ChartCard.less'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 type Props = {
     children?: ReactNode

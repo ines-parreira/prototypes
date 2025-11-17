@@ -3,16 +3,17 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {
+import type {
     EmailIntegration,
-    EmailProvider,
     GmailIntegration,
 } from '@gorgias/helpdesk-queries'
+import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
-import { IntegrationType, OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import EmailIntegrationListItem from '../EmailIntegrationListItem'
 import { canIntegrationDomainBeVerified } from '../helpers'

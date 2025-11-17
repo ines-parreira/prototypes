@@ -1,22 +1,19 @@
-import React, {
-    HTMLAttributes,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-} from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import axios, { AxiosError, CancelToken } from 'axios'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Button } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { downloadStat } from 'domains/reporting/models/stat/resources'
-import {
+import type {
     LegacyStatsFilters,
     Stat,
     TwoDimensionalChart,

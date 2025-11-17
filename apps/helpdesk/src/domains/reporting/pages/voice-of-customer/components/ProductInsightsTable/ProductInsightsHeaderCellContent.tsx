@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useProductsSorting } from 'domains/reporting/hooks/voice-of-customer/useSortedProducts'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     HintTooltip,
     HintTooltipContent,
@@ -24,7 +24,8 @@ import {
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { opposite, OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
+import { opposite } from 'models/api/types'
 
 export const SORTABLE_COLUMNS = [
     ProductInsightsTableColumns.Product,

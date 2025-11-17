@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { TicketCompact } from '../../types'
+import type { TicketCompact } from '../../types'
 import useSelection from '../useSelection'
 
 describe('useSelection', () => {

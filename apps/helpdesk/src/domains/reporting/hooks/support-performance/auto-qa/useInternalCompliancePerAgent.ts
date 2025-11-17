@@ -3,8 +3,8 @@ import {
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { internalCompliancePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/internalComplianceQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useInternalCompliancePerAgent = (
     statsFilters: StatsFilters,

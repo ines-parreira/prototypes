@@ -1,23 +1,21 @@
 import { ContentState } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-    TicketVia,
-} from 'business/types/ticket'
-import { DiscountCode } from 'models/discountCodes/types'
-import { MacroAction } from 'models/macroAction/types'
-import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { TicketVia } from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import type { DiscountCode } from 'models/discountCodes/types'
+import type { MacroAction } from 'models/macroAction/types'
+import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as ticketTypes from 'state/ticket/constants'
 import { getSourceTypeOfResponse } from 'state/ticket/utils'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import { getChannelFromSourceType, isPublic } from 'tickets/common/utils'
 
-import { addEmailExtra } from './actions'
+import type { addEmailExtra } from './actions'
 import * as types from './constants'
 import {
     addEmailExtraContent,
@@ -25,17 +23,17 @@ import {
     hasEmailExtraContent,
     updateEmailExtraOnUserInput,
 } from './emailExtraUtils'
+import type { MessageContext } from './responseUtils'
 import {
     addCache,
     applyMacro,
     deleteReplyCache,
-    MessageContext,
     updateCache,
     updateNewMessageWithContentState,
 } from './responseUtils'
 import { getReceiversProperties } from './selectors'
 import ticketReplyCache from './ticketReplyCache'
-import { NewMessage, NewMessageState, ReplyAreaState } from './types'
+import type { NewMessage, NewMessageState, ReplyAreaState } from './types'
 import { getMentionIds } from './utils'
 
 const defaultSourceExtra = {

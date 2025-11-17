@@ -1,5 +1,5 @@
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 export default function getMultiSelectLabel(values?: CustomFieldValue[]) {
     return values?.length

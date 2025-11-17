@@ -1,9 +1,8 @@
 import _truncate from 'lodash/truncate'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 const MAX_COMMENT_LENGTH = 250
 

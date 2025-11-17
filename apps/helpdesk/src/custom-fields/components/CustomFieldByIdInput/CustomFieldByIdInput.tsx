@@ -1,7 +1,8 @@
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 
-import CustomFieldInput, { CustomFieldInputProps } from '../CustomFieldInput'
+import type { CustomFieldInputProps } from '../CustomFieldInput'
+import CustomFieldInput from '../CustomFieldInput'
 
 export type CustomFieldByIdInputProps = Omit<
     CustomFieldInputProps,

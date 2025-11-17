@@ -13,10 +13,8 @@ import {
 } from 'state/entities/helpCenter/categories'
 
 import { CategoriesTableBasicRow } from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
-import {
-    CategoriesTableRow,
-    CategoriesTableRowProps,
-} from './components/CategoriesTableRow'
+import type { CategoriesTableRowProps } from './components/CategoriesTableRow'
+import { CategoriesTableRow } from './components/CategoriesTableRow'
 import { DND_ENTITIES } from './constants'
 
 import css from './CategoriesTable.less'

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -6,12 +6,10 @@ import { userEvent } from '@testing-library/user-event'
 import { useFormContext } from 'react-hook-form'
 
 import { mockEnqueueStep } from '@gorgias/helpdesk-mocks'
-import { PhoneIntegration } from '@gorgias/helpdesk-queries'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
-import {
-    validateCallRoutingFlow,
-    ValidationError,
-} from '@gorgias/helpdesk-validators'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import type { ValidationError } from '@gorgias/helpdesk-validators'
+import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'

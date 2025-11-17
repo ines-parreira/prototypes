@@ -10,11 +10,9 @@ import {
     performanceByArticleCountQueryFactory,
     performanceByArticleQueryFactory,
 } from 'domains/reporting/models/queryFactories/help-center/performanceByArticle'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    HelpCenterTableCell,
-    TableCellType,
-} from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { HelpCenterTableCell } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import { TableCellType } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { getArticleUrl } from 'domains/reporting/pages/help-center/utils/helpcenterStats.utils'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { notEmpty } from 'utils'

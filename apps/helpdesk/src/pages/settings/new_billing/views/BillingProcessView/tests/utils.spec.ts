@@ -3,7 +3,8 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import { AutomatePlan, Cadence } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 
 import { setAutomationNotification, setHelpdeskNotification } from '../utils'
 

@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { SchemasState } from './types'
+import type { SchemasState } from './types'
 
 const initialState: SchemasState = fromJS({})
 

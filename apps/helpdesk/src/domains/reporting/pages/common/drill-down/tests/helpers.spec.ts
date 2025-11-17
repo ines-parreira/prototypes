@@ -7,9 +7,9 @@ import {
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
+import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import {
     AIJourneyMetric,
-    AIJourneyMetrics,
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -50,9 +50,9 @@ import {
     declinedVoiceCallsPerAgentQueryFactory,
     transferredInboundVoiceCallsPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     Sentiment,
-    StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
@@ -62,7 +62,7 @@ import {
     getDrillDownMetricColumn,
     getDrillDownQuery,
 } from 'domains/reporting/pages/common/drill-down/helpers'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { campaignSalesDrillDownQueryFactory } from 'domains/reporting/pages/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     CSAT_SCORE,
@@ -87,7 +87,7 @@ import { OverviewMetric } from 'domains/reporting/pages/support-performance/over
 import { ProductInsightsColumnWithDrillDownConfig } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'domains/reporting/services/constants'
-import {
+import type {
     AgentsMetrics,
     AiSalesAgentMetrics,
     ChannelsMetrics,

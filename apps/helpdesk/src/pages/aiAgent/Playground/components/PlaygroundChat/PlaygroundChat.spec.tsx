@@ -10,10 +10,8 @@ import useFlag from 'core/flags/hooks/useFlag'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useSearchCustomer } from 'models/aiAgent/queries'
-import {
-    AiAgentOnboardingState,
-    OnboardingNotificationState,
-} from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import {
     MessageType,
     PlaygroundPromptType,

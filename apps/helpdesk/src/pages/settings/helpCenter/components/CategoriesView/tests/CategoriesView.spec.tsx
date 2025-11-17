@@ -15,7 +15,7 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SearchContextProvider } from 'pages/settings/helpCenter/providers/SearchContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

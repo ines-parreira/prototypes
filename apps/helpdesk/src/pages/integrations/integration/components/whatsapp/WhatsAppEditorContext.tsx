@@ -1,9 +1,9 @@
 import { createContext } from 'react'
 
-import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 
-import { WhatsAppMessageTemplateSearchFilters } from './WhatsAppMessageTemplateSearch'
+import type { WhatsAppMessageTemplateSearchFilters } from './WhatsAppMessageTemplateSearch'
 
 export type WhatsAppEditorContextState = {
     selectedTemplateType: TemplateTypeFilterOption

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import {
+import type {
     GuidanceVariable,
     GuidanceVariableGroup,
 } from 'pages/aiAgent/components/GuidanceEditor/variables.types'

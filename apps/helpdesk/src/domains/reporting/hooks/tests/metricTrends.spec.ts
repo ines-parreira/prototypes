@@ -75,7 +75,7 @@ import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scope
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { openTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsOpen'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
     getPreviousPeriod,

@@ -1,6 +1,7 @@
-import { FormEvent, useCallback, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import {

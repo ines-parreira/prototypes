@@ -1,7 +1,7 @@
 import { ExpressionFieldSource } from '@gorgias/helpdesk-types'
 
-import { CustomFieldState } from 'custom-fields/types'
-import { TicketStateWithoutImmutable } from 'state/ticket/types'
+import type { CustomFieldState } from 'custom-fields/types'
+import type { TicketStateWithoutImmutable } from 'state/ticket/types'
 
 export const enum SupportedTicketFields {
     Status = 'status',

@@ -1,6 +1,6 @@
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
-import {
+import type {
     UniqueDiscountListParams,
     UniqueDiscountOfferCreatePayload,
     UniqueDiscountOfferDeleteParams,

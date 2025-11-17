@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { Map } from 'immutable'
-import { CountryCode } from 'libphonenumber-js'
+import type { Map } from 'immutable'
+import type { CountryCode } from 'libphonenumber-js'
 
 import {
     getDefaultAddressInfoFromActiveCustomer,

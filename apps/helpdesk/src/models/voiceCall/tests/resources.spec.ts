@@ -3,7 +3,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
-import { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
+import type { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import client from 'models/api/resources'

@@ -1,6 +1,6 @@
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import {

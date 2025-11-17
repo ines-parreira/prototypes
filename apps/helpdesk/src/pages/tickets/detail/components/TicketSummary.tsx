@@ -8,7 +8,7 @@ import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
-import { TicketSummary } from '@gorgias/helpdesk-types'
+import type { TicketSummary } from '@gorgias/helpdesk-types'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import { PhoneContactInfoDto } from 'models/helpCenter/types'
+import type { PhoneContactInfoDto } from 'models/helpCenter/types'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'

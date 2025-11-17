@@ -1,11 +1,13 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 
 import { Panel, Panels } from 'panels'
 import { LayoutKeys } from 'split-ticket-view/constants'
 
-import PanelLayout, { PanelLayoutConfig } from '../PanelLayout'
+import type { PanelLayoutConfig } from '../PanelLayout'
+import PanelLayout from '../PanelLayout'
 
 jest.mock('panels', () => ({
     Panel: jest.fn(),

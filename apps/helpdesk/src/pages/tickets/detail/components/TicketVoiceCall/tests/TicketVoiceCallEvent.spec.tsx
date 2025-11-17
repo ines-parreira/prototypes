@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 
-import { ProcessedEvent } from 'models/voiceCall/processEvents'
+import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

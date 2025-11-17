@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import type KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
 import MultiResourceKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import { totalMessagesSent } from 'fixtures/stats'
 

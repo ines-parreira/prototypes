@@ -11,13 +11,10 @@ import {
 } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
-import {
-    SmartFollowUp,
-    SmartFollowUpType,
-    TicketMessage,
-} from 'models/ticket/types'
-import { Account } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { SmartFollowUp, TicketMessage } from 'models/ticket/types'
+import { SmartFollowUpType } from 'models/ticket/types'
+import type { Account } from 'state/currentAccount/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import Body from '../Body'
 

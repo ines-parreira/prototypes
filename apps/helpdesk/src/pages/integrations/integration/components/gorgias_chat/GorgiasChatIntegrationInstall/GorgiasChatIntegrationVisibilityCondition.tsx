@@ -1,4 +1,5 @@
-import React, { useRef } from 'react'
+import type React from 'react'
+import { useRef } from 'react'
 
 import classNames from 'classnames'
 
@@ -7,16 +8,14 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import {
-    GorgiasChatInstallationVisibilityCondition,
-    GorgiasChatInstallationVisibilityConditionOperator,
-} from 'models/integration/types'
+import type { GorgiasChatInstallationVisibilityCondition } from 'models/integration/types'
+import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import { UrlValidationResult } from './utils/validateUrl'
+import type { UrlValidationResult } from './utils/validateUrl'
 
 import css from './GorgiasChatIntegrationVisibilityCondition.less'
 

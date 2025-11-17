@@ -1,7 +1,7 @@
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 type VoiceCallVolumeMetricProps = {
     title: string

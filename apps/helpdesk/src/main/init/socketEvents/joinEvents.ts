@@ -1,9 +1,6 @@
-import { SocketManager } from 'services/socketManager/socketManager'
-import {
-    JoinEventType,
-    SendEvent,
-    SocketEventType,
-} from 'services/socketManager/types'
+import type { SocketManager } from 'services/socketManager/socketManager'
+import type { SendEvent } from 'services/socketManager/types'
+import { JoinEventType, SocketEventType } from 'services/socketManager/types'
 
 /**
  * Events describing a room to join on server via socket

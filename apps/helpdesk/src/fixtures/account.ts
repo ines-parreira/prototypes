@@ -5,8 +5,8 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import { SubscriptionStatus } from 'models/billing/types'
+import type { Account } from 'state/currentAccount/types'
 import {
-    Account,
     AccountFeature,
     AccountSettingType,
     AccountStatus,

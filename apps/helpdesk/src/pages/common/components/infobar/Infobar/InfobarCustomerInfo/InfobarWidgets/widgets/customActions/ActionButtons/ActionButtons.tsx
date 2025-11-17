@@ -1,8 +1,8 @@
 import React, { memo } from 'react'
 
-import { Source } from 'models/widget/types'
+import type { Source } from 'models/widget/types'
 
-import { Button as ButtonType } from '../types'
+import type { Button as ButtonType } from '../types'
 import ButtonsGroup from './Display'
 import Editor from './Editor'
 

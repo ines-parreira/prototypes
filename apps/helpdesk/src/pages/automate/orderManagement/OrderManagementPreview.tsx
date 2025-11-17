@@ -1,17 +1,16 @@
-import { History } from 'history'
+import type { History } from 'history'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     PolicyKey,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext, {
-    SelfServicePreviewContextType,
-} from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import type { SelfServicePreviewContextType } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
 

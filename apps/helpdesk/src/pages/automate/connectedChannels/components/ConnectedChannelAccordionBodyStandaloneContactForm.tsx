@@ -3,9 +3,9 @@ import React, { useMemo } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { TicketChannel } from 'business/types/ticket'
-import { ContactFormAutomationSettings } from 'models/contactForm/types'
+import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import type { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 
 import useAppSelector from '../../../../hooks/useAppSelector'
 import { getHasAutomate } from '../../../../state/billing/selectors'

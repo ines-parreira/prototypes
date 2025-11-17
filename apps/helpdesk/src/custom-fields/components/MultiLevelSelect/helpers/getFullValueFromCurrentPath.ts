@@ -1,5 +1,5 @@
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 const removeKeyMarkers = (path: string[]) => {
     return path.map(

@@ -1,7 +1,8 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { currentProductsUsage } from 'fixtures/productPrices'
-import { StoreAction } from 'state/types'
+import type { StoreAction } from 'state/types'
 
 import * as types from '../constants'
 import reducer, { initialState } from '../reducers'

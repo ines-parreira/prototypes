@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
@@ -15,7 +15,7 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
 
-import { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
+import type { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../translations/useTicketsTranslatedProperties'
 
 // Mock the feature flag hook

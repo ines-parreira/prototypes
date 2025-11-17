@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { PartiallySucceededMigrationState } from '../../../../types'
+import type { PartiallySucceededMigrationState } from '../../../../types'
 
 import css from './MigrationPartiallySucceededActions.less'
 

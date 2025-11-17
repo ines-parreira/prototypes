@@ -5,9 +5,9 @@ import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles
 
 // Add this import
 
-import { PlaygroundTemplateMessage } from '../../types'
+import type { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
-import { PlaygroundAction } from '../PlaygroundActions/types'
+import type { PlaygroundAction } from '../PlaygroundActions/types'
 import { PlaygroundPredefinedMessages } from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
 
 import css from './PlaygroundEditor.less'

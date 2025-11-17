@@ -26,7 +26,7 @@ import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()

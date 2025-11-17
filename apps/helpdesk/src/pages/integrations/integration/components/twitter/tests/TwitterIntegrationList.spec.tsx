@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'

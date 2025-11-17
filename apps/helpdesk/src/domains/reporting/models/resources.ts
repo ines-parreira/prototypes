@@ -1,7 +1,11 @@
-import { AxiosResponse, isAxiosError } from 'axios'
+import type { AxiosResponse } from 'axios'
+import { isAxiosError } from 'axios'
 
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
-import {
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type {
     Cube,
     EnrichmentFields,
     ReportingParams,

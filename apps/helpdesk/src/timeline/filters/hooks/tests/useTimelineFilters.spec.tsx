@@ -1,13 +1,15 @@
 import { useLocalStorage } from '@repo/hooks'
 import { act, renderHook } from '@testing-library/react'
 
-import { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
+import type { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 
-import { TimelineItem, TimelineItemKind } from '../../../types'
-import { ActiveFilters, useTimelineFilters } from '../useTimelineFilters'
+import type { TimelineItem } from '../../../types'
+import { TimelineItemKind } from '../../../types'
+import type { ActiveFilters } from '../useTimelineFilters'
+import { useTimelineFilters } from '../useTimelineFilters'
 
 jest.mock('@repo/logging')
 jest.mock('@repo/hooks', () => ({

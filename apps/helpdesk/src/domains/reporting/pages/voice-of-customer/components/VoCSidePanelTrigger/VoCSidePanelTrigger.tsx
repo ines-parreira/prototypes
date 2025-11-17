@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -8,10 +8,8 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger.less'
-import {
-    setSidePanelData,
-    SidePanelProduct,
-} from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import { setSidePanelData } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 type Props = {

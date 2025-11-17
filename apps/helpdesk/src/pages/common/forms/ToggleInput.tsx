@@ -1,10 +1,10 @@
-import React, {
+import type {
     AriaAttributes,
     InputHTMLAttributes,
     MouseEvent,
     ReactNode,
-    useCallback,
 } from 'react'
+import React, { useCallback } from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'

@@ -1,5 +1,5 @@
-import { TopIntentsColumns } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
-import { OrderDirection } from 'models/api/types'
+import type { TopIntentsColumns } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
+import type { OrderDirection } from 'models/api/types'
 
 type BaseRowProps = {
     level: number

@@ -1,10 +1,11 @@
-import React, { ReactNode, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {
+import type {
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 
 import TriggersContext from './context'
 

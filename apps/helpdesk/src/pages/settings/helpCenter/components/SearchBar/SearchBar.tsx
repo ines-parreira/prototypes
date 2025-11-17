@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import type { FC } from 'react'
+import React from 'react'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'

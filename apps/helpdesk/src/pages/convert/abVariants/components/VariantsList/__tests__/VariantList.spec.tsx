@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { renderWithStore } from 'utils/testing'
 
 import VariantsList from '../VariantList'

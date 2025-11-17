@@ -1,5 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { render, RenderResult, screen } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'

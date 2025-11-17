@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceProductModifiers,
 } from 'models/integration/types'
 
 import { supportedBigCommerceModifierTypes } from './consts'
-import { ModifierErrors, ModifierValues } from './types'
+import type { ModifierErrors, ModifierValues } from './types'
 
 export const useModifierValues = ({
     modifiers,

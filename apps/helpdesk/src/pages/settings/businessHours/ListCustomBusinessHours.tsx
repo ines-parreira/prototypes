@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
-import {
+import type {
     ListBusinessHoursOrderBy,
     OrderDirection,
-    useListBusinessHours,
 } from '@gorgias/helpdesk-queries'
+import { useListBusinessHours } from '@gorgias/helpdesk-queries'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import Navigation from 'pages/common/components/Navigation/Navigation'

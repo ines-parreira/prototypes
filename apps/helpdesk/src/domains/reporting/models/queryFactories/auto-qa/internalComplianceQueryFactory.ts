@@ -1,22 +1,18 @@
 import { TicketStatus } from 'business/types/ticket'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    TicketQAScoreCubeWithJoins,
-    TicketQAScoreMeasure,
-} from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
+import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
+import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const internalComplianceQueryFactory = (
     filters: StatsFilters,

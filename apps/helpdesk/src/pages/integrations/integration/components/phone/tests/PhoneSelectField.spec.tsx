@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import PhoneSelectField from '../PhoneSelectField'
 import usePhoneDeviceDialerInput from '../usePhoneDeviceDialerInput'

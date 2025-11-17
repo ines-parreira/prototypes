@@ -1,4 +1,4 @@
-import { GuidanceTemplate } from '../types'
+import type { GuidanceTemplate } from '../types'
 
 export const getGuidanceTemplateFixture = (
     id: GuidanceTemplate['id'],

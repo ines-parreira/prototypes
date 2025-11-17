@@ -1,15 +1,17 @@
-import React, { CSSProperties, useEffect, useMemo } from 'react'
+import type { CSSProperties } from 'react'
+import type React from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { Collapse } from 'reactstrap'
 
-import { MacroAction } from 'models/macroAction/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { MacroAction } from 'models/macroAction/types'
+import type { TicketMessage } from 'models/ticket/types'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 
-import { SuggestionStates } from './InTicketSuggestion'
+import type { SuggestionStates } from './InTicketSuggestion'
 
 import css from './SuggestionBody.less'
 

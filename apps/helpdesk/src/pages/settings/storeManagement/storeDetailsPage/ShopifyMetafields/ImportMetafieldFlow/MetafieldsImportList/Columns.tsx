@@ -1,15 +1,14 @@
+import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
-    ColumnDef,
     createSelectableColumn,
     createSortableColumn,
     Text,
 } from '@gorgias/axiom'
 
-import { Field } from '../../MetafieldsTable/types'
-import MetafieldTypeItem, {
-    MetafieldType,
-} from '../../MetafieldTypeItem/MetafieldTypeItem'
+import type { Field } from '../../MetafieldsTable/types'
+import type { MetafieldType } from '../../MetafieldTypeItem/MetafieldTypeItem'
+import MetafieldTypeItem from '../../MetafieldTypeItem/MetafieldTypeItem'
 
 export const columns: ColumnDef<Field>[] = [
     createSelectableColumn<Field>(),

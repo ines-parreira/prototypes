@@ -7,7 +7,7 @@ import { THEME_NAME } from '@gorgias/design-tokens'
 
 import * as themeHooks from '../../../../core/theme'
 import { IntegrationType } from '../../../../models/integration/constants'
-import { StoreIntegration } from '../../../../models/integration/types'
+import type { StoreIntegration } from '../../../../models/integration/types'
 import StoreSelector from './StoreSelector'
 
 jest.mock('../../../../core/theme', () => ({

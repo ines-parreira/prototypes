@@ -2,11 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {
-    PromoCardContent,
-    PromoCardVariant,
-    TrialType,
-} from '../../types/ShoppingAssistant'
+import type { PromoCardContent } from '../../types/ShoppingAssistant'
+import { PromoCardVariant, TrialType } from '../../types/ShoppingAssistant'
 import { AdminTrialProgress } from '../AdminTrialProgress'
 
 jest.mock('@repo/logging', () => ({

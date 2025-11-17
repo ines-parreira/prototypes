@@ -1,4 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import type React from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 import { Map } from 'immutable'
 
@@ -6,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 
-import { MigrationProvider } from '../../types'
+import type { MigrationProvider } from '../../types'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
 import ProviderInfo from '../ProviderInfo'

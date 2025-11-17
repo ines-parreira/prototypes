@@ -1,12 +1,13 @@
 import MockAdapter from 'axios-mock-adapter'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { BASE_VIEW_ID } from 'constants/view'
 import client from 'models/api/resources'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
-import { Ticket } from 'models/ticket/types'
-import { StoreDispatch } from 'state/types'
+import type { Ticket } from 'models/ticket/types'
+import type { StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { mergeTickets, searchTickets } from '../actions'

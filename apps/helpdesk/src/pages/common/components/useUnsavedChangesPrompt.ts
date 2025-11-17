@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
-import { Location } from 'history'
-import { PromptProps } from 'react-router-dom'
+import type { Location } from 'history'
+import type { PromptProps } from 'react-router-dom'
 
 type Props = {
     when: boolean | undefined

@@ -1,15 +1,15 @@
 import _omit from 'lodash/omit'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
-import {
+import type {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'
-import { TicketPartial } from 'models/ticket/types'
+import type { TicketPartial } from 'models/ticket/types'
 
-import { View, ViewDraft } from './types'
+import type { View, ViewDraft } from './types'
 
 type SharedView = View & {
     shared_with_teams: { id: number }[]

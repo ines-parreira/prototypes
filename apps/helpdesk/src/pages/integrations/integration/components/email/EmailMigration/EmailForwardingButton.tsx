@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { verifyMigrationIntegration } from 'models/integration/resources/email'
-import {
-    EmailMigrationInboundVerification,
-    EmailMigrationInboundVerificationStatus,
-} from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
+import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

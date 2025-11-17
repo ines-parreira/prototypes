@@ -1,7 +1,9 @@
-import React, { ReactNode, RefObject, useRef, useState } from 'react'
+import type { ReactNode, RefObject } from 'react'
+import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { Popover, PopoverBody, PopoverHeader, PopoverProps } from 'reactstrap'
+import type { PopoverProps } from 'reactstrap'
+import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

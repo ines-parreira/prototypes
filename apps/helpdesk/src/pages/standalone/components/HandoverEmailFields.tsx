@@ -1,18 +1,17 @@
-import { FC, useRef } from 'react'
+import type { FC } from 'react'
+import { useRef } from 'react'
 
-import { FieldErrors, UseFormSetValue } from 'react-hook-form'
+import type { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
 import InputField from 'pages/common/forms/input/InputField'
-import {
-    EmailItem,
-    HandoverEmailDropdown,
-} from 'pages/standalone/components/HandoverEmailDropdown'
+import type { EmailItem } from 'pages/standalone/components/HandoverEmailDropdown'
+import { HandoverEmailDropdown } from 'pages/standalone/components/HandoverEmailDropdown'
 import css from 'pages/standalone/components/HandoverEmailFields.less'
 import { EMAIL_INTEGRATION_PATH } from 'pages/standalone/constants'
-import { HandoverFormValues } from 'pages/standalone/schemas'
+import type { HandoverFormValues } from 'pages/standalone/schemas'
 
 export const HandoverEmailFields: FC<{
     setValue: UseFormSetValue<HandoverFormValues>

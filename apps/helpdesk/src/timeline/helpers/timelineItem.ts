@@ -1,17 +1,16 @@
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { Order } from 'constants/integrations/types/shopify'
-import { CustomerIntegration } from 'models/customer/types'
+import type { Order } from 'constants/integrations/types/shopify'
+import type { CustomerIntegration } from 'models/customer/types'
 import { SORTABLE_KEY_TO_ORDER_KEY } from 'timeline/constants'
 
-import {
+import type {
     SortableKey,
-    SupportedOrderIntegration,
     TimelineItem,
-    TimelineItemKind,
     TimelineOrder,
     TimelineTicket,
 } from '../types'
+import { SupportedOrderIntegration, TimelineItemKind } from '../types'
 
 export function getItemId(item: TimelineItem): number {
     if (item.kind === TimelineItemKind.Ticket) {

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { parse as parseQueryString } from 'qs'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { getAccessToken } from 'rest_api/auth'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import { CsvColumnPreview } from '../../../../models/helpCenter/types'
+import type { CsvColumnPreview } from '../../../../models/helpCenter/types'
 import { notify } from '../../../../state/notifications/actions'
 import { NotificationStatus } from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
@@ -19,9 +20,9 @@ import { useMigrationApi } from '../hooks/useMigrationApi'
 import { useSupportedLocales } from '../providers/SupportedLocales'
 import { HelpCenterDetailsBreadcrumb } from './HelpCenterDetailsBreadcrumb'
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
-import { GorgiasFieldsMappingsLocalized } from './Imports/components/CsvColumnMatching/types'
+import type { GorgiasFieldsMappingsLocalized } from './Imports/components/CsvColumnMatching/types'
 import { mapCSVLocalValuesToAPIPayload } from './Imports/components/CsvColumnMatching/utils'
-import { AutoOpenSessionLocationState } from './Imports/components/ImportSection/types'
+import type { AutoOpenSessionLocationState } from './Imports/components/ImportSection/types'
 import {
     getErrorMessage,
     responseIsSession,

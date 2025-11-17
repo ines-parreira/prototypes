@@ -2,7 +2,7 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
@@ -12,9 +12,9 @@ import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     transferredInboundVoiceCallsCountPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import type { OrderDirection } from 'models/api/types'
 
 const createFetchMetricPerDimension =
     <TCube extends Cubes>(

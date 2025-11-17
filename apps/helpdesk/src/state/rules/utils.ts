@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import drop from 'lodash/drop'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
@@ -7,17 +8,19 @@ import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
 import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
-import { Schemas } from '../../types'
+import type { Schemas } from '../../types'
 import { getAST, getFirstExpressionOfAST } from '../../utils'
 import { isTimedelta } from '../../utils/ast'
 import { OBJECT_DEFINITIONS } from './constants'
+import type {
+    ObjectExpression,
+    ObjectExpressionProperty,
+    RuleDraft,
+} from './types'
 import {
     CollectionOperator,
     DatetimeOperator,
     DeprecatedOperator,
-    ObjectExpression,
-    ObjectExpressionProperty,
-    RuleDraft,
     TimedeltaOperator,
 } from './types'
 

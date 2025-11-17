@@ -1,8 +1,8 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'

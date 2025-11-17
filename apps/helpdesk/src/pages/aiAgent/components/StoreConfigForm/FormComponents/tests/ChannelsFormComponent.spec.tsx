@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'

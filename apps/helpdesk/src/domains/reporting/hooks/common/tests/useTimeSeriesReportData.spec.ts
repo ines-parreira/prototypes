@@ -20,10 +20,8 @@ import {
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     ACHIEVED_SLA_LABEL,

@@ -1,15 +1,13 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    useAIAgentGetOtherResources,
-    UseAIAgentGetOtherResourcesProps,
-} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
+import type { UseAIAgentGetOtherResourcesProps } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
+import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 
-import { MultiLevelSelectProps } from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
+import type { MultiLevelSelectProps } from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'

@@ -5,15 +5,13 @@ import classNames from 'classnames'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     ContactForm,
     UpdateContactFormDto,
     UpdateSubjectLinesProps,
 } from 'models/contactForm/types'
-import {
-    ContactFormExtraHTML,
-    ExtraHtmlSection,
-} from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
+import type { ContactFormExtraHTML } from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
+import { ExtraHtmlSection } from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
 import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
 import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'

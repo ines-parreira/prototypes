@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -11,7 +11,7 @@ import {
     mockGetVoiceQueueHandler,
     mockListVoiceQueuesHandler,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
+import type { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'

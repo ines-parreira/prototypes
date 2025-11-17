@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import useSplitLLMPromptTriggerInputs from '../useSplitLLMPromptTriggerInputs'
 

@@ -18,7 +18,7 @@ import {
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-import { StoreActivation } from './storeActivationReducer'
+import type { StoreActivation } from './storeActivationReducer'
 
 type AIAgentTrialType = {
     accountDomain: string

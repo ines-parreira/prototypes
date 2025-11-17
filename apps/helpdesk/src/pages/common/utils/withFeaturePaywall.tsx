@@ -1,12 +1,13 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React from 'react'
 
 import _memoize from 'lodash/memoize'
 
-import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
+import type { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { currentAccountHasFeature } from 'state/currentAccount/selectors'
-import { AccountFeature } from 'state/currentAccount/types'
+import type { AccountFeature } from 'state/currentAccount/types'
 
 export function withFeaturePaywall<P extends Record<string, unknown>>(
     feature: AccountFeature,

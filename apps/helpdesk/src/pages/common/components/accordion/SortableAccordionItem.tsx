@@ -1,15 +1,14 @@
-import React, { RefObject, useMemo } from 'react'
+import type { RefObject } from 'react'
+import React, { useMemo } from 'react'
 
-import {
-    DragItemRequired,
-    useReorderDnD,
-} from 'pages/common/hooks/useReorderDnD'
+import type { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
-import AccordionItem, { AccordionItemProps } from './AccordionItem'
+import type { AccordionItemProps } from './AccordionItem'
+import AccordionItem from './AccordionItem'
 import { useSortableAccordionContext } from './SortableAccordionContext'
-import SortableAccordionItemContext, {
-    SortableAccordionItemContextType,
-} from './SortableAccordionItemContext'
+import type { SortableAccordionItemContextType } from './SortableAccordionItemContext'
+import SortableAccordionItemContext from './SortableAccordionItemContext'
 
 type Props = { id: string; index?: number } & Omit<AccordionItemProps, 'id'>
 

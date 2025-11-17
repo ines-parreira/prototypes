@@ -9,7 +9,7 @@ import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import { useMessagesContext } from '../contexts/MessagesContext'
 import { useSettingsContext } from '../contexts/SettingsContext'
-import { PlaygroundCustomer, PlaygroundFormValues } from '../types'
+import type { PlaygroundCustomer, PlaygroundFormValues } from '../types'
 
 export type { PlaygroundFormValues }
 

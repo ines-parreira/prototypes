@@ -1,8 +1,8 @@
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { SLA_FORMAT } from 'domains/reporting/pages/sla/SlaConfig'
-import { OrderDirection } from 'models/api/types'
-import { DrillDownReportingQuery } from 'models/job/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { SLA_FORMAT } from 'domains/reporting/pages/sla/SlaConfig'
+import type { OrderDirection } from 'models/api/types'
+import type { DrillDownReportingQuery } from 'models/job/types'
 
 export enum Domain {
     Voice = 'voice',

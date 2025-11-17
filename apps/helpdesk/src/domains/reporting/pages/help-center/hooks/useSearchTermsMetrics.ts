@@ -10,11 +10,9 @@ import {
     searchResultQueryCountFactory,
     searchResultTermsQueryFactory,
 } from 'domains/reporting/models/queryFactories/help-center/searchResult'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    HelpCenterTableCell,
-    TableCellType,
-} from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { HelpCenterTableCell } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import { TableCellType } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 
 export const useSearchTermsMetrics = ({
     statsFilters,

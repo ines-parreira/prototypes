@@ -1,10 +1,5 @@
-import React, {
-    FC,
-    UIEventHandler,
-    useCallback,
-    useMemo,
-    useState,
-} from 'react'
+import type { FC, UIEventHandler } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
@@ -12,8 +7,9 @@ import classNames from 'classnames'
 import css from 'domains/reporting/pages/common/components/Table/TableWithNestedRows.less'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import { TableFallbackDisplay } from 'domains/reporting/pages/ticket-insights/components/TableFallbackDisplay'
-import { TooltipData } from 'domains/reporting/pages/types'
-import { opposite, OrderDirection } from 'models/api/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
+import type { OrderDirection } from 'models/api/types'
+import { opposite } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

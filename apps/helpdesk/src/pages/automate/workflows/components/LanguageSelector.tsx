@@ -9,10 +9,8 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {
-    LanguageCode,
-    supportedLanguages,
-} from '../models/workflowConfiguration.types'
+import type { LanguageCode } from '../models/workflowConfiguration.types'
+import { supportedLanguages } from '../models/workflowConfiguration.types'
 
 import css from './WorkflowLanguageSelect.less'
 

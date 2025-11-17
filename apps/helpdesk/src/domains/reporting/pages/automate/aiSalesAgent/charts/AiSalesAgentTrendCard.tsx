@@ -1,11 +1,9 @@
 import { useContext } from 'react'
 
-import {
-    AiSalesAgentMetricConfig,
-    TrendMetric,
-} from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AiSalesAgentMetricConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 import { useAiSalesAgentTrendCardComponent } from './useAiSalesAgentTrendCardComponent'
 

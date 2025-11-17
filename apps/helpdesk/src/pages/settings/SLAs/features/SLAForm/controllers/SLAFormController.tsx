@@ -4,13 +4,14 @@ import { useGetSlaPolicy } from '@gorgias/helpdesk-queries'
 import { validateCreateSLAPolicy } from '@gorgias/helpdesk-validators'
 
 import { toFormErrors } from 'core/forms'
-import { SLATemplate } from 'pages/settings/SLAs/config/templates'
+import type { SLATemplate } from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
 import SLAFormView from '../views/SLAFormView'
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
-import useFormValues, { SLAFormValues } from './useFormValues'
+import type { SLAFormValues } from './useFormValues'
+import useFormValues from './useFormValues'
 import useSubmitPolicy from './useSubmitPolicy'
 
 export default function SLAFormController() {

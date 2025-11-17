@@ -1,14 +1,14 @@
-import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
-import {
+import type { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import type {
     VoiceCallStatus,
     VoiceCallTransferReceiverType,
 } from '@gorgias/helpdesk-types'
 
-import {
+import type {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
-import {
+import type {
     VoiceCallDisplayStatus,
     VoiceCallMonitoringStatus,
 } from 'models/voiceCall/types'

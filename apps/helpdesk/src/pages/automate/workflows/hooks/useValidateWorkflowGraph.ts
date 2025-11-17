@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { produce } from 'immer'
 import _set from 'lodash/set'
 
-import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getAutomatedMessageNodeErrors,
     getChannelTriggerNodeErrors,
@@ -15,7 +15,7 @@ import {
     getOrderSelectionNodeErrors,
     getTextReplyNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useValidateWorkflowGraph = (
     getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],

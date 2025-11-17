@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import cn from 'classnames'
 
-import { TicketCompact, TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketCompact, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'

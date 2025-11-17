@@ -5,7 +5,7 @@ import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
-import { VoiceFlowFormValues } from '../types'
+import type { VoiceFlowFormValues } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import {
     bfsFlow,

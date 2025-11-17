@@ -1,4 +1,4 @@
-import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 export const aiJourneyKeys = {
     all: () => ['journeys'] as const,

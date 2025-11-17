@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { changeHelpCenterId, changeViewLanguage } from './actions'
-import { HelpCenterState } from './types'
+import type { HelpCenterState } from './types'
 
 export const initialState: HelpCenterState = {
     currentLanguage: null,

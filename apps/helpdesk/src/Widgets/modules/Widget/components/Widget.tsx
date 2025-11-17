@@ -1,8 +1,8 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { Source, Template as TemplateType } from 'models/widget/types'
+import type { Source, Template as TemplateType } from 'models/widget/types'
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import Template from 'Widgets/modules/Template'
 

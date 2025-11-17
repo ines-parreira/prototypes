@@ -14,7 +14,7 @@ import {
 import { user } from 'fixtures/users'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { ConvertLimitBanner } from '../ConvertLimitBanner'

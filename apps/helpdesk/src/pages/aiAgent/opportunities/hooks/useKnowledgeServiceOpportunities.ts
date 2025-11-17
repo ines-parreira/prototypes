@@ -5,7 +5,7 @@ import {
     useFindOpportunitiesOpportunity,
 } from '@gorgias/knowledge-service-queries'
 
-import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 import { mapKnowledgeServiceOpportunities } from '../utils/mapKnowledgeServiceOpportunities'
 
 export const OPPORTUNITIES_PAGE_SIZE = 20

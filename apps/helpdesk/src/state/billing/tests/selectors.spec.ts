@@ -19,9 +19,10 @@ import {
     voiceAvailablePlans,
     voicePlan1,
 } from 'fixtures/productPrices'
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

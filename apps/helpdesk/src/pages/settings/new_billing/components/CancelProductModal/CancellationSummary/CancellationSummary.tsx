@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react'
 
-import { Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import { getPlanPrice, getPlanPriceFormatted } from 'models/billing/utils'
 
 import { PRODUCT_INFO } from '../../../constants'
 import SummaryBody from '../UI/SummaryBody'
 import SummaryHeader from '../UI/SummaryHeader'
-import { SummaryItemData } from '../UI/types'
-import { SubscriptionProducts } from './types'
+import type { SummaryItemData } from '../UI/types'
+import type { SubscriptionProducts } from './types'
 
 import css from './CancellationSummary.less'
 

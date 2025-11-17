@@ -3,21 +3,19 @@ import React, { useCallback, useContext, useMemo, useState } from 'react'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
-import {
-    BundleActionResponse,
-    BundleInstallationMethod,
-} from 'models/convert/bundle/types'
+import type { BundleActionResponse } from 'models/convert/bundle/types'
+import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import {
     campaignKeys,
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
-import { ChannelConnection } from 'models/convert/channelConnection/types'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { ChannelConnection } from 'models/convert/channelConnection/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'

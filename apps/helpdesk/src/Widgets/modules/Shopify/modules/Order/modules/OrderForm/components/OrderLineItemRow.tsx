@@ -1,8 +1,9 @@
-import React, { ChangeEvent, memo, useCallback, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

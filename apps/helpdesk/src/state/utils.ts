@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { notify } from './notifications/actions'
 import { NotificationStatus } from './notifications/types'

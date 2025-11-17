@@ -1,21 +1,18 @@
 // g/integrations/phone/schemas.py
-import {
+import type {
     Integration as ApiIntegration,
     VoiceQueueWaitMusicLibrary,
 } from '@gorgias/helpdesk-queries'
-import {
+import type {
     CallRoutingFlow,
     VoiceGender,
     VoiceLanguage,
 } from '@gorgias/helpdesk-types'
 
-import { PhoneFunction } from 'business/twilio'
+import type { PhoneFunction } from 'business/twilio'
 
-import {
-    IntegrationType,
-    IvrMenuActionType,
-    VoiceMessageType,
-} from '../constants'
+import type { IvrMenuActionType, VoiceMessageType } from '../constants'
+import { IntegrationType } from '../constants'
 import type { Integration } from './'
 import type { IntegrationBase } from './base'
 

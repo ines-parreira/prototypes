@@ -1,8 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import { createSelector } from 'reselect'
 
-import {
+import type {
     AutomatePlan,
     ConvertPlan,
     HelpdeskPlan,
@@ -11,19 +12,19 @@ import {
     PriceId,
     Product,
     ProductId,
-    ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import { getCheapestPrice } from 'models/billing/utils'
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
-import {
+import type {
     AccountFeature,
     AccountFeatureMetadata,
     CurrentAccountState,
 } from 'state/currentAccount/types'
 
-import { RootState } from '../types'
-import {
+import type { RootState } from '../types'
+import type {
     BillingImmutableState,
     CurrentProductsUsages,
     Invoice,

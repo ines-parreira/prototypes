@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
@@ -20,7 +21,7 @@ import {
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import {
+import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
@@ -28,7 +29,7 @@ import { DrillDownTable } from 'domains/reporting/pages/common/drill-down/DrillD
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownMetricColumn } from 'domains/reporting/pages/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
-import { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import {
@@ -42,7 +43,7 @@ import {
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { SlaStatusLabel } from 'domains/reporting/services/constants'
-import {
+import type {
     AiSalesAgentMetrics,
     DrillDownMetric,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -55,7 +56,7 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { campaign, campaignId } from 'fixtures/campaign'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 

@@ -1,6 +1,7 @@
 import React, { createContext, useMemo } from 'react'
 
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 
 import useStoreIntegrations from './useStoreIntegrations'

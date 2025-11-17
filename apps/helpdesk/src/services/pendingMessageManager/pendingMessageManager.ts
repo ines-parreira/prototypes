@@ -1,4 +1,4 @@
-import { EnhancedStore } from '@reduxjs/toolkit'
+import type { EnhancedStore } from '@reduxjs/toolkit'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
@@ -9,7 +9,7 @@ import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
-import { NewMessage, ReplyAreaState } from 'state/newMessage/types'
+import type { NewMessage, ReplyAreaState } from 'state/newMessage/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { applyMacro, messageDeleted } from 'state/ticket/actions'

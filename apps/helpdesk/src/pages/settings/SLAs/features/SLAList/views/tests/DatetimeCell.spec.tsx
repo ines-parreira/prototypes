@@ -1,6 +1,6 @@
 import { renderWithRouter } from 'utils/testing'
 
-import { UISLAPolicy } from '../../types'
+import type { UISLAPolicy } from '../../types'
 import DatetimeCell from '../DatetimeCell'
 
 const mockUISLAPolicy = {

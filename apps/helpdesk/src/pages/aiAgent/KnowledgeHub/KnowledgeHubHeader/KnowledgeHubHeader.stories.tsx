@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn, StoryObj } from '@storybook/react'
+import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { KnowledgeType } from '../types'

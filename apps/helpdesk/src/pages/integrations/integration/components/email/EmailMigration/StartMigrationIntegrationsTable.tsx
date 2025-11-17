@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import { Badge } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { EmailIntegration } from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Pagination from 'pages/common/components/Pagination'

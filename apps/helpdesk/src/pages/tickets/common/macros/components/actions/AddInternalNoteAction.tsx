@@ -1,8 +1,8 @@
 import { useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { EditorState } from 'draft-js'
-import { List, Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { List, Map } from 'immutable'
 import {
     Button,
     DropdownItem,
@@ -14,19 +14,18 @@ import {
 import { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { MacroActionName } from 'models/macroAction/types'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'
 import { convertToHTML, getPlainText } from 'utils/editor'
 
-import MacroMessageActionsHeader, {
-    MacroMessageActionsHeaderProps,
-} from '../MacroMessageActionsHeader'
+import type { MacroMessageActionsHeaderProps } from '../MacroMessageActionsHeader'
+import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
 
 import css from './AddInternalNoteAction.less'
 

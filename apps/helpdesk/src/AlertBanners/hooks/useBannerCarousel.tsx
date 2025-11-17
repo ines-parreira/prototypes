@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { MergedBanner } from 'AlertBanners/Context/types'
+import type { MergedBanner } from 'AlertBanners/Context/types'
 
 import useLegacyAlertBanners from '../../notifications/hooks/useLegacyAlertBanners'
 import { useBannersContext } from '../Context'

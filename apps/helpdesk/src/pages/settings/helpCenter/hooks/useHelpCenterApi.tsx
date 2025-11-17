@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import React, {
     createContext,
-    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -9,8 +9,8 @@ import React, {
 } from 'react'
 
 import { getHelpCenterClient } from 'rest_api/help_center_api'
-import { AppAbility } from 'rest_api/help_center_api/ability'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { AppAbility } from 'rest_api/help_center_api/ability'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 type UseHelpCenterApiInterface = {
     isReady: boolean

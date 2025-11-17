@@ -4,7 +4,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import routerDom, { useParams } from 'react-router-dom'
+import type routerDom from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -22,7 +23,7 @@ import {
     useUpdateSetting,
 } from 'models/convert/settings/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])

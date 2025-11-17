@@ -15,7 +15,7 @@ import { notify } from 'state/notifications/actions'
 
 import { OpportunityType } from '../../enums'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
-import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
 jest.mock('state/notifications/actions', () => ({

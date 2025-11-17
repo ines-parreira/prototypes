@@ -16,7 +16,7 @@ import {
     updateCategory,
     updateCategoryTranslation,
 } from './actions'
-import { HelpCenterCategoriesState } from './types'
+import type { HelpCenterCategoriesState } from './types'
 
 export const initialState: HelpCenterCategoriesState = {
     categoriesById: {

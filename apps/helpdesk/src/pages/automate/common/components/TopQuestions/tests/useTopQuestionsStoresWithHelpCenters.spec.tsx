@@ -6,15 +6,15 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import {
-    IntegrationType,
+import type { HelpCenter } from 'models/helpCenter/types'
+import type {
     ShopifyIntegration,
     ShopifyIntegrationMeta,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { useTopQuestionsStoresWithHelpCenters } from '../useTopQuestionsStoresWithHelpCenters'
 

@@ -1,9 +1,9 @@
 import { SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { HelpdeskPlan } from 'models/billing/types'
+import type { HelpdeskPlan } from 'models/billing/types'
 import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
 import { AccountFeature } from 'state/currentAccount/types'
 

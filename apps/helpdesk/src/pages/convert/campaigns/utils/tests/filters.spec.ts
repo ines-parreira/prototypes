@@ -10,7 +10,7 @@ import {
     CONTAINS_PRODUCT_CARDS,
     TRIGGERED_ON_EXIT_INTENT,
 } from '../../constants/filters'
-import { Campaign } from '../../types/Campaign'
+import type { Campaign } from '../../types/Campaign'
 import { ABGroupStatus } from '../../types/enums/ABGroupStatus.enum'
 import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
 import { CampaignTriggerBusinessHoursValuesEnum } from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'

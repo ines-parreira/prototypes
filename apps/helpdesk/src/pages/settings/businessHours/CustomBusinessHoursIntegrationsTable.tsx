@@ -10,13 +10,11 @@ import {
     LegacyCheckBoxField as CheckBoxField,
     Skeleton,
 } from '@gorgias/axiom'
-import {
-    ListIntegrationsForBusinessHoursOrderBy,
-    useListIntegrationsForBusinessHours,
-} from '@gorgias/helpdesk-queries'
+import type { ListIntegrationsForBusinessHoursOrderBy } from '@gorgias/helpdesk-queries'
+import { useListIntegrationsForBusinessHours } from '@gorgias/helpdesk-queries'
 
 import { FormField, useFormContext } from 'core/forms'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import ChannelFilter from 'pages/common/components/ChannelFilter/ChannelFilter'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -32,7 +30,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
 import IntegrationRowsField from './IntegrationRowsField'
 import StoreFilter from './StoreFilter'
-import {
+import type {
     BusinessHoursCreateFormValues,
     EditCustomBusinessHoursFormValues,
 } from './types'

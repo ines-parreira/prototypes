@@ -1,4 +1,5 @@
-import React, { ComponentProps, useEffect, useMemo, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import {

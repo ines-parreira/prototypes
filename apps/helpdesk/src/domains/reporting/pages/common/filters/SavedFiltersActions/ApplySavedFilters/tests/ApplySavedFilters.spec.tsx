@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import { SavedFilter } from 'domains/reporting/models/stat/types'
+import type { SavedFilter } from 'domains/reporting/models/stat/types'
 import ApplySavedFilers, {
     APPLY_SAVED_FILTER_TOOLTIP,
     APPLY_SAVED_FILTERS,
@@ -11,7 +11,7 @@ import ApplySavedFilers, {
     NOT_ADMIN_CONTENT,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { initialiseSavedFilterDraft } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const savedFilters: SavedFilter[] = [

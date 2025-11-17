@@ -1,16 +1,17 @@
 import moment from 'moment'
 
-import { User } from 'config/types/user'
-import {
-    AiAgentOnboardingState,
+import type { User } from 'config/types/user'
+import type {
     OnboardingNotificationState,
     TrialRequestNotification,
 } from 'models/aiAgent/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getAgent } from 'services/notificationTracker/notificationTracker'
 
-import { AiAgentNotificationPayload, AiAgentNotificationType } from './types'
+import type { AiAgentNotificationPayload } from './types'
+import { AiAgentNotificationType } from './types'
 
 type NotificationParams = {
     title: string

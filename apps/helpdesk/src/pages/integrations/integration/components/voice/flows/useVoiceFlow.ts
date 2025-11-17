@@ -1,7 +1,7 @@
-import { ReactFlowInstance, useReactFlow } from 'core/ui/flows'
-import type { Edge } from 'core/ui/flows'
+import { useReactFlow } from 'core/ui/flows'
+import type { Edge, ReactFlowInstance } from 'core/ui/flows'
 
-import { VoiceFlowNode } from './types'
+import type { VoiceFlowNode } from './types'
 
 type RF = ReactFlowInstance<VoiceFlowNode, Edge>
 

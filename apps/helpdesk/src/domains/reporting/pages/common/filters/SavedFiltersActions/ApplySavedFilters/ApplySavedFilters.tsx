@@ -8,7 +8,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import {
+import type {
     SavedFilter,
     SavedFilterAPI,
 } from 'domains/reporting/models/stat/types'

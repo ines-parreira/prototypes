@@ -1,8 +1,8 @@
 import _capitalize from 'lodash/capitalize'
 
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
 
 import css from './style.less'

@@ -13,12 +13,12 @@ import {
 } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import ActionsPlatformEditStepView from '../ActionsPlatformEditStepView'
 import useApps from '../hooks/useApps'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
-import { ActionTemplate } from '../types'
+import type { ActionTemplate } from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')

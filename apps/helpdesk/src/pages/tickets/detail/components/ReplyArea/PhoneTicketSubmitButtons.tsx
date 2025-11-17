@@ -1,13 +1,8 @@
-import React, {
-    SyntheticEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

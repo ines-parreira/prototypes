@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

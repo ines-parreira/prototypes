@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
 import { mockIncomingCall } from 'tests/twilioMocks'
 

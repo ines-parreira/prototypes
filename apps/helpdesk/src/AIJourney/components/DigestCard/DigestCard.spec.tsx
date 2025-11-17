@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 
 import { DigestCard } from './DigestCard'
 

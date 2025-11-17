@@ -1,4 +1,4 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { SYSTEM_RULE_TYPE } from './constants'
 import { TICKET_EVENT_TYPES } from './types'

@@ -1,27 +1,24 @@
-import { PropsWithRef } from 'react'
+import type { PropsWithRef } from 'react'
 
 import classNames from 'classnames'
 import _isNil from 'lodash/isNil'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { User } from 'config/types/user'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { User } from 'config/types/user'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/heatmap.less'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import {
-    METRIC_COLUMN_WIDTH,
-    MetricQueryPerAgentQuery,
-} from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { MetricQueryPerAgentQuery } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import { METRIC_COLUMN_WIDTH } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 export type AgentsCellContentProps = {
     agent: User

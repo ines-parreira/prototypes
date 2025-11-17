@@ -4,13 +4,13 @@ import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
+import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
-    UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
 jest.mock('@repo/routing', () => ({

@@ -1,10 +1,10 @@
 import { renderHook } from '@repo/testing'
 
-import {
+import type {
     HttpResponse,
     ListSlaPolicies200,
-    useListSlaPolicies,
 } from '@gorgias/helpdesk-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 

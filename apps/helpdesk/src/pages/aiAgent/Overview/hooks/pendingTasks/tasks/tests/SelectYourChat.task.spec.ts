@@ -1,6 +1,6 @@
 import { TicketChannel } from 'business/types/ticket'
 import { SelectYourChatTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SelectYourChat.task'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'

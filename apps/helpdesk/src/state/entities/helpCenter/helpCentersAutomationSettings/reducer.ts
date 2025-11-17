@@ -6,7 +6,7 @@ import {
     helpCentersAutomationSettingsFetched,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings/actions'
 
-import { HelpCentersAutomationSettingsState } from './types'
+import type { HelpCentersAutomationSettingsState } from './types'
 
 export const initialState: HelpCentersAutomationSettingsState = {
     automationSettingsByHelpCenterId: {},

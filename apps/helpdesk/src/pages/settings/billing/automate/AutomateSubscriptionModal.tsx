@@ -1,4 +1,5 @@
-import React, { ElementType, useEffect, useMemo, useRef, useState } from 'react'
+import type { ElementType } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -16,7 +17,7 @@ import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Plan } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
 import { isEnterprise } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {

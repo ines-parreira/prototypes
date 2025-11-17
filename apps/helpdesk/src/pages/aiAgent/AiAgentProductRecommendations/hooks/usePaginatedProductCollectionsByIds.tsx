@@ -4,7 +4,7 @@ import { useDebouncedValue } from '@repo/hooks'
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchEcommerceProductCollections } from 'models/ecommerce/resources'
-import { ProductCollection } from 'models/ecommerce/types'
+import type { ProductCollection } from 'models/ecommerce/types'
 
 interface Collection {
     id: string

@@ -7,10 +7,10 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { PhoneIntegration } from 'models/integration/types'
 import {
     IntegrationType,
     IvrMenuActionType,
-    PhoneIntegration,
     VoiceMessageType,
 } from 'models/integration/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'

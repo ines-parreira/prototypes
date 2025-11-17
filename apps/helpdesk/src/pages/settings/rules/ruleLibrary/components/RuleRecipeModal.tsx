@@ -15,21 +15,17 @@ import {
 import { useAppNode } from 'appNode'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
-import { RuleRecipe } from 'models/ruleRecipe/types'
+import type { RuleRecipe } from 'models/ruleRecipe/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
-import {
-    AnyManagedRuleSettings,
-    ManagedRulesSlugs,
-    RuleLimitStatus,
-    RuleType,
-} from 'state/rules/types'
+import type { AnyManagedRuleSettings } from 'state/rules/types'
+import { ManagedRulesSlugs, RuleLimitStatus, RuleType } from 'state/rules/types'
 
-import { RuleItemActions } from '../../types'
+import type { RuleItemActions } from '../../types'
 import {
     InstallationError,
     InstallationErrorMessage,

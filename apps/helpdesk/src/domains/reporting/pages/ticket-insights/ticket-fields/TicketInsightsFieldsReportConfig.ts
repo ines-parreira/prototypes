@@ -1,14 +1,14 @@
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StaticFilter,
 } from 'domains/reporting/models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { TicketDistributionChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable'

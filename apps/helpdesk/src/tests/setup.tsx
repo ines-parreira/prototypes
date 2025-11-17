@@ -3,7 +3,7 @@ import './mockAudioContext'
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'
-import { MomentTimezone } from 'moment-timezone'
+import type { MomentTimezone } from 'moment-timezone'
 import { setImmediate } from 'timers'
 import { TextDecoder, TextEncoder } from 'util'
 

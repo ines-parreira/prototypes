@@ -5,7 +5,7 @@ import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { VoiceCallAverageTimeMetric } from 'domains/reporting/pages/voice/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 

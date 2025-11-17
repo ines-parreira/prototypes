@@ -1,5 +1,5 @@
 import { ModalManager } from './Manager'
-import { HookConfig } from './typings'
+import type { HookConfig } from './typings'
 import { useModalManager as _useModalManager } from './useModalManager'
 
 export * from './typings'

@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useGmvUsdOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvUsdOverTimeSeries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

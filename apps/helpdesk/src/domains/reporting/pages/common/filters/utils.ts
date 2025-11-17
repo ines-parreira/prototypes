@@ -1,15 +1,17 @@
 import _isEqual from 'lodash/isEqual'
 import times from 'lodash/times'
 
-import { AnalyticsFilter } from '@gorgias/helpdesk-queries'
+import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
-import {
-    FilterComponentKey,
-    FilterKey,
+import type {
     SavedFilter,
     SavedFilterDraft,
 } from 'domains/reporting/models/stat/types'
 import {
+    FilterComponentKey,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
+import type {
     DropdownOption,
     FilterOptionGroup,
     OptionalProperty,

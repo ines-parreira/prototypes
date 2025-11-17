@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isArray from 'lodash/isArray'
 import { createSelector } from 'reselect'
 
@@ -9,46 +10,43 @@ import {
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
     MESSAGING_INTEGRATION_TYPES,
 } from 'models/integration/constants'
-import {
+import type {
     AppIntegration,
     GorgiasChatIntegration,
     Integration,
     IntegrationFromType,
+    ShopifyIntegration,
+    WhatsAppIntegration,
+} from 'models/integration/types'
+import {
     IntegrationType,
     isAppIntegration,
     isPhoneIntegration,
     isSmsIntegration,
     isStandardPhoneIntegration,
     isWhatsAppIntegration,
-    ShopifyIntegration,
-    WhatsAppIntegration,
 } from 'models/integration/types'
 import {
     isSourceAddress,
     isTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
-import { SourceAddress } from 'models/ticket/types'
+import type { SourceAddress } from 'models/ticket/types'
 import { isBaseEmailIntegration } from 'pages/integrations/integration/components/email/helpers'
 import {
     getApplicationById,
     getApplicationsByChannel,
 } from 'services/applications'
-import {
-    Channel,
-    ChannelLike,
-    getChannelById,
-    getChannelBySlug,
-    toChannel,
-} from 'services/channels'
+import type { Channel, ChannelLike } from 'services/channels'
+import { getChannelById, getChannelBySlug, toChannel } from 'services/channels'
 import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 import { getNewPhoneNumbers as getNewPhoneNumbersState } from 'state/entities/phoneNumbers/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { nestedReplace } from 'tickets/common/utils'
 import { compare } from 'utils'
 
-import { IntegrationListItem, IntegrationsState } from './types'
+import type { IntegrationListItem, IntegrationsState } from './types'
 
 type IntegrationsCountMap = {
     [key in IntegrationType]?: number

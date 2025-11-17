@@ -11,7 +11,7 @@ import {
     fetchViewsPaginated,
     updateView,
 } from '../resources'
-import { ViewDraft } from '../types'
+import type { ViewDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
 const draftView: ViewDraft = {

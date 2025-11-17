@@ -1,8 +1,9 @@
 /* istanbul ignore file */
-import React, { Component, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React, { Component } from 'react'
 
 import classNames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import {
     DropdownItem,
     DropdownMenu,
@@ -20,7 +21,7 @@ import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variable
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'
 
-import RichField from './RichField/RichField'
+import type RichField from './RichField/RichField'
 import TicketRichField from './RichField/TicketRichField'
 
 import css from './RichFieldWithVariables.less'

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { cloneDeep } from 'lodash'
 
@@ -7,7 +7,7 @@ import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import PreviewRadioFieldSet from 'pages/common/forms/PreviewRadioFieldSet'
 
 import { VoiceFlowNodeType } from './constants'
-import { VoiceFlowFormValues } from './types'
+import type { VoiceFlowFormValues } from './types'
 import { useDeleteNode } from './utils/useDeleteNode'
 
 type RouteToStepTypeFieldProps = ComponentProps<typeof PreviewRadioFieldSet> & {

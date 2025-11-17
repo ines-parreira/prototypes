@@ -3,8 +3,8 @@ import { Card, CardBody, CardTitle } from 'reactstrap'
 
 import { Badge } from '@gorgias/axiom'
 
-import { Customer } from 'models/customer/types'
-import { PickedCustomerWithHighlights } from 'models/search/types'
+import type { Customer } from 'models/customer/types'
+import type { PickedCustomerWithHighlights } from 'models/search/types'
 import css from 'pages/common/components/infobar/Infobar.less'
 import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import { sanitizeHtmlDefault } from 'utils/html'

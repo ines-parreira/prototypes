@@ -1,13 +1,15 @@
-import {
+import type {
     AiAgentAttachment,
-    MessageType,
     PlaygroundErrorMessage,
     PlaygroundInternalNoteMessage,
     PlaygroundPlaceholderMessage,
     PlaygroundPromptMessage,
-    PlaygroundPromptType,
     PlaygroundTextMessage,
     PlaygroundTicketEventMessage,
+} from 'models/aiAgentPlayground/types'
+import {
+    MessageType,
+    PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import axios, { CancelToken, CancelTokenSource } from 'axios'
+import type { CancelToken, CancelTokenSource } from 'axios'
+import axios from 'axios'
 
 type FnReturningPromise = (...args: any[]) => Promise<unknown>
 

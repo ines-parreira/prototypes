@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
@@ -9,11 +10,12 @@ import { Badge } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import { AppListItem, isAppListItem } from 'models/integration/types/app'
+import type { AppListItem } from 'models/integration/types/app'
+import { isAppListItem } from 'models/integration/types/app'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import { getApplicationById } from 'services/applications'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { IntegrationListItem } from 'state/integrations/types'
+import type { IntegrationListItem } from 'state/integrations/types'
 import { assetsUrl } from 'utils'
 
 import css from './Card.less'

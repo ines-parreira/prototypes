@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
-import { NewPhoneNumbersState, PhoneNumbersState } from './types'
+import type { NewPhoneNumbersState, PhoneNumbersState } from './types'
 
 export const getPhoneNumbers = (state: RootState): PhoneNumbersState =>
     state.entities?.phoneNumbers || {}

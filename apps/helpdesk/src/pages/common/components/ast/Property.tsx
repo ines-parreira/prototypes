@@ -1,9 +1,10 @@
-import React, { ComponentProps, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import { Argument, Properties } from './actions/config'
+import type { Argument, Properties } from './actions/config'
 import Errors from './Errors'
 import Widget from './Widget'
 

@@ -1,6 +1,7 @@
-import { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useState } from 'react'
 
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -11,18 +12,15 @@ import {
 
 import { getCallSid } from 'hooks/integrations/phone/twilioCall.utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownAlertBanner, {
-    AlertBannerData,
-} from 'pages/common/components/dropdown/DropdownAlertBanner'
+import type { AlertBannerData } from 'pages/common/components/dropdown/DropdownAlertBanner'
+import DropdownAlertBanner from 'pages/common/components/dropdown/DropdownAlertBanner'
 import AgentCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
 import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
 import QueueCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent'
-import {
-    TransferTarget,
-    TransferType,
-} from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { getTransferReceiverData } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import { notify } from 'state/notifications/actions'

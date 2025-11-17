@@ -8,7 +8,7 @@ import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumber
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import * as utils from 'domains/reporting/pages/common/utils'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 

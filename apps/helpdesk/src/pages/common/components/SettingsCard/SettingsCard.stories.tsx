@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'

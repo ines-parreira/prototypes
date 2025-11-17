@@ -1,7 +1,7 @@
-import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 

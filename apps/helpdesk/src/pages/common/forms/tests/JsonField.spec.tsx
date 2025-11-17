@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'

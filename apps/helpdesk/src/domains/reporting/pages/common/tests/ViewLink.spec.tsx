@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import { LinkProps } from 'react-router-dom'
+import type { LinkProps } from 'react-router-dom'
 
 import ViewLink from 'domains/reporting/pages/common/ViewLink'
 

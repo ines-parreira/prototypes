@@ -27,7 +27,8 @@ import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from './hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from './hooks/usePlaygroundTracking'
 import { useShopNameResolution } from './hooks/useShopNameResolution'
-import { PlaygroundEvent, SupportedPlaygroundModes } from './types'
+import type { SupportedPlaygroundModes } from './types'
+import { PlaygroundEvent } from './types'
 
 import css from './AiAgentPlayground.less'
 

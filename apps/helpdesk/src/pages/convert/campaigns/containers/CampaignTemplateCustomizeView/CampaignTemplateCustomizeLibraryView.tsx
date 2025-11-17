@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
-import { ConvertRouteTemplateParams } from 'pages/convert/common/types'
+import type { ConvertRouteTemplateParams } from 'pages/convert/common/types'
 
 import CampaignTemplateCustomizeBaseView from './CampaignTemplateCustomizeBaseView'
 

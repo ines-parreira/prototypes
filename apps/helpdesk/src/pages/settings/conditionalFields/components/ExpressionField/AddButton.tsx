@@ -1,5 +1,5 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
+import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
 import { useWatch } from 'core/forms'
 

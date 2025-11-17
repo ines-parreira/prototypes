@@ -12,7 +12,7 @@ import {
     TableRowsOrder,
     TableRowsOrderWithTotal,
 } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
-import {
+import type {
     AgentsTableColumn,
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'

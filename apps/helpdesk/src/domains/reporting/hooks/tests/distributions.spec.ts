@@ -1,8 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
-import { TicketChannel } from 'business/types/ticket'
+import type { TicketChannel } from 'business/types/ticket'
 import {
     CHANNEL_DIMENSION,
     fetchWorkloadPerChannelDistribution,
@@ -21,7 +21,7 @@ import {
     usePostReporting,
 } from 'domains/reporting/models/queries'
 import { workloadPerChannelDistributionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/workloadPerChannel'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
     getPreviousPeriod,

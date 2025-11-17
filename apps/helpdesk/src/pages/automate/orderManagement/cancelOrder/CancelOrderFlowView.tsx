@@ -5,20 +5,19 @@ import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import {
-    AUTOMATED_RESPONSE,
+import type {
     ResponseMessageContent,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
+import { AUTOMATED_RESPONSE } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
-import CancelOrderFlowViewContext, {
-    CancelOrderFlowViewContextType,
-} from './CancelOrderFlowViewContext'
+import type { CancelOrderFlowViewContextType } from './CancelOrderFlowViewContext'
+import CancelOrderFlowViewContext from './CancelOrderFlowViewContext'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
 import { DEFAULT_RESPONSE_MESSAGE_CONTENT } from './constants'

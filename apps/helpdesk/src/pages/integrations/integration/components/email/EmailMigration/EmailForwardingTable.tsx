@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { EmailMigrationInboundVerification } from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import Pagination from 'pages/common/components/Pagination'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

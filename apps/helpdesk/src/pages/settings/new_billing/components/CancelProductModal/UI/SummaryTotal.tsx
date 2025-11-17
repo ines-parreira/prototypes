@@ -1,4 +1,4 @@
-import { Cadence } from 'models/billing/types'
+import type { Cadence } from 'models/billing/types'
 
 import css from './SummaryTotal.less'
 

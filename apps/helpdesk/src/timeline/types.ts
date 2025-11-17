@@ -1,9 +1,9 @@
-import { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
+import type { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
 
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 import { IntegrationType } from 'models/integration/constants'
 
-import { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
+import type { SORTABLE_KEY_TO_LABEL, SORTABLE_KEYS } from './constants'
 
 export type Range = {
     start: number | null

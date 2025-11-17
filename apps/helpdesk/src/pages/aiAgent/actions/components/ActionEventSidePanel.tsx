@@ -4,9 +4,9 @@ import classnames from 'classnames'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 import { Drawer } from 'pages/common/components/Drawer'
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 
-import {
+import type {
     ActionStepItem,
     HTTPExecutionLogs,
     LlmTriggeredExecution,
@@ -14,9 +14,8 @@ import {
 } from '../types'
 import CollapsableVariables from './ActionEventsCollapsableVariables'
 import ActionEventTitle from './ActionEventTitle'
-import ActionStepAccordionItem, {
-    ActionStepAccordionItemProps,
-} from './ActionStepAccordionItem'
+import type { ActionStepAccordionItemProps } from './ActionStepAccordionItem'
+import ActionStepAccordionItem from './ActionStepAccordionItem'
 
 import css from './ActionEventSidePanel.less'
 

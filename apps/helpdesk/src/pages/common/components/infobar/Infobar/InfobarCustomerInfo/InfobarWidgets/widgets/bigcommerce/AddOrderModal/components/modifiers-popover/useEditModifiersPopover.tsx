@@ -8,13 +8,13 @@ import {
     useRole,
 } from '@floating-ui/react'
 
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceProduct,
 } from 'models/integration/types'
 
 import { ModifiersPopover } from './ModifiersPopover'
-import { ModifierValues } from './types'
+import type { ModifierValues } from './types'
 
 import css from './ModifiersPopover.less'
 

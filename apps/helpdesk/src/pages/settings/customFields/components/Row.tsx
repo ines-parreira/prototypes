@@ -9,8 +9,8 @@ import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import type { CustomField } from 'custom-fields/types'
 import {
-    CustomField,
     isCustomFieldAIManagedType,
     isCustomFieldSystemReadOnly,
 } from 'custom-fields/types'
@@ -18,7 +18,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
-import { Callbacks } from 'pages/common/hooks/useReorderDnD'
+import type { Callbacks } from 'pages/common/hooks/useReorderDnD'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'

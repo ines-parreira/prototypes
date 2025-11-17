@@ -1,9 +1,9 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 
-import { PlaygroundCustomer } from './Playground/types'
-import { TicketCustomer } from './Playground/utils/playground-ticket.util'
-import { FormValues, WizardFormValues } from './types'
+import type { PlaygroundCustomer } from './Playground/types'
+import type { TicketCustomer } from './Playground/utils/playground-ticket.util'
+import type { FormValues, WizardFormValues } from './types'
 
 // NAVBAR CONSTANTS
 export const AI_AGENT = 'AI Agent'

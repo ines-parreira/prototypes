@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import _difference from 'lodash/difference'
@@ -8,8 +9,8 @@ import { Link } from 'react-router-dom'
 import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import { ChannelLanguage } from 'pages/automate/common/types'
+import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { ChannelLanguage } from 'pages/automate/common/types'
 
 function getChannelLanguageLabel(l: ChannelLanguage): string {
     switch (l) {

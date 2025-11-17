@@ -1,8 +1,9 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { Paths } from 'rest_api/help_center_api/client.generated'
-import { MutationOverrides } from 'types/query'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
+import type { MutationOverrides } from 'types/query'
 
 import {
     getMailtoReplacementConfig,

@@ -3,7 +3,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import useAppDispatch from 'hooks/useAppDispatch'
 

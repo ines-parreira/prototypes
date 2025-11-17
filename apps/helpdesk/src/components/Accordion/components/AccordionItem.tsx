@@ -1,6 +1,6 @@
 import { AccordionItemContext } from '../contexts/accordion-item-context'
 import { useAccordion } from '../hooks/useAccordion'
-import { AccordionValue } from '../utils/types'
+import type { AccordionValue } from '../utils/types'
 
 export type AccordionItemProps = {
     /**

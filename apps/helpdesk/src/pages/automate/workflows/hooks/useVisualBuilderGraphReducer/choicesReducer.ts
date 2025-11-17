@@ -6,12 +6,12 @@ import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
 } from '../../models/visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     MultipleChoicesNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
-import { MessageContent } from '../../models/workflowConfiguration.types'
+import type { MessageContent } from '../../models/workflowConfiguration.types'
 import {
     buildEndNode,
     buildMultipleChoicesNode,

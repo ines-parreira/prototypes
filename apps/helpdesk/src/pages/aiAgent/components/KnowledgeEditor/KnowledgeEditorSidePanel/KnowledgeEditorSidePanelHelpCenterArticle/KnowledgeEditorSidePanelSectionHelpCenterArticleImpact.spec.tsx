@@ -5,10 +5,8 @@ import userEvent from '@testing-library/user-event'
 
 import { Accordion } from 'components/Accordion/Accordion'
 
-import {
-    KnowledgeEditorSidePanelSectionHelpCenterArticleImpact,
-    Props,
-} from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
+import type { Props } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
+import { KnowledgeEditorSidePanelSectionHelpCenterArticleImpact } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
 
 const defaultProps: Props = {
     sectionId: 'impact',

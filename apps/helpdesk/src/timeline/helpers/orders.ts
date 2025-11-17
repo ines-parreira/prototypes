@@ -1,5 +1,5 @@
-import { Order } from 'constants/integrations/types/shopify'
-import { Customer } from 'models/customer/types'
+import type { Order } from 'constants/integrations/types/shopify'
+import type { Customer } from 'models/customer/types'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 
 export function extractOrders(customer: Customer): Order[] {

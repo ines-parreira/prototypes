@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { act, waitFor } from '@testing-library/react'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { produce } from 'immer'
 import { ulid } from 'ulidx'
 
@@ -14,7 +14,7 @@ import {
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 import {
     renderHookWithQueryClientProvider,

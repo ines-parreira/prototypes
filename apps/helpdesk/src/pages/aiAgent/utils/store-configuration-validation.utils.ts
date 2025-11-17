@@ -1,6 +1,6 @@
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
-import { IngestionLog } from '../AiAgentScrapedDomainContent/types'
+import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 import { hasSuccessfullySyncedOnce } from '../AiAgentScrapedDomainContent/utils'
 import {
     AiAgentChannel,
@@ -11,8 +11,8 @@ import {
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../constants'
-import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
-import { FormValues, ValidFormValues } from '../types'
+import type { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
+import type { FormValues, ValidFormValues } from '../types'
 
 export enum StoreConfigurationValidationMessage {
     SignatureEmpty = 'Signature cannot be empty',

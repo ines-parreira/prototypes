@@ -1,34 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext } from 'react'
 
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import moment from 'moment'
 
 import noise from 'assets/img/integrations/noise.svg'
 import { useFlag } from 'core/flags'
-import ConversationHeader, {
-    ConversationHeaderVariant,
-} from 'gorgias-design-system/Header/ConversationHeader'
+import type { ConversationHeaderVariant } from 'gorgias-design-system/Header/ConversationHeader'
+import ConversationHeader from 'gorgias-design-system/Header/ConversationHeader'
 import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import useAppSelector from 'hooks/useAppSelector'
+import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatPosition,
+} from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
     GorgiasChatBackgroundColorStyle,
     GorgiasChatLauncherType,
-    GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import type { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
+import type { LanguageItem } from '../../../../../../config/integrations/gorgias_chat'
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -38,7 +41,6 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
     isAutoresponderReply,
-    LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     getTextColorBasedOnBackground,

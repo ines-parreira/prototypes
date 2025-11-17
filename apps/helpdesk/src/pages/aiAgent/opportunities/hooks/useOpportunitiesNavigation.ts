@@ -1,4 +1,4 @@
-import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 
 export const useOpportunitiesNavigation = ({
     selectedOpportunity,

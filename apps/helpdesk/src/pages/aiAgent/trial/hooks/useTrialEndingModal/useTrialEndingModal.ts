@@ -12,14 +12,14 @@ import {
     TYPICAL_RESULTS_TEXT,
 } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
-import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import {
     getTrialEndingModalDescription,
     getTrialEndingModalSecondaryDescription,
 } from 'pages/aiAgent/trial/hooks/useTrialEndingModal/getTrialEndingModalDescription'
-import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { toPercentage } from 'pages/aiAgent/trial/utils/utils'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'

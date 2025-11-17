@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

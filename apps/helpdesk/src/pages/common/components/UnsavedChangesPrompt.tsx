@@ -2,9 +2,8 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 
 import { Prompt } from 'react-router-dom'
 
-import UnsavedChangesModal, {
-    UnsavedChangesModalProps,
-} from './UnsavedChangesModal'
+import type { UnsavedChangesModalProps } from './UnsavedChangesModal'
+import UnsavedChangesModal from './UnsavedChangesModal'
 import useUnsavedChangesPrompt from './useUnsavedChangesPrompt'
 
 type UnsavedChangesPromptProps = {

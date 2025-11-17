@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
-import {
+import type {
     CustomFieldConditionsEvaluationResults,
     CustomFieldObjectTypes,
 } from 'custom-fields/types'

@@ -1,6 +1,7 @@
-import React, { FC, MouseEvent } from 'react'
+import type { FC, MouseEvent } from 'react'
+import React from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -10,7 +11,7 @@ import { AttachmentEnum } from 'common/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import { DELETE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import { useDeleteDiscountOffer } from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'

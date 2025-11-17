@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment/moment'
 
 import {
@@ -10,7 +10,7 @@ import {
 } from 'domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { ticketCountPerProductAndIntentQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/models/queries')

@@ -1,7 +1,7 @@
+import type { SendToVoicemailStep } from '@gorgias/helpdesk-queries'
 import {
     IntegrationType,
     PhoneFunction,
-    SendToVoicemailStep,
     VoiceMessageType,
 } from '@gorgias/helpdesk-queries'
 

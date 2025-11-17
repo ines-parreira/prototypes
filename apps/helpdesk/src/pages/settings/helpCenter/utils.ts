@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
 export const getGenericMessageFromError = (err: unknown) => {
     if (axios.isAxiosError(err) && err.response?.status === 400) {

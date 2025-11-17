@@ -1,13 +1,14 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ContentType, HttpMethod } from 'models/api/types'
 import { useGetHTTPEvent } from 'models/integration/queries/http'
-import { HTTPIntegrationEvent } from 'models/integration/types'
+import type { HTTPIntegrationEvent } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import Events from '../Event'

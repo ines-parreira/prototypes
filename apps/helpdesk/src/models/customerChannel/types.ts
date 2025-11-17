@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { Channel } from '../ticket/types'
+import type { Channel } from '../ticket/types'
 
 export type CustomerChannel = {
     address: string

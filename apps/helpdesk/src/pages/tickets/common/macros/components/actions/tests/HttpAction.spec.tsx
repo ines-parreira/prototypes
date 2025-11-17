@@ -4,7 +4,8 @@ import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
-import { Action, ActionStatus } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 
 import HttpAction from '../HttpAction'
 

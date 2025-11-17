@@ -1,8 +1,8 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { usePerformanceTips } from 'domains/reporting/hooks/usePerformanceTips'
 import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
-import { MetricName } from 'domains/reporting/services/constants'
+import type { MetricName } from 'domains/reporting/services/constants'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 export const SupportPerformanceTip = ({

@@ -23,9 +23,9 @@ import { extendedAgents } from 'domains/reporting/pages/common/filters/tests/fix
 import { extendedTeams } from 'domains/reporting/pages/common/filters/tests/fixtures/teams'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
-import { Team } from 'models/team/types'
+import type { Team } from 'models/team/types'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()

@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'

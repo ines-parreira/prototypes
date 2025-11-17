@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import SearchResultDonut from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut'
 import { useSearchResultRange } from 'domains/reporting/pages/help-center/hooks/useSearchResultRange'

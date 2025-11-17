@@ -1,10 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 
-import {
-    FilterStatus,
-    NotificationFeedHeaderProps,
-    useKnockFeed,
-} from '@knocklabs/react'
+import type { NotificationFeedHeaderProps } from '@knocklabs/react'
+import { FilterStatus, useKnockFeed } from '@knocklabs/react'
 import {
     logEvent,
     NotificationCenterEventTypes,

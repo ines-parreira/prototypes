@@ -1,6 +1,6 @@
 import { act, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
 
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'

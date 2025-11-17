@@ -19,9 +19,8 @@ import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'
-import ProductPlanSelection, {
-    ProductPlanSelectionProps,
-} from '../ProductPlanSelection'
+import type { ProductPlanSelectionProps } from '../ProductPlanSelection'
+import ProductPlanSelection from '../ProductPlanSelection'
 
 const mockStore = configureMockStore()
 const store = mockStore({

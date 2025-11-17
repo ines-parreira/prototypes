@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -24,9 +25,9 @@ import {
     usersStatuses,
 } from 'fixtures/stats'
 import { teams } from 'fixtures/teams'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')

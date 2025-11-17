@@ -23,13 +23,13 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { ManagedRuleDisplayName } from 'state/rules/constants'
-import {
+import type {
     ManagedRule,
     ManagedRuleEmptySettings,
     Rule,
     RuleDraft,
-    RuleType,
 } from 'state/rules/types'
+import { RuleType } from 'state/rules/types'
 
 import AutoresponderViewButton from '../../components/AutoresponderViewButton'
 import TrackedRuleLibraryLink, {

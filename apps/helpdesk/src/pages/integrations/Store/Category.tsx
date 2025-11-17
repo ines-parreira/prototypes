@@ -1,7 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Category as CategoryType } from 'models/integration/types/app'
+import type { Category as CategoryType } from 'models/integration/types/app'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

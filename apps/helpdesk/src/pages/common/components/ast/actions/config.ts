@@ -1,8 +1,9 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { UploadType } from 'common/types'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import { ACTION_TYPES, ActionType } from 'models/rule/types'
+import type { ActionType } from 'models/rule/types'
+import { ACTION_TYPES } from 'models/rule/types'
 import { templateRegex } from 'pages/common/utils/template'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import { findProperty, isEmailList } from 'utils'

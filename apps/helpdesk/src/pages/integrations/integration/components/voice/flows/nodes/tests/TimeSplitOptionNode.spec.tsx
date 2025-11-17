@@ -10,17 +10,15 @@ import {
     mockPlayMessageStep,
     mockTimeSplitConditionalStep,
 } from '@gorgias/helpdesk-mocks'
-import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
-import {
-    TimeSplitConditionalRuleType,
-    TimeSplitConditionalStep,
-} from '@gorgias/helpdesk-types'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
+import type { TimeSplitConditionalStep } from '@gorgias/helpdesk-types'
+import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { VoiceFlowFormValues } from '../../types'
+import type { VoiceFlowFormValues } from '../../types'
 import { VoiceFlow } from '../../VoiceFlow'
 
 // Mock business hours data

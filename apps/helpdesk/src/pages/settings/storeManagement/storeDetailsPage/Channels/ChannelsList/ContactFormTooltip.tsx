@@ -1,6 +1,6 @@
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 
 import css from '../ChannelsDrawer/ChannelsDrawer.less'
 

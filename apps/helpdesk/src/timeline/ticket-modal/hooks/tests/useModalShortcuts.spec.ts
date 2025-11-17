@@ -3,7 +3,7 @@ import { shortcutManager } from '@repo/utils'
 import { act } from '@testing-library/react'
 
 import { useModalShortcuts } from '../useModalShortcuts'
-import { useTicketModal } from '../useTicketModal'
+import type { useTicketModal } from '../useTicketModal'
 
 jest.mock('@repo/utils', () => ({
     shortcutManager: {

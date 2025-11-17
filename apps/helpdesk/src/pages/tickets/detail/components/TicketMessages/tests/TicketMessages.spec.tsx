@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -15,7 +15,7 @@ import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'

@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { testJourney, TestProductApiDTO } from '@gorgias/convert-client'
+import type { TestProductApiDTO } from '@gorgias/convert-client'
+import { testJourney } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'

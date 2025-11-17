@@ -5,10 +5,8 @@ import {
     migrationOutboundVerificationVerifiedDomain,
     migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
-import {
-    EmailMigrationInboundVerification,
-    EmailMigrationInboundVerificationStatus,
-} from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
+import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 
 import {

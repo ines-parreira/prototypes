@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,7 @@ import { useModalManager } from 'hooks/useModalManager'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { HeaderReturnButton } from 'pages/convert/common/components/HeaderReturnButton'

@@ -1,6 +1,6 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
 type Props = {

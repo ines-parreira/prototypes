@@ -12,13 +12,13 @@ import {
     mockListAnalyticsCustomReportsHandler,
     mockUpdateAnalyticsCustomReportHandler,
 } from '@gorgias/helpdesk-mocks'
-import {
+import type {
     AnalyticsCustomReport,
     AnalyticsCustomReportType,
     CreateAnalyticsCustomReportBody,
     ListAnalyticsCustomReports200,
-    queryKeys,
 } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import {
     DASHBOARD_DELETED_ERROR_MESSAGE,
@@ -30,10 +30,8 @@ import {
 } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { MAX_DASHBOARDS_ALLOWED } from 'domains/reporting/pages/dashboards/constants'
 import * as constants from 'domains/reporting/pages/dashboards/constants'
-import {
-    DashboardChildType,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { notify } from 'state/notifications/actions'

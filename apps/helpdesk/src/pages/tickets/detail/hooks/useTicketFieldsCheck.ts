@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

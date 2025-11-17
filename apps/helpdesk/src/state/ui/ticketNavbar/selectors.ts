@@ -1,12 +1,13 @@
 import { createSelector } from 'reselect'
 
-import { UserViewsOrderingSettingData } from 'config/types/user'
-import { View, ViewCategory, ViewType, ViewVisibility } from 'models/view/types'
-import { TicketNavbarElement } from 'pages/tickets/navbar/TicketNavbarContent'
+import type { UserViewsOrderingSettingData } from 'config/types/user'
+import type { View } from 'models/view/types'
+import { ViewCategory, ViewType, ViewVisibility } from 'models/view/types'
+import type { TicketNavbarElement } from 'pages/tickets/navbar/TicketNavbarContent'
 import { getViewsOrderingSetting } from 'state/currentAccount/selectors'
-import { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
+import type { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
 import { getViewsOrderingUserSetting } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { TicketNavbarElementType } from './types'
 

@@ -1,30 +1,28 @@
 import { useMemo, useRef } from 'react'
 
-import {
+import type {
     FeedbackExecutionsItem,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-types'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type {
     useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
 } from 'models/helpCenter/queries'
-import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
+import type { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
-import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
-import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import type { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import type { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
+import type { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 
+import type { FreeForm, KnowledgeResource, SuggestedResource } from '../types'
 import {
     AiAgentFeedbackTypeEnum,
     AiAgentKnowledgeResourceTypeEnum,
-    FreeForm,
-    KnowledgeResource,
-    SuggestedResource,
     suggestedResourceValueSchema,
 } from '../types'
 import { getHelpCenterArticleUrl } from '../utils'

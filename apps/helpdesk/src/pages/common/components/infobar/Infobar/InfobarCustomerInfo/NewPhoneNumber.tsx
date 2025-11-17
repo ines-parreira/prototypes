@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
+import type { UpdateCustomerBodyChannelsItem } from '@gorgias/helpdesk-queries'
 import {
     LegacyChannelSlug,
-    UpdateCustomerBodyChannelsItem,
     useGetCustomer,
     useUpdateCustomer,
 } from '@gorgias/helpdesk-queries'

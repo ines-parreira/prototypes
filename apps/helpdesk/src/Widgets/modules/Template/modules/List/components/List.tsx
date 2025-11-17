@@ -1,11 +1,8 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import {
-    isCardTemplate,
-    ListTemplate,
-    Source,
-    Template,
-} from 'models/widget/types'
+import type { ListTemplate, Source, Template } from 'models/widget/types'
+import { isCardTemplate } from 'models/widget/types'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 
 import UIList from './views/List'

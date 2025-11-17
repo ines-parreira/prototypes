@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchCustomer } from 'models/aiAgent/queries'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { reportError } from 'utils/errors'
 
-import { PlaygroundCustomer } from '../../Playground/types'
+import type { PlaygroundCustomer } from '../../Playground/types'
 import { CustomerSearchDropdownSelectComponent } from './CustomerSearchDropdownSelectComponent'
 
 type Props = {

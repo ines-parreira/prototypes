@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { HelpCenterArticleModalView } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -13,7 +13,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { initialState as helpCenterArticlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as helpCenterCategoriesState } from 'state/entities/helpCenter/categories/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as helpCenterUIState } from 'state/ui/helpCenter/reducer'
 import { initialState as knowledgeSourceArticleEditorState } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 

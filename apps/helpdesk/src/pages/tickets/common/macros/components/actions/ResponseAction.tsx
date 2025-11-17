@@ -2,8 +2,8 @@ import { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
-import { List, Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { List, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -19,23 +19,21 @@ import {
 import { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/types'
+import type { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import Tip from 'pages/common/components/tip/Tip'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'
 import { convertToHTML, getPlainText } from 'utils/editor'
 
-import MacroMessageActionsHeader, {
-    MacroMessageActionsHeaderProps,
-} from '../MacroMessageActionsHeader'
-import MacroReplyActionControls, {
-    onFieldChange,
-} from '../MacroReplyActionControls'
+import type { MacroMessageActionsHeaderProps } from '../MacroMessageActionsHeader'
+import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
+import type { onFieldChange } from '../MacroReplyActionControls'
+import MacroReplyActionControls from '../MacroReplyActionControls'
 
 type Props = {
     type:

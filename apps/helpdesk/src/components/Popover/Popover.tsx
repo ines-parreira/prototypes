@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import type { PropsWithChildren, ReactNode, RefObject } from 'react'
 
+import type { OffsetOptions, Placement, ShiftOptions } from '@floating-ui/react'
 import {
     arrow,
     autoUpdate,
@@ -9,10 +10,7 @@ import {
     FloatingFocusManager,
     FloatingPortal,
     offset,
-    OffsetOptions,
-    Placement,
     shift,
-    ShiftOptions,
     useClick,
     useDismiss,
     useFloating,

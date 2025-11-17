@@ -1,17 +1,17 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import type { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import {
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type {
     AutoQAMetric,
     SatisfactionMetric,
     SlaMetric,

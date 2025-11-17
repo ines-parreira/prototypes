@@ -3,7 +3,7 @@ import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import GorgiasApi from '../../../../services/gorgiasApi'
-import { StoreDispatch } from '../../../types'
+import type { StoreDispatch } from '../../../types'
 import { onApiError } from '../../../utils'
 import { SET_ADDRESSES, SET_INITIAL_STATE, SET_LOADING } from './constants'
 

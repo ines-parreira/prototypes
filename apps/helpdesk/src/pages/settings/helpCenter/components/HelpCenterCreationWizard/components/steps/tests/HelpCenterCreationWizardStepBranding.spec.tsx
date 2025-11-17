@@ -6,10 +6,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {

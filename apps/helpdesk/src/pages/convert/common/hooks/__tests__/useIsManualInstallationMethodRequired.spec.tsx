@@ -4,11 +4,11 @@ import {
     MAGENTO2_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {
-    GorgiasChatInstallationMethod,
+import type {
     GorgiasChatIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
+import { GorgiasChatInstallationMethod } from 'models/integration/types'
 import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
 

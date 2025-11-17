@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
@@ -7,15 +8,17 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
+import type {
+    SearchRankRequest,
+    SearchRankResponse,
+} from 'hooks/useSearchRankScenario'
 import useSearchRankScenario, {
     DATABASE_TYPE,
     EntityType,
-    SearchRankRequest,
-    SearchRankResponse,
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import { SearchEngine } from 'models/search/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('@repo/logging')

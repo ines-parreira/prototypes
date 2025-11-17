@@ -3,9 +3,9 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import TestLiquidTemplateModal from '../TestLiquidTemplateModal'
 

@@ -4,7 +4,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import { AUTH_TYPE_LABEL_BY_TYPE } from '../constants'
-import { ActionsApp, App } from '../types'
+import type { ActionsApp, App } from '../types'
 
 import css from './ActionsPlatformAppsTableRow.less'
 

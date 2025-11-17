@@ -1,14 +1,13 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { IntegrationProvider } from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {
-    CampaigFormConfigurationProvider,
-    CampaignFormConfigurationType,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import {
+import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import { CampaigFormConfigurationProvider } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type {
     UtmConfiguration,
     WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'

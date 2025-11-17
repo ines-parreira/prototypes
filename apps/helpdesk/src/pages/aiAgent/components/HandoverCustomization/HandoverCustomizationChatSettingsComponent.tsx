@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { StoreConfigFormSection } from 'pages/aiAgent/constants'
+import type { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 import {
     SettingsCard,

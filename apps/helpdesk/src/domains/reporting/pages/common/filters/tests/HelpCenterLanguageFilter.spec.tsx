@@ -16,13 +16,13 @@ import HelpCenterLanguageFilter, {
 } from 'domains/reporting/pages/common/filters/HelpCenterLanguageFilter'
 import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()

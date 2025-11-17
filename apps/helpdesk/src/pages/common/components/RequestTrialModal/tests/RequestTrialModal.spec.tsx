@@ -3,7 +3,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 
 import RequestTrialModal from '../RequestTrialModal'
 

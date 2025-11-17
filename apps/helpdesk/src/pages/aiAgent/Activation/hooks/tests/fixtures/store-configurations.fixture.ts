@@ -1,4 +1,5 @@
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'

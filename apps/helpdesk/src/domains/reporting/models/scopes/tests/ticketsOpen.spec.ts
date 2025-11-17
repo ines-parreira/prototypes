@@ -2,7 +2,7 @@ import {
     openTicketsCount,
     openTicketsCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsOpen'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('ticketsOpenScope', () => {
     const filters: StatsFilters = {

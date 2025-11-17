@@ -1,7 +1,10 @@
-import { OrderDirection } from '@gorgias/helpdesk-types'
+import type { OrderDirection } from '@gorgias/helpdesk-types'
 
-import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
-import {
+import type {
+    MetricName,
+    MetricScope,
+} from 'domains/reporting/hooks/metricNames'
+import type {
     CustomFieldsFilter,
     DateFilter,
     DimensionName,
@@ -10,7 +13,7 @@ import {
     TimeDimensionName,
 } from 'domains/reporting/models/scopes/types'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import {
+import type {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'

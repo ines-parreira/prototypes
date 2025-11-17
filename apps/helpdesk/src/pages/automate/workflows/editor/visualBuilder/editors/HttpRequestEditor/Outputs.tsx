@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

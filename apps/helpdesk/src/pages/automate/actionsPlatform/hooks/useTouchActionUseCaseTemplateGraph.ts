@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { produce } from 'immer'
 
 import { getLLMPromptTriggerNodeTouched } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionUseCaseTemplateGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {

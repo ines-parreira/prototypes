@@ -1,6 +1,6 @@
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
-import { ChoicesTree } from '../../types'
+import type { ChoicesTree } from '../../types'
 import { buildTreeOfChoices } from '../buildTreeOfChoices'
 
 describe('buildTreeOfChoices', () => {

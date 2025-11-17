@@ -1,11 +1,14 @@
-import React, { Component, SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 
 import classNames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -24,19 +27,18 @@ import {
     FACEBOOK_LANGUAGE_DEFAULT,
     FACEBOOK_LANGUAGE_OPTIONS,
 } from 'config/integrations/facebook'
-import {
+import type {
     FacebookIntegration,
     FacebookIntegrationSettings,
-    isFacebookIntegration,
 } from 'models/integration/types'
+import { isFacebookIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import CheckBoxFieldSet, {
-    Props as CheckBoxFieldSetProps,
-} from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
+import type { Props as CheckBoxFieldSetProps } from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
+import CheckBoxFieldSet from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
 import FacebookIntegrationDetailSummary from 'pages/integrations/integration/components/facebook/FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
 import FacebookIntegrationLoginButton from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookIntegrationLoginButton'
@@ -56,7 +58,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     integration: FacebookIntegration

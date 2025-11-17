@@ -4,11 +4,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     EcommerceIntegrationMeta,
     Integration,
-    isAppIntegration,
 } from 'models/integration/types'
+import { isAppIntegration } from 'models/integration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

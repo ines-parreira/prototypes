@@ -1,8 +1,8 @@
-import { ContentBlock, ContentState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
-import {
+import type {
     Decorator,
     DecoratorComponentProps,
     DecoratorStrategyCallback,

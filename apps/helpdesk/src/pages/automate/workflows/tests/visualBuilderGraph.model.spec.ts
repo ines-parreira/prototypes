@@ -49,7 +49,7 @@ import {
     getUpdateShippingAddressNodeTouched,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelSubscriptionNodeType,
     ChannelTriggerNodeType,

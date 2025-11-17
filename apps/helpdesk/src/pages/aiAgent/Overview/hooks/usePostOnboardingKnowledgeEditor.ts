@@ -4,9 +4,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import type { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

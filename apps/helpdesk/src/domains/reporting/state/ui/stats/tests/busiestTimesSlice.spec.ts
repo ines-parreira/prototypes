@@ -5,7 +5,7 @@ import {
     initialState,
     setSelectedMetric,
 } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('busiestTimesSlice', () => {
     const defaultState = {

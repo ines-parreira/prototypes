@@ -8,7 +8,7 @@ import { integrationsStateWithShopify } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { PendingTasksSectionConnected } from '../PendingTasksSectionConnected'

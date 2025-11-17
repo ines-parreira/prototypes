@@ -1,10 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { OpportunityType } from '../enums'
-import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 import { useSelectedOpportunity } from './useSelectedOpportunity'
 

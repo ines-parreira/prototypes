@@ -1,7 +1,8 @@
 // sort-imports-ignore
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
-import React, { ComponentProps, ReactPortal } from 'react'
+import type { ComponentProps, ReactPortal } from 'react'
+import type React from 'react'
 
 import { useSelectedIndex } from '@repo/hooks'
 import { assumeMock, flushPromises } from '@repo/testing'
@@ -21,7 +22,7 @@ import { mockSearchRank } from 'fixtures/searchRank'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { voiceCall } from 'fixtures/voiceCalls'
-import { RecentItems } from 'hooks/useRecentItems/constants'
+import type { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
@@ -33,14 +34,14 @@ import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
-import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
+import type SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
+import type SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import SpotlightModal, {
     CUSTOMERS_ADVANCED_SEARCH_PATH,
     FEDERATED_SEARCH_TAB_LABEL,
     TICKETS_ADVANCED_SEARCH_PATH,
 } from 'pages/common/components/Spotlight/SpotlightModal'
-import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import type SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import { history } from '@repo/routing'
 import * as billingSelectors from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'

@@ -1,4 +1,4 @@
-import { CurrentPlans } from '@gorgias/helpdesk-queries'
+import type { CurrentPlans } from '@gorgias/helpdesk-queries'
 
 import { useBillingState } from './useBillingState'
 

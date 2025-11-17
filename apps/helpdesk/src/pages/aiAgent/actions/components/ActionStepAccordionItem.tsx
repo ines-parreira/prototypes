@@ -4,10 +4,10 @@ import { defaultNodeNames } from 'pages/automate/workflows/editor/visualBuilder/
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import { ActionStepItem, TemplateConfiguration } from '../types'
+import type { ActionStepItem, TemplateConfiguration } from '../types'
 import ActionEventTitle from './ActionEventTitle'
 import HttpRequestLogsView from './HttpRequestLogsView'
 import NoHttpRequestLogsView from './NoHttpRequestLogsView'

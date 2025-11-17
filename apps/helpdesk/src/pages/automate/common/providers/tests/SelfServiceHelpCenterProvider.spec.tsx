@@ -7,7 +7,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { helpCentersFetched } from 'state/entities/helpCenter/helpCenters'

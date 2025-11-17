@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-import { ContentBlock, ContentState } from 'draft-js'
-import { Map } from 'immutable'
+import type { ContentBlock, ContentState } from 'draft-js'
+import type { Map } from 'immutable'
 
-import {
+import type {
     Decorator,
     DecoratorComponentProps,
     DecoratorStrategyCallback,

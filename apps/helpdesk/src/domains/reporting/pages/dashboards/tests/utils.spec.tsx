@@ -1,12 +1,14 @@
 import { AxiosError } from 'axios'
 
-import {
+import type {
     AnalyticsCustomReport,
     AnalyticsCustomReportChartSchema,
     AnalyticsCustomReportRowSchema,
+    AnalyticsCustomReportSectionSchema,
+} from '@gorgias/helpdesk-types'
+import {
     AnalyticsCustomReportRowSchemaChildrenItemType,
     AnalyticsCustomReportRowSchemaType,
-    AnalyticsCustomReportSectionSchema,
     AnalyticsCustomReportSectionSchemaType,
     AnalyticsCustomReportType,
 } from '@gorgias/helpdesk-types'
@@ -14,14 +16,16 @@ import {
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
+import type {
     ChartConfig,
-    ChartType,
     DashboardChartSchema,
     DashboardChild,
-    DashboardChildType,
     DashboardInput,
     DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import {
+    ChartType,
+    DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
 import {
     createDashboardPayload,

@@ -1,13 +1,7 @@
 import { useEffect } from 'react'
 
-import {
-    Edge,
-    Node,
-    ReactFlowState,
-    useNodesInitialized,
-    useReactFlow,
-    useStore,
-} from '@xyflow/react'
+import type { Edge, Node, ReactFlowState } from '@xyflow/react'
+import { useNodesInitialized, useReactFlow, useStore } from '@xyflow/react'
 
 import { getLayoutedElements } from '../layout.utils'
 

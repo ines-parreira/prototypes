@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'

@@ -1,11 +1,11 @@
 import { ulid } from 'ulidx'
 
 import { WorkflowConfigurationBuilder } from '../models/workflowConfiguration.model'
-import {
+import type {
     WorkflowConfiguration,
     WorkflowTemplate,
-    WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
+import { WorkflowTemplateLabelType } from '../models/workflowConfiguration.types'
 
 export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
     slug: 'show-loyalty-lion-point-balance',

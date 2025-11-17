@@ -8,7 +8,7 @@ import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { SkipChargeNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { SkipChargeNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import SkipChargeEditor from '../SkipChargeEditor'
 

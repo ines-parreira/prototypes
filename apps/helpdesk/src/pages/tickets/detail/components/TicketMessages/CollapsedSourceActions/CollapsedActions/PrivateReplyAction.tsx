@@ -1,6 +1,6 @@
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import PrivateReplyButton from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyButton'
 
 import CollapsedAction from './CollapsedAction'

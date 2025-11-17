@@ -1,19 +1,18 @@
 import { createAction } from '@reduxjs/toolkit'
 import { history } from '@repo/routing'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import {
+import type {
     EditableUserProfile,
     User,
     UserPreferences,
-    UserRole,
     UserSetting,
-    UserSettingType,
 } from 'config/types/user'
+import { UserRole, UserSettingType } from 'config/types/user'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import client from 'models/api/resources'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'

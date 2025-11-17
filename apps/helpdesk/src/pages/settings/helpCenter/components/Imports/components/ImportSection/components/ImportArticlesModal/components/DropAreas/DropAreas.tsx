@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { FetchedProvidersState } from '../../../../types'
+import type { FetchedProvidersState } from '../../../../types'
 
 import css from './DropAreas.less'
 

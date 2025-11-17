@@ -2,17 +2,17 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import {
+import type {
     Product,
-    ProductStatus,
     ProductWithAiAgentStatus,
 } from 'constants/integrations/types/shopify'
-import {
+import { ProductStatus } from 'constants/integrations/types/shopify'
+import type {
     ApiPaginationParams,
     ApiPaginationParamsWithFilter,
 } from 'models/api/types'
 import { fetchIntegrationProducts } from 'models/integration/resources'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 
 interface UsePaginatedProductIntegrationProps {
     integrationId: number

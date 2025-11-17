@@ -16,7 +16,7 @@ import { ProgressIcon } from '../AiAgentTasks/ProgressIcon'
 import { DeploySection } from './DeploySection'
 import { TestSection } from './TestSection'
 import { TrainSection } from './TrainSection'
-import { PostOnboardingStepMetadata } from './types'
+import type { PostOnboardingStepMetadata } from './types'
 import { mapTabToStepName, POST_ONBOARDING_STEPS_METADATA } from './utils'
 
 import css from './PostOnboardingTasksSection.less'

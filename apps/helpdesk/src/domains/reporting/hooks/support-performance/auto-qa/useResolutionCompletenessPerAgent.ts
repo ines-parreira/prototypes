@@ -3,8 +3,8 @@ import {
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { resolutionCompletenessPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useResolutionCompletenessPerAgent = (
     statsFilters: StatsFilters,

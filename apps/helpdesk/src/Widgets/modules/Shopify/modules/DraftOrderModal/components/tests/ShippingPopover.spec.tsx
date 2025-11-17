@@ -1,9 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     shopifyAvailableShippingRate,

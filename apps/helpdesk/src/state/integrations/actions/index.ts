@@ -1,22 +1,26 @@
 import { history } from '@repo/routing'
-import axios, { AxiosError } from 'axios'
-import { fromJS, Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 
 import { isChannel } from 'config'
 import client from 'models/api/resources'
-import {
+import type {
     ApiListResponseLegacyPagination,
     GorgiasApiError,
 } from 'models/api/types'
 import { fetchIntegrations as fetchIntegrationsResources } from 'models/integration/resources'
+import type {
+    GorgiasChatIntegration,
+    Integration,
+} from 'models/integration/types'
 import {
     EmailMigrationInboundVerificationStatus,
-    GorgiasChatIntegration,
     GorgiasChatStatusEnum,
-    Integration,
     IntegrationType,
 } from 'models/integration/types'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'

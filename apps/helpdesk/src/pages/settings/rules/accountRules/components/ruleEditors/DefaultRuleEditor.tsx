@@ -1,5 +1,5 @@
+import type { ForwardedRef } from 'react'
 import {
-    ForwardedRef,
     forwardRef,
     useCallback,
     useContext,
@@ -12,8 +12,8 @@ import {
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import esprima from 'esprima'
-import { List, Map } from 'immutable'
+import type esprima from 'esprima'
+import type { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
 import moment from 'moment'
 import { FormGroup, Label } from 'reactstrap'
@@ -34,19 +34,15 @@ import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { eventTypes as getEventTypes } from 'state/rules/helpers'
-import {
-    Rule,
-    RuleDraft,
-    RuleLimitStatus,
-    RuleOperation,
-} from 'state/rules/types'
+import type { Rule, RuleDraft, RuleOperation } from 'state/rules/types'
+import { RuleLimitStatus } from 'state/rules/types'
 import { getEmptyRule } from 'state/rules/utils'
 import { getSchemas } from 'state/schemas/selectors'
 
 import RuleEditor from '../../../components/RuleEditor'
 import RuleItemButtons from '../../../components/RuleItemButtons'
-import { CodeASTType } from '../../../types'
-import { EditorHandle, RuleEditorProps } from '../RuleFormEditor'
+import type { CodeASTType } from '../../../types'
+import type { EditorHandle, RuleEditorProps } from '../RuleFormEditor'
 import { getRuleActions } from './utils'
 
 import css from './DefaultRuleEditor.less'

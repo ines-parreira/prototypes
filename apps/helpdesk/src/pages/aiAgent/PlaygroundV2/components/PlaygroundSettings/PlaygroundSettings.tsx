@@ -13,12 +13,12 @@ import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import { useSettingsChanged } from 'pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundCustomer,
-    PlaygroundEvent,
 } from 'pages/aiAgent/PlaygroundV2/types'
+import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import css from './PlaygroundSettings.less'

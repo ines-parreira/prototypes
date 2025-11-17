@@ -2,10 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import {
-    AiAgentNotificationPayload,
-    AiAgentNotificationType,
-} from 'automate/notifications/types'
+import type { AiAgentNotificationPayload } from 'automate/notifications/types'
+import { AiAgentNotificationType } from 'automate/notifications/types'
 import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
 import type { Notification } from 'common/notifications'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'

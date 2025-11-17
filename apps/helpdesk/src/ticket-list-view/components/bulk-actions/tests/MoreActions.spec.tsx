@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -13,12 +13,12 @@ import { JobType } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
-import { TagDropdownMenu } from 'tags'
+import type { TagDropdownMenu } from 'tags'
 
-import ApplyMacro from '../ApplyMacro'
+import type ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'
-import PriorityDropdownMenu from '../PriorityDropdownMenu'
-import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
+import type PriorityDropdownMenu from '../PriorityDropdownMenu'
+import type TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)

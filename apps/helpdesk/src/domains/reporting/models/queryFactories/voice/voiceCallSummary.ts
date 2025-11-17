@@ -1,12 +1,12 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { VoiceCallSummaryCube } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import {
-    VoiceCallSummaryCube,
     VoiceCallSummaryFiltersMembers,
     VoiceCallSummaryMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { statsFiltersToReportingFilters } from 'domains/reporting/utils/reporting'
 

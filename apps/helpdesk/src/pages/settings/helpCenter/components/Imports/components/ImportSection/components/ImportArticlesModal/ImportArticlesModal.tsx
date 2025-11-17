@@ -1,7 +1,9 @@
-import React, { useRef } from 'react'
+import type React from 'react'
+import { useRef } from 'react'
 
-import { AxiosError } from 'axios'
-import { fromJS, Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -20,7 +22,10 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
-import { FetchedProvidersState, ImportArticlesModalState } from '../../types'
+import type {
+    FetchedProvidersState,
+    ImportArticlesModalState,
+} from '../../types'
 import DropAreas from './components/DropAreas'
 import FileSelectedArea from './components/FileSelectedArea'
 import {

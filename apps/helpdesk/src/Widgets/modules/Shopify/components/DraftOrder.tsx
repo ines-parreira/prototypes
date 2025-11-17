@@ -1,7 +1,8 @@
-import React, { ReactNode, useContext } from 'react'
+import type { ReactNode } from 'react'
+import React, { useContext } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { Badge } from '@gorgias/axiom'
 
@@ -13,7 +14,7 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import css from './DraftOrder.less'

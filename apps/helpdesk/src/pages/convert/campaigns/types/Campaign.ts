@@ -1,14 +1,14 @@
-import {
+import type {
     CampaignCreatePayload as CampaignCreatePayloadSchema,
     CampaignPublishType,
     Campaign as CampaignSchema,
 } from 'models/convert/campaign/types'
 
-import { CampaignAttachment } from './CampaignAttachment'
-import { CampaignMeta } from './CampaignMeta'
-import { ScheduleSchema } from './CampaignSchedule'
-import { CampaignTrigger } from './CampaignTrigger'
-import { CampaignVariant } from './CampaignVariant'
+import type { CampaignAttachment } from './CampaignAttachment'
+import type { CampaignMeta } from './CampaignMeta'
+import type { ScheduleSchema } from './CampaignSchedule'
+import type { CampaignTrigger } from './CampaignTrigger'
+import type { CampaignVariant } from './CampaignVariant'
 
 type SharedCampaignParams = {
     attachments?: CampaignAttachment[]

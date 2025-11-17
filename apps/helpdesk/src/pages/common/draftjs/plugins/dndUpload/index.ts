@@ -1,9 +1,9 @@
-import { SelectionState } from 'draft-js'
+import type { SelectionState } from 'draft-js'
 import _noop from 'lodash/noop'
 
 import { EditorHandledNotHandled } from 'utils/editor'
 
-import { ImagePluginConfig, PluginMethods } from '../types'
+import type { ImagePluginConfig, PluginMethods } from '../types'
 import { insertInlineImages, isImage } from '../utils'
 
 const _handleDroppedFiles =

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import {
     getShopDomainFromStoreIntegration,
     getShopUrlFromStoreIntegration,

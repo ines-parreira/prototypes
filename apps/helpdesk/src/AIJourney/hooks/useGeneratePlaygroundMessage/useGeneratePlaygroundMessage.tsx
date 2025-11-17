@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import {
+import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
-import { Integration } from '@gorgias/helpdesk-types'
+import type { Integration } from '@gorgias/helpdesk-types'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {

@@ -8,7 +8,7 @@ import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStor
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'
 
-import { AiAgentNotificationPayload } from '../types'
+import type { AiAgentNotificationPayload } from '../types'
 import {
     getNotificationParams,
     getNotificationReceivedDatetimePayload,

@@ -11,8 +11,8 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { CellWrapper } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/CellWrapper'
 import { ProductInsightsColumnConfig } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
-import { ReturnMentionsMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
+import type { ReturnMentionsMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 

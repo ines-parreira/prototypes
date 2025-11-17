@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
@@ -7,13 +7,14 @@ import { fromJS } from 'immutable'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import {
     canMonitorCall,
     getCallMonitorability,
 } from 'hooks/integrations/phone/monitoring.utils'
-import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import type { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import { renderWithStore } from 'utils/testing'

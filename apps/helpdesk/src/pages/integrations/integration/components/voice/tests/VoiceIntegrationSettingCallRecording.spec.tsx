@@ -5,9 +5,8 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallRecording_DEPRECATED from '../VoiceIntegrationSettingCallRecording_DEPRECATED'
-import TextToSpeechContext, {
-    TextToSpeechContext as TextToSpeechContextType,
-} from '../VoiceMessageTTS/TextToSpeechContext'
+import type { TextToSpeechContext as TextToSpeechContextType } from '../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext from '../VoiceMessageTTS/TextToSpeechContext'
 
 const defaultPreferences = {
     record_inbound_calls: false,

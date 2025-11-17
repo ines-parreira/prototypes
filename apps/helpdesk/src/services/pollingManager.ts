@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux'
+import type { AnyAction } from 'redux'
 
 import { store as reduxStore } from 'common/store'
 import { isFullWidthViewPath } from 'common/utils'

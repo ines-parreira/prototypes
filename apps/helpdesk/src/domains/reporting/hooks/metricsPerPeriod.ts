@@ -10,22 +10,20 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import {
+import type {
     MetricPerDimensionTrend,
     QueryReturnType,
-    useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import {
     tagsTicketCountOnCreatedDatetimeQueryFactory,
     tagsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
-import {
-    StatsFilters,
-    TicketTimeReference,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const filterDataWithSelectedTags = ({
     tagResultsSelection,

@@ -1,12 +1,12 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { useAccordionContext } from './AccordionContext'
-import AccordionItemContext, {
-    AccordionItemContextType,
-} from './AccordionItemContext'
+import type { AccordionItemContextType } from './AccordionItemContext'
+import AccordionItemContext from './AccordionItemContext'
 
 import css from './AccordionItem.less'
 

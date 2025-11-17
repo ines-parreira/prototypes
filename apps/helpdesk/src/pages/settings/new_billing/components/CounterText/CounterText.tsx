@@ -1,4 +1,4 @@
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Cadence, Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,

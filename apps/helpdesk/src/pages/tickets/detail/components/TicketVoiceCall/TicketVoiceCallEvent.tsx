@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import { ProcessedEvent } from 'models/voiceCall/processEvents'
+import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 

@@ -1,10 +1,7 @@
+import type { ForwardedRef, MouseEvent, ReactNode, RefObject } from 'react'
 import React, {
     createContext,
-    ForwardedRef,
     forwardRef,
-    MouseEvent,
-    ReactNode,
-    RefObject,
     useCallback,
     useImperativeHandle,
     useMemo,

@@ -14,9 +14,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasAgentPrivileges, isAdmin } from 'utils'
 
-import AutomateExploreDataModal, {
-    AutomateExploreDataModalHandle,
-} from './AutomateExploreDataModal'
+import type { AutomateExploreDataModalHandle } from './AutomateExploreDataModal'
+import AutomateExploreDataModal from './AutomateExploreDataModal'
 
 import css from './AutomateSavingsCard.less'
 

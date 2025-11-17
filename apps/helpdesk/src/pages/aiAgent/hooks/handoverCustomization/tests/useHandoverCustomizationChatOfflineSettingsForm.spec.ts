@@ -3,10 +3,8 @@ import { act } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { initialFormFieldValues } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
 import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationConfigurationData.utils'

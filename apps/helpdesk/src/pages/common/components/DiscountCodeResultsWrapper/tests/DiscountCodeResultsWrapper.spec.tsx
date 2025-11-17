@@ -9,10 +9,8 @@ import thunk from 'redux-thunk'
 import { integrationsState } from 'fixtures/integrations'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
-import {
-    DiscountCodeResultsWrapper,
-    DiscountCodeResultsWrapperProps,
-} from '../DiscountCodeResultsWrapper'
+import type { DiscountCodeResultsWrapperProps } from '../DiscountCodeResultsWrapper'
+import { DiscountCodeResultsWrapper } from '../DiscountCodeResultsWrapper'
 
 describe('<DiscountCodeResultsWrapper />', () => {
     const middlewares = [thunk]

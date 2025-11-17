@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 export const sortOrderOptions = [
     {

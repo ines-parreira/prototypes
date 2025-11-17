@@ -1,11 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import classNames from 'classnames'
 
-import { CustomField } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 

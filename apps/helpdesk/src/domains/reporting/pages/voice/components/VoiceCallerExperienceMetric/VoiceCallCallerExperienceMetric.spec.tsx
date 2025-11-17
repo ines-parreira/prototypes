@@ -2,8 +2,8 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import * as DrillDownModalTrigger from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
@@ -12,7 +12,7 @@ import {
     AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend'
-import { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { mockStore } from 'utils/testing'
 

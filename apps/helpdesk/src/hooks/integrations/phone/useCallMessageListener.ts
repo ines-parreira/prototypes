@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
-import { TwilioMessage } from 'models/voiceCall/twilioMessageTypes'
+import type { TwilioMessage } from 'models/voiceCall/twilioMessageTypes'
 
 export function useCallMessageListener(
     call: Call,

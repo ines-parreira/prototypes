@@ -1,5 +1,5 @@
-import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 export const buildConditionSchemaByVariableType = (
     type: WorkflowVariable['type'],

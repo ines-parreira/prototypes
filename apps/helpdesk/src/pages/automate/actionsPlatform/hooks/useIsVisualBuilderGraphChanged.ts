@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useDebouncedValue, usePrevious } from '@repo/hooks'
 
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useIsVisualBuilderGraphChanged = (
     graph: VisualBuilderGraph,

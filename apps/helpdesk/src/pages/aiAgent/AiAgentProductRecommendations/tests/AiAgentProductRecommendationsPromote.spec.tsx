@@ -1,12 +1,8 @@
-import {
-    fireEvent,
-    isInaccessible,
-    render,
-    RenderResult,
-} from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, isInaccessible, render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
+import type { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {

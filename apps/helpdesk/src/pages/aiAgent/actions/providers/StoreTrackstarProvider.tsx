@@ -1,10 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { useListTrackstarConnections } from 'models/workflows/queries'
 
-import StoreTrackstarContext, {
-    StoreTrackstarContextType,
-} from './StoreTrackstarContext'
+import type { StoreTrackstarContextType } from './StoreTrackstarContext'
+import StoreTrackstarContext from './StoreTrackstarContext'
 
 type Props = {
     storeName: string

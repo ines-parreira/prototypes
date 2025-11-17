@@ -7,8 +7,8 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
 import { voiceCall } from 'fixtures/voiceCalls'
-import { Customer } from 'models/customer/types'
-import {
+import type { Customer } from 'models/customer/types'
+import type {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
 } from 'models/search/types'

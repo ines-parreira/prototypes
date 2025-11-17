@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { FacebookReactionType } from 'constants/integrations/facebook'
+import type { FacebookReactionType } from 'constants/integrations/facebook'
 import {
     duplicatedHiddenFacebookMessage,
     facebookMessageNoMeta,

@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

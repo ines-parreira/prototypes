@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { isProduction } from '@repo/utils'
 import { renderHook } from '@testing-library/react'
@@ -8,7 +8,7 @@ import configureStore from 'redux-mock-store'
 
 import { createBaseUrl } from 'models/aiAgent/resources/message-processing'
 import { IntegrationType } from 'models/integration/constants'
-import { HttpIntegration } from 'models/integration/types'
+import type { HttpIntegration } from 'models/integration/types'
 
 import { useAiAgentHttpIntegration } from '../useAiAgentHttpIntegration'
 

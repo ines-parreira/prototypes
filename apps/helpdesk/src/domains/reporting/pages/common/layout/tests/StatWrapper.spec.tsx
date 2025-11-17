@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
@@ -8,7 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
@@ -17,7 +18,7 @@ import { account } from 'fixtures/account'
 import { firstResponseTime } from 'fixtures/stats'
 import { user } from 'fixtures/users'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
 jest.mock('utils/file')

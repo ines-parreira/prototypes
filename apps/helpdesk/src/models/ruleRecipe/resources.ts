@@ -1,6 +1,6 @@
 import client from '../api/resources'
-import { ApiListResponse } from '../api/types'
-import { RuleRecipe } from './types'
+import type { ApiListResponse } from '../api/types'
+import type { RuleRecipe } from './types'
 
 export const fetchRuleRecipes = async (): Promise<
     ApiListResponse<RuleRecipe[], null>

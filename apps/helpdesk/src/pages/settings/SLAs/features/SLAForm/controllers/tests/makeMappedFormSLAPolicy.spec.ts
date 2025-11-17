@@ -1,4 +1,4 @@
-import { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,

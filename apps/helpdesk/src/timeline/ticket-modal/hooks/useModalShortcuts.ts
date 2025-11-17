@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 
-import { useTicketModal } from './useTicketModal'
+import type { useTicketModal } from './useTicketModal'
 
 export function useModalShortcuts({
     ticketId,

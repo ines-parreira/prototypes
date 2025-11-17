@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'

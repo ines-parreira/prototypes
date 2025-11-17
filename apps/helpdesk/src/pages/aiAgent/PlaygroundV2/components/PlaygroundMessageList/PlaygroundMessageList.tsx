@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 
 import classNames from 'classnames'
 
-import { MessageType, PlaygroundMessage } from 'models/aiAgentPlayground/types'
+import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
+import { MessageType } from 'models/aiAgentPlayground/types'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 

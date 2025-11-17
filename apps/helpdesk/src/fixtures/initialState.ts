@@ -8,7 +8,7 @@ import {
     ViewVisibility,
 } from 'models/view/types'
 import { CompanyTier } from 'state/currentCompany/types'
-import { GorgiasInitialState } from 'types'
+import type { GorgiasInitialState } from 'types'
 
 import { account } from './account'
 import { products } from './productPrices'

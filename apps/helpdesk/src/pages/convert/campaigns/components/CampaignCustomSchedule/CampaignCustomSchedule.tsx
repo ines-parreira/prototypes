@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
+import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { produce } from 'immer'
 
@@ -11,7 +12,7 @@ import {
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
-import { CustomScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
+import type { CustomScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 
 import css from './CampaignCustomSchedule.less'
 

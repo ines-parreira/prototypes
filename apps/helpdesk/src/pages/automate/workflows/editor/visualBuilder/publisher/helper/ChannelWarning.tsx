@@ -1,10 +1,11 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import {
+import type {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'

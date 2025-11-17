@@ -4,10 +4,8 @@ import { waitFor } from '@testing-library/react'
 import { TicketChannel } from 'business/types/ticket'
 import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/useDistributionTrendReportData'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'

@@ -8,11 +8,11 @@ import {
     useRequestTicketMessageTranslation,
     useRequestTicketTranslation,
 } from '@gorgias/helpdesk-queries'
-import { Language } from '@gorgias/helpdesk-types'
+import type { Language } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import { sleep } from 'hooks/integrations/phone/utils'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'
 import {
     DisplayedContent,

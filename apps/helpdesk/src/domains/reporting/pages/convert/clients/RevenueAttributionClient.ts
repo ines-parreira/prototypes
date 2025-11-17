@@ -1,7 +1,10 @@
 import { REVENUE_PER_DAY } from 'domains/reporting/config/stats'
 import { fetchStat } from 'domains/reporting/models/stat/resources'
-import { LegacyStatsFilters, Stat } from 'domains/reporting/models/stat/types'
-import { RevenueAttributionFilterParams } from 'domains/reporting/pages/convert/clients/types'
+import type {
+    LegacyStatsFilters,
+    Stat,
+} from 'domains/reporting/models/stat/types'
+import type { RevenueAttributionFilterParams } from 'domains/reporting/pages/convert/clients/types'
 import { getDateRange } from 'domains/reporting/pages/convert/clients/utils'
 
 export const getTicketsPerformanceData = async ({

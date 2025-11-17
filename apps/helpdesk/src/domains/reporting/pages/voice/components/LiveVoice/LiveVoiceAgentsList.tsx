@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { useFlag } from 'core/flags'
@@ -15,10 +15,8 @@ import {
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
-import {
-    TableBodyRowExpandable,
-    WithChildren,
-} from 'pages/common/components/table/TableBodyRowExpandable'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
+import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { useAblyAgentsOnlineStatus } from 'providers/realtime-ably/hooks/useAblyAgentsOnlineStatus'
 

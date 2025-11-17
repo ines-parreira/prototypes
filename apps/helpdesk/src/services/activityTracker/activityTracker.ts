@@ -1,5 +1,5 @@
 import { isDevelopment } from '@repo/utils'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
 

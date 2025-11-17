@@ -9,7 +9,7 @@ import {
     mockListAccountSettingsHandler,
     mockUpdateAccountSettingHandler,
 } from '@gorgias/helpdesk-mocks'
-import {
+import type {
     AccountSettingsItem,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'

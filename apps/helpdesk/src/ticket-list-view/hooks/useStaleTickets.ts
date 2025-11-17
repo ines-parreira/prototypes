@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { TicketPartial } from '../types'
+import type { TicketPartial } from '../types'
 
 type TicketTimestamps = Record<number, number>
 

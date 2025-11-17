@@ -1,12 +1,13 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { BannerActions } from 'AlertBanners/Context/types'
+import type { BannerActions } from 'AlertBanners/Context/types'
 
 import { BannerActionTypes, useBannersDispatchContext } from '../../Context'
 import { useDismissedStorage } from '../../Storage'
-import { BannerCategories, ContextBanner } from '../../types'
+import type { ContextBanner } from '../../types'
+import { BannerCategories } from '../../types'
 import { useBanners } from '../useBanners'
 
 jest.mock('../../Context', () => ({

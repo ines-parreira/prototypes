@@ -1,9 +1,7 @@
 import { useMemo } from 'react'
 
-import {
-    ArticleMode,
-    ArticleModes,
-} from '../../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
+import type { ArticleMode } from '../../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
+import { ArticleModes } from '../../KnowledgeEditorTopBar/KnowledgeEditorTopBarHelpCenterArticlesControls'
 
 type Props = {
     mode: ArticleModes

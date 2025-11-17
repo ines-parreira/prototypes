@@ -10,7 +10,10 @@ import _zip from 'lodash/zip'
 import moment from 'moment'
 
 import { getMomentGranularityFromReportingGranularity } from 'domains/reporting/hooks/useTimeSeries'
-import { AggregationWindow, Stat } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    Stat,
+} from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     formatCurrency,
@@ -24,7 +27,7 @@ import {
     OrderConversionDimension,
     OrderConversionMeasure,
 } from 'domains/reporting/pages/convert/clients/constants'
-import {
+import type {
     CubeData,
     CubeMetric,
     GroupDimension,
@@ -35,7 +38,7 @@ import {
     COMPARISON_DATA_FORMAT,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'domains/reporting/pages/convert/services/constants'
-import {
+import type {
     CalculatedTotals,
     CampaignGraphData,
     CampaignPerformanceData,

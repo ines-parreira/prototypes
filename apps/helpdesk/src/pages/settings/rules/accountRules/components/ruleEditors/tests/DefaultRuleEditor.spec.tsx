@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { appQueryClient } from 'api/queryClient'
 import { emptyRule } from 'fixtures/rule'
 import { user } from 'fixtures/users'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import DefaultRuleEditor from '../DefaultRuleEditor'
 

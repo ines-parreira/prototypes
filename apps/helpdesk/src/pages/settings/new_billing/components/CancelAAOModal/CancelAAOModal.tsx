@@ -13,7 +13,7 @@ import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import { CurrentProductsUsages } from 'state/billing/types'
+import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentDomain, isTrialing } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 

@@ -1,4 +1,4 @@
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     fetchTimeSeriesPerDimension,
@@ -13,11 +13,11 @@ import {
     averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
     integrationCsatQueryBuilder,
 } from 'domains/reporting/models/scopes/satisfactionSurveys'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import { ReportFetch } from 'domains/reporting/pages/dashboards/types'
+import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import {
     getFormattedInfo,
     transformToTimeSeriesData,
@@ -25,7 +25,7 @@ import {
 import { createTimeSeriesPerDimensionReport } from 'domains/reporting/services/SLAsReportingService'
 import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 export const SATISFACTION_AVERAGE_CSAT_OVER_TIME = '{metric}-over-time'
 

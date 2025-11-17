@@ -12,7 +12,7 @@ import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Con
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import List from 'gorgias-design-system/List/List'
 import ListItem from 'gorgias-design-system/List/ListItem'
-import {
+import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'

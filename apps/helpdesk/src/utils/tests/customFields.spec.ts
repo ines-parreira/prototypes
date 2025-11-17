@@ -1,4 +1,4 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { ticketInputFieldDefinition } from 'fixtures/customField'

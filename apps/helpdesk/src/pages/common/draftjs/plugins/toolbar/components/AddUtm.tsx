@@ -1,4 +1,5 @@
-import { KeyboardEvent, useCallback, useState } from 'react'
+import type { KeyboardEvent } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Button } from 'reactstrap'
 
@@ -7,7 +8,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 import css from './AddUtm.less'
 

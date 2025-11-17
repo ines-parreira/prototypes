@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 

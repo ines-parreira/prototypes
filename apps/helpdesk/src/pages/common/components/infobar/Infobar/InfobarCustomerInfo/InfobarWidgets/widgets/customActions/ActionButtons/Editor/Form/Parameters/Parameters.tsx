@@ -5,7 +5,7 @@ import { ulid } from 'ulidx'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     OnChangeAction,
     Parameter as ParameterType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

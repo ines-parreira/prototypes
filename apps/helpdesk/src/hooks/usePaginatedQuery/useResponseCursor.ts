@@ -1,9 +1,7 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
-import {
-    ApiListResponseCursorPagination,
-    isGorgiasApiError,
-} from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 
 export const useResponseCursor = ({
     data,

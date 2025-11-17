@@ -5,7 +5,7 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
 import KnowledgeSourceFeedback from '../KnowledgeSourceFeedback'
-import { KnowledgeResource } from '../types'
+import type { KnowledgeResource } from '../types'
 
 const defaultResource = {
     feedback: { feedbackValue: null },

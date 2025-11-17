@@ -1,10 +1,11 @@
-import { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getCampaignOrderPerformanceDrillDownData } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import { CubeFilterParams } from 'domains/reporting/pages/convert/clients/types'
-import { OrderDirection } from 'models/api/types'
+import type { CubeFilterParams } from 'domains/reporting/pages/convert/clients/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const campaignSalesDrillDownQueryFactory = (
     shopName: string,

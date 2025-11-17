@@ -12,7 +12,7 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import AutomateMacros from 'domains/reporting/pages/ticket-insights/macros/AutomateMacros'
 import { integrationsState } from 'fixtures/integrations'
 import { messagesSentPerMacro } from 'fixtures/stats'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useStatResource')

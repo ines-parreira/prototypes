@@ -1,9 +1,10 @@
-import { TicketMessage } from '@gorgias/helpdesk-queries'
+import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, ActionStatus } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 
-import { TicketElement } from '../../types'
+import type { TicketElement } from '../../types'
 import { failedMessageTransformer } from '../failedMessageTransformer'
 import { integrationErrorTransformer } from '../integrationErrorTransformer'
 

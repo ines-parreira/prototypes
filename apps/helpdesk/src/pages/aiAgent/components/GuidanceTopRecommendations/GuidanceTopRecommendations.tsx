@@ -1,7 +1,7 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import { AIGuidance } from 'pages/aiAgent/types'
+import type { AIGuidance } from 'pages/aiAgent/types'
 
 import css from './GuidanceTopRecommendations.less'
 

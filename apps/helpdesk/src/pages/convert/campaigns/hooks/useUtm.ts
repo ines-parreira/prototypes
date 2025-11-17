@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
-import { ChannelConnection } from 'models/convert/channelConnection/types'
+import type { ChannelConnection } from 'models/convert/channelConnection/types'
 
 export const useUtm = (
     channelConnection: ChannelConnection | null,

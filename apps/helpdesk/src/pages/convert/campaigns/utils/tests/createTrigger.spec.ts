@@ -1,6 +1,6 @@
 import _omit from 'lodash/omit'
 
-import { CampaignTrigger } from '../../types/CampaignTrigger'
+import type { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerBusinessHoursValuesEnum } from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'

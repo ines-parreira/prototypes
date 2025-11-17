@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { account, account as accountFixture } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import { user as userFixture } from 'fixtures/users'
-import { ContactFormPageEmbedment } from 'models/contactForm/types'
+import type { ContactFormPageEmbedment } from 'models/contactForm/types'
 import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
 import { CONTACT_FORM_PUBLISH_PATH } from 'pages/settings/contactForm/constants'
 import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
@@ -19,7 +19,7 @@ import {
     useDeletePageEmbedment,
     useUpdatePageEmbedment,
 } from 'pages/settings/contactForm/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

@@ -3,11 +3,9 @@ import { useCallback, useMemo, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import { useRouteMatch } from 'react-router'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 import {
     CONVERT_NAVBAR_EXPANDED_SECTIONS_KEY,

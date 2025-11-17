@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import cn from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

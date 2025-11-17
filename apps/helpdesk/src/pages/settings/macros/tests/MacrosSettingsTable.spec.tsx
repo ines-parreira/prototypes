@@ -1,7 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import type React from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
 

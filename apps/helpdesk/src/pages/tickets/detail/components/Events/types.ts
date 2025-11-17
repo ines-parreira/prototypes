@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 export type actionConfigType = {
     name: string

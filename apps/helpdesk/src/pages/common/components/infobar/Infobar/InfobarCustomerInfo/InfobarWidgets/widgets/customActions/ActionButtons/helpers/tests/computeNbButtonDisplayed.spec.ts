@@ -1,4 +1,4 @@
-import {
+import type {
     Button,
     TemplateContext,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

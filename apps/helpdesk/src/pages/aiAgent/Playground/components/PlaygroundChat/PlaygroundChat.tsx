@@ -6,16 +6,14 @@ import classNames from 'classnames'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import useFlag from 'core/flags/hooks/useFlag'
-import {
+import type {
     AccountConfigurationWithHttpIntegration,
-    AiAgentOnboardingState,
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {
-    MessageType,
-    PlaygroundPromptType,
-} from 'models/aiAgentPlayground/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
+import type { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
+import { MessageType } from 'models/aiAgentPlayground/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
@@ -35,7 +33,7 @@ import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInpu
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
 } from '../PlaygroundMessage/PlaygroundMessage'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
 } from './PlaygroundChat.types'

@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { CancelToken } from 'axios'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { CancelToken } from 'axios'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { ActionTemplateExecution } from 'config'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { useOptions } from 'pages/common/components/ast/widget/hooks'
 import Select from 'pages/common/components/ast/widget/ReactSelect'
 import { fetchAllMacros, getMacro } from 'state/macro/actions'
-import { Macro } from 'state/macro/types'
-import { RootState } from 'state/types'
+import type { Macro } from 'state/macro/types'
+import type { RootState } from 'state/types'
 import { getActionTemplate } from 'utils'
 
 type OwnProps = {

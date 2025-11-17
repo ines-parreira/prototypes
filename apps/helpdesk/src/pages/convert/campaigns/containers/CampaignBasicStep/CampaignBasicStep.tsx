@@ -9,9 +9,9 @@ import {
     getGorgiasChatLanguageByCode,
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
-import { Language as LanguageEnum } from 'constants/languages'
+import type { Language as LanguageEnum } from 'constants/languages'
 import { useFlag } from 'core/flags'
-import { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'

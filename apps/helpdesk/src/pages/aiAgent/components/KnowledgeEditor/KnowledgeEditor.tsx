@@ -1,7 +1,7 @@
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance/KnowledgeEditorGuidance'
-import { GuidanceMode } from './KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import type { GuidanceMode } from './KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 
 type Props = {
     shopName: string

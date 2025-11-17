@@ -1,4 +1,5 @@
-import { isOutboundVoiceCall, VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import { isOutboundVoiceCall } from 'models/voiceCall/types'
 
 import TicketVoiceCallInbound from './TicketVoiceCallInbound'
 import TicketVoiceCallOutbound from './TicketVoiceCallOutbound'

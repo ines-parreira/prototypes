@@ -9,7 +9,7 @@ import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { Drawer } from 'components/Drawer/Drawer'
 import { useFlag } from 'core/flags'
@@ -18,7 +18,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import { TicketDetail } from 'tickets/ticket-detail/components/TicketDetail'
 
-import { useTicketModal } from '../hooks/useTicketModal'
+import type { useTicketModal } from '../hooks/useTicketModal'
 import { TicketModalProvider } from './TicketModalProvider'
 
 import css from './TicketModal.less'

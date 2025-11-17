@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
@@ -7,10 +7,11 @@ import { setupServer } from 'msw/node'
 
 import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import { UserSettingType } from '@gorgias/helpdesk-queries'
-import { Language, UserPreferencesSettingData } from '@gorgias/helpdesk-types'
+import type { UserPreferencesSettingData } from '@gorgias/helpdesk-types'
+import { Language } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { CurrentUser } from 'pages/settings/yourProfile/types'
+import type { CurrentUser } from 'pages/settings/yourProfile/types'
 
 import { useCurrentUserLanguagePreferences } from '../translations/useCurrentUserLanguagePreferences'
 

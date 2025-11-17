@@ -1,4 +1,4 @@
-import { CustomField, ExpressionFieldType } from '@gorgias/helpdesk-types'
+import type { CustomField, ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import IconButton from 'pages/common/components/button/IconButton'

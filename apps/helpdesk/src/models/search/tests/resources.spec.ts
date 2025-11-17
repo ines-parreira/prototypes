@@ -7,11 +7,8 @@ import {
     SEARCH_ENDPOINT,
     SEARCH_ENGINE_HEADER,
 } from 'models/search/resources'
-import {
-    SearchApiResponse,
-    SearchParams,
-    SearchType,
-} from 'models/search/types'
+import type { SearchApiResponse, SearchParams } from 'models/search/types'
+import { SearchType } from 'models/search/types'
 
 const mockedServer = new MockAdapter(client)
 

@@ -16,18 +16,16 @@ import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/u
 import { useGetChatForStore } from 'domains/reporting/pages/convert/hooks/useGetChatForStore'
 import { useGetCurrencyForStore } from 'domains/reporting/pages/convert/hooks/useGetCurrencyForStore'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 

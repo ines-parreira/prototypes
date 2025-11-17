@@ -1,4 +1,5 @@
-import React, { ReactNode, useRef } from 'react'
+import type { ReactNode } from 'react'
+import React, { useRef } from 'react'
 
 import { useDrag, useDrop } from 'react-dnd'
 import { DropdownItem } from 'reactstrap'

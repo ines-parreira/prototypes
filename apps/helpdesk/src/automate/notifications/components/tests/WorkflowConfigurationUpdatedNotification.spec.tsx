@@ -1,8 +1,9 @@
 import { assumeMock } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
-import { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
+import type { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
 import { trackstarDefinitionKeys } from 'models/workflows/queries'
 import { renderWithRouter } from 'utils/testing'

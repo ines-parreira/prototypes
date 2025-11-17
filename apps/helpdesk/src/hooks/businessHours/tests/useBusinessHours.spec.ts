@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import {
+import type {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'

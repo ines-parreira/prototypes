@@ -1,4 +1,4 @@
-import { Locale, LocaleCode } from '../../../../models/helpCenter/types'
+import type { Locale, LocaleCode } from '../../../../models/helpCenter/types'
 import { FlagLanguageItem } from '../../../common/components/LanguageBulletList'
 
 export type LocaleOption = {

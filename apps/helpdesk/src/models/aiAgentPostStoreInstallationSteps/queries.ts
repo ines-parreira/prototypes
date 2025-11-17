@@ -1,6 +1,7 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 import {
     createPostStoreInstallationStep,
@@ -9,7 +10,7 @@ import {
     updateStepConfiguration,
     updateStepNotifications,
 } from './configuration'
-import { GetPostStoreInstallationStepsParams } from './types'
+import type { GetPostStoreInstallationStepsParams } from './types'
 
 const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
 const CACHE_TIME_MS = 10 * 60 * 1000 // 10 minutes

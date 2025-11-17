@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import {
-    getTicket,
+import type {
     Ticket,
     TicketsSearchListDataItem,
 } from '@gorgias/helpdesk-client'
+import { getTicket } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchTickets } from 'models/aiAgent/queries'

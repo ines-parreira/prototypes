@@ -1,9 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import Expression from './expression/Expression'
 import AddActionOrIfStatement from './operations/AddActionOrIfStatement'

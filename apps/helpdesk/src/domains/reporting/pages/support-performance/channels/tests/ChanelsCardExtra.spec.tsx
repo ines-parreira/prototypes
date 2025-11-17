@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
 import { ChannelsCardExtra } from 'domains/reporting/pages/support-performance/channels/ChannelsCardExtra'

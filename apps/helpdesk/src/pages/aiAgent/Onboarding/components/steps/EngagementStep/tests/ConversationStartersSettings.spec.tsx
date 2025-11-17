@@ -1,9 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     CONV_STARTERS_ESTIMATED_INFLUENCED_GMV,
     ConversationStartersSettings,

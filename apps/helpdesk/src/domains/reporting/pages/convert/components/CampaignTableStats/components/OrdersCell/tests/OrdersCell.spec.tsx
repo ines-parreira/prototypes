@@ -6,12 +6,12 @@ import { render } from '@testing-library/react'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { OrdersCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/OrdersCell/OrdersCell'
 import { CAMPAIGN_TABLE_COLUMN_TITLES } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()

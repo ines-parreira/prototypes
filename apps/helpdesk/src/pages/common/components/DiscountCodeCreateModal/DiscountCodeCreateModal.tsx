@@ -1,7 +1,9 @@
-import React, { FormEvent, memo, useCallback, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
-import axios, { AxiosError } from 'axios'
-import { Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
+import type { Map } from 'immutable'
 import moment from 'moment-timezone'
 import {
     FormGroup,
@@ -23,7 +25,7 @@ import {
     DISCOUNT_USE_CHOICES,
     DISCOUNT_USE_TYPE,
 } from 'models/discountCodes/constants'
-import { DiscountCode } from 'models/discountCodes/types'
+import type { DiscountCode } from 'models/discountCodes/types'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Errors from 'pages/common/forms/Errors'
 import NumberInput from 'pages/common/forms/input/NumberInput'

@@ -7,7 +7,7 @@ import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from './visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelOrderNodeType,
     CancelSubscriptionNodeType,
@@ -39,7 +39,7 @@ import {
     VisualBuilderNode,
     VisualBuilderTriggerNode,
 } from './visualBuilderGraph.types'
-import {
+import type {
     MessageContent,
     WorkflowConfiguration,
     WorkflowStep,

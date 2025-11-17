@@ -14,7 +14,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import useGetAppFromTemplateApp from '../hooks/useGetAppFromTemplateApp'
-import { ActionTemplateApp, App } from '../types'
+import type { ActionTemplateApp, App } from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
 

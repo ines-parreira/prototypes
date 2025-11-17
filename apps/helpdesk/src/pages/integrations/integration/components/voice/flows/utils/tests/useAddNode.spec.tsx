@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, renderHook, waitFor } from '@testing-library/react'
@@ -10,11 +10,10 @@ import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
 
-import TextToSpeechContext, {
-    TextToSpeechContext as TextToSpeechContextType,
-} from '../../../VoiceMessageTTS/TextToSpeechContext'
+import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
 import { VoiceFlowNodeType } from '../../constants'
-import {
+import type {
     IntermediaryNode,
     VoiceFlowFormValues,
     VoiceFlowNode,

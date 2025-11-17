@@ -1,5 +1,8 @@
-import { BillableTicketCube } from 'domains/reporting/models/cubes/automate/BillableTicketCube'
-import { Cube, JoinedCubesWithMapping } from 'domains/reporting/models/types'
+import type { BillableTicketCube } from 'domains/reporting/models/cubes/automate/BillableTicketCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum AutomationBillingEventMeasure {
     FirstResponseTimeWithAutomateFeatures = 'AutomationBillingEvent.firstResponseTimeWithAutomateFeatures',

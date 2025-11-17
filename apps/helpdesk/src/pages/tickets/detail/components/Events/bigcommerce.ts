@@ -1,8 +1,9 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { BigCommerceActionType } from 'models/integration/types'
 
-import { eventMaker } from './types'
+import type { eventMaker } from './types'
 
 const bigCommerceEvent = ({
     integration,

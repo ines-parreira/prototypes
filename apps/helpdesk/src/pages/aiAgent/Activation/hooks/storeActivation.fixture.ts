@@ -1,5 +1,5 @@
 import { AiAgentScope } from 'models/aiAgent/types'
-import {
+import type {
     Settings,
     StoreActivation,
 } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'

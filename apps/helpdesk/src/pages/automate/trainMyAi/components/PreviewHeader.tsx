@@ -6,7 +6,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 
-import { Components as ComponentsSSP } from '../../../../rest_api/ssp_api/client.generated'
+import type { Components as ComponentsSSP } from '../../../../rest_api/ssp_api/client.generated'
 import ArticleSelectPreview from './ArticleSelectPreview'
 
 import css from './PreviewHeader.less'

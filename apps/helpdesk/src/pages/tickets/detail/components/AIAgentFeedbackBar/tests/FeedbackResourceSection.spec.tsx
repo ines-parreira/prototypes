@@ -10,14 +10,15 @@ import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import {
     FeedbackResourceSection,
     TOOLTIP_COOKIE_NAME,
 } from '../FeedbackResourceSection'
-import { ActionStatus, ResourceSection } from '../types'
+import type { ResourceSection } from '../types'
+import { ActionStatus } from '../types'
 
 const mockHandleSubmitFeedback = jest.fn()
 const mockSetCookie = jest.fn()

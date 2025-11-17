@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import PeopleSearchInput from './PeopleSearchInput'

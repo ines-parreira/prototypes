@@ -1,4 +1,5 @@
-import React, { ReactElement, ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import React from 'react'
 
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'

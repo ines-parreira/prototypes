@@ -1,5 +1,5 @@
 import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { EmailDNSRecord } from '@gorgias/helpdesk-queries'
+import type { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
 import CharDiff from './CharDiff'
 

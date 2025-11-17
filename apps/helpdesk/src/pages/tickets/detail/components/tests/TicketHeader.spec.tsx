@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -32,11 +32,11 @@ import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
 import * as ticketSelectors from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import Snooze from '../Snooze'
+import type Snooze from '../Snooze'
 import TicketHeader from '../TicketHeader'
 import useIsTicketNavigationAvailable from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
 

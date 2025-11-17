@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { WidgetEnvironment } from 'state/widgets/types'
 
 import { InfobarWidgetsEditionTools } from '../InfobarWidgetsEditionTools'

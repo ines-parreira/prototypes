@@ -13,7 +13,7 @@ import {
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
 import { useUpdateOrDeleteCustomerFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
-import { CustomField, CustomFieldValue } from 'custom-fields/types'
+import type { CustomField, CustomFieldValue } from 'custom-fields/types'
 
 import { MIN_CHARACTERS_TO_TOOLTIP } from './contstants'
 

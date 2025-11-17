@@ -3,16 +3,16 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
+import type { TagFilter } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
-    TagFilter,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import {
@@ -32,7 +32,7 @@ import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { tags } from 'fixtures/tag'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/common/useTagSearch')

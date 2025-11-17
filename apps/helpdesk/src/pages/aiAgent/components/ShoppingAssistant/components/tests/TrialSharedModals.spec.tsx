@@ -2,9 +2,10 @@ import { render, screen } from '@testing-library/react'
 
 import { Cadence } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import type { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 
-import { TrialSharedModals, TrialSharedModalsProps } from '../TrialSharedModals'
+import type { TrialSharedModalsProps } from '../TrialSharedModals'
+import { TrialSharedModals } from '../TrialSharedModals'
 
 const mockFeatures: TrialFinishSetupFeature[] = [
     {

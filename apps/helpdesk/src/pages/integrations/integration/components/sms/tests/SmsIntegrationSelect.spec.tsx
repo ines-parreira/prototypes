@@ -3,7 +3,7 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 
-import { SmsIntegration } from 'models/integration/types'
+import type { SmsIntegration } from 'models/integration/types'
 
 import SmsIntegrationSelect from '../SmsIntegrationSelect'
 

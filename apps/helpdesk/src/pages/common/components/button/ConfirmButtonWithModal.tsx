@@ -1,4 +1,5 @@
-import { ComponentProps, ReactNode, useState } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

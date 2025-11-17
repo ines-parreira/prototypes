@@ -3,8 +3,8 @@ import {
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { accuracyPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/accuracyQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useAccuracyPerAgent = (
     statsFilters: StatsFilters,

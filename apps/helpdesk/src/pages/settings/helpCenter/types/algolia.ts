@@ -1,6 +1,6 @@
 import type { HighlightResult, Hit } from '@algolia/client-search'
 
-import { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
+import type { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
 
 export type AlgoliaHit<T> = Hit<T> & {
     _highlightResult?: {

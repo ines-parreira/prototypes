@@ -3,8 +3,8 @@ import {
     fetchZeroTouchTicketsTrend,
     useZeroTouchTicketsTrend,
 } from 'domains/reporting/hooks/metricTrends'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useZeroTouchTicketsMetricTrend = (
     statsFilters: StatsFilters,

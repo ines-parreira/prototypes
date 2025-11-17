@@ -1,4 +1,5 @@
-import React, { ForwardedRef, forwardRef, useContext } from 'react'
+import type { ForwardedRef } from 'react'
+import React, { forwardRef, useContext } from 'react'
 
 import classnames from 'classnames'
 

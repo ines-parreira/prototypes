@@ -2,13 +2,11 @@ import { Card } from '@gorgias/analytics-ui-kit'
 import { Badge } from '@gorgias/axiom'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {
-    AIArticleRecommendationItem,
-    AllRecommendationsStatus,
-} from '../hooks/useAIArticleRecommendationItems'
+import type { AIArticleRecommendationItem } from '../hooks/useAIArticleRecommendationItems'
+import { AllRecommendationsStatus } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsTable from './AutomateAllRecommendationsTable'
 
 import css from './AutomateAllRecommendationsCard.less'

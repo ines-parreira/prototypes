@@ -1,4 +1,5 @@
-import React, { ComponentProps, LegacyRef, SyntheticEvent } from 'react'
+import type { ComponentProps, LegacyRef, SyntheticEvent } from 'react'
+import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 

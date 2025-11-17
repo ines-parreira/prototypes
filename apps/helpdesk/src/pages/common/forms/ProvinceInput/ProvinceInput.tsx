@@ -1,10 +1,5 @@
-import React, {
-    ComponentProps,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
@@ -18,7 +13,7 @@ import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import InputField from 'pages/common/forms/input/InputField'
 
 import SelectInputBox, { SelectInputBoxContext } from '../input/SelectInputBox'
-import TextInput from '../input/TextInput'
+import type TextInput from '../input/TextInput'
 
 import css from '../ProvinceInput/ProvinceInput.less'
 

@@ -5,7 +5,8 @@ import { act, fireEvent, screen } from '@testing-library/react'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithDnD } from 'utils/testing'
 
-import { StepListItem, StepListItemProps } from '../StepListItem'
+import type { StepListItemProps } from '../StepListItem'
+import { StepListItem } from '../StepListItem'
 
 describe('<StepListItem />', () => {
     const mockOnDelete = jest.fn()

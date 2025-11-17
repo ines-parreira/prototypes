@@ -12,7 +12,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
-import { EditCustomBusinessHoursFormValues } from './types'
+import type { EditCustomBusinessHoursFormValues } from './types'
 
 import css from './AssignIntegrationsModal.less'
 

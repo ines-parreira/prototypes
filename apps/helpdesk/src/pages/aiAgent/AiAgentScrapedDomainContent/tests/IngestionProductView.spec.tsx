@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import IngestionProductView from '../IngestionProductView'
-import { IngestedProduct } from '../types'
+import type { IngestedProduct } from '../types'
 
 const mockProduct: IngestedProduct = {
     account_id: 1,

@@ -1,13 +1,11 @@
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    EmailIntegration,
-    OutboundVerificationStatusValue,
-} from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getVerification } from 'models/singleSenderVerification/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'

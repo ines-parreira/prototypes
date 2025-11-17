@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -13,10 +13,10 @@ import { JobType } from '@gorgias/helpdesk-queries'
 import { UserRole } from 'config/types/user'
 import { useBulkAction } from 'jobs'
 
-import AssignUser from '../AssignUser'
+import type AssignUser from '../AssignUser'
 import BulkActions from '../BulkActions'
-import CloseTickets from '../CloseTickets'
-import MoreActions from '../MoreActions'
+import type CloseTickets from '../CloseTickets'
+import type MoreActions from '../MoreActions'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)

@@ -1,14 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
+import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import {
-    Article,
-    isArticleWithExistingTranslation,
-    LocaleCode,
-} from 'models/helpCenter/types'
+import type { Article, LocaleCode } from 'models/helpCenter/types'
+import { isArticleWithExistingTranslation } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     EDITOR_MODAL_CONTAINER_ID,
@@ -16,17 +14,17 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
+import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
     getHelpCenterDomain,
     isExistingArticle,
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { getDetailedFormattedDate, getFormattedDate } from 'utils/date'
 
 import { useAbilityChecker } from '../../../../hooks/useHelpCenterApi'
-import { ActionType, OptionItem } from '../../ArticleLanguageSelect'
+import type { ActionType, OptionItem } from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
 import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'

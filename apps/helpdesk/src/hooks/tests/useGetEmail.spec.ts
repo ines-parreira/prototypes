@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 
 import {
     useGetEmail,

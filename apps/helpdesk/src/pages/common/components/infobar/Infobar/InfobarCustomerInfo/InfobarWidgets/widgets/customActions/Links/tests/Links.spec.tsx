@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import * as actions from 'state/widgets/actions'
 
-import { Link } from '../../types'
+import type { Link } from '../../types'
 import { Links } from '../Links'
 
 const mockStore = configureMockStore([thunk])

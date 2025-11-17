@@ -1,27 +1,25 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import {
-    isMetricTrendWithCurrency,
-    MetricTrendHook,
-} from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import { isMetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
-import { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import {
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type {
     AutoQAMetric,
     SatisfactionMetric,
     SlaMetric,

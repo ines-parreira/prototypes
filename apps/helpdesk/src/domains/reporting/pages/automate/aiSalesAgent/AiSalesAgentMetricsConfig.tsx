@@ -1,8 +1,8 @@
-import {
+import type {
     MetricTrendFetch,
     MetricTrendHook,
 } from 'domains/reporting/hooks/useMetricTrend'
-import {
+import type {
     TimeSeriesFetch,
     TimeSeriesHook,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -81,12 +81,10 @@ import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 export enum AiSalesAgentChart {
     AiSalesAgentTotalSalesConv = 'aiSalesTotalSalesConv',

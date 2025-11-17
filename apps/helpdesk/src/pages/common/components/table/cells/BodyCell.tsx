@@ -1,4 +1,6 @@
-import React, { forwardRef, HTMLProps, MouseEvent, ReactNode } from 'react'
+import type { HTMLProps, MouseEvent, ReactNode } from 'react'
+import type React from 'react'
+import { forwardRef } from 'react'
 
 import classNames from 'classnames'
 

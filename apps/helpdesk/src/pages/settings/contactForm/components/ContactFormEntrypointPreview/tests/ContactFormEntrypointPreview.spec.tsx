@@ -20,7 +20,7 @@ import {
     automationSettingsFixture,
     selfServiceConfigurationFixture,
 } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'

@@ -3,7 +3,7 @@ import React from 'react'
 import { screen } from '@testing-library/dom'
 import { render } from '@testing-library/react'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { DECREASE_IN_RESOLUTION_TIME } from 'pages/automate/automate-metrics/constants'
 import { DecreaseInResolutionTimeMetric } from 'pages/automate/automate-metrics/DecreaseInResolutionTimeMetric'
 

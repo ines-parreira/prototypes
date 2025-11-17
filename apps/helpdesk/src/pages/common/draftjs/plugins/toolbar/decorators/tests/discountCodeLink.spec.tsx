@@ -5,7 +5,7 @@ import { ContentState } from 'draft-js'
 
 import { convertFromHTML } from 'utils/editor'
 
-import { DecoratorComponentProps } from '../../../types'
+import type { DecoratorComponentProps } from '../../../types'
 import discountCodeLink from '../discountCodeLink'
 
 describe('discountCodeLink decorator', () => {

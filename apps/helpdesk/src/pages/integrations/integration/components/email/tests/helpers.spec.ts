@@ -3,12 +3,12 @@ import MockAdapter from 'axios-mock-adapter'
 import { cloneDeep } from 'lodash'
 
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
-import {
+import type {
     DomainDNSRecord,
     EmailIntegration,
     GmailIntegration,
-    OutboundVerificationStatusValue,
 } from 'models/integration/types'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
 
 import {
     canEnableEmailingViaInternalProvider,

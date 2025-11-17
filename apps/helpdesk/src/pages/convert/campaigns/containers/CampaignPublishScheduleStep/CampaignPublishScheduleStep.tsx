@@ -3,7 +3,8 @@ import React, { useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import { produce } from 'immer'
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -19,7 +20,7 @@ import { DURATION_VALUES } from 'pages/convert/campaigns/constants/labels'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
-import {
+import type {
     CustomScheduleSchema,
     ScheduleSchema,
 } from 'pages/convert/campaigns/types/CampaignSchedule'

@@ -9,7 +9,7 @@ import _xor from 'lodash/xor'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { SourceAddress } from 'models/ticket/types'
+import type { SourceAddress } from 'models/ticket/types'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
 import { setReceivers } from 'state/newMessage/actions'
@@ -23,7 +23,7 @@ import {
     makeGetNewMessageSourceProperty,
 } from 'state/newMessage/selectors'
 import { getTicket } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import ReceiversSelectField from './components/ReceiversSelectField'
 import SenderSelectField from './components/SenderSelectField/SenderSelectField'

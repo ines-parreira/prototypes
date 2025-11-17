@@ -25,7 +25,7 @@ import {
     useTicketsRepliedPerHour,
     useTicketsRepliedPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     getAverageQuery,
     getTotalsQuery,

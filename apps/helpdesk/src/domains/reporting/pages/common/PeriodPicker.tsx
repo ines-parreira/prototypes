@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
@@ -9,11 +11,8 @@ import {
     type LegacyButtonFillStyle as ButtonFillStyle,
 } from '@gorgias/axiom'
 
-import {
-    DateTimeFormatMapper,
-    DateTimeFormatType,
-    DateTimeResultFormatType,
-} from 'constants/datetime'
+import type { DateTimeResultFormatType } from 'constants/datetime'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import { useTheme } from 'core/theme'
 import css from 'domains/reporting/pages/common/PeriodPicker.less'
 import {
@@ -22,13 +21,13 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { getDefaultSetOfRanges } from 'domains/reporting/pages/constants'
 import { getTimezone } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
-import {
-    type BaseDateRangePicker,
-    DateRangePicker,
-    type Props as DateRangeProps,
+import type { RootState } from 'state/types'
+import type {
+    BaseDateRangePicker,
+    Props as DateRangeProps,
     EventHandler,
 } from 'utils/wrappers/DateRangePicker'
+import { DateRangePicker } from 'utils/wrappers/DateRangePicker'
 
 export type Props = {
     endDatetime: Moment

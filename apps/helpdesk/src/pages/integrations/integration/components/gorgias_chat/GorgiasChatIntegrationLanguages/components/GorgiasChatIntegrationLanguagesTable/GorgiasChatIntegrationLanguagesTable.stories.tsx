@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
@@ -6,7 +6,7 @@ import { Language } from 'constants/languages'
 
 import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
 import { GorgiasChatIntegrationLanguagesTableRow } from './GorgiasChatIntegrationLanguagesTableRow'
-import { LanguageItemRow } from './types'
+import type { LanguageItemRow } from './types'
 
 const rows: LanguageItemRow[] = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
     (option) => ({

@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import type React from 'react'
+import { useContext } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _last from 'lodash/last'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Integration, IntegrationType } from 'models/integration/types'
-import { Source, Template, WrapperTemplate } from 'models/widget/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { Source, Template, WrapperTemplate } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {
     getWidgetId,
@@ -29,7 +32,7 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { EXPAND_CONTAINER_MARKER } from 'Widgets/modules/Template/config/template'
 import WidgetPanel from 'Widgets/modules/WidgetPanel'

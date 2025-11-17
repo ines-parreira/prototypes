@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { produce } from 'immer'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { get, set } from 'lodash'
 import { connect } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
@@ -30,7 +32,7 @@ import GorgiasChatIntegrationHeader from 'pages/integrations/integration/compone
 import { getHasAutomate } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     getLanguagesFromChatConfig,
@@ -40,12 +42,12 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
 } from '../../../../../../../config/integrations/gorgias_chat'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
+import type { GorgiasChatIntegration } from '../../../../../../../models/integration/types'
 import {
-    GorgiasChatIntegration,
     GorgiasChatLauncherType,
     IntegrationType,
 } from '../../../../../../../models/integration/types'
-import {
+import type {
     Texts,
     TextsLegacyMonoLanguage,
     TextsMultiLanguage,

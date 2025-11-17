@@ -1,4 +1,4 @@
-import { UseTrialEndingReturn } from 'pages/aiAgent/trial/hooks/useTrialEnding'
+import type { UseTrialEndingReturn } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 
 export const getUseTrialEndingFixture = (
     props?: Partial<UseTrialEndingReturn>,

@@ -8,9 +8,10 @@ import {
     useBillableTicketDatasetTimeSeries,
 } from 'domains/reporting/hooks/automate/timeSeries'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'pages/automate/automate-metrics/constants'
 
 export const useAutomationRateTimeSeriesData = (

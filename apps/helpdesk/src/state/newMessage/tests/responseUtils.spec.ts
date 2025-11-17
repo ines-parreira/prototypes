@@ -6,7 +6,8 @@ import draftJS, {
 } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
@@ -22,16 +23,17 @@ import {
     initialState,
     initialState as newMessageInitialState,
 } from '../reducers'
+import type { MessageContext } from '../responseUtils'
 import {
     addCache,
     applyMacro,
-    MessageContext,
     toReplyAreaState,
     transformMessageContext,
     updateCache,
     updateNewMessageWithContentState,
 } from '../responseUtils'
-import ticketReplyCache, { RawCachedTicket } from '../ticketReplyCache'
+import type { RawCachedTicket } from '../ticketReplyCache'
+import ticketReplyCache from '../ticketReplyCache'
 import {
     getMessageContextSnapshot,
     getReplyAreaStateSnapshot,

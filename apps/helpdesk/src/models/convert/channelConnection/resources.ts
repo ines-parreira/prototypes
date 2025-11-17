@@ -1,11 +1,11 @@
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
-import {
+import type {
     ChannelConnectionCreatePayload,
     ChannelConnectionListOptions,
     ChannelConnectionParams,
     ChannelConnectionUpdatePayload,
 } from 'models/convert/channelConnection/types'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 export const getChannelConnection = async (
     client: RevenueAddonClient | undefined,

@@ -11,7 +11,7 @@ import {
     AILibraryArticleItemsFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { useHelpCenterAIArticlesLibrary } from '../useHelpCenterAIArticlesLibrary'
 

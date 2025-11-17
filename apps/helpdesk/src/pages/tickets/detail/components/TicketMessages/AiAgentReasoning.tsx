@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

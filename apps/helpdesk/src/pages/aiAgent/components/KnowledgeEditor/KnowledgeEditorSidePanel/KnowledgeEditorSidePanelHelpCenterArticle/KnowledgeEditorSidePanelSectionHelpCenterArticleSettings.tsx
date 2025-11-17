@@ -1,16 +1,16 @@
 import { Icon, IconSize } from '@gorgias/axiom'
 
-import { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
-import {
-    ArticleLanguageSelect,
+import type {
     ActionType as LocaleActionType,
     OptionItem as LocaleOption,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
+import { ArticleLanguageSelect } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
 import SelectVisibilityStatus from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
-import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { ExcerptInput } from './components/ExcerptInput'

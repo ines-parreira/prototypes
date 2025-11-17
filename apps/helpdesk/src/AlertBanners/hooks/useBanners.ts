@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { BannerActionTypes, useBannersDispatchContext } from '../Context'
 import { useDismissedStorage } from '../Storage'
-import { BannerCategory, ContextBanner } from '../types'
+import type { BannerCategory, ContextBanner } from '../types'
 
 export function useBanners() {
     const bannerDispatch = useBannersDispatchContext()

@@ -3,23 +3,23 @@ import React, { useCallback, useMemo } from 'react'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
-import {
+import type {
     AggregationWindow,
-    FilterKey,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import {
     FilterLabels,
     ReportingGranularityLabels,
 } from 'domains/reporting/pages/common/filters/constants'
 import { logSegmentEvent } from 'domains/reporting/pages/common/filters/helpers'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import { getAllowedAggregationWindows } from 'domains/reporting/state/stats/utils'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value?: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]

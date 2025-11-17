@@ -1,7 +1,7 @@
-import { MacroAction } from '@gorgias/helpdesk-queries'
+import type { MacroAction } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { ActionTemplate } from 'config'
+import type { ActionTemplate } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
 import {
     getPersonLabelFromSource,

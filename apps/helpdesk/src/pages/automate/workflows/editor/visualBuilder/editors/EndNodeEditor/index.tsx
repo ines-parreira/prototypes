@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { Tag, TicketTag } from '@gorgias/helpdesk-types'
+import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'

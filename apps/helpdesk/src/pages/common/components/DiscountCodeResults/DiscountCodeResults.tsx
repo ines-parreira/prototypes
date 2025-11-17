@@ -1,9 +1,10 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
 
@@ -19,7 +20,7 @@ import {
     DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
 } from 'models/discountCodes/constants'
-import { DiscountCode } from 'models/discountCodes/types'
+import type { DiscountCode } from 'models/discountCodes/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
 import Loader from 'pages/common/components/Loader/Loader'

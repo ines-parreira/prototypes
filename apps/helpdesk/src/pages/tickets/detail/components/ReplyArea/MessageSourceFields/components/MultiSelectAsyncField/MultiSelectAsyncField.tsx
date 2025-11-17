@@ -20,7 +20,7 @@ import { findDOMNode } from 'react-dom'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { ReceiverValue } from 'state/ticket/utils'
+import type { ReceiverValue } from 'state/ticket/utils'
 
 import css from './MultiSelectAsyncField.less'
 

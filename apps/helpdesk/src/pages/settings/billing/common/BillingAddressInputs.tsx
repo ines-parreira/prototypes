@@ -9,9 +9,9 @@ import {
 } from 'config/countries'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import settingsCss from 'pages/settings/settings.less'
-import { BillingContact } from 'state/billing/types'
+import type { BillingContact } from 'state/billing/types'
 
 import css from './BillingAddressInputs.less'
 

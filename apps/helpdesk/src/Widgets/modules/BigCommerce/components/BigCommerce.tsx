@@ -3,8 +3,8 @@ import { orderCustomization } from 'pages/common/components/infobar/Infobar/Info
 import { shippingCustomization } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Shipping'
 import Template from 'Widgets/modules/Template'
 import { CustomizationContext } from 'Widgets/modules/Template/contexts/CustomizationContext'
-import { TemplateCustomization } from 'Widgets/modules/Template/types'
-import { WidgetProps } from 'Widgets/modules/Widget'
+import type { TemplateCustomization } from 'Widgets/modules/Template/types'
+import type { WidgetProps } from 'Widgets/modules/Widget'
 
 export const customization: TemplateCustomization = {
     card: [

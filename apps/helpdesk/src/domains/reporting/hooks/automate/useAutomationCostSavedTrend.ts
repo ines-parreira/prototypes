@@ -2,11 +2,11 @@ import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
-import {
+import type {
     MetricTrend,
     MetricTrendFetch,
 } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 

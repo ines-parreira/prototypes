@@ -9,11 +9,11 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { METRIC_COLUMN_WIDTH } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import css from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
-import {
+import type {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
-    isHourCell,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
+import { isHourCell } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { hourFromHourIndex } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 

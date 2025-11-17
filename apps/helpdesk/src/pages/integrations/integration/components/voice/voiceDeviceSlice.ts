@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Call, Device } from '@twilio/voice-sdk'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { Call, Device } from '@twilio/voice-sdk'
 
 import { initialState } from 'state/twilio/voiceDevice'
 

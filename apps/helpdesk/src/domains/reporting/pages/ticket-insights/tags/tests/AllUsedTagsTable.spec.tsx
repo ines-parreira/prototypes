@@ -17,7 +17,7 @@ import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/ticket-insights/useTicketCountPerTag')

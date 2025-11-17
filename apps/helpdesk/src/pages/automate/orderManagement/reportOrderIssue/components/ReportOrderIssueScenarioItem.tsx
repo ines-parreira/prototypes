@@ -1,4 +1,5 @@
-import React, { RefObject } from 'react'
+import type { RefObject } from 'react'
+import React from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
@@ -6,11 +7,9 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
-import {
-    DragItemRequired,
-    useReorderDnD,
-} from 'pages/common/hooks/useReorderDnD'
+import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import type { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReportOrderIssueScenarioItem.less'
 

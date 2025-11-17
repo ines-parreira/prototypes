@@ -1,7 +1,7 @@
-import { Edge, Node } from '@xyflow/react'
+import type { Edge, Node } from '@xyflow/react'
 
-import { ConditionSchema, ConditionsSchema } from './conditions.types'
-import {
+import type { ConditionSchema, ConditionsSchema } from './conditions.types'
+import type {
     LanguageCode,
     MessageContent,
     WorkflowTransition,

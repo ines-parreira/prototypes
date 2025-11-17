@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 import TestRequestInputs from '../TestRequestInputs'
 

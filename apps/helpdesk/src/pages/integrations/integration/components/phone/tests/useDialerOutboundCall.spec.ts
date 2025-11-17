@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
-import { PhoneIntegration } from 'models/integration/types'
+import type { PhoneIntegration } from 'models/integration/types'
 import * as userSelectors from 'state/currentUser/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
 

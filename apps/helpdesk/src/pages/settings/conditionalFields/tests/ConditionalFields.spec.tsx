@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'

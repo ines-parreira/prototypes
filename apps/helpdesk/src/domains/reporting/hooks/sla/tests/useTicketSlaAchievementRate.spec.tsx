@@ -16,10 +16,10 @@ import {
     useTicketSlaAchievementRateTrend,
 } from 'domains/reporting/hooks/sla/useTicketSlaAchievementRate'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

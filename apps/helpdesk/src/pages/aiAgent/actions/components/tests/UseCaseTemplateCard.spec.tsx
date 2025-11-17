@@ -3,7 +3,7 @@ import React from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { ulid } from 'ulidx'
 
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 import UseCaseTemplateCard from '../UseCaseTemplateCard'

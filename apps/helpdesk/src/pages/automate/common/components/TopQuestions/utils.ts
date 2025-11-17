@@ -1,11 +1,14 @@
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { AIArticle, HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { AIArticle, HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { sortAIArticlesByTicketsCount } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
-import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import type { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 
-import { TopQuestion, TopQuestionsSectionProps } from './TopQuestionsSection'
+import type {
+    TopQuestion,
+    TopQuestionsSectionProps,
+} from './TopQuestionsSection'
 
 type FetchedArticles = ReturnType<typeof useGetAIArticles>['fetchedArticles']
 

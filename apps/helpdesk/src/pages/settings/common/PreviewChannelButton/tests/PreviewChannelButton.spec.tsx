@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { TicketChannel } from '../../../../../business/types/ticket'
-import { SelfServiceChannel } from '../../../../automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from '../../../../automate/common/hooks/useSelfServiceChannels'
 import { getHelpCentersResponseFixture } from '../../../helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { PreviewChannelButton } from '../PreviewChannelButton'
 

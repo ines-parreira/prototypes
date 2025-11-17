@@ -1,9 +1,10 @@
-import { MutableRefObject, useCallback, useEffect, useMemo } from 'react'
+import type { MutableRefObject } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
-import { VirtuosoHandle } from 'react-virtuoso'
+import type { VirtuosoHandle } from 'react-virtuoso'
 
-import { TicketCompact } from '../types'
+import type { TicketCompact } from '../types'
 
 export default function useScrollActiveTicketIntoView(
     activeTicketId: number | undefined,

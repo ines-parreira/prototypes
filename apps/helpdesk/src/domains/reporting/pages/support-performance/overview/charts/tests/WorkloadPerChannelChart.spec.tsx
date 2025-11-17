@@ -6,16 +6,12 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
-import {
-    useWorkloadPerChannelDistribution,
-    useWorkloadPerChannelDistributionForPreviousPeriod,
-} from 'domains/reporting/hooks/distributions'
+import type { useWorkloadPerChannelDistributionForPreviousPeriod } from 'domains/reporting/hooks/distributions'
+import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
@@ -23,7 +19,7 @@ import { WorkloadPerChannelChart } from 'domains/reporting/pages/support-perform
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)

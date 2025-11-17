@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     BigCommerceIntegration,
     GorgiasChatIntegration,
-    IntegrationType,
     Magento2Integration,
     ShopifyIntegration,
 } from 'models/integration/types'
-import { Value } from 'pages/common/forms/SelectField/types'
+import { IntegrationType } from 'models/integration/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

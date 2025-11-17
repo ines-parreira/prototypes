@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { useFlag } from 'core/flags'

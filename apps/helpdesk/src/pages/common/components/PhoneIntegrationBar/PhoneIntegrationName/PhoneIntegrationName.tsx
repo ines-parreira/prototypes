@@ -1,8 +1,9 @@
 import classnames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { getIntegrationById } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from './PhoneIntegrationName.less'
 

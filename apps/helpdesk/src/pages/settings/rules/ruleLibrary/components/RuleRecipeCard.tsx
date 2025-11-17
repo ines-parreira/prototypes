@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
 import { Badge } from 'reactstrap'
 
@@ -14,16 +14,16 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { IntegrationType } from 'models/integration/constants'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { createRule } from 'models/rule/resources'
-import { RuleDraft } from 'models/rule/types'
-import { RuleRecipe } from 'models/ruleRecipe/types'
+import type { RuleDraft } from 'models/rule/types'
+import type { RuleRecipe } from 'models/ruleRecipe/types'
 import { createSection } from 'models/section/resources'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { createTag, fetchTags } from 'models/tag/resources'
-import { TagDraft } from 'models/tag/types'
+import type { TagDraft } from 'models/tag/types'
 import { createView, deleteView } from 'models/view/resources'
-import { View, ViewDraft } from 'models/view/types'
+import type { View, ViewDraft } from 'models/view/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { ruleCreated } from 'state/entities/rules/actions'
 import {
@@ -38,16 +38,15 @@ import { getTicketViews } from 'state/entities/views/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import {
+import type {
     AnyManagedRuleSettings,
     ManagedRule,
-    RuleLimitStatus,
     RuleOperation,
-    RuleType,
 } from 'state/rules/types'
+import { RuleLimitStatus, RuleType } from 'state/rules/types'
 import { compare } from 'utils'
 
-import { CodeASTType } from '../../types'
+import type { CodeASTType } from '../../types'
 import { RuleTemplateRecipeSlugs, tagColors } from '../constants'
 import { AiAgentRequirements } from './installationModals/components/AiAgentRequirement'
 import { RuleRecipeModal } from './RuleRecipeModal'

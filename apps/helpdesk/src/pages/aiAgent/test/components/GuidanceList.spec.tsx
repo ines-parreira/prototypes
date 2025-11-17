@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { userEvent } from '@repo/testing'
 import {
@@ -16,7 +16,7 @@ import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
-import { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { GuidanceList } from '../../components/GuidanceList/GuidanceList'

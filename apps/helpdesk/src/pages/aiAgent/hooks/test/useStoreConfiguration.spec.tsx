@@ -1,15 +1,12 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import {
-    QueryClient,
-    QueryClientProvider,
-    UseQueryResult,
-} from '@tanstack/react-query'
+import type { QueryClient, UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
-import { StoreConfigurationsResponse } from 'models/aiAgent/types'
+import type { StoreConfigurationsResponse } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

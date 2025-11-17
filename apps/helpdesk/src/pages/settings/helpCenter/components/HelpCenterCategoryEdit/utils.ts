@@ -1,4 +1,8 @@
-import { Category, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import type {
+    Category,
+    LocaleCode,
+    NonRootCategory,
+} from 'models/helpCenter/types'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
 /**

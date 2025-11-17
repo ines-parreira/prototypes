@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import { useAIAgentUser } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'

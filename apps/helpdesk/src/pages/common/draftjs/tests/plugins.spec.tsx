@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { ContentState, EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
+import { ContentState } from 'draft-js'
 
 import { convertFromHTML } from '../../../../utils/editor'
-import { Plugin } from '../plugins/types'
+import type { Plugin } from '../plugins/types'
 import { variable as variableDecorator } from '../plugins/variables/decorators'
 import { attachEntitiesToVariables } from '../plugins/variables/utils'
 import {

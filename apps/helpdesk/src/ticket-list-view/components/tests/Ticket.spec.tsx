@@ -6,9 +6,9 @@ import { mockTicketTranslationCompact } from '@gorgias/helpdesk-mocks'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
-import { TicketCompact } from 'ticket-list-view/types'
+import type { TicketCompact } from 'ticket-list-view/types'
 import { renderWithRouter } from 'utils/testing'
 
 import Ticket from '../Ticket'

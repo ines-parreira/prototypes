@@ -1,4 +1,4 @@
-import { TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessageSourceType } from 'business/types/ticket'
 import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
 /**

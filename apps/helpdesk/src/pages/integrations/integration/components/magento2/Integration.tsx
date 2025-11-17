@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

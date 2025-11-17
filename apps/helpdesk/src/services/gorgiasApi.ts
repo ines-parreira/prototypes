@@ -1,12 +1,14 @@
-import axios, {
+import type {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
     CancelTokenSource,
 } from 'axios'
-import { fromJS, List, Map } from 'immutable'
+import axios from 'axios'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { ListSatisfactionSurveys200 } from '@gorgias/helpdesk-types'
+import type { ListSatisfactionSurveys200 } from '@gorgias/helpdesk-types'
 
 import { EditOrderAction } from 'constants/integrations/types/shopify'
 import type {
@@ -15,14 +17,15 @@ import type {
     Refund,
 } from 'constants/integrations/types/shopify'
 import { createClient } from 'models/api/resources'
-import {
+import type {
     ApiListResponseCursorPagination,
     ApiListResponseLegacyPagination,
     ApiPaginationParams,
 } from 'models/api/types'
 import { fetchEvents } from 'models/event/resources'
-import { Event, EventObjectType, FetchEventsOptions } from 'models/event/types'
-import { IntegrationDataItemType } from 'models/integration/types'
+import type { Event, FetchEventsOptions } from 'models/event/types'
+import { EventObjectType } from 'models/event/types'
+import type { IntegrationDataItemType } from 'models/integration/types'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean

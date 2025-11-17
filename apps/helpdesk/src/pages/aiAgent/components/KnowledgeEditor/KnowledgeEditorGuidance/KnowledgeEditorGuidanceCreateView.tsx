@@ -1,10 +1,10 @@
 import Caption from 'gorgias-design-system/Input/Caption'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import InputField from 'pages/common/forms/input/InputField'
 
-import { GuidanceVariableGroup } from '../../GuidanceEditor/variables.types'
+import type { GuidanceVariableGroup } from '../../GuidanceEditor/variables.types'
 
 import css from './KnowledgeEditorGuidanceEditView.less'
 

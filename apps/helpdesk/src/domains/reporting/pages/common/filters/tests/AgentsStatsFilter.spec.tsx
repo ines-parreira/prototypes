@@ -13,7 +13,7 @@ import {
 } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { teams } from 'fixtures/teams'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

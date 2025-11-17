@@ -30,7 +30,7 @@ import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navig
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'

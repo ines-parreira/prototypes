@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallSubject, VoiceCallSubjectType } from 'models/voiceCall/types'
+import type { VoiceCallSubject } from 'models/voiceCall/types'
+import { VoiceCallSubjectType } from 'models/voiceCall/types'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
 import VoiceCallSubjectLabel from './VoiceCallSubjectLabel'

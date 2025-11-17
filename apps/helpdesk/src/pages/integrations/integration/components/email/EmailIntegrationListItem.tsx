@@ -2,21 +2,21 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 
-import {
+import type {
     EmailIntegration,
-    EmailProvider,
     GmailIntegration,
 } from '@gorgias/helpdesk-queries'
+import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     EmailIntegration as DEPRECATED_EmailIntegration,
-    IntegrationType,
     OutlookIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 import { makeGetRedirectUri } from 'state/integrations/selectors'

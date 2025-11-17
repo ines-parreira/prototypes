@@ -1,21 +1,20 @@
 import React, { memo } from 'react'
 
-import { Handle, NodeProps, Position, useNodeId } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import VisualBuilderActionIconCondensed from 'pages/automate/workflows/components/VisualBuilderActionIconCondensed'
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
-import {
+import type {
     AutomatedMessageNodeType,
     ConditionsNodeType,
     FileUploadNodeType,

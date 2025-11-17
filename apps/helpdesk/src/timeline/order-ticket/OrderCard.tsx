@@ -1,7 +1,7 @@
 import cn from 'classnames'
 
 import logo from 'assets/img/infobar/shopify.svg'
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import CardHeaderIcon from './CardHeaderIcon'

@@ -1,5 +1,5 @@
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import deduplicateChannelTypes from '../getDeduplicatedChannelTypes'
 

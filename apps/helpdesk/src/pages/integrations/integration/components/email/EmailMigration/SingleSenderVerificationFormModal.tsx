@@ -1,10 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SenderInformation } from 'models/singleSenderVerification/types'
+import type { SenderInformation } from 'models/singleSenderVerification/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

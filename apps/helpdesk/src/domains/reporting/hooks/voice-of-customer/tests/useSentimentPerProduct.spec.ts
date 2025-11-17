@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
@@ -16,7 +16,8 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { Sentiment } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)

@@ -1,10 +1,10 @@
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 
+import type { IdentifierElement } from './types'
 import {
     CustomFieldTreePath,
     IdentifierCategoryKey,
     IdentifierCategoryValue,
-    IdentifierElement,
     IdentifierSubCategoryValue,
 } from './types'
 

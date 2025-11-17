@@ -1,7 +1,7 @@
 import { act, renderHook } from '@repo/testing'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { usePostOnboardingKnowledgeEditor } from '../usePostOnboardingKnowledgeEditor'
 

@@ -4,7 +4,7 @@ import { Badge } from '@gorgias/axiom'
 
 import { assetsUrl } from 'utils'
 
-import { ProductDetail } from './types'
+import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 

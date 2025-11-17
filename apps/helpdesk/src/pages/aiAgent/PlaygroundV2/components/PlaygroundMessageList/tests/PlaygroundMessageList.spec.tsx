@@ -1,10 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 
-import {
-    MessageType,
-    PlaygroundMessage,
-    TicketOutcome,
-} from 'models/aiAgentPlayground/types'
+import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
+import { MessageType, TicketOutcome } from 'models/aiAgentPlayground/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import { useConfigurationContext } from '../../../contexts/ConfigurationContext'

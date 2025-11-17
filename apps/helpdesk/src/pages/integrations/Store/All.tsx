@@ -1,17 +1,15 @@
-import { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTitle } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
-import { AutomatePlan, HelpdeskPlan } from 'models/billing/types'
+import type { AutomatePlan, HelpdeskPlan } from 'models/billing/types'
 import { fetchApps } from 'models/integration/resources'
-import {
-    AppListItem,
-    Integration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { AppListItem, Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import {
     Category as CategoryType,
     isCategory,
@@ -22,7 +20,7 @@ import {
     getAvailableHelpdeskPlans,
     getCurrentProductsFeatures,
 } from 'state/billing/selectors'
-import {
+import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
@@ -32,7 +30,7 @@ import {
     getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
-import { IntegrationListItem } from 'state/integrations/types'
+import type { IntegrationListItem } from 'state/integrations/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getCheapestPriceNameForFeature } from 'utils/paywalls'

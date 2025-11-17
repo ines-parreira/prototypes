@@ -8,12 +8,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
-    IvrMenuAction,
-    IvrMenuActionType,
-    VoiceMessageType,
-} from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { IvrMenuAction } from 'models/integration/types'
+import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
+import type { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import IvrMenuActionsFieldArray from '../DEPRECATED_IvrMenuActionsFieldArray'

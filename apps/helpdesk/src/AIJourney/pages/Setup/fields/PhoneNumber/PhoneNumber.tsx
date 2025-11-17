@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { Dropdown, FieldPresentation } from 'AIJourney/components'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import css from './PhoneNumber.less'
 

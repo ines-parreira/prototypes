@@ -1,11 +1,9 @@
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { getDataFromTableCell } from 'domains/reporting/pages/convert/utils/getDataFromTableCell'
 import { campaignVariant } from 'fixtures/campaign'
-import {
-    CampaignPreview,
-    InferredCampaignStatus,
-} from 'models/convert/campaign/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
 
 describe('getDataFromTableCell', () => {
     const campaignName = 'Super conversion campaign name'

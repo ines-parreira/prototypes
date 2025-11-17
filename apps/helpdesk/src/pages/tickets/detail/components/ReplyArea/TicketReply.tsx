@@ -1,16 +1,17 @@
-import React, { ReactNode, useCallback } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback } from 'react'
 
 import classNames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { canReply } from 'business/ticket'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { deleteAttachment } from 'state/newMessage/actions'
 import {

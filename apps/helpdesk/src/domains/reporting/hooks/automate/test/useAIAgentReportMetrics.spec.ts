@@ -26,7 +26,7 @@ import { useCustomFieldsTicketCountTimeSeries } from 'domains/reporting/hooks/ti
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getTimeSeriesFormattedData } from 'domains/reporting/pages/automate/overview/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'

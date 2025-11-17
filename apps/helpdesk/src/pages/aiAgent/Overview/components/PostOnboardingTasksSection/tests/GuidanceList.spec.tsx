@@ -3,8 +3,8 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { LocaleCode } from 'models/helpCenter/types'
-import { GuidanceArticle } from 'pages/aiAgent/types'
+import type { LocaleCode } from 'models/helpCenter/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { GuidanceList } from '../GuidanceList'
 

@@ -9,7 +9,7 @@ import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'
-import { GuidanceTemplate } from '../../types'
+import type { GuidanceTemplate } from '../../types'
 import { CreateNewGuidanceCard } from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import { GuidanceTemplateCard } from '../GuidanceTemplateCard/GuidanceTemplateCard'
 

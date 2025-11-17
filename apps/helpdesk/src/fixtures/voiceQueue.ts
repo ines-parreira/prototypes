@@ -1,6 +1,6 @@
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import {
     PhoneRingingBehaviour,
-    VoiceQueue,
     VoiceQueueTargetScope,
     VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'

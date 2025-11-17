@@ -1,16 +1,12 @@
-import {
+import type {
     CustomField as ApiCustomField,
     ExpressionFieldType,
     ManagedCustomerFieldType,
     ManagedTicketFieldType,
 } from '@gorgias/helpdesk-types'
 
-import {
-    AI_MANAGED_TYPES,
-    OBJECT_TYPES,
-    SUPPORTED_UI_DATA_TYPES,
-    SYSTEM_READ_ONLY_MANAGED_TYPES,
-} from './constants'
+import type { OBJECT_TYPES, SUPPORTED_UI_DATA_TYPES } from './constants'
+import { AI_MANAGED_TYPES, SYSTEM_READ_ONLY_MANAGED_TYPES } from './constants'
 
 export type CustomFieldObjectTypes =
     (typeof OBJECT_TYPES)[keyof typeof OBJECT_TYPES]

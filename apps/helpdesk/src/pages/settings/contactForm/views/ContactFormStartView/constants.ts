@@ -1,4 +1,4 @@
-import { ProductDetail } from 'pages/common/components/ProductDetail/types'
+import type { ProductDetail } from 'pages/common/components/ProductDetail/types'
 
 import { CONTACT_FORM_PAGE_TITLE } from '../../constants'
 

@@ -1,9 +1,13 @@
 import { useFormContext } from 'react-hook-form'
 
 import { useTextToSpeechContext } from '../../VoiceMessageTTS/TextToSpeechContext'
-import { VoiceFlowNodeType } from '../constants'
+import type { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
-import { VoiceFlowFormValues, VoiceFlowNode, VoiceFlowNodeData } from '../types'
+import type {
+    VoiceFlowFormValues,
+    VoiceFlowNode,
+    VoiceFlowNodeData,
+} from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import {
     generateNodeData,

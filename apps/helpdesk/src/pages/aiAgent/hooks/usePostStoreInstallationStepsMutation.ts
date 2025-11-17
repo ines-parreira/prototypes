@@ -9,7 +9,7 @@ import {
     useUpdateStepConfigurationPure,
     useUpdateStepNotificationsPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
+import type {
     CreatePostStoreInstallationStepPayload,
     PostStoreInstallationSteps,
     UpdateNotificationAcknowledgementRequest,

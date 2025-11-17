@@ -3,13 +3,13 @@ import React from 'react'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import getStoreDomain from '../../helpers/getStoreDomain'
-import { StoreWithAssignedChannels } from '../../types'
+import type { StoreWithAssignedChannels } from '../../types'
 import ChannelListCell from './ChannelListCell'
 
 import css from './StoreManagementTableRow.less'

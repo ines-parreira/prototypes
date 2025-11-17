@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import { getLayoutedElements } from 'core/ui/flows'
 import { createFlowGraph } from 'core/ui/flows/utils'
 
-import { VoiceFlowFormValues } from '../types'
+import type { VoiceFlowFormValues } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from '../utils'
 

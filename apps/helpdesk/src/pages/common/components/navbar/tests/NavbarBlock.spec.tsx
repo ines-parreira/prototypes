@@ -2,7 +2,8 @@ import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
+import type { ViewCategoryNavbar } from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import NavbarBlock from '../NavbarBlock'

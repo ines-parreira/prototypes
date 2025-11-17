@@ -2,13 +2,13 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
+import type { DateTimeResultFormatType } from 'constants/datetime'
 import {
     DateAndTimeFormatting,
     DateFormatType,
-    DateTimeResultFormatType,
     TimeFormatType,
 } from 'constants/datetime'
-import { Source, Template } from 'models/widget/types'
+import type { Source, Template } from 'models/widget/types'
 import { jsonToCovertToWidgets } from 'pages/common/components/infobar/tests/fixtures'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { getDateAndTimeFormat } from 'utils/datetime'

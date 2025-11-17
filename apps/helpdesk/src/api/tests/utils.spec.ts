@@ -1,4 +1,5 @@
-import { AxiosError, AxiosHeaders, AxiosResponse } from 'axios'
+import type { AxiosError, AxiosResponse } from 'axios'
+import { AxiosHeaders } from 'axios'
 
 import {
     doNotRetry40XErrorsHandler,

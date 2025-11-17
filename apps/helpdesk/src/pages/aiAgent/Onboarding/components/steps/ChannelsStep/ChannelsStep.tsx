@@ -1,4 +1,5 @@
-import React, { useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FeatureFlagKey } from '@repo/feature-flags'
@@ -17,12 +18,11 @@ import {
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
-import {
-    EmailIntegrationListSelection,
-    EmailItem,
-} from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import type { EmailItem } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { ToggleCard } from 'pages/aiAgent/components/ToggleCard/ToggleCard'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
@@ -31,15 +31,13 @@ import { EmailIntegrationModal } from 'pages/aiAgent/Onboarding/components/Email
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import css from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.less'
-import {
-    ChannelsFormValues,
-    useChannelsSchema,
-} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
+import type { ChannelsFormValues } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
+import { useChannelsSchema } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
 import { usePreselectedChat } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedChat'
 import { usePreselectedEmails } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/usePreselectedEmails'
 import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
 import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
@@ -62,9 +60,8 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
-import useSelfServiceChatChannels, {
-    SelfServiceChatChannel,
-} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'

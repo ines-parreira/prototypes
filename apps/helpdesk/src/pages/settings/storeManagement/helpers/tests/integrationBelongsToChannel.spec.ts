@@ -1,6 +1,7 @@
-import { Integration, IntegrationType } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import { ChannelTypes } from '../../types'
+import type { ChannelTypes } from '../../types'
 import integrationBelongsToChannel from '../integrationBelongsToChannel'
 
 describe('integrationBelongsToChannel', () => {

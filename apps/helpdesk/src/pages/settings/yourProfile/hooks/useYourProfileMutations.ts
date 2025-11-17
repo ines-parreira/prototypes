@@ -3,21 +3,21 @@ import { useCallback } from 'react'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import {
+import type {
     UpdateUserBody,
     UserLanguagePreferencesSetting,
-    UserSettingType,
 } from '@gorgias/helpdesk-types'
+import { UserSettingType } from '@gorgias/helpdesk-types'
 
 import { useUpdateCurrentUserProfile } from '../hooks/useUpdateCurrentUserProfile'
 import {
     useCreateCurrentUserProfileSettings,
     useUpdateCurrentUserProfileSettings,
 } from '../hooks/useUpdateCurrentUserProfileSettings'
-import { ApplicationUserPreferencesSettings } from '../types'
+import type { ApplicationUserPreferencesSettings } from '../types'
+import type { useYourProfileForm } from './useYourProfileForm'
 import {
     defaultContent,
-    useYourProfileForm,
     validateLanguagePreferences,
 } from './useYourProfileForm'
 

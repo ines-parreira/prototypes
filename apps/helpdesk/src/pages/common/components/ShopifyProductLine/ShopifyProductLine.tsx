@@ -1,8 +1,9 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -11,21 +12,20 @@ import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
 } from 'constants/integration'
-import { Product, Variant } from 'constants/integrations/types/shopify'
+import type { Product, Variant } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
-import {
+import type {
     IntegrationDataItem,
     ProductCardDetails,
 } from 'models/integration/types'
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
 import { transformShopifyProductToProductCardDetails } from 'pages/common/draftjs/plugins/toolbar/utils'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
-import Result, {
-    Props as ResultProps,
-} from 'pages/common/forms/ProductSearchInput/Result'
+import type { Props as ResultProps } from 'pages/common/forms/ProductSearchInput/Result'
+import Result from 'pages/common/forms/ProductSearchInput/Result'
 import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
-import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { ConvertShopifyProductLineHeader } from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
 import GorgiasApi from 'services/gorgiasApi'
 import { getIconFromType } from 'state/integrations/helpers'

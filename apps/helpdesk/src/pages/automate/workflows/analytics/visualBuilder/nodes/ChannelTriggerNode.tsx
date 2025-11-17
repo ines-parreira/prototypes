@@ -1,15 +1,14 @@
 import React, { memo } from 'react'
 
-import { Handle, NodeProps, Position } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position } from '@xyflow/react'
 import classNames from 'classnames'
 
 import { Badge, LegacyLabel as Label } from '@gorgias/axiom'
 
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import css from './Node.less'
 

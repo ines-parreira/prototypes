@@ -1,5 +1,5 @@
-import { EditorState, SelectionState } from 'draft-js'
-import { List, Map } from 'immutable'
+import type { EditorState, SelectionState } from 'draft-js'
+import type { List, Map } from 'immutable'
 import _deburr from 'lodash/deburr'
 
 /**

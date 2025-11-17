@@ -2,9 +2,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
+import type { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 import {
     useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,

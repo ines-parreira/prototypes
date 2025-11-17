@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 
-import { FeedbackStatus, ResourceSection } from './types'
+import type { ResourceSection } from './types'
+import { FeedbackStatus } from './types'
 
 import css from './FeedbackStatusBadge.less'
 

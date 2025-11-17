@@ -6,9 +6,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { formatMetricTrend } from 'domains/reporting/pages/common/utils'
-import OverviewCard, {
-    OverviewCardProps,
-} from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard'
+import type { OverviewCardProps } from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard'
+import OverviewCard from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore()

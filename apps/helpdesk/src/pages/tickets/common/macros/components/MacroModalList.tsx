@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useConditionalShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 
-import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import TextInput from 'pages/common/forms/input/TextInput'

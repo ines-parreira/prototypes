@@ -1,7 +1,7 @@
 import { LEAF_TYPES } from 'models/widget/constants'
-import { CardTemplate, LeafTemplate, LeafType } from 'models/widget/types'
+import type { CardTemplate, LeafTemplate, LeafType } from 'models/widget/types'
 
-import { FieldCustomization, TemplateCustomization } from '../../types'
+import type { FieldCustomization, TemplateCustomization } from '../../types'
 import { seekCardCustomization, seekFieldCustomization } from '../customization'
 
 describe('seekCardCustomization', () => {

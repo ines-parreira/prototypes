@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 const useReportOrderIssueFlowScenarios = (shopName: string) => {

@@ -1,13 +1,14 @@
-import React, { PropsWithRef, useCallback } from 'react'
+import type { PropsWithRef } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import cn from 'classnames'
 
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import { OnTogglePolicyFn, UISLAPolicy } from '../types'
+import type { OnTogglePolicyFn, UISLAPolicy } from '../types'
 import CellLinkWrapper from './CellLinkWrapper'
 
 import css from './ToggleCell.less'

@@ -1,4 +1,4 @@
-import { AutomatePlan } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
 
 /* *
  * Determine if the store has an automate plan with generation 6 or higher.

@@ -19,12 +19,12 @@ import {
     extractVariablesFromNode,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import {
     getHTTPRequestNodeErrors,
     getHTTPRequestNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

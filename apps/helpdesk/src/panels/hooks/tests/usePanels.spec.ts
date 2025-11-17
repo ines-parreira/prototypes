@@ -1,9 +1,9 @@
-import { MouseEvent as ReactMouseEvent } from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import { Config } from 'panels/types'
+import type { Config } from 'panels/types'
 
 import usePanels from '../usePanels'
 import useScreenSize from '../useScreenSize'

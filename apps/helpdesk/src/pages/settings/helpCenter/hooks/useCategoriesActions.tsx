@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     CreateCategoryDto,
     CreateCategoryTranslationDto,
     LocaleCode,
@@ -25,7 +25,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 import { reportError } from 'utils/errors'
 
-import { CategoriesPositionsType } from '../components/CategoriesTable'
+import type { CategoriesPositionsType } from '../components/CategoriesTable'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../constants'
 import { getCategoriesToUpdate } from '../utils/getCategoriesToUpdate'
 import useCurrentHelpCenter from './useCurrentHelpCenter'

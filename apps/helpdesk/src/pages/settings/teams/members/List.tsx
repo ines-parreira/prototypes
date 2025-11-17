@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 
 import classnames from 'classnames'
 import { Set } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
-import { NavLink, RouteComponentProps } from 'react-router-dom'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
+import type { RouteComponentProps } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -16,12 +18,8 @@ import {
     fetchTeam,
     fetchTeamMembers,
 } from 'models/team/resources'
-import {
-    FetchTeamMembersOptions,
-    Member,
-    Team,
-    TeamSortableProperties,
-} from 'models/team/types'
+import type { FetchTeamMembersOptions, Member, Team } from 'models/team/types'
+import { TeamSortableProperties } from 'models/team/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -40,7 +38,7 @@ import {
     fetchTeamSuccess,
     updateTeamSuccess,
 } from 'state/teams/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import AddMember from './AddMember'
 import Row from './Row'

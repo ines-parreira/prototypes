@@ -4,7 +4,8 @@ import { fireEvent, queryByDisplayValue, within } from '@testing-library/react'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithRouter } from 'utils/testing'
 
-import { Props, TicketTagsFormComponent } from '../TicketTagsFormComponent'
+import type { Props } from '../TicketTagsFormComponent'
+import { TicketTagsFormComponent } from '../TicketTagsFormComponent'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())

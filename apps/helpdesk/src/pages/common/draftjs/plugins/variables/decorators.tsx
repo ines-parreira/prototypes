@@ -1,13 +1,17 @@
-import React, { ReactNode, SyntheticEvent } from 'react'
+import type { ReactNode, SyntheticEvent } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
-import { ContentBlock, ContentState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
 
-import { IntegrationType } from 'models/integration/constants'
-import { Variable } from 'tickets/common/config'
+import type { IntegrationType } from 'models/integration/constants'
+import type { Variable } from 'tickets/common/config'
 
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'
-import { DecoratorComponentProps, DecoratorStrategyCallback } from '../types'
+import type {
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
+} from '../types'
 import { setVariableEditable } from './utils'
 
 type Entity = Variable & {

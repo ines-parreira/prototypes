@@ -1,15 +1,18 @@
-import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
+import type { SyntheticEvent } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { produce } from 'immer'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { set } from 'lodash'
 import _cloneDeep from 'lodash/cloneDeep'
 import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -25,6 +28,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {
     getGorgiasChatLanguageOptions,
     getPrimaryLanguageFromChatConfig,
@@ -46,20 +50,21 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
     isTextsMultiLanguage,
-    LanguageItem,
 } from 'config/integrations/gorgias_chat'
-import { LanguageChat } from 'constants/languages'
+import type { LanguageChat } from 'constants/languages'
 import { useFlag } from 'core/flags'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+    GorgiasChatPosition,
+    GorgiasChatPositionAlignmentEnum,
+} from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
     GorgiasChatBackgroundColorStyle,
-    GorgiasChatIntegration,
     GorgiasChatLauncherType,
-    GorgiasChatPosition,
-    GorgiasChatPositionAlignmentEnum,
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -82,14 +87,14 @@ import OfflineMessages from 'pages/integrations/integration/components/gorgias_c
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import { Tab } from 'pages/integrations/integration/types'
 import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
-import {
+import type {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'

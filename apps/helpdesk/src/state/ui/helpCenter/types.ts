@@ -1,6 +1,6 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 export enum UiActions {
     ChangeLanguage = 'UI/HELPCENTER/CHANGE_LANGUAGE',

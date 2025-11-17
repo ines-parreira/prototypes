@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getTicketState } from 'state/ticket/selectors'

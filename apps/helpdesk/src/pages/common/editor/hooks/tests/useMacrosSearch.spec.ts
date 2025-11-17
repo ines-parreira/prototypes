@@ -1,7 +1,7 @@
 import * as debounceHook from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
+import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 

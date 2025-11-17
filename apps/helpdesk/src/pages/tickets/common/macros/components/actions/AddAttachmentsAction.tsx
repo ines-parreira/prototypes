@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Badge } from 'reactstrap'
 
-import { Attachment } from 'models/ticket/types'
+import type { Attachment } from 'models/ticket/types'
 import FileField from 'pages/common/forms/FileField'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 

@@ -1,11 +1,11 @@
-import React, {
-    Component,
+import type {
     ComponentProps,
     FormEvent,
     KeyboardEvent,
     ReactNode,
     RefObject,
 } from 'react'
+import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Button, Form, Popover, PopoverBody } from 'reactstrap'

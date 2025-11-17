@@ -1,48 +1,52 @@
 import { history } from '@repo/routing'
-import axios, { AxiosError, CancelToken } from 'axios'
-import { fromJS, List, Map } from 'immutable'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _chunk from 'lodash/chunk'
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 import { notify as updateNotification } from 'reapop'
-import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import { JobType } from '@gorgias/helpdesk-queries'
-import { OrderDirection } from '@gorgias/helpdesk-types'
+import type { JobType } from '@gorgias/helpdesk-queries'
+import type { OrderDirection } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
-import { SearchRank } from 'hooks/useSearchRankScenario'
+import type { SearchRank } from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
-import { ApiListResponseLegacyPagination } from 'models/api/types'
+import type { ApiListResponseLegacyPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { JOBS_PATH } from 'models/job/resources'
-import { Job } from 'models/job/types'
+import type { Job } from 'models/job/types'
 import { search, SEARCH_ENGINE_HEADER } from 'models/search/resources'
-import {
-    CUSTOMER_SEARCH_ORDERING,
+import type {
     SearchEngine,
     SearchType,
     TicketSearchSortableProperties,
 } from 'models/search/types'
+import { CUSTOMER_SEARCH_ORDERING } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
-import { Ticket } from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 import { fetchViewsPaginated } from 'models/view/resources'
-import { View, ViewType } from 'models/view/types'
+import type { View } from 'models/view/types'
+import { ViewType } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
 import { JoinEventType, SocketEventType } from 'services/socketManager/types'
 import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import * as types from 'state/views/constants'
 import * as viewsSelectors from 'state/views/selectors'
-import {
+import type {
     FetchViewItemsOptions,
     FieldSearchResult,
     ViewFilter,
     ViewImmutable,
-    ViewNavDirection,
 } from 'state/views/types'
+import { ViewNavDirection } from 'state/views/types'
 import { activeViewUrl } from 'state/views/utils'
 import {
     getHashOfObj,

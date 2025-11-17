@@ -1,7 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 import { useFlag } from '../../core/flags'
 import {
@@ -12,7 +13,7 @@ import {
     inviteAgent,
     updateAgent,
 } from './resources'
-import { FetchAgentsOptions } from './types'
+import type { FetchAgentsOptions } from './types'
 
 export const agentsKeys = {
     all: () => ['agents'] as const,

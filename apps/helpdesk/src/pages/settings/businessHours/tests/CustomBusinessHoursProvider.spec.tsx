@@ -1,6 +1,6 @@
 import { act, render, renderHook, waitFor } from '@testing-library/react'
 
-import { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
+import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
 
 import { useCustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'

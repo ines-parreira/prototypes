@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import {
     cleanup,
@@ -12,7 +13,7 @@ import {
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
-import { EmailMigrationOutboundVerification } from 'models/integration/types'
+import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 

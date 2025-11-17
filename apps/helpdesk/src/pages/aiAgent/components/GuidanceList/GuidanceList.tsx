@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 
 import { OrderDirection } from 'models/api/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { GuidanceListRow } from 'pages/aiAgent/components/GuidanceList/GuidanceListRow'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -17,7 +17,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import { GuidanceArticle } from '../../types'
+import type { GuidanceArticle } from '../../types'
 
 import css from './GuidanceList.less'
 

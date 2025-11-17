@@ -5,7 +5,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import BaseButton from 'pages/common/components/button/BaseButton'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
-import { AlertBannerCTATypes } from '../types'
+import type { AlertBannerCTATypes } from '../types'
 
 function getOpenInNewTabProps(opensInNewTab?: boolean) {
     if (!opensInNewTab) {

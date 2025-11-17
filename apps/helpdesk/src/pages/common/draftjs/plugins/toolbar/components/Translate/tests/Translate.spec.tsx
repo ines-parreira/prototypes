@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { EditorState } from 'draft-js'

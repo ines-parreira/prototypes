@@ -1,6 +1,7 @@
 import moment from 'moment-timezone'
 
-import { Campaign, InferredCampaignStatus } from 'models/convert/campaign/types'
+import type { Campaign } from 'models/convert/campaign/types'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
 
 export const getCampaignStatus = (
     campaign: Campaign,

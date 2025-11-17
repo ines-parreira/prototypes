@@ -1,11 +1,11 @@
-import { TicketChannel, TicketStatus } from 'business/types/ticket'
-import { User } from 'config/types/user'
+import type { TicketChannel, TicketStatus } from 'business/types/ticket'
+import type { User } from 'config/types/user'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import {
     AI_AGENT_OUTCOME_DISPLAY_LABELS,
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from 'domains/reporting/hooks/automate/types'
-import { MergedRecord } from 'domains/reporting/hooks/withEnrichment'
+import type { MergedRecord } from 'domains/reporting/hooks/withEnrichment'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
@@ -15,8 +15,8 @@ import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube
 import { VoiceEventsByAgentDimension } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { OrderConversionDimension } from 'domains/reporting/pages/convert/clients/constants'
-import { SLAPolicyStatus } from 'domains/reporting/pages/sla/components/SlaStatusCell'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { SLAPolicyStatus } from 'domains/reporting/pages/sla/components/SlaStatusCell'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 
 export interface TicketDetails {
     id: number | string

@@ -6,7 +6,7 @@ import {
     sectionsFetched,
     sectionUpdated,
 } from './actions'
-import { SectionsState } from './types'
+import type { SectionsState } from './types'
 
 const initialState: SectionsState = {}
 

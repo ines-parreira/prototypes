@@ -5,7 +5,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
-import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { runRuleEngine } from './ruleEngine'

@@ -5,7 +5,7 @@ import { userEvent } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 
 import useAppSelector from 'hooks/useAppSelector'
 

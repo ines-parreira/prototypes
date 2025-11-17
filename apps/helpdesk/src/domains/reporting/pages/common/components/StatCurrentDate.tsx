@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import css from 'domains/reporting/pages/common/components/StatCurrentDate.less'
 import useAppSelector from 'hooks/useAppSelector'

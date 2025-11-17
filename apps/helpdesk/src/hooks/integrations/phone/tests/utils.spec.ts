@@ -33,7 +33,7 @@ import {
     registerDevice,
 } from 'hooks/integrations/phone/utils'
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'

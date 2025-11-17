@@ -1,15 +1,15 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { MigrationStage } from 'core/flags/utils/readMigration'
+import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
     fetchMetricPerDimensionV2,
     fetchMetricPerDimensionWithEnrichment,
-    QueryReturnType,
     selectMeasurePerDimension,
     useMetricPerDimension,
     useMetricPerDimensionV2,
@@ -23,9 +23,9 @@ import {
     withBreakdown,
 } from 'domains/reporting/hooks/withBreakdown'
 import { withEnrichment } from 'domains/reporting/hooks/withEnrichment'
-import { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
-    TicketMessagesCube,
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
@@ -38,19 +38,18 @@ import {
 } from 'domains/reporting/models/queries'
 import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
-import {
-    CustomFieldsReportingQuery,
-    customFieldsTicketCountQueryFactory,
-} from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import type { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import { customFieldsTicketCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     postEnrichedReporting,
     postReportingV1,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
-import {
-    EnrichmentFields,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { EnrichmentFields } from 'domains/reporting/models/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')

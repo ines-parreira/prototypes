@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
-import { MigrationStage } from 'core/flags/utils/readMigration'
+import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
@@ -19,11 +19,9 @@ import {
     TAG_SEPARATOR,
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import {
-    TicketCubeWithJoins,
-    TicketDimension,
-} from 'domains/reporting/models/cubes/TicketCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -34,18 +32,20 @@ import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import {
+import type {
     BuiltQuery,
     ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import {
+import type {
     ReportingFilter,
-    ReportingFilterOperator,
-    ReportingGranularity,
     ReportingResponse,
     ReportingTimeDimension,
     TimeSeriesQuery,
+} from 'domains/reporting/models/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
 } from 'domains/reporting/models/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 

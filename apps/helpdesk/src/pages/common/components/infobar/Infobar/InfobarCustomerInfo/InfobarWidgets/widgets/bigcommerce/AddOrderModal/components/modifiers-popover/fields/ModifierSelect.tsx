@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { BigCommerceProductSelectModifier } from 'models/integration/types'
+import type { BigCommerceProductSelectModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,7 +12,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import { FieldProps } from './types'
+import type { FieldProps } from './types'
 
 import sharedCss from './Shared.less'
 

@@ -10,7 +10,7 @@ import {
     mockGetBusinessHoursDetailsResponse,
     mockListAccountSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
-import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
+import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'

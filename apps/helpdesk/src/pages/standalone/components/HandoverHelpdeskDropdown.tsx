@@ -6,13 +6,13 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 // oxlint-disable-next-line no-named-as-default
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import type { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'
 import SelectInputBox, {
     SelectInputBoxContext,
-    SelectInputBoxContextState,
 } from 'pages/common/forms/input/SelectInputBox'
 
 import { INTEGRATIONS_MAPPING } from '../constants'
-import {
+import type {
     HelpdeskIntegrationOptions,
     HelpdeskIntegrationProperties,
 } from '../types'

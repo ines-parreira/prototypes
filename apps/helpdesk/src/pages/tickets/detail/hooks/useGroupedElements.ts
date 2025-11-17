@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { getActionByName } from 'config/actions'
 import { PHONE_EVENTS } from 'constants/event'

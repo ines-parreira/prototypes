@@ -15,12 +15,12 @@ import {
     mockListTicketsHandler,
     mockListTicketsResponse,
 } from '@gorgias/helpdesk-mocks'
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { user } from 'fixtures/users'
 import { useRunningJobs } from 'jobs'
 import { createJob } from 'models/job/resources'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { OpportunityTicketDrillDownModal } from './OpportunityTicketDrillDownModal'
 

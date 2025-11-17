@@ -1,17 +1,13 @@
-import React, {
-    MouseEvent,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Popover } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
 import { ModalContext } from 'pages/common/components/modal/Modal'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from './LinkPopover.less'
 

@@ -7,7 +7,7 @@ import { Banner, Box, LegacyButton as Button } from '@gorgias/axiom'
 import { getActionTemplate, stripErrorMessage } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
-import { FailedData } from '../types'
+import type { FailedData } from '../types'
 
 import css from './MessageError.less'
 

@@ -4,7 +4,8 @@ import { THEME_NAME, useTheme } from 'core/theme'
 import { assetsUrl } from 'utils'
 
 import { AutomateFeatures } from '../../types'
-import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
+import type { PaywallFeature } from '../usePaywallConfig'
+import { usePaywallConfig } from '../usePaywallConfig'
 
 jest.mock('utils')
 jest.mock('core/theme', () => ({

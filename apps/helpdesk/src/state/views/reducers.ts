@@ -1,16 +1,17 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import moment from 'moment'
 
 import { MAX_RECENT_VIEWS } from 'config/views'
-import { View } from 'models/view/types'
+import type { View } from 'models/view/types'
 import { tryLocalStorage } from 'services/common/utils'
 import { getCode } from 'utils'
 
-import { GorgiasAction, RootState } from '../types'
+import type { GorgiasAction, RootState } from '../types'
 import * as constants from './constants'
 import * as selectors from './selectors'
-import { ViewsState } from './types'
+import type { ViewsState } from './types'
 import {
     addFilterAST,
     addViewIfMissing,

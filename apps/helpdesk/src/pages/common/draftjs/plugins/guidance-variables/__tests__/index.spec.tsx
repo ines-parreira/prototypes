@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
-import { ContentBlock, ContentState, EditorState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 
 import createGuidanceVariablesPlugin from '../index'
 import { addGuidanceVariableEntity } from '../utils'

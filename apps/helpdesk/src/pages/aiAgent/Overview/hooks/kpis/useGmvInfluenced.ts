@@ -5,13 +5,13 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from 'core/flags'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluencedCtaButton'
-import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
-import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import type { KpiMetric } from 'pages/aiAgent/Overview/types'
 
 export const useGmvInfluenced = ({
     filters,

@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
+import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
 import { useWatch } from 'core/forms'
 

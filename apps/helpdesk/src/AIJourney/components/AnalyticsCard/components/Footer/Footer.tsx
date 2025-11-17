@@ -1,11 +1,11 @@
-import {
+import type {
     JourneyConfigurationApiDTO,
     JourneyTypeEnum,
 } from '@gorgias/convert-client'
 
 import { DiscountCard } from 'AIJourney/components/DiscountCard/DiscountCard'
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 
 import css from './Footer.less'
 

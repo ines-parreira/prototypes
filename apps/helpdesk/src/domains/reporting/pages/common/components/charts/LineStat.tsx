@@ -1,12 +1,14 @@
-import React, { Component, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React, { Component } from 'react'
 
-import { ChartDataset, ChartOptions } from 'chart.js'
-import { List, Map } from 'immutable'
+import type { ChartDataset, ChartOptions } from 'chart.js'
+import type { List, Map } from 'immutable'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import { Line } from 'react-chartjs-2'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import {
     chartMaxHeight,
@@ -16,7 +18,7 @@ import {
 import { highlightTimeRanges } from 'domains/reporting/pages/common/components/charts/plugins'
 import Legend from 'domains/reporting/pages/common/components/Legend/Legend'
 import { getBusinessHoursRangesByUserTimezone } from 'state/currentAccount/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     data: Map<any, any>

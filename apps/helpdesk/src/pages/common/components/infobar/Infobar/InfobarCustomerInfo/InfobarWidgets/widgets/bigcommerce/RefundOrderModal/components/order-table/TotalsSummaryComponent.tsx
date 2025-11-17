@@ -1,10 +1,11 @@
-import React, { Dispatch } from 'react'
+import type { Dispatch } from 'react'
+import React from 'react'
 
 import { Table } from 'reactstrap'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundItemsPayload,
     GiftWrappingItemRefundData,
@@ -20,10 +21,8 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from '../../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../../types'
+import { BigCommerceRefundActionType } from '../../types'
 import { RefundableAmountComponent } from './RefundableAmountComponent'
 
 import bigcommerceTableCss from './OrderTable.less'

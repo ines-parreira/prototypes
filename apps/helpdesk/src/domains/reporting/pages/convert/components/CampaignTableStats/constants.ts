@@ -1,8 +1,8 @@
-import { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
+import type { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { CampaignTableValueFormat } from 'domains/reporting/pages/convert/types/enums/CampaignTableValueFormat.enum'
-import { TooltipData } from 'domains/reporting/pages/types'
-import { TableSetting } from 'domains/reporting/state/ui/stats/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
+import type { TableSetting } from 'domains/reporting/state/ui/stats/types'
 
 export const enum CampaignSettingType {
     PerformanceReportVisibleFields = 'performance_report_visible_fields',

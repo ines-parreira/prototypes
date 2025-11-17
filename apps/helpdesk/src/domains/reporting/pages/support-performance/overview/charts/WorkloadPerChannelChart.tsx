@@ -9,7 +9,7 @@ import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distr
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { WORKLOAD_BY_CHANNEL_HINT } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TOTAL_WORKLOAD_BY_CHANNEL_LABEL } from 'domains/reporting/services/constants'
 import IconButton from 'pages/common/components/button/IconButton'

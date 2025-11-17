@@ -15,9 +15,9 @@ import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/
 import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
 import ActionsPlatformTemplateName from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateName'
 import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { useGuidanceReferenceContext } from '../providers/GuidanceReferenceContext'

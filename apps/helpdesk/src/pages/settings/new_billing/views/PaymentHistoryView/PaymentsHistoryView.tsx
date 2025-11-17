@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useCallbackRef } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -17,7 +17,8 @@ import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import GorgiasApi from 'services/gorgiasApi'
 import { fetchInvoices, updateInvoiceInList } from 'state/billing/actions'
 import { getInvoices } from 'state/billing/selectors'
-import { Invoice, PaymentIntentStatus } from 'state/billing/types'
+import type { Invoice } from 'state/billing/types'
+import { PaymentIntentStatus } from 'state/billing/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

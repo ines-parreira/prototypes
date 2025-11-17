@@ -1,4 +1,4 @@
-import {
+import type {
     listCustomFieldConditions,
     listCustomFields,
 } from '@gorgias/helpdesk-client'
@@ -7,9 +7,9 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 import { appQueryClient } from 'api/queryClient'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
-import { CustomFieldConditionsEvaluationResults } from 'custom-fields/types'
+import type { CustomFieldConditionsEvaluationResults } from 'custom-fields/types'
 import { getTicket, getTicketFieldState } from 'state/ticket/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { getInvalidTicketFieldIds } from 'utils/customFields'
 
 import setInvalidCustomFieldsToErrored from './setInvalidCustomFieldsToErrored'

@@ -1,6 +1,6 @@
-import { ProductType } from 'models/billing/types'
+import type { ProductType } from 'models/billing/types'
 
-import { ProductFeature } from './ProductFeaturesFOMO/types'
+import type { ProductFeature } from './ProductFeaturesFOMO/types'
 
 export type Reason = {
     label: string

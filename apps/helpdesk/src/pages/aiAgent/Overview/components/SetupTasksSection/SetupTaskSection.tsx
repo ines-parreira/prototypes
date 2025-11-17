@@ -14,7 +14,7 @@ import { useGetSetupTasksConfigByCategory } from './hooks/useGetSetupTasksConfig
 import { useMarkAllTasksAsCompleted } from './hooks/useMarkAllTasksAsCompleted'
 import { useMarkPostGoLiveStepCompleted } from './hooks/useMarkPostGoLiveStepCompleted'
 import { PostGoLiveModal } from './PostGoLiveModal'
-import { TaskConfig, TasksCategoryKey } from './types'
+import type { TaskConfig, TasksCategoryKey } from './types'
 
 import css from './SetupTaskSection.less'
 

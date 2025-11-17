@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -8,7 +9,7 @@ import { FormField, FormSubmitButton } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import { PhoneIntegration } from 'models/integration/types'
+import type { PhoneIntegration } from 'models/integration/types'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 

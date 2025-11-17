@@ -2,7 +2,7 @@ import { Component } from 'react'
 
 import type { Map } from 'immutable'
 
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 
 import { CardHeaderYotpoLoyaltyPoints } from './CardHeaderYotpoLoyaltyPoints'
 

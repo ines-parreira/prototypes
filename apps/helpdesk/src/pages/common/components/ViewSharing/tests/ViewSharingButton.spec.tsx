@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { BASIC_AGENT_ROLE } from 'config/user'
 import { user } from 'fixtures/users'

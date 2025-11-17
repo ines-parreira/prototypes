@@ -13,7 +13,7 @@ import {
     toggleHeatmapMode,
     toggleValueMode,
 } from 'domains/reporting/state/ui/stats/tagsReportSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/ticket-insights/tags/AllUsedTagsTable')

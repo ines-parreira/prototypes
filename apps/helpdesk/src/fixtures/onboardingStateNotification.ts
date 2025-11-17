@@ -1,4 +1,4 @@
-import { OnboardingNotificationState } from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 
 export const defaultUseAiAgentOnboardingNotification = {

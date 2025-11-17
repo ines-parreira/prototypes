@@ -1,9 +1,10 @@
-import React, { ReactNode, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'

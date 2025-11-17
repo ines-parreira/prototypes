@@ -58,6 +58,14 @@
                 "varsIgnorePattern": "^__"
             }
         ],
+        "typescript/consistent-type-imports": [
+            "error",
+            {
+                "prefer": "type-imports",
+                "fixStyle": "separate-type-imports",
+                "disallowTypeAnnotations": false
+            }
+        ],
         "eqeqeq": [
             "error",
             "always",
@@ -71,6 +79,12 @@
         "import/no-duplicates": "error",
         "import/no-named-as-default": "warn",
         "import/no-named-as-default-member": "off",
+        "import/consistent-type-specifier-style": [
+            "error",
+            {
+                "mode": "prefer-top-level"
+            }
+        ],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/click-events-have-key-events": "off",

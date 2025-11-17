@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { renderWithStore } from 'utils/testing'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import ChannelsDrawer from '../ChannelsDrawer'
 
 const mockChannel: ChannelWithMetadata = {

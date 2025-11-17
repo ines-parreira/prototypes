@@ -2,7 +2,8 @@ import { useNodesData } from '@xyflow/react'
 
 import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
-import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
+import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
 import { type TimeSplitOptionNode } from '../types'
 

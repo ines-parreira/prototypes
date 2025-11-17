@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { AircallIntegration } from 'models/integration/types'
+import type { AircallIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {

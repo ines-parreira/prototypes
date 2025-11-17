@@ -1,4 +1,4 @@
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 
 export type DiscountCode = {
     id: number

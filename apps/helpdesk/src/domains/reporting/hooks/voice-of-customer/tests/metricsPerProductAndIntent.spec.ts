@@ -1,9 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
-    MetricWithDecile,
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -17,7 +17,7 @@ import {
     ticketCountForIntentQueryFactory,
     ticketCountPerIntentForProductQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')

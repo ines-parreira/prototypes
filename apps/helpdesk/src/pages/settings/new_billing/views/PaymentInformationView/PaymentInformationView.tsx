@@ -8,7 +8,7 @@ import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views
 import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
 import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
-import { TicketPurpose } from 'state/billing/types'
+import type { TicketPurpose } from 'state/billing/types'
 import { shouldPayWithShopify as getShouldPayWithShopify } from 'state/currentAccount/selectors'
 
 import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'

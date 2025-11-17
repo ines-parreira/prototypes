@@ -2,17 +2,17 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     CampaignUpdateApiDTO,
     JourneyStatusEnum,
 } from '@gorgias/convert-client'
 
-import { UpdatableJourneyCampaignState } from 'AIJourney/constants'
+import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
-import { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

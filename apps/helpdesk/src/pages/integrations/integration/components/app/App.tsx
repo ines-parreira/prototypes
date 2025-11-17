@@ -17,10 +17,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { disconnectApp, fetchApp } from 'models/integration/resources'
-import {
-    AppDetail as AppDetailType,
-    TrialPeriod,
-} from 'models/integration/types/app'
+import type { AppDetail as AppDetailType } from 'models/integration/types/app'
+import { TrialPeriod } from 'models/integration/types/app'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

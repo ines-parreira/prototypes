@@ -1,4 +1,6 @@
-import React, { ComponentProps, ForwardedRef, forwardRef } from 'react'
+import type { ComponentProps, ForwardedRef } from 'react'
+import type React from 'react'
+import { forwardRef } from 'react'
 
 import { NewToggleButton } from './NewToggleButton'
 

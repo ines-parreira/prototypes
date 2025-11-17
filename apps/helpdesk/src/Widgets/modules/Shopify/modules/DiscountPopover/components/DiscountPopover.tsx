@@ -1,16 +1,17 @@
-import React, {
+import type {
     ChangeEvent,
     ComponentProps,
     KeyboardEvent,
     MouseEvent,
-    PureComponent,
     ReactNode,
     RefObject,
     SyntheticEvent,
 } from 'react'
+import React, { PureComponent } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import {
     Button,
     Form,
@@ -25,10 +26,8 @@ import {
 
 import { getDiscountAmount } from 'business/shopify/discount'
 import { formatPrice } from 'business/shopify/number'
-import {
-    AppliedDiscount,
-    DiscountType,
-} from 'constants/integrations/types/shopify'
+import type { AppliedDiscount } from 'constants/integrations/types/shopify'
+import { DiscountType } from 'constants/integrations/types/shopify'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
 import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'

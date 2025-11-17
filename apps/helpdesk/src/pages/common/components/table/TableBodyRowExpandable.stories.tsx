@@ -1,9 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import {
-    TableBodyRowExpandable,
-    WithChildren,
-} from 'pages/common/components/table/TableBodyRowExpandable'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
+import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 
 import BodyCell from './cells/BodyCell'
 import HeaderCellProperty from './cells/HeaderCellProperty'

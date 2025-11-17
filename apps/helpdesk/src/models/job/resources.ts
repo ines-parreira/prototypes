@@ -1,5 +1,5 @@
 import client from 'models/api/resources'
-import { Job, JobRequestPayload } from 'models/job/types'
+import type { Job, JobRequestPayload } from 'models/job/types'
 
 export const JOBS_PATH = '/api/jobs/'
 

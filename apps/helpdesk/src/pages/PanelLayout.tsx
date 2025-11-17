@@ -1,7 +1,9 @@
-import React, { ReactElement, useCallback, useMemo } from 'react'
+import type { ReactElement } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import { Panel, PanelConfig, Panels } from 'panels'
-import { LayoutKeys } from 'split-ticket-view/constants'
+import type { PanelConfig } from 'panels'
+import { Panel, Panels } from 'panels'
+import type { LayoutKeys } from 'split-ticket-view/constants'
 import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
 import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
 

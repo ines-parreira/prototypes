@@ -1,8 +1,8 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { Product } from 'constants/integrations/types/shopify'
-import { IntegrationDataItem } from 'models/integration/types'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { Product } from 'constants/integrations/types/shopify'
+import type { IntegrationDataItem } from 'models/integration/types'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {
     transformProductCardDetailsToProductCardAttachment,
     transformShopifyProductToProductCardDetails,

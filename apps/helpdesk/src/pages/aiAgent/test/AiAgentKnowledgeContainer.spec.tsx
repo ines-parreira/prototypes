@@ -17,7 +17,7 @@ import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     useCreateFileIngestion,
     useDeleteFileIngestion,
@@ -34,7 +34,7 @@ import {
     getHelpCentersResponseFixture,
     getSingleHelpCenterResponseFixture,
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

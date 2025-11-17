@@ -8,7 +8,7 @@ import {
     AUTOMATED_INTERACTION_TOOLTIP,
     AUTOMATED_INTERACTIONS_LABEL,
 } from './constants'
-import { AutomateMetricProps } from './types'
+import type { AutomateMetricProps } from './types'
 import { getTrendProps } from './utils'
 
 export const AutomatedInteractionsMetric = ({

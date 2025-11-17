@@ -2,7 +2,7 @@ import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 
 import FeedbackEvents from '../FeedbackEvents'

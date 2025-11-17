@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
-import { PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { DEFAULT_SORTING_DIRECTION } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import {
     getAgentSorting,
@@ -16,7 +16,8 @@ import {
 } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { opposite, OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
+import { opposite } from 'models/api/types'
 
 export const useAutoQAAgentsSortingQuery = (
     column: AutoQAAgentsTableColumn,

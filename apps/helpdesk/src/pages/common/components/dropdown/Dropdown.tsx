@@ -1,12 +1,14 @@
-import React, {
-    createContext,
-    forwardRef,
-    Fragment,
+import type {
     HTMLAttributes,
     MouseEvent,
     ReactNode,
     Ref,
     RefObject,
+} from 'react'
+import React, {
+    createContext,
+    forwardRef,
+    Fragment,
     useCallback,
     useEffect,
     useImperativeHandle,
@@ -15,13 +17,13 @@ import React, {
     useState,
 } from 'react'
 
+import type { Placement } from '@floating-ui/react'
 import {
     autoUpdate,
     flip,
     FloatingOverlay,
     FloatingPortal,
     offset as offsetMiddleware,
-    Placement,
     shift,
     size,
     useFloating,

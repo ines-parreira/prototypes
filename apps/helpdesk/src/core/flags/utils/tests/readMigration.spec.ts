@@ -1,6 +1,7 @@
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import { MigrationStage, readMigration } from 'core/flags/utils/readMigration'
+import type { MigrationStage } from 'core/flags/utils/readMigration'
+import { readMigration } from 'core/flags/utils/readMigration'
 import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('utils/launchDarkly', () => ({

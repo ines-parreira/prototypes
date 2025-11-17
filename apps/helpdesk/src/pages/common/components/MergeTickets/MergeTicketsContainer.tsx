@@ -2,8 +2,10 @@ import { Component, createRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

@@ -4,7 +4,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useProductsTicketCountsPerIntentWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProductAndIntent'
 import { useProductsTicketCountsPerIntentDistribution } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import { TicketProductsEnrichedMeasure } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     EnrichmentFields,
     ReportingGranularity,

@@ -1,9 +1,9 @@
-import {
+import type {
     ArticleTemplate,
-    ArticleTemplateType,
     ArticleWithLocalTranslationAndRating,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 
 export const ArticleTemplatesListFixture: ArticleTemplate[] = [
     {

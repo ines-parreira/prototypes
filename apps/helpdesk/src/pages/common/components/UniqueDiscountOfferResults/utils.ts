@@ -1,6 +1,6 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 // TODO: Revisit the summary text

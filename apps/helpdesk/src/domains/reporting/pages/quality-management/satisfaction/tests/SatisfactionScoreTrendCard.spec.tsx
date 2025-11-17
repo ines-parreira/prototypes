@@ -13,7 +13,7 @@ import { SatisfactionMetricConfig } from 'domains/reporting/pages/quality-manage
 import { SatisfactionScoreTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

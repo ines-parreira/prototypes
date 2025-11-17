@@ -1,6 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { createMemoryHistory } from 'history'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'

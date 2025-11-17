@@ -1,6 +1,7 @@
-import React, { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'
 

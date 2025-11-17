@@ -4,7 +4,7 @@ import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/us
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import * as useTimeSeries from 'domains/reporting/hooks/useTimeSeries'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 

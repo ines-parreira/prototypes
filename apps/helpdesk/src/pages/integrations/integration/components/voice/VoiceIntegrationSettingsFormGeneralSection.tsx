@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import {
+import type {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-queries'

@@ -5,10 +5,10 @@ import { useQueries } from '@tanstack/react-query'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { listIngestedResources } from 'models/helpCenter/resources'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { reportError } from 'utils/errors'
 
-import { IngestedResourceWithArticleId } from '../AiAgentScrapedDomainContent/types'
+import type { IngestedResourceWithArticleId } from '../AiAgentScrapedDomainContent/types'
 import { getTheLatestIngestionLog } from '../AiAgentScrapedDomainContent/utils'
 import { useStoresDomainIngestionLogs } from './useStoresDomainIngestionLogs'
 

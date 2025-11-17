@@ -4,11 +4,8 @@ import MockAdapter from 'axios-mock-adapter'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 
 import { notify } from '../../../state/notifications/actions'
-import client, {
-    createClient,
-    handleNewRelease,
-    timeoutTime,
-} from '../resources'
+import type { handleNewRelease } from '../resources'
+import client, { createClient, timeoutTime } from '../resources'
 
 jest.unmock('../resources')
 

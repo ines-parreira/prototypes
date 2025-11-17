@@ -1,4 +1,4 @@
-import { Edge, Node } from '@xyflow/react'
+import type { Edge, Node } from '@xyflow/react'
 import _cloneDeep from 'lodash/cloneDeep'
 import _groupBy from 'lodash/groupBy'
 import _isEqual from 'lodash/isEqual'
@@ -11,13 +11,13 @@ import { ulid } from 'ulidx'
 
 import { validateHttpHeaderName, validateWebhookURL } from 'utils'
 
-import {
+import type {
     ActionsApp,
     ActionTemplate,
     ActionTemplateApp,
 } from '../../actionsPlatform/types'
-import { TrackstarConnection } from '../types'
-import {
+import type { TrackstarConnection } from '../types'
+import type {
     ConditionSchema,
     ConditionsSchema,
     VarSchema,
@@ -31,21 +31,18 @@ import {
     unescapeUrlEncodedVariables,
     validateJSONWithVariables,
 } from './variables.model'
-import {
+import type {
     AvailableIntegrations,
-    SHIPMONK_APPLICATION_ID,
     WorkflowVariableList,
 } from './variables.types'
-import {
+import { SHIPMONK_APPLICATION_ID } from './variables.types'
+import type {
     AutomatedMessageNodeType,
     CancelSubscriptionNodeType,
     ChannelTriggerNodeType,
     ConditionsNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
-    isConditionsNodeType,
-    isHttpRequestNodeType,
-    isMultipleChoicesNodeType,
     LiquidTemplateNodeType,
     LLMPromptTriggerNodeType,
     MultipleChoicesNodeType,
@@ -65,6 +62,11 @@ import {
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
 import {
+    isConditionsNodeType,
+    isHttpRequestNodeType,
+    isMultipleChoicesNodeType,
+} from './visualBuilderGraph.types'
+import type {
     WorkflowConfiguration,
     WorkflowStepAttachmentsInput,
     WorkflowStepCancelOrder,

@@ -4,12 +4,11 @@ import AxiosMock from 'axios-mock-adapter'
 import axiosClient from 'models/api/resources'
 import { reportError } from 'utils/errors'
 
+import type { PredictionFeedback, QueryContext } from '../client'
 import {
     PHRASE_PREDICTION_ERROR_TAG_NAME,
     PhrasePredictionClient,
     PREDICTION_REQUEST_TIMEOUT,
-    PredictionFeedback,
-    QueryContext,
     REQUEST_PREDICTION_ERROR_TAG_VALUE,
     SEND_FEEDBACK_ERROR_TAG_VALUE,
 } from '../client'

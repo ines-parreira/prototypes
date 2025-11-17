@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
 import previewDark from 'assets/img/help-center/preview-dark.svg'
 import previewLight from 'assets/img/help-center/preview-light.svg'

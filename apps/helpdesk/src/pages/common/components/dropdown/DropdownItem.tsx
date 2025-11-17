@@ -1,10 +1,12 @@
-import React, {
-    createElement,
+import type {
     ForwardedRef,
-    forwardRef,
     HTMLAttributes,
     KeyboardEvent,
     ReactNode,
+} from 'react'
+import React, {
+    createElement,
+    forwardRef,
     useCallback,
     useContext,
     useImperativeHandle,

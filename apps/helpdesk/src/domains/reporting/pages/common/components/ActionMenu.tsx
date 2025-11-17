@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useContext, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 

@@ -1,4 +1,4 @@
-import { UseShoppingAssistantTrialFlowReturn } from '../trial/hooks/useShoppingAssistantTrialFlow'
+import type { UseShoppingAssistantTrialFlowReturn } from '../trial/hooks/useShoppingAssistantTrialFlow'
 
 export const getUseShoppingAssistantTrialFlowFixture = (
     props?: Partial<UseShoppingAssistantTrialFlowReturn>,

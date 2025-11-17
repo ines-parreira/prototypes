@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -13,7 +13,7 @@ import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { emptyRule, rules } from 'fixtures/rule'
 import { user } from 'fixtures/users'
-import { ApiListResponseLegacyPagination } from 'models/api/types'
+import type { ApiListResponseLegacyPagination } from 'models/api/types'
 import { fetchRules } from 'models/rule/resources'
 import {
     ruleCreated,
@@ -22,9 +22,9 @@ import {
     ruleUpdated,
 } from 'state/entities/rules/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { Rule } from 'state/rules/types'
+import type { Rule } from 'state/rules/types'
 import { getEmptyRule } from 'state/rules/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { RuleDetailForm } from '../RuleDetailForm'
 

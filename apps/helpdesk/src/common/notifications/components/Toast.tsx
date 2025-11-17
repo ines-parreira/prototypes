@@ -1,8 +1,9 @@
-import React, { MouseEvent, useCallback } from 'react'
+import type { MouseEvent } from 'react'
+import React, { useCallback } from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
-import { Notification } from '../types'
+import type { Notification } from '../types'
 import getNotificationConfig from '../utils/getNotificationConfig'
 
 import css from './Toast.less'

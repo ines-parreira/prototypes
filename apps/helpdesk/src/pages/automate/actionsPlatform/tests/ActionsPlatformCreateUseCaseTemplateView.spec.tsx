@@ -13,7 +13,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouterAndDnD } from 'utils/testing'
 
 import ActionsPlatformCreateUseCaseTemplateView from '../ActionsPlatformCreateUseCaseTemplateView'

@@ -1,15 +1,15 @@
 import { createContext } from 'react'
 
-import {
+import type {
     AggregationWindow,
     Period,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { CampaignPreview } from 'models/convert/campaign/types'
-import { Integration } from 'models/integration/types'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
+import type { Integration } from 'models/integration/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 interface FilterContextSchema {
     campaigns: CampaignPreview[]

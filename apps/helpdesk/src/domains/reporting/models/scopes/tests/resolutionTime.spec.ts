@@ -6,7 +6,7 @@ import {
     medianResolutionTimePerChannelQueryV2Factory,
     medianResolutionTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/resolutionTime'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 describe('resolutionTimeScope', () => {

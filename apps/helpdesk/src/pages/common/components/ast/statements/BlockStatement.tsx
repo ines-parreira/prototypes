@@ -1,4 +1,4 @@
-import { BlockStatementProps } from '../types'
+import type { BlockStatementProps } from '../types'
 import BlockStatementItem from './BlockStatementItem'
 
 const BlockStatement = ({

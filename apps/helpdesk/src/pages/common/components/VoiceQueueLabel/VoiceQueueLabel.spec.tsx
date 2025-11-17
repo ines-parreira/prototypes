@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 

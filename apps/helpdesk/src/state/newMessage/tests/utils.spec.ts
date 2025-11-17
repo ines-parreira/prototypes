@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 
-import { NewMessage } from '../types'
+import type { NewMessage } from '../types'
 import { getMentionIds, upsertNewMessageAction } from '../utils'
 
 describe('Utils', () => {

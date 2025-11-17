@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 
 export const useSelectedOpportunity = (

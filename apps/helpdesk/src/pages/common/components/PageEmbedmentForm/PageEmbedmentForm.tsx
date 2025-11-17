@@ -19,8 +19,9 @@ import SelectInputBox, {
 import { slugify } from 'utils/slugifyForShopify'
 
 import { SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX } from './constants'
-import { EmbeddablePage, EmbedMode, PageEmbedmentPosition } from './types'
-import {
+import type { EmbeddablePage } from './types'
+import { EmbedMode, PageEmbedmentPosition } from './types'
+import type {
     PageEmbedmentFormReducerDispatch,
     PageEmbedmentFormReducerState,
 } from './usePageEmbedmentForm'

@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import { PreviewChannelButton } from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'

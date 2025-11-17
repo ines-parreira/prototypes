@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreState } from 'state/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreState } from 'state/types'
 import { getCurrentHelpCenterId } from 'state/ui/helpCenter/selectors'
 
 export const getHelpCenters = (state: StoreState): Record<string, HelpCenter> =>

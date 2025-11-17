@@ -1,10 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 
-import ColorPanel from '../views/ColorPanel'
+import type ColorPanel from '../views/ColorPanel'
 import WidgetPanel, { WIDGET_COLORS } from '../WidgetPanel'
 
 const MOCK_ACCENT_COLOR_ID = 'accent-color'

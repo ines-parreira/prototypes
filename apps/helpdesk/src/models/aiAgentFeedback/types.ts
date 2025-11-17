@@ -1,10 +1,10 @@
-import { MacroAction } from 'models/macroAction/types'
-import {
+import type { MacroAction } from 'models/macroAction/types'
+import type {
     ActionStatus,
     AiAgentKnowledgeResourceTypeEnum,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import { ReportIssueOption } from './constants'
+import type { ReportIssueOption } from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
 

@@ -8,7 +8,7 @@ import {
     Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { BusinessHoursList } from '@gorgias/helpdesk-types'
+import type { BusinessHoursList } from '@gorgias/helpdesk-types'
 
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import SourceIcon from 'pages/common/components/SourceIcon'

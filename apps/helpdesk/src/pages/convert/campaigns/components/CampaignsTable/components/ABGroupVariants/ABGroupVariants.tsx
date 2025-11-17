@@ -7,7 +7,7 @@ import {
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 import css from './ABGroupVariants.less'
 

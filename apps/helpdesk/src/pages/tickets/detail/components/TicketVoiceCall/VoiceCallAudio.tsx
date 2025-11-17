@@ -1,8 +1,7 @@
 import classNames from 'classnames'
 
+import type { VoiceCall, VoiceCallRecording } from 'models/voiceCall/types'
 import {
-    VoiceCall,
-    VoiceCallRecording,
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'

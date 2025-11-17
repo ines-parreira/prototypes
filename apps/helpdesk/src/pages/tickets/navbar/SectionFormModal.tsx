@@ -4,7 +4,7 @@ import { Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { SectionDraft } from 'models/section/types'
+import type { SectionDraft } from 'models/section/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

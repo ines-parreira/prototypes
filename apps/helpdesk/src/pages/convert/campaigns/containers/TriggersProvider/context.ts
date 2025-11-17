@@ -1,11 +1,11 @@
 import { createContext } from 'react'
 
-import {
+import type {
     DeleteTriggerFn,
     UpdateTriggerFn,
     ValidateStateUpdateFn,
 } from '../../types/AdvancedTriggerBaseProps'
-import { CampaignTriggerMap } from '../../types/CampaignTriggerMap'
+import type { CampaignTriggerMap } from '../../types/CampaignTriggerMap'
 
 type ContextModel = {
     triggers: CampaignTriggerMap

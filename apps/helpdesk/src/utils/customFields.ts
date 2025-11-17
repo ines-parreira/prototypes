@@ -1,13 +1,14 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { isFieldErrored } from 'custom-fields/helpers/isFieldErrored'
-import {
+import type {
     CustomField,
     CustomFieldConditionsEvaluationResults,
     CustomFields,
     CustomFieldState,
 } from 'custom-fields/types'
-import { MacroAction, MacroActionName } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 
 export function getInvalidTicketFieldIds({
     fieldsState,

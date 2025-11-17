@@ -14,7 +14,7 @@ import {
     useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock('models/aiAgent/queries')

@@ -16,14 +16,12 @@ import {
 
 import { Form } from 'core/forms'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
-import {
-    CustomBusinessHoursContext,
-    CustomBusinessHoursContextState,
-} from '../CustomBusinessHoursContext'
+import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
+import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 import CustomBusinessHoursIntegrationsTable from '../CustomBusinessHoursIntegrationsTable'
 
 const queryClient = mockQueryClient()

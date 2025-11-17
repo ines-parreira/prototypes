@@ -1,4 +1,5 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'

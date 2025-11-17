@@ -1,4 +1,5 @@
-import React, { FormEvent, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -11,7 +12,7 @@ import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
-import { CardEditFormState, HiddenField } from '../../types'
+import type { CardEditFormState, HiddenField } from '../../types'
 
 import css from './CardEditForm.less'
 

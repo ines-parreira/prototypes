@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
-import { History } from 'history'
+import type { History } from 'history'
+import type { RouteComponentProps } from 'react-router-dom'
 import {
     Redirect,
     Route,
-    RouteComponentProps,
     Switch,
     useLocation,
     useParams,

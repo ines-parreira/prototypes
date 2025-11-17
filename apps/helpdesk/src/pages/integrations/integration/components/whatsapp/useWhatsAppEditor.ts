@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 
-import { Context, WhatsAppEditorContextState } from './WhatsAppEditorContext'
+import type { WhatsAppEditorContextState } from './WhatsAppEditorContext'
+import { Context } from './WhatsAppEditorContext'
 
 export default function useWhatsAppEditor(): WhatsAppEditorContextState {
     return useContext(Context)

@@ -3,9 +3,10 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { ExtraHTMLDto } from 'models/helpCenter/types'
+import type { ExtraHTMLDto } from 'models/helpCenter/types'
 
-import { ContactFormExtraHTML, ExtraHtmlSection } from '../ExtraHtmlSection'
+import type { ContactFormExtraHTML } from '../ExtraHtmlSection'
+import { ExtraHtmlSection } from '../ExtraHtmlSection'
 
 // Mock the CodeEditor component
 jest.mock('../../CodeEditor/CodeEditor', () => {

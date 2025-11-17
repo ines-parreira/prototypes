@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 
 import { AdvancedTriggerFactory } from 'pages/convert/campaigns/components/AdvancedTriggerFactory'
 import { useTriggers } from 'pages/convert/campaigns/containers/TriggersProvider'
-import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 type Props = {

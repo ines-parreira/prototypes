@@ -4,7 +4,7 @@ import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     IvrMenuActionType,
 } from 'models/integration/constants'
-import {
+import type {
     IvrForwardCallMenuAction,
     IvrMenuAction,
 } from 'models/integration/types'

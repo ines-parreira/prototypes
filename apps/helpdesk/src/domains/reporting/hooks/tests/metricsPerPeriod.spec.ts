@@ -11,21 +11,17 @@ import {
     useTagResultsSelection,
 } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { useTicketTimeReference } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import {
-    QueryReturnType,
-    useMetricPerDimension,
-} from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    TicketTagsEnrichedCube,
-    TicketTagsEnrichedDimension,
-} from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
+import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import {
     tagsTicketCountOnCreatedDatetimeQueryFactory,
     tagsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
-    StatsFilters,
     TagFilterInstanceId,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

@@ -16,7 +16,7 @@ import {
     HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

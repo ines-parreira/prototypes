@@ -1,15 +1,16 @@
 import { useState } from 'react'
 
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
-import { UserSettingType } from 'config/types/user'
-import { ViewType } from 'models/view/types'
+import type { UserSettingType } from 'config/types/user'
+import type { ViewType } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { makeGetViewCount, makeGetViewsByType } from 'state/views/selectors'
 import { getPluralObjectName } from 'utils'
 

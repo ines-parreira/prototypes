@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     REVENUE_OVERVIEW,
@@ -10,7 +11,7 @@ import {
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
-import {
+import type {
     OneDimensionalUnionChart,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'

@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
 import { useFlag } from 'core/flags'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 
 const useThemeAppExtensionInstallation = (
     shopifyIntegration?: ShopifyIntegration,

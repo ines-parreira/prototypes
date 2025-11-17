@@ -7,20 +7,15 @@ import createMockStore from 'redux-mock-store'
 
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
-import {
-    EmailIntegration,
-    OutboundVerificationStatusValue,
-} from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getVerification } from 'models/singleSenderVerification/resources'
-import {
-    SenderVerification,
-    VerificationStatus,
-} from 'models/singleSenderVerification/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { SenderVerification } from 'models/singleSenderVerification/types'
+import { VerificationStatus } from 'models/singleSenderVerification/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import SingleSenderVerification, {
-    Props,
-} from '../SingleSenderVerification/SingleSenderVerification'
+import type { Props } from '../SingleSenderVerification/SingleSenderVerification'
+import SingleSenderVerification from '../SingleSenderVerification/SingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 

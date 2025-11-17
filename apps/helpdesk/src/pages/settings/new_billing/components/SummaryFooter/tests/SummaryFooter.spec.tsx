@@ -12,10 +12,11 @@ import {
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
 import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import { RootState, StoreDispatch } from 'state/types'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import SummaryFooter, { SummaryFooterProps } from '../SummaryFooter'
+import type { SummaryFooterProps } from '../SummaryFooter'
+import SummaryFooter from '../SummaryFooter'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 

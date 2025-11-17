@@ -3,7 +3,7 @@ import useMetricTrend, {
 } from 'domains/reporting/hooks/useMetricTrend'
 import { averageScoreQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
 import { averageScoreQueryV2Factory } from 'domains/reporting/models/scopes/satisfactionSurveys'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAverageScoreTrend = (filters: StatsFilters, timezone: string) =>

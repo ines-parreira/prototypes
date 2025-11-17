@@ -1,10 +1,11 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import moment from 'moment'
 
 import { FETCH_TICKET_REPLY_MACRO } from 'common/state'
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import { CustomFieldState } from 'custom-fields/types'
-import {
+import type { CustomFieldState } from 'custom-fields/types'
+import type {
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
@@ -13,11 +14,11 @@ import {
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
 import { MacroActionName } from 'models/macroAction/types'
-import { Ticket } from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
@@ -30,7 +31,7 @@ import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
-import { TicketState } from './types'
+import type { TicketState } from './types'
 import { getPendingMessageIndex, mergeActions } from './utils'
 
 export const initialState: TicketState = fromJS({

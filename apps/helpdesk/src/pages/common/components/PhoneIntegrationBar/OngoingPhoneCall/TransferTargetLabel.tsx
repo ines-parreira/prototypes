@@ -1,6 +1,7 @@
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from '../../VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import { TransferTarget, TransferType } from './types'
+import type { TransferTarget } from './types'
+import { TransferType } from './types'
 
 import css from './OngoingPhoneCall.less'
 

@@ -1,5 +1,6 @@
-import { Query, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import type { Query, UseQueryOptions } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import type { AxiosResponse } from 'axios'
 
 import { appQueryClient } from 'api/queryClient'
 import { reportingRetryDelayHandler, reportingRetryHandler } from 'api/utils'
@@ -7,8 +8,11 @@ import {
     postEnrichedReporting,
     postReportingV1,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
-import {
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type {
     Cube,
     EnrichmentFields,
     ReportingParams,

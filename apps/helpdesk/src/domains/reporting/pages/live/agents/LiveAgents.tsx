@@ -8,16 +8,16 @@ import {
     USERS_PERFORMANCE_OVERVIEW,
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
-import {
+import type {
     LegacyStatsFilters,
     NumericStatAxisValue,
     NumericStatCell,
     OnlineTimeDetailStatCell,
     Stat,
-    StatType,
     TicketDetailStatCell,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
+import { StatType } from 'domains/reporting/models/stat/types'
 import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
 import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'

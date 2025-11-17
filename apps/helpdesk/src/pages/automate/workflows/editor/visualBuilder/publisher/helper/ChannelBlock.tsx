@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import { ChannelConfig } from './utils'
 

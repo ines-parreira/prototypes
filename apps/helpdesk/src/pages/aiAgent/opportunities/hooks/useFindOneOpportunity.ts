@@ -1,6 +1,6 @@
 import { useFindOpportunityByIdOpportunity } from '@gorgias/knowledge-service-queries'
 
-import { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
 import { mapOpportunityDetailToOpportunity } from '../utils/mapOpportunityDetailToOpportunity'
 
 export const useFindOneOpportunity = (

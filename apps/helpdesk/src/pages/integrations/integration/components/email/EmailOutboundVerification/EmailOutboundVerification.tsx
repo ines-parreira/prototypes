@@ -2,7 +2,7 @@ import { history } from '@repo/routing'
 import { Route, Switch } from 'react-router-dom'
 import { Col, Container } from 'reactstrap'
 
-import { EmailIntegration } from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
 import settingsCss from 'pages/settings/settings.less'
 
 import DEPRECATED_EmailDomainVerification from '../EmailDomainVerification/DEPRECATED_EmailDomainVerification'

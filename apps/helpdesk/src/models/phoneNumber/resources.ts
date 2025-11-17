@@ -1,9 +1,9 @@
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 
 import client from 'models/api/resources'
-import { ApiListResponseLegacyPagination } from 'models/api/types'
+import type { ApiListResponseLegacyPagination } from 'models/api/types'
 
-import {
+import type {
     NewPhoneNumber,
     OldPhoneNumber,
     PhoneCapabilitiesLimitationsMap,

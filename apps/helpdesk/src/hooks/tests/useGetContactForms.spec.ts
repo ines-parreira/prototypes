@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseInfiniteQueryResult } from '@tanstack/react-query'
+import type { UseInfiniteQueryResult } from '@tanstack/react-query'
 
 import { useGetContactFromIntegrationIdsForStore } from 'hooks/contacForm/useGetContactForms'
 import { useGetContactFormList } from 'pages/settings/contactForm/queries'

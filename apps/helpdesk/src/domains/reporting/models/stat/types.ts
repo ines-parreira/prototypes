@@ -1,8 +1,8 @@
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import { ReportingGranularity } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 
 export enum FilterKey {
     Accuracy = 'accuracy',

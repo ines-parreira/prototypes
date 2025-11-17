@@ -11,7 +11,7 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

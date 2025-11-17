@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from 'react'
 import classnames from 'classnames'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
-import { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
+import type { ListCustomFieldsParams } from '@gorgias/helpdesk-client'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import css from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect.less'
 import {
     getSelectedCustomField,

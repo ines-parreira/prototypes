@@ -1,4 +1,4 @@
-import { Expression } from 'estree'
+import type { Expression } from 'estree'
 
 import resolvePunctuators from './resolvePunctuators'
 

@@ -1,9 +1,11 @@
-import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import type { ComponentType, PropsWithChildren, ReactNode } from 'react'
+import type React from 'react'
 
 import { logPageChange } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'

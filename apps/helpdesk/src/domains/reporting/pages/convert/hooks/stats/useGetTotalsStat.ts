@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
 import { usePostReporting } from 'domains/reporting/models/queries'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsTotalsData,
     getCampaignOrderTotalsData,
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import {
+import type {
     CubeFilterParams,
     CubeMetric,
 } from 'domains/reporting/pages/convert/clients/types'
@@ -19,7 +19,7 @@ import {
     transformToStoreTotal,
 } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { CampaignsTotals } from 'domains/reporting/pages/convert/services/types'
+import type { CampaignsTotals } from 'domains/reporting/pages/convert/services/types'
 import { getDefaultsForMetricKeys } from 'domains/reporting/pages/convert/services/utils'
 
 const OVERRIDES = {

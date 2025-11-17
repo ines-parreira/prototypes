@@ -3,9 +3,9 @@ import React from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 
+import type { InjectedProps } from '../withGrammarlyUsageTracking'
 import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
-    InjectedProps,
 } from '../withGrammarlyUsageTracking'
 
 jest.mock('@repo/logging')

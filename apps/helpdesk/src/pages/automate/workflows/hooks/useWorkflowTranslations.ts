@@ -25,8 +25,8 @@ import {
 } from 'models/workflows/queries'
 
 import { MAX_TRANSLATIONS_SIZE_IN_BYTES } from '../constants'
-import { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
-import { LanguageCode } from '../models/workflowConfiguration.types'
+import type { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
+import type { LanguageCode } from '../models/workflowConfiguration.types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,

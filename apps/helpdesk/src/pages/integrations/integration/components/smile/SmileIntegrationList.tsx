@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

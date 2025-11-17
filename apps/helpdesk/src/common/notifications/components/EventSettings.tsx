@@ -3,10 +3,10 @@ import React, { Fragment } from 'react'
 import useLaunchDarklyClient from 'common/hooks/useLaunchDarklyClient'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { SoundValue } from 'services/NotificationSounds'
+import type { SoundValue } from 'services/NotificationSounds'
 
 import { categories, notifications } from '../data'
-import { CategoryConfig, Settings } from '../types'
+import type { CategoryConfig, Settings } from '../types'
 import EventSettingsRow from './EventSettingsRow'
 import EventSettingsTableHead from './EventSettingsTableHead'
 

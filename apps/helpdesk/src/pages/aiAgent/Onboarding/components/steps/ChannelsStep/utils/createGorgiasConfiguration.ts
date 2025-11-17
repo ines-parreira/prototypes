@@ -12,11 +12,11 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
+import type { StoreIntegration } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
-    StoreIntegration,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 

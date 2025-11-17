@@ -13,7 +13,7 @@ import {
     useDuplicateWorkflowConfiguration,
     useGetWorkflowConfigurations,
 } from 'models/workflows/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithDnD, renderWithRouterAndDnD } from 'utils/testing'
 

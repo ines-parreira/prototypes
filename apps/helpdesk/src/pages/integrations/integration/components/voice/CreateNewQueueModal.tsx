@@ -1,8 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
-    CreateVoiceQueue,
-    useCreateVoiceQueues,
-} from '@gorgias/helpdesk-queries'
+import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
+import { useCreateVoiceQueues } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
 import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'

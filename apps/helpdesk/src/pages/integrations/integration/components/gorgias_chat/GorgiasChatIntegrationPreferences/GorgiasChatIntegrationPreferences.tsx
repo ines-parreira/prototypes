@@ -5,14 +5,15 @@ import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
 import { get, set } from 'lodash'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 import moment from 'moment'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
@@ -23,27 +24,29 @@ import {
 } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import { LanguageChat } from 'constants/languages'
+import type { LanguageChat } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
+import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
     GorgiasChatBackgroundColorStyle,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import Caption from 'pages/common/forms/Caption/Caption'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
-import {
+import type {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,
@@ -76,7 +79,7 @@ import {
 } from '../../../../../../config/integrations/gorgias_chat'
 import { updateOrCreateIntegration } from '../../../../../../state/integrations/actions'
 import { getIntegrationsByTypes } from '../../../../../../state/integrations/selectors'
-import { RootState } from '../../../../../../state/types'
+import type { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'

@@ -7,8 +7,8 @@ import {
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import { GorgiasChatIntegration } from 'models/integration/types'
-import { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import type { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 

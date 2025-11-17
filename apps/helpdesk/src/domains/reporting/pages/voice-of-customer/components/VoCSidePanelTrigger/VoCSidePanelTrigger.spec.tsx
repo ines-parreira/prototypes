@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { setSidePanelData } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

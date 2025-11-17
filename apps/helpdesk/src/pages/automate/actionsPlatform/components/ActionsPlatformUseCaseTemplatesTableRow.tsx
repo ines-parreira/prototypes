@@ -8,7 +8,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { formatDatetime } from 'utils'
 
-import { ActionTemplate, App } from '../types'
+import type { ActionTemplate, App } from '../types'
 
 import css from './ActionsPlatformTemplatesTableRow.less'
 

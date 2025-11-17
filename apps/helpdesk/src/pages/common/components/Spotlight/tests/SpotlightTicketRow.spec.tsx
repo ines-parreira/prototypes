@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,7 +11,7 @@ import { TicketStatus } from 'business/types/ticket'
 import { agents } from 'fixtures/agents'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import { PickedTicket } from 'models/search/types'
+import type { PickedTicket } from 'models/search/types'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import { renderWithRouter } from 'utils/testing'
 

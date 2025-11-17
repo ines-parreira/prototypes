@@ -1,10 +1,11 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { Store } from 'redux'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { Store } from 'redux'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
@@ -12,16 +13,12 @@ import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 import { TwilioSocketEventType } from 'business/twilio'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
-import {
-    TransferTarget,
-    TransferType,
-} from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import socketManager from 'services/socketManager'
-import {
-    SocketEventType,
-    VoiceCallTransferFailedEvent,
-} from 'services/socketManager/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { VoiceCallTransferFailedEvent } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockIncomingCall } from 'tests/twilioMocks'
 

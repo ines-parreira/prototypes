@@ -1,5 +1,5 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { IntegrationType } from '@gorgias/helpdesk-types'
+import type { IntegrationType } from '@gorgias/helpdesk-types'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 

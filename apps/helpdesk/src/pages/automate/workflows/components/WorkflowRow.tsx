@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -14,11 +14,11 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { formatDatetime } from 'utils'
 
-import {
+import type {
     LanguageCode,
-    supportedLanguages,
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
+import { supportedLanguages } from '../models/workflowConfiguration.types'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 import { DraftBadge } from './DraftBadge'
 

@@ -4,9 +4,9 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ConditionsBranchBody } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import { buildConditionSchemaByVariableType } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Alert from 'pages/common/components/Alert/Alert'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 

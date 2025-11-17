@@ -2,8 +2,8 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
 import useAppSelector from 'hooks/useAppSelector'
-import { PhoneIntegration } from 'models/integration/types'
-import { UserSearchResult } from 'models/search/types'
+import type { PhoneIntegration } from 'models/integration/types'
+import type { UserSearchResult } from 'models/search/types'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getTicket } from 'state/ticket/selectors'
 

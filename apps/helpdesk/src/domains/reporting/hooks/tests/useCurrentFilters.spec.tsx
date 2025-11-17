@@ -13,9 +13,9 @@ import {
     isPeriodFilter,
     isTagFilter,
 } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
-    StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'

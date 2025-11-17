@@ -2,10 +2,10 @@ import React from 'react'
 
 import { Link, useParams } from 'react-router-dom'
 
-import { JourneyConfigurationApiDTO } from '@gorgias/convert-client'
+import type { JourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import css from './DiscountCard.less'

@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { PhoneCountry, PhoneType } from 'business/twilio'
-import { PhoneNumberMeta } from 'models/phoneNumber/types'
+import type { PhoneNumberMeta } from 'models/phoneNumber/types'
 
 import PhoneMetaFields from '../PhoneMetaFields'
 import { shouldDisplayType } from '../utils'

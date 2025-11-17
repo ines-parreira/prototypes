@@ -1,5 +1,5 @@
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
-import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
+import type { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
 import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 import { renderWithRouter } from 'utils/testing'
 

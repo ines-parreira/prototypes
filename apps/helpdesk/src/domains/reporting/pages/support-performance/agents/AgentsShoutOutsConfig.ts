@@ -6,13 +6,13 @@ import {
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { TicketsFirstAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

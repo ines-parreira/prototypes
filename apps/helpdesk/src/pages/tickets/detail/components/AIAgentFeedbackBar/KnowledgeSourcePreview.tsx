@@ -9,7 +9,7 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { Drawer } from 'pages/common/components/Drawer'
 import { KnowledgeSourcePreviewContentRenderer } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreviewContentRenderer'
-import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getKnowledgeResourceTypeLabel } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { formatDatetime } from 'utils'
 import { sanitizeHtmlDefault, unescapeAmpAndDollarEntities } from 'utils/html'

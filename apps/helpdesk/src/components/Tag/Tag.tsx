@@ -1,13 +1,10 @@
-import {
+import type {
     CSSProperties,
     ForwardedRef,
-    forwardRef,
     HTMLAttributes,
     ReactNode,
-    useImperativeHandle,
-    useMemo,
-    useRef,
 } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
 import classNames from 'classnames'
 

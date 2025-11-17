@@ -1,8 +1,6 @@
+import type { ForwardedRef, InputHTMLAttributes, KeyboardEvent } from 'react'
 import React, {
-    ForwardedRef,
     forwardRef,
-    InputHTMLAttributes,
-    KeyboardEvent,
     useEffect,
     useImperativeHandle,
     useRef,

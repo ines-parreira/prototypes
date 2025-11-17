@@ -6,7 +6,8 @@ import {
     mockCustomerSummary,
 } from '@gorgias/helpdesk-mocks'
 
-import { ResponseBillingState, useBillingState } from '../useBillingState'
+import type { ResponseBillingState } from '../useBillingState'
+import { useBillingState } from '../useBillingState'
 import { useHasCreditCard } from '../useHasCreditCard'
 
 jest.mock('billing/hooks/useBillingState')

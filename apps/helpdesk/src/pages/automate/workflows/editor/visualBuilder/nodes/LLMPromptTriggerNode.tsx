@@ -1,14 +1,12 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 
 import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import LLMPromptTriggerNodeBadge from './LLMPromptTriggerNodeBadge'
 import LLMPromptTriggerNodeLabel from './LLMPromptTriggerNodeLabel'

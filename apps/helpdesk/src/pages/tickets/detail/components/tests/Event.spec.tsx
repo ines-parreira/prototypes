@@ -1,7 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
 import { getIntegrationById } from 'state/integrations/selectors'

@@ -1,7 +1,7 @@
 import { AttachmentEnum } from 'common/types'
 
-import { CampaignAttachment } from '../types/CampaignAttachment'
-import { CampaignProduct } from '../types/CampaignProduct'
+import type { CampaignAttachment } from '../types/CampaignAttachment'
+import type { CampaignProduct } from '../types/CampaignProduct'
 import { attachUtmToCampaignProduct } from './attachUtmParams'
 
 export function transformProductToAttachment(

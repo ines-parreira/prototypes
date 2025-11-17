@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -8,7 +9,7 @@ import {
     getVoiceOrSmsPlanChanged,
 } from 'state/billing/selectors'
 
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
 import css from './VoiceOrSmsChangeReviewAlert.less'
 

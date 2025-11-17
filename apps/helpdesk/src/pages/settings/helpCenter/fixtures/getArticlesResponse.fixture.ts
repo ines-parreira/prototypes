@@ -1,4 +1,4 @@
-import { Article, ArticlesListPage } from 'models/helpCenter/types'
+import type { Article, ArticlesListPage } from 'models/helpCenter/types'
 
 export const getArticlesResponseFixture: ArticlesListPage = {
     object: 'list',

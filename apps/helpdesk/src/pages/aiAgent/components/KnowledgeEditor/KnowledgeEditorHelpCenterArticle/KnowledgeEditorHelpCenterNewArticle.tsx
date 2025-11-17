@@ -2,14 +2,14 @@ import { useCallback, useState } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useCreateArticle } from 'models/helpCenter/queries'
-import {
+import type {
     ArticleWithLocalTranslation,
     Category,
     HelpCenter,
     Locale,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {
+import type {
     ActionType as LocaleActionType,
     OptionItem,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
@@ -24,10 +24,8 @@ import {
 import { useKnowledgeEditorHelpCenterArticleDetails } from './hooks/useKnowledgeEditorHelpCenterArticleDetails'
 import { useKnowledgeEditorHelpCenterArticleModal } from './hooks/useKnowledgeEditorHelpCenterArticleModal'
 import { useKnowledgeEditorHelpCenterArticleMode } from './hooks/useKnowledgeEditorHelpCenterArticleMode'
-import {
-    Changes as SettingsChanges,
-    useKnowledgeEditorHelpCenterArticleSettings,
-} from './hooks/useKnowledgeEditorHelpCenterArticleSettings'
+import type { Changes as SettingsChanges } from './hooks/useKnowledgeEditorHelpCenterArticleSettings'
+import { useKnowledgeEditorHelpCenterArticleSettings } from './hooks/useKnowledgeEditorHelpCenterArticleSettings'
 import { KnowledgeEditorHelpCenterArticleEditView } from './KnowledgeEditorHelpCenterArticleEditView'
 import { KnowledgeEditorHelpCenterArticleUnsavedChangesModal } from './KnowledgeEditorHelpCenterArticleUnsavedChangesModal'
 

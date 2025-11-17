@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import LinkButton from 'pages/common/components/button/LinkButton'
 

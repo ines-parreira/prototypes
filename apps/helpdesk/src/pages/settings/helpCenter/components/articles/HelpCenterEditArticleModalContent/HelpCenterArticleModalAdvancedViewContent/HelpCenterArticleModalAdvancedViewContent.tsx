@@ -1,6 +1,6 @@
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import {
+import type {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
@@ -9,14 +9,14 @@ import IconButton from 'pages/common/components/button/IconButton'
 import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
+import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
     getHelpCenterDomain,
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
-import { ActionType, OptionItem } from '../../ArticleLanguageSelect'
+import type { ActionType, OptionItem } from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'

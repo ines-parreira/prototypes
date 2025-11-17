@@ -1,11 +1,7 @@
-import esprima from 'esprima'
+import type esprima from 'esprima'
 
-import {
-    ManagedRule,
-    ManagedRulesSlugs,
-    Rule,
-    RuleType,
-} from '../state/rules/types'
+import type { ManagedRule, Rule } from '../state/rules/types'
+import { ManagedRulesSlugs, RuleType } from '../state/rules/types'
 
 export const emptyRule = {
     id: 1,

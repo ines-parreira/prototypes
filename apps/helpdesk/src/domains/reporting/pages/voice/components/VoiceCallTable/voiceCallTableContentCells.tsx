@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
@@ -15,13 +15,11 @@ import {
 import { filterAndOrderCells } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
 import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
-import {
-    isInboundVoiceCallSummary,
-    VoiceCallSummary,
-} from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import { isInboundVoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getFormattedDurationEndedCall } from 'models/voiceCall/utils'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import type BodyCell from 'pages/common/components/table/cells/BodyCell'
+import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'

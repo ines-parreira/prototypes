@@ -11,7 +11,7 @@ import css from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsMo
 import { ModalSearchBar } from 'domains/reporting/pages/dashboards/DashboardsModal/ModalSearchBar'
 import { SelectableCharts } from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableCharts'
 import { SelectableReports } from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableReports'
-import {
+import type {
     DashboardChild,
     ReportConfig,
     ReportsModalConfig,

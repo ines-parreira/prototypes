@@ -1,4 +1,4 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import {
     Button,
     DropdownItem,
@@ -8,7 +8,7 @@ import {
 } from 'reactstrap'
 
 import { RuleOperation } from '../../../../../state/rules/types'
-import { RuleItemActions } from '../../../../settings/rules/types'
+import type { RuleItemActions } from '../../../../settings/rules/types'
 import useHoverable from '../../../hooks/useHoverable'
 
 type Props = {

@@ -1,23 +1,23 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { VoiceCallRecording } from '@gorgias/helpdesk-types'
+import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
-import { RecentChatTicket } from 'business/types/recentChats'
-import { TicketChannel } from 'business/types/ticket'
-import {
+import type { RecentChatTicket } from 'business/types/recentChats'
+import type { TicketChannel } from 'business/types/ticket'
+import type {
     EcommerceStore,
     Shopper,
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
-import { CustomerExternalData } from 'models/customerExternalData/types'
-import { MacrosProperties } from 'models/macro/types'
-import { Section } from 'models/section/types'
-import { Ticket } from 'models/ticket/types'
-import { View } from 'models/view/types'
-import { VoiceCall } from 'models/voiceCall/types'
-import { Account } from 'state/currentAccount/types'
-import { ActionData } from 'state/infobar/utils'
+import type { CustomerExternalData } from 'models/customerExternalData/types'
+import type { MacrosProperties } from 'models/macro/types'
+import type { Section } from 'models/section/types'
+import type { Ticket } from 'models/ticket/types'
+import type { View } from 'models/view/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import type { Account } from 'state/currentAccount/types'
+import type { ActionData } from 'state/infobar/utils'
 
 export type SendData = {
     clientId?: string

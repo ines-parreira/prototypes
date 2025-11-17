@@ -17,7 +17,7 @@ import {
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

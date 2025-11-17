@@ -1,9 +1,10 @@
-import React, { createRef, useContext } from 'react'
+import type React from 'react'
+import { createRef, useContext } from 'react'
 
 import { isArray, map, startCase, truncate } from 'lodash'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import {
+import type {
     DimensionShopifyMetafieldData,
     MoneyShopifyMetafield,
     RatingShopifyMetafieldData,
@@ -11,7 +12,7 @@ import {
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
 } from '@gorgias/helpdesk-queries'
-import { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
+import type { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { DateAndTimeFormatting } from 'constants/datetime'

@@ -5,7 +5,7 @@ import { useInterval } from '@repo/hooks'
 import { Badge } from '@gorgias/axiom'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,

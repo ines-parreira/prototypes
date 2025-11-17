@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { activeViewIdSet } from './actions'
-import { ViewsState } from './types'
+import type { ViewsState } from './types'
 
 const initialState: ViewsState = {
     activeViewId: null,

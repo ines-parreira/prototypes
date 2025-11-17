@@ -4,7 +4,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { HttpIntegration, IntegrationType } from 'models/integration/types'
+import type { HttpIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { AVAILABLE_3PL_INTEGRATIONS } from 'pages/automate/workflows/models/variables.types'
 import { getIntegrations } from 'state/integrations/selectors'
 

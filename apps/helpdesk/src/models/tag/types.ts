@@ -1,4 +1,5 @@
-import { ListTagsOrderBy, OrderDirection, Tag } from '@gorgias/helpdesk-queries'
+import type { OrderDirection, Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
 export type TagDraft = Pick<Tag, 'name'> & Partial<Pick<Tag, 'description'>>
 

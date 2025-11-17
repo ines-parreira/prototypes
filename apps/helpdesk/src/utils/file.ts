@@ -1,5 +1,6 @@
-import { ContentBlock, EditorState } from 'draft-js'
-import { Map } from 'immutable'
+import type { ContentBlock } from 'draft-js'
+import { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
 import JSZip from 'jszip'
 import _get from 'lodash/get'
 

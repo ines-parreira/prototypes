@@ -1,12 +1,13 @@
 import { ContentState, EditorState, SelectionState } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { TicketVia } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 
 import {
@@ -19,7 +20,7 @@ import { NEW_MESSAGE_FETCH_TICKET_SUCCESS } from '../constants'
 import * as emailExtraUtils from '../emailExtraUtils'
 import reducer, { initialState, makeNewMessage } from '../reducers'
 import * as responseUtils from '../responseUtils'
-import { NewMessage, ReplyAreaState } from '../types'
+import type { NewMessage, ReplyAreaState } from '../types'
 import { getMessageContextSnapshot } from './testUtils'
 
 const { addEmailExtraContent } = emailExtraUtils

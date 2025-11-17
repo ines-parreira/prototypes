@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import cn from 'classnames'
 
@@ -7,12 +8,12 @@ import { Skeleton } from '@gorgias/axiom'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 import css from './Kpi.less'
 

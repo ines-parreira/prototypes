@@ -6,13 +6,13 @@ import { chain as _chain } from 'lodash'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { helpCenterKeys } from 'models/helpCenter/queries'
-import {
+import type {
     Article,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
 import { createArticleFromDto } from 'models/helpCenter/utils'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import {
     deleteArticle as deleteArticleAction,
     getArticlesById,
@@ -27,7 +27,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE } from '../constants'
-import { ArticleTemplateKey } from '../types/articleTemplates'
+import type { ArticleTemplateKey } from '../types/articleTemplates'
 import { useCategoriesActions } from './useCategoriesActions'
 import useCurrentHelpCenter from './useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'

@@ -4,7 +4,7 @@ import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useA
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { OrderDirection } from 'models/api/types'
 
-import { IntentTableColumn } from '../types'
+import type { IntentTableColumn } from '../types'
 
 export const useIntentQuery = (
     column: IntentTableColumn,

@@ -1,4 +1,5 @@
-import { RefObject, useCallback, useEffect, useRef } from 'react'
+import type { RefObject } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { PREVIOUS_BUTTON_ID } from '../constants'
 

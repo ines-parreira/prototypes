@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import {
+import type {
     BigCommerceActionType,
     BigCommerceCart,
     BigCommerceCheckout,

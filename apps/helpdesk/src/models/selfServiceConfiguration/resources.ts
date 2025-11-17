@@ -1,6 +1,6 @@
 import { getGorgiasSSPApiClient } from 'rest_api/ssp_api/client'
 
-import { SelfServiceConfiguration } from './types'
+import type { SelfServiceConfiguration } from './types'
 
 export const fetchSelfServiceConfigurationSSP = async (
     shopName: string,

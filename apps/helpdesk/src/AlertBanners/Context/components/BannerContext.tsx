@@ -1,4 +1,5 @@
-import React, { ReactNode, useReducer } from 'react'
+import type { ReactNode } from 'react'
+import React, { useReducer } from 'react'
 
 import { BannersContext, BannersDispatchContext } from '../context'
 import { bannersReducer } from '../reducer'

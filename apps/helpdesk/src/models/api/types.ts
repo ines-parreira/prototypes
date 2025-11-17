@@ -1,6 +1,7 @@
-import axios, { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 export enum ContentType {
     Json = 'application/json',

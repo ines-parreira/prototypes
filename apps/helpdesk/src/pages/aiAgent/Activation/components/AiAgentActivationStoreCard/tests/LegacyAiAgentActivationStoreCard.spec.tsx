@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, waitFor } from '@testing-library/react'
@@ -6,10 +6,8 @@ import { userEvent } from '@testing-library/user-event'
 
 import { useFlag } from 'core/flags'
 import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard'
-import {
-    KNOWLEDGE_ALERT_KIND,
-    StoreActivation,
-} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'
 

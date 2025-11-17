@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import {
+import type {
     CustomerCustomFieldWithValue,
     ListCustomerCustomFieldsValues200,
     ListCustomFields200,

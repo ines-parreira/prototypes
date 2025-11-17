@@ -2,9 +2,9 @@ import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimensionV2,
-    MetricWithDecile,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -35,8 +35,8 @@ import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains
 import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export type MetricPerChannelQueryHook = (
     statsFilters: StatsFilters,

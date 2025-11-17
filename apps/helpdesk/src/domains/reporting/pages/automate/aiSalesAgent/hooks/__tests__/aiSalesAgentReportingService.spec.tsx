@@ -10,8 +10,8 @@ import { useTimeSeriesReportData } from 'domains/reporting/hooks/common/useTimeS
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import useAiSalesAgentOverviewReportData, {
     AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,

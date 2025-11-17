@@ -1,20 +1,20 @@
 import axios from 'axios'
 
-import {
+import type {
     AlertNotification,
     NotificationButton,
 } from 'state/notifications/types'
 
-import { MigrationFailuresSection } from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
-import { QuickSummaryEntry } from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
-import {
+import type { MigrationFailuresSection } from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
+import type { QuickSummaryEntry } from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
+import type {
     DetailMessage,
     ErrorResponse,
     MigrationSession,
     MigrationSessionCreate,
-    MigrationSessionStatus,
     UnprocessableContent,
 } from './types'
+import { MigrationSessionStatus } from './types'
 
 const sessionKeys: (keyof MigrationSession)[] = [
     'session',

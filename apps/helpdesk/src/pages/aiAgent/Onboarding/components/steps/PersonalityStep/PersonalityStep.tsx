@@ -1,4 +1,5 @@
-import { FC, useMemo } from 'react'
+import type { FC } from 'react'
+import { useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -9,12 +10,12 @@ import { z } from 'zod'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
+import type { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
-import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import type { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -26,7 +27,7 @@ import {
     PersuasionLevelLabels,
     PersuasionLevelSteps,
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'

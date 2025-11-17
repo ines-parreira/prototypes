@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { Field } from '../../MetafieldsTable/types'
-import { MetafieldCategory } from '../../types'
+import type { Field } from '../../MetafieldsTable/types'
+import type { MetafieldCategory } from '../../types'
 
 type SelectionByCategory = Record<MetafieldCategory, Field[]>
 

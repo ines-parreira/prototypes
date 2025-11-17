@@ -6,7 +6,7 @@ import { Redirect, Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import { CustomFieldObjectTypes } from 'custom-fields/types'
+import type { CustomFieldObjectTypes } from 'custom-fields/types'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'

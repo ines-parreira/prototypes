@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { getCategories } from 'state/entities/helpCenter/categories'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'

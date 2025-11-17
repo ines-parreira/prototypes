@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as types from './constants'
-import { LayoutState } from './types'
+import type { LayoutState } from './types'
 
 const initialState: LayoutState = fromJS({
     openedPanel: null,

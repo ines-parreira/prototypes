@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
-import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 

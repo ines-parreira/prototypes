@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,7 +17,8 @@ import {
     sentimentsTicketCountPerProductQueryFactory,
     TICKET_COUNT_MEASURE,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { Sentiment } from 'domains/reporting/models/stat/types'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { PositiveSentimentsPerProductKpiChart } from 'domains/reporting/pages/voice-of-customer/charts/PositiveSentimentsPerProductKpiChart/PositiveSentimentsPerProductKpiChart'
 import {

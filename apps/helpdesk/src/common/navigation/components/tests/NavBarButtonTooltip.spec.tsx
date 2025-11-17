@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import {
-    NavBarContextType,
-    NavBarDisplayMode,
-} from '../../hooks/useNavBar/context'
+import type { NavBarContextType } from '../../hooks/useNavBar/context'
+import { NavBarDisplayMode } from '../../hooks/useNavBar/context'
 import { useNavBar } from '../../hooks/useNavBar/useNavBar'
 import { NavBarButtonTooltip } from '../NavBarButtonTooltip'
 

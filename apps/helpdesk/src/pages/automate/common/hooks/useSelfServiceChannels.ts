@@ -2,15 +2,12 @@ import { useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
 
-import useSelfServiceChatChannels, {
-    SelfServiceChatChannel,
-} from './useSelfServiceChatChannels'
-import useSelfServiceHelpCenterChannels, {
-    SelfServiceHelpCenterChannel,
-} from './useSelfServiceHelpCenterChannels'
-import useSelfServiceStandaloneContactFormChannels, {
-    SelfServiceStandaloneContactFormChannel,
-} from './useSelfServiceStandaloneContactFormChannels'
+import type { SelfServiceChatChannel } from './useSelfServiceChatChannels'
+import useSelfServiceChatChannels from './useSelfServiceChatChannels'
+import type { SelfServiceHelpCenterChannel } from './useSelfServiceHelpCenterChannels'
+import useSelfServiceHelpCenterChannels from './useSelfServiceHelpCenterChannels'
+import type { SelfServiceStandaloneContactFormChannel } from './useSelfServiceStandaloneContactFormChannels'
+import useSelfServiceStandaloneContactFormChannels from './useSelfServiceStandaloneContactFormChannels'
 
 export type SelfServiceChannel =
     | SelfServiceHelpCenterChannel

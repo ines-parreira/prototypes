@@ -6,7 +6,7 @@ import {
     TicketSatisfactionSurveyMeasure,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { surveyScoresQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/surveyScoresQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     NotSpamNorTrashedTicketsFilter,

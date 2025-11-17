@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import React, {
     cloneElement,
-    ReactNode,
     useEffect,
     useMemo,
     useRef,
@@ -13,7 +13,7 @@ import { Popover } from 'reactstrap'
 import { useAppNode } from 'appNode'
 
 import { TRIGGERS_CONFIG } from '../../constants/triggers'
-import { CampaignTrigger } from '../../types/CampaignTrigger'
+import type { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 
 import css from './style.less'

@@ -1,5 +1,6 @@
-import { DraftEntityMutability, EditorState, SelectionState } from 'draft-js'
-import { Map } from 'immutable'
+import type { DraftEntityMutability } from 'draft-js'
+import { EditorState, SelectionState } from 'draft-js'
+import type { Map } from 'immutable'
 
 import {
     createEntityAndApplyToFirstBlockRange,

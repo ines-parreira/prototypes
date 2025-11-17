@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFilters } from 'domains/reporting/state/stats/selectors'
 import { setStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'

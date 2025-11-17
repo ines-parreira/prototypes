@@ -1,14 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import {
-    Edge,
-    Flow,
-    FlowProvider,
-    Node,
-    useEdgesState,
-    useNodesState,
-} from '..'
+import type { Edge, Node } from '..'
+import { Flow, FlowProvider, useEdgesState, useNodesState } from '..'
 import { useAutoLayout } from '../hooks/useAutoLayout'
 import * as layoutUtils from '../layout.utils'
 

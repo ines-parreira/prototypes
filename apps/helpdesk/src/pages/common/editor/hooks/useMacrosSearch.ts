@@ -11,8 +11,8 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchMacros } from 'models/macro/resources'
-import { Filters } from 'models/macro/types'
-import { Ticket } from 'models/ticket/types'
+import type { Filters } from 'models/macro/types'
+import type { Ticket } from 'models/ticket/types'
 import { NotificationStatus } from 'state/notifications/types'
 
 export const SEARCH_DEBOUNCE_DELAY = 350

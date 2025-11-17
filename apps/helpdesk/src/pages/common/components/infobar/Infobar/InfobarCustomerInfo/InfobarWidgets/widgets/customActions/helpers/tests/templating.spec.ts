@@ -1,9 +1,9 @@
-import { TemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import type { TemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
+import type { TemplateValues } from '../templating'
 import {
     applyCustomActionTemplate,
     applyCustomActionVariables,
-    TemplateValues,
 } from '../templating'
 
 describe('applyCustomActionTemplate', () => {

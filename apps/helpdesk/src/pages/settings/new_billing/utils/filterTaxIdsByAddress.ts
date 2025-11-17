@@ -1,7 +1,10 @@
 import mapValues from 'lodash/mapValues'
 
 import { TAX_ID_VALIDATION } from 'pages/settings/new_billing/constants'
-import { BillingContactUpdatePayload, TaxIdType } from 'state/billing/types'
+import type {
+    BillingContactUpdatePayload,
+    TaxIdType,
+} from 'state/billing/types'
 
 export const filterTaxIdsByAddress = (
     taxIds: BillingContactUpdatePayload['tax_ids'],

@@ -1,6 +1,6 @@
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class UpdateYourDiscountStrategyTask extends Task {

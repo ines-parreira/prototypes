@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     EngagementSettingsCard,
     EngagementSettingsCardContent,

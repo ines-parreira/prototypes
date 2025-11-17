@@ -1,6 +1,6 @@
 import { getAiSalesAgentEmailEnabledFlag } from 'pages/aiAgent/Activation/utils'
 
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class EnableAIAgentOnEmailTask extends Task {

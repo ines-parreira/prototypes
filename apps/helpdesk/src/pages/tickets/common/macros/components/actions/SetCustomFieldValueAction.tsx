@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { ObjectType } from '@gorgias/helpdesk-types'
+import type { ObjectType } from '@gorgias/helpdesk-types'
 
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 

@@ -3,10 +3,10 @@ import { TrialEndingModal } from 'pages/aiAgent/trial/components/TrialEndingModa
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import TrialOptOutModal from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
-import { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import type { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 
-import { TrialType } from '../types/ShoppingAssistant'
+import type { TrialType } from '../types/ShoppingAssistant'
 
 export type TrialSharedModalsProps = {
     shopName: string

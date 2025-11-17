@@ -15,7 +15,7 @@ import { channelConnection } from 'fixtures/channelConnection'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { ONBOARDING_CAMPAIGN_TEMPLATES_LIST } from 'pages/convert/campaigns/templates'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import WizardCampaignsStep from '../WizardCampaignsStep'

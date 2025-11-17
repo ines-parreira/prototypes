@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { getAutomateColorsForEventType } from 'domains/reporting/hooks/automate/utils'
-import { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 interface UseFilteredAutomatedInteractionTimeSeriesProps {

@@ -6,7 +6,7 @@ import {
     SelectField,
     TextField,
 } from '@gorgias/axiom'
-import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
+import type { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 
 import { FormField, useWatch } from 'core/forms'
 

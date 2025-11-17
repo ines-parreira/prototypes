@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { SCREEN_SIZE, useAsyncFn, useScreenSize } from '@repo/hooks'
 import classNames from 'classnames'
@@ -19,7 +20,7 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     Category,
     CreateCategoryDto,
     HelpCenter,
@@ -31,7 +32,7 @@ import {
 import { Drawer } from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Option, Value } from 'pages/common/forms/SelectField/types'
+import type { Option, Value } from 'pages/common/forms/SelectField/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -55,13 +56,11 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
-import { FileUpload, useFileUpload } from '../../hooks/useFileUpload'
+import type { FileUpload } from '../../hooks/useFileUpload'
+import { useFileUpload } from '../../hooks/useFileUpload'
 import { getCategoryDropdownOption } from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
-import {
-    ActionType,
-    ArticleLanguageSelect,
-    OptionItem,
-} from '../articles/ArticleLanguageSelect'
+import type { ActionType, OptionItem } from '../articles/ArticleLanguageSelect'
+import { ArticleLanguageSelect } from '../articles/ArticleLanguageSelect'
 import { CloseModal } from '../articles/CloseModal'
 import { ConfirmationModal } from '../ConfirmationModal'
 import { SearchEnginePreview } from '../SearchEnginePreview'

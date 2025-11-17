@@ -1,4 +1,4 @@
-import { MetafieldCategory } from './types'
+import type { MetafieldCategory } from './types'
 
 export type CategoryDefinition = {
     label: string

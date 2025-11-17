@@ -7,11 +7,11 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { topProductRecommendationsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { isFilterWithLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { mapMetrics } from 'domains/reporting/utils/reporting'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { mockedProducts } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
-import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import type { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
 let useTopProductsImplementation = ({
     filters,

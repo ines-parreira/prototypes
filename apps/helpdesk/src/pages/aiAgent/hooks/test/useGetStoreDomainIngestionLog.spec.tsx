@@ -1,13 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import {
-    useGetArticleIngestionLogs,
-    useGetIngestionLogs,
-} from 'models/helpCenter/queries'
+import type { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
+import { useGetIngestionLogs } from 'models/helpCenter/queries'
 import { POLLING_INTERVAL } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { reportError } from 'utils/errors'
 

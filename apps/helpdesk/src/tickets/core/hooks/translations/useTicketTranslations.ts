@@ -1,9 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import {
-    TicketLanguage,
-    useListTicketMessageTranslations,
-} from '@gorgias/helpdesk-queries'
+import type { TicketLanguage } from '@gorgias/helpdesk-queries'
+import { useListTicketMessageTranslations } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 

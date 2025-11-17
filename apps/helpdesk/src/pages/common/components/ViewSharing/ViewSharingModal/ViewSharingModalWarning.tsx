@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import { UncontrolledTooltip } from 'reactstrap'
 
 import Alert, { AlertType } from '../../Alert/Alert'

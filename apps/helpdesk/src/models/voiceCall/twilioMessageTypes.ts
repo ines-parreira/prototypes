@@ -1,4 +1,4 @@
-import { MonitoringErrorCode } from './types'
+import type { MonitoringErrorCode } from './types'
 
 export enum TwilioMessageType {
     MonitoringValidationFailed = 'monitoring-validation-failed',

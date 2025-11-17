@@ -10,10 +10,10 @@ import thunk from 'redux-thunk'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { createRule } from 'models/rule/resources'
-import { TagsState } from 'state/entities/tags/types'
+import type { TagsState } from 'state/entities/tags/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import RuleCreationModalContent from '../RuleCreationModalContent'
 

@@ -1,6 +1,6 @@
 import { OrderDirection } from 'models/api/types'
+import type { View } from 'models/view/types'
 import {
-    View,
     ViewCategory,
     ViewField,
     ViewType,

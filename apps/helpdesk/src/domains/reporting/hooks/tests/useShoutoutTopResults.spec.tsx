@@ -6,12 +6,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useShoutoutTopResults } from 'domains/reporting/hooks/useShoutoutTopResults'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { AgentsShoutOutsConfig } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
 import { agents } from 'fixtures/agents'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

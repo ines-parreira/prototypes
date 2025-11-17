@@ -1,19 +1,21 @@
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
-    AgentSkill,
-    AiAgentMessageType,
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type {
     AiAgentResponse,
-    MessageType,
     PlaygroundMessage,
     PlaygroundTextMessage,
     PlaygroundTicketEventMessage,
     TestSessionLog,
+} from 'models/aiAgentPlayground/types'
+import {
+    AgentSkill,
+    AiAgentMessageType,
+    MessageType,
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 
-import { PlaygroundChannels } from '../types'
+import type { PlaygroundChannels } from '../types'
 import {
     shouldAiAgentResponseDisplay,
     shouldDisplayActions,

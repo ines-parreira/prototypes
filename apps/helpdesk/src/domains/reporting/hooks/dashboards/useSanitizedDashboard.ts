@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import {
+import type {
     DashboardChild,
-    DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 
 const removeRestrictedCharts = (

@@ -1,4 +1,5 @@
-import { ReactNode, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useRef, useState } from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -7,7 +8,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import { SmsPhoneNumber } from '../StoreConfigForm/types'
+import type { SmsPhoneNumber } from '../StoreConfigForm/types'
 
 import css from './SmsIntegrationListSelection.less'
 

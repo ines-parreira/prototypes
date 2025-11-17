@@ -1,12 +1,13 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Template } from 'models/widget/types'
-import { Widget } from 'state/widgets/types'
+import type { Template } from 'models/widget/types'
+import type { Widget } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
 import Placeholder from '../Placeholder'

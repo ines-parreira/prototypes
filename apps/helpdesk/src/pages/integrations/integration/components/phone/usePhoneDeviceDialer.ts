@@ -1,10 +1,10 @@
 import { useState } from 'react'
 
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { PhoneIntegration } from 'models/integration/types/phone'
-import { UserSearchResult } from 'models/search/types'
+import type { PhoneIntegration } from 'models/integration/types/phone'
+import type { UserSearchResult } from 'models/search/types'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
 

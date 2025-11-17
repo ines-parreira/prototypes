@@ -15,10 +15,8 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import settingsCss from 'pages/settings/settings.less'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getViewsVisibilitySettings } from 'state/currentAccount/selectors'
-import {
-    AccountSettingType,
-    AccountSettingViewsVisibility,
-} from 'state/currentAccount/types'
+import type { AccountSettingViewsVisibility } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import {
     getBottomSystemTicketNavbarWithHiddenElements,
     getTopSystemTicketNavbarWithHiddenElements,

@@ -2,16 +2,16 @@ import { useCallback } from 'react'
 
 import { history } from '@repo/routing'
 
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     HttpResponse,
-    useDeleteIntegration,
 } from '@gorgias/helpdesk-queries'
+import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import { OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

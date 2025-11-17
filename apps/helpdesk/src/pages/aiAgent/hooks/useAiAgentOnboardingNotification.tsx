@@ -18,10 +18,8 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
-import {
-    AiAgentOnboardingState,
-    OnboardingNotificationState,
-} from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { NotificationEvent } from 'services/notificationTracker/constants'
 import {
     getAdminRecipientIds,

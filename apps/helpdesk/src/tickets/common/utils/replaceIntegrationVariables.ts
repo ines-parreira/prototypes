@@ -1,7 +1,8 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
-import { notify as notifyAction } from 'state/notifications/actions'
+import type { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import getVariableWithValue from './getVariableWithValue'

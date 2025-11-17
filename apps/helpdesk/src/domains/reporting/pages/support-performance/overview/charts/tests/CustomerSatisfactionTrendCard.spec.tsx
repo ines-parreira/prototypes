@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -10,7 +11,7 @@ import { CustomerSatisfactionTrendCard } from 'domains/reporting/pages/support-p
 import { STATS_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { account } from 'fixtures/account'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

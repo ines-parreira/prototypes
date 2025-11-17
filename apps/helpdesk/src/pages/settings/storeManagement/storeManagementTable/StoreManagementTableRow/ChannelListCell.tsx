@@ -11,7 +11,7 @@ import phoneIcon from 'assets/img/icons/channels/phone.svg'
 import smsIcon from 'assets/img/icons/channels/sms.svg'
 import tiktokShopIcon from 'assets/img/icons/channels/tiktok-shop.svg'
 import whatsappIcon from 'assets/img/icons/channels/whatsapp.svg'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import getDeduplicatedChannelTypes from '../../helpers/getDeduplicatedChannelTypes'
 import sortChannels from '../../helpers/sortChannels'

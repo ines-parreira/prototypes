@@ -9,17 +9,15 @@ import {
     LegacyCheckBoxField as CheckBoxField,
 } from '@gorgias/axiom'
 
-import {
-    isReusableLLMPromptCallNodeType,
-    VisualBuilderNode,
-} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import { AlertType } from '../../../common/components/Alert/Alert'
-import { ActionTemplate } from '../types'
+import type { ActionTemplate } from '../types'
 
 import css from './ActionsPlatformTemplateConfirmation.less'
 

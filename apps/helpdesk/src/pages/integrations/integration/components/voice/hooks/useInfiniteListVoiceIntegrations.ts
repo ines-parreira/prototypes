@@ -1,16 +1,16 @@
-import {
-    useInfiniteQuery,
-    UseInfiniteQueryOptions,
-} from '@tanstack/react-query'
+import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
-import {
+import type {
     HttpError,
     HttpResponse,
+    ListIntegrations200,
+    ListIntegrationsParams,
+} from '@gorgias/helpdesk-client'
+import {
     IntegrationType,
     listIntegrations,
-    ListIntegrations200,
     ListIntegrationsOrderBy,
-    ListIntegrationsParams,
 } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 

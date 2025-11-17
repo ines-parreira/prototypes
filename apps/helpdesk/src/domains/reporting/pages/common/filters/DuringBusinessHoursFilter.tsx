@@ -3,10 +3,8 @@ import { useCallback, useMemo } from 'react'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
@@ -14,11 +12,11 @@ import {
     emptyFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import {
+import type {
     OptionalFilterProps,
     RemovableFilter,
 } from 'domains/reporting/pages/common/filters/types'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
@@ -32,7 +30,7 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value?: StatsFiltersWithLogicalOperator[FilterKey.IsDuringBusinessHours]

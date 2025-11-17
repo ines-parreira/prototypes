@@ -1,8 +1,8 @@
 import { isString } from 'lodash'
 
-import { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 
-import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
+import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 export default function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
     return {

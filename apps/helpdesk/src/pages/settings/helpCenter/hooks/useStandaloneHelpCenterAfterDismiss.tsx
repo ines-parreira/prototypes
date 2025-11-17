@@ -2,11 +2,9 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import {
-    PRODUCT_BANNER_KEY,
-    useProductBannerStorage,
-} from 'hooks/useProductBannerStorage'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { PRODUCT_BANNER_KEY } from 'hooks/useProductBannerStorage'
+import { useProductBannerStorage } from 'hooks/useProductBannerStorage'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 export function useStandaloneHelpCenterAfterDismiss(
     helpCenters: HelpCenter[],

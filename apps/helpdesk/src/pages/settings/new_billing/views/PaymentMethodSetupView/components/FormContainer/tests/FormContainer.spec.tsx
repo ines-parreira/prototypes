@@ -7,7 +7,7 @@ import {
     useElements,
     useStripe,
 } from '@stripe/react-stripe-js'
-import {
+import type {
     StripeAddressElementChangeEvent,
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js'
@@ -27,10 +27,10 @@ import {
     BILLING_PAYMENT_PATH,
     SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
 } from 'pages/settings/new_billing/constants'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import type { BillingContactDetailResponse } from 'state/billing/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('@stripe/react-stripe-js')

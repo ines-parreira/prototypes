@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { reportError } from 'utils/errors'
 
 type Props = {

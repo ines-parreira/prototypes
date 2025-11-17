@@ -1,9 +1,10 @@
-import React, { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 
-import { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
-import { SegmentedOptionModel } from './types/SegmentedOptionModel'
+import type { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
+import type { SegmentedOptionModel } from './types/SegmentedOptionModel'
 
 import classes from './SegmentedOption.less'
 

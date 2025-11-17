@@ -2,13 +2,15 @@ import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceOrder,
-    BigCommerceRefundableItemType,
     BigCommerceRefundOrderState,
-    BigCommerceRefundType,
     CalculateOrderRefundDataResponse,
+} from 'models/integration/types'
+import {
+    BigCommerceRefundableItemType,
+    BigCommerceRefundType,
 } from 'models/integration/types'
 
 import {

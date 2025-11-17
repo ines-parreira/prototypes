@@ -13,7 +13,7 @@ import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 
-import { TaskConfig } from './types'
+import type { TaskConfig } from './types'
 import { getFirstIncompleteStep } from './utils/utils'
 
 import css from './CategoryContent.less'

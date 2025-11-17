@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
@@ -9,7 +9,7 @@ import CallExpression from 'pages/common/components/ast/expression/CallExpressio
 import Expression from 'pages/common/components/ast/expression/Expression'
 import Statement from 'pages/common/components/ast/statements/Statement'
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

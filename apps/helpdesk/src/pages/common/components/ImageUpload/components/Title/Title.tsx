@@ -1,7 +1,8 @@
-import React, { createRef, FunctionComponent, ReactChild } from 'react'
+import type { FunctionComponent, ReactChild } from 'react'
+import React, { createRef } from 'react'
 
 import classNames from 'classnames'
-import { UncontrolledTooltipProps } from 'reactstrap'
+import type { UncontrolledTooltipProps } from 'reactstrap'
 
 import { LegacyTooltip as TooltipComponent } from '@gorgias/axiom'
 

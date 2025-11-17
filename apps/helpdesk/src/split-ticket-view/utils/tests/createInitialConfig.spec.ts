@@ -1,4 +1,4 @@
-import { Config } from 'panels'
+import type { Config } from 'panels'
 
 import { LayoutKeys } from '../../constants'
 import createInitialConfig from '../createInitialConfig'

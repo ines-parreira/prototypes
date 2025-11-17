@@ -7,13 +7,13 @@ import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
-    StoreConfiguration,
 } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
@@ -31,7 +31,7 @@ import {
     WIZARD_POST_COMPLETION_STATE,
     WIZARD_UPDATE_QUERY_KEY,
 } from '../../constants'
-import { FormValues, UpdateValue, WizardFormValues } from '../../types'
+import type { FormValues, UpdateValue, WizardFormValues } from '../../types'
 
 type handleSaveParams = {
     publicUrls?: string[]

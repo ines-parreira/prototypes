@@ -1,9 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
 import { PromoCard } from 'pages/common/components/PromoCard'
 
 import { usePromoCardVideoContent } from '../hooks/usePromoCardVideoContent'
-import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
+import type { PromoCardContent } from '../types/ShoppingAssistant'
+import { TrialType } from '../types/ShoppingAssistant'
 import { NotificationIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'

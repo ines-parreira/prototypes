@@ -1,4 +1,4 @@
-import { ToneOfVoiceResponse } from '../types'
+import type { ToneOfVoiceResponse } from '../types'
 import { apiClient } from './message-processing'
 
 /**

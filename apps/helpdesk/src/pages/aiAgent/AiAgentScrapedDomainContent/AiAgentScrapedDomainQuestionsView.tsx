@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
@@ -20,7 +20,7 @@ import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResou
 import { useSelectedQuestionAndDetail } from './hooks/useSelectedQuestionAndDetail'
 import ScrapedDomainContentView from './ScrapedDomainContentView'
 import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
-import { IngestedResourceWithArticleId } from './types'
+import type { IngestedResourceWithArticleId } from './types'
 
 type Props = {
     shopName: string

@@ -1,4 +1,4 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -8,7 +8,7 @@ import {
 
 import Errors from 'pages/common/components/ast/Errors'
 import { computeLeftPadding } from 'pages/common/components/ast/utils'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
 import useHoverable from '../../../hooks/useHoverable'

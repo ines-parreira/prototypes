@@ -1,14 +1,13 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import {
-    GorgiasChatInstallationMethod,
-    ShopifyIntegration,
-} from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { GorgiasChatInstallationMethod } from 'models/integration/types'
 import {
     DEPRECATED_getIntegrationsByTypes,
     getStoreIntegrations,

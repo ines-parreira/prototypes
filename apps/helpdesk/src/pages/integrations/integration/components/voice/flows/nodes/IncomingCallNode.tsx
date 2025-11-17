@@ -1,6 +1,7 @@
 import { Icon } from '@gorgias/axiom'
 
-import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
+import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
 import type { IncomingCallNode } from '../types'
 

@@ -1,14 +1,16 @@
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
-    AiAgentMessageType,
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type {
     AiAgentResponse,
     CreatePlaygroundMessage,
-    isApiEligiblePlaygroundMessage,
-    MessageType,
     PlaygroundMessage,
     PlaygroundPromptMessage,
-    PlaygroundPromptType,
     PlaygroundTextMessage,
+} from 'models/aiAgentPlayground/types'
+import {
+    AiAgentMessageType,
+    isApiEligiblePlaygroundMessage,
+    MessageType,
+    PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 import {
@@ -20,7 +22,7 @@ import {
     CustomerHttpIntegrationDataMock,
     PLAYGROUND_PROMPT_CONTENT,
 } from '../../constants'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,

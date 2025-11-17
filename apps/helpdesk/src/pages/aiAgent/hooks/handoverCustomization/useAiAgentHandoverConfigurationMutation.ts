@@ -6,7 +6,7 @@ import {
     handoverConfigurationKeys,
     useUpsertStoreHandoverConfiguration,
 } from 'models/aiAgent/queries'
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
 
 type Params = {
     accountDomain: string

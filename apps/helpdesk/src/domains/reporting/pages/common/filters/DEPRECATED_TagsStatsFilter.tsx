@@ -1,7 +1,8 @@
-import React, { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback } from 'react'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter.less'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'

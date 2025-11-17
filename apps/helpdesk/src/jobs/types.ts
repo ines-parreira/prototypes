@@ -1,4 +1,4 @@
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
 export type Update = {
     assignee_team_id: number | null

@@ -1,16 +1,16 @@
-import { ContentBlock, ContentState, EditorState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 
-import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import {
+import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
 
 import { guidanceVariableRegex } from './constants'
-import GuidanceVariableTag, {
-    GuidanceVariableTagProps,
-} from './GuidanceVariableTag'
+import type { GuidanceVariableTagProps } from './GuidanceVariableTag'
+import GuidanceVariableTag from './GuidanceVariableTag'
 import { addGuidanceVariableEntity } from './utils'
 
 type Options = {

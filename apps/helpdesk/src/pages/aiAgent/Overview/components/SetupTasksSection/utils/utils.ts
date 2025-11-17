@@ -1,8 +1,8 @@
-import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import type { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 
 import { RULE_ENGINE_TASK_TO_STEP_NAME, TASK_CONFIG_TEMPLATES } from '../config'
-import { TaskConfig, TasksCategory } from '../types'
+import type { TaskConfig, TasksCategory } from '../types'
 
 export const createRuleEngineTaskMap = (
     pendingTasks: Task[],

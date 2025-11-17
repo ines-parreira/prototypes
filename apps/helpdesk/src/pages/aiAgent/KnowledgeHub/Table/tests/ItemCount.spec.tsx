@@ -1,12 +1,9 @@
 import { render, screen } from '@testing-library/react'
 
-import { Table } from '@gorgias/axiom'
+import type { Table } from '@gorgias/axiom'
 
-import {
-    GroupedKnowledgeItem,
-    KnowledgeType,
-    KnowledgeVisibility,
-} from '../../types'
+import type { GroupedKnowledgeItem } from '../../types'
+import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import { ItemCount } from '../ItemCount'
 
 const createMockTable = (

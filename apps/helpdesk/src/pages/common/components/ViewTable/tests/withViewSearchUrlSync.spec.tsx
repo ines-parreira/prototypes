@@ -1,7 +1,7 @@
 import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
-import { Location } from 'history'
-import { Map } from 'immutable'
+import type { Location } from 'history'
+import type { Map } from 'immutable'
 import _noop from 'lodash/noop'
 import { compressToEncodedURIComponent } from 'lz-string'
 import { stringify } from 'qs'
@@ -9,10 +9,8 @@ import { useLocation } from 'react-router-dom'
 
 import * as viewsConfig from 'config/views'
 import { EntityType } from 'models/view/types'
-import {
-    ViewSearchUrlSyncInjectedProps,
-    withViewSearchUrlSyncContainer,
-} from 'pages/common/components/ViewTable/withViewSearchUrlSync'
+import type { ViewSearchUrlSyncInjectedProps } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
+import { withViewSearchUrlSyncContainer } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('react-router-dom', () => ({

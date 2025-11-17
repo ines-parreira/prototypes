@@ -1,8 +1,9 @@
-import React, { FormEvent, useCallback, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
-import { Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
 import { Form, FormGroup, Label, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -19,10 +20,8 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { useGetContactFormList } from 'pages/settings/contactForm/queries'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettings } from 'state/currentAccount/selectors'
-import {
-    AccountSettingSatisfactionSurvey,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { AccountSettingSatisfactionSurvey } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { convertToHTML, getPlainText } from 'utils/editor'

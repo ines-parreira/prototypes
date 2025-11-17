@@ -4,16 +4,13 @@ import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
-import {
-    ListMacrosParams,
-    Macro,
-    useListMacros,
-} from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
+import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError, OrderDirection } from 'models/api/types'
-import { MacroSortableProperties } from 'models/macro/types'
+import type { GorgiasApiError, OrderDirection } from 'models/api/types'
+import type { MacroSortableProperties } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'

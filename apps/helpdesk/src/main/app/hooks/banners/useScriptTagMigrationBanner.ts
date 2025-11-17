@@ -1,11 +1,7 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import {
-    AlertBannerTypes,
-    BannerCategories,
-    ContextBanner,
-    useBanners,
-} from 'AlertBanners'
+import type { ContextBanner } from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

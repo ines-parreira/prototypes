@@ -1,6 +1,6 @@
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
-import { ChannelWithMetadata } from '../../../../types'
+import type { ChannelWithMetadata } from '../../../../types'
 import { trackChannelChanges } from '../trackChannelChanges'
 
 describe('trackChannelChanges', () => {

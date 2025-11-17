@@ -1,9 +1,10 @@
-import React, { Component, ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { MentionPluginTheme } from 'pages/common/draftjs/plugins/mentions/types'
+import type { MentionPluginTheme } from 'pages/common/draftjs/plugins/mentions/types'
 
 type Props = {
     entryComponent: ComponentType<

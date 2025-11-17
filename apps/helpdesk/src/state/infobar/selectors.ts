@@ -1,7 +1,8 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { createImmutableSelector } from '../../utils'
-import { RootState } from '../types'
+import type { RootState } from '../types'
 
 export const getInfobarState = (state: RootState) => state.infobar || fromJS({})
 

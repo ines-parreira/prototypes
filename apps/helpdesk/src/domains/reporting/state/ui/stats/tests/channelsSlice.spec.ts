@@ -10,7 +10,7 @@ import {
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('channelsSlice', () => {
     const defaultState = {

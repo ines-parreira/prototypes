@@ -1,7 +1,5 @@
-import {
-    InventoryPolicy as ShopifyInventoryPolicy,
-    Product as ShopifyProduct,
-} from 'constants/integrations/types/shopify'
+import type { Product as ShopifyProduct } from 'constants/integrations/types/shopify'
+import { InventoryPolicy as ShopifyInventoryPolicy } from 'constants/integrations/types/shopify'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 
 export function isProductAvailable(product: ShopifyProduct): boolean {

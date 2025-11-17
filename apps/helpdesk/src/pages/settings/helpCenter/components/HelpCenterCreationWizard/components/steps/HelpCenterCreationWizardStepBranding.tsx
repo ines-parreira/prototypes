@@ -4,10 +4,8 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
@@ -22,7 +20,7 @@ import {
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
 import { useFileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
-import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
+import type { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

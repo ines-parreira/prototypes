@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,7 +9,7 @@ import thunk from 'redux-thunk'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { IntegrationsFilter } from 'domains/reporting/pages/common/filters/IntegrationsFilter'
 import { integrationsState } from 'fixtures/integrations'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 const defaultState = {}
 

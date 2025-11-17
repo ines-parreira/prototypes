@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
 import Clipboard from 'clipboard'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -18,7 +19,7 @@ import {
 
 import { IntegrationType } from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 

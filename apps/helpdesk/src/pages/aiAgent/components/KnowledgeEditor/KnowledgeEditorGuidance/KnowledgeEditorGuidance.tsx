@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { LoadingSpinner, SidePanel } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
-import {
+import type {
     ArticleTranslationResponseDto,
     ArticleWithLocalTranslation,
     LocaleCode,
@@ -15,18 +15,16 @@ import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/varia
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-import {
+import type {
     GuidanceArticle,
     GuidanceFormFields,
     GuidanceTemplate,
 } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
-import {
-    BaseProps,
-    KnowledgeEditorGuidanceView,
-} from './KnowledgeEditorGuidanceView'
+import type { BaseProps } from './KnowledgeEditorGuidanceView'
+import { KnowledgeEditorGuidanceView } from './KnowledgeEditorGuidanceView'
 
 const KnowledgeEditorGuidanceStatefulEdit = ({
     shopName,

@@ -1,10 +1,5 @@
-import {
-    KeyboardEvent,
-    ReactNode,
-    useCallback,
-    useContext,
-    useRef,
-} from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
+import { useCallback, useContext, useRef } from 'react'
 
 import cn from 'classnames'
 
@@ -14,7 +9,8 @@ import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScrol
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import Context, { Item } from './Context'
+import type { Item } from './Context'
+import Context from './Context'
 import focusOnNextItem from './focusOnNextItem'
 
 import css from './style.less'

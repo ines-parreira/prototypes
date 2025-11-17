@@ -2,13 +2,8 @@ import React, { forwardRef, isValidElement, useRef } from 'react'
 
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
-import {
-    DragSourceMonitor,
-    DropTargetMonitor,
-    useDrag,
-    useDragLayer,
-    useDrop,
-} from 'react-dnd'
+import type { DragSourceMonitor, DropTargetMonitor } from 'react-dnd'
+import { useDrag, useDragLayer, useDrop } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -16,10 +11,12 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import DashboardGrid from 'domains/reporting/pages/common/layout/DashboardGrid'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import css from 'domains/reporting/pages/dashboards/DraggableGridCell.less'
-import {
-    ChartType,
+import type {
     DashboardChartSchema,
     DashboardChild,
+} from 'domains/reporting/pages/dashboards/types'
+import {
+    ChartType,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
 import IconInput from 'pages/common/forms/input/IconInput'

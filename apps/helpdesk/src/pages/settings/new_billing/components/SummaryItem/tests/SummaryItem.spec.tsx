@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 
-import SummaryItem, { SummaryItemProps } from '../SummaryItem'
+import type { SummaryItemProps } from '../SummaryItem'
+import SummaryItem from '../SummaryItem'
 
 describe('SummaryItem', () => {
     const props: SummaryItemProps = {

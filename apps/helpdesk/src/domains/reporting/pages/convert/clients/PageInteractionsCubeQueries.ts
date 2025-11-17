@@ -1,8 +1,6 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    ReportingFilterOperator,
-    ReportingParams,
-} from 'domains/reporting/models/types'
+import type { ReportingParams } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     PageInteractionsDimension,
     PageInteractionsMeasure,

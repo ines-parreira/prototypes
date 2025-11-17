@@ -2,9 +2,8 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import useGetBadgeTiers, {
-    BadgeTiers,
-} from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
+import type { BadgeTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
+import useGetBadgeTiers from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
 
 import { BadgeWithTiers } from '../BadgeWithTiers'
 

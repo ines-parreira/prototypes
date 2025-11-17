@@ -4,10 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
-import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
-import { WfConfigurationResponseDto } from '../types'
+import type { VisualBuilderNode } from '../models/visualBuilderGraph.types'
+import type { WfConfigurationResponseDto } from '../types'
 import {
     useWorkflowsIdsEnabledInChat,
     useWorkflowsIdsEnabledInContactForm,

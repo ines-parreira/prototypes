@@ -3,7 +3,8 @@ import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { AutomatePlan, Cadence, Plan, ProductType } from 'models/billing/types'
+import type { AutomatePlan, Cadence, Plan } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
 import css from './AutomateSubscriptionModal.less'

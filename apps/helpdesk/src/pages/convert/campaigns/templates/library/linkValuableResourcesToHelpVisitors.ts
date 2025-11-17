@@ -1,10 +1,10 @@
 // Link to a valuable resource outside of business hours
 import { ulid } from 'ulidx'
 
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     BannerType,
     TooltipActionType,
-    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
@@ -15,7 +15,7 @@ import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRu
 import { assetsUrl } from 'utils'
 
 import { CampaignConfigurationBuilder } from '../constructor'
-import { CampaignConfiguration, CampaignTemplate } from '../types'
+import type { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
     slug: 'link-valuable-resource-to-help-visitors',

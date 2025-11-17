@@ -1,8 +1,8 @@
-import { Value } from 'pages/common/forms/SelectField/types'
-import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import type { Value } from 'pages/common/forms/SelectField/types'
+import type { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import { UpdateTriggerFn } from '../types/AdvancedTriggerBaseProps'
-import { CampaignTrigger } from '../types/CampaignTrigger'
+import type { UpdateTriggerFn } from '../types/AdvancedTriggerBaseProps'
+import type { CampaignTrigger } from '../types/CampaignTrigger'
 import { isTriggerOperatorAllowed } from './isTriggerOperatorAllowed'
 
 export const handleTriggerOperatorChange = (

@@ -1,4 +1,4 @@
-import { Ticket, TicketMessage } from '@gorgias/helpdesk-client'
+import type { Ticket, TicketMessage } from '@gorgias/helpdesk-client'
 
 import { extractTicketData } from '../ticket-extraction.utils'
 

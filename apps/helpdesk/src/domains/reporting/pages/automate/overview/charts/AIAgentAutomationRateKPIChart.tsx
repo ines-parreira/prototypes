@@ -4,7 +4,7 @@ import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumber
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import {
     AI_AGENT_AUTOMATION_RATE_LABEL,
     AI_AGENT_AUTOMATION_RATE_TOOLTIP,

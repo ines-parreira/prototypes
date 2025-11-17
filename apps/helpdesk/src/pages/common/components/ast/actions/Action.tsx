@@ -1,13 +1,8 @@
-import React, {
-    Children,
-    cloneElement,
-    PropsWithChildren,
-    ReactElement,
-    useMemo,
-} from 'react'
+import type { PropsWithChildren, ReactElement } from 'react'
+import React, { Children, cloneElement, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
 
@@ -15,7 +10,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import Errors from 'pages/common/components/ast/Errors'
 import { computeLeftPadding } from 'pages/common/components/ast/utils'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'

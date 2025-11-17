@@ -15,10 +15,8 @@ import {
     NO_DASHBOARDS_LABEL,
     REMOVE_FROM_DASHBOARD,
 } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import {
-    DashboardChildType,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { user } from 'fixtures/users'
 import { renderWithStore } from 'utils/testing'

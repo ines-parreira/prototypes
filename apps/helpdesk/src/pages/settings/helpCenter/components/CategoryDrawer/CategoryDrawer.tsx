@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import type React from 'react'
+import { useEffect } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import {
+import type {
     Category,
     CreateCategoryDto,
     HelpCenter,

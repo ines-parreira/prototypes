@@ -1,4 +1,4 @@
-import { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
+import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 /* istanbul ignore file */
 import { appQueryClient } from 'api/queryClient'

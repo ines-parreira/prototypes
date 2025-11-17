@@ -1,11 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { getContrastColor } from 'gorgias-design-system/utils'
-import {
+import type {
     ContactFormField,
-    ContactFormFieldType,
     ContactFormStep,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ContactFormFieldType } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 import { EmailCaptureField } from './EmailCaptureField'
 import { Disclaimer, SubmitButton } from './styled'

@@ -1,5 +1,5 @@
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
-import { CustomBusinessHoursFormValues } from './types'
+import type { CustomBusinessHoursFormValues } from './types'
 
 export const useCustomBusinessHoursForm = () => {
     const { integrationsToOverride } = useCustomBusinessHoursContext()

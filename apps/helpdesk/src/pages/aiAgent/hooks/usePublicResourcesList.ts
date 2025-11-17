@@ -5,7 +5,7 @@ import {
     useGetArticleIngestionLogsList,
     useGetHelpCenterListMulti,
 } from 'models/helpCenter/queries'
-import { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
+import type { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
 import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 

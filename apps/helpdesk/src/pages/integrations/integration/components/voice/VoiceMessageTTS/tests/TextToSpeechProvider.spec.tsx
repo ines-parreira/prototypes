@@ -1,14 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
-import { DomainEvent } from '@gorgias/events'
-import {
-    VoiceGender,
-    VoiceLanguage,
-    VoiceMessageTextToSpeech,
-} from '@gorgias/helpdesk-types'
+import type { DomainEvent } from '@gorgias/events'
+import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-types'
+import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
 import { Form } from 'core/forms'

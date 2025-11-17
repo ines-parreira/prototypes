@@ -1,4 +1,5 @@
-import { RefObject, useMemo } from 'react'
+import type { RefObject } from 'react'
+import { useMemo } from 'react'
 
 import DisplayedDate from './DisplayedDate'
 import * as timelineItem from './helpers/timelineItem'
@@ -6,7 +7,8 @@ import { OrderCard } from './order-ticket'
 import { TicketModal, useTicketModal } from './ticket-modal'
 import { useModalShortcuts } from './ticket-modal/hooks/useModalShortcuts'
 import { TicketListItem } from './TicketListItem'
-import { SortOption, TimelineItem, TimelineItemKind } from './types'
+import type { SortOption, TimelineItem } from './types'
+import { TimelineItemKind } from './types'
 
 import css from './SortedTicketList.less'
 

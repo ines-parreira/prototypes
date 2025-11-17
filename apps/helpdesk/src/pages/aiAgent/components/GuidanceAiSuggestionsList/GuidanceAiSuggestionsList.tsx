@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
-import { AIGuidance } from '../../types'
+import type { AIGuidance } from '../../types'
 import { GuidanceAiSuggestionCard } from '../GuidanceAiSuggestionCard/GuidanceAiSuggestionCard'
 import { SeeAllSuggestionsCard } from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
 

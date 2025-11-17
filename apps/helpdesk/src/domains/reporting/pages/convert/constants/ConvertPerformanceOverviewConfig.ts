@@ -1,5 +1,5 @@
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 export const OverviewMetricConfig: Record<
     CampaignsTotalsMetricNames,

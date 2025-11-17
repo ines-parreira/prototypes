@@ -1,9 +1,10 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
 import * as fixtures from '../../../fixtures/views'
 import { ViewType } from '../../../models/view/types'
-import { RootState } from '../../types'
+import type { RootState } from '../../types'
 import * as types from '../constants'
 import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from '../constants'
 import reducers, { initialState } from '../reducers'

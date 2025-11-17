@@ -1,12 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import {
+import type {
     CustomFieldFilter,
-    FilterKey,
     LegacyStatsFilters,
     Period,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,

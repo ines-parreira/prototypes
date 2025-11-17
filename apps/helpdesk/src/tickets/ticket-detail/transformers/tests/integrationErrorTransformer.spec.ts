@@ -1,4 +1,4 @@
-import { TicketMessage } from '@gorgias/helpdesk-queries'
+import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 

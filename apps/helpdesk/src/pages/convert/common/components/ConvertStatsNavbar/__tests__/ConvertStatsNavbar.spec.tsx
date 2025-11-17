@@ -16,10 +16,10 @@ import {
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import * as aiAgentAccessHook from 'hooks/aiAgent/useAiAgentAccess'
-import { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
+import type { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { ConvertStatsNavbar } from '../ConvertStatsNavbar'

@@ -3,10 +3,9 @@ import { createRef } from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { UnsavedChangesModalProps } from '../UnsavedChangesModal'
-import UnsavedChangesPrompt, {
-    UnsavedChangesPromptTrigger,
-} from '../UnsavedChangesPrompt'
+import type { UnsavedChangesModalProps } from '../UnsavedChangesModal'
+import type { UnsavedChangesPromptTrigger } from '../UnsavedChangesPrompt'
+import UnsavedChangesPrompt from '../UnsavedChangesPrompt'
 import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
 
 const mockUseUnsavedChangesPromptProps = {

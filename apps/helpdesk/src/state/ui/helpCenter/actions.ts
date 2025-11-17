@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 import { UiActions } from './types'
 

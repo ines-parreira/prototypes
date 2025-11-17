@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import { UserSettingType } from 'config/types/user'
 import { view } from 'fixtures/views'
 import { ViewType } from 'models/view/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import ViewNavbarView from '../ViewNavbarView'

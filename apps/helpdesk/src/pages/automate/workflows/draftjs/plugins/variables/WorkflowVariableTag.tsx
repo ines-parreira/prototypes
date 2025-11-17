@@ -1,6 +1,5 @@
+import type { MouseEvent, ReactNode } from 'react'
 import React, {
-    MouseEvent,
-    ReactNode,
     useCallback,
     useLayoutEffect,
     useMemo,

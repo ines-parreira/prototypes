@@ -1,4 +1,5 @@
-import { AlertBannerTypes, BannerCategories, ContextBanner } from '../../types'
+import type { ContextBanner } from '../../types'
+import { AlertBannerTypes, BannerCategories } from '../../types'
 import { bannersReducer } from '../reducer'
 import { BannerActionTypes } from '../types'
 

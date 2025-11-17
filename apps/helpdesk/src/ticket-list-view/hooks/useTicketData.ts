@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { QueryKey, useQueryClient } from '@tanstack/react-query'
+import type { QueryKey } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { fetchTicketsByTicketIds } from 'models/ticket/resources'
 
-import { TicketCompact } from '../types'
+import type { TicketCompact } from '../types'
 
 export default function useTicketData(
     visibleStaleTicketIds: number[],

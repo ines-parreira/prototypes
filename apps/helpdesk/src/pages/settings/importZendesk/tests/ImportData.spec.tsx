@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchIntegrations } from 'state/integrations/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import ImportZendesk from '../ImportZendesk'

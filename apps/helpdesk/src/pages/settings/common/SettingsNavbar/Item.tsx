@@ -1,4 +1,5 @@
-import { ReactNode, useMemo, useRef } from 'react'
+import type { ReactNode } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _kebabCase from 'lodash/kebabCase'
@@ -6,7 +7,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 import { DisplayType } from 'components/Navigation/components/NavigationSectionItem'
 import { Navigation } from 'components/Navigation/Navigation'
-import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import type { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'

@@ -1,12 +1,12 @@
-import { EnhancedStore } from '@reduxjs/toolkit'
-import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable'
+import type { EnhancedStore } from '@reduxjs/toolkit'
+import type { Map as ImmutableMap, Set as ImmutableSet } from 'immutable'
 import moment from 'moment'
 import { dismissNotification } from 'reapop'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { store as reduxStore } from 'common/store'
-import { HelpCenter } from 'models/helpCenter/types'
-import { IntegrationType } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { IntegrationType } from 'models/integration/types'
 import { tryLocalStorage } from 'services/common/utils'
 import { getHelpCenters } from 'state/entities/helpCenter/helpCenters'
 import { getActiveIntegrations } from 'state/integrations/selectors'
@@ -28,10 +28,7 @@ import {
     MAINTENANCE_POLLING_INTERVAL_SECONDS,
     PAGE_ID,
 } from './constants'
-import {
-    ComponentStatus,
-    IncidentImpact,
-    MaintenanceStatus,
+import type {
     Page,
     StatusPageComponent,
     StatusPageIncident,
@@ -39,6 +36,7 @@ import {
     StatusPageScheduledMaintenance,
     StatusPageScheduledMaintenanceResponseData,
 } from './types'
+import { ComponentStatus, IncidentImpact, MaintenanceStatus } from './types'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore

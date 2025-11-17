@@ -1,4 +1,5 @@
-import React, { UIEventHandler, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'

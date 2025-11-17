@@ -11,16 +11,16 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { CellWrapper } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/CellWrapper'
 import { ProductFeedbackCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductFeedbackCell'
+import type { Product } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import {
     getDrillDownMetricData,
     getUseSentimentTrendQuery,
-    Product,
     ProductInsightsColumnConfig,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { ProductNameCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductNameCell'
 import { ReturnMentionsMetricCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ReturnMentionsMetricCell'
 import { TicketsVolumeMetricCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/TicketsVolumeMetricCell'
-import { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
+import type { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 
 export type ProductSentimentTableCellProps = PropsWithProduct & {

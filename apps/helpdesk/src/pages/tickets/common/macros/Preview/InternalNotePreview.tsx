@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { MacroAction } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
 
 import css from './Preview.less'
 

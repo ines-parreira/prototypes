@@ -1,6 +1,7 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
 import Action from 'pages/common/components/ast/actions/Action'
@@ -13,9 +14,9 @@ import DeleteBinaryExpression from 'pages/common/components/ast/operations/Delet
 import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
 import useHoverable from 'pages/common/hooks/useHoverable'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { OBJECT_DEFINITIONS } from 'state/rules/constants'
-import { ObjectExpressionPropertyKey } from 'state/rules/types'
+import type { ObjectExpressionPropertyKey } from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>

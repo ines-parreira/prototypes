@@ -5,7 +5,7 @@ import {
     proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 
-import { EnhancedStore } from '@reduxjs/toolkit'
+import type { EnhancedStore } from '@reduxjs/toolkit'
 import { fromJS } from 'immutable'
 import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
@@ -17,7 +17,7 @@ import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
 import { section } from 'fixtures/section'
 import { view } from 'fixtures/views'
-import { HelpdeskPlan, PriceId } from 'models/billing/types'
+import type { HelpdeskPlan, PriceId } from 'models/billing/types'
 import {
     ecommerceStoreFixture,
     shopperAddressFixture,
@@ -30,15 +30,15 @@ import { history } from '@repo/routing'
 import * as activityTracker from 'services/activityTracker'
 import { ActivityEvents } from 'services/activityTracker'
 import browserNotification from 'services/browserNotification'
-import {
+import type {
     CustomerExternalDataUpdatedEvent,
     OrderEvent,
     OutboundPhoneCallInitiated,
     ReceivedEvent,
     ShopperAddressEvent,
     ShopperEvent,
-    SocketEventType,
 } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 import * as billingSelectors from 'state/billing/selectors'
 import * as chatActions from 'state/chats/actions'
 import * as currentAccountConstants from 'state/currentAccount/constants'

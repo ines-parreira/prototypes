@@ -1,8 +1,9 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 
-import { User } from 'config/types/user'
-import { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { User } from 'config/types/user'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { statsFiltersWithLogicalOperatorsFromSavedFilters } from 'domains/reporting/state/stats/utils'
@@ -11,14 +12,14 @@ import {
     getSavedFilterDraft,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { getCleanStatsFilters } from 'domains/reporting/state/ui/stats/selectors'
-import {
-    AgentsTableColumn,
+import type {
     StatsTablesState,
     VoiceAgentsTableColumn,
 } from 'domains/reporting/state/ui/stats/types'
+import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getSortByName } from 'utils/getSortByName'
 
 export type AgentPerformanceSorting<T> = {

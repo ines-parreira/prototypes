@@ -1,18 +1,19 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
+import type { RenderResult } from '@testing-library/react'
 import {
     act,
     fireEvent,
     render,
-    RenderResult,
     screen,
     waitFor,
     within,
 } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -21,15 +22,15 @@ import { UserRole } from 'config/types/user'
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import { Update } from 'jobs'
+import type { Update } from 'jobs'
 import { JobType } from 'models/job/types'
 import { createJob as createJobTicket } from 'state/tickets/actions'
-import { RootState, StoreState } from 'state/types'
+import type { RootState, StoreState } from 'state/types'
 import {
     createJob as createJobView,
     updateSelectedItemsIds,
 } from 'state/views/actions'
-import { TagDropdownMenu } from 'tags'
+import type { TagDropdownMenu } from 'tags'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import { TicketListActions } from '../TicketListActions'

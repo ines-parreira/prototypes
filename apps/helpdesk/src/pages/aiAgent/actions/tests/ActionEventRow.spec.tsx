@@ -8,12 +8,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import ActionEventRow from '../components/ActionEventRow'
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-import { ACEProps, EditorProps } from './types'
+import type { ACEProps, EditorProps } from './types'
 import withACEEditor from './withACEEditor'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */

@@ -3,21 +3,22 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import {
-    TicketCubeWithJoins,
-    TicketDimension,
-} from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { injectCustomFieldId } from 'domains/reporting/models/queryFactories/utils'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type {
+    Sentiment,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
+import type {
     ReportingFilter,
-    ReportingFilterOperator,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,

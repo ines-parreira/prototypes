@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { produce } from 'immer'
 
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useUntouchWorkflowGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {

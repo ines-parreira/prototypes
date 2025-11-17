@@ -6,7 +6,8 @@ import SalesStrategy from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.p
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { assetsUrl } from 'utils'
 
-import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
+import type { PaywallFeature } from '../usePaywallConfig'
+import { usePaywallConfig } from '../usePaywallConfig'
 
 jest.mock('utils')
 

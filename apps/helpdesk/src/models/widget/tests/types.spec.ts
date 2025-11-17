@@ -1,4 +1,5 @@
 import { LEAF_TYPES } from '../constants'
+import type { Source, Template } from '../types'
 import {
     isCardTemplate,
     isLeafTemplate,
@@ -7,8 +8,6 @@ import {
     isSourceArray,
     isSourceRecord,
     isWrapperTemplate,
-    Source,
-    Template,
 } from '../types'
 
 describe('isSourceRecord', () => {

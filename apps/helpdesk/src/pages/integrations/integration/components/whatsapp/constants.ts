@@ -1,4 +1,4 @@
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
 import { AlertType } from 'pages/common/components/Alert/Alert'

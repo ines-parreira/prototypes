@@ -8,11 +8,9 @@ import { useModalManager } from 'hooks/useModalManager'
 import ProductRecommendationModal from 'pages/convert/campaigns/components/ProductRecommendationModal/ProductRecommendationModal'
 import { SCENARIO_CONFIG } from 'pages/convert/campaigns/constants/productRecommendationScenarios'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {
-    ProductRecommendationAttachment,
-    ProductRecommendationScenario,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { areTriggersEqual } from 'pages/convert/campaigns/utils/areTriggersEqual'
 import { getRecommendedTriggerForScenario } from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
 

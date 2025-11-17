@@ -5,9 +5,10 @@ import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 import { fromJS } from 'immutable'
 import _camelCase from 'lodash/camelCase'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
-import { InputType } from 'reactstrap/es/Input'
+import type { InputType } from 'reactstrap/es/Input'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -21,7 +22,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from '../settings.less'
 

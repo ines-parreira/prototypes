@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { flushPromises, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
@@ -16,7 +16,7 @@ import {
 } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([

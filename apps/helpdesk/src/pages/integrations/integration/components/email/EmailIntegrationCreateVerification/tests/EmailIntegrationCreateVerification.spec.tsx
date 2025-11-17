@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
@@ -12,7 +13,7 @@ import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { ErrorMessage } from 'pages/convert/settings/components/styled'
-import { DisclaimerSettings } from 'pages/convert/settings/types'
+import type { DisclaimerSettings } from 'pages/convert/settings/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
 import { sanitizeHtmlDefault } from 'utils/html'
 

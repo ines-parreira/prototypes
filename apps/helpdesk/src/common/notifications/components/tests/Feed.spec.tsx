@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
-import type { RenderItemProps } from '@knocklabs/react'
+import { useKnockFeed } from '@knocklabs/react'
+import type { NotificationFeed, RenderItemProps } from '@knocklabs/react'
 import {
     logEvent,
     NotificationCenterEventTypes,
@@ -11,8 +11,8 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import Feed from '../Feed'
-import FeedHeader from '../FeedHeader'
-import FeedItem from '../FeedItem'
+import type FeedHeader from '../FeedHeader'
+import type FeedItem from '../FeedItem'
 
 let mockItem: RenderItemProps['item']
 

@@ -1,7 +1,7 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
-import { CampaignContactFormAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignContactFormAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 export const transformAttachmentsToContactCaptureForms = (
     attachments: List<any>,

@@ -1,11 +1,12 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { RootState, StoreDispatch } from '../../state/types'
+import type { RootState, StoreDispatch } from '../../state/types'
 import useAppDispatch from '../useAppDispatch'
 
 describe('useAppDispatch', () => {

@@ -1,19 +1,20 @@
 import { action } from '@storybook/addon-actions'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { user } from 'fixtures/users'
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
-import {
-    KNOWLEDGE_ALERT_KIND,
+import type {
     Settings,
     StoreActivation,
 } from '../../hooks/storeActivationReducer'
+import { KNOWLEDGE_ALERT_KIND } from '../../hooks/storeActivationReducer'
 import { AiAgentActivationStoreCard } from './AiAgentActivationStoreCard'
 
 const meta: Meta<typeof AiAgentActivationStoreCard> = {

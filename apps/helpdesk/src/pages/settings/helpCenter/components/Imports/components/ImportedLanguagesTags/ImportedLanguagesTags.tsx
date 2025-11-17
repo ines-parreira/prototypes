@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { BadgeItemProps } from 'pages/common/components/BadgetItem'
+import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
 import settingsCss from 'pages/settings/settings.less'
 
-import {
+import type {
     Locale,
     LocaleCode,
 } from '../../../../../../../models/helpCenter/types'

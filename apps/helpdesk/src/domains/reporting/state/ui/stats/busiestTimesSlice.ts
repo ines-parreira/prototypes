@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { metrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export type BusiestTimesState = {
     selectedMetric: BusiestTimeOfDaysMetrics

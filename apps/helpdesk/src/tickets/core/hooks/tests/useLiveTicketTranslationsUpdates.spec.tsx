@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
@@ -16,14 +16,14 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import {
     DisplayedContent,
     FetchingState,
     TicketMessagesTranslationDisplayContext,
 } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
-import { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
+import type { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
 import { useLiveTicketTranslationsUpdates } from '../translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 
 type UseLiveTicketTranslationsUpdatesParams = Parameters<

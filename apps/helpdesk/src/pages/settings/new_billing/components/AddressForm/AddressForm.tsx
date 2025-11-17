@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { countriesRequiringState, Country } from 'config/countries'
+import type { Country } from 'config/countries'
+import { countriesRequiringState } from 'config/countries'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import { BillingContact } from 'state/billing/types'
+import type { BillingContact } from 'state/billing/types'
 
 import CountriesDropdown from '../../components/CountriesDropdown/CountriesDropdown'
 import {

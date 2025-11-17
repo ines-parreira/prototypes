@@ -1,7 +1,7 @@
 import { Panel } from 'core/layout/panels'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
-import { OnToggleUnreadFn } from 'tickets/dtp'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 const panelConfig = {
     defaultSize: Infinity,

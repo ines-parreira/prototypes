@@ -1,7 +1,7 @@
-import { TicketElement, TicketMessage } from 'models/ticket/types'
+import type { TicketElement, TicketMessage } from 'models/ticket/types'
 import { isVoiceCall } from 'models/voiceCall/types'
 
-import { ShoppingAssistantEvent } from './hooks/useInsertShoppingAssistantEventElements'
+import type { ShoppingAssistantEvent } from './hooks/useInsertShoppingAssistantEventElements'
 
 export const getVoiceCallIndex = (
     voiceCallId: string,

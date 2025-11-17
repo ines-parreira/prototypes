@@ -1,6 +1,7 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { RecentChatTicket } from './types/recentChats'
+import type { RecentChatTicket } from './types/recentChats'
 import { TicketStatus } from './types/ticket'
 
 /**

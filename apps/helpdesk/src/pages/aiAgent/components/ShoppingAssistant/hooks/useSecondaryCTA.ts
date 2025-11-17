@@ -1,11 +1,8 @@
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 
-import {
-    ButtonConfig,
-    PromoCardVariant,
-    TrialType,
-} from '../types/ShoppingAssistant'
+import type { ButtonConfig, PromoCardVariant } from '../types/ShoppingAssistant'
+import { TrialType } from '../types/ShoppingAssistant'
 import { useAiAgentSecondaryCTA } from './useAiAgentSecondaryCTA'
 import { useShoppingAssistantSecondaryCTA } from './useShoppingAssistantSecondaryCTA'
 

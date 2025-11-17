@@ -7,7 +7,7 @@ import {
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../../constants'
-import { FormValues, ValidFormValues, WizardFormValues } from '../../types'
+import type { FormValues, ValidFormValues, WizardFormValues } from '../../types'
 import {
     ConfigurationPage,
     getConfigurationPage,

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { MessageMetadata } from '../MessageMetadata'
 import { MessageStatusIndicator } from '../MessageStatusIndicator'

@@ -2,7 +2,7 @@ import {
     useGetBusinessHoursDetails,
     useListAccountSettings,
 } from '@gorgias/helpdesk-queries'
-import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
+import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 export const useIntegrationBusinessHours = (
     businessHoursId?: number | null,

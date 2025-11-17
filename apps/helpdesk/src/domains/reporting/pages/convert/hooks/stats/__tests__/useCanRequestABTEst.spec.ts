@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { CampaignOrderEventsMeasure } from 'domains/reporting/pages/convert/clients/constants'

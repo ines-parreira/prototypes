@@ -1,5 +1,5 @@
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import { createCsv } from 'utils/file'
 
 export const createTimeSeriesPerDimensionReport = (

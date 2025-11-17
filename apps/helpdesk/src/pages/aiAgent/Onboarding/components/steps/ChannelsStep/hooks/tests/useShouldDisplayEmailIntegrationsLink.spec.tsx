@@ -12,7 +12,7 @@ import {
     helpdeskProduct,
 } from 'fixtures/productPrices'
 import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
-import { Account } from 'state/currentAccount/types'
+import type { Account } from 'state/currentAccount/types'
 import { mockStore } from 'utils/testing'
 
 describe('useShouldDisplayEmailIntegrationsLink', () => {

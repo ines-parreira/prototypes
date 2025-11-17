@@ -1,6 +1,6 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'

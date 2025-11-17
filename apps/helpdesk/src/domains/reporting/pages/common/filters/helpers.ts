@@ -1,32 +1,35 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
 
-import {
+import type {
     CleanFilterComponentKeys,
     CustomFieldFilter,
-    FilterComponentKey,
-    FilterKey,
     SavedFilter,
     SavedFilterAPI,
     SavedFilterAPISupportedFilters,
     SavedFilterSupportedFilters,
     StateOnlyFilterKeys,
     StaticFilter,
+} from 'domains/reporting/models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { OptionGroup } from 'domains/reporting/pages/common/filters/AddFilterButton'
-import { ChannelsFilterWithState } from 'domains/reporting/pages/common/filters/ChannelsFilter'
+import type { OptionGroup } from 'domains/reporting/pages/common/filters/AddFilterButton'
+import type { ChannelsFilterWithState } from 'domains/reporting/pages/common/filters/ChannelsFilter'
 import {
     AUTO_QA_FILTER_KEYS,
     FilterLabels,
 } from 'domains/reporting/pages/common/filters/constants'
-import { ActiveFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import { PeriodFilterWithState } from 'domains/reporting/pages/common/filters/PeriodFilter'
-import { Channel, ChannelIdentifier, toChannels } from 'services/channels'
+import type { ActiveFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { PeriodFilterWithState } from 'domains/reporting/pages/common/filters/PeriodFilter'
+import type { Channel, ChannelIdentifier } from 'services/channels'
+import { toChannels } from 'services/channels'
 
 export function filterChannels(
     channels: Channel[],

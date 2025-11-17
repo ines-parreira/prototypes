@@ -2,9 +2,9 @@ import '@xyflow/react/dist/style.css'
 
 import React, { useCallback, useEffect } from 'react'
 
+import type { NodeMouseHandler } from '@xyflow/react'
 import {
     MiniMap,
-    NodeMouseHandler,
     ReactFlow,
     ReactFlowProvider,
     useEdgesState,
@@ -34,7 +34,7 @@ import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
+import type {
     VisualBuilderEdge,
     VisualBuilderNode,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

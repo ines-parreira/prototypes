@@ -9,12 +9,12 @@ import {
     mockPlayMessageStep,
     mockSendToSMSStep,
 } from '@gorgias/helpdesk-mocks'
-import { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
+import type { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
 
 import { Form, FormField, FormSubmitButton } from 'core/forms'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import { useVoiceFlow } from '../../useVoiceFlow'
 import { transformToReactFlowNodes } from '../../utils'
 import { useDeleteNode } from '../useDeleteNode'

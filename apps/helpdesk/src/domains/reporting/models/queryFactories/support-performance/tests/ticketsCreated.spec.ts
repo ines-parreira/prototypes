@@ -14,7 +14,7 @@ import {
     ticketsCreatedTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,

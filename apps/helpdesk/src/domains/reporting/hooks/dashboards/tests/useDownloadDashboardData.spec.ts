@@ -3,12 +3,12 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useDownloadDashboardData } from 'domains/reporting/hooks/dashboards/useDownloadDashboardData'
-import {
+import type {
     DashboardChartSchema,
-    DashboardChildType,
     DashboardRowSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { saveZippedFiles } from 'utils/file'
 

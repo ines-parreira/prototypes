@@ -1,21 +1,17 @@
-import React, {
-    FormEvent,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { FormEvent } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Col, Container, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'
+import type { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { DEFAULT_ACTIONS } from 'config'
 import {
@@ -26,8 +22,9 @@ import {
 } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { JobParams, JobType } from 'models/job/types'
-import { Filters } from 'models/macro/types'
+import type { JobParams } from 'models/job/types'
+import { JobType } from 'models/job/types'
+import type { Filters } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'

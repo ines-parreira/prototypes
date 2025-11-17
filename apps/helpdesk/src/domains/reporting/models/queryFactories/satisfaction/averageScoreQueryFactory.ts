@@ -1,5 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
@@ -10,16 +10,14 @@ import {
     isFilterWithLogicalOperator,
     withLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
-    FilterKey,
+import type {
     LegacyStatsFilters,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -27,7 +25,7 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export enum SatisfactionSurveyScore {
     One = '1',

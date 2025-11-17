@@ -1,7 +1,8 @@
-import { forwardRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { forwardRef } from 'react'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
-import { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
+import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
@@ -10,7 +11,7 @@ import {
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'

@@ -1,5 +1,5 @@
 import client from 'models/api/resources'
-import {
+import type {
     SearchApiResponse,
     SearchEngine,
     SearchParams,

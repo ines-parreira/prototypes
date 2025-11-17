@@ -10,11 +10,8 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
 import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    KnowledgeResource,
-    SuggestedResource,
-} from '../types'
+import type { KnowledgeResource, SuggestedResource } from '../types'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { getResourceMetadata } from '../useEnrichKnowledgeFeedbackData/utils'
 
 // Mock the segment event logging

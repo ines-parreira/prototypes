@@ -1,9 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
 import { Banner, Box } from '@gorgias/axiom'
-import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
+import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'

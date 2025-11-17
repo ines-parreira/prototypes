@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import { Chart, TooltipModel } from 'chart.js'
+import type { Chart, TooltipModel } from 'chart.js'
 
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
 

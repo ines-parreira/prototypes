@@ -5,13 +5,13 @@ import {
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
 import { TicketProductsEnrichedMember } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import {
-    TicketCustomFieldsCube,
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
@@ -30,14 +30,14 @@ import {
     injectCustomFieldId,
 } from 'domains/reporting/models/queryFactories/utils'
 import { PRODUCT_ID_DIMENSION } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingFilter,
-    ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,

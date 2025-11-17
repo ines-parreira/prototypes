@@ -1,5 +1,4 @@
-import React, {
-    Component,
+import type {
     ComponentProps,
     ComponentType,
     DragEvent,
@@ -7,36 +6,33 @@ import React, {
     MouseEvent,
     ReactNode,
 } from 'react'
+import type React from 'react'
+import { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import {
-    ContentState,
-    EditorState,
-    KeyBindingUtil,
-    Modifier,
-    RichUtils,
-} from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState, KeyBindingUtil, Modifier, RichUtils } from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import _uniq from 'lodash/uniq'
 import ReactPlayer from 'react-player'
 
-import { UploadType } from 'common/types'
-import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type { UploadType } from 'common/types'
+import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
 import createGuidanceActionsPlugin from 'pages/common/draftjs/plugins/guidanceActions'
 import { addVideo } from 'pages/common/draftjs/plugins/utils'
 import { extractUrlsFromString } from 'utils'
 
-import { notify } from '../../../../state/notifications/actions'
-import { ConnectedAction } from '../../../../state/types'
+import type { notify } from '../../../../state/notifications/actions'
+import type { ConnectedAction } from '../../../../state/types'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
@@ -54,19 +50,16 @@ import createPredictionPlugin from '../../draftjs/plugins/prediction'
 import { createQuotesPlugin } from '../../draftjs/plugins/quotes/quotesPlugin'
 import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
 import { ActionName } from '../../draftjs/plugins/toolbar/types'
-import { ImagePluginConfig, Plugin } from '../../draftjs/plugins/types'
+import type { ImagePluginConfig, Plugin } from '../../draftjs/plugins/types'
 import createVariablesPlugin from '../../draftjs/plugins/variables/index'
 import { DraftJsErrorBoundary } from './DraftJsErrorBoundary'
 import EmailExtraButton from './EmailExtraButton'
-import provideMentionFilteredSuggestions, {
-    InjectedProps as MentionFilteredSuggestionsProps,
-} from './provideMentionSearchResults'
-import provideToolbarPlugin, {
-    InjectedProps as ToolbarPluginProps,
-} from './provideToolbarPlugin'
-import withGrammarlyUsageTracking, {
-    InjectedProps as GrammarlyUsageTrackingProps,
-} from './withGrammarlyUsageTracking'
+import type { InjectedProps as MentionFilteredSuggestionsProps } from './provideMentionSearchResults'
+import provideMentionFilteredSuggestions from './provideMentionSearchResults'
+import type { InjectedProps as ToolbarPluginProps } from './provideToolbarPlugin'
+import provideToolbarPlugin from './provideToolbarPlugin'
+import type { InjectedProps as GrammarlyUsageTrackingProps } from './withGrammarlyUsageTracking'
+import withGrammarlyUsageTracking from './withGrammarlyUsageTracking'
 
 import css from './RichFieldEditor.less'
 

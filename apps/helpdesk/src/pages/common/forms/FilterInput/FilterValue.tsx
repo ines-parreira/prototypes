@@ -1,7 +1,6 @@
+import type { ForwardedRef, ReactNode } from 'react'
 import {
-    ForwardedRef,
     forwardRef,
-    ReactNode,
     useEffect,
     useImperativeHandle,
     useRef,

@@ -16,7 +16,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
-import { SLAFormValues } from './useFormValues'
+import type { SLAFormValues } from './useFormValues'
 
 export default function useSubmitPolicy() {
     const dispatch = useAppDispatch()

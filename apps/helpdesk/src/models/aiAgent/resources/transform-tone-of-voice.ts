@@ -1,4 +1,4 @@
-import {
+import type {
     TransformToneOfVoiceConversation,
     TransformToneOfVoiceResponse,
 } from '../types'

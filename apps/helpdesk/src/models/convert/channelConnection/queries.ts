@@ -1,4 +1,5 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import {
     createChannelConnection,
@@ -7,13 +8,13 @@ import {
     listChannelConnections,
     updateChannelConnection,
 } from 'models/convert/channelConnection/resources'
-import {
+import type {
     ChannelConnection,
     ChannelConnectionListOptions,
 } from 'models/convert/channelConnection/types'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
-import { Paths } from 'rest_api/revenue_addon_api/client.generated'
-import { MutationOverrides } from 'types/query'
+import type { Paths } from 'rest_api/revenue_addon_api/client.generated'
+import type { MutationOverrides } from 'types/query'
 
 import { CONVERT_DEFAULT_OPTIONS } from '../constants'
 

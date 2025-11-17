@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { macroFixture, setTextAction } from 'fixtures/macro'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacroButton } from '../MacroButton'
 

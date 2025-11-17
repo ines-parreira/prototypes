@@ -1,11 +1,11 @@
 import { validateCreateCustomerBody } from '@gorgias/helpdesk-validators'
 
-import { GorgiasApiResponseDataError } from 'models/api/types'
+import type { GorgiasApiResponseDataError } from 'models/api/types'
 
+import type { FormValidator } from '../utils/validation'
 import {
     createFormValidator,
     createResolver,
-    FormValidator,
     toFieldErrors,
     toFormErrors,
 } from '../utils/validation'

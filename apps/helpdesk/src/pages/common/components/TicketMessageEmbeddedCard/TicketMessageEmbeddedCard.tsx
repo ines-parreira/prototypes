@@ -1,9 +1,10 @@
 import classnames from 'classnames'
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 import { Col, Row } from 'reactstrap'
 
-import { GenericAttachment } from 'common/types'
-import { Actor, Meta, Source } from 'models/ticket/types'
+import type { GenericAttachment } from 'common/types'
+import type { Actor, Meta, Source } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'

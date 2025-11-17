@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, getByTestId, render, waitFor } from '@testing-library/react'
 import { ContentState } from 'draft-js'
@@ -7,13 +8,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Language } from '@gorgias/helpdesk-queries'
+import type { Language } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { macros } from 'fixtures/macro'
-import { InTicketSuggestionState } from 'state/entities/rules/types'
+import type { InTicketSuggestionState } from 'state/entities/rules/types'
 
-import TicketMacrosSearch from '../TicketMacrosSearch'
+import type TicketMacrosSearch from '../TicketMacrosSearch'
 import TicketReply from '../TicketReply'
 import { TicketReplyArea } from '../TicketReplyArea'
 

@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 
-import { Handle, NodeProps, Position, useNodeId } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
+import { Handle, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
 
 import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -10,13 +11,11 @@ import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
 import EdgeBlock from '../components/EdgeBlock'

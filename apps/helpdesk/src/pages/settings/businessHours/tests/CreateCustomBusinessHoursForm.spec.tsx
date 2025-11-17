@@ -7,10 +7,8 @@ import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { renderWithStore } from 'utils/testing'
 
 import CreateCustomBusinessHoursForm from '../CreateCustomBusinessHoursForm'
-import {
-    CustomBusinessHoursContext,
-    CustomBusinessHoursContextState,
-} from '../CustomBusinessHoursContext'
+import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
+import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 
 jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => () => (
     <div>Form Unsaved Changes Prompt</div>

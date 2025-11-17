@@ -17,10 +17,10 @@ import {
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
+import type { PlaygroundReasoningStatelessProps } from './PlaygroundReasoning'
 import {
     PlaygroundReasoning,
     PlaygroundReasoningStateless,
-    PlaygroundReasoningStatelessProps,
 } from './PlaygroundReasoning'
 
 const mockStore = configureMockStore()

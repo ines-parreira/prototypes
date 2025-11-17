@@ -8,8 +8,8 @@ import {
     getSingleHelpCenterResponseFixture,
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter/constants'

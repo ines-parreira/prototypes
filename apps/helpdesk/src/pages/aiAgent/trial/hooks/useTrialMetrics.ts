@@ -4,10 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
 import { shallowEqual } from 'react-redux'
 
-import {
-    fetchMetricPerDimension,
-    ReportingMetricItem,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
@@ -16,7 +14,7 @@ import {
     gmvInfluencedQueryFactory,
     gmvQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculateRate } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketVia } from 'business/types/ticket'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'

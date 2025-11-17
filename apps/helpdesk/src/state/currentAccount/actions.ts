@@ -1,11 +1,11 @@
-import { AxiosError } from 'axios'
-import { Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
 import { AgentsTableViews } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { ChannelsTableViews } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ProductInsightsTableViews } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import {
+import type {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
@@ -14,23 +14,22 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
-import { GorgiasApiError, isGorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import GorgiasApi from 'services/gorgiasApi'
-import { ProductData, Subscription } from 'state/billing/types'
+import type { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
     getProductInsightsTableConfigSettingsJS,
 } from 'state/currentAccount/selectors'
-import {
-    Account,
-    AccountSetting,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { Account, AccountSetting } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 export const updateAccount =
     (values: Account) =>

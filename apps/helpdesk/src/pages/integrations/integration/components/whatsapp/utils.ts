@@ -1,10 +1,11 @@
 import { findLast } from 'lodash'
-import slackMessageParser, { Node, NodeType } from 'slack-message-parser'
+import type { Node } from 'slack-message-parser'
+import slackMessageParser, { NodeType } from 'slack-message-parser'
 
 import { TicketChannel } from 'business/types/ticket'
 import { MacroActionName } from 'models/macroAction/types'
-import { TicketMessage } from 'models/ticket/types'
-import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import type { TicketMessage } from 'models/ticket/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import { getMoment, stringToDatetime } from 'utils/date'
 
 export const WHATSAPP_VARIABLE_REGEX = /(\{\{\d\}\})/

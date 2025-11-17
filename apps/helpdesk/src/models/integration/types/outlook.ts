@@ -2,8 +2,8 @@
 import { IntegrationType } from '../constants'
 import type { Integration } from './'
 import type { IntegrationBase } from './base'
-import type { EmailSignature } from './email'
-import {
+import type {
+    EmailSignature,
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from './email'

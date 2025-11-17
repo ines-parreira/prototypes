@@ -1,11 +1,9 @@
-import React, {
-    createContext,
-    FunctionComponent,
-    ReactNode,
-    useContext,
-} from 'react'
+import type { FunctionComponent, ReactNode } from 'react'
+import type React from 'react'
+import { createContext, useContext } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { Badge } from '@gorgias/axiom'
 

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import {
+import type {
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
 } from 'models/helpCenter/types'

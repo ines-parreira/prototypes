@@ -1,14 +1,16 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, Map as ImmutableMap } from 'immutable'
+import type { Map as ImmutableMap } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ACTION_TEMPLATES } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 
 import TicketSubmitButtons from '../TicketSubmitButtons'

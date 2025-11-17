@@ -2,8 +2,10 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
-import { DragSourceMonitor, DropTargetMonitor, useDragLayer } from 'react-dnd'
+import type { DragSourceMonitor, DropTargetMonitor } from 'react-dnd'
+import { useDragLayer } from 'react-dnd'
 
+import type { MeasureRect } from 'domains/reporting/pages/dashboards/DraggableGridCell'
 import {
     createDragItem,
     createDropzoneHoverHandler,
@@ -12,14 +14,13 @@ import {
     createMoveRawHandler,
     DraggableGridCell,
     DraggablePreview,
-    MeasureRect,
     useMeasure,
 } from 'domains/reporting/pages/dashboards/DraggableGridCell'
-import {
+import type {
     DashboardChartSchema,
     DashboardChild,
-    DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 const dummyRect = {
     x: 0,

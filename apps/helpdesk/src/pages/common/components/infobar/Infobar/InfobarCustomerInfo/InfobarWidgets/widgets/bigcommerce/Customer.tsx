@@ -1,27 +1,26 @@
-import { ReactNode, useContext } from 'react'
+import type { ReactNode } from 'react'
+import { useContext } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    BigCommerceActionType,
-    BigCommerceCustomer,
-} from 'models/integration/types'
+import type { BigCommerceCustomer } from 'models/integration/types'
+import { BigCommerceActionType } from 'models/integration/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import { InfobarAction } from '../types'
+import type { InfobarAction } from '../types'
 import OrderModal from './AddOrderModal/OrderModal'
 
 export const customerCustomization: CardCustomization = {

@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import moment from 'moment'
 
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import type { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialManageModal } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'

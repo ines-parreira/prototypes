@@ -4,7 +4,8 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
+import type { Action, TicketMessage } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 
 export const message: TicketMessage = {
     id: 1,

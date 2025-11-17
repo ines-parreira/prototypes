@@ -1,13 +1,14 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 import {
     fetchSelfServiceConfigurationSSP,
     updateSelfServiceConfigurationSSP,
 } from './resources'
-import { SelfServiceConfiguration } from './types'
+import type { SelfServiceConfiguration } from './types'
 import { getShopNameFromStoreIntegration } from './utils'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes

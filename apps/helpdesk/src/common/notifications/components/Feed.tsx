@@ -1,19 +1,18 @@
 import { useCallback } from 'react'
 
-import { FeedItem, FeedItem as KnockFeedItem } from '@knocklabs/client'
-import {
-    NotificationFeed,
+import type { FeedItem, FeedItem as KnockFeedItem } from '@knocklabs/client'
+import type {
     NotificationFeedHeaderProps,
     RenderItemProps,
-    useKnockFeed,
 } from '@knocklabs/react'
+import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
 } from '@repo/logging'
 
-import { RawNotification } from '../types'
+import type { RawNotification } from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
 import FeedHeader from './FeedHeader'
 import FeedItemComponent from './FeedItem'

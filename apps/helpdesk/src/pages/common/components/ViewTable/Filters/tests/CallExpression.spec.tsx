@@ -1,17 +1,19 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { CallExpression as ESCallExpression, LogicalExpression } from 'estree'
+import type {
+    CallExpression as ESCallExpression,
+    LogicalExpression,
+} from 'estree'
 import { fromJS } from 'immutable'
 
-import {
-    StoreMapping,
-    useGetStoreMappingsByAccountId,
-} from '@gorgias/helpdesk-queries'
+import type { StoreMapping } from '@gorgias/helpdesk-queries'
+import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_PATHS } from 'custom-fields/constants'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import { view as viewFixture } from 'fixtures/views'
 import useAppSelector from 'hooks/useAppSelector'
 import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'

@@ -1,7 +1,8 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { listWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/resources'
-import { ListWhatsAppMessageTemplatesParams } from 'models/whatsAppMessageTemplates/types'
+import type { ListWhatsAppMessageTemplatesParams } from 'models/whatsAppMessageTemplates/types'
 
 export const whatsAppMessageTemplatesKeys = {
     all: () => ['whatsAppMessageTemplates'] as const,

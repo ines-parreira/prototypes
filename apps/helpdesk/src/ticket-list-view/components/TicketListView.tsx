@@ -1,10 +1,9 @@
+import type { ComponentProps, ReactElement } from 'react'
 import {
     Children,
     cloneElement,
-    ComponentProps,
     forwardRef,
     Fragment,
-    ReactElement,
     useCallback,
     useEffect,
     useMemo,
@@ -13,14 +12,16 @@ import {
 
 import cn from 'classnames'
 import { fromJS } from 'immutable'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
+import type { CSSTransition } from 'react-transition-group'
+import { TransitionGroup } from 'react-transition-group'
+import type { Components, VirtuosoHandle } from 'react-virtuoso'
+import { Virtuoso } from 'react-virtuoso'
 
 import {
     LegacyIconButton as IconButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -39,7 +40,7 @@ import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoVie
 import useSelection from '../hooks/useSelection'
 import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
-import { TicketCompact } from '../types'
+import type { TicketCompact } from '../types'
 import BulkActions from './bulk-actions/BulkActions'
 import { Action } from './bulk-actions/types'
 import InvalidFiltersAction from './InvalidFiltersAction'

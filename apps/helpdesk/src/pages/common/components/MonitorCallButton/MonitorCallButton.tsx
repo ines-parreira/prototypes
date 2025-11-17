@@ -2,14 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import {
     getMonitoringParameters,
     getMonitoringRestrictionReason,
 } from 'hooks/integrations/phone/monitoring.utils'
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
 import { useNotify } from 'hooks/useNotify'
-import { MonitoringErrorCode, VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
+import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
 import MonitoringCallSwitchModal from 'pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal'
 

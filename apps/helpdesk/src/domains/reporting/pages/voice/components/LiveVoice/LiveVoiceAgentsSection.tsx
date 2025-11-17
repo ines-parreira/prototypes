@@ -1,6 +1,6 @@
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
-import { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
+import type { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'

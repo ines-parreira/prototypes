@@ -1,12 +1,13 @@
-import React, { createContext, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext } from 'react'
 
-import {
+import type {
     CreateTriggerFn,
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from '../../types/AdvancedTriggerBaseProps'
-import { Campaign } from '../../types/Campaign'
-import { CampaignTriggerMap } from '../../types/CampaignTriggerMap'
+import type { Campaign } from '../../types/Campaign'
+import type { CampaignTriggerMap } from '../../types/CampaignTriggerMap'
 
 export interface CampaignDetailsFormApi {
     campaign: Campaign

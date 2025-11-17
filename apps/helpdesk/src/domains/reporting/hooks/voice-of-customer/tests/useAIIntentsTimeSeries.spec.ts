@@ -1,9 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
+import type { useCustomFieldsTimeSeries } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
 import {
     useAIIntentCustomFieldsTimeSeries,
     useCustomFieldsForProductTimeSeries,
-    useCustomFieldsTimeSeries,
 } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
 import {
     AMOUNT_OF_PRODUCTS_TO_SHOW,

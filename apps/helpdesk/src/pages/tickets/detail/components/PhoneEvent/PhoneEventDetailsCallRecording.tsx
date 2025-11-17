@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from 'react'
 
 import _flatten from 'lodash/flatten'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import {
     Link,
     NavLink,

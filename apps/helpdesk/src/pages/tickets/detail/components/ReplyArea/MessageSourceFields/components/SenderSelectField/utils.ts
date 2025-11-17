@@ -1,5 +1,5 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { ChannelIdentifier } from 'services/channels'
+import type { ChannelIdentifier } from 'services/channels'
 
 /** Get the URL to the settings page where the user can setup the integrations for this channel*/
 export const getReconnectUrlByChannel = (

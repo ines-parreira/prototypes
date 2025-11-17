@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { AxiosError, AxiosResponse, CancelToken } from 'axios'
+import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,12 +9,12 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import { ApiListResponseCursorPagination } from 'models/api/types'
-import {
+import type { ApiListResponseCursorPagination } from 'models/api/types'
+import type {
     CustomerWithHighlightsResponse,
     PickedCustomerWithHighlights,
-    SearchEngine,
 } from 'models/search/types'
+import { SearchEngine } from 'models/search/types'
 import { mergeEntitiesWithHighlights } from 'models/search/utils'
 import { searchWithHighlights } from 'state/infobar/actions'
 

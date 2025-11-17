@@ -1,11 +1,10 @@
 import moment from 'moment/moment'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     AggregationWindow,
     CustomFieldFilter,
     CustomFieldSavedFilter,
-    FilterKey,
     LegacyStatsFilters,
     Period,
     SavedFilterCustomFieldFilter,
@@ -13,6 +12,9 @@ import {
     SavedFilterSupportedFilters,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
+import {
+    FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'

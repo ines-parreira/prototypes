@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 
 import { useFirstStoreAndHelpCenterWithTopQuestions } from './useFirstStoreAndHelpCenterWithTopQuestions'
-import {
-    StoreWithHelpCenters,
-    useTopQuestionsStoresWithHelpCenters,
-} from './useTopQuestionsStoresWithHelpCenters'
+import type { StoreWithHelpCenters } from './useTopQuestionsStoresWithHelpCenters'
+import { useTopQuestionsStoresWithHelpCenters } from './useTopQuestionsStoresWithHelpCenters'
 import { makeHelpCenterFilter, makeStoreFilter } from './utils'
 
 type Props = {

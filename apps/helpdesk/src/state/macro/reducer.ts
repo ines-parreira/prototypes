@@ -1,6 +1,7 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import {
     DELETE_MACRO,
     MACRO_PARAMS_UPDATED,

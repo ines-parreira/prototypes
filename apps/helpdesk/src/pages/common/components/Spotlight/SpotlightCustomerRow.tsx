@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { EntityType } from 'hooks/useSearchRankScenario'
-import { PickedCustomerWithHighlights } from 'models/search/types'
+import type { PickedCustomerWithHighlights } from 'models/search/types'
 import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'

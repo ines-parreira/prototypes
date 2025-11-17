@@ -1,7 +1,7 @@
 import { ulid } from 'ulidx'
 
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 

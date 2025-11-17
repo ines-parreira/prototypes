@@ -1,7 +1,8 @@
-import { RawDraftContentState, SelectionState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { RawDraftContentState, SelectionState } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { DiscountCode } from 'models/discountCodes/types'
+import type { DiscountCode } from 'models/discountCodes/types'
 
 import { tryLocalStorage } from '../../services/common/utils'
 

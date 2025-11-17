@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import { Trial } from 'models/aiAgent/types'
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import type { Trial } from 'models/aiAgent/types'
+import type { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 export const hasTrialStarted = (trial: Trial) => {
     return !!trial.trial?.startDatetime

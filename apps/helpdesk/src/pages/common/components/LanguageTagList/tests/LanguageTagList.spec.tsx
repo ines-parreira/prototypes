@@ -3,7 +3,7 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { Locale, LocaleCode } from 'models/helpCenter/types'
+import type { Locale, LocaleCode } from 'models/helpCenter/types'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
 import { LanguageTagList } from '../LanguageTagList'

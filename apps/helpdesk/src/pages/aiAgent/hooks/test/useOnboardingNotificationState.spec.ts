@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { useGetOrCreateOnboardingNotificationState } from 'models/aiAgent/queries'
-import {
+import type {
     OnboardingNotificationState,
     OnboardingNotificationStateResponse,
 } from 'models/aiAgent/types'

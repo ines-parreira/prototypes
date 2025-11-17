@@ -1,5 +1,6 @@
 import { getCampaignStatus } from 'domains/reporting/pages/convert/utils/getCampaignStatus'
-import { Campaign, InferredCampaignStatus } from 'models/convert/campaign/types'
+import type { Campaign } from 'models/convert/campaign/types'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
 
 describe('getCampaignStatus', () => {
     const TIMEZONE = 'UTC'

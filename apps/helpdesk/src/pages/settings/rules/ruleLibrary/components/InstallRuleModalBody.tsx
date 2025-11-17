@@ -1,13 +1,12 @@
-import {
+import type {
     AnyManagedRuleSettings,
     ManagedRule,
-    ManagedRulesSlugs,
     RuleDraft,
-    RuleType,
 } from 'state/rules/types'
+import { ManagedRulesSlugs, RuleType } from 'state/rules/types'
 
-import { RuleItemActions } from '../../types'
-import { InstallationError } from '../constants'
+import type { RuleItemActions } from '../../types'
+import type { InstallationError } from '../constants'
 import { AutoCloseSpamModal } from './installationModals/AutoCloseSpamModal'
 import { AutoReplyFAQModal } from './installationModals/AutoReplyFAQModal'
 import { AutoReplyReturnModal } from './installationModals/AutoReplyReturnModal'

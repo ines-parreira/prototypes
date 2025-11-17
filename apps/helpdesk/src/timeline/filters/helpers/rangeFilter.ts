@@ -1,8 +1,8 @@
-import { DateTimeResultFormatType } from 'constants/datetime'
+import type { DateTimeResultFormatType } from 'constants/datetime'
 import { formatDatetime } from 'utils'
 
 import * as timelineItem from '../../helpers/timelineItem'
-import { Range, TimelineItem } from '../../types'
+import type { Range, TimelineItem } from '../../types'
 
 export function filterTicketsByRange(tickets: TimelineItem[], range: Range) {
     return tickets.filter((ticket) => {

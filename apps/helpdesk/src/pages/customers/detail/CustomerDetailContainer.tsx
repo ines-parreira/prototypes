@@ -1,14 +1,17 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import _pick from 'lodash/pick'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import { PickedCustomer, pickedCustomerFields } from 'models/search/types'
+import type { PickedCustomer } from 'models/search/types'
+import { pickedCustomerFields } from 'models/search/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
@@ -21,7 +24,7 @@ import {
     getLoading,
     makeGetActiveCustomerChannelsByType,
 } from 'state/customers/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import Timeline from 'timeline/Timeline'
 
 import css from './CustomerDetailContainer.less'

@@ -7,10 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, ActionStatus } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { getActionTemplate, stripErrorMessage } from 'utils'
 
 import Error from '../Error'

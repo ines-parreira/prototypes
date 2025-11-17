@@ -2,14 +2,15 @@ import { useCallback, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { CreateContactFormDto } from 'models/contactForm/types'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { CreateContactFormDto } from 'models/contactForm/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'

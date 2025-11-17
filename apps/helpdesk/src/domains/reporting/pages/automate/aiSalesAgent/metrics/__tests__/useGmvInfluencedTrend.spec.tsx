@@ -11,7 +11,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchGmvInfluencedTrend,
     useGmvInfluencedTrend,

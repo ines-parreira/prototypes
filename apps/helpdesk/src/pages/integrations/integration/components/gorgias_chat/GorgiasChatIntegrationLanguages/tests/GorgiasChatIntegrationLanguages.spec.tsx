@@ -7,7 +7,7 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'

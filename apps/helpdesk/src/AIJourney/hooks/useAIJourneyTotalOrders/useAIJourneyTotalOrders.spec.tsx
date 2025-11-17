@@ -1,10 +1,8 @@
 import { renderHook } from '@testing-library/react'
 
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
-import {
-    TimeSeriesDataItem,
-    useTimeSeries,
-} from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { totalNumberOfOrderQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { ReportingGranularity } from 'domains/reporting/models/types'

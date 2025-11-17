@@ -1,11 +1,11 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatTimeSeriesData } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 
 export const OverviewChartCard = ({
     title,

@@ -1,21 +1,19 @@
-import React, { Dispatch, Fragment, ReactNode } from 'react'
+import type { Dispatch, ReactNode } from 'react'
+import React, { Fragment } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable'
+import type { List as ImmutableList, Map as ImmutableMap } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,
 } from 'models/integration/resources/bigcommerce'
-import {
+import type {
     BigCommerceActionType,
     BigCommerceAvailablePaymentOptionsData,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
     BigCommerceOrderProduct,
-    BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,
     BigCommerceRefundMethod,
     BigCommerceRefundMethodComponent,
@@ -23,15 +21,18 @@ import {
     GiftWrappingItemRefundData,
     ProductItemRefundData,
 } from 'models/integration/types'
-import { executeAction } from 'state/infobar/actions'
-import { ActionDataPayload } from 'state/infobar/utils'
-import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { StoreDispatch } from 'state/types'
-
 import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from './types'
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceRefundableItemType,
+} from 'models/integration/types'
+import { executeAction } from 'state/infobar/actions'
+import type { ActionDataPayload } from 'state/infobar/utils'
+import { fetchIntegrationProducts } from 'state/integrations/helpers'
+import type { StoreDispatch } from 'state/types'
+
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from './types'
+import { BigCommerceRefundActionType } from './types'
 
 export const onReset = _debounce(
     ({

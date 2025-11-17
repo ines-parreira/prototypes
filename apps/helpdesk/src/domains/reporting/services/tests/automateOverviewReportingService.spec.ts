@@ -11,7 +11,7 @@ import {
 } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     AUTOMATED_INTERACTIONS_LABEL,

@@ -13,7 +13,7 @@ import { MultiButton } from '@gorgias/axiom'
 import IconButton from 'pages/common/components/button/IconButton'
 import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
-import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
 
 type Props = {

@@ -2,10 +2,10 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 import DrawerContent from '../ChannelsDrawer/DrawerContent'
 
 describe('ChannelsDrawerContent', () => {

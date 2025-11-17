@@ -1,12 +1,14 @@
-import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 
-import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
-import { Team } from 'models/team/types'
+import type { Item } from 'components/Dropdown'
+import { Body, Context, focusOnNextItem } from 'components/Dropdown'
+import type { Team } from 'models/team/types'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import { useListTeams } from 'teams/queries'

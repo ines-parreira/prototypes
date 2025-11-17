@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -17,18 +17,14 @@ import {
     bigCommerceShippingAddressesFixture,
 } from 'fixtures/bigcommerce'
 import { integrationsState } from 'fixtures/integrations'
-import {
-    BigCommerceActionType,
-    BigCommerceCheckout,
-} from 'models/integration/types'
+import type { BigCommerceCheckout } from 'models/integration/types'
+import { BigCommerceActionType } from 'models/integration/types'
 import OrderModalRenderWrapper, {
     OrderModal,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import { useCheckout } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import * as utils from '../utils'
 

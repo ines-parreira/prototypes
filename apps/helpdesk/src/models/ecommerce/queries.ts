@@ -1,13 +1,9 @@
-import {
-    useMutation,
-    UseMutationOptions,
-    useQuery,
-    UseQueryOptions,
-} from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 
-import { ApiPaginationParams } from 'models/api/types'
-import { IntegrationDataItem } from 'models/integration/types/misc'
+import type { ApiPaginationParams } from 'models/api/types'
+import type { IntegrationDataItem } from 'models/integration/types/misc'
 
 import {
     fetchEcommerceItemByExternalId,
@@ -16,7 +12,7 @@ import {
     fetchEcommerceProducts,
     updateProductAdditionalInfo,
 } from './resources'
-import {
+import type {
     AdditionalInfoKey,
     AdditionalInfoObjectType,
     AdditionalInfoSourceType,

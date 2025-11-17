@@ -1,6 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 
-import {
+import type {
     AuthenticatorData,
     RecoveryCode,
 } from '../../../../../models/twoFactorAuthentication/types'

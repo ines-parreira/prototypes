@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
-import { AIGuidance } from '../../types'
+import type { AIGuidance } from '../../types'
 
 import css from './GuidanceAiSuggestionCard.less'
 

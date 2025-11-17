@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -12,18 +12,18 @@ import {
 } from 'domains/reporting/pages/dashboards/Dashboard'
 import { DashboardChart } from 'domains/reporting/pages/dashboards/DashboardChart'
 import { DashboardsSection } from 'domains/reporting/pages/dashboards/DashboardsSection'
-import {
+import type {
     DashboardChartSchema,
-    DashboardChildType,
     DashboardRowSchema,
     DashboardSchema,
     DashboardSectionSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 import { updateChartPosition } from 'domains/reporting/pages/dashboards/utils'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

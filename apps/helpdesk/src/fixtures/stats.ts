@@ -1,12 +1,12 @@
 import { TicketChannel } from 'business/types/ticket'
-import {
+import type {
     LegacyStatsFilters,
     OneDimensionalChart,
     OneDimensionalUnionChart,
     Stat,
-    StatType,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
+import { StatType } from 'domains/reporting/models/stat/types'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 import {
     ARTICLE_RECOMMENDATION,

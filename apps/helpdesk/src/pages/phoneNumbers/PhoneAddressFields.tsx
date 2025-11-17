@@ -4,7 +4,7 @@ import { Col, FormGroup, Row } from 'reactstrap'
 
 import { PhoneCountry, phoneCountryConfig } from 'business/twilio'
 import { AddressType } from 'models/integration/types'
-import { AddressInformation } from 'models/phoneNumber/types'
+import type { AddressInformation } from 'models/phoneNumber/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'
 

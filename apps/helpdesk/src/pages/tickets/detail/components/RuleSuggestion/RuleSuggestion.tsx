@@ -17,13 +17,12 @@ import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from 'models/macroAction/types'
-import { RuleAction, RuleType } from 'models/rule/types'
-import { ActionStatus, Ticket } from 'models/ticket/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
+import type { RuleAction } from 'models/rule/types'
+import { RuleType } from 'models/rule/types'
+import type { Ticket } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 import { actionsConfig } from 'pages/common/components/ast/actions/config'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -31,11 +30,11 @@ import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { useRules } from 'state/entities/rules/hooks'
 import { getEmailChannels } from 'state/integrations/selectors'
 import { sendTicketMessage } from 'state/newMessage/actions'
-import { NewMessage } from 'state/newMessage/types'
+import type { NewMessage } from 'state/newMessage/types'
 import { transformToInternalNote } from 'state/newMessage/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { ManagedRule } from 'state/rules/types'
+import type { ManagedRule } from 'state/rules/types'
 import {
     getPreferredChannel,
     guessReceiversFromTicket,

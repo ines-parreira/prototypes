@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -9,13 +9,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
     fetchSelfServiceConfigurationSSP,
     updateSelfServiceConfigurationSSP,
 } from 'models/selfServiceConfiguration/resources'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEnableArticleRecommendation } from '../useEnableArticleRecommendation'

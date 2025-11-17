@@ -1,10 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import {
-    CustomField,
-    HttpResponse,
-    useGetCustomField,
-} from '@gorgias/helpdesk-queries'
+import type { CustomField, HttpResponse } from '@gorgias/helpdesk-queries'
+import { useGetCustomField } from '@gorgias/helpdesk-queries'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'

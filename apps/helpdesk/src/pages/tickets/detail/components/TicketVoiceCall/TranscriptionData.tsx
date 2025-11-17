@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react'
 import classnames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
-    useGetVoiceCallRecordingTranscription,
+import type {
     VoiceCallRecordingTranscriptionSpeakersItem,
     VoiceCallRecordingTranscriptionTranscriptionItem,
 } from '@gorgias/helpdesk-queries'
+import { useGetVoiceCallRecordingTranscription } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

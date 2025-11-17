@@ -11,7 +11,7 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
-import { CurrentUser } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
+import type { CurrentUser } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 import { TranslationsOnboardingModal } from '../TranslationsOnboardingModal'
 

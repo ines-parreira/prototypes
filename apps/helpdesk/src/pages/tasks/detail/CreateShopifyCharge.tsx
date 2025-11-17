@@ -1,6 +1,7 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
@@ -13,7 +14,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import cssSettings from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 const CreateShopifyCharge = () => {
     const dispatch = useAppDispatch()

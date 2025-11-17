@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { useGetStoreHandoverConfigurations } from 'models/aiAgent/queries'
-import {
+import type {
     HandoverConfigurationData,
     HandoverConfigurationResponse,
 } from 'models/aiAgent/types'

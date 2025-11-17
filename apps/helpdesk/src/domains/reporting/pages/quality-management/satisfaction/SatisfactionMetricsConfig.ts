@@ -33,11 +33,9 @@ import {
 import { responseRateDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/responseRateQueryFactory'
 import { satisfactionScoreDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import { surveysSentDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/surveysSentQueryFactory'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,

@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
-import { RouteComponentProps } from 'react-router-dom'
+import type { RouteComponentProps } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 
 import appCss from 'pages/App.less'

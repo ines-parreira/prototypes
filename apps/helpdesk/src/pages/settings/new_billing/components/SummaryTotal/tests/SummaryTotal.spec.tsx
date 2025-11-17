@@ -8,7 +8,7 @@ import {
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
-import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'

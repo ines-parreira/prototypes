@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
 import { useFlag } from 'core/flags'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 

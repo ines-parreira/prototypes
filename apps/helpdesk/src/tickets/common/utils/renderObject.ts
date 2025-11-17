@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { renderTemplate } from 'pages/common/utils/template'
 

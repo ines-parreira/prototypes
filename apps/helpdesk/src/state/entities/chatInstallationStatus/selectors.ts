@@ -1,5 +1,5 @@
-import { StoreState } from '../../types'
-import { ChatInstallationStatusState } from './types'
+import type { StoreState } from '../../types'
+import type { ChatInstallationStatusState } from './types'
 
 export const getChatInstallationStatus = (
     state: StoreState,

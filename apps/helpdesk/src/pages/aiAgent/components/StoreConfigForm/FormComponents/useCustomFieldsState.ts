@@ -1,6 +1,6 @@
 import { useCallback, useReducer } from 'react'
 
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 export type CustomFieldsAction =
     | { type: 'SET_SELECTED_FIELDS'; payload: Value[] }

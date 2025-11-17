@@ -1,6 +1,6 @@
 import type { Event, TicketMessage, VoiceCall } from '@gorgias/helpdesk-queries'
 
-import { Action } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
 import type { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 type AIEvent = {

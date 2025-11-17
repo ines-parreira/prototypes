@@ -1,10 +1,11 @@
-import React, { ReactNode, useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { deleteTwoFASecret } from 'models/twoFactorAuthentication/resources'

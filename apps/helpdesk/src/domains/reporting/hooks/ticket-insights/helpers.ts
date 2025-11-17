@@ -1,15 +1,15 @@
 import { orderBy } from 'lodash'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { getTagValuesByOperator } from 'domains/reporting/hooks/helpers'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
-import {
+import type {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 
 export const getTagName = ({
     name,

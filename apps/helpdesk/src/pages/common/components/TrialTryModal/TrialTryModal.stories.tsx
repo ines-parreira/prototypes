@@ -1,10 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
-import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
-import TrialTryModal, { TrialFeature } from './TrialTryModal'
+import type { TrialFeature } from './TrialTryModal'
+import TrialTryModal from './TrialTryModal'
 
 const meta: Meta<typeof TrialTryModal> = {
     title: 'Overlays/TrialTryModal',

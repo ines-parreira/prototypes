@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render } from '@testing-library/react'
-import { TooltipModel } from 'chart.js'
+import type { TooltipModel } from 'chart.js'
 
 import { DonutChartTooltip } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip'
 

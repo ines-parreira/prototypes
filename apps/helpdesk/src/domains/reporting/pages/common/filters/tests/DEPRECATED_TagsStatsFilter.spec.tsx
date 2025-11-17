@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
-import { Action } from 'redux'
+import type { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -18,9 +19,9 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { tags as tagsFixtures } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import type InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import * as tagsActions from 'state/entities/tags/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('models/tag/resources')
 jest.mock(

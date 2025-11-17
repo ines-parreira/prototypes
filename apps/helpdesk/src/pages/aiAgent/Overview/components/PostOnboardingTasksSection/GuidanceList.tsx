@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { Icon, IconSize, Skeleton, Text } from '@gorgias/axiom'
 
-import { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 

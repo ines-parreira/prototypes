@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import type { Component } from 'react'
 
 import { findDOMNode } from 'react-dom'
 

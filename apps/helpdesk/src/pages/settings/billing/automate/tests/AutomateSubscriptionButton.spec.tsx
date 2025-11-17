@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,9 +15,9 @@ import {
     products,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
-import { Product, ProductType } from 'models/billing/types'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Product, ProductType } from 'models/billing/types'
+import type UpgradeButton from 'pages/common/components/UpgradeButton'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AutomateSubscriptionButton from '../AutomateSubscriptionButton'
 

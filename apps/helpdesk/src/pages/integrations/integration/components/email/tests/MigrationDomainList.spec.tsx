@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import * as hooksImports from '@repo/hooks'
 import {
@@ -15,15 +15,13 @@ import {
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
-import {
-    EmailMigrationOutboundVerification,
-    OutboundVerificationType,
-} from 'models/integration/types'
+import type { EmailMigrationOutboundVerification } from 'models/integration/types'
+import { OutboundVerificationType } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 
-import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
+import type DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 import MigrationDomainList from '../EmailMigration/MigrationDomainList'
-import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
+import type SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 const useLocalStorageSpy = jest.spyOn(
     hooksImports,

@@ -1,10 +1,9 @@
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _rangeRight from 'lodash/rangeRight'
 
-import DistributionVariantStat, {
-    DistributionStatVariant,
-} from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
+import type { DistributionStatVariant } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
+import DistributionVariantStat from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat.less'
 
 type Props = {

@@ -1,10 +1,10 @@
-import React, {
+import type {
     ChangeEvent,
-    Component,
     ComponentType,
     KeyboardEvent,
     ReactNode,
 } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -23,9 +23,10 @@ import {
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import GorgiasApi, { SearchResultType } from 'services/gorgiasApi'
+import type { SearchResultType } from 'services/gorgiasApi'
+import GorgiasApi from 'services/gorgiasApi'
 
-import { SearchInputResultProps, SearchInputSubResultProps } from './types'
+import type { SearchInputResultProps, SearchInputSubResultProps } from './types'
 import { getSearchResultUniqueId } from './utils'
 
 import css from './SearchInput.less'

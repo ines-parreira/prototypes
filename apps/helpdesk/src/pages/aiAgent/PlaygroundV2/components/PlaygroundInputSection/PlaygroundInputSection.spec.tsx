@@ -15,7 +15,7 @@ import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,

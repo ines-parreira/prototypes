@@ -1,4 +1,4 @@
-import { ChatApplicationAutomationSettings } from '../../../../models/chatApplicationAutomationSettings/types'
+import type { ChatApplicationAutomationSettings } from '../../../../models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsFetched,
     chatApplicationAutomationSettingsUpdated,

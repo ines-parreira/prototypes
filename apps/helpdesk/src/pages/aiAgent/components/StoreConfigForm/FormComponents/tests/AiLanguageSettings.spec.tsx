@@ -1,9 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import AiLanguageSettings, {
-    AiLanguageSettingsProps,
-} from '../AiLanguageSettings'
+import type { AiLanguageSettingsProps } from '../AiLanguageSettings'
+import AiLanguageSettings from '../AiLanguageSettings'
 
 // Mock MacroEditLanguage component
 jest.mock(

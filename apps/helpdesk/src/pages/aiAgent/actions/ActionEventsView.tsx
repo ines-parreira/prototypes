@@ -19,7 +19,7 @@ import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventSidePanel from './components/ActionEventSidePanel'
 import ActionEventsList from './components/ActionEventsList'
 import ActionEventsNumberedPagination from './components/ActionEventsNumberedPagination'
-import { LlmTriggeredExecution } from './types'
+import type { LlmTriggeredExecution } from './types'
 
 import css from './ActionEventsView.less'
 

@@ -1,6 +1,6 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { Locale } from 'models/helpCenter/types'
+import type { Locale } from 'models/helpCenter/types'
 
 import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings'
 import { LanguageBadgeTags } from './LanguageBadgeTags'

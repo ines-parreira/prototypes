@@ -8,7 +8,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import { KnowledgeEditorHelpCenterArticleModalState } from './hooks/useKnowledgeEditorHelpCenterArticleModal'
+import type { KnowledgeEditorHelpCenterArticleModalState } from './hooks/useKnowledgeEditorHelpCenterArticleModal'
 
 export const KnowledgeEditorHelpCenterExistingArticleDeleteModal = (
     props: Extract<

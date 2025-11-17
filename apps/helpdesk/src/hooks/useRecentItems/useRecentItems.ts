@@ -5,7 +5,8 @@ import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 
-import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
+import type { RecentItems } from 'hooks/useRecentItems/constants'
+import { DEBOUNCE_TIME } from 'hooks/useRecentItems/constants'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 
 const MAX_RECENT_ITEMS = 30

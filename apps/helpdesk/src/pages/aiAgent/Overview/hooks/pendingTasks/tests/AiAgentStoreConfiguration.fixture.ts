@@ -1,7 +1,7 @@
-import { AiAgentScope } from 'models/aiAgent/types'
+import type { AiAgentScope } from 'models/aiAgent/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 
-import { AiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
+import type { AiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
 
 type AllKeys = keyof AiAgentStoreConfigurationFixture
 type ConfiguredAiAgentStoreConfigurationFixture<

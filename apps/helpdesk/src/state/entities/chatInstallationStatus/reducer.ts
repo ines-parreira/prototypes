@@ -6,7 +6,7 @@ import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
 } from './actions'
-import { ChatInstallationStatusState } from './types'
+import type { ChatInstallationStatusState } from './types'
 
 export const initialState: ChatInstallationStatusState = {
     installed: true,

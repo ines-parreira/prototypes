@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { PlanId } from 'models/billing/types'
+import type { PlanId } from 'models/billing/types'
 
 export const handleConvertProductRemoved = (
     planId: PlanId | undefined,

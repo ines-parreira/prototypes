@@ -1,9 +1,9 @@
 import _omit from 'lodash/omit'
 
-import ColorPicker, {
-    Props as ColorPickerProps,
-} from '../components/ColorPicker/ColorPicker'
-import DEPRECATED_InputField, { InputFieldProps } from './DEPRECATED_InputField'
+import type { Props as ColorPickerProps } from '../components/ColorPicker/ColorPicker'
+import ColorPicker from '../components/ColorPicker/ColorPicker'
+import type { InputFieldProps } from './DEPRECATED_InputField'
+import DEPRECATED_InputField from './DEPRECATED_InputField'
 
 type Props = ColorPickerProps & InputFieldProps<string>
 

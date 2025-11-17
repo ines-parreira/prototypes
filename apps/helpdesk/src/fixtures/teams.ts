@@ -1,4 +1,4 @@
-import { Team } from 'models/team/types'
+import type { Team } from 'models/team/types'
 
 export const teams: Team[] = [
     {

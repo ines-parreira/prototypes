@@ -1,4 +1,5 @@
-import React, { ComponentType, useMemo } from 'react'
+import type { ComponentType } from 'react'
+import React, { useMemo } from 'react'
 
 import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 import analyticsColorsLight from 'assets/css/new/stats/light.json'

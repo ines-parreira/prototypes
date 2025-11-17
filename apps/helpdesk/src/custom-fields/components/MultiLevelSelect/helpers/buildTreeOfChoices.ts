@@ -1,7 +1,7 @@
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
-import { ChoicesTree } from '../types'
+import type { ChoicesTree } from '../types'
 
 const leafKey = (key: string) => {
     return `${key}${DROPDOWN_NESTING_DELIMITER}leaf`

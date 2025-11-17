@@ -1,10 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { CardTemplate, LeafTemplate, Source } from 'models/widget/types'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
-import Field from 'Widgets/modules/Template/modules/Field'
+import type { CardTemplate, LeafTemplate, Source } from 'models/widget/types'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type Field from 'Widgets/modules/Template/modules/Field'
 
-import { TemplateCustomization } from '../types'
+import type { TemplateCustomization } from '../types'
 
 export function seekCardCustomization(
     cardExtensionArray: TemplateCustomization['card'] | undefined = [],

@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 
-import { Banner, BannerType } from '@gorgias/axiom'
+import type { BannerType } from '@gorgias/axiom'
+import { Banner } from '@gorgias/axiom'
 
 import css from './DropdownAlertBanner.less'
 

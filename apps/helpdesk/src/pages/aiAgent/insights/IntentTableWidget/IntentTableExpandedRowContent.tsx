@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { TableWithNestedRowsCell } from 'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell'
-import { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { AIInsightsMetric } from 'domains/reporting/state/ui/stats/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 
@@ -16,7 +16,8 @@ import {
     IntentSuccessRateUpliftOpportunitiesCellContent,
 } from './IntentTableCells'
 import { TableColumnsOrder } from './IntentTableConfig'
-import { Intent, IntentTableColumn } from './types'
+import type { Intent } from './types'
+import { IntentTableColumn } from './types'
 
 import css from './IntentTable.less'
 

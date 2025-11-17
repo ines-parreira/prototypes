@@ -1,19 +1,22 @@
+import type { ReactNode } from 'react'
 import {
     createContext,
-    ReactNode,
     useCallback,
     useContext,
     useMemo,
     useState,
 } from 'react'
 
-import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
+import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { useAiAgentHttpIntegration } from 'pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration'
 import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { useTestSession } from 'pages/aiAgent/PlaygroundV2/hooks/useTestSession'
 
 import { usePlaygroundChannel } from '../hooks/usePlaygroundChannel'
-import { PlaygroundChannelAvailability, PlaygroundChannels } from '../types'
+import type {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+} from '../types'
 
 const DEFAULT_ACTIONS_ENABLED = false
 

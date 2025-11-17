@@ -4,7 +4,7 @@ import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscribe
 import { OutOfStockProductPagesTrigger } from 'pages/convert/campaigns/components/AdvancedTriggerFactory/OutOfStockProductPagesTrigger'
 
 import { useTriggers } from '../../containers/TriggersProvider'
-import { CampaignTrigger } from '../../types/CampaignTrigger'
+import type { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 import { isAllowedToUpdateTrigger } from '../../utils/isAllowedToUpdateTrigger'
 import { AmountSpentTrigger } from './AmountSpentTrigger'

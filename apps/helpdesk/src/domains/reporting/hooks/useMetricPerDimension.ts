@@ -1,40 +1,41 @@
-import { BuiltQuery, ScopeMeta } from 'domains/reporting//models/scopes/scope'
-import { RequestedData } from 'domains/reporting/hooks/types'
-import {
-    TicketCustomFieldsTicketCountData,
-    withBreakdown,
-} from 'domains/reporting/hooks/withBreakdown'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting//models/scopes/scope'
+import type { RequestedData } from 'domains/reporting/hooks/types'
+import type { TicketCustomFieldsTicketCountData } from 'domains/reporting/hooks/withBreakdown'
+import { withBreakdown } from 'domains/reporting/hooks/withBreakdown'
 import { withDeciles } from 'domains/reporting/hooks/withDeciles'
-import {
+import type {
     IDRecord,
     MergedRecord,
-    withEnrichment,
 } from 'domains/reporting/hooks/withEnrichment'
-import { Cubes } from 'domains/reporting/models/cubes'
+import { withEnrichment } from 'domains/reporting/hooks/withEnrichment'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     fetchPostReporting,
     fetchPostReportingV2,
     useEnrichedPostReporting,
-    UseEnrichedPostReportingQueryData,
     usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import type { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import {
     postEnrichedReporting,
     postReportingV1,
 } from 'domains/reporting/models/resources'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     EnrichmentFields,
     ReportingQuery,
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
-import { OrderDirection } from 'models/api/types'
-import { DrillDownReportingQuery } from 'models/job/types'
-import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
+import type { OrderDirection } from 'models/api/types'
+import type { DrillDownReportingQuery } from 'models/job/types'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
 export type ReportingMetricItem<TCube extends Cubes = Cubes> = Record<
     TCube['measures'][0] | TCube['dimensions'][0] | 'decile',

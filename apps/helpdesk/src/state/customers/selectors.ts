@@ -1,11 +1,12 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
-import { TicketChannel } from 'business/types/ticket'
-import { Customer } from 'models/customer/types'
-import { RootState } from 'state/types'
+import type { TicketChannel } from 'business/types/ticket'
+import type { Customer } from 'models/customer/types'
+import type { RootState } from 'state/types'
 
-import { CustomersState } from './types'
+import type { CustomersState } from './types'
 
 export const getCustomersState = (state: RootState) =>
     state.customers || fromJS({})

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
 import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingBreadcrumbs'

@@ -7,9 +7,9 @@ import {
     useCreateTrackstarToken,
 } from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'
-import { Paths } from 'rest_api/workflows_api/client.generated'
+import type { Paths } from 'rest_api/workflows_api/client.generated'
 
-import { App } from '../../../../actionsPlatform/types'
+import type { App } from '../../../../actionsPlatform/types'
 
 import styles from './ConnectTrackstarButton.less'
 

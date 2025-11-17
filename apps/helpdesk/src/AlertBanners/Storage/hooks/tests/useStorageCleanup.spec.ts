@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 
 import { BannerCategories } from '../../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../../constants'
-import { AlertBannerStorage } from '../../types'
+import type { AlertBannerStorage } from '../../types'
 import { useStorageCleanup } from '../useStorageCleanup'
 
 const storage: AlertBannerStorage = {

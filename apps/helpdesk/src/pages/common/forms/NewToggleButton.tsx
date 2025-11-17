@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef, useCallback, useMemo } from 'react'
+import type { ForwardedRef } from 'react'
+import { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 

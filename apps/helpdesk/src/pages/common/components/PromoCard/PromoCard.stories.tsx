@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import preTrialBannerThumbnail from 'assets/img/pre-trial-banner-thumbnail.png'

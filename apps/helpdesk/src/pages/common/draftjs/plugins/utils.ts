@@ -1,27 +1,22 @@
-import { AxiosError } from 'axios'
-import {
-    AtomicBlockUtils,
-    EditorChangeType,
-    EditorState,
-    Modifier,
-    RichUtils,
-    SelectionState,
-} from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { EditorChangeType, SelectionState } from 'draft-js'
+import { AtomicBlockUtils, EditorState, Modifier, RichUtils } from 'draft-js'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _get from 'lodash/get'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
 import { DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH } from 'config/editor'
-import { notify as notifyAction } from 'state/notifications/actions'
+import type { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { ConnectedAction } from 'state/types'
+import type { ConnectedAction } from 'state/types'
 import { getEntitySelectionState } from 'utils/editor'
 import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 import { linkify } from 'utils/linkify'
 
-import { PluginMethods } from './types'
+import type { PluginMethods } from './types'
 
 const uploadPicture = (file: File, uploadType?: UploadType) => {
     return uploadFiles([file], uploadType ? { type: uploadType } : null)

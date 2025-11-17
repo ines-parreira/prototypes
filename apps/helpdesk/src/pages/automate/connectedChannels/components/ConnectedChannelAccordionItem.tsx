@@ -4,7 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
-import {
+import type {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'

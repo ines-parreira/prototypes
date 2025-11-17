@@ -8,7 +8,7 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
-import { AutomatePlan, HelpdeskPlan, Plan } from 'models/billing/types'
+import type { AutomatePlan, HelpdeskPlan, Plan } from 'models/billing/types'
 import { getPlanPriceFormatted } from 'models/billing/utils'
 import {
     Card,

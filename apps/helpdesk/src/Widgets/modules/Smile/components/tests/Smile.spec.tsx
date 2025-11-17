@@ -1,4 +1,5 @@
-import { ComponentProps, useContext } from 'react'
+import type { ComponentProps } from 'react'
+import { useContext } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'

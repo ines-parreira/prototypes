@@ -14,7 +14,8 @@ import PaywallViewRightContainer from 'pages/common/components/PaywallView/Paywa
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
-import { ConvertFeatures, PaywallConfig } from './constants'
+import type { ConvertFeatures } from './constants'
+import { PaywallConfig } from './constants'
 
 import css from './ConvertPaywallView.less'
 

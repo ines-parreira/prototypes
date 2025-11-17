@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import { useAIAgentMessageEvents } from '../../../hooks/useAIAgentMessageEvents'
 import { TicketEventEnum } from '../../AIAgentFeedbackBar/types'

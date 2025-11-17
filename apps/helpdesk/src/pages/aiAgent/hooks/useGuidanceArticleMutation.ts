@@ -3,26 +3,26 @@ import { useCallback } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
-import { HttpResponse } from '@gorgias/helpdesk-queries'
+import type { HttpResponse } from '@gorgias/helpdesk-queries'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'
+import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import {
     helpCenterKeys,
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
-    useGetMultipleHelpCenterArticleLists,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import {
     mapGuidanceToArticleApi,
     mapUpdateGuidanceArticleToArticleApi,
 } from 'pages/aiAgent/utils/guidance.utils'
 import { reportError } from 'utils/errors'
 
-import { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
+import type { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
 import { getGuidanceArticleQueryParams } from './useGuidanceArticles'
 
 export const useGuidanceArticleMutation = ({

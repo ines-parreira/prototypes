@@ -1,8 +1,8 @@
 import { produce } from 'immer'
 
-import { ConditionsSchema } from '../../models/conditions.types'
+import type { ConditionsSchema } from '../../models/conditions.types'
 import { buildEdgeCommonProperties } from '../../models/visualBuilderGraph.model'
-import {
+import type {
     ConditionsNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,

@@ -1,6 +1,7 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import DatePicker from 'pages/common/forms/DatePicker'
 

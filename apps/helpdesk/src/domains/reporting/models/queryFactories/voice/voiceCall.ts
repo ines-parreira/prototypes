@@ -1,20 +1,19 @@
 import moment from 'moment/moment'
 
-import { METRIC_NAMES, MetricName } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
-    VoiceCallCube,
     VoiceCallDimension,
     VoiceCallFiltersMembers,
     VoiceCallMeasure,
     VoiceCallMember,
     VoiceCallSegment,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import {
@@ -22,11 +21,9 @@ import {
     statsFiltersToReportingFilters,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
-import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import {
-    AccountSettingBusinessHours,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 export const getAccountBusinessHoursTimezone = () =>
     (

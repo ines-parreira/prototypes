@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { SaveState } from 'auto_qa/hooks/useSaveState'
+import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import useAppSelector from 'hooks/useAppSelector'

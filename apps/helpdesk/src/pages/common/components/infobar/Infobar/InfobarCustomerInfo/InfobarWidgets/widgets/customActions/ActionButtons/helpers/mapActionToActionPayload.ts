@@ -1,5 +1,5 @@
 import { ContentType, HttpMethod } from 'models/api/types'
-import {
+import type {
     Action,
     ActionPayload,
     Parameter,

@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import { IntegrationType } from '@gorgias/helpdesk-client'
 
 import useAllIntegrations from 'hooks/useAllIntegrations'
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
 import { isBaseEmailIntegration } from 'pages/integrations/integration/components/email/helpers'
 
-import { EmailOption } from '../EmailMultiselect'
+import type { EmailOption } from '../EmailMultiselect'
 
 const isEmailIntegrationType = (type: IntegrationType): boolean => {
     return (

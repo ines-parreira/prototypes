@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -17,22 +18,20 @@ import {
 import { integrationsState } from 'fixtures/integrations'
 import client from 'models/api/resources'
 import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
-import {
-    BigCommerceActionType,
-    BigCommerceGeneralErrorMessage,
+import type {
     BigCommerceOrder,
-    BigCommerceRefundableItemType,
-    BigCommerceRefundType,
     CalculateOrderRefundDataNestedResponse,
 } from 'models/integration/types'
 import {
-    CustomerContext,
-    CustomerContextType,
-} from 'providers/infobar/CustomerContext'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
+    BigCommerceActionType,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceRefundableItemType,
+    BigCommerceRefundType,
+} from 'models/integration/types'
+import type { CustomerContextType } from 'providers/infobar/CustomerContext'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import * as integrationHelpers from 'state/integrations/helpers'
 
 import RefundOrderModalRenderWrapper, {

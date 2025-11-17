@@ -2,7 +2,8 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { assumeMock } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _range from 'lodash/range'
@@ -29,8 +30,8 @@ import {
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import { Paths } from 'rest_api/workflows_api/client.generated'
-import { RootState, StoreDispatch } from 'state/types'
+import type { Paths } from 'rest_api/workflows_api/client.generated'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

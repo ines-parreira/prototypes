@@ -4,7 +4,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'
-import {
+import type {
     CampaignDisplaysInSession,
     MinimumTimeBetweenCampaigns,
 } from 'pages/convert/campaigns/types/CampaignMeta'

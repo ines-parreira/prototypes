@@ -4,7 +4,7 @@ import { history } from '@repo/routing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
-import { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
+import type { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { notify } from 'state/notifications/actions'

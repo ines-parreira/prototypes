@@ -1,9 +1,5 @@
-import {
-    FieldValues,
-    Path,
-    useController,
-    UseControllerProps,
-} from 'react-hook-form'
+import type { FieldValues, Path, UseControllerProps } from 'react-hook-form'
+import { useController } from 'react-hook-form'
 
 import InputField from 'pages/common/forms/input/InputField'
 

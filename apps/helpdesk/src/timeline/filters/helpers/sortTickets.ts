@@ -1,10 +1,6 @@
 import { SORTABLE_KEY_TO_ORDER_KEY } from '../../constants'
-import {
-    SortableKey,
-    SortOption,
-    TimelineItem,
-    TimelineItemKind,
-} from '../../types'
+import type { SortableKey, SortOption, TimelineItem } from '../../types'
+import { TimelineItemKind } from '../../types'
 
 function getSortableValue(item: TimelineItem, key: SortableKey): string | null {
     switch (item.kind) {

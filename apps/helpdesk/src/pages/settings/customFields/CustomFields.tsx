@@ -7,12 +7,12 @@ import { Link, NavLink, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
+import type { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
 
 import { AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useUpdateCustomFieldDefinitions } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
-import {
+import type {
     CustomFieldAIManagedType,
     CustomFieldObjectTypes,
 } from 'custom-fields/types'

@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     AIArticle,
-    AIArticleToggleOptionValue,
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'

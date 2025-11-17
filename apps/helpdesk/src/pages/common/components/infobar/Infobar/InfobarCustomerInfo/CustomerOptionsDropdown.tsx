@@ -1,8 +1,8 @@
 import React, { useRef } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { TicketCustomer } from '@gorgias/helpdesk-types'
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

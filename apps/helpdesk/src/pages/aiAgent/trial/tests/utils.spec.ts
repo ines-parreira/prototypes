@@ -1,4 +1,4 @@
-import { Trial } from 'models/aiAgent/types'
+import type { Trial } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 import {

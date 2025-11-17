@@ -6,7 +6,7 @@ import {
 } from '@gorgias/axiom'
 
 import { DashboardsPageActions } from 'domains/reporting/pages/dashboards/DashboardsPageActions'
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 
 export const DASHBOARD_ACTIONS_LABEL = 'Actions'
 export const DASHBOARD_ACTIONS_MENU_ICON = 'more_vert'

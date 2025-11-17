@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { keyBy as _keyBy } from 'lodash'
@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -14,7 +14,7 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import useCategoriesOptions from '../hooks/useCategoriesOptions'

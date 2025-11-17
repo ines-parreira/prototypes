@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import battery from 'assets/img/battery.svg'
 import wifi from 'assets/img/wifi.svg'

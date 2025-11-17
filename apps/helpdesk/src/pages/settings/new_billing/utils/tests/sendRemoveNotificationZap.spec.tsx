@@ -1,6 +1,7 @@
 import client from 'models/api/resources'
 
-import { Props, sendRemoveNotificationZap } from '../sendRemoveNotificationZap'
+import type { Props } from '../sendRemoveNotificationZap'
+import { sendRemoveNotificationZap } from '../sendRemoveNotificationZap'
 
 jest.mock('models/api/resources', () => ({
     get: jest.fn(),

@@ -1,6 +1,6 @@
-import { Team } from '@gorgias/helpdesk-queries'
+import type { Team } from '@gorgias/helpdesk-queries'
 
-import { ApiPaginationParams, OrderDirection } from 'models/api/types'
+import type { ApiPaginationParams, OrderDirection } from 'models/api/types'
 
 export type ListParams = ApiPaginationParams & {
     url?: string

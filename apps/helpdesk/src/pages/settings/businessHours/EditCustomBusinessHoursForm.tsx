@@ -1,7 +1,7 @@
 import { history } from '@repo/routing'
 
 import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
-import { BusinessHoursDetails } from '@gorgias/helpdesk-types'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
@@ -19,7 +19,7 @@ import { BUSINESS_HOURS_BASE_URL } from './constants'
 import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
 import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
 import EditCustomBusinessHoursIntegrationsSection from './EditCustomBusinessHoursIntegrationsSection'
-import { EditCustomBusinessHoursFormValues } from './types'
+import type { EditCustomBusinessHoursFormValues } from './types'
 import { useCustomBusinessHoursForm } from './useCustomBusinessHoursForm'
 import {
     getEditCustomBusinessHoursDefaultValues,

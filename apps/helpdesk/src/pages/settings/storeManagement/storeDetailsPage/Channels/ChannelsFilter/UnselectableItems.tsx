@@ -7,7 +7,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import deriveLabelFromIntegration from '../../../helpers/deriveLabelFromIntegration'
 import integrationBelongsToChannel from '../../../helpers/integrationBelongsToChannel'
 import { useStoreManagementState } from '../../../StoreManagementProvider'
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 
 import css from './UnselectableItems.less'
 

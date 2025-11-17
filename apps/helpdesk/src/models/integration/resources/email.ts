@@ -2,8 +2,8 @@ import { stringify } from 'qs'
 
 import client from 'models/api/resources'
 
-import { EmailProvider } from '../constants'
-import {
+import type { EmailProvider } from '../constants'
+import type {
     EmailDomain,
     EmailMigrationBannerStatus,
     EmailMigrationInboundVerification,

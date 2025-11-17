@@ -1,4 +1,5 @@
-import { countries, Country } from 'config/countries'
+import type { Country } from 'config/countries'
+import { countries } from 'config/countries'
 
 export const getCountrySelectOptions = (
     supportedCountryCodes: Country[],

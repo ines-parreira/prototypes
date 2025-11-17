@@ -1,4 +1,5 @@
-import { ComponentType, memo, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
+import { memo } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import cn from 'classnames'

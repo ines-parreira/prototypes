@@ -7,7 +7,7 @@ import sortBy from 'lodash/sortBy'
 import 'react-select/dist/react-select.css'
 
 import SelectField from '../../../forms/SelectField/SelectField'
-import {
+import type {
     SelectableOption as SelectOption,
     Value as SelectValue,
 } from '../../../forms/SelectField/types'

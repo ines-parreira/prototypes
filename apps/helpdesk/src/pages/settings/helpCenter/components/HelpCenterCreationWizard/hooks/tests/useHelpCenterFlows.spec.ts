@@ -3,13 +3,13 @@ import Promise from 'promise-polyfill'
 
 import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
 import { IntegrationType } from 'models/integration/constants'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { ChannelLanguage } from 'pages/automate/common/types'
-import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { ChannelLanguage } from 'pages/automate/common/types'
+import type { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import { useHelpCenterFlows } from '../useHelpCenterFlows'
 

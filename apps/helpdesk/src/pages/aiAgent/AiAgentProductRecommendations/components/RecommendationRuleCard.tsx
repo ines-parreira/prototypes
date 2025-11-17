@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import type { ColorType } from '@gorgias/axiom'
 import {
     LegacyButton as Button,
-    ColorType,
     LegacyIconButton as IconButton,
     LoadingSpinner,
     Skeleton,

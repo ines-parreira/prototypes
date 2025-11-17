@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import {
     MACRO_CREATED,

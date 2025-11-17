@@ -1,6 +1,7 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

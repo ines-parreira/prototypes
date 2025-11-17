@@ -6,7 +6,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
+import type { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,

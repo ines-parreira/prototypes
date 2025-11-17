@@ -2,11 +2,10 @@ import { useCallback, useMemo } from 'react'
 
 import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
 
-import { SavedFilterAPI } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import ApplySavedFilters, {
-    ApplySavedFilterProps,
-} from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import type { SavedFilterAPI } from 'domains/reporting/models/stat/types'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { ApplySavedFilterProps } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import ApplySavedFilters from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { areFiltersFilled } from 'domains/reporting/pages/common/filters/SavedFiltersActions/helpers'
 import css from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions.less'
 import { SaveFilters } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SaveFilters/SaveFilters'

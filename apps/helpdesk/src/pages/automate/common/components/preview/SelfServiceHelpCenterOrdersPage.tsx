@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { Badge } from '@gorgias/axiom'
 
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import MousePointer from './components/MousePointer'
 import { LINE_ITEMS } from './constants'

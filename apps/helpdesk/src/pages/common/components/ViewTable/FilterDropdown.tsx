@@ -1,6 +1,8 @@
-import React, { ComponentType, useCallback, useMemo, useState } from 'react'
+import type { ComponentType } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { ViewField } from 'models/view/types'

@@ -1,7 +1,7 @@
-import { MetricName } from 'domains/reporting/hooks/metricNames'
-import { Cubes } from 'domains/reporting/models/cubes'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export enum ReportingFilterOperator {
     Equals = 'equals',

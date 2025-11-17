@@ -1,9 +1,9 @@
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { QueryReturnType } from 'domains/reporting/hooks/useMetric'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetric'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { usePostReporting } from 'domains/reporting/models/queries'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 
 export function useSummaryMetric<TCube extends Cubes = Cubes>(
     query: ReportingQuery<TCube>,

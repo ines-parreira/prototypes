@@ -1,4 +1,6 @@
-import React, { HTMLAttributes, useEffect, useState } from 'react'
+import type { HTMLAttributes } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useKey } from '@repo/hooks'
 import classNames from 'classnames'

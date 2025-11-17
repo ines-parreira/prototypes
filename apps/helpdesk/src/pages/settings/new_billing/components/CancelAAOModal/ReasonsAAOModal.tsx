@@ -7,7 +7,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import { Reason } from './CancelAAOModal'
+import type { Reason } from './CancelAAOModal'
 
 import css from './CancelAAOModal.less'
 

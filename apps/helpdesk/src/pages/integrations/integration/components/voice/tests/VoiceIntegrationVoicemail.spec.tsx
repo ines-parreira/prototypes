@@ -4,13 +4,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { PhoneCountry, PhoneFunction } from 'business/twilio'
+import type { PhoneIntegration } from 'models/integration/types'
 import {
     IntegrationType,
-    PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
 } from 'models/integration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

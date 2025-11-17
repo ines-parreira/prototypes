@@ -12,7 +12,7 @@ import { CustomFieldsTicketCountBreakdownTableChart } from 'domains/reporting/pa
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

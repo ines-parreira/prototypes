@@ -13,7 +13,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { view } from 'fixtures/views'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import useBulkAction from '../useBulkAction'
 import useCancelJob from '../useCancelJob'

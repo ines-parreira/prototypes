@@ -2,11 +2,11 @@ import _omit from 'lodash/omit'
 
 import { campaign, campaignId } from 'fixtures/campaign'
 import { channelConnectionId } from 'fixtures/channelConnection'
-import {
+import type {
     CampaignCreatePayload,
     CampaignSuggestCopyPayload,
 } from 'models/convert/campaign/types'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 

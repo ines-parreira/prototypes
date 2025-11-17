@@ -1,16 +1,16 @@
+import type { TagsReportState } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import {
     getHeatmapMode,
     getTagsOrder,
     getValueMode,
     setOrder,
     tagsReportSlice,
-    TagsReportState,
     toggleHeatmapMode,
     toggleValueMode,
 } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { opposite, OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('tagsReportSlice', () => {
     const tagsState: TagsReportState = {

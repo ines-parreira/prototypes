@@ -4,7 +4,7 @@ import { act, assumeMock, renderHook } from '@repo/testing'
 
 import { useFlag } from 'core/flags'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
-import { FilterOptionGroup } from 'domains/reporting/pages/types'
+import type { FilterOptionGroup } from 'domains/reporting/pages/types'
 
 jest.mock('core/flags')
 jest.mock('@repo/hooks', () => ({

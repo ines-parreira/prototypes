@@ -9,14 +9,12 @@ import { CAMPAIGN_TABLE_COLUMN_TITLES } from 'domains/reporting/pages/convert/co
 import { useCampaignPerformanceTableSetting } from 'domains/reporting/pages/convert/hooks/useCampaignPerformanceTableSetting'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
-import {
-    ConvertMetric,
-    TableView,
-} from 'domains/reporting/state/ui/stats/types'
+import type { TableView } from 'domains/reporting/state/ui/stats/types'
+import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import { campaign, campaignVariant } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
-import { CampaignPreview } from 'models/convert/campaign/types'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
 const chatIntegration = {

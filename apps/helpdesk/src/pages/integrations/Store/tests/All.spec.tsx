@@ -10,14 +10,13 @@ import thunk from 'redux-thunk'
 import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { dummyAppListData } from 'fixtures/apps'
 import client from 'models/api/resources'
-import { Cadence, HelpdeskPlan, ProductType } from 'models/billing/types'
+import type { HelpdeskPlan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
-import {
-    AccountFeature,
-    AccountFeatureMetadata,
-} from 'state/currentAccount/types'
-import { IntegrationListItem } from 'state/integrations/types'
+import type { Integration } from 'models/integration/types'
+import type { AccountFeatureMetadata } from 'state/currentAccount/types'
+import { AccountFeature } from 'state/currentAccount/types'
+import type { IntegrationListItem } from 'state/integrations/types'
 import { renderWithRouter } from 'utils/testing'
 
 import All, { addRequiredPlanToIntegrations } from '../All'

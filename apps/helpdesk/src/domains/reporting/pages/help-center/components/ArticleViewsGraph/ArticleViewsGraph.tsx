@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { Scale } from 'chart.js'
+import type { Scale } from 'chart.js'
 import moment from 'moment/moment'
 
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
@@ -13,7 +13,7 @@ import {
     formatTimeSeriesData,
     SHORT_FORMAT,
 } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,

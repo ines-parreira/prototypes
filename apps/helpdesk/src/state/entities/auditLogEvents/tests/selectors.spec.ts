@@ -1,6 +1,7 @@
-import { Event, EventObjectType, EventType } from 'models/event/types'
+import type { Event } from 'models/event/types'
+import { EventObjectType, EventType } from 'models/event/types'
 import { getAuditLogEvents } from 'state/entities/auditLogEvents/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('getAuditLogEvents', () => {
     it('should return AuditLogEvents array', () => {

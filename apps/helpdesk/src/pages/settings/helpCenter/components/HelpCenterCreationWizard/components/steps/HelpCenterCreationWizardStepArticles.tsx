@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
     ArticleTemplateType,
-    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'

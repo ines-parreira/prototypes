@@ -29,9 +29,10 @@ import {
     customFieldsTicketTotalCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { injectCustomFieldId } from 'domains/reporting/models/queryFactories/utils'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
 import {
-    ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'

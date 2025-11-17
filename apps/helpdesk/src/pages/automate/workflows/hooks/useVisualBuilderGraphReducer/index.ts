@@ -1,45 +1,43 @@
 import { useReducer } from 'react'
 
-import {
+import type {
     VisualBuilderGraph,
     VisualBuilderTriggerNode,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import { baseReducer, VisualBuilderBaseAction } from './baseReducer'
-import {
-    choicesReducer,
-    isVisualBuilderChoiceAction,
-    VisualBuilderChoicesAction,
-} from './choicesReducer'
+import type { VisualBuilderBaseAction } from './baseReducer'
+import { baseReducer } from './baseReducer'
+import type { VisualBuilderChoicesAction } from './choicesReducer'
+import { choicesReducer, isVisualBuilderChoiceAction } from './choicesReducer'
+import type { VisualBuilderConditionsAction } from './conditionsReducer'
 import {
     conditionsReducer,
     isVisualBuilderConditionAction,
-    VisualBuilderConditionsAction,
 } from './conditionsReducer'
+import type { VisualBuilderHttpRequestAction } from './httpRequestReducer'
 import {
     httpRequestReducer,
     isVisualBuilderHttpRequestAction,
-    VisualBuilderHttpRequestAction,
 } from './httpRequestReducer'
+import type { VisualBuilderLiquidTemplateAction } from './liquidTemplateReducer'
 import {
     isVisualBuilderLiquidTemplateAction,
     liquidTemplateReducer,
-    VisualBuilderLiquidTemplateAction,
 } from './liquidTemplateReducer'
+import type { VisualBuilderLLMPromptTriggerAction } from './llmPromptTriggerReducer'
 import {
     isVisualBuilderLLMPromptTriggerAction,
     llmPromptTriggerReducer,
-    VisualBuilderLLMPromptTriggerAction,
 } from './llmPromptTriggerReducer'
+import type { VisualBuilderReusableLLMPromptCallAction } from './reusableLLMPromptCallReducer'
 import {
     isVisualBuilderReusableLLMPromptCallAction,
     reusableLLMPromptCallReducer,
-    VisualBuilderReusableLLMPromptCallAction,
 } from './reusableLLMPromptCallReducer'
+import type { VisualBuilderReusableLLMPromptTriggerAction } from './reusableLLMPromptTriggerReducer'
 import {
     isVisualBuilderReusableLLMPromptTriggerAction,
     reusableLLMPromptTriggerReducer,
-    VisualBuilderReusableLLMPromptTriggerAction,
 } from './reusableLLMPromptTriggerReducer'
 
 export type VisualBuilderGraphAction =

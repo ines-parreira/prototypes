@@ -1,9 +1,10 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React from 'react'
 
 import { connect } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import { getSchemas } from 'state/schemas/selectors'
 
 import UnknownSyntax from '../UnknownSyntax'

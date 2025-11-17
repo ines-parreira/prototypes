@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { CustomDomain as CustomDomainEntity } from 'models/helpCenter/types'
+import type { CustomDomain as CustomDomainEntity } from 'models/helpCenter/types'
 import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import Loader from 'pages/common/components/Loader/Loader'
 import { StatusCheck } from 'pages/common/components/StatusCheck'

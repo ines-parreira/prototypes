@@ -5,10 +5,10 @@ import {
     useSuccessRateUpliftOpportunityPerIntent,
 } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { filterMetricDataByIntentLevel } from 'domains/reporting/hooks/automate/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 
 export const getIntentMetric = (

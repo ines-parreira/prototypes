@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { shortcutManager, shortcuts } from '@repo/utils'
@@ -21,17 +22,17 @@ import {
     WIZARD_POST_COMPLETION_STATE,
 } from '../../../constants'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
-import { PlaygroundCustomer } from '../../types'
-import { PlaygroundAction } from '../PlaygroundActions/types'
-import {
+import type { PlaygroundCustomer } from '../../types'
+import type { PlaygroundAction } from '../PlaygroundActions/types'
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundFormValues,
 } from '../PlaygroundChat/PlaygroundChat.types'
+import type { TicketData } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import {
     PlaygroundCustomerSelection,
     SenderTypeValues,
-    TicketData,
 } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'

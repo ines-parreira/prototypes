@@ -7,13 +7,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import TeamAverageCallsCountCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
-import { useTotalCallsMetric } from 'domains/reporting/pages/voice/hooks/agentMetrics'
+import type { useTotalCallsMetric } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import { initialState as agentPerformanceInitialState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { agents } from 'fixtures/agents'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

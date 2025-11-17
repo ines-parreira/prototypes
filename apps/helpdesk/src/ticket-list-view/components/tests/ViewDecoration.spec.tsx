@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { View, ViewCategory } from 'models/view/types'
+import type { View } from 'models/view/types'
+import { ViewCategory } from 'models/view/types'
 import { systemViewIcons } from 'utils/views'
 
 import ViewDecoration from '../ViewDecoration'

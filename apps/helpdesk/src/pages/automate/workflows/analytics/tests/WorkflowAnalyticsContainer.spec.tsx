@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import * as segment from '@repo/logging'
 import { render, screen } from '@testing-library/react'

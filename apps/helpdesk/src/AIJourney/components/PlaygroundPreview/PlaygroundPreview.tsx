@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 import { highlightFakeLinks } from 'AIJourney/utils/highlightFakeLinks/highlightFakeLinks'
-import { Image } from 'constants/integrations/types/shopify'
+import type { Image } from 'constants/integrations/types/shopify'
 
 import { GeneratingMessage } from '../GeneratingMessage/GeneratingMessage'
 import { PlaygroundPreviewHeader } from '../PlaygroundPreviewHeader/PlaygroundPreviewHeader'

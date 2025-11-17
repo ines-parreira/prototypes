@@ -1,6 +1,6 @@
-import { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import { IngestedResourceStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
+import type { IngestedResourceStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export type KnowledgeStatus = Components.Schemas.KnowledgeStatusDto
 

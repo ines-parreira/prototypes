@@ -4,9 +4,9 @@ import { useConditionalShortcuts } from '@repo/utils'
 import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
+import type { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import { TagDropdownMenu } from 'tags'
 

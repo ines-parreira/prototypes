@@ -1,4 +1,5 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -12,7 +13,7 @@ import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { getActiveCustomerId } from 'state/customers/selectors'
 import { executeAction } from 'state/infobar/actions'
 import { isEditing } from 'state/widgets/selectors'
-import { FieldCustomization } from 'Widgets/modules/Template/types'
+import type { FieldCustomization } from 'Widgets/modules/Template/types'
 
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { ShopifyActionType } from '../types'

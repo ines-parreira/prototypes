@@ -12,7 +12,7 @@ import {
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { SalesSettingsData } from 'models/aiAgent/types'
+import type { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'

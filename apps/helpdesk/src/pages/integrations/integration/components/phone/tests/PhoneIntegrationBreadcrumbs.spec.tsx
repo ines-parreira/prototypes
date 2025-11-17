@@ -5,13 +5,13 @@ import configureMockStore from 'redux-mock-store'
 
 import { PhoneCountry, PhoneFunction } from 'business/twilio'
 import { phoneNumbers } from 'fixtures/phoneNumber'
+import type { PhoneIntegration } from 'models/integration/types'
 import {
     IntegrationType,
-    PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
 } from 'models/integration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'

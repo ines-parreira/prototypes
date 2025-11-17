@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import { QUALITY_MANAGEMENT_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export type QualityManagementState = {
     commentHighlightsCsatSentiment: CsatSentiment

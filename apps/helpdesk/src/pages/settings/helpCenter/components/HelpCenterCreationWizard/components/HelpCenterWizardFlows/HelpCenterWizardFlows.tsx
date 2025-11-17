@@ -5,10 +5,9 @@ import classnames from 'classnames'
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import WorkflowsFeatureList, {
-    Entrypoint,
-} from 'pages/automate/common/components/WorkflowsFeatureList'
-import { ChannelLanguage } from 'pages/automate/common/types'
+import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import WorkflowsFeatureList from 'pages/automate/common/components/WorkflowsFeatureList'
+import type { ChannelLanguage } from 'pages/automate/common/types'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'

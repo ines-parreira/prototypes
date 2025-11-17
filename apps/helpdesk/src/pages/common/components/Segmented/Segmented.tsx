@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
 import SegmentedOption from './SegmentedOption'
-import { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
-import { SegmentedOptionModel } from './types/SegmentedOptionModel'
-import { SegmentedOptionValue } from './types/SegmentedOptionValue'
+import type { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
+import type { SegmentedOptionModel } from './types/SegmentedOptionModel'
+import type { SegmentedOptionValue } from './types/SegmentedOptionValue'
 
 import classes from './Segmented.less'
 

@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
+import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/types'

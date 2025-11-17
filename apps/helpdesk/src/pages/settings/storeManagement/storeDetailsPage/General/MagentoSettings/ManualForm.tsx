@@ -1,5 +1,5 @@
 import { FormField } from 'core/forms'
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 
 import { BaseForm } from './BaseForm'
 import { useManualForm } from './hooks/useManualForm'

@@ -1,4 +1,5 @@
-import React, { ComponentProps, useCallback, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import {
     LegacyButton as Button,

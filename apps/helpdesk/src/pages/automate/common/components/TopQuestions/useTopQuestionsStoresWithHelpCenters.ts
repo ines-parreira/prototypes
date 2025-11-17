@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { getStoreIntegrations } from 'state/integrations/selectors'
-import { NonEmptyArray } from 'types'
+import type { NonEmptyArray } from 'types'
 
 export type StoreWithHelpCenters = {
     store: StoreIntegration

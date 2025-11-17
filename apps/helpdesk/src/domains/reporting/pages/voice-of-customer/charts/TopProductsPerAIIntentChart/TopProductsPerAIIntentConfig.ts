@@ -1,4 +1,4 @@
-import { NestedTableColumnConfig } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
+import type { NestedTableColumnConfig } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 
 export const TOP_INTENTS_PER_PAGE = 10
 

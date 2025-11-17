@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -10,7 +10,7 @@ import {
     getOtherAgentsTypingOnTicket,
 } from 'state/agents/selectors'
 
-import { TicketPresenceState } from './useCollisionDetection'
+import type { TicketPresenceState } from './useCollisionDetection'
 
 export default function useSocketIOPresence(): TicketPresenceState {
     const agentsViewing =

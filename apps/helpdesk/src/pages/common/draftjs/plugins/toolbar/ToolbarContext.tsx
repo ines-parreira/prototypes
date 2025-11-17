@@ -1,27 +1,28 @@
-import React, { ComponentType, createContext, useContext } from 'react'
+import type { ComponentType } from 'react'
+import React, { createContext, useContext } from 'react'
 
 import { List } from 'immutable'
 import _noop from 'lodash/noop'
 
-import { DiscountCode } from 'models/discountCodes/types'
-import {
+import type { DiscountCode } from 'models/discountCodes/types'
+import type {
     ProductCardDetails,
     ShopifyIntegration,
 } from 'models/integration/types'
-import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import {
+import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type {
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
-import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
-import {
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
+import type {
     AttachmentType,
     DiscountOfferAttachment,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import { ProductCardAttachment } from './components/AddProductLink'
-import { TooltipTourConfigurationType } from './types'
+import type { ProductCardAttachment } from './components/AddProductLink'
+import type { TooltipTourConfigurationType } from './types'
 
 export type ToolbarContextType = {
     placementType: RichFieldEditorPlacement | undefined

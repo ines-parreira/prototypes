@@ -1,9 +1,7 @@
 import cn from 'classnames'
 
-import {
-    InfluencedOrderSource,
-    ShoppingAssistantEvent,
-} from '../../hooks/useInsertShoppingAssistantEventElements'
+import type { ShoppingAssistantEvent } from '../../hooks/useInsertShoppingAssistantEventElements'
+import { InfluencedOrderSource } from '../../hooks/useInsertShoppingAssistantEventElements'
 
 import cssEvent from '../Event.less'
 import css from './InfluencedOrderEvent.less'

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { HTMLAttributes } from 'react'
+import type { HTMLAttributes } from 'react'
+import type React from 'react'
 
 import styled from '@emotion/styled'
 

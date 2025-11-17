@@ -1,5 +1,6 @@
-import { AutomatePlan, Cadence, HelpdeskPlan } from '../models/billing/types'
-import {
+import type { AutomatePlan, HelpdeskPlan } from '../models/billing/types'
+import { Cadence } from '../models/billing/types'
+import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from '../state/currentAccount/types'

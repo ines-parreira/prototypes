@@ -1,6 +1,8 @@
-import React, { useRef } from 'react'
+import type React from 'react'
+import { useRef } from 'react'
 
-import UploadLogoModal, { UploadLogoModalHandle } from './UploadLogoModal'
+import type { UploadLogoModalHandle } from './UploadLogoModal'
+import UploadLogoModal from './UploadLogoModal'
 
 type UploadLogoCaptionProps = {
     onConfirm: (url: string) => void

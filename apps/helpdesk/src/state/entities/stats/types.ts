@@ -1,8 +1,8 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Stat } from 'domains/reporting/models/stat/types'
+import type { Stat } from 'domains/reporting/models/stat/types'
 
-import { STAT_FETCHED } from './constants'
+import type { STAT_FETCHED } from './constants'
 
 export type StatsState = {
     [key: string]: Stat | undefined

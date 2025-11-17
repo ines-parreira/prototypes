@@ -3,10 +3,11 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { AILibraryArticleItem } from 'models/helpCenter/types'
+import type { AILibraryArticleItem } from 'models/helpCenter/types'
 import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 
-import AIArticleRow, { AIArticleRowProps } from '../AIArticleRow'
+import type { AIArticleRowProps } from '../AIArticleRow'
+import AIArticleRow from '../AIArticleRow'
 
 describe('AIArticleRow', () => {
     const article: AILibraryArticleItem = {

@@ -17,7 +17,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import AIArticlesLibraryArticleEditor from '../AIArticlesLibraryArticleEditor'
 

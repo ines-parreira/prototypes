@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 

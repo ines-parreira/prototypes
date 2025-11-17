@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import type {
+    EmailIntegration,
+    GmailIntegration,
+} from '@gorgias/helpdesk-queries'
 
-import { OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import LinkButton from 'pages/common/components/button/LinkButton'
 

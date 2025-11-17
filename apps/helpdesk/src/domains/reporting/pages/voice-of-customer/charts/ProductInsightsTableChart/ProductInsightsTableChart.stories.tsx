@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 
@@ -8,10 +8,10 @@ import { appQueryClient } from 'api/queryClient'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import product1 from 'domains/reporting/assets/img/voc-preview/product_01.png'
 import product2 from 'domains/reporting/assets/img/voc-preview/product_02.png'
+import type { ProductEnrichmentFields } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     PRODUCT_ENRICHMENT_FIELDS,
-    ProductEnrichmentFields,
 } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { INTENT_DIMENSION } from 'domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct'
 import { withEnrichment } from 'domains/reporting/hooks/withEnrichment'
@@ -19,10 +19,8 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import {
-    reportingKeys,
-    UseEnrichedPostReportingQueryData,
-} from 'domains/reporting/models/queries'
+import type { UseEnrichedPostReportingQueryData } from 'domains/reporting/models/queries'
+import { reportingKeys } from 'domains/reporting/models/queries'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import { ticketCountPerProductAndIntentQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
 import { returnMentionsPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/returnMentionsPerProduct'
@@ -32,7 +30,8 @@ import {
     TICKET_COUNT_MEASURE,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/sentimentPerProduct'
 import { ticketCountPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { Sentiment } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { ProductInsightsTableChart } from 'domains/reporting/pages/voice-of-customer/charts/ProductInsightsTableChart/ProductInsightsTableChart'
@@ -45,7 +44,7 @@ import { initialState as productInsightsInitialState } from 'domains/reporting/s
 import { PRODUCT_NAME_FIELD } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
 import configureStore from 'store/configureStore'
-import { InitialRootState } from 'types'
+import type { InitialRootState } from 'types'
 
 const productId = 'some-product-id'
 const anotherProductId = 'another-product-id'

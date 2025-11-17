@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import SmsIntegrationCreate from '../SmsIntegrationCreate'
 

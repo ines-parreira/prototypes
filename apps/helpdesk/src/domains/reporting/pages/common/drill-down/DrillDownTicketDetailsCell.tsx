@@ -1,13 +1,13 @@
-import React, { PropsWithRef } from 'react'
+import type { PropsWithRef } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
-import { TicketDetails } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
+import type { TicketDetails } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell.less'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import BodyCell, {
-    Props as BodyCellProps,
-} from 'pages/common/components/table/cells/BodyCell'
+import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TicketIcon, { NullTicketIcon } from 'pages/common/components/TicketIcon'
 
 const TICKET_DELETED_OR_MERGED = 'Ticket has been deleted or merged'

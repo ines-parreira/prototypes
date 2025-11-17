@@ -1,4 +1,4 @@
-import {
+import type {
     ArticleTranslationWithRating,
     LocaleCode,
 } from 'models/helpCenter/types'

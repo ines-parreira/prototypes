@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
@@ -10,13 +11,12 @@ import {
     createPhoneNumber,
     fetchNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import {
+import type {
     AddressInformation,
-    AddressType,
     NewPhoneNumber,
     PhoneNumberMeta,
-    PhoneType,
 } from 'models/phoneNumber/types'
+import { AddressType, PhoneType } from 'models/phoneNumber/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { Locale, LocaleCode } from 'models/helpCenter/types'
-import { BadgeItemProps } from 'pages/common/components/BadgetItem'
+import type { Locale, LocaleCode } from 'models/helpCenter/types'
+import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

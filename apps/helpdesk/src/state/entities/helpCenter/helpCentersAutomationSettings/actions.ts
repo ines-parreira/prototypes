@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
+import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import { HelpCentersAutomationSettingsActions } from 'state/entities/helpCenter/helpCentersAutomationSettings/types'
 
 export const helpCenterAutomationSettingsFetched = createAction<{

@@ -2,8 +2,8 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { DiscountStrategy } from '../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from '../Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import type { DiscountStrategy } from '../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import type { PersuasionLevel } from '../Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 
 interface useShoppingAssistantTrackingProps {
     shopName: string

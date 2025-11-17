@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import { getHumanAgentsJS } from 'state/agents/selectors'

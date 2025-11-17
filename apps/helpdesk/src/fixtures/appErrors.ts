@@ -1,4 +1,4 @@
-import { AppErrorLog } from 'models/integration/types/app'
+import type { AppErrorLog } from 'models/integration/types/app'
 
 export const dummyErrorLogList: AppErrorLog[] = [
     {

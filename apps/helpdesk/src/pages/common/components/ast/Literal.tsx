@@ -1,7 +1,7 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { UNARY_OPERATORS } from 'config'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import Errors from './Errors'
 import Widget from './Widget'

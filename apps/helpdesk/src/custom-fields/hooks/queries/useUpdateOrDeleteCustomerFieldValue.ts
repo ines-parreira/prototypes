@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { UpdateCustomerCustomFieldValueBody } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
-    UpdateCustomerCustomFieldValueBody,
     useDeleteCustomerCustomFieldValue,
     useUpdateCustomerCustomFieldValue,
 } from '@gorgias/helpdesk-queries'

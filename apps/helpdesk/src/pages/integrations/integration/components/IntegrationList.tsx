@@ -1,10 +1,13 @@
-import { cloneElement, Component, isValidElement, memo, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { cloneElement, Component, isValidElement, memo } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import moment from 'moment'
-import { connect, ConnectedProps } from 'react-redux'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
+import type { RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Table } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

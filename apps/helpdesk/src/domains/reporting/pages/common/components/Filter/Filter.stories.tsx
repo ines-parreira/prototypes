@@ -1,11 +1,12 @@
-import React, { ComponentProps, useMemo, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useMemo, useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { flatMap } from 'lodash'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 
 const storyConfig: Meta = {
     title: 'Stats/Filter',

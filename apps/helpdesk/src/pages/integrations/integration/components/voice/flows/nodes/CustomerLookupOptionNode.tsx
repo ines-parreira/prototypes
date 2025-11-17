@@ -1,8 +1,9 @@
 import { useWatch } from 'react-hook-form'
 
-import { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
+import type { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 
-import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
+import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
 import { type CustomerLookupOptionNode } from '../types'
 

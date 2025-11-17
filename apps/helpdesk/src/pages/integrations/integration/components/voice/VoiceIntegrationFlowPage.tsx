@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom'
 
 import { Box } from '@gorgias/axiom'
-import { PhoneIntegration, useGetIntegration } from '@gorgias/helpdesk-queries'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { FlowProvider } from 'core/ui/flows'
 import { isPhoneIntegration } from 'models/integration/types'

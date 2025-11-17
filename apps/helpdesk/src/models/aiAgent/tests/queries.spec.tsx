@@ -10,9 +10,11 @@ import {
     useGetTestSessionLogs,
     useTriggerAIJourney,
 } from 'models/aiAgent/queries'
-import {
+import type {
     CreatePlaygroundBody,
     GetTestSessionLogsResponse,
+} from 'models/aiAgentPlayground/types'
+import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
@@ -22,7 +24,7 @@ import { getHandoverConfigurationsFixture } from 'pages/aiAgent/fixtures/handove
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {

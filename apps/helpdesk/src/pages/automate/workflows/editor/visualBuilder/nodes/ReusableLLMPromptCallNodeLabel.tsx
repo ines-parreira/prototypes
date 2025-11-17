@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import { App } from 'pages/automate/actionsPlatform/types'
+import type { App } from 'pages/automate/actionsPlatform/types'
 
 import css from './ReusableLLMPromptCallNodeLabel.less'
 

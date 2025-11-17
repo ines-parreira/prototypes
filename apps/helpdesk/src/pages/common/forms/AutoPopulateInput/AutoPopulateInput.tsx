@@ -1,9 +1,9 @@
-import React, { ComponentProps, useEffect, useMemo, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import CheckBox from '../CheckBox'
-import DEPRECATED_InputField, {
-    InputFieldProps,
-} from '../DEPRECATED_InputField'
+import type { InputFieldProps } from '../DEPRECATED_InputField'
+import DEPRECATED_InputField from '../DEPRECATED_InputField'
 
 import css from './AutoPopulateInput.less'
 

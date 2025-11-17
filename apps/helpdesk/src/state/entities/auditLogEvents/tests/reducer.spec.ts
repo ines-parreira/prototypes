@@ -1,7 +1,7 @@
 import { events as eventsFixtures } from '../../../../fixtures/event'
 import { auditLogEventsFetched } from '../actions'
 import reducer from '../reducer'
-import { AuditLogEventsState } from '../types'
+import type { AuditLogEventsState } from '../types'
 
 describe('audit log events reducer', () => {
     describe('fetchEvents action', () => {

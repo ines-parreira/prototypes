@@ -1,13 +1,12 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
-import HelpCenterAutoEmbedWarningBanner, {
-    HelpCenterAutoEmbedWarningBannerProps,
-} from '../HelpCenterAutoEmbedWarningBanner'
+import type { HelpCenterAutoEmbedWarningBannerProps } from '../HelpCenterAutoEmbedWarningBanner'
+import HelpCenterAutoEmbedWarningBanner from '../HelpCenterAutoEmbedWarningBanner'
 import { HelpCenterAutoEmbedReadinessStatus } from './types'
 
 import css from './HelpCenterAutoEmbedPublishSection.less'

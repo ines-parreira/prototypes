@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'

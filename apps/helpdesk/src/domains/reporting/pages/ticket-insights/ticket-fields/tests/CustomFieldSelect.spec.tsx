@@ -17,7 +17,7 @@ import {
     ticketInsightsSlice,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ticketFieldDefinitions } from 'fixtures/customField'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

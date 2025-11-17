@@ -1,6 +1,8 @@
-import React, { Component, ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React, { Component } from 'react'
 
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { suggestionsFilter } from '../../draftjs/plugins/mentions'
 

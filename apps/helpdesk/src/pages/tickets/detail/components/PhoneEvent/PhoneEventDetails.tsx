@@ -1,4 +1,5 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
 import { PhoneIntegrationEvent } from '../../../../../constants/integrations/types/event'

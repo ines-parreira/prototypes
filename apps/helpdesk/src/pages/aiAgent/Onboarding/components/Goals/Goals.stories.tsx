@@ -1,6 +1,7 @@
-import React, { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
 import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 

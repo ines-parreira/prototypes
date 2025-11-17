@@ -1,10 +1,10 @@
 import _throttle from 'lodash/throttle'
 
-import { RecentChatTicket } from '../../business/types/recentChats'
+import type { RecentChatTicket } from '../../business/types/recentChats'
 import client from '../../models/api/resources'
-import { Ticket } from '../../models/ticket/types'
+import type { Ticket } from '../../models/ticket/types'
 import browserNotification from '../../services/browserNotification'
-import { StoreDispatch } from '../types'
+import type { StoreDispatch } from '../types'
 import * as constants from './constants'
 
 export const fetchChats =

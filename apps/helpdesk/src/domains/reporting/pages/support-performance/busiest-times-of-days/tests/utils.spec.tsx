@@ -17,10 +17,8 @@ import {
     getWorkingHoursInTimeZone,
     weekDayLabel,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import {
-    AccountSettingBusinessHours,
-    AccountSettingType,
-} from 'state/currentAccount/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

@@ -1,4 +1,4 @@
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class ConnectAHelpCenterTask extends Task {

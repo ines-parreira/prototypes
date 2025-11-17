@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -7,7 +9,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
+import type { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,

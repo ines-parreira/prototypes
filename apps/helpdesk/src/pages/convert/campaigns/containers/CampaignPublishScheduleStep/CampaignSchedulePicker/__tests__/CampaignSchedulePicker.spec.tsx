@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import CampaignSchedulePicker from '../CampaignSchedulePicker'
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import { useId } from '@repo/hooks'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'

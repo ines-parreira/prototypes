@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import {
+import type {
     GroupedVirtuosoProps,
     TableVirtuosoProps,
     VirtuosoProps,

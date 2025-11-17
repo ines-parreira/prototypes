@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,7 +14,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { initialState as billingInitialState } from 'state/billing/reducers'
 import { getStoreIntegrations } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/StoreFilter',

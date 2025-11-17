@@ -1,4 +1,4 @@
-import { UpdateContactFormDto } from 'models/contactForm/types'
+import type { UpdateContactFormDto } from 'models/contactForm/types'
 import {
     useCreateStoreMapping,
     useListStoreMappings,

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 export const ContactFormAttachmentContainer = (props: {
     attachment: Map<any, any>

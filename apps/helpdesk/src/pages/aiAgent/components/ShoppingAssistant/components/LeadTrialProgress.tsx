@@ -1,11 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { PromoCard } from 'pages/common/components/PromoCard'
 
-import { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
+import type { PromoCardContent, TrialType } from '../types/ShoppingAssistant'
 import { GMVIcon, NotificationIcon } from './SharedIcons'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'

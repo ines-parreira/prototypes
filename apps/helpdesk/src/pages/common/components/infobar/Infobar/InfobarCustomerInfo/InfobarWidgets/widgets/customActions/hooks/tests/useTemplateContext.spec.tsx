@@ -2,14 +2,12 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { Customer } from 'models/customer/types'
-import { Ticket } from 'models/ticket/types'
+import type { Customer } from 'models/customer/types'
+import type { Ticket } from 'models/ticket/types'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 import { AppContext } from 'providers/infobar/AppContext'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicket } from 'state/ticket/selectors'
 

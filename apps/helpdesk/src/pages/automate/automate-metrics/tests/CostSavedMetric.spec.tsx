@@ -3,12 +3,12 @@ import React from 'react'
 import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { products } from 'fixtures/productPrices'
 import { COST_SAVED } from 'pages/automate/automate-metrics/constants'
 import { CostSavedMetric } from 'pages/automate/automate-metrics/CostSavedMetric'
 import { initialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 const trend: MetricTrend = {

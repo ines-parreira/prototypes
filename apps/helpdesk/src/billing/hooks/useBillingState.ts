@@ -1,10 +1,7 @@
-import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
 
-import {
-    BillingState,
-    HttpResponse,
-    useGetBillingState,
-} from '@gorgias/helpdesk-queries'
+import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
+import { useGetBillingState } from '@gorgias/helpdesk-queries'
 
 const STALE_TIME = 1000 * 60 * 60 // 1h
 const CACHE_TIME = 1000 * 60 * 65 // 1h5m

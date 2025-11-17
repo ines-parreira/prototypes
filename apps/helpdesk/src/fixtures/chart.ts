@@ -1,6 +1,6 @@
 import moment from 'moment-timezone'
 
-import {
+import type {
     OneDimensionalDataItem,
     TwoDimensionalDataItem,
 } from 'domains/reporting/pages/types'

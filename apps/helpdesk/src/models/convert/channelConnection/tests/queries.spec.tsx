@@ -7,7 +7,7 @@ import {
     channelConnection,
     channelConnectionId,
 } from 'fixtures/channelConnection'
-import {
+import type {
     ChannelConnectionCreatePayload,
     ChannelConnectionListOptions,
     ChannelConnectionParams,

@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
+import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'

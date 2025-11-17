@@ -1,9 +1,11 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import { List } from 'immutable'
 import _noop from 'lodash/noop'
 
-import { ToolbarContext, ToolbarContextType } from './ToolbarContext'
+import type { ToolbarContextType } from './ToolbarContext'
+import { ToolbarContext } from './ToolbarContext'
 
 type Props = {
     children?: ReactNode

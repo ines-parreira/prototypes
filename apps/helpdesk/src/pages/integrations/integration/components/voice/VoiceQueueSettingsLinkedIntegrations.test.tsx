@@ -1,10 +1,10 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
+import type { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 
-import { NewPhoneNumber } from 'models/phoneNumber/types'
-import { NewPhoneNumbersState } from 'state/entities/phoneNumbers/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumbersState } from 'state/entities/phoneNumbers/types'
 
 import usePhoneNumbers from '../phone/usePhoneNumbers'
 import VoiceQueueSettingsLinkedIntegrations from './VoiceQueueSettingsLinkedIntegrations'

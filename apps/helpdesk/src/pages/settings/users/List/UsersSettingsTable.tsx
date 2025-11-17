@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
-import { ListUsersParams } from '@gorgias/helpdesk-queries'
-import { User } from '@gorgias/helpdesk-types'
+import type { ListUsersParams } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'

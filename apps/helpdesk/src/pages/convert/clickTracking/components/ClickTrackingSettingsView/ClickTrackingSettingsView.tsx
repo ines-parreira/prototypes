@@ -9,7 +9,7 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import css from 'pages/settings/settings.less'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

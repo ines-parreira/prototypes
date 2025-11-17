@@ -1,5 +1,5 @@
 import { INTEGRATIONS_MAPPING } from 'pages/standalone/constants'
-import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
+import type { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 
 export const getWebhookRequiredFields = (
     integration: HelpdeskIntegrationOptions,

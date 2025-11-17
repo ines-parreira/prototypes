@@ -10,11 +10,8 @@ import {
 
 import useAppSelector from 'hooks/useAppSelector'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
-import {
-    IvrMenuAction,
-    IvrMenuActionType,
-    VoiceMessage,
-} from 'models/integration/types'
+import type { IvrMenuAction, VoiceMessage } from 'models/integration/types'
+import { IvrMenuActionType } from 'models/integration/types'
 import { Drawer } from 'pages/common/components/Drawer'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { getSmsIntegrations } from 'state/integrations/selectors'

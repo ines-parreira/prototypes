@@ -1,4 +1,4 @@
-import { CampaignTemplate } from '../types'
+import type { CampaignTemplate } from '../types'
 import { CSM_CROSS_SELL_COMPLIMENTARY_ITEM } from './csmCrossSellComplimentaryItem'
 import { CSM_DRIVE_LOYALTY_PROGRAM_SIGNUPS } from './csmDriveLoyaltyProgramSignups'
 import { CSM_HIGHLIGHT_PRODUCTS_FEATURED_IN_BLOG } from './csmHighlightProductsFeaturedInBlog'

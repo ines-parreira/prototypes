@@ -1,18 +1,18 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AutomatedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import {
-    AutomatedTicketsCube,
     AutomatedTicketsFilterMember,
     AutomatedTicketsMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
+import type { RecommendedResourcesCube } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import {
-    RecommendedResourcesCube,
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketCubeWithJoins,
     TicketDimension,
     TicketMeasure,
     TicketMember,
@@ -32,18 +32,16 @@ import {
     addFieldIdToCustomFieldValues,
     countUniquePrefixes,
 } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const customerSatisfactionPerIntentLevelQueryFactory = ({
     filters,

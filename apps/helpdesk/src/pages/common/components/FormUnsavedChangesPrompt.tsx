@@ -1,10 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { FieldValues, useFormContext } from 'react-hook-form'
+import type { FieldValues } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
-import { Form } from 'core/forms'
+import type { Form } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
-import { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
+import type { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 type Props<T extends FieldValues> = {

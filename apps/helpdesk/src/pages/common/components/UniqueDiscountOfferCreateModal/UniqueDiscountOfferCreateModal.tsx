@@ -1,14 +1,10 @@
-import React, {
-    FormEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { FormEvent } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { AxiosError } from 'axios'
-import { Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { Map } from 'immutable'
 import { isEqual } from 'lodash'
 import {
     FormGroup,
@@ -24,7 +20,7 @@ import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import {
+import type {
     UniqueDiscountOffer,
     UniqueDiscountOfferCreatePayload,
     UniqueDiscountOfferTypeEnum,

@@ -1,4 +1,4 @@
-import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
+import type { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
 
 import {
     AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET,

@@ -2,12 +2,13 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import type { FC, HTMLAttributes, ReactNode } from 'react'
 
-import { Theme, useTheme } from '@emotion/react'
+import type { Theme } from '@emotion/react'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { relativeDarken, relativeLighten } from 'gorgias-design-system/utils'
-import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 const getIconStylesByVariant = ({
     variant,

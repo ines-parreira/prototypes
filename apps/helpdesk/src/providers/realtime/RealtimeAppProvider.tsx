@@ -1,15 +1,16 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { isObject, isString, toPlainObject } from 'lodash'
 
+import type { RealtimeStatus } from '@gorgias/realtime'
 import {
     ExponentialRetryPolicy,
     RealtimeLogLevel,
     RealtimeProvider,
-    RealtimeStatus,
 } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'

@@ -1,9 +1,9 @@
-import { Chart } from 'chart.js'
+import type { Chart } from 'chart.js'
 import classNames from 'classnames'
 
 import css from 'domains/reporting/pages/common/components/charts/ChartLegend.less'
 import Legend from 'domains/reporting/pages/common/components/charts/Legend'
-import { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
 
 type LinesVisibility = Record<number, boolean | undefined> | null
 type Props = {

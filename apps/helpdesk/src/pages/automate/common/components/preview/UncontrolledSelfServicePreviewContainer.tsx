@@ -1,6 +1,7 @@
-import { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
 
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import SelfServicePreviewContainer from './SelfServicePreviewContainer'
 

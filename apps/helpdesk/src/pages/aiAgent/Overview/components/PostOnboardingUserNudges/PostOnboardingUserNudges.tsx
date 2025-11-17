@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'

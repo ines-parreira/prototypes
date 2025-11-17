@@ -1,4 +1,4 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { DropdownItem } from 'reactstrap'
 

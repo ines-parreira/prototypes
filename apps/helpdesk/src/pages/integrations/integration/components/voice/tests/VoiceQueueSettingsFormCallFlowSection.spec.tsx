@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
-import { render, RenderResult, screen } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/helpdesk-queries'
 

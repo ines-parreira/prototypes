@@ -5,7 +5,7 @@ import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomF
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { updateCustomFieldFilterId } from 'state/views/actions'
-import { Schemas } from 'types'
+import type { Schemas } from 'types'
 
 import {
     getCustomFieldIdFromObjectPath,

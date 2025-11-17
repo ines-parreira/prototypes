@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import pluralize from 'pluralize'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { TicketFeedback } from 'models/aiAgentFeedback/types'
+import type { TicketFeedback } from 'models/aiAgentFeedback/types'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 
 import { QA_FAILED_MESSAGE } from './constants'

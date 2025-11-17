@@ -1,16 +1,15 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { DomainEvent } from '@gorgias/events'
+import type { DomainEvent } from '@gorgias/events'
 import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime'
 
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
 import LiveVoiceCallTable from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
 import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
@@ -18,7 +17,7 @@ import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLive
 import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
-import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')

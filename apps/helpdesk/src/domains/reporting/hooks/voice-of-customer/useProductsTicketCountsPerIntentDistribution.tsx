@@ -5,7 +5,7 @@ import { useProductsTicketCountsPerIntentWithEnrichment } from 'domains/reportin
 import { TicketProductsEnrichedMeasure } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const PRODUCTS_PER_INTENT_LIMIT = 5
 

@@ -1,17 +1,17 @@
-import {
-    InventoryPolicy as ShipifyInventoryPolicy,
+import type {
     Product as ShopifyProduct,
     Variant as ShopifyVariant,
 } from 'constants/integrations/types/shopify'
-import {
+import { InventoryPolicy as ShipifyInventoryPolicy } from 'constants/integrations/types/shopify'
+import type {
     BigCommerceProduct,
     BigCommerceProductVariant,
     IntegrationDataItem,
-    IntegrationType,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { supportedBigCommerceModifierTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
 
-import { Props as ResultProps } from './Result'
+import type { Props as ResultProps } from './Result'
 
 export const shopifyDataMappers = {
     variantsPath: (integrationItem: IntegrationDataItem<ShopifyProduct>) =>

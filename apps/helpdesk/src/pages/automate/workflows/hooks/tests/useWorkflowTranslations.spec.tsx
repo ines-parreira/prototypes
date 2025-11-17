@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -13,12 +13,12 @@ import {
 } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { VisualBuilderGraph } from '../../models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from '../../models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from '../../models/workflowConfiguration.model'
-import { LanguageCode } from '../../models/workflowConfiguration.types'
+import type { LanguageCode } from '../../models/workflowConfiguration.types'
 import useWorkflowTranslations from '../useWorkflowTranslations'
 
 let mockStore: Record<string, Record<string, string>> = {}

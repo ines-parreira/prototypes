@@ -1,11 +1,13 @@
-import React, { FC, ReactNode, Ref } from 'react'
+import type { FC, ReactNode, Ref } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 
-import AgentMessages, { AgentMessage } from './AgentMessages'
+import type { AgentMessage } from './AgentMessages'
+import AgentMessages from './AgentMessages'
 import CustomerInitialMessages from './CustomerInitialMessages'
 
 import css from './ChatIntegrationPreview.less'

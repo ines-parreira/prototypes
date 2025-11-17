@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
 import { getCategoriesById } from 'state/entities/helpCenter/categories'
 

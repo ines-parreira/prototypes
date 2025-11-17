@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { changeContactFormId } from './actions'
-import { ContactFormState } from './types'
+import type { ContactFormState } from './types'
 
 export const initialState: ContactFormState = {
     currentId: null,

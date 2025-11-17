@@ -3,9 +3,12 @@ import Alert from 'pages/common/components/Alert/Alert'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { AutoCloseSpamSettings, ManagedRuleSettings } from 'state/rules/types'
+import type {
+    AutoCloseSpamSettings,
+    ManagedRuleSettings,
+} from 'state/rules/types'
 
-import { ManagedRuleDetailProps } from './ManagedRuleEditor'
+import type { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 

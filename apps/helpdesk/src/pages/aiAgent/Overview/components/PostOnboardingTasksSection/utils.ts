@@ -6,13 +6,13 @@ import {
     PostStoreInstallationStepType,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import type { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { assetsUrl } from 'utils'
 
-import { ChatWarningDecision, PostOnboardingStepMetadata } from './types'
+import type { ChatWarningDecision, PostOnboardingStepMetadata } from './types'
 
 export const MAX_VISIBLE_GUIDANCES_TRAIN_SECTION = 5
 

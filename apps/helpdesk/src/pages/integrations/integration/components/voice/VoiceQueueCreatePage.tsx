@@ -2,10 +2,8 @@ import { history } from '@repo/routing'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
-    CreateVoiceQueue,
-    useCreateVoiceQueues,
-} from '@gorgias/helpdesk-queries'
+import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
+import { useCreateVoiceQueues } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
 import SettingsContent from 'pages/settings/SettingsContent'

@@ -1,11 +1,5 @@
-import React, {
-    ReactNode,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import _escapeRegExp from 'lodash/escapeRegExp'

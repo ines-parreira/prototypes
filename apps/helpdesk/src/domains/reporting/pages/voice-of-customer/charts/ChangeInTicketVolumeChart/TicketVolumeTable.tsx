@@ -24,7 +24,7 @@ import {
     ProductsPerTicketColumn,
     sortingSet,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
-import { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
+import type { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { opposite } from 'models/api/types'

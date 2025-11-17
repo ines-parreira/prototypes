@@ -1,9 +1,10 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
+import type { ContentBlock } from 'draft-js'
 import {
     AtomicBlockUtils,
     CompositeDecorator,
-    ContentBlock,
     ContentState,
     EditorState,
     Modifier,

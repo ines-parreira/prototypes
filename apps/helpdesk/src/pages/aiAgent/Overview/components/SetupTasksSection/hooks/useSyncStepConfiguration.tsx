@@ -7,8 +7,8 @@ import {
     postStoreInstallationStepsKeys,
     useUpdateStepConfigurationPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import type { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 
 import { createRuleEngineTaskMap } from '../utils/utils'
 

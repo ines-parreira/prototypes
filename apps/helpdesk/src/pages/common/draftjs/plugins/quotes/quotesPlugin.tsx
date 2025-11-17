@@ -1,9 +1,9 @@
-import {
+import type {
     ContentBlock,
-    DefaultDraftBlockRenderMap,
     DraftBlockRenderConfig,
     DraftBlockType,
 } from 'draft-js'
+import { DefaultDraftBlockRenderMap } from 'draft-js'
 
 import { EditorBlockType } from '../../../../../utils/editor'
 import { getQuoteDepth } from './quotesEditorUtils'

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
@@ -17,7 +17,7 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
-import { Source, TicketMessage } from 'models/ticket/types'
+import type { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
 import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 

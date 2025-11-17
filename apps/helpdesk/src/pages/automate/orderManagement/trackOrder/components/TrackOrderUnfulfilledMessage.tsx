@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
 import { UploadType } from 'common/types'
-import { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
+import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'

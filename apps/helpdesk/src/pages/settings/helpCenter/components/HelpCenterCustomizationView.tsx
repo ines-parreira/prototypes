@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { FormGroup } from 'reactstrap'
-import isURL, { IsURLOptions } from 'validator/lib/isURL'
+import type { IsURLOptions } from 'validator/lib/isURL'
+import isURL from 'validator/lib/isURL'
 
 import {
     LegacyButton as Button,
@@ -13,7 +14,7 @@ import {
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     ExtraHTMLDto,
     LocalSocialNavigationLink,
     NavigationLink,

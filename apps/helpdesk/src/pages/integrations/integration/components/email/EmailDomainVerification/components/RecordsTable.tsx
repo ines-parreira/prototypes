@@ -1,4 +1,4 @@
-import { EmailDNSRecord, EmailDomain } from '@gorgias/helpdesk-queries'
+import type { EmailDNSRecord, EmailDomain } from '@gorgias/helpdesk-queries'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

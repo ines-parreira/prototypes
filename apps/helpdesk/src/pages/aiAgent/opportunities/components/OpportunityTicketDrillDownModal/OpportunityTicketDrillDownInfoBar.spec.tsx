@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { user } from 'fixtures/users'
 import { useRunningJobs } from 'jobs'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { OpportunityTicketDrillDownInfoBar } from './OpportunityTicketDrillDownInfoBar'
 

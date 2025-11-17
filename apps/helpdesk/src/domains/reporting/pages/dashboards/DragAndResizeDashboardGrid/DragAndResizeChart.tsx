@@ -1,7 +1,7 @@
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import {
+import type {
     DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'

@@ -1,12 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import moment from 'moment'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { VoiceCallMeasure } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 

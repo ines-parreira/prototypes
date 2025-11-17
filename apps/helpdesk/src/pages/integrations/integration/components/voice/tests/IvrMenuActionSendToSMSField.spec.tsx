@@ -10,8 +10,9 @@ import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
 } from 'models/integration/constants'
-import { IvrSmsDeflection, VoiceMessageType } from 'models/integration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { IvrSmsDeflection } from 'models/integration/types'
+import { VoiceMessageType } from 'models/integration/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'

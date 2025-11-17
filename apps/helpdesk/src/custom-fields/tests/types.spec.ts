@@ -1,7 +1,7 @@
 import { SYSTEM_READ_ONLY_MANAGED_TYPES } from 'custom-fields/constants'
 
+import type { CustomField } from '../types'
 import {
-    CustomField,
     isCustomField,
     isCustomFieldAIManagedType,
     isCustomFieldSystemReadOnly,

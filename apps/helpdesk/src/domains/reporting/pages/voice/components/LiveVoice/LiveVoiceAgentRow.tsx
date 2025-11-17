@@ -4,7 +4,7 @@ import { useInterval } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {

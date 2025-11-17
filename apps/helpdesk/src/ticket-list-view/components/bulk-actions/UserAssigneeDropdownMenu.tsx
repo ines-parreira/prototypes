@@ -1,11 +1,13 @@
-import { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
-import { User } from 'config/types/user'
+import type { Item } from 'components/Dropdown'
+import { Body, Context, focusOnNextItem } from 'components/Dropdown'
+import type { User } from 'config/types/user'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import useListUsers from 'users/useListUsers'

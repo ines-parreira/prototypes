@@ -7,7 +7,7 @@ import { act, waitFor } from '@testing-library/react'
 import { campaign, campaignVariant } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'
 import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { renderWithStore } from 'utils/testing'
 

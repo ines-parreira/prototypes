@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import css from './ChannelIcon.less'
 

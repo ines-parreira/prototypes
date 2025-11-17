@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { useFlag } from 'core/flags'
 import { EmailProvider } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 

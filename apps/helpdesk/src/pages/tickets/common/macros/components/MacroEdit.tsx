@@ -1,8 +1,10 @@
-import { ComponentProps, useCallback } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -10,14 +12,14 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { ACTION_TEMPLATES, ActionTemplateExecution } from 'config'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/types'
+import type { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
-import { Attachment } from 'models/ticket/types'
+import type { Attachment } from 'models/ticket/types'
 import InputField from 'pages/common/forms/input/InputField'
 import { getSortedIntegrationActionsNames } from 'pages/tickets/common/utils'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'

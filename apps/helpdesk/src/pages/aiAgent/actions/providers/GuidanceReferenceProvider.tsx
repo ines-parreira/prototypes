@@ -1,12 +1,12 @@
-import { ReactNode, useCallback } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback } from 'react'
 
-import { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
+import type { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledge-service-client'
 
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 
-import GuidanceReferenceContext, {
-    GuidanceReferenceContextType,
-} from './GuidanceReferenceContext'
+import type { GuidanceReferenceContextType } from './GuidanceReferenceContext'
+import GuidanceReferenceContext from './GuidanceReferenceContext'
 
 type Props<T extends { id: string }> = {
     actions: Array<T>

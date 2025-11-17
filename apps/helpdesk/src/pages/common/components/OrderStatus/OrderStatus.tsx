@@ -1,9 +1,10 @@
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
+import type { ReturnStatus } from 'constants/integrations/types/shopify'
 import {
     FinancialStatus,
     FulfillmentStatus,
-    ReturnStatus,
 } from 'constants/integrations/types/shopify'
 import { humanizeString } from 'utils'
 

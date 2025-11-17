@@ -3,12 +3,11 @@ import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumber
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
-import {
-    MetricValueFormat,
-    NOT_AVAILABLE_PLACEHOLDER,
-} from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
-import { ValueMode, VoiceMetric } from 'domains/reporting/state/ui/stats/types'
+import type { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
+import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 
 type FullProps = {
     title: string

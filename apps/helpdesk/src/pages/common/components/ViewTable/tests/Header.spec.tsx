@@ -1,8 +1,9 @@
-import React from 'react'
+import type React from 'react'
 
 import { screen } from '@testing-library/dom'
 import { fireEvent, render, waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { getConfigByName } from 'config/views'

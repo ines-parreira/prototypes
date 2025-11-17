@@ -2,7 +2,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { IntegrationType, PhoneIntegration } from '@gorgias/helpdesk-queries'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'

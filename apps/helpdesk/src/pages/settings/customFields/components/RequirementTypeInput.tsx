@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { RequirementType } from 'custom-fields/types'
+import type { RequirementType } from 'custom-fields/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/customFields/components/RequirementTypeInput.less'
 

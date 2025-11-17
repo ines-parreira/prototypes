@@ -2,7 +2,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAgent } from 'models/agents/queries'
 import { useGetCustomer } from 'models/customer/queries'
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 import { getTicketCustomer } from 'state/ticket/selectors'
 
 export function useCustomerDetails({

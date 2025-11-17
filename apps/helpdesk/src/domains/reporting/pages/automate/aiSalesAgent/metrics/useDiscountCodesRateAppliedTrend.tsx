@@ -1,4 +1,4 @@
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchDiscountCodesAppliedTrend,
     useDiscountCodesAppliedTrend,

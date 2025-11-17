@@ -14,10 +14,11 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { PRODUCT_INFO } from '../../../constants'
-import ProductCard, { ProductCardProps } from '../ProductCard'
+import type { ProductCardProps } from '../ProductCard'
+import ProductCard from '../ProductCard'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 

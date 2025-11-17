@@ -1,4 +1,4 @@
-import { SearchRank } from 'hooks/useSearchRankScenario'
+import type { SearchRank } from 'hooks/useSearchRankScenario'
 
 export const mockSearchRank: SearchRank = {
     isRunning: false,

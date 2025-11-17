@@ -3,10 +3,10 @@ import React, { useRef, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 
 import { CancellationsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
+import type { SelfServiceConfigurationFilter } from 'models/selfServiceConfiguration/types'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
-    SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

@@ -5,7 +5,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockGetBillingStateHandler } from '@gorgias/helpdesk-mocks'
-import { BillingState } from '@gorgias/helpdesk-queries'
+import type { BillingState } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

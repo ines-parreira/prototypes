@@ -4,7 +4,8 @@ import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { BANNER_DETAILS } from '../constants'
-import FlowsBanner, { FlowsBannerProps } from '../FlowsBanner'
+import type { FlowsBannerProps } from '../FlowsBanner'
+import FlowsBanner from '../FlowsBanner'
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({

@@ -1,8 +1,8 @@
-import { TwilioError } from '@twilio/voice-sdk'
-import { CountryCode } from 'libphonenumber-js'
+import type { TwilioError } from '@twilio/voice-sdk'
+import type { CountryCode } from 'libphonenumber-js'
 
-import { PhoneCapabilities } from 'models/phoneNumber/types'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { PhoneCapabilities } from 'models/phoneNumber/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import rawAuAreaCodeOptions from 'pages/phoneNumbers/options/area-codes/au.json'
 import rawCaAreaCodeOptions from 'pages/phoneNumbers/options/area-codes/ca.json'
 import rawTollFreeAreaCodeOptions from 'pages/phoneNumbers/options/area-codes/toll-free.json'

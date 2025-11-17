@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from '../../providers/SupportedLocales'

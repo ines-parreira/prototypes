@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { DomainEvent } from '@gorgias/events'
-import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
+import type { DomainEvent } from '@gorgias/events'
+import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'

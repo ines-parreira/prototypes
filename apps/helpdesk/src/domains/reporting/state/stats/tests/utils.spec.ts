@@ -2,13 +2,15 @@ import {
     withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     AggregationWindow,
-    FilterKey,
     LegacyStatsFilters,
     SavedFilterDraft,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
+import {
+    FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'

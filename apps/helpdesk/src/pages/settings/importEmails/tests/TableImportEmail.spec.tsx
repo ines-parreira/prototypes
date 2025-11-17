@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/types'
 
-import TableImportEmail, { ImportEmailData } from '../TableImportEmail'
+import type { ImportEmailData } from '../TableImportEmail'
+import TableImportEmail from '../TableImportEmail'
 
 const MOCK_IMPORT_DATA: ImportEmailData[] = [
     {

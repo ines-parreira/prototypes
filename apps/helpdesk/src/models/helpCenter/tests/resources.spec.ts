@@ -1,5 +1,5 @@
 import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import {
     createFileIngestion,

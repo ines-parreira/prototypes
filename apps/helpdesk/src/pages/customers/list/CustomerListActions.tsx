@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import {
     DropdownItem,
     DropdownMenu,
@@ -16,9 +17,10 @@ import {
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { withAppNode, WithAppNodeProps } from 'appNode'
+import type { WithAppNodeProps } from 'appNode'
+import { withAppNode } from 'appNode'
 import { bulkDeleteCustomer } from 'state/customers/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     areAllActiveViewItemsSelected,
     makeGetViewCount,

@@ -1,10 +1,10 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import client from '../../models/api/resources'
-import { ApiListResponseLegacyPagination } from '../../models/api/types'
-import { StoreDispatch } from '../types'
+import type { ApiListResponseLegacyPagination } from '../../models/api/types'
+import type { StoreDispatch } from '../types'
 import * as constants from './constants'
-import { CurrentProductsUsages, Invoice, PaymentMethod } from './types'
+import type { CurrentProductsUsages, Invoice, PaymentMethod } from './types'
 
 /**
  * Update an invoice in the list of invoices.

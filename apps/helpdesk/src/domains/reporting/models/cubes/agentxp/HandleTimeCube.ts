@@ -1,5 +1,8 @@
-import { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
-import { Cube, JoinedCubesWithMapping } from 'domains/reporting/models/types'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum HandleTimeMeasure {
     HandleTime = 'HandleTime.handleTime',

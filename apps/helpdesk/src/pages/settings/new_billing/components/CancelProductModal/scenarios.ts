@@ -5,7 +5,7 @@ import {
     HELPDESK_CANCELLATION_REASONS,
     HELPDESK_REASONS_TO_CANDU_CONTENTS,
 } from './constants'
-import { CancellationScenario } from './types'
+import type { CancellationScenario } from './types'
 
 export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
     reasons: HELPDESK_CANCELLATION_REASONS,

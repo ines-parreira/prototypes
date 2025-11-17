@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect } from 'react'
+import type React from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'

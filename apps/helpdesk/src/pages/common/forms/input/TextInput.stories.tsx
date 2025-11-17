@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import IconInput from './IconInput'
 import TextInput from './TextInput'

@@ -6,14 +6,16 @@ import {
     postStoreInstallationStepsKeys,
     useCreatePostStoreInstallationStepPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
+import type {
     PostStoreInstallationSteps,
-    PostStoreInstallationStepStatus,
-    PostStoreInstallationStepType,
     StepConfiguration,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import {
+    PostStoreInstallationStepStatus,
+    PostStoreInstallationStepType,
+} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 
 import { TASK_CONFIG_TEMPLATES } from '../config'
 import { createRuleEngineTaskMap } from '../utils/utils'

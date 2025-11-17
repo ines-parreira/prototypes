@@ -1,9 +1,9 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { toImmutable } from 'common/utils'
-import { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
+import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 
 /**
  * Return whether or not the message is forwarded

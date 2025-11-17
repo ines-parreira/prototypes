@@ -1,7 +1,5 @@
-import {
-    AutomatedResponseReturnAction,
-    ReturnActionType,
-} from 'models/selfServiceConfiguration/types'
+import type { AutomatedResponseReturnAction } from 'models/selfServiceConfiguration/types'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 
 export const DEFAULT_RETURN_ACTION: AutomatedResponseReturnAction = {
     type: ReturnActionType.AutomatedResponse,

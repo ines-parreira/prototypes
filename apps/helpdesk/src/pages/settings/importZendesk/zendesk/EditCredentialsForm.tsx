@@ -1,4 +1,5 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
@@ -11,7 +12,7 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ZendeskIntegration } from 'models/integration/types'
+import type { ZendeskIntegration } from 'models/integration/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

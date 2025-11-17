@@ -7,7 +7,7 @@ import _set from 'lodash/set'
 import { Form } from '../components/Form'
 import { FormField } from '../components/FormField'
 import { FormSubmitButton } from '../components/FormSubmitButton'
-import { FormErrors } from '../utils/validation'
+import type { FormErrors } from '../utils/validation'
 
 const onSubmit = jest.fn()
 

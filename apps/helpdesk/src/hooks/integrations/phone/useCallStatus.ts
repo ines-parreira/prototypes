@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useInterval } from '@repo/hooks'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
 export function useCallStatus(call: Call): Call.State {
     const [status, setStatus] = useState(call.status())

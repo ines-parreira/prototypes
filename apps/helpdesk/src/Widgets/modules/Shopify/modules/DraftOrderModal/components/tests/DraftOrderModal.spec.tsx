@@ -1,7 +1,8 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { initDraftOrderPayload } from 'business/shopify/draftOrder'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
@@ -14,17 +15,17 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import type ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getDuplicateOrderPayload } from 'state/infobarActions/shopify/createOrder/actions'
 import { renderWithRouter } from 'utils/testing'
-import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
+import type AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { DraftOrderModalContainer } from '../DraftOrderModal'
-import EmailInvoicePopover from '../EmailInvoicePopover'
-import OrderFooter from '../OrderFooter'
+import type EmailInvoicePopover from '../EmailInvoicePopover'
+import type OrderFooter from '../OrderFooter'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',

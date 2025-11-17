@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import { useUpsertStoreApps } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

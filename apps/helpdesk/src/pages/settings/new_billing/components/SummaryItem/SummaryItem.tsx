@@ -4,7 +4,8 @@ import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPrice,
@@ -17,7 +18,7 @@ import warningIcon from '../../../../../assets/img/icons/warning.svg'
 import { PRODUCT_INFO } from '../../constants'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
 import css from './SummaryItem.less'
 

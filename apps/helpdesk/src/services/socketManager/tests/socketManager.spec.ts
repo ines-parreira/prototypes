@@ -3,7 +3,7 @@ import _noop from 'lodash/noop'
 import * as reapop from 'reapop'
 
 import * as actions from 'state/notifications/actions'
-import { BannerNotification } from 'state/notifications/types'
+import type { BannerNotification } from 'state/notifications/types'
 
 import {
     RELOAD_TAB_DELAY,
@@ -11,13 +11,11 @@ import {
     SHARED_WORKER_NAME,
 } from '../constants'
 import { SocketManager } from '../socketManager'
+import type { ReceivedEvent, SendEvent, ServerMessage } from '../types'
 import {
     BroadcastChannelEvent,
     JoinEventType,
     MessagePortEvent,
-    ReceivedEvent,
-    SendEvent,
-    ServerMessage,
     SocketEventType,
 } from '../types'
 

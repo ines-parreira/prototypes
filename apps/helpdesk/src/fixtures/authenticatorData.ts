@@ -1,4 +1,4 @@
-import { AuthenticatorData } from '../models/twoFactorAuthentication/types'
+import type { AuthenticatorData } from '../models/twoFactorAuthentication/types'
 
 export const authenticatorData = {
     secret_key: 'foo_secret',

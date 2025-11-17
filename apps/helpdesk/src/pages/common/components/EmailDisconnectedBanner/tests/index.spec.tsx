@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { userEvent } from '@repo/testing'
-import { Location } from '@sentry/react/types/types'
+import type { Location } from '@sentry/react/types/types'
 import { cleanup, screen, waitFor } from '@testing-library/react'
 import { fromJS, List } from 'immutable'
 import { Provider } from 'react-redux'

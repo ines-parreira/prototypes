@@ -1,9 +1,9 @@
 import { useHistory } from 'react-router-dom'
 
-import { ShopifyIntegration } from 'models/integration/types'
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { ShopifyIntegration } from 'models/integration/types'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
@@ -11,8 +11,8 @@ import {
     SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS,
     SHOPPING_ASSISTANT_TRIAL_GMV_INFLUENCED_THRESHOLD,
 } from '../constants/shoppingAssistant'
+import type { ButtonConfig } from '../types/ShoppingAssistant'
 import {
-    ButtonConfig,
     PromoCardVariant,
     TrialEventType,
     TrialType,

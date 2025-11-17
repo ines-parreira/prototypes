@@ -4,19 +4,19 @@ import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/u
 import { useTimeSeriesReportData } from 'domains/reporting/hooks/common/useTimeSeriesReportData'
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import type { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
 import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
-    MetricPerDimensionFetch,
 } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TimeSeriesMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     OverviewChartConfig,
     OverviewMetric,
     OverviewMetricConfig,
-    TimeSeriesMetric,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { WORKLOAD_BY_CHANNEL_LABEL } from 'domains/reporting/services/constants'
 import {

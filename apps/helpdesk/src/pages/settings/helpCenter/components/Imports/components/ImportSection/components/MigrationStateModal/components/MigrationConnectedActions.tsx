@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ConnectedMigrationState } from '../../../types'
+import type { ConnectedMigrationState } from '../../../types'
 
 type Props = {
     state: ConnectedMigrationState

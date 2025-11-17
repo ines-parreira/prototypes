@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -14,7 +14,7 @@ import { Flow, FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import { createIvrOptionNode } from '../../utils'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { IvrMenuNode } from '../IvrMenuNode'

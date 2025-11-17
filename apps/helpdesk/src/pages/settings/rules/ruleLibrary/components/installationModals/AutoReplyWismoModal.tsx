@@ -4,7 +4,7 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
 import { assetsUrl } from 'utils'
 
-import { ManagedRuleModalProps } from '../InstallRuleModalBody'
+import type { ManagedRuleModalProps } from '../InstallRuleModalBody'
 import TargetCount from './components/TargetCount'
 
 import defaultModalCss from '../RuleRecipeModal.less'

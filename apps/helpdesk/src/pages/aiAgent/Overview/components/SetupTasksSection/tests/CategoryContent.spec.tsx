@@ -11,7 +11,7 @@ import {
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from '../SetupTaskBodies'
-import { TaskConfig } from '../types'
+import type { TaskConfig } from '../types'
 
 jest.mock('pages/aiAgent/hooks/usePostStoreInstallationStepsMutation')
 

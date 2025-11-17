@@ -2,7 +2,7 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {
+import type {
     OnPolicyPriorityChangeFn,
     OnTogglePolicyFn,
     UISLAPolicy,

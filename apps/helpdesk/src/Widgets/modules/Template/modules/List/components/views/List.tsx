@@ -1,10 +1,12 @@
-import React, { ReactNode, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import cs from 'classnames'
 
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
-import { OrderBy, sortListItems } from '../../utils/sortListItems'
+import type { OrderBy } from '../../utils/sortListItems'
+import { sortListItems } from '../../utils/sortListItems'
 
 import css from './List.less'
 

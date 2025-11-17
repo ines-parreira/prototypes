@@ -1,49 +1,47 @@
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import moment from 'moment'
 import { dismissNotification } from 'reapop'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
+import type { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
 import { teams } from 'fixtures/teams'
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     ecommerceStoreFixture,
     shopperAddressFixture,
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
+import type { Event } from 'models/event/types'
 import {
-    Event,
     EventObjectType,
     SATISFACTION_SURVEY_EVENT_TYPES,
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
-import { Ticket, TicketMessage } from 'models/ticket/types'
+import type { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
 import socketManager from 'services/socketManager/socketManager'
-import {
-    SocketEventType,
-    TicketMessageFailedEvent,
-} from 'services/socketManager/types'
+import type { TicketMessageFailedEvent } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { notify } from 'state/notifications/actions'
-import {
-    AlertNotification,
-    NotificationStatus,
-} from 'state/notifications/types'
+import type { AlertNotification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { getLDClient } from 'utils/launchDarkly'
 
 import * as actions from '../actions'

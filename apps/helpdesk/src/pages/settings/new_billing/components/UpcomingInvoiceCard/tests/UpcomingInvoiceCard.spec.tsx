@@ -1,18 +1,18 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     CouponSummary,
-    ProductType,
     ProductUsages,
-    SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 

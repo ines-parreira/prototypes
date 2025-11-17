@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import {
+import type {
     BusinessHoursConfig,
     BusinessHoursCreate,
     BusinessHoursDetails,
@@ -12,7 +12,7 @@ import {
     DEFAULT_BUSINESS_HOURS_SCHEDULE,
     EVERYDAY_OPTION_VALUE,
 } from './constants'
-import {
+import type {
     BusinessHoursCreateFormValues,
     CustomBusinessHoursFormValues,
     EditCustomBusinessHoursFormValues,

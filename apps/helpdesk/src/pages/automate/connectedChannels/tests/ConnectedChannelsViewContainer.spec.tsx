@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import ConnectedChannelsViewContainer from '../ConnectedChannelsViewContainer'
 

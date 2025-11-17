@@ -5,7 +5,7 @@ import {
     SET_FACEBOOK_ADS_LOADING,
     UPDATE_ACTIVE_FACEBOOK_AD,
 } from './constants'
-import { Internals } from './types'
+import type { Internals } from './types'
 
 export const setFacebookAdsLoading = (loading: boolean) => ({
     type: SET_FACEBOOK_ADS_LOADING,

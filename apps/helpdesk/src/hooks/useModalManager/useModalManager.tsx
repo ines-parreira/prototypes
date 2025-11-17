@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import _defaultsDeep from 'lodash/defaultsDeep'
 
-import { ModalManager } from './Manager'
-import {
+import type { ModalManager } from './Manager'
+import type {
     CallbackFunction,
     Event,
     HookConfig,

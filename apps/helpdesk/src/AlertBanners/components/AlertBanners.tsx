@@ -6,7 +6,7 @@ import { noop } from 'lodash'
 
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import { MergedBanner } from 'AlertBanners/Context/types'
+import type { MergedBanner } from 'AlertBanners/Context/types'
 import { useFlag } from 'core/flags'
 
 import { useBannerCarousel } from '../hooks/useBannerCarousel'

@@ -1,7 +1,7 @@
 import { emptyRuleRecipeFixture as recipe } from '../../../../fixtures/ruleRecipe'
-import { RootState } from '../../../types'
+import type { RootState } from '../../../types'
 import { getSortedRuleRecipes } from '../selectors'
-import { RuleRecipesState } from '../types'
+import type { RuleRecipesState } from '../types'
 
 describe('rules recipes selectors', () => {
     describe('getSortedRulesRecipes', () => {

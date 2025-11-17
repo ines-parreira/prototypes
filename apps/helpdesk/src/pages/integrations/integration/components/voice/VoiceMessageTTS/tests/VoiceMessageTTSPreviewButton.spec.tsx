@@ -5,7 +5,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockSynthesizeSpeechPreviewHandler } from '@gorgias/helpdesk-mocks'
-import { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
+import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'

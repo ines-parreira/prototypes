@@ -1,14 +1,15 @@
-import React, { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
+import React from 'react'
 
-import { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
-import {
+import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
+import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
-import { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 

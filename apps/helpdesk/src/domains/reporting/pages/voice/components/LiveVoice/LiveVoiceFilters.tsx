@@ -4,10 +4,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StaticFilter,
 } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'

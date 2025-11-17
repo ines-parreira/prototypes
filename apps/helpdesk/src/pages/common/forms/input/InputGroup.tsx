@@ -1,10 +1,5 @@
-import React, {
-    createContext,
-    ReactNode,
-    useContext,
-    useMemo,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import React, { createContext, useContext, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 

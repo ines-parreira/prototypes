@@ -1,9 +1,7 @@
 import cn from 'classnames'
 
-import {
-    TicketQAScoreDimension,
-    TicketQAScoreDimensionName,
-} from '@gorgias/helpdesk-queries'
+import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
+import { TicketQAScoreDimensionName } from '@gorgias/helpdesk-queries'
 
 import type { DimensionConfig } from './types'
 

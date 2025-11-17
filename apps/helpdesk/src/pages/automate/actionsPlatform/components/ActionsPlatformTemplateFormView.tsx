@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import { ActionTemplate } from '../types'
+import type { ActionTemplate } from '../types'
 import ActionsPlatformTemplateConditions from './ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from './ActionsPlatformTemplateConfirmation'
 import ActionsPlatformTemplateInstructions from './ActionsPlatformTemplateInstructions'

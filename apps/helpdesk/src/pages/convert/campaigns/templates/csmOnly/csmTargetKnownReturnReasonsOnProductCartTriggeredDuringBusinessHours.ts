@@ -1,7 +1,7 @@
 import { ulid } from 'ulidx'
 
 import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
-import {
+import type {
     CampaignConfiguration,
     CampaignTemplate,
 } from 'pages/convert/campaigns/templates/types'

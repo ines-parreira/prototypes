@@ -1,4 +1,4 @@
-import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import { createTrigger } from './createTrigger'

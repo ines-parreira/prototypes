@@ -1,4 +1,5 @@
-import { AlertBannerTypes, ContextBanner } from '../../types'
+import type { ContextBanner } from '../../types'
+import { AlertBannerTypes } from '../../types'
 
 const getNextBannerType = (
     type: AlertBannerTypes,

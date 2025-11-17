@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef, useMemo } from 'react'
+import type { ForwardedRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
@@ -13,13 +14,11 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegration } from 'models/integration/types'
-import {
-    ToolbarContext,
-    ToolbarContextType,
-} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import { TooltipTourConfigurationType } from 'pages/common/draftjs/plugins/toolbar/types'
-import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
+import type { ShopifyIntegration } from 'models/integration/types'
+import type { ToolbarContextType } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import { ToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import type { TooltipTourConfigurationType } from 'pages/common/draftjs/plugins/toolbar/types'
+import type { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import {
@@ -34,7 +33,8 @@ import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import { getTicketState } from 'state/ticket/selectors'
 import { canAddVideoPlayer } from 'utils'
 
-import RichField, { Props as RichFieldProps } from './RichField'
+import type { Props as RichFieldProps } from './RichField'
+import RichField from './RichField'
 
 type Props = {
     disableOutOfStockProducts?: boolean

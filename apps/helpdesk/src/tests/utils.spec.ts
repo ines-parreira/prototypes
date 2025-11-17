@@ -2,7 +2,8 @@ import { mockProductionEnvironment } from '@repo/testing'
 import * as envUtils from '@repo/utils'
 import { isDevelopment, isProduction, isStaging } from '@repo/utils'
 import * as esprima from 'esprima'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import randomstring from 'randomstring'
 
@@ -20,7 +21,7 @@ import {
     TimeFormatType,
 } from 'constants/datetime'
 import schemasJSON from 'fixtures/openapi.json'
-import { Account } from 'state/currentAccount/types'
+import type { Account } from 'state/currentAccount/types'
 import * as utils from 'utils'
 import { assertUnreachable, getCode } from 'utils'
 import { getDateAndTimeFormat } from 'utils/datetime'

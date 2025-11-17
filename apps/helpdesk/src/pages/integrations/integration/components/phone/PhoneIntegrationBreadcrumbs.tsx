@@ -1,14 +1,14 @@
-import { LocationState } from 'history'
+import type { LocationState } from 'history'
 import { Link, matchPath, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    IntegrationType,
+import type {
     PhoneIntegration,
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { friendlyName } from 'pages/phoneNumbers/utils'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 

@@ -1,6 +1,6 @@
+import type { InterpretAs } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
-    InterpretAs,
     TREND_BADGE_FORMAT,
 } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 

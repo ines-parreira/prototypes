@@ -10,7 +10,7 @@ import {
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
     VoiceMessageType,
 } from 'models/integration/constants'
-import {
+import type {
     IvrSmsDeflection,
     SmsIntegration,
     VoiceMessage,

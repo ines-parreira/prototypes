@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { useGetCurrentUser, UserSettingType } from '@gorgias/helpdesk-queries'
-import {
+import type {
     GetCurrentUserResult,
     Language,
     UserLanguagePreferencesSetting,

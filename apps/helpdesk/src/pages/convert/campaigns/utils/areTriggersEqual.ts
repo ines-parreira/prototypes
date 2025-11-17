@@ -1,4 +1,4 @@
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 
 /*
  * Compares the two triggers on equality ignoring the `id` field.

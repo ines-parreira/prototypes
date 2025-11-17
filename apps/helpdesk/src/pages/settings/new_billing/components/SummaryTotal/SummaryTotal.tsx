@@ -3,17 +3,13 @@ import { useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import {
-    Cadence,
-    CouponSummary,
-    Plan,
-    SubscriptionStatus,
-} from 'models/billing/types'
+import type { CouponSummary, Plan } from 'models/billing/types'
+import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 import { formatAmount } from '../../utils/formatAmount'
 import { getTotalWithDiscounts } from '../../utils/getTotalWithDiscounts'
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'

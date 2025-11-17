@@ -1,28 +1,22 @@
-import {
-    MouseEvent,
-    SyntheticEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent, SyntheticEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
+import type {
     CreateMacroBody,
-    type Language,
+    Language,
     UpdateMacroBody,
-    useGetMacro,
 } from '@gorgias/helpdesk-queries'
+import { useGetMacro } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import { DEFAULT_ACTIONS } from 'config'
@@ -37,7 +31,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { isGorgiasApiError } from 'models/api/types'
-import { MacroDraft } from 'models/macro/types'
+import type { MacroDraft } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'

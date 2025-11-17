@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { FindFeedbackResult } from '@gorgias/knowledge-service-types'
+import type { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 

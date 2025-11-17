@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { produce } from 'immer'
 
-import {
+import type {
     ConditionSchema,
     DoesNotExistSchema,
     ExistsSchema,

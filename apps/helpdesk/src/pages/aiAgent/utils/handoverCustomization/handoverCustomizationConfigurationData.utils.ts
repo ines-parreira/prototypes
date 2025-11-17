@@ -1,8 +1,8 @@
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
 import { IntegrationType } from 'models/integration/constants'
 
 import { AiAgentChannel } from '../../constants'
-import {
+import type {
     HandoverCustomizationChatOfflineSettingsFormValues,
     HandoverCustomizationChatOnlineSettingsFormValues,
 } from '../../types'

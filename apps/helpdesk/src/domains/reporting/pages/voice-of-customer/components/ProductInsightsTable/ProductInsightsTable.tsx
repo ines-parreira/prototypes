@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useProductInsightsTableSetting } from 'domains/reporting/hooks/useProductInsightsTableConfigSetting'
 import { useSortedProducts } from 'domains/reporting/hooks/voice-of-customer/useSortedProducts'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ProductInsightsCellContent } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent'
 import { ProductInsightsHeaderCellContent } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsHeaderCellContent'
 import css from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTable.less'
@@ -17,7 +17,7 @@ import {
     ProductTableBodyCell,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductTable'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

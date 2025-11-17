@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import React from 'react'
+import type React from 'react'
 
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -14,8 +14,8 @@ import { IntegrationType } from 'models/integration/constants'
 import { TestFlowEditor } from 'pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { RootState } from 'state/types'
+import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore([thunk])

@@ -1,4 +1,5 @@
-import React, { FC, ReactNode, useRef, useState } from 'react'
+import type { FC, ReactNode } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { Badge } from '@gorgias/axiom'
 

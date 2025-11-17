@@ -1,7 +1,7 @@
-import { EmojiData } from 'emoji-mart'
+import type { EmojiData } from 'emoji-mart'
 
-import { User, UserRole } from 'config/types/user'
-import { ApiPaginationParams, OrderParams } from 'models/api/types'
+import type { User, UserRole } from 'config/types/user'
+import type { ApiPaginationParams, OrderParams } from 'models/api/types'
 
 export type Member = {
     id: number

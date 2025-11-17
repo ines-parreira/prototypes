@@ -4,9 +4,9 @@ import _noop from 'lodash/noop'
 import { THEME_NAME } from 'core/theme'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { FakeFAQArticlePreview } from 'pages/settings/rules/components/FakeFAQArticlePreview'
-import { AutoReplyFAQSettings } from 'state/rules/types'
+import type { AutoReplyFAQSettings } from 'state/rules/types'
 
-import { ManagedRuleDetailProps } from './ManagedRuleEditor'
+import type { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 

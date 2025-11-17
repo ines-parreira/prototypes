@@ -1,13 +1,12 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice } from '@reduxjs/toolkit'
 
 import { INTENT_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
-import { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
+import type { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import {
-    Intent,
-    IntentTableColumn,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
-import { RootState } from 'state/types'
+import type { Intent } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { RootState } from 'state/types'
 
 export type IntentState<T> = {
     sorting: ColumnSorting<T> & {

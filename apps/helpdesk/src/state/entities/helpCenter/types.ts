@@ -1,7 +1,7 @@
-import { HelpCenterArticlesState } from './articles'
-import { HelpCenterCategoriesState } from './categories'
-import { HelpCentersState } from './helpCenters'
-import { HelpCentersAutomationSettingsState } from './helpCentersAutomationSettings'
+import type { HelpCenterArticlesState } from './articles'
+import type { HelpCenterCategoriesState } from './categories'
+import type { HelpCentersState } from './helpCenters'
+import type { HelpCentersAutomationSettingsState } from './helpCentersAutomationSettings'
 
 export type HelpCenterState = {
     articles: HelpCenterArticlesState

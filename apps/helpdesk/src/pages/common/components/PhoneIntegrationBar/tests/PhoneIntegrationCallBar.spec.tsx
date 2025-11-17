@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
-import { Call, Device } from '@twilio/voice-sdk'
+import type { Call, Device } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import client from 'models/api/resources'
-import { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { initialState } from 'state/twilio/voiceDevice'
 import {
     mockDevice,

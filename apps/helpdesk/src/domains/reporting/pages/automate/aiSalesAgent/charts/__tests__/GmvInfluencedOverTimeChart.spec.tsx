@@ -1,13 +1,13 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import { TooltipItem } from 'chart.js'
+import type { TooltipItem } from 'chart.js'
 import { fromJS } from 'immutable'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import GmvInfluencedOverTimeChart, {
     formatLabelValue,
@@ -18,7 +18,7 @@ import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')

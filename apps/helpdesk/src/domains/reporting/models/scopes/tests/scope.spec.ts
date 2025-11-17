@@ -3,15 +3,17 @@ import {
     ReportingStatsOperatorsEnum,
 } from '@gorgias/helpdesk-types'
 
-import { MetricName, MetricScope } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import { MetricScope } from 'domains/reporting/hooks/metricNames'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import {
+import type {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
-import { defineScope, QueryFor } from '../scope'
+import type { QueryFor } from '../scope'
+import { defineScope } from '../scope'
 
 jest.mock('domains/reporting/models/scopes/utils', () => ({
     createScopeFilters: jest.fn(),

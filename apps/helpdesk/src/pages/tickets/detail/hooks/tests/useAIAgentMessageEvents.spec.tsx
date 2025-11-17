@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { TicketStatus } from 'business/types/ticket'
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, TicketMessage } from 'models/ticket/types'
+import type { Action, TicketMessage } from 'models/ticket/types'
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import {

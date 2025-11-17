@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     PolicyKey,
     ResponseMessageContent,
 } from 'models/selfServiceConfiguration/types'

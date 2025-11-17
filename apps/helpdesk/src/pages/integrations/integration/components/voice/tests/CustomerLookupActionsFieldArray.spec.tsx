@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,7 +11,7 @@ import {
     mockDropdownInputSettingsSettings,
     mockTextDataTypeDefinition,
 } from '@gorgias/helpdesk-mocks'
-import { CustomField } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'

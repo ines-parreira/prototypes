@@ -18,7 +18,7 @@ import {
     DROPDOWN_NESTING_DELIMITER,
     OBJECT_TYPE_SETTINGS,
 } from 'custom-fields/constants'
-import { CustomFieldObjectTypes } from 'custom-fields/types'
+import type { CustomFieldObjectTypes } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Loader from 'pages/common/components/Loader/Loader'

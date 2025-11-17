@@ -15,12 +15,10 @@ import {
 } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
-import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
+import type { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import {

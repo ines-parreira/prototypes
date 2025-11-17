@@ -14,7 +14,7 @@ import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/use
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'
 import { shopifyIntegration } from 'fixtures/integrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { saveZippedFiles } from 'utils/file'
 

@@ -1,7 +1,8 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { IntegrationType, Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
 import useStoreUpdater from '../../../../General/hooks/useStoreUpdater'
 import { useManualForm } from '../useManualForm'

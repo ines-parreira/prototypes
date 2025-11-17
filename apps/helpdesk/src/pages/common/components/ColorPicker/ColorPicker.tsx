@@ -1,4 +1,5 @@
-import React, { RefObject, useCallback, useRef, useState } from 'react'
+import type { RefObject } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import cn from 'classnames'

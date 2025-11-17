@@ -12,7 +12,7 @@ import {
     ticketCountPerProductQueryFactory,
     ticketsWithProductsQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'

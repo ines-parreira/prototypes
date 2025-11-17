@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AIAgentAutomationRateKPIChart } from 'domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'

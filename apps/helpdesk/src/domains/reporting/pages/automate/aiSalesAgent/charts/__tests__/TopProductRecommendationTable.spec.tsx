@@ -8,7 +8,7 @@ import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesA
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock(

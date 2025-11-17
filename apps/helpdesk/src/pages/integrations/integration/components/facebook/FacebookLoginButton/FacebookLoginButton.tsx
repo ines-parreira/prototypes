@@ -1,8 +1,10 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, LegacyButtonIntent } from '@gorgias/axiom'
+import type { LegacyButtonIntent } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
 

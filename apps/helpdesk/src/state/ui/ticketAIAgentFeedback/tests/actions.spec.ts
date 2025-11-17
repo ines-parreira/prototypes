@@ -1,4 +1,4 @@
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import { changeTicketMessage } from '../actions'
 import { UIActions } from '../types'

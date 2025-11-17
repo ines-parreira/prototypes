@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import type { AxiosResponse } from 'axios'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import {
+import type {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'

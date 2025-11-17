@@ -1,7 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { Category, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type {
+    Category,
+    LocaleCode,
+    NonRootCategory,
+} from 'models/helpCenter/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 import { useHelpCenterCategories } from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 

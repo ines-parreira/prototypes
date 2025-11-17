@@ -1,4 +1,4 @@
-import { RuleDraft } from 'state/rules/types'
+import type { RuleDraft } from 'state/rules/types'
 
 import { getRuleActions } from '../utils'
 

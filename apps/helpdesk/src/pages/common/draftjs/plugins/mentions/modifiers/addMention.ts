@@ -1,8 +1,9 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import { EditorChangeType, EditorState, Modifier } from 'draft-js'
-import { Map } from 'immutable'
+import type { EditorChangeType } from 'draft-js'
+import { EditorState, Modifier } from 'draft-js'
+import type { Map } from 'immutable'
 
 import { getSearchText, getTypeByTrigger } from '../utils'
 

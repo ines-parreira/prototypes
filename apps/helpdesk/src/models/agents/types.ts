@@ -1,9 +1,9 @@
-import {
+import type {
     ListUsersRelationshipsItem,
     ListUsersRolesItem,
 } from '@gorgias/helpdesk-queries'
 
-import { ApiPaginationParams, OrderParams } from 'models/api/types'
+import type { ApiPaginationParams, OrderParams } from 'models/api/types'
 
 export enum AgentSortableProperties {
     CreatedDatetimeAsc = 'created_datetime:asc',

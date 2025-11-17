@@ -1,9 +1,7 @@
 import { useContext } from 'react'
 
-import {
-    TicketModalContext,
-    TicketModalContextType,
-} from '../TicketModalContext'
+import type { TicketModalContextType } from '../TicketModalContext'
+import { TicketModalContext } from '../TicketModalContext'
 
 export const useTicketModalContext = (): TicketModalContextType => {
     const context = useContext(TicketModalContext)

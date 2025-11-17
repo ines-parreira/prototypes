@@ -5,7 +5,8 @@ import userEvent from '@testing-library/user-event'
 
 import { reportError } from 'utils/errors'
 
-import PhoneNumberInput, { PhoneNumberInputHandle } from '../PhoneNumberInput'
+import type { PhoneNumberInputHandle } from '../PhoneNumberInput'
+import PhoneNumberInput from '../PhoneNumberInput'
 
 jest.mock('utils/errors')
 

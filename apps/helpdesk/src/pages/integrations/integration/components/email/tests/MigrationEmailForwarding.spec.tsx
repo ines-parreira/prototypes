@@ -3,7 +3,7 @@ import React from 'react'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { EmailMigrationInboundVerification } from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 
 import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'

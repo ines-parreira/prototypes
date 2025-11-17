@@ -1,18 +1,18 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -21,7 +21,7 @@ import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const averageCSATScorePerDimensionQueryFactory = (
     dimension: string,

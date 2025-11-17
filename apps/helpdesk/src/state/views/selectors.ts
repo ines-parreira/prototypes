@@ -1,20 +1,15 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import { createSelector } from 'reselect'
 
 import { UserSettingType } from 'config/types/user'
 import * as viewsConfig from 'config/views'
 import { BASE_VIEW_ID } from 'constants/view'
-import { OrderDirection } from 'models/api/types'
-import {
-    EntityType,
-    View,
-    ViewCategory,
-    ViewCategoryNavbar,
-    ViewType,
-    ViewVisibility,
-} from 'models/view/types'
-import {
+import type { OrderDirection } from 'models/api/types'
+import type { EntityType, View, ViewCategoryNavbar } from 'models/view/types'
+import { ViewCategory, ViewType, ViewVisibility } from 'models/view/types'
+import type {
     TicketNavbarElement,
     TicketNavbarSectionElement,
 } from 'pages/tickets/navbar/TicketNavbarContent'
@@ -28,7 +23,7 @@ import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
 } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
@@ -37,7 +32,7 @@ import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { createImmutableSelector, isCurrentlyOnView } from 'utils'
 
 import { SYSTEM_VIEWS } from './constants'
-import { ViewsState } from './types'
+import type { ViewsState } from './types'
 import { sortViews } from './utils'
 
 export const getViewsState = (state: RootState): ViewsState =>

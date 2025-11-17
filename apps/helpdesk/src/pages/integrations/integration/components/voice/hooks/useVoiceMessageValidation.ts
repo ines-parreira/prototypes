@@ -6,16 +6,15 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     IvrMenuAction,
-    IvrMenuActionType,
     LocalWaitMusicPreferences,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
-    VoiceMessageType,
 } from 'models/integration/types'
+import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getBase64 } from 'utils/file'

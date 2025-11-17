@@ -5,7 +5,7 @@ import { Content, Subtitle } from 'common/notifications'
 
 import { ERROR_ICON } from '../../../../common/components/SourceIcon'
 import { getStartEndDate } from '../../utils'
-import { ImportNotification } from '../types'
+import type { ImportNotification } from '../types'
 
 import css from './ImportEmailNotifications.less'
 

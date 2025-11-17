@@ -1,19 +1,19 @@
 import { useMemo } from 'react'
 
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
     fetchTicketsCreatedMetric,
-    Metric,
     useTicketsCreatedMetric,
 } from 'domains/reporting/hooks/metrics'
 import {
     fetchCreatedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
 } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const ticketCountField = TicketMeasure.TicketCount
 

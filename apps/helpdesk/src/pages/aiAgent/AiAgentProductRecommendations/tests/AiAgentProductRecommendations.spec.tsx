@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
+import type { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'

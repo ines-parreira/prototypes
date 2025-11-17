@@ -7,8 +7,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Source } from 'models/widget/types'
-import {
+import type { Source } from 'models/widget/types'
+import type {
     Link as LinkType,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

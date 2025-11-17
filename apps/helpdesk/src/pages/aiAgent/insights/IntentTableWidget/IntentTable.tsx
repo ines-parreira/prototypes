@@ -1,10 +1,5 @@
-import React, {
-    UIEventHandler,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce, useMeasure } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -24,11 +19,11 @@ import {
 } from 'domains/reporting/state/ui/stats/insightsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     Intent,
-    IntentTableColumn,
     PaginatedIntents,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -47,10 +42,8 @@ import {
     TableLabels,
     useIntentSortingQuery,
 } from './IntentTableConfig'
-import {
-    IntentTableExpandedRowContent,
-    IntentTableExpandedRowContentProps,
-} from './IntentTableExpandedRowContent'
+import type { IntentTableExpandedRowContentProps } from './IntentTableExpandedRowContent'
+import { IntentTableExpandedRowContent } from './IntentTableExpandedRowContent'
 
 import intentTableCss from './IntentTable.less'
 

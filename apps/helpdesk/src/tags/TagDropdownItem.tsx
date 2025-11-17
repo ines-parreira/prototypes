@@ -1,9 +1,10 @@
-import React, { CSSProperties, useCallback, useState } from 'react'
+import type { CSSProperties } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
 
 import css from './TagDropdownItem.less'
 

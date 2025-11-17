@@ -1,9 +1,9 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { userEvent } from '@storybook/test'
 import { within } from '@testing-library/react'
-import { Identifier } from 'estree'
+import type { Identifier } from 'estree'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

@@ -1,20 +1,21 @@
 import { history } from '@repo/routing'
-import { fireEvent, render, RenderResult } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserSettingType } from 'config/types/user'
+import type { DateTimeResultFormatType } from 'constants/datetime'
 import {
     DateFormatType,
     DateTimeFormatMapper,
     DateTimeFormatType,
-    DateTimeResultFormatType,
     TimeFormatType,
 } from 'constants/datetime'
 
-import { ZendeskIntegration } from '../../../../../models/integration/types'
+import type { ZendeskIntegration } from '../../../../../models/integration/types'
 import { ImportZendeskDataList } from '../ImportZendeskDataList'
 import {
     failedImport,

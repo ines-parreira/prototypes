@@ -3,10 +3,12 @@ import { useCallback } from 'react'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     CreateCustomFieldCondition,
-    queryKeys,
     UpdateCustomFieldCondition,
+} from '@gorgias/helpdesk-queries'
+import {
+    queryKeys,
     useCreateCustomFieldCondition,
 } from '@gorgias/helpdesk-queries'
 

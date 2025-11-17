@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import {
     helpCenterCreated,
@@ -9,7 +9,7 @@ import {
     helpCentersFetched,
     helpCenterUpdated,
 } from './actions'
-import { HelpCentersState } from './types'
+import type { HelpCentersState } from './types'
 
 export const initialState: HelpCentersState = {
     helpCentersById: {},

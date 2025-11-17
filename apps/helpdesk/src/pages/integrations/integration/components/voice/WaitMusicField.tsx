@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import _get from 'lodash/get'
 
@@ -10,9 +11,9 @@ import {
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
-import { GorgiasApiResponseDataError } from 'models/api/types'
+import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
-import { LocalWaitMusicPreferences } from 'models/integration/types'
+import type { LocalWaitMusicPreferences } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'

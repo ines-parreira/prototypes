@@ -4,7 +4,7 @@ import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/voice-of-customer/components/ProductHeader.less'
 import { ProductImage } from 'domains/reporting/pages/voice-of-customer/components/ProductImage'
 import { formatDateRange } from 'domains/reporting/pages/voice-of-customer/utils'
-import { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
+import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 
 export const ProductHeader = ({ product }: { product: SidePanelProduct }) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()

@@ -1,8 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     METRIC_NAMES_BY_SCOPE,
-    MetricName,
     MetricScope,
 } from 'domains/reporting/hooks/metricNames'
 

@@ -1,10 +1,11 @@
 import { isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
+import type { Document } from 'openapi-client-axios'
+import OpenAPIClientAxios from 'openapi-client-axios'
 
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import { Client, Components } from './client.generated'
+import type { Client, Components } from './client.generated'
 import OpenAPIDoc from './revenue-addon.openapi.json'
 
 export function getGorgiasRevenueAddonApiBaseUrl(): string {

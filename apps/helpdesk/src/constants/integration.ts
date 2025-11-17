@@ -1,4 +1,4 @@
-import { IntegrationType } from '../models/integration/types'
+import type { IntegrationType } from '../models/integration/types'
 
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'

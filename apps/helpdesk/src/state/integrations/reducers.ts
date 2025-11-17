@@ -1,15 +1,16 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import {
+import type {
     EmailMigrationInboundVerification,
     Integration,
-    IntegrationType,
 } from 'models/integration/types'
-import { GorgiasAction } from 'state/types'
+import { IntegrationType } from 'models/integration/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import { IntegrationsImmutableState } from './types'
+import type { IntegrationsImmutableState } from './types'
 
 export const initialState: IntegrationsImmutableState = fromJS({
     integrations: [],

@@ -1,13 +1,13 @@
-import { KeyboardEvent } from 'react'
+import type { KeyboardEvent } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { debounce } from 'lodash'
 
 import { getLDClient } from 'utils/launchDarkly'
 
-import { Plugin, PluginMethods } from '../types'
+import type { Plugin, PluginMethods } from '../types'
 import client from './client'
 import decorators from './decorators'
 import { cachedSelection, predictionKey } from './state'

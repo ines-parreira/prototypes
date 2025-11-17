@@ -8,7 +8,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { rulesFetched } from './actions'
 import { rulesSelector } from './selectors'
-import { RulesState } from './types'
+import type { RulesState } from './types'
 
 let loading = false
 

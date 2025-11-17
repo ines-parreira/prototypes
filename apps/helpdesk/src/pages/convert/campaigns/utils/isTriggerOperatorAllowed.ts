@@ -1,6 +1,6 @@
 import { TRIGGERS_CONFIG } from '../constants/triggers'
-import { CampaignTriggerOperator } from '../types/enums/CampaignTriggerOperator.enum'
-import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
+import type { CampaignTriggerOperator } from '../types/enums/CampaignTriggerOperator.enum'
+import type { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
 
 export const isTriggerOperatorAllowed = (
     operator: CampaignTriggerOperator,

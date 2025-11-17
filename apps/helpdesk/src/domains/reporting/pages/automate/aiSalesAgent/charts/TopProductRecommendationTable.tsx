@@ -5,7 +5,7 @@ import { TopProductRecommendationTableStats } from 'domains/reporting/pages/auto
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 const ITEMS_PER_PAGE = 10
 

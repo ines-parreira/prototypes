@@ -3,9 +3,9 @@ import { useMemo } from 'react'
 import { TicketChannel } from 'business/types/ticket'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getCampaignsPerformanceGraphData } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import {
+import type {
     CubeData,
     CubeFilterParams,
     CubeMetric,
@@ -18,7 +18,7 @@ import {
     transformToCampaignCTROverTime,
     transformToChatConversionRateOverTime,
 } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
-import { CampaignChatPerformanceData } from 'domains/reporting/pages/convert/services/types'
+import type { CampaignChatPerformanceData } from 'domains/reporting/pages/convert/services/types'
 
 export type GetCampaignsAndChatChartQuery = {
     isFetching: boolean

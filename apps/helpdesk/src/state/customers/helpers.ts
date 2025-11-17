@@ -1,8 +1,8 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _trim from 'lodash/trim'
 
 import { isImmutable, toImmutable } from 'common/utils'
-import { CustomerChannel } from 'models/customerChannel/types'
+import type { CustomerChannel } from 'models/customerChannel/types'
 import { normalizeAddress } from 'tickets/common/utils'
 
 /**

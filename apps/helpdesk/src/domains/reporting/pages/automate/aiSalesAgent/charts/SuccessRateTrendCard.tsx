@@ -3,14 +3,14 @@ import { useCallback, useContext, useMemo } from 'react'
 import moment from 'moment'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    AiSalesAgentMetricConfig,
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     AiSalesMetricConfig,
     TrendMetric,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AiSalesAgentMetricConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 import { useAiSalesAgentTrendCardComponent } from './useAiSalesAgentTrendCardComponent'
 

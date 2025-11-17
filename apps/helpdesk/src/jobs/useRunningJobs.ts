@@ -1,5 +1,6 @@
 import { useListJobs } from '@gorgias/helpdesk-queries'
-import { Job, JobStatus } from '@gorgias/helpdesk-types'
+import type { Job } from '@gorgias/helpdesk-types'
+import { JobStatus } from '@gorgias/helpdesk-types'
 
 const RUNNING_JOB_STATUSES: string[] = [
     JobStatus.Running,

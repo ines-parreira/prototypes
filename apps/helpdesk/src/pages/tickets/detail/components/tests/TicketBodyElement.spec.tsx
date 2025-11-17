@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import { PHONE_CALL_CONVERSATION_STARTED } from 'constants/event'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
-import { TicketElement } from 'models/ticket/types'
+import type { TicketElement } from 'models/ticket/types'
 import * as voiceCallTypes from 'models/voiceCall/types'
 import {
     FACEBOOK_PRIVATE_REPLY_ACTION,
@@ -14,7 +14,7 @@ import {
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import { InfluencedOrderSource } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { reportError } from 'utils/errors'
 
 jest.mock('utils/errors')

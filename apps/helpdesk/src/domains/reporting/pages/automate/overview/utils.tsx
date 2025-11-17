@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
-import {
+import type {
     AutomateTimeseries,
     GreyArea,
 } from 'domains/reporting/hooks/automate/types'
@@ -9,9 +9,9 @@ import {
     addZeroValueTimeSeriesForGreyArea,
     sortByAutomateFeatureLabels,
 } from 'domains/reporting/hooks/automate/utils'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import css from 'domains/reporting/pages/automate/overview/AutomateOverview.less'
 import {
     formatLabeledTimeSeriesData,
@@ -21,7 +21,7 @@ import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
 } from 'domains/reporting/pages/self-service/constants'
-import { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
+import type { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 export function getGreyAreaHint(showGreyArea: GreyArea | null) {

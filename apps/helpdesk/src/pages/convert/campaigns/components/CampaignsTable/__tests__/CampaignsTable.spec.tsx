@@ -12,7 +12,7 @@ import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enu
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { renderWithRouter } from 'utils/testing'
 
-import { Campaign } from '../../../types/Campaign'
+import type { Campaign } from '../../../types/Campaign'
 import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
 import { createTrigger } from '../../../utils/createTrigger'
 import { CampaignsTable } from '../CampaignsTable'

@@ -1,5 +1,5 @@
-import { ConditionKey } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { ConditionKey } from 'pages/automate/workflows/models/conditions.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 export interface ConditionOperator {
     label: string

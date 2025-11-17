@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
-import {
-    getViewTicketUpdates,
-    ViewTicketUpdatesParams,
-} from 'models/view/resources'
+import type { ViewTicketUpdatesParams } from 'models/view/resources'
+import { getViewTicketUpdates } from 'models/view/resources'
 
 export const viewItemsDefinitionKeys = {
     all: () => ['view'] as const,

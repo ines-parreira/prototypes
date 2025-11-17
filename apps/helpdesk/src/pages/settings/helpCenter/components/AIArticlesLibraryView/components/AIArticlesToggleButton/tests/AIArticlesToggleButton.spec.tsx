@@ -3,10 +3,8 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import {
-    AIArticleToggleOption,
-    AIArticleToggleOptionValue,
-} from 'models/helpCenter/types'
+import type { AIArticleToggleOption } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../../constants'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'

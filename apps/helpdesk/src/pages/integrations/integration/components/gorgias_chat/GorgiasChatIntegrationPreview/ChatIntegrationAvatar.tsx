@@ -1,11 +1,11 @@
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 import { getInitials } from 'pages/common/components/Avatar/utils'
 import { getHumanAgents } from 'state/agents/selectors'

@@ -1,9 +1,8 @@
-import { forwardRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { forwardRef } from 'react'
 
-import BaseDateRangePicker, {
-    EventHandler,
-    Props,
-} from 'react-bootstrap-daterangepicker'
+import type { EventHandler, Props } from 'react-bootstrap-daterangepicker'
+import BaseDateRangePicker from 'react-bootstrap-daterangepicker'
 
 export type DateRangePickerProps = Props & {
     children?: ReactNode

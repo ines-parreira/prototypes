@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
 
-import {
-    getPeriodDateTimes,
+import type {
     TimeSeriesFetch,
     TimeSeriesPerDimension,
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
-import {
+import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
+import type {
     AggregationWindow,
     Period,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { NOT_AVAILABLE_LABEL } from 'domains/reporting/services/constants'
-import { TimeSeriesDataWithLabels } from 'domains/reporting/services/supportPerformanceReportingService'
+import type { TimeSeriesDataWithLabels } from 'domains/reporting/services/supportPerformanceReportingService'
 
 export const useTimeSeriesReportData = (
     cleanStatsFilters: StatsFilters,

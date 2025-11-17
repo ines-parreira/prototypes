@@ -7,7 +7,7 @@ import FilterName from 'pages/common/forms/FilterInput/FilterName'
 import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 
 import { INTERACTION_FILTER_OPTIONS } from '../constants'
-import { InteractionFilterType } from '../types'
+import type { InteractionFilterType } from '../types'
 import { getTypeOptionLabels } from './helpers/interactionFilter'
 
 import css from './Filters.less'

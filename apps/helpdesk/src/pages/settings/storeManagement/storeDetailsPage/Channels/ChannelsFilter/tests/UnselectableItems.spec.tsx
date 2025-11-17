@@ -1,4 +1,4 @@
-import { ContextType } from 'react'
+import type { ContextType } from 'react'
 
 import { screen } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
@@ -6,7 +6,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import { renderWithStore } from 'utils/testing'
 
-import { ChannelTypes, ChannelWithMetadata } from '../../../../types'
+import type { ChannelTypes, ChannelWithMetadata } from '../../../../types'
 import UnselectableItems from '../UnselectableItems'
 
 const mockStores = [

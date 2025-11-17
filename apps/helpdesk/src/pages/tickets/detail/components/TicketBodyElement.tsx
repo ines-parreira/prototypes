@@ -1,5 +1,6 @@
-import { fromJS, Map } from 'immutable'
-import { Moment } from 'moment'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { Moment } from 'moment'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { PHONE_EVENTS } from 'constants/event'
@@ -10,12 +11,16 @@ import {
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
 } from 'models/ticket/predicates'
-import { TicketElement, TicketEvent, TicketMessage } from 'models/ticket/types'
+import type {
+    TicketElement,
+    TicketEvent,
+    TicketMessage,
+} from 'models/ticket/types'
 import { isVoiceCall } from 'models/voiceCall/types'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
+import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import AuditLogEvent, {
     contentfulEventTypesValues,
-    HighlightedElements,
 } from 'pages/tickets/detail/components/AuditLogEvent'
 import Event from 'pages/tickets/detail/components/Event'
 import PhoneEvent from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
@@ -33,8 +38,8 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { getLastCustomerMessage, getTicketState } from 'state/ticket/selectors'
 import { reportError } from 'utils/errors'
 
-import { TicketEventPrivateReplyData } from '../../../../models/event/types'
-import { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
+import type { TicketEventPrivateReplyData } from '../../../../models/event/types'
+import type { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
 import { isShoppingAssistantEvent } from '../utils'
 import { InfluencedOrderEvent } from './ShoppingAssistantEvent/InfluencedOrderEvent'
 import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'

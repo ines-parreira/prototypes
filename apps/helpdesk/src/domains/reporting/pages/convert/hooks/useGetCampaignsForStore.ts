@@ -4,14 +4,12 @@ import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/comp
 import { getCampaignStatus } from 'domains/reporting/pages/convert/utils/getCampaignStatus'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListCampaigns } from 'models/convert/campaign/queries'
-import {
+import type {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignPreview,
 } from 'models/convert/campaign/types'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 

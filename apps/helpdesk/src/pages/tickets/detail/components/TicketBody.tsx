@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useSelectedIndex } from '@repo/hooks'
 import classnames from 'classnames'
-import { List } from 'immutable'
-import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
+import type { List } from 'immutable'
+import type { Components, VirtuosoHandle } from 'react-virtuoso'
+import { Virtuoso } from 'react-virtuoso'
 
 import { useSearch } from 'hooks/useSearch'
-import { TicketElement, TicketMessage } from 'models/ticket/types'
+import type { TicketElement, TicketMessage } from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 
 import {
@@ -16,10 +17,8 @@ import {
     useKeyboardNavigation,
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
-import {
-    ShoppingAssistantEvent,
-    useInsertShoppingAssistantEventElements,
-} from '../hooks/useInsertShoppingAssistantEventElements'
+import type { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
+import { useInsertShoppingAssistantEventElements } from '../hooks/useInsertShoppingAssistantEventElements'
 import { getVoiceCallIndex } from '../utils'
 import MessageQuoteContext from './MessageQuoteContext'
 import TicketBodyElement from './TicketBodyElement'

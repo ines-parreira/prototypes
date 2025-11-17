@@ -2,32 +2,37 @@ import { chain, differenceBy, map, orderBy } from 'lodash'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 
-import {
+import type {
     AIArticle,
     ArticleTemplate,
-    ArticleTemplateType,
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
     HelpCenterArticleItem,
-    HelpCenterCreationWizardStep,
     Locale,
     LocaleCode,
 } from 'models/helpCenter/types'
+import {
+    ArticleTemplateType,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
-import { IntegrationFromType, IntegrationType } from 'models/integration/types'
-import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
-import { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type {
+    IntegrationFromType,
+    IntegrationType,
+} from 'models/integration/types'
+import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import type { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     DEFAULT_ARTICLE_GROUP,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_LANGUAGE_DEFAULT_UI,
-    HelpCenterCreationWizard,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
 
 import { HelpCenterLayout } from '../../types/layout.enum'

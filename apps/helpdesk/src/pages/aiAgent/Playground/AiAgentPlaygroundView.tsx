@@ -13,7 +13,7 @@ import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import { AccountConfigurationWithHttpIntegration } from 'models/aiAgent/types'
+import type { AccountConfigurationWithHttpIntegration } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'

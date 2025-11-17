@@ -10,7 +10,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import { AIArticle, LocalArticleTranslation } from 'models/helpCenter/types'
+import type {
+    AIArticle,
+    LocalArticleTranslation,
+} from 'models/helpCenter/types'
 import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {

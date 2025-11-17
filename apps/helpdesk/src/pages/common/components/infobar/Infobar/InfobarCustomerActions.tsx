@@ -1,5 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

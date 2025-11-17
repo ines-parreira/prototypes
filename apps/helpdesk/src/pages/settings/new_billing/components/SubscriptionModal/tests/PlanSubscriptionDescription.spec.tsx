@@ -4,9 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { convertProduct } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductLabel } from 'models/billing/utils'
-import PlanSubscriptionDescription, {
-    PlanSubscriptionDescriptionProps,
-} from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,

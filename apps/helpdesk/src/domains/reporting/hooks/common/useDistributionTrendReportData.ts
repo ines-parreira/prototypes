@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    formatMetricValue,
-    MetricTrendFormat,
-} from 'domains/reporting/pages/common/utils'
+import type { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 export type LabelledData = {
     label: string

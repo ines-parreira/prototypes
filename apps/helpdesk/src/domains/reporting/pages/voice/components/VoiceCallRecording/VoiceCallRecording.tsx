@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import css from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording.less'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
 import { useDownloadRecording } from 'pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording'

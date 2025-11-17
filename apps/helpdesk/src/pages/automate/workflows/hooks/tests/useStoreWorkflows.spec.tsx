@@ -1,7 +1,8 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@repo/testing'
@@ -13,7 +14,7 @@ import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { selfServiceConfigurationKeys } from 'models/selfServiceConfiguration/queries'
 import { selfServiceConfigurationFixture } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import useStoreWorkflows from '../useStoreWorkflows'
 import { getIntegration } from './fixtures/utils'

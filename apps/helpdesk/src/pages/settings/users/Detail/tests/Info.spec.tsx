@@ -2,7 +2,7 @@ import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { Info } from '../Info'
-import { AgentState } from '../types'
+import type { AgentState } from '../types'
 
 const mockedInviteAgent = jest.fn(() => Promise.resolve(true))
 jest.mock('hooks/agents/useInviteAgent', () => ({

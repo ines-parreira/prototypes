@@ -1,8 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 

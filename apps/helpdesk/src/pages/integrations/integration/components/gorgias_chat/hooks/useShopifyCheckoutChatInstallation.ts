@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'

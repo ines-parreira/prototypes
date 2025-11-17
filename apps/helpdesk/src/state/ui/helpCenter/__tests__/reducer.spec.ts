@@ -3,7 +3,7 @@ import {
     changeViewLanguage,
 } from 'state/ui/helpCenter/actions'
 import reducer, { initialState } from 'state/ui/helpCenter/reducer'
-import { ChangeViewLanguage } from 'state/ui/helpCenter/types'
+import type { ChangeViewLanguage } from 'state/ui/helpCenter/types'
 
 describe('Help Center/UI reducer', () => {
     it('has the correct initial state', () => {

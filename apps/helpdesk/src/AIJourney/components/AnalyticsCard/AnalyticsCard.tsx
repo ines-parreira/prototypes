@@ -4,7 +4,8 @@ import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
 import { LoadingSpinner } from '@gorgias/axiom'
-import { JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
 import { TotalConversationsCard } from 'AIJourney/components/AnalyticsCard/components/TotalConversationsCard/TotalConversationsCard'
 import { AnalyticsData } from 'AIJourney/components/AnalyticsData/AnalyticsData'

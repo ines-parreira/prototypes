@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { useApplications } from 'models/integration/queries'
 import { contactInfoFixture } from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
 import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

@@ -1,12 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import moment from 'moment'
 
-import {
+import type {
     LiveCallQueueAgent,
     LiveCallQueueVoiceCall,
-    VoiceCallDirection,
-    VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import {

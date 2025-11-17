@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformUseCaseTemplatesView from '../ActionsPlatformUseCaseTemplatesView'

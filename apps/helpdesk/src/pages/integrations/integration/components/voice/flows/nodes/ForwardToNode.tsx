@@ -5,10 +5,11 @@ import { useWatch } from 'react-hook-form'
 
 import { Banner } from '@gorgias/axiom'
 import { useListPhoneNumbers } from '@gorgias/helpdesk-queries'
-import { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
+import type { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
-import { NodeProps, NodeWrapper } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
+import { NodeWrapper } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import PhoneSelectField from 'pages/integrations/integration/components/phone/PhoneSelectField'
 

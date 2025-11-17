@@ -8,7 +8,7 @@ import {
     useDownloadSLAsData,
 } from 'domains/reporting/hooks/sla/useDownloadSLAsData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')

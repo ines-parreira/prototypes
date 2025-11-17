@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -8,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { createTeam } from 'models/team/resources'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import TeamCreationModal from '../TeamCreationModal'
 

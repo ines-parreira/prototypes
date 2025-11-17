@@ -8,7 +8,7 @@ import {
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
 import InputField from 'pages/common/forms/input/InputField'
 
-import { AgentState } from './types'
+import type { AgentState } from './types'
 
 import css from './Detail.less'
 

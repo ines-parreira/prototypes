@@ -8,7 +8,7 @@ import {
     createdTicketsTimeseries,
     createdTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsCreated'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'

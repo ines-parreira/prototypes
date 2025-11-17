@@ -16,7 +16,7 @@ import {
     sortingSet,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { opposite } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart')

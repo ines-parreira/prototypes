@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 
-import { RootState } from '../../types'
-import { SectionsState } from './types'
+import type { RootState } from '../../types'
+import type { SectionsState } from './types'
 
 type SectionByName = { [name: string]: number }
 

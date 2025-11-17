@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { MigrationProvider } from '../../types'
+import type { MigrationProvider } from '../../types'
 
 import css from './ProviderInfo.less'
 

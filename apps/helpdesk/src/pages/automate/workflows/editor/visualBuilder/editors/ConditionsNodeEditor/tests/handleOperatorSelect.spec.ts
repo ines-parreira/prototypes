@@ -1,8 +1,8 @@
-import {
+import type {
     ConditionSchema,
     VarSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 import { handleOperatorSelectLogic } from '../handleOperatorSelectLogic'
 

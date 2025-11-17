@@ -5,9 +5,9 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
 import RichField from 'pages/common/forms/RichField/RichField'
-import { AutoReplyReturnSettings } from 'state/rules/types'
+import type { AutoReplyReturnSettings } from 'state/rules/types'
 
-import { ManagedRuleDetailProps } from './ManagedRuleEditor'
+import type { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 

@@ -7,7 +7,7 @@ import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
 import { columns } from './Columns'
 import MetafieldsTable from './MetafieldsTable'
-import { Field } from './types'
+import type { Field } from './types'
 
 jest.mock('../hooks/useToggleMetafieldVisibility')
 const useToggleMetafieldVisibilityMock = assumeMock(

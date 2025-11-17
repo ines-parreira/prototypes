@@ -1,7 +1,8 @@
-import { ReactComponentElement } from 'react'
+import type { ReactComponentElement } from 'react'
 
 import { render, screen } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import { isImmutable } from 'common/utils'
@@ -9,10 +10,10 @@ import { defaultTicketView } from 'config/views'
 import * as viewsConfig from 'config/views'
 import { customer } from 'fixtures/customer'
 import * as ticketFixtures from 'fixtures/ticket'
-import { TicketHighlights } from 'models/search/types'
+import type { TicketHighlights } from 'models/search/types'
+import type { View } from 'models/view/types'
 import {
     EntityType,
-    View,
     ViewField,
     ViewType,
     ViewVisibility,

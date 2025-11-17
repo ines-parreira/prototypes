@@ -1,11 +1,11 @@
 import _isEmpty from 'lodash/isEmpty'
 
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 
 export const isFilterFilled = (
     filterKey: OptionalFilter,

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { screen } from '@testing-library/react'
 
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 import { renderWithRouter } from 'utils/testing'
 
 import HttpRequestLogsView from '../HttpRequestLogsView'

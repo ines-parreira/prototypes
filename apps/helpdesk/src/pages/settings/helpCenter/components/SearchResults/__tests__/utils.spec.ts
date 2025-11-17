@@ -1,4 +1,4 @@
-import { Category } from 'models/helpCenter/types'
+import type { Category } from 'models/helpCenter/types'
 
 import { searchResultsResponseFixture } from '../SearchResults.response.fixture'
 import { getMissingEntities, searchResultsTreeFromAlgolia } from '../utils'

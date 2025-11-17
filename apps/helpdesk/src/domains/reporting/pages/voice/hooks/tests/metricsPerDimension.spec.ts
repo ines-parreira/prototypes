@@ -14,7 +14,7 @@ import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     transferredInboundVoiceCallsCountPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetricPerAgent,
     fetchAverageTalkTimeMetricPerAgent,

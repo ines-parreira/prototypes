@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     fetchTimeSeries,
-    TimeSeriesDataItem,
     useTimeSeries,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { influencedGmvTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/timeseries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,

@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useMemo } from 'react'
 
 export type WarningBannerContextType = {
     isBannerVisible: boolean

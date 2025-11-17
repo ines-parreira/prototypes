@@ -11,7 +11,7 @@ import {
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { VisibilityStatus } from 'models/helpCenter/types'
+import type { VisibilityStatus } from 'models/helpCenter/types'
 import { objKeys } from 'utils'
 
 import css from './SelectVisibilityStatus.less'

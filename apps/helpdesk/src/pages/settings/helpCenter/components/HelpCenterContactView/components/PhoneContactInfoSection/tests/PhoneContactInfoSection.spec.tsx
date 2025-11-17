@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { render } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
@@ -11,7 +11,10 @@ import { initialState as articlesState } from 'state/entities/helpCenter/article
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import { RootState, StoreDispatch } from '../../../../../../../../state/types'
+import type {
+    RootState,
+    StoreDispatch,
+} from '../../../../../../../../state/types'
 import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { getHelpCenterTranslationsResponseFixture } from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'

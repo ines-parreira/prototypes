@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'

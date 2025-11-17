@@ -13,8 +13,8 @@ import {
     DrillDownDownloadButton,
     TOTAL_OBJECTS_COUNT_PLACEHOLDER,
 } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
+import type { AgentsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
-    AgentsMetrics,
     drillDownSlice,
     EXPORT_DRILL_DOWN_JOB_ACTION,
     initialState,
@@ -27,7 +27,7 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { user } from 'fixtures/users'
 import { useRunningJobs } from 'jobs'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])

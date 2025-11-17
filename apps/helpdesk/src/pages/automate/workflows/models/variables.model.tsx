@@ -1,31 +1,35 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { Liquid, Output } from 'liquidjs'
-import { IdentifierToken, PropertyAccessToken } from 'liquidjs/dist/src/tokens'
+import type {
+    IdentifierToken,
+    PropertyAccessToken,
+} from 'liquidjs/dist/src/tokens'
 import _flatten from 'lodash/flatten'
 import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
 import _set from 'lodash/set'
 
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import { App } from 'pages/automate/actionsPlatform/types'
+import type { App } from 'pages/automate/actionsPlatform/types'
 import { validateJSON } from 'utils'
 
-import {
+import type {
     AVAILABLE_3PL_INTEGRATIONS,
     AvailableIntegrations,
-    SHIPMONK_APPLICATION_ID,
     WorkflowVariable,
     WorkflowVariableGroup,
     WorkflowVariableList,
 } from './variables.types'
-import {
-    isVisualBuilderGraphAppApp,
+import { SHIPMONK_APPLICATION_ID } from './variables.types'
+import type {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
-import { WorkflowConfiguration } from './workflowConfiguration.types'
+import { isVisualBuilderGraphAppApp } from './visualBuilderGraph.types'
+import type { WorkflowConfiguration } from './workflowConfiguration.types'
 
 const templateEngine = new Liquid({
     timezoneOffset: 0,

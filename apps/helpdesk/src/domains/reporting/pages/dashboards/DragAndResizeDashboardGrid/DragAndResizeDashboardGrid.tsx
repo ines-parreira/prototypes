@@ -1,15 +1,15 @@
-import React from 'react'
+import type React from 'react'
 
 import { Responsive, WidthProvider } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
 
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
-import {
+import type {
     DashboardChild,
-    DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 const COLS = 4
 

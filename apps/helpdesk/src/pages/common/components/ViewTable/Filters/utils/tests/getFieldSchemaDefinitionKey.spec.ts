@@ -1,4 +1,4 @@
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 
 import getFieldSchemaDefinitionKey from '../getFieldSchemaDefinitionKey'
 import { mockCustomField } from './mocks'

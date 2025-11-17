@@ -15,7 +15,8 @@ import {
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
 
-import AutoUpgradeToggle, { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'
+import type { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'
+import AutoUpgradeToggle from '../AutoUpgradeToggle'
 
 const mockStore = configureMockStore()
 const store = mockStore({

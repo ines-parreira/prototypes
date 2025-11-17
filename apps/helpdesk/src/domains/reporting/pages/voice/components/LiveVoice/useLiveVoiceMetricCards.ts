@@ -1,16 +1,16 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { isFilterEmpty } from 'domains/reporting/pages/utils'
-import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
+import type { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import { filterLiveCallsByStatus } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'

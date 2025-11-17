@@ -1,20 +1,24 @@
-import React, { ReactNode, useContext, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import {
@@ -23,7 +27,7 @@ import {
     CardHeaderTitle,
     ExpandAllButton,
 } from 'Widgets/modules/Template/modules/Card'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import { CustomizationContext } from '../../Template'

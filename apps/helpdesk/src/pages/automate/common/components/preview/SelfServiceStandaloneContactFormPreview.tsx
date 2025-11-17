@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import { Route, useLocation } from 'react-router-dom'
 
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 import StandaloneContactFormPreview from 'pages/settings/contactForm/components/StandaloneContactFormPreview/StandaloneContactFormPreview'
 import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 

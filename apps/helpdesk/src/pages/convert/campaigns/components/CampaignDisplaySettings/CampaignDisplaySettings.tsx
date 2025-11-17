@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { CampaignDeviceType } from 'pages/convert/campaigns/components/CampaignDeviceType'
 import { CampaignPreferences } from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
 import { WithRevenuePaywall } from 'pages/convert/campaigns/components/WithRevenuePaywall'
-import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './CampaignDisplaySettings.less'

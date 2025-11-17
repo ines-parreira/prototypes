@@ -1,6 +1,6 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessageSourceType } from 'business/types/ticket'
 import { toImmutable } from 'common/utils'
 
 import sourceTypeToChannel from './sourceTypeToChannel'

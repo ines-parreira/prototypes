@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { DropdownItem } from 'reactstrap'
 
 import RichDropdownOptions from './RichDropdownOptions'
-import { OptionGroup } from './types'
+import type { OptionGroup } from './types'
 
 type Props = {
     onClick: (optionKey: string) => void

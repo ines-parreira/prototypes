@@ -1,6 +1,7 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import {
+import type {
     ActiveElement,
     ChartData,
     ChartMeta,
@@ -21,7 +22,7 @@ import { ChartTooltip } from 'domains/reporting/pages/common/components/charts/C
 import { DonutChartTooltip } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip'
 import Legend from 'domains/reporting/pages/common/components/charts/Legend'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
-import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 import { renderTickLabelAsNumber } from 'domains/reporting/pages/utils'
 
 const STAT_COLORS = [

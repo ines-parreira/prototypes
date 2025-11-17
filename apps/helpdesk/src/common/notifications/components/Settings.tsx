@@ -1,10 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    useCallback,
-    useEffect,
-    useRef,
-} from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import { useMouseRelease } from '@repo/hooks'
 import cn from 'classnames'
@@ -14,7 +9,8 @@ import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { notificationSounds } from 'services'
-import { defaultSound, SoundValue } from 'services/NotificationSounds'
+import type { SoundValue } from 'services/NotificationSounds'
+import { defaultSound } from 'services/NotificationSounds'
 
 import useSettings from '../hooks/useSettings'
 import EventSettings from './EventSettings'

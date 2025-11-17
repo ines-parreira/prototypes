@@ -1,4 +1,5 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 export const eventNameToLabel: { [name: string]: string } = {
     'ticket-created': 'ticket created',

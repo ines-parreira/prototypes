@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
-import { EditorState } from 'draft-js'
-import { Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { Form, FormGroup } from 'reactstrap'
 

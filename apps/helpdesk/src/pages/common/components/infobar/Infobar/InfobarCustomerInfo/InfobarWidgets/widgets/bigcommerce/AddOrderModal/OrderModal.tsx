@@ -1,5 +1,5 @@
+import type { ChangeEvent } from 'react'
 import React, {
-    ChangeEvent,
     useCallback,
     useContext,
     useEffect,
@@ -20,26 +20,28 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { OptionSelection } from 'models/integration/resources/bigcommerce'
-import {
-    AddressType,
-    BigCommerceActionType,
+import type { OptionSelection } from 'models/integration/resources/bigcommerce'
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
     BigCommerceCustomProduct,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
     BigCommerceProduct,
     BigCommerceProductsListType,
     BigCommerceProductVariant,
+} from 'models/integration/types'
+import {
+    AddressType,
+    BigCommerceActionType,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
     IntegrationType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

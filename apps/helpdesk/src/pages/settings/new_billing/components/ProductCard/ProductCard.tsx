@@ -9,7 +9,8 @@ import {
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
@@ -23,7 +24,7 @@ import {
     getCheapestProductPrices,
     getCurrentHelpdeskCadence,
 } from 'state/billing/selectors'
-import { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
+import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 
 import { BILLING_PROCESS_PATH, PRODUCT_INFO } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'

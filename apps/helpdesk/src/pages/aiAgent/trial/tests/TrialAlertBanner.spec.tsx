@@ -1,10 +1,8 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import {
-    TrialAlertBanner,
-    TrialAlertBannerProps,
-} from '../components/TrialAlertBanner/TrialAlertBanner'
+import type { TrialAlertBannerProps } from '../components/TrialAlertBanner/TrialAlertBanner'
+import { TrialAlertBanner } from '../components/TrialAlertBanner/TrialAlertBanner'
 
 describe('TrialAlertBanner', () => {
     const defaultProps: TrialAlertBannerProps = {

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const renderWithVariables = (
     string: string,

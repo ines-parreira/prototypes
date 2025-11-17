@@ -1,7 +1,8 @@
 import classnames from 'classnames'
 import { Badge } from 'reactstrap'
 
-import { MacroAction, MacroActionName } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import { CustomFieldName } from 'pages/tickets/common/macros/Preview/CustomFieldName'

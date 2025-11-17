@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './StorePicker.less'

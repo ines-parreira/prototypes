@@ -1,10 +1,8 @@
-import {
-    AddressType,
+import type {
     OldPhoneNumber,
     PhoneCapabilitiesLimitationsMap,
-    PhoneCountry,
-    PhoneType,
 } from 'models/phoneNumber/types'
+import { AddressType, PhoneCountry, PhoneType } from 'models/phoneNumber/types'
 
 export const phoneNumbers: OldPhoneNumber[] = [
     {

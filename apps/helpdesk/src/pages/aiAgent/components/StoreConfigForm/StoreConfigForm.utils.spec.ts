@@ -1,7 +1,7 @@
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import { ToneOfVoice } from '../../constants'
-import { ValidFormValues } from '../../types'
+import type { ValidFormValues } from '../../types'
 import { filterNonNull } from '../../util'
 import {
     getStoreConfigurationFromFormValues,

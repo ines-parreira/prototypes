@@ -1,6 +1,7 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import {
     ADD_LOADING_FACEBOOK_AD,
     REMOVE_LOADING_FACEBOOK_AD,

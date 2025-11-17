@@ -1,15 +1,10 @@
-import React, {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import QRCode from 'qrcode'
 
-import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
+import type { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'

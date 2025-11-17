@@ -1,6 +1,7 @@
-import { FormEvent, useCallback, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useCallback, useState } from 'react'
 
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 
 import useStoreUpdater from './useStoreUpdater'
 

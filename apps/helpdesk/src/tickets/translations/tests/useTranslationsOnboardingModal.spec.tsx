@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import * as hooksImports from '@repo/hooks'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { useFlag } from 'core/flags'
-import { CurrentUser } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
+import type { CurrentUser } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 import { useTranslationsOnboardingModal } from '../useTranslationsOnboardingModal'
 

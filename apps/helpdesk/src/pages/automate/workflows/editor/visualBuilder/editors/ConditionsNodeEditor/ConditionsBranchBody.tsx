@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     BooleanSchema,
     ConditionKey,
     ConditionSchema,
@@ -14,7 +15,7 @@ import {
     VarSchema,
 } from 'pages/automate/workflows/models/conditions.types'
 import { findVariable } from 'pages/automate/workflows/models/variables.model'
-import {
+import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
@@ -22,7 +23,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { Condition } from 'pages/common/components/Condition/Condition'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
+import type WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 
 import { BooleanConditionType } from './conditions/BooleanConditionType'

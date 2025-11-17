@@ -1,9 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { getTicket, Ticket } from '@gorgias/helpdesk-client'
+import type { Ticket } from '@gorgias/helpdesk-client'
+import { getTicket } from '@gorgias/helpdesk-client'
 
 import { useSearchTickets } from 'models/aiAgent/queries'
 

@@ -1,4 +1,5 @@
-import React, { FC, HTMLAttributes, useMemo, useRef, useState } from 'react'
+import type { FC, HTMLAttributes } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { useListShopifyCustomerSegments } from 'models/integration/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

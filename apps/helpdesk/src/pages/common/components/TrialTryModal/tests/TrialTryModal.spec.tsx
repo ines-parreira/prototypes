@@ -4,13 +4,14 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
-import { Trial } from 'models/aiAgent/types'
+import type { Trial } from 'models/aiAgent/types'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
-import TrialTryModal, { TrialFeature } from '../TrialTryModal'
+import type { TrialFeature } from '../TrialTryModal'
+import TrialTryModal from '../TrialTryModal'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('models/aiAgent/queries')

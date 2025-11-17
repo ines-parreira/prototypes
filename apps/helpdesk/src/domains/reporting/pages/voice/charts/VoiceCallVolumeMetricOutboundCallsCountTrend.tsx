@@ -1,6 +1,6 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import {
     OUTBOUND_CALLS_METRIC_HINT,

@@ -13,7 +13,7 @@ import {
     setSelectedMetric,
 } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
 import { FILTER_DROPDOWN_ICON } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('@repo/logging', () => ({

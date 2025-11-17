@@ -1,4 +1,5 @@
-import { ComponentProps, Fragment, ReactElement, ReactNode } from 'react'
+import type { ComponentProps, ReactElement, ReactNode } from 'react'
+import { Fragment } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
@@ -11,13 +12,13 @@ import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/
 import { ticket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 import useSelection from 'ticket-list-view/hooks/useSelection'
 import useSortOrder from 'ticket-list-view/hooks/useSortOrder'
 import useTickets from 'ticket-list-view/hooks/useTickets'
-import { TicketPartial } from 'ticket-list-view/types'
+import type { TicketPartial } from 'ticket-list-view/types'
 
 import Ticket from '../Ticket'
 import TicketListView, { listInfoProps } from '../TicketListView'

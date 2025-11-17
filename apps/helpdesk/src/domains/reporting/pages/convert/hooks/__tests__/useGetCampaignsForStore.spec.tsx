@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -11,7 +12,7 @@ import { channelConnection } from 'fixtures/channelConnection'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { IntegrationType } from 'models/integration/types'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(

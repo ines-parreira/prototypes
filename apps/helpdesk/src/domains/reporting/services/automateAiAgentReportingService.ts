@@ -1,22 +1,20 @@
 import moment from 'moment/moment'
 
-import { User } from 'config/types/user'
-import { Metric } from 'domains/reporting/hooks/metrics'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { Period } from 'domains/reporting/models/stat/types'
-import { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
-import {
-    AgentsPerformanceReportData,
-    getData as getPerformanceData,
-} from 'domains/reporting/services/agentsPerformanceReportingService'
+import type { User } from 'config/types/user'
+import type { Metric } from 'domains/reporting/hooks/metrics'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { Period } from 'domains/reporting/models/stat/types'
+import type { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
+import type { AgentsPerformanceReportData } from 'domains/reporting/services/agentsPerformanceReportingService'
+import { getData as getPerformanceData } from 'domains/reporting/services/agentsPerformanceReportingService'
 import { formatPerformanceFeatureData } from 'domains/reporting/services/automateOverviewReportingService'
 import { DATE_TIME_FORMAT } from 'domains/reporting/services/constants'
 import { formatData as getTicketInsightsData } from 'domains/reporting/services/ticketFieldsReportingService'
-import {
+import type {
     AgentsTableColumn,
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const AI_AGENT_PERFORMANCE_FILENAME = 'ai-agent-performance'

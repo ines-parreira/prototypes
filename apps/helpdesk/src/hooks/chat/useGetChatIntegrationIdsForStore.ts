@@ -1,10 +1,8 @@
 import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 const CHAT_CHANNEL = 'chat'

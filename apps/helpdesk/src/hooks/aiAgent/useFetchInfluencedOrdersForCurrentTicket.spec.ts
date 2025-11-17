@@ -1,12 +1,10 @@
 import { renderHook } from '@repo/testing'
-import { QueryObserverSuccessResult } from '@tanstack/react-query'
+import type { QueryObserverSuccessResult } from '@tanstack/react-query'
 
 import { useGetTicketContext } from 'hooks/aiAgent/useGetTicketContext'
 
-import {
-    InfluencedOrderData,
-    useFetchInfluencedOrders,
-} from './useFetchInfluencedOrders'
+import type { InfluencedOrderData } from './useFetchInfluencedOrders'
+import { useFetchInfluencedOrders } from './useFetchInfluencedOrders'
 import { useFetchInfluencedOrdersForCurrentTicket } from './useFetchInfluencedOrdersForCurrentTicket'
 
 jest.mock('hooks/aiAgent/useGetTicketContext')

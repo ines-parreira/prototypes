@@ -1,11 +1,11 @@
 import { fromJS } from 'immutable'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
-import { View } from 'models/view/types'
+import type { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
+import type { View } from 'models/view/types'
 import { recentViewsStorage } from 'state/views/utils'
-import { GorgiasInitialState, InitialRootState } from 'types'
+import type { GorgiasInitialState, InitialRootState } from 'types'
 
 export const TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION = {
     meta: {

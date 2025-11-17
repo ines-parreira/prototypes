@@ -1,7 +1,7 @@
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomerFieldValues } from 'custom-fields/hooks/queries/useCustomerFieldValues'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 import CustomerField from './CustomerField'
 import { Heading } from './Heading'

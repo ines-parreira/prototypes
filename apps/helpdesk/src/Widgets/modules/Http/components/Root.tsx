@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import logo from 'assets/img/integrations/http.png'
 import { renderTemplate } from 'pages/common/utils/template'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 

@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react'
 
-import { BigCommerceIntegration } from 'models/integration/types'
+import type { BigCommerceIntegration } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 
 import * as Utils from '../../../../../../integrations/integration/components/bigcommerce/Utils'

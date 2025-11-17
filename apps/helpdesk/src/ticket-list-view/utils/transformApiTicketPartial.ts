@@ -1,6 +1,6 @@
-import { TicketPartial as ApiTicketPartial } from 'models/ticket/types'
+import type { TicketPartial as ApiTicketPartial } from 'models/ticket/types'
 
-import { TicketPartial } from '../types'
+import type { TicketPartial } from '../types'
 
 export default function transformApiTicketPartial(
     t: ApiTicketPartial,

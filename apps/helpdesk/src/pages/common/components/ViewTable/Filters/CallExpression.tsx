@@ -1,27 +1,27 @@
 import { useCallback, useMemo } from 'react'
 
-import {
+import type {
     CallExpression as ESCallExpression,
     Expression,
     Identifier,
     LogicalExpression,
     LogicalOperator,
 } from 'estree'
-import { fromJS, List, Map, Seq } from 'immutable'
+import type { List, Map, Seq } from 'immutable'
+import { fromJS } from 'immutable'
 import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { Badge } from '@gorgias/axiom'
-import {
-    StoreMapping,
-    useGetStoreMappingsByAccountId,
-} from '@gorgias/helpdesk-queries'
+import type { StoreMapping } from '@gorgias/helpdesk-queries'
+import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import { BASIC_OPERATORS, UNARY_OPERATORS } from 'config'
 import { OBJECT_PATHS } from 'custom-fields/constants'
-import { RootState } from 'state/types'
-import { updateFieldFilter } from 'state/views/actions'
+import type { RootState } from 'state/types'
+import type { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
 import { fieldPath, findProperty } from 'utils'
 
@@ -32,7 +32,7 @@ import { Operator } from './Operator'
 import { OperatorLabel } from './OperatorLabel'
 import { RemoveCallExpression } from './RemoveCallExpression'
 import Right from './Right'
-import { OperatorType } from './types'
+import type { OperatorType } from './types'
 import { getCustomFieldOperators, resolveObjectPath } from './utils'
 
 import css from './CallExpression.less'

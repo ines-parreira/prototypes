@@ -2,22 +2,23 @@ import { useMemo, useRef } from 'react'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
-import { ListItem, SelectField, SelectFieldProps } from '@gorgias/axiom'
-import {
+import type { SelectFieldProps } from '@gorgias/axiom'
+import { ListItem, SelectField } from '@gorgias/axiom'
+import type {
     CustomerFieldsConditionalStep,
     CustomField,
-    ObjectType,
 } from '@gorgias/helpdesk-types'
+import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 
 import { CustomerLookupActionsFieldArray } from '../../CustomerLookupActionsFieldArray'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
-import {
+import type {
     CustomerLookupNode as CustomerLookupNodeType,
     VoiceFlowFormValues,
 } from '../types'

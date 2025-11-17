@@ -1,5 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -14,14 +14,14 @@ import {
     addOptionalFilter,
     hasFilter,
 } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingFilter,
-    ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,

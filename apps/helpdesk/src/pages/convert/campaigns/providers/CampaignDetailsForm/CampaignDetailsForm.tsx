@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import cn from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _trim from 'lodash/trim'
 
@@ -19,16 +21,18 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useFlag } from 'core/flags'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
@@ -36,12 +40,12 @@ import { findContactCaptureForm } from 'pages/convert/campaigns/components/Conta
 import { ProductRecommendationBanner } from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
 import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {
+import type {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
@@ -70,20 +74,19 @@ import { useChatPreviewProps } from '../../hooks/useChatPreviewProps'
 import { useManageTriggers } from '../../hooks/useManageTriggers'
 import { usePristineSteps } from '../../hooks/usePristineSteps'
 import { useUtm } from '../../hooks/useUtm'
-import { Campaign } from '../../types/Campaign'
-import { CampaignAuthor } from '../../types/CampaignAgent'
-import { CampaignDiscountOffer } from '../../types/CampaignDiscountOffer'
-import { CampaignProduct } from '../../types/CampaignProduct'
+import type { Campaign } from '../../types/Campaign'
+import type { CampaignAuthor } from '../../types/CampaignAgent'
+import type { CampaignDiscountOffer } from '../../types/CampaignDiscountOffer'
+import type { CampaignProduct } from '../../types/CampaignProduct'
 import { CampaignStepsKeys } from '../../types/CampaignSteps'
 import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
 import { transformAttachmentsToDiscountOffers } from '../../utils/transformAttachmentsToDiscountOffers'
 import { transformAttachmentToProduct } from '../../utils/transformAttachmentToProduct'
 import { transformCampaignAttachmentsToDetails } from '../../utils/transformCampaignAttachmentsToDetails'
-import {
-    CampaigFormConfigurationProvider,
-    CampaignFormConfigurationType,
-} from './configurationContext'
-import { CampaignDetailsFormApi, CampaignDetailsFormProvider } from './context'
+import type { CampaignFormConfigurationType } from './configurationContext'
+import { CampaigFormConfigurationProvider } from './configurationContext'
+import type { CampaignDetailsFormApi } from './context'
+import { CampaignDetailsFormProvider } from './context'
 
 import css from './style.less'
 

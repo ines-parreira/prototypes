@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
@@ -9,7 +10,7 @@ import { Card, CardBody } from 'reactstrap'
 
 import { getActionByName } from 'config/actions'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import IconButton from 'pages/common/components/button/IconButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { AgentLabel } from 'pages/common/utils/labels'

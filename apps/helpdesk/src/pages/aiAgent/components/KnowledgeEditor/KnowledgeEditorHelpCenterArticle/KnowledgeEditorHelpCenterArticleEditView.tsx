@@ -1,4 +1,4 @@
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import HelpCenterEditor from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
 import { EDITOR_MODAL_CONTAINER_ID } from 'pages/settings/helpCenter/constants'
 

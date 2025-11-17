@@ -3,9 +3,9 @@ import { memo, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { SourceType } from 'models/ticket/types'
+import type { SourceType } from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'
 
 import css from './MessageStatusIndicator.less'

@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import { fetchTableReportData } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useAutoQAMetrics } from 'domains/reporting/hooks/support-performance/auto-qa/useAutoQAMetrics'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
@@ -23,12 +23,12 @@ import {
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
+import type { AutoQAReportMetrics } from 'domains/reporting/services/autoQAReportingService'
 import {
     AGENT_ID_DIMENSION,
     AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME,
     AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
     AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME,
-    AutoQAReportMetrics,
     createReport,
     fetchAutoQAAgentsTableReportData,
     useAutoQAReportData,

@@ -1,5 +1,5 @@
 import { initialState as contactformState } from 'state/entities/contactForm/reducer'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { getCurrentContactFormId } from 'state/ui/contactForm/selectors'
 
 import { initialState as uiState } from '../reducer'

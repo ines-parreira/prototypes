@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Plan, ProductType } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 import { getPlanPriceFormatted, getProductLabel } from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
@@ -18,7 +20,7 @@ import {
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import { ProductSubscriptionDescription } from 'pages/settings/new_billing/types'
+import type { ProductSubscriptionDescription } from 'pages/settings/new_billing/types'
 import { formatNumTickets } from 'pages/settings/new_billing/utils/formatAmount'
 
 export type PlanSubscriptionDescriptionProps = {

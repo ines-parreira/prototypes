@@ -8,7 +8,7 @@ import {
     useDeleteFileIngestion,
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 const UPDATE_STATUS_INTERVAL_MS = 5000
 

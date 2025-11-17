@@ -1,4 +1,4 @@
-import { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
+import type { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
 
 export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
     {

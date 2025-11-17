@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     AIArticle,
     ArticleTemplateReviewAction,
     LocaleCode,
@@ -15,7 +15,7 @@ import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import type { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

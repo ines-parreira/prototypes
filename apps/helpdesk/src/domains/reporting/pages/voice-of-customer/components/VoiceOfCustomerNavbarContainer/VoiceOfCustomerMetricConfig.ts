@@ -6,9 +6,9 @@ import {
     ticketCountForIntentAndProductDrillDownQueryFactory,
     ticketCountForIntentDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
-import { InterpretAs } from 'domains/reporting/pages/common/components/TrendBadge'
+import type { InterpretAs } from 'domains/reporting/pages/common/components/TrendBadge'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 
 export enum VoiceOfCustomerMetric {
     NegativeSentimentsPerProduct = 'negative_sentiments_per_product',

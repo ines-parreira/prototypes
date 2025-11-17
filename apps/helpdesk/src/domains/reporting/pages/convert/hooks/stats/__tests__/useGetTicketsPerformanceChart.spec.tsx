@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 
 import { TicketChannel } from 'business/types/ticket'
-import { Stat } from 'domains/reporting/models/stat/types'
+import type { Stat } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import * as revenueAttributionClient from 'domains/reporting/pages/convert/clients/RevenueAttributionClient'
 import { useTicketsPerformanceChart } from 'domains/reporting/pages/convert/hooks/stats/useGetTicketsPerformanceChart'

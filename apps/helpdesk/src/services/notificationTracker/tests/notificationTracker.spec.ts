@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react'
 import EventTracker from '@gorgias/event-tracker-api'
 
 import { UserRole } from 'config/types/user'
-import { GorgiasInitialState } from 'types'
+import type { GorgiasInitialState } from 'types'
 
 import { NotificationEvent } from '../constants'
 

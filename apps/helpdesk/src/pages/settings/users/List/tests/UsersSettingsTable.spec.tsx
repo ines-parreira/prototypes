@@ -3,8 +3,8 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { ListUsersParams } from '@gorgias/helpdesk-queries'
-import { User } from '@gorgias/helpdesk-types'
+import type { ListUsersParams } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'

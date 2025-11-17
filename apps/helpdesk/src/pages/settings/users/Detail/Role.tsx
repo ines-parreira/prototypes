@@ -2,12 +2,12 @@ import { Fragment } from 'react'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { UserRole } from 'config/types/user'
+import type { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { RoleLabel } from 'pages/common/utils/labels'
 
-import { AgentState } from './types'
+import type { AgentState } from './types'
 
 import css from './Detail.less'
 

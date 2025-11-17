@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { FlowProvider } from 'core/ui/flows'
 import * as flows from 'core/ui/flows'

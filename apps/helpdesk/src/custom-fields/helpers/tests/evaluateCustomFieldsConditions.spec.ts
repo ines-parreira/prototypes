@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
+import type { CustomFieldCondition } from '@gorgias/helpdesk-types'
 import {
-    CustomFieldCondition,
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,

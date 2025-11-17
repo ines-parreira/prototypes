@@ -6,7 +6,7 @@ import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/
 import { IMPRESSIONS_LABEL } from 'domains/reporting/pages/convert/constants/labels'
 import { usePerformanceCampaignPerformanceStats } from 'domains/reporting/pages/convert/hooks/usePerformanceCampaignPerformanceStats'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export const PerformanceImpressionsGraphChart = ({
     chartId,

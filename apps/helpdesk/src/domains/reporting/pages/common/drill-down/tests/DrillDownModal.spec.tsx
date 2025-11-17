@@ -20,17 +20,15 @@ import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/dril
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
-import {
-    closeDrillDownModal,
-    DrillDownMetric,
-} from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { closeDrillDownModal } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     TicketFieldsMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownTable')
 const DrillDownTableMock = assumeMock(DrillDownTable)

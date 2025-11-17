@@ -5,9 +5,9 @@ import {
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import { CustomField, CustomFieldValue } from 'custom-fields/types'
+import type { CustomField, CustomFieldValue } from 'custom-fields/types'
 
-import { MultiLevelSelectProps } from './MultiLevelSelect/MultiLevelSelect'
+import type { MultiLevelSelectProps } from './MultiLevelSelect/MultiLevelSelect'
 import StealthInput from './StealthInput'
 
 export type CustomFieldInputProps = {

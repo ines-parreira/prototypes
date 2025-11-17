@@ -1,15 +1,13 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import { getContrastColor } from 'gorgias-design-system/utils'
 import { InputRange } from 'pages/common/forms/input/InputRange'
-import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 import { BaseProductCard } from '../BaseProductCard'
-import {
-    FeaturedImage,
-    ImagePosition,
-    VISIBLE_IMAGE_CONTAINER,
-} from '../ImagePosition'
+import type { FeaturedImage } from '../ImagePosition'
+import { ImagePosition, VISIBLE_IMAGE_CONTAINER } from '../ImagePosition'
 import { getDraggableContainerBounds } from '../ImagePosition/utils'
 import {
     convertRangeValueToSize,

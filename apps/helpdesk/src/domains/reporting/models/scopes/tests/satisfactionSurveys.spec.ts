@@ -10,7 +10,7 @@ import {
     averageScore,
     averageScoreQueryV2Factory,
 } from 'domains/reporting/models/scopes/satisfactionSurveys'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'

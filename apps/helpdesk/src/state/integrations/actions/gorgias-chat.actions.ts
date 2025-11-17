@@ -1,10 +1,10 @@
-import {
+import type {
     GetApplicationsResponse,
     GetInstallationSnippetParams,
     GetInstallationSnippetResponse,
 } from 'models/integration/types'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
-import {
+import type {
     InstallationStatus,
     InstallationStatuses,
     Texts,

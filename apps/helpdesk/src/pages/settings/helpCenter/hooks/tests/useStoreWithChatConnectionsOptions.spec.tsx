@@ -2,13 +2,12 @@ import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Integration, IntegrationType } from 'models/integration/types'
-import { StoreState } from 'state/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { StoreState } from 'state/types'
 
-import {
-    CssClasses,
-    useStoreWithChatConnectionsOptions,
-} from '../useStoreWithChatConnectionsOptions'
+import type { CssClasses } from '../useStoreWithChatConnectionsOptions'
+import { useStoreWithChatConnectionsOptions } from '../useStoreWithChatConnectionsOptions'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockAppSelector = jest.mocked(useAppSelector)

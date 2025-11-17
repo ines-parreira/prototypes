@@ -13,10 +13,8 @@ import {
     INTEGRATIONS_MAPPING,
     TICKET_HANDOVER_TRIGGER,
 } from 'pages/standalone/constants'
-import {
-    HelpdeskIntegrationOptions,
-    HTTPIntegrationPayload,
-} from 'pages/standalone/types'
+import type { HTTPIntegrationPayload } from 'pages/standalone/types'
+import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationById } from 'state/integrations/selectors'
 

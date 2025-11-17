@@ -5,7 +5,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockListAccountSettingsHandler } from '@gorgias/helpdesk-mocks'
-import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
+import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

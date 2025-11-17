@@ -3,7 +3,7 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { GuidanceTemplatesModal } from '../GuidanceTemplatesModal'
 

@@ -32,9 +32,9 @@ import { StatefulMessageCard as MessageCard } from './components/MessageCard'
 import PreviewSection from './components/PreviewSection'
 import RecommendationDivisor from './components/RecommendationDivisor'
 import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
+import type { FeedbackOptions } from './components/RecommendationFilters'
 import RecommendationFilters, {
     DEFAULT_FEEDBACK_OPTIONS,
-    FeedbackOptions,
 } from './components/RecommendationFilters'
 import RecommendationPagination from './components/RecommendationPagination'
 import { RecommendationDisabled } from './components/TrainMyAiAlerts'

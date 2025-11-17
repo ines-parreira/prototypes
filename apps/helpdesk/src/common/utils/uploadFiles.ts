@@ -1,4 +1,4 @@
-import { GenericAttachment } from 'common/types'
+import type { GenericAttachment } from 'common/types'
 import client from 'models/api/resources'
 
 /**

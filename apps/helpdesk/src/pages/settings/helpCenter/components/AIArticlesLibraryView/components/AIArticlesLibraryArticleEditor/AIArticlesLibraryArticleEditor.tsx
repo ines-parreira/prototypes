@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
     DropdownItem,
@@ -14,7 +16,7 @@ import {
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'
+import type { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,
@@ -35,7 +37,7 @@ import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
 import { isOneOfParentsUnlisted } from '../../../HelpCenterCategoryEdit/utils'
 import SelectVisibilityStatus from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
-import { onEditorSaveProps } from '../../hooks/useAILibraryActions'
+import type { onEditorSaveProps } from '../../hooks/useAILibraryActions'
 
 import css from './AIArticlesLibraryArticleEditor.less'
 

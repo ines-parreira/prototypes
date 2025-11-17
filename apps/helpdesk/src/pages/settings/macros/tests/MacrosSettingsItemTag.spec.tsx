@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { MacrosSettingsItemTag } from '../MacrosSettingsItemTag'
 

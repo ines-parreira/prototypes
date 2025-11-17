@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

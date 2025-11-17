@@ -5,25 +5,25 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import type { MockStore } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AttachmentEnum } from 'common/types'
-import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
+import type { useModalManagerApi } from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useGetDiscountOffer,
     useUpdateDiscountOffer,
 } from 'models/convert/discountOffer/queries'
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
 import { testIds } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {
-    DiscountOfferTicketAttachment,
-    DiscountOfferTicketAttachmentType,
-} from '../DiscountOfferTicketAttachment'
+import type { DiscountOfferTicketAttachmentType } from '../DiscountOfferTicketAttachment'
+import { DiscountOfferTicketAttachment } from '../DiscountOfferTicketAttachment'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')

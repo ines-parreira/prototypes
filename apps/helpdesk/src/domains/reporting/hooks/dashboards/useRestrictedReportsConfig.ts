@@ -1,5 +1,5 @@
 import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
-import { ChartConfig } from 'domains/reporting/pages/dashboards/types'
+import type { ChartConfig } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 
 export const useRestrictedReportsConfig = () => {

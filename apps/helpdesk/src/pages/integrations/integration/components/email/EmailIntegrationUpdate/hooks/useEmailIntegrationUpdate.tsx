@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 export enum EmailIntegrationActionType {
     SET_NAME = 'SET_NAME',

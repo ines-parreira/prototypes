@@ -1,12 +1,13 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
-import {
+import type {
     PlaygroundMessage,
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
 import { usePlaygroundMessages } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundMessages'
-import { PlaygroundCustomer } from 'pages/aiAgent/PlaygroundV2/types'
+import type { PlaygroundCustomer } from 'pages/aiAgent/PlaygroundV2/types'
 
 type MessagesContextValue = {
     messages: PlaygroundMessage[]

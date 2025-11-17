@@ -6,7 +6,7 @@ import {
     mockGetVoiceQueueHandler,
     mockVoiceQueue,
 } from '@gorgias/helpdesk-mocks'
-import { VoiceQueue } from '@gorgias/helpdesk-types'
+import type { VoiceQueue } from '@gorgias/helpdesk-types'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

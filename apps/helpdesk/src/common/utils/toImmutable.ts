@@ -1,4 +1,4 @@
-import { Iterable } from 'immutable'
+import type { Iterable } from 'immutable'
 
 import fromAST from './fromAST'
 import isImmutable from './isImmutable'

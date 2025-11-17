@@ -49,10 +49,8 @@ import {
     shopifyVolume,
     shopifyWeight,
 } from 'fixtures/shopify'
-import {
-    IntegrationContext,
-    IntegrationContextType,
-} from 'providers/infobar/IntegrationContext'
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import Metafield from '../Metafield'
 

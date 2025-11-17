@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import { LlmTriggeredExecution } from '../../types'
+import type { LlmTriggeredExecution } from '../../types'
 import ActionEventSidePanel from '../ActionEventSidePanel'
 
 const queryClient = mockQueryClient()

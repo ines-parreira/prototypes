@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { Skeleton } from '@gorgias/axiom'
 
 import { formatCurrency } from 'domains/reporting/pages/common/utils'
-import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import type { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
 import css from './TopProductItem.less'
 

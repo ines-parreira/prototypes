@@ -1,6 +1,6 @@
-import { VisualBuilderGraphApp } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderGraphApp } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import { ActionsApp, ActionTemplateApp } from './types'
+import type { ActionsApp, ActionTemplateApp } from './types'
 
 export const getGraphAppFromTemplateApp = (
     graphApps: VisualBuilderGraphApp[],

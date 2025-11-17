@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -13,10 +14,10 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
+import type { GorgiasChatLauncherType } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatLauncherType,
 } from 'models/integration/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import { getCurrentUser } from 'state/currentUser/selectors'

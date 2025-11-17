@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { TooltipModel } from 'chart.js'
+import type { TooltipModel } from 'chart.js'
 
 import css from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip.less'
 import { formatPercentage } from 'pages/common/utils/numbers'

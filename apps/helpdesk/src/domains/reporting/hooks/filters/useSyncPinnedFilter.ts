@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { SavedFilter } from 'domains/reporting/models/stat/types'
+import type { SavedFilter } from 'domains/reporting/models/stat/types'
 import {
     actions,
     selectors,

@@ -1,7 +1,5 @@
-import {
-    useInfiniteQuery,
-    UseInfiniteQueryOptions,
-} from '@tanstack/react-query'
+import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { fetchMacros } from './resources'
 

@@ -6,7 +6,7 @@ import { useConfirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { getBillingStateQuery } from 'models/billing/queries'
 import { useStartSubscription } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
-import { ErrorResponse } from 'state/billing/types'
+import type { ErrorResponse } from 'state/billing/types'
 import { getIsCurrentSubscriptionTrialingOrCanceled } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import {

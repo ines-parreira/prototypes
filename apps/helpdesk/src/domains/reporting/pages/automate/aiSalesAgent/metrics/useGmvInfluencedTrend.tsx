@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
+import type { MetricWithDecileData } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
-    MetricWithDecileData,
     useMetricPerDimension,
 } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import useMetricTrend, {
     fetchMetricTrend,
-    MetricTrendWithCurrency,
 } from 'domains/reporting/hooks/useMetricTrend'
 import {
     AiSalesAgentOrdersDimension,
@@ -17,7 +17,7 @@ import {
     gmvInfluencedQueryFactory,
     gmvUSDInfluencedQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 const CURRENCY_DIMENSION = AiSalesAgentOrdersDimension.Currency

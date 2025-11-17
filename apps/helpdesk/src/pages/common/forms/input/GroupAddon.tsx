@@ -1,4 +1,5 @@
-import React, { HTMLProps, useContext } from 'react'
+import type { HTMLProps } from 'react'
+import React, { useContext } from 'react'
 
 import classnames from 'classnames'
 

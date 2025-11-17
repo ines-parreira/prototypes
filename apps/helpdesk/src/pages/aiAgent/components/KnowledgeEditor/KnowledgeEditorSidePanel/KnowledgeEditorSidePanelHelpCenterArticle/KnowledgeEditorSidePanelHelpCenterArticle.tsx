@@ -1,16 +1,10 @@
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
-import {
-    Props as HelpCenterArticleDetailsProps,
-    KnowledgeEditorSidePanelSectionHelpCenterArticleDetails,
-} from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
-import {
-    Props as HelpCenterArticleImpactProps,
-    KnowledgeEditorSidePanelSectionHelpCenterArticleImpact,
-} from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
-import {
-    Props as HelpCenterArticleSettingsProps,
-    KnowledgeEditorSidePanelSectionHelpCenterArticleSettings,
-} from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
+import type { Props as HelpCenterArticleDetailsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
+import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
+import type { Props as HelpCenterArticleImpactProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
+import { KnowledgeEditorSidePanelSectionHelpCenterArticleImpact } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
+import type { Props as HelpCenterArticleSettingsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
+import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 type Props = {
     details: Omit<HelpCenterArticleDetailsProps, 'sectionId'>

@@ -6,11 +6,11 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
-import { FormValues, UpdateValue } from '../../types'
+import type { FormValues, UpdateValue } from '../../types'
 import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
 
 import css from './AiAgentPreviewModeSection.less'

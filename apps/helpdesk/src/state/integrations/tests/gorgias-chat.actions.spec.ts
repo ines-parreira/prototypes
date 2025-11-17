@@ -1,15 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {
+import type {
     GetApplicationsResponse,
     GetInstallationSnippetResponse,
-    GorgiasChatMinimumSnippetVersion,
 } from 'models/integration/types'
+import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 
 import client from '../../../models/api/resources'
 import { getGorgiasChatProtectedApiClient } from '../../../rest_api/gorgias_chat_protected_api/client'
-import { Client } from '../../../rest_api/gorgias_chat_protected_api/client.generated'
-import {
+import type { Client } from '../../../rest_api/gorgias_chat_protected_api/client.generated'
+import type {
     InstallationStatus,
     InstallationStatuses,
     Texts,

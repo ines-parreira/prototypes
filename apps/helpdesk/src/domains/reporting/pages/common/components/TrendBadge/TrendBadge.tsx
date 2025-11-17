@@ -6,10 +6,10 @@ import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { getTrendColorFromSign } from 'domains/reporting/pages/common/components/TrendBadge/helper'
 import css from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge.less'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricTrend,
     formatMetricValue,
-    MetricValueFormat,
 } from 'domains/reporting/pages/common/utils'
 
 const getTooltipText = (prevValue: string, period: string) => (

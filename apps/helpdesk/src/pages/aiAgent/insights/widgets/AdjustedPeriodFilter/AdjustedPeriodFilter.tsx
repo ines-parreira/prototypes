@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import moment, { Moment } from 'moment/moment'
+import type { Moment } from 'moment/moment'
+import moment from 'moment/moment'
 import { useParams } from 'react-router-dom'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'

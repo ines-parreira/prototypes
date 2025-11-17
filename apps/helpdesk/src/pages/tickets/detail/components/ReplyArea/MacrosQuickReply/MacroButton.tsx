@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { PreviewPopover } from './PreviewPopover'
 

@@ -1,4 +1,5 @@
-import React, { MouseEvent, PropsWithChildren } from 'react'
+import type { MouseEvent, PropsWithChildren } from 'react'
+import type React from 'react'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classNames from 'classnames'

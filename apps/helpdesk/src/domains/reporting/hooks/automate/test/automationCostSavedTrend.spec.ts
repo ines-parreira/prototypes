@@ -9,7 +9,7 @@ import {
     formatData,
     useAutomationCostSavedTrend,
 } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')

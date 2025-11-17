@@ -11,7 +11,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import { useSortedCampaigns } from '../../../campaigns/hooks/useSortedCampaigns'
-import { Campaign } from '../../../campaigns/types/Campaign'
+import type { Campaign } from '../../../campaigns/types/Campaign'
 import { isActiveStatus } from '../../../campaigns/types/enums/CampaignStatus.enum'
 
 import css from './ConvertCampaignsTablePlaceholder.less'

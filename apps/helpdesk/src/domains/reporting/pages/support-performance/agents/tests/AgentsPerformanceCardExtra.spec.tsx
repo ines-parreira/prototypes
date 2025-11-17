@@ -14,7 +14,7 @@ import {
     CANDU_ID,
 } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { agents } from 'fixtures/agents'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsEditColumns.tsx',

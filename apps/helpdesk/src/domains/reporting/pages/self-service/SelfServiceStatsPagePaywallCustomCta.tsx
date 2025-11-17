@@ -7,7 +7,7 @@ import AutomateSubscriptionButton from 'pages/settings/billing/automate/Automate
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { CurrentAccountState } from 'state/currentAccount/types'
+import type { CurrentAccountState } from 'state/currentAccount/types'
 
 const SelfServiceStatsPagePaywallCustomCta = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =

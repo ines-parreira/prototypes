@@ -1,8 +1,8 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import { WorkflowTemplate } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { WorkflowTemplate } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -1,12 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 
-import {
-    ObjectType,
-    queryKeys,
-    UpdateCustomField,
-    useUpdateCustomField,
-} from '@gorgias/helpdesk-queries'
+import type { ObjectType, UpdateCustomField } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateCustomField } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,11 +1,11 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import {
+import type {
     ActionConfig,
     Argument,
 } from 'pages/common/components/ast/actions/config'
-import { RuleItemActions } from 'pages/settings/rules/types'
-import { ObjectExpressionProperty } from 'state/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
+import type { ObjectExpressionProperty } from 'state/rules/types'
 
 import Property from '../Property'
 

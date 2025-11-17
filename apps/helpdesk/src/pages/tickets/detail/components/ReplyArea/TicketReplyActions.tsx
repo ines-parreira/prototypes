@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
 import classNames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Collapse } from 'reactstrap'
 
 import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'

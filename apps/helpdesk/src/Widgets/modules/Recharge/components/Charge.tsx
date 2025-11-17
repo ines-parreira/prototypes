@@ -1,29 +1,26 @@
-import {
-    Component,
-    ContextType,
-    createContext,
-    FunctionComponent,
-    ReactNode,
-    useContext,
-} from 'react'
+import type { ContextType, FunctionComponent, ReactNode } from 'react'
+import { Component, createContext, useContext } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _groupBy from 'lodash/groupBy'
 import _lowerCase from 'lodash/lowerCase'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
-import { LineItem } from 'constants/integrations/types/shopify'
+import type { LineItem } from 'constants/integrations/types/shopify'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { renderTemplate } from 'pages/common/utils/template'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
 import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { devLog, humanizeString, isCurrentlyOnTicket, toJS } from 'utils'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 const ChargeContext = createContext<{

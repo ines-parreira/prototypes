@@ -16,7 +16,7 @@ import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/Knowled
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'

@@ -1,9 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { Integration, IntegrationType } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import { ChannelWithMetadata } from '../../../../types'
+import type { ChannelWithMetadata } from '../../../../types'
 import ChannelsList from '../ChannelsList'
 
 const mockChannels = [

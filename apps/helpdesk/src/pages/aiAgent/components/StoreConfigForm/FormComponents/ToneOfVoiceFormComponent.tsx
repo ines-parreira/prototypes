@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import { useFlag } from 'core/flags'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {
     CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH,
@@ -12,14 +12,14 @@ import {
     INITIAL_FORM_VALUES,
     ToneOfVoice,
 } from 'pages/aiAgent/constants'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCardContent,
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import SettingsCard from 'pages/common/components/SettingsCard/SettingsCard'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
 import AiLanguageSettings from './AiLanguageSettings'

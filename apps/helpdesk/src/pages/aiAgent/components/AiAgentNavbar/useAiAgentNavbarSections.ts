@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import { useRouteMatch } from 'react-router-dom'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -12,7 +12,8 @@ import {
 } from 'pages/aiAgent/constants'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { getSectionKeyFromStoreIntegration, SectionKey } from './utils'
+import type { SectionKey } from './utils'
+import { getSectionKeyFromStoreIntegration } from './utils'
 
 export const useAiAgentNavbarSections = () => {
     const match = useRouteMatch<{ shopType?: string; shopName: string }>({

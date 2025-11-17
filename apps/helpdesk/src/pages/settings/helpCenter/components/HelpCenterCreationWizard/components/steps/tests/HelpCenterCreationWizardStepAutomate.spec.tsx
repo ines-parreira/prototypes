@@ -1,6 +1,7 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -21,26 +22,24 @@ import {
     useGetHelpCenterArticleList,
     useGetHelpCenterList,
 } from 'models/helpCenter/queries'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
-import { Integration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
+import type { Integration } from 'models/integration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
-    HelpCenterCreationWizard,
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'

@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { Virtuoso } from 'react-virtuoso'
 
 import { OpportunityType } from '../../enums'
-import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))

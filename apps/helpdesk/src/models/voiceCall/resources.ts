@@ -1,15 +1,15 @@
 import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
 
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
-import {
+import type {
     VoiceCallSearchOptions,
     VoiceCallWithHighlightsResponse,
 } from 'models/search/types'
 import { mergeEntitiesWithHighlights } from 'models/search/utils'
 
-import {
+import type {
     ListCallEventsParams,
     ListCallRecordingsParams,
     ListVoiceCallsParams,

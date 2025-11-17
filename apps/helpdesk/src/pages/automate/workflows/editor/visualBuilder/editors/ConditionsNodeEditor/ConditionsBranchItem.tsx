@@ -1,5 +1,5 @@
-import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
-import {
+import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'

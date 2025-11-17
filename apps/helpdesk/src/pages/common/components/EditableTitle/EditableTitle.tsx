@@ -1,13 +1,10 @@
-import {
+import type {
     ComponentProps,
     FocusEvent,
     ForwardedRef,
-    forwardRef,
     KeyboardEvent,
-    useEffect,
-    useImperativeHandle,
-    useState,
 } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'

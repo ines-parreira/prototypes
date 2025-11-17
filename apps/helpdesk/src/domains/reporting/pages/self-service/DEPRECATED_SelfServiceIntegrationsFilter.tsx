@@ -1,8 +1,8 @@
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import css from 'domains/reporting/pages/self-service/DEPRECATED_SelfServiceIntegrationsFilter.less'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { getIconFromType } from 'state/integrations/helpers'
 
 type Props = {

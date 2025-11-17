@@ -6,7 +6,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 import { AICopyAssistant } from '../AICopyAssistant'
 

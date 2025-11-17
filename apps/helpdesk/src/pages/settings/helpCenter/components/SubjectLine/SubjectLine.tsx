@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 
 import TextInput from 'pages/common/forms/input/TextInput'
-import { Callbacks, useReorderDnD } from 'pages/common/hooks/useReorderDnD'
+import type { Callbacks } from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './SubjectLine.less'
 

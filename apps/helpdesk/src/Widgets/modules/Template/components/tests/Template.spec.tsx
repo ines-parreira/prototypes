@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 
 import { shopifyWidget } from 'fixtures/widgets'
 import { LEAF_TYPES } from 'models/widget/constants'
-import {
+import type {
     CardTemplate,
     LeafTemplate,
     LeafType,
@@ -14,10 +14,11 @@ import {
 } from 'models/widget/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
-import Card, {
+import type {
     CardCustomization,
     HiddenField,
 } from 'Widgets/modules/Template/modules/Card'
+import Card from 'Widgets/modules/Template/modules/Card'
 import Field from 'Widgets/modules/Template/modules/Field'
 import ListWidget from 'Widgets/modules/Template/modules/List'
 import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
@@ -27,7 +28,7 @@ import {
     seekCardCustomization,
     seekFieldCustomization,
 } from '../../helpers/customization'
-import { FieldEditFormData } from '../../modules/Field/types'
+import type { FieldEditFormData } from '../../modules/Field/types'
 import Template, { self } from '../Template'
 
 jest.spyOn(self, 'Template')

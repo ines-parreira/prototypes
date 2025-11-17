@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
@@ -13,7 +14,7 @@ import useStatResource, {
     DEFAULT_ERROR_MESSAGE,
 } from 'domains/reporting/hooks/useStatResource'
 import { fetchStat } from 'domains/reporting/models/stat/resources'
-import {
+import type {
     LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
@@ -25,7 +26,7 @@ import { firstResponseTime } from 'fixtures/stats'
 import { statFetched } from 'state/entities/stats/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock

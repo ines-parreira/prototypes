@@ -1,15 +1,16 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
-import { SubmitHandler } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
-import { StripePaymentMethodType } from 'models/billing/types'
+import type { StripePaymentMethodType } from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
@@ -22,13 +23,11 @@ import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/u
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { getIsMissingBillingtInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
 import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
-import {
-    ISubscriptionSummaryProps,
-    SubscriptionSummary,
-} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
+import type { ISubscriptionSummaryProps } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
+import { SubscriptionSummary } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
 import { VerificationChargeDisclaimer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/VerificationChargeDisclaimer/VerificationChargeDisclaimer'
 import { useSubmitPaymentMethodWithBillingContact } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
-import {
+import type {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
 } from 'state/billing/types'

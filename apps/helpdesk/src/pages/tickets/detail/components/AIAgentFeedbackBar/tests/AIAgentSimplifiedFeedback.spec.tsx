@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { TicketInfobarTab } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'

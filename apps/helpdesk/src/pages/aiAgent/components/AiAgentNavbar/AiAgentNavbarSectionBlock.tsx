@@ -8,12 +8,10 @@ import { Badge } from '@gorgias/axiom'
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopType } from 'models/selfServiceConfiguration/types'
+import type { ShopType } from 'models/selfServiceConfiguration/types'
 import { OPPORTUNITIES, SALES, SETTINGS } from 'pages/aiAgent/constants'
-import {
-    NavigationItem,
-    useAiAgentNavigation,
-} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
@@ -24,7 +22,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
-import { SectionKey } from './utils'
+import type { SectionKey } from './utils'
 
 import css from './AiAgentNavbarSectionBlock.less'
 

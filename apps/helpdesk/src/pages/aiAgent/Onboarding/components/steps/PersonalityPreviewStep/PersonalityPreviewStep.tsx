@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
@@ -6,15 +7,13 @@ import { useParams } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {
-    getFirstPreviewForPreviewType,
-    PreviewId,
-} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import type { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { getFirstPreviewForPreviewType } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 import { PersonalityPreviewGroup } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/PersonalityPreviewGroup'
 import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import css from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.less'
 import { mapScopeToPreviewType } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
-import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import type { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'

@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import StoreManagementTableRow from '../storeManagementTable/StoreManagementTableRow/StoreManagementTableRow'
-import { StoreWithAssignedChannels } from '../types'
+import type { StoreWithAssignedChannels } from '../types'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

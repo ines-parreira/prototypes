@@ -16,7 +16,7 @@ import {
     updateArticle,
 } from '../actions'
 import reducer, { initialState } from '../reducer'
-import { ArticlesAction } from '../types'
+import type { ArticlesAction } from '../types'
 
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)

@@ -1,10 +1,14 @@
 import { useFormContext } from 'react-hook-form'
 
-import { ActionLabel, NodeProps, NodeWrapper } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
+import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
-import { type IvrOptionNode, VoiceFlowFormValues } from '../types'
+import type {
+    IvrOptionNode as IvrOptionNodeType,
+    VoiceFlowFormValues,
+} from '../types'
 
-type IvrOptionNodeProps = NodeProps<IvrOptionNode>
+type IvrOptionNodeProps = NodeProps<IvrOptionNodeType>
 
 export function IvrOptionNode(props: IvrOptionNodeProps) {
     const { data } = props

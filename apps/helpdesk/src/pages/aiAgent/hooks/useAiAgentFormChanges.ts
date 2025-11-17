@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { ActionCallback } from '../providers/AiAgentFormChangesContext'
+import type { ActionCallback } from '../providers/AiAgentFormChangesContext'
 
 export const useAiAgentFormChanges = () => {
     const [dirtyFormSections, setDirtyFormSections] = useState<

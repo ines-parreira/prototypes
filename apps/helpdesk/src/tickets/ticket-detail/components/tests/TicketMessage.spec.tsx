@@ -7,7 +7,8 @@ import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import { Meta, SmartFollowUp, SmartFollowUpType } from 'models/ticket/types'
+import type { Meta, SmartFollowUp } from 'models/ticket/types'
+import { SmartFollowUpType } from 'models/ticket/types'
 
 import type { FailedFlag, TicketMessageElement } from '../../types'
 import { MessageAvatar } from '../MessageAvatar'

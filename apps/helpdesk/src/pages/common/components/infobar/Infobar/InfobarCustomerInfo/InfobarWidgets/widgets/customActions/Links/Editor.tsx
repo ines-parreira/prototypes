@@ -1,10 +1,5 @@
-import React, {
-    FormEvent,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
+import type { FormEvent } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Popover, PopoverBody } from 'reactstrap'
@@ -13,7 +8,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     Link,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

@@ -7,8 +7,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
+import type { Bundle } from 'models/convert/bundle/types'
 import {
-    Bundle,
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'

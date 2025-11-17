@@ -1,30 +1,30 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
 
 import { appQueryClient } from 'api/queryClient'
 import { humanize } from 'business/format'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-    TicketVia,
-} from 'business/types/ticket'
+import type { TicketVia } from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { isImmutable, toImmutable } from 'common/utils'
 import { MacroActionName } from 'models/macroAction/types'
 import {
     isGorgiasContactFormTicketMeta,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
-import { TicketMessage } from 'models/ticket/types'
-import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import type { TicketMessage } from 'models/ticket/types'
+import type { UseListVoiceCalls } from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
-import { ChannelIdentifier, ChannelLike, toChannel } from 'services/channels'
+import type { ChannelIdentifier, ChannelLike } from 'services/channels'
+import { toChannel } from 'services/channels'
 import { tryLocalStorage } from 'services/common/utils'
-import { AccountSettingDefaultIntegration } from 'state/currentAccount/types'
+import type { AccountSettingDefaultIntegration } from 'state/currentAccount/types'
 import * as responseUtils from 'state/newMessage/responseUtils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     getValuePropFromSourceType,
     isForwardedMessage,

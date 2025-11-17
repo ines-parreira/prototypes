@@ -3,7 +3,8 @@ import React from 'react'
 import { assumeMock, userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { User, UserRole } from 'config/types/user'
+import type { User } from 'config/types/user'
+import { UserRole } from 'config/types/user'
 
 import { DeleteModal } from '../DeleteModal'
 import { Footer } from '../Footer'

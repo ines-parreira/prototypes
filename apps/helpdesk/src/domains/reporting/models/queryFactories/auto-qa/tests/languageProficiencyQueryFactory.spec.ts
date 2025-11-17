@@ -8,7 +8,7 @@ import {
     languageProficiencyDrillDownQueryFactory,
     languageProficiencyQueryFactory,
 } from 'domains/reporting/models/queryFactories/auto-qa/languageProficiencyQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,

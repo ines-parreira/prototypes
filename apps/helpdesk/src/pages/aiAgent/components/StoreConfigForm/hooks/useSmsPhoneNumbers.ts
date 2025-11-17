@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getPhoneChannelsForSmsSource } from 'state/integrations/selectors'
 
-import { SmsPhoneNumber } from '../types'
+import type { SmsPhoneNumber } from '../types'
 
 export function useSmsPhoneNumbers(): SmsPhoneNumber[] {
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])

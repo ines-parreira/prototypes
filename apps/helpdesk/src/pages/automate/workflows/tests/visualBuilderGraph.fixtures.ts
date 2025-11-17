@@ -2,7 +2,7 @@ import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from '../models/visualBuilderGraph.model'
-import {
+import type {
     ChannelTriggerNodeType,
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,

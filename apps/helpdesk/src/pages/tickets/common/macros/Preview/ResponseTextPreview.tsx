@@ -1,8 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import cn from 'classnames'
 
-import { MacroAction } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'

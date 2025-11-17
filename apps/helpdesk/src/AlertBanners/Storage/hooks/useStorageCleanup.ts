@@ -1,9 +1,9 @@
 import { useEffectOnce } from '@repo/hooks'
 import { produce } from 'immer'
 
-import { BannerCategory } from '../../types'
+import type { BannerCategory } from '../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../constants'
-import { AlertBannerStorage } from '../types'
+import type { AlertBannerStorage } from '../types'
 
 export function useStorageCleanup(
     storage: AlertBannerStorage,

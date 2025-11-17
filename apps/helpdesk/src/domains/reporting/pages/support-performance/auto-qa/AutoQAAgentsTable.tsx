@@ -1,17 +1,16 @@
-import React, { FunctionComponent, UIEventHandler, useState } from 'react'
+import type { FunctionComponent, UIEventHandler } from 'react'
+import React, { useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAutoQAAgentsSortingQuery } from 'domains/reporting/hooks/useAutoQAAgentsSortingQuery'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentNameCellContent } from 'domains/reporting/pages/support-performance/agents/AgentNameCellContent'
-import {
-    AgentsCellContent,
-    AgentsCellContentProps,
-} from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
+import type { AgentsCellContentProps } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
+import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import {
     AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,

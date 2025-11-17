@@ -1,15 +1,17 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
-import { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/ConvertOrderEventsCube'
+import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
+import type { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/ConvertOrderEventsCube'
 import { FilterOperatorMap } from 'domains/reporting/models/queryFactories/utils'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
+import type {
     ReportingParams,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'domains/reporting/models/types'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -21,7 +23,7 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'domains/reporting/pages/convert/clients/constants'
-import {
+import type {
     CampaignCubeFilterParams,
     CubeFilter,
     CubeFilterParams,

@@ -9,7 +9,7 @@ import { billingState } from 'fixtures/billing'
 import { convertAvailablePlans } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('SubscriptionModal', () => {

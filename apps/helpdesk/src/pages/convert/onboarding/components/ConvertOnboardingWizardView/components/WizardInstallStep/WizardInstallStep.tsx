@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'

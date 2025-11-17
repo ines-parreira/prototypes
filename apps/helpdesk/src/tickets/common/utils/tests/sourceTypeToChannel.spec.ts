@@ -3,7 +3,7 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { DEFAULT_CHANNEL } from 'tickets/common/config'
 
 import sourceTypeToChannel from '../sourceTypeToChannel'

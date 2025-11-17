@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getIntegrationsData, getTicketCustomer } from 'state/ticket/selectors'

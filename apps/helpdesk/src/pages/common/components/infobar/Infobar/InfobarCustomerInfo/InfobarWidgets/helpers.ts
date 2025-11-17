@@ -1,8 +1,9 @@
 import _snakeCase from 'lodash/snakeCase'
 
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
-import { isSourceRecord, Source, Template } from 'models/widget/types'
+import type { Integration } from 'models/integration/types'
+import type { Source, Template } from 'models/widget/types'
+import { isSourceRecord } from 'models/widget/types'
 import { renderTemplate } from 'pages/common/utils/template'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
@@ -10,7 +11,7 @@ import {
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 import { humanizeString } from 'utils'
 
 export const LABELS: { [key: string]: string } = {

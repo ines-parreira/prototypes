@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { AGENT_ROLE } from 'config/user'
 import { ViewCategory } from 'models/view/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { hasRole } from 'utils'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'

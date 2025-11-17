@@ -10,7 +10,7 @@ import {
     USERS_STATUSES,
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
-import {
+import type {
     LegacyStatsFilters,
     OneDimensionalChart,
     TwoDimensionalChart,

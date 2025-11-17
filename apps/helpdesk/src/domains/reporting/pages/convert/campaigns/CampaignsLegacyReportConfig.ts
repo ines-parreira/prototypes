@@ -1,4 +1,5 @@
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { CAMPAIGNS_REPORT_TITLE } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
 import { CampaignRevenueKPIChart } from 'domains/reporting/pages/convert/charts/CampaignRevenueKPIChart'
 import { CampaignsSalesCountKPIChart } from 'domains/reporting/pages/convert/charts/CampaignsSalesCountKPIChart'
@@ -12,10 +13,8 @@ import {
 } from 'domains/reporting/pages/convert/components/CampaignRevenueShareStat'
 import { METRICS } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
-    ChartType,
-    ReportConfig,
-} from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum CampaignsLegacyChart {

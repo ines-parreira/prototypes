@@ -1,7 +1,10 @@
 import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
-import { CustomFieldPrediction, CustomFieldValue } from 'custom-fields/types'
+import type {
+    CustomFieldPrediction,
+    CustomFieldValue,
+} from 'custom-fields/types'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import CheckIcon from './CheckIcon'

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'

@@ -1,11 +1,11 @@
-import {
+import type {
     ConflictOpportunityDetail,
     FindOpportunityByIdOpportunity200,
     KnowledgeGapOpportunityDetail,
 } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
-import { Opportunity } from './mapAiArticlesToOpportunities'
+import type { Opportunity } from './mapAiArticlesToOpportunities'
 
 export const mapOpportunityDetailToOpportunity = (
     detail: FindOpportunityByIdOpportunity200,

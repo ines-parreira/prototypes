@@ -1,7 +1,7 @@
 import { apiClient } from 'models/aiAgent/resources/configuration'
-import { ResourceSection } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { ResourceSection } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import {
+import type {
     DeleteMessageFeedback,
     SubmitMessageFeedback,
     TicketFeedback,

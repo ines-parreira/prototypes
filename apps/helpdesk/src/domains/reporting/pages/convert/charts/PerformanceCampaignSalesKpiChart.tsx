@@ -4,7 +4,7 @@ import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down
 import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { usePerformanceTotalStats } from 'domains/reporting/pages/convert/hooks/usePerformanceTotalStats'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const PerformanceCampaignSalesKpiChart = ({

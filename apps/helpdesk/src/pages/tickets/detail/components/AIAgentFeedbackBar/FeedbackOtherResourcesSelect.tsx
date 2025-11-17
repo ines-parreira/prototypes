@@ -8,10 +8,10 @@ import {
     Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { Tag } from '@gorgias/helpdesk-types'
+import type { Tag } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'

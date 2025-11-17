@@ -1,13 +1,10 @@
-import { ShopifyIntegration } from 'models/integration/types'
-import { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { ShopifyIntegration } from 'models/integration/types'
+import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 
-import {
-    ButtonConfig,
-    PromoCardVariant,
-    TrialType,
-} from '../types/ShoppingAssistant'
+import type { ButtonConfig, PromoCardVariant } from '../types/ShoppingAssistant'
+import { TrialType } from '../types/ShoppingAssistant'
 import { useAiAgentPrimaryCTA } from './useAiAgentPrimaryCTA'
 import { useShoppingAssistantPrimaryCTA } from './useShoppingAssistantPrimaryCTA'
 

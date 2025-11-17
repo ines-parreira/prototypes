@@ -1,11 +1,11 @@
-import { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { TicketProductsEnrichedDimension } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -28,7 +28,7 @@ import {
 import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
 import { sentMessagesTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
-import {
+import type {
     BuiltQuery,
     Context,
     ScopeMeta,
@@ -36,18 +36,18 @@ import {
 import { closedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import {
+import type {
     AggregationWindow,
     Sentiment,
     StatsFilters,
-    TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import { TicketTimeReference } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
-import { OrderDirection } from 'models/api/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import type { OrderDirection } from 'models/api/types'
 
 type TimeSeriesQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,

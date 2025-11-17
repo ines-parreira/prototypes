@@ -1,6 +1,6 @@
-import React from 'react'
+import type React from 'react'
 
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 
 import MacroEditLanguage from '../../../../tickets/common/macros/components/MacroEditLanguage'
 

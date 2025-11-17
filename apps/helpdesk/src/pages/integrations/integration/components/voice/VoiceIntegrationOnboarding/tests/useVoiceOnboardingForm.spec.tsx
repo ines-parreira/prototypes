@@ -7,11 +7,11 @@ import { Router } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 import { createIntegration } from '@gorgias/helpdesk-client'
-import {
+import type {
     CreateIntegrationBody,
-    PhoneFunction,
     PhoneIntegration,
 } from '@gorgias/helpdesk-queries'
+import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

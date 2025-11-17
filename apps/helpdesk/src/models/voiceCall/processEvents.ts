@@ -1,7 +1,8 @@
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 
-import { VoiceCallEvent, VoiceCallSubject, VoiceCallSubjectType } from './types'
+import type { VoiceCallEvent, VoiceCallSubject } from './types'
+import { VoiceCallSubjectType } from './types'
 
 export type ProcessedEvent = {
     datetime: string

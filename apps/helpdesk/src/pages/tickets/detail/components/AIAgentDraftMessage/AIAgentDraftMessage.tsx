@@ -9,7 +9,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {

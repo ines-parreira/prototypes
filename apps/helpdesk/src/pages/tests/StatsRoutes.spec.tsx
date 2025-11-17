@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
@@ -10,9 +10,9 @@ import { Route, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {
     NavBarContext,
-    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { useFlag } from 'core/flags'
@@ -22,7 +22,7 @@ import * as billingFixtures from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { initialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('core/flags')

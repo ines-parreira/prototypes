@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js'
+import type { Chart } from 'chart.js'
 import moment from 'moment'
 
 import colorTokens from '@gorgias/design-tokens/tokens/colors'

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal.less'
-import { ABTest } from 'models/convert/abTest/types'
+import type { ABTest } from 'models/convert/abTest/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

@@ -5,7 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { useSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -14,11 +14,11 @@ import { SatisfactionSurveyScore } from 'domains/reporting/models/queryFactories
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AverageScoreTrend } from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
 import css from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart.less'
 import { SatisfactionMetricConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
-import { OneDimensionalDataItem } from 'domains/reporting/pages/types'
+import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     SatisfactionAverageSurveyScoreMetric,

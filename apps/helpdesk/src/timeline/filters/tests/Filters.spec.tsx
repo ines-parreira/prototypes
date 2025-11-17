@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 
-import { InteractionFilterType } from '../../types'
+import type { InteractionFilterType } from '../../types'
 import Filters from '../Filters'
 import { InteractionType } from '../InteractionType'
 import { RangeFilter } from '../RangeFilter'

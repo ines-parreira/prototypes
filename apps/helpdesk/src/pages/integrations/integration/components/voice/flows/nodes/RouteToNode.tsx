@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
 
-import { NodeProps } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 import { useParams } from 'react-router-dom'
 
 import { Banner, Box } from '@gorgias/axiom'
 import { useGetIntegration, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
-import {
+import type {
     EnqueueStep,
-    IntegrationType,
     PhoneIntegration,
     RouteToInternalNumber,
 } from '@gorgias/helpdesk-types'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { FormField, useWatch } from 'core/forms'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'

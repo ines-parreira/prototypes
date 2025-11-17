@@ -1,12 +1,12 @@
 import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
-    AiSalesAgentConversationsCube,
     AiSalesAgentConversationsDimension,
     AiSalesAgentConversationsMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -14,13 +14,13 @@ import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     getFilterDateRange,
     statsFiltersToReportingFilters,

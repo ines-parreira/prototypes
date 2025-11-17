@@ -4,9 +4,9 @@ import {
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
+import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import {
     AIJourneyMetric,
-    AIJourneyMetrics,
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
@@ -22,9 +22,9 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
-    StatsFilters,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
 import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
@@ -32,21 +32,19 @@ import {
     AiSalesAgentChart,
     AiSalesAgentMetricsWithDrillDownConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import {
+import type {
     ColumnConfig,
     DrillDownQueryFactory,
 } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { campaignSalesDrillDownQueryFactory } from 'domains/reporting/pages/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     SatisfactionAverageSurveyScoreMetricConfig,
     SatisfactionMetricConfig,
     SatisfactionMetricConfig as SatisfactionTrendCardConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {
-    SLA_FORMAT,
-    SlaMetricConfig,
-} from 'domains/reporting/pages/sla/SlaConfig'
+import type { SLA_FORMAT } from 'domains/reporting/pages/sla/SlaConfig'
+import { SlaMetricConfig } from 'domains/reporting/pages/sla/SlaConfig'
 import {
     AgentsColumnConfig,
     TableLabels,
@@ -77,7 +75,7 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { VoiceAgentsMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceMetricsConfig'
-import {
+import type {
     AiSalesAgentMetrics,
     DrillDownMetric,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -97,7 +95,7 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const getDrillDownQuery = (
     metricData: DrillDownMetric,

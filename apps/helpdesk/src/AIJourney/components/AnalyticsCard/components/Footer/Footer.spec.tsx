@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import { renderWithRouter } from 'utils/testing'
 
 import { Footer } from './Footer'

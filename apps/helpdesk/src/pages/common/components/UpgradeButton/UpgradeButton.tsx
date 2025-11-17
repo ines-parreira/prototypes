@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { logEvent, SegmentEventToSend } from '@repo/logging'
+import type { SegmentEventToSend } from '@repo/logging'
+import { logEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -9,9 +10,8 @@ import {
     type LegacyButtonComponentProps as ButtonComponentProps,
 } from '@gorgias/axiom'
 
-import ButtonIconLabel, {
-    ButtonIconPosition,
-} from 'pages/common/components/button/ButtonIconLabel'
+import type { ButtonIconPosition } from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './UpgradeButton.less'
 

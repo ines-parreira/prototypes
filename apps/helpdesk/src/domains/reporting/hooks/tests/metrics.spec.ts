@@ -64,8 +64,8 @@ import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketH
 import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCount } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import {
     formatReportingQueryDate,
     withFilter,

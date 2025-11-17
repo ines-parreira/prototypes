@@ -1,4 +1,4 @@
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

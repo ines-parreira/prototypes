@@ -7,9 +7,9 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import {
+import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type {
     ConditionsNodeType,
     VisualBuilderEdge,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

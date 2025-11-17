@@ -1,13 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
-import {
-    KNOWLEDGE_ALERT_KIND,
-    StoreActivation,
-} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/Activation/hooks/tests/fixtures/store-configurations.fixture'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import { renderWithRouter } from 'utils/testing'

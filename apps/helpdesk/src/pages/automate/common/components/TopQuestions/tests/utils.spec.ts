@@ -1,4 +1,4 @@
-import { AIArticle } from 'models/helpCenter/types'
+import type { AIArticle } from 'models/helpCenter/types'
 
 import { filteredSortedTopQuestionsFromFetchedArticles } from '../utils'
 

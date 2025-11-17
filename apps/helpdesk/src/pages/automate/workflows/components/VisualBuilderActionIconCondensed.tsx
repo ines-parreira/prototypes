@@ -1,5 +1,5 @@
 import { iconByVisualBuilderNodeType } from '../constants'
-import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
+import type { VisualBuilderNode } from '../models/visualBuilderGraph.types'
 
 import css from './VisualBuilderActionIconCondensed.less'
 

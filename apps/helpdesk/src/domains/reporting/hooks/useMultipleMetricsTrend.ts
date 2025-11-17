@@ -1,10 +1,10 @@
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     fetchPostReporting,
     usePostReporting,
-    UsePostReportingQueryData,
 } from 'domains/reporting/models/queries'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 
 export type MultipleMetricsData<TCube extends Cubes> = Record<
     TCube['measures'],

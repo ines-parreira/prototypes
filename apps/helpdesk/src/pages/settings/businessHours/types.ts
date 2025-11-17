@@ -1,4 +1,4 @@
-import {
+import type {
     BusinessHoursCreate,
     BusinessHoursUpdate,
 } from '@gorgias/helpdesk-types'

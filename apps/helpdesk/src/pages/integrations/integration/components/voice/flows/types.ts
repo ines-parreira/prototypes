@@ -1,4 +1,4 @@
-import {
+import type {
     CallRoutingFlow,
     CallRoutingFlowSteps,
     CustomerFieldsConditionalStep,
@@ -12,9 +12,9 @@ import {
     TimeSplitConditionalStep,
 } from '@gorgias/helpdesk-types'
 
-import { Node } from 'core/ui/flows'
+import type { Node } from 'core/ui/flows'
 
-import { VoiceFlowNodeType } from './constants'
+import type { VoiceFlowNodeType } from './constants'
 
 export type EnqueueOptionStep = {
     parentId: string

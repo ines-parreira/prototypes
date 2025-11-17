@@ -1,16 +1,17 @@
-import React, { FC } from 'react'
+import type { FC } from 'react'
+import type React from 'react'
 
-import { FieldErrors, UseFormSetValue } from 'react-hook-form'
+import type { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
 import { Banner, LegacyLabel as Label } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
-import { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'
+import type { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'
 import { HandoverHelpdeskDropdown } from 'pages/standalone/components/HandoverHelpdeskDropdown'
 import css from 'pages/standalone/components/HandoverWebhookFields.less'
 import { INTEGRATIONS_MAPPING } from 'pages/standalone/constants'
-import { HandoverFormValues } from 'pages/standalone/schemas'
-import { HelpdeskIntegrationOptions } from 'pages/standalone/types'
+import type { HandoverFormValues } from 'pages/standalone/schemas'
+import type { HelpdeskIntegrationOptions } from 'pages/standalone/types'
 
 interface HandoverWebhookFieldsProps {
     onClick: (

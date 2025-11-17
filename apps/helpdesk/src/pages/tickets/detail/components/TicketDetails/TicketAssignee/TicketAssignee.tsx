@@ -1,16 +1,9 @@
-import React, {
-    ComponentProps,
-    KeyboardEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ComponentProps, KeyboardEvent } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import {
     Dropdown,
@@ -18,7 +11,7 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
-import { Direction } from 'reactstrap/lib/Dropdown'
+import type { Direction } from 'reactstrap/lib/Dropdown'
 
 import useAppSelector from 'hooks/useAppSelector'
 import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
@@ -27,7 +20,7 @@ import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import { getHumanAgentsExceptGorgiasSupport } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getTeams } from 'state/teams/selectors'
-import { setAgent, setTeam } from 'state/ticket/actions'
+import type { setAgent, setTeam } from 'state/ticket/actions'
 
 import css from './TicketAssignee.less'
 

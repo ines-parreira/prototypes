@@ -1,11 +1,11 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import { CoreScaleOptions, Scale } from 'chart.js'
+import type { CoreScaleOptions, Scale } from 'chart.js'
 import moment from 'moment'
 
 import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/useArticleViewTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import ArticleViewsGraph, {
     renderXTickLabel,

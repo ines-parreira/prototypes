@@ -1,7 +1,10 @@
 import facebookLogo from 'assets/img/icons/social/facebook.svg'
 import instagramLogo from 'assets/img/icons/social/instagram.svg'
 import twitterLogo from 'assets/img/icons/social/twitter.svg'
-import { LocaleCode, LocalSocialNavigationLink } from 'models/helpCenter/types'
+import type {
+    LocaleCode,
+    LocalSocialNavigationLink,
+} from 'models/helpCenter/types'
 
 import { SocialNavigationItem } from './SocialNavigationItem'
 

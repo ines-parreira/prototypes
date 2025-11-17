@@ -1,4 +1,4 @@
-import { MacroAction, TicketPriority } from '@gorgias/helpdesk-types'
+import type { MacroAction, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 

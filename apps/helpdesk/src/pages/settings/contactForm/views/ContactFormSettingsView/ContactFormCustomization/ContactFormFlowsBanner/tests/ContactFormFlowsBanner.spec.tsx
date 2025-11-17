@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import { billingState } from 'fixtures/billing'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import ContactFormFlowsBanner from '../ContactFormFlowsBanner'

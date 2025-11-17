@@ -1,4 +1,4 @@
-import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 
 export interface PostOnboardingStepMetadata {
     stepName: StepName

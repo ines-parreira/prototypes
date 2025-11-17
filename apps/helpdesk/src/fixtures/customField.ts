@@ -2,7 +2,7 @@ import {
     OBJECT_TYPES,
     SYSTEM_READ_ONLY_MANAGED_TYPES,
 } from 'custom-fields/constants'
-import {
+import type {
     CustomField,
     CustomFieldInput,
     CustomFieldInputSettingsDropdown,

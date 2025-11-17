@@ -1,12 +1,8 @@
-import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-import { getMigrationClient, MigrationClient } from 'rest_api/migration_api'
+import type { MigrationClient } from 'rest_api/migration_api'
+import { getMigrationClient } from 'rest_api/migration_api'
 
 interface UseMigrationApiContextValue {
     client: MigrationClient | null

@@ -1,18 +1,22 @@
-import React, { FC, useCallback, useMemo } from 'react'
+import type { FC } from 'react'
+import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useModalManager } from 'hooks/useModalManager'
-import { Article, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import type {
+    Article,
+    LocaleCode,
+    NonRootCategory,
+} from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {
-    ArticleRowActionTypes,
-    MODALS,
-} from 'pages/settings/helpCenter/constants'
+import type { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
+import { MODALS } from 'pages/settings/helpCenter/constants'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { changeViewLanguage } from 'state/ui/helpCenter/actions'
 import { sanitizeHtmlDefault } from 'utils/html'
@@ -22,11 +26,8 @@ import { TableActions } from '../../TableActions'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
 import { SearchResultsArticleRow } from '../SearchResultsArticleRow'
 import { SearchResultsLoadingContent } from '../SearchResultsLoadingContent'
-import {
-    isLoading,
-    isSearchResultArticle,
-    SearchResultCategory,
-} from '../types'
+import type { SearchResultCategory } from '../types'
+import { isLoading, isSearchResultArticle } from '../types'
 import { isResultOrAncestorUnlisted } from '../utils'
 
 import nestingCss from '../nesting.less'

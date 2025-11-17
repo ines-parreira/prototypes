@@ -1,6 +1,6 @@
 import { useHistory, useParams } from 'react-router-dom'
 
-import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'

@@ -1,9 +1,5 @@
-import React, {
-    ForwardedRef,
-    forwardRef,
-    InputHTMLAttributes,
-    useState,
-} from 'react'
+import type { ForwardedRef, InputHTMLAttributes } from 'react'
+import React, { forwardRef, useState } from 'react'
 
 import classnames from 'classnames'
 

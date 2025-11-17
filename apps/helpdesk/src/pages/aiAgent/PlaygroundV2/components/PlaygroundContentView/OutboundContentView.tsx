@@ -12,7 +12,7 @@ import { useAiJourneyMessages } from 'pages/aiAgent/PlaygroundV2/hooks/useAiJour
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import { PlaygroundMessageList } from '../PlaygroundMessageList/PlaygroundMessageList'
 import { SmsChannelMessagesContainer } from '../SmsChannelMessagesContainer/SmsChannelMessagesContainer'
-import { BaseContentViewProps } from './ContentView'
+import type { BaseContentViewProps } from './ContentView'
 
 // TODO: extract the style into a dedicated file
 import css from './OutboundContentView.less'

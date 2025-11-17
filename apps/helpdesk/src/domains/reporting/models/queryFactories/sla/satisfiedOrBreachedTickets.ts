@@ -1,6 +1,6 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { TicketSLACubeWithJoins } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import {
-    TicketSLACubeWithJoins,
     TicketSLADimension,
     TicketSLAMeasure,
     TicketSLAMember,
@@ -8,12 +8,14 @@ import {
     TicketSLAStatus,
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    ReportingQuery,
+    TimeSeriesQuery,
+} from 'domains/reporting/models/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
-    ReportingQuery,
-    TimeSeriesQuery,
 } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -22,7 +24,7 @@ import {
     statsFiltersToReportingFilters,
     TicketSLAStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const satisfiedOrBreachedTicketsQueryFactory = (
     filters: StatsFilters,

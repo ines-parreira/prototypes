@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { VisibilityStatus } from 'models/helpCenter/types'
+import type { VisibilityStatus } from 'models/helpCenter/types'
 
-import SelectVisibilityStatus, {
-    SelectVisibilityStatusProps,
-} from './SelectVisibilityStatus'
+import type { SelectVisibilityStatusProps } from './SelectVisibilityStatus'
+import SelectVisibilityStatus from './SelectVisibilityStatus'
 
 const storyConfig: Meta = {
     title: 'Help Center/SelectVisibilityStatus',

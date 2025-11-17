@@ -1,4 +1,4 @@
-import { HandoverConfigurationResponse } from 'models/aiAgent/types'
+import type { HandoverConfigurationResponse } from 'models/aiAgent/types'
 
 import { AiAgentChannel } from '../constants'
 

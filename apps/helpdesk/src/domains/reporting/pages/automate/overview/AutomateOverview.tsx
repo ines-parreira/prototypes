@@ -1,10 +1,8 @@
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import {
-    paywallConfigs as defaultPaywallConfigs,
-    PaywallConfig,
-} from 'config/paywalls'
+import type { PaywallConfig } from 'config/paywalls'
+import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import AutomateOverviewContent from 'domains/reporting/pages/automate/overview/AutomateOverviewContent'
 import {
     PAGE_TITLE_AUTOMATE_PAYWALL,

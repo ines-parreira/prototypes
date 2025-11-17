@@ -2,7 +2,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { Variant } from 'constants/integrations/types/shopify'
+import type { Variant } from 'constants/integrations/types/shopify'
 import { useFlag } from 'core/flags'
 import { shopifyProductFixture } from 'fixtures/shopify'
 

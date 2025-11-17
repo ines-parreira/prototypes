@@ -15,7 +15,7 @@ import {
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { getDrillDownHook } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import {
+import type {
     AgentsMetrics,
     ChannelsMetrics,
     DrillDownMetric,

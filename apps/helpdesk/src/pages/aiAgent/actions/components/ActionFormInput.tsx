@@ -13,9 +13,9 @@ import { useFlag } from 'core/flags'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 
-import { Input } from '../types'
+import type { Input } from '../types'
 
 import css from './ActionFormInput.less'
 

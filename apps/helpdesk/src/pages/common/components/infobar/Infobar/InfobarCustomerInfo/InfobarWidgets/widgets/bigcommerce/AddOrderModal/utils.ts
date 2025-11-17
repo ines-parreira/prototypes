@@ -1,8 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map as ImmutableMap } from 'immutable'
+import type { Map as ImmutableMap } from 'immutable'
 import _debounce from 'lodash/debounce'
 import _omit from 'lodash/omit'
 
+import type { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     addBigCommerceCheckoutBillingAddress,
     addBigCommerceCustomAddressToCustomerAddressBook,
@@ -15,13 +16,11 @@ import {
     editBigCommerceLineItemModifiers,
     getBigCommerceCheckout,
     getBigCommerceDraftOrderUrl,
-    OptionSelection,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
     updateBigCommerceCheckoutDiscount,
 } from 'models/integration/resources/bigcommerce'
-import {
-    BigCommerceActionType,
+import type {
     BigCommerceCart,
     BigCommerceCartLineItem,
     BigCommerceCheckout,
@@ -30,23 +29,26 @@ import {
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
     BigCommerceCustomProduct,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
-    BigCommerceLineItemError,
-    BigCommerceLineItemErrorMessage,
     BigCommerceProduct,
     BigCommerceProductsListType,
     BigCommerceProductVariant,
     BigCommerceTaxCheckout,
+} from 'models/integration/types'
+import {
+    BigCommerceActionType,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
     OrderPaymentMethodType,
     OrderStatusIDType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
 import { executeAction } from 'state/infobar/actions'
-import { ActionDataPayload } from 'state/infobar/utils'
+import type { ActionDataPayload } from 'state/infobar/utils'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
 
 export const isBigCommerceCartLineItem = (

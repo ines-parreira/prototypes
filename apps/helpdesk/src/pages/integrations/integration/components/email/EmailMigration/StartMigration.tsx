@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -10,7 +10,7 @@ import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { startEmailMigration } from 'models/integration/resources/email'
-import { EmailIntegration } from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import Loader from 'pages/common/components/Loader/Loader'
 import { UPDATE_FORWARDING_EMAIL_ADDRESS } from 'state/integrations/constants'

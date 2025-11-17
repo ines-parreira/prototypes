@@ -1,12 +1,7 @@
-import React, {
-    FormEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { FormEvent } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import {
     LegacyButton as Button,

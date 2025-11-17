@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import _debounce from 'lodash/debounce'
 
-import { OptionSelection } from 'models/integration/resources/bigcommerce'
-import {
+import type { OptionSelection } from 'models/integration/resources/bigcommerce'
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomProduct,

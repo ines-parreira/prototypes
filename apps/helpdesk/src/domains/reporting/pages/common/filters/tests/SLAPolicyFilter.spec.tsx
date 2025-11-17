@@ -2,7 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
-import { SLAPolicy, useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -29,7 +30,7 @@ import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('@gorgias/helpdesk-queries')

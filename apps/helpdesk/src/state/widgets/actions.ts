@@ -1,19 +1,19 @@
-import { AxiosError } from 'axios'
-import { Map } from 'immutable'
+import type { AxiosError } from 'axios'
+import type { Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _last from 'lodash/last'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 
 import client from 'models/api/resources'
-import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { fetchWidgets as fetchWidgetsRequest } from 'models/widget/resources'
-import {
+import type {
     FetchWidgetsOptions,
     PartialTemplate,
     Template,
 } from 'models/widget/types'
-import {
+import type {
     Button,
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
@@ -22,7 +22,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { getSources, getSourcesWithCustomer } from 'state/widgets/selectors'
 
 import * as types from './constants'
@@ -31,7 +31,8 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from './constants'
-import { Widget, WidgetEnvironment } from './types'
+import type { Widget } from './types'
+import { WidgetEnvironment } from './types'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {

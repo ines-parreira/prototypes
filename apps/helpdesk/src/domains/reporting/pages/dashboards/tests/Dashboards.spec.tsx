@@ -13,7 +13,7 @@ import {
     Dashboards,
 } from 'domains/reporting/pages/dashboards/Dashboards'
 import { MODAL_TITLE } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
-import { DashboardInput } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardInput } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { useNotify } from 'hooks/useNotify'

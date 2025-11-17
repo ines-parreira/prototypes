@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -8,10 +9,8 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import {
-    ArticleTemplateType,
-    HelpCenterArticleItem,
-} from 'models/helpCenter/types'
+import type { HelpCenterArticleItem } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'

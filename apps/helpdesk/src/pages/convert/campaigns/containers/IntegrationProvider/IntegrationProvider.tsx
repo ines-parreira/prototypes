@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import {
+import type {
     GorgiasChatIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'

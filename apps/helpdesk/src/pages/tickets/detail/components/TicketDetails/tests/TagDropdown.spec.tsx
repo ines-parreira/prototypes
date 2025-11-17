@@ -1,13 +1,13 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
 import { render, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import { Tag, TicketTag } from '@gorgias/helpdesk-queries'
+import type { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
-import { TagDropdownMenu } from 'tags'
+import type { TagDropdownMenu } from 'tags'
 
 import TagDropdown from '../TagDropdown'
 

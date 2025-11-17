@@ -2,7 +2,8 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import { ArticleLanguageSelect, OptionItem } from '../ArticleLanguageSelect'
+import type { OptionItem } from '../ArticleLanguageSelect'
+import { ArticleLanguageSelect } from '../ArticleLanguageSelect'
 
 const list: OptionItem[] = [
     { value: 'en-US', label: 'English', text: 'English', canBeDeleted: false },

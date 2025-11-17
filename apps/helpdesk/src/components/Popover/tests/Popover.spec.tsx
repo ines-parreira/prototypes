@@ -1,4 +1,5 @@
-import { ComponentProps, useRef } from 'react'
+import type { ComponentProps } from 'react'
+import { useRef } from 'react'
 
 import { shift } from '@floating-ui/react'
 import { fireEvent, render, screen } from '@testing-library/react'

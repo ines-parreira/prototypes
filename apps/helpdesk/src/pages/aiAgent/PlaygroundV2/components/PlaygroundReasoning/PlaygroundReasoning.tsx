@@ -4,10 +4,10 @@ import classNames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
-import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
-import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
+import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import type { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
 import { useReasoningTracking } from 'pages/tickets/detail/components/TicketMessages/hooks/useReasoningTracking'
 

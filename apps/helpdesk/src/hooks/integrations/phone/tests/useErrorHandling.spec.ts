@@ -3,8 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import { isRecoverableError } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import { State } from 'state/twilio/voiceDevice'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { State } from 'state/twilio/voiceDevice'
 
 import { useErrorHandling } from '../useErrorHandling'
 

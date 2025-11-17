@@ -4,7 +4,7 @@ import { FormGroup, Label } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { ContactPhoneNumber } from 'models/helpCenter/types'
+import type { ContactPhoneNumber } from 'models/helpCenter/types'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 

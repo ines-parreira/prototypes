@@ -2,7 +2,7 @@ import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
-import { BigCommerceProductsListType } from 'models/integration/types'
+import type { BigCommerceProductsListType } from 'models/integration/types'
 
 import { getOrderLineItemInfo } from '../utils'
 

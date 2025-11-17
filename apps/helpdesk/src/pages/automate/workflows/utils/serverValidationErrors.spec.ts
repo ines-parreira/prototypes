@@ -1,6 +1,6 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
-import { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
 import {
     extractServerErrorMessages,
     mapServerErrorsToGraph,

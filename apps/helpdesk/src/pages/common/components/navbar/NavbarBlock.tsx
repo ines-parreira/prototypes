@@ -1,4 +1,5 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import _kebabCase from 'lodash/kebabCase'
@@ -13,7 +14,7 @@ import {
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import { ViewCategoryNavbar } from 'models/view/types'
+import type { ViewCategoryNavbar } from 'models/view/types'
 import css from 'pages/common/components/navbar/NavbarBlock.less'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'

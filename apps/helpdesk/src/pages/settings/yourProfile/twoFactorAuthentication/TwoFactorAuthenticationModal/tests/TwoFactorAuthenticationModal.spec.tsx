@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -17,7 +17,7 @@ import {
     saveTwoFASecret,
     validateVerificationCode,
 } from 'models/twoFactorAuthentication/resources'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 

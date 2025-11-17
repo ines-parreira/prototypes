@@ -1,7 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,7 +25,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { STATS_ROUTES } from 'routes/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

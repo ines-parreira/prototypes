@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react'
+import type { ReactElement } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 

@@ -1,4 +1,5 @@
-import React, { CSSProperties, useCallback, useEffect, useState } from 'react'
+import type { CSSProperties } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 

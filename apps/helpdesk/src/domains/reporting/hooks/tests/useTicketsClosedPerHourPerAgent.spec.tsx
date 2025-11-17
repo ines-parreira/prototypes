@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import {
     fetchClosedTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -20,10 +20,8 @@ import {
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/metricsPerAgent')
 const useClosedTicketsMetricPerAgentMock = assumeMock(

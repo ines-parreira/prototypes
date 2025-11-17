@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     getContext,

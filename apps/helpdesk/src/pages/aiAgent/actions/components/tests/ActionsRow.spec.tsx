@@ -13,7 +13,7 @@ import {
 } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

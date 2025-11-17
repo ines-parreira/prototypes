@@ -1,6 +1,7 @@
-import { PropsWithChildren, useMemo } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'

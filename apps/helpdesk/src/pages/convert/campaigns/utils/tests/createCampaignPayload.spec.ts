@@ -4,9 +4,9 @@ import {
     campaign as campaignFixture,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { createCampaignPayload } from '../createCampaignPayload'

@@ -1,9 +1,12 @@
 import { type ComponentType, useMemo } from 'react'
 
-import { Language, TicketMessageTranslation } from '@gorgias/helpdesk-types'
+import type {
+    Language,
+    TicketMessageTranslation,
+} from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
 import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'

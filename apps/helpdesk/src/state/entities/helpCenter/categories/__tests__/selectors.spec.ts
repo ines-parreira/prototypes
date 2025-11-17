@@ -8,7 +8,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {

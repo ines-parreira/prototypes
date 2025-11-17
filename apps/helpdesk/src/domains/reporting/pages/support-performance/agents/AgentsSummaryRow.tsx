@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
-import { User } from 'config/types/user'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { User } from 'config/types/user'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentsTableAverageCell } from 'domains/reporting/pages/support-performance/agents/AgentsTableAverageCell'
 import {

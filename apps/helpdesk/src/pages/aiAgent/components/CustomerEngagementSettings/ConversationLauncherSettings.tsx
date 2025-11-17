@@ -12,15 +12,15 @@ import {
     LegacyLabel as Label,
 } from '@gorgias/axiom'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { Drawer } from 'pages/common/components/Drawer'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import TextArea from 'pages/common/forms/TextArea'
 import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
-import { Translations } from 'rest_api/gorgias_chat_protected_api/types'
+import type { Translations } from 'rest_api/gorgias_chat_protected_api/types'
 import { STATS_ROUTES } from 'routes/constants'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 import { assetsUrl } from 'utils'

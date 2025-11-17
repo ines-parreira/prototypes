@@ -4,7 +4,7 @@ import _capitalize from 'lodash/capitalize'
 
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
-import { IngestedProduct } from './types'
+import type { IngestedProduct } from './types'
 
 import css from './IngestionProductView.less'
 

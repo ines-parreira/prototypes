@@ -7,7 +7,7 @@ import {
     useCreateOnboardingNotificationState,
     useUpsertOnboardingNotificationState,
 } from 'models/aiAgent/queries'
-import {
+import type {
     CreateOnboardingNotificationStatePayload,
     OnboardingNotificationState,
     UpsertOnboardingNotificationStatePayload,

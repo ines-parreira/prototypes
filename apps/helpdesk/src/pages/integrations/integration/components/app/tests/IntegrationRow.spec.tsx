@@ -6,12 +6,12 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { getReconnectUrl } from 'pages/integrations/integration/components/app/helpers'
 import IntegrationRow from 'pages/integrations/integration/components/app/IntegrationRow'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('../helpers')
 const getReconnectUrlMock = assumeMock(getReconnectUrl)

@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,13 +9,13 @@ import thunk from 'redux-thunk'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { SmsSettingsFormComponent } from '../FormComponents/SmsSettingsFormComponent'
 import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
-import { SmsPhoneNumber } from '../types'
+import type { SmsPhoneNumber } from '../types'
 
 jest.mock('../hooks/useSmsPhoneNumbers')
 

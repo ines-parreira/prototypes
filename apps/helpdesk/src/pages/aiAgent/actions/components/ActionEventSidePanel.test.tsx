@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 import ActionEventSidePanel from './ActionEventSidePanel'
 
 jest.mock('pages/common/components/Drawer', () => ({

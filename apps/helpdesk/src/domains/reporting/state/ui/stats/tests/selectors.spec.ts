@@ -24,7 +24,7 @@ import {
 import { integrationsStateWithShopify } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { initialState as currentUserInitialState } from 'state/currentUser/reducers'
-import { RootState, StoreState } from 'state/types'
+import type { RootState, StoreState } from 'state/types'
 
 const store = {
     ui: {

@@ -3,8 +3,8 @@ import { createSelector } from 'reselect'
 import { getLimitsSetting } from 'state/currentAccount/selectors'
 
 import { RuleLimitStatus } from '../../rules/types'
-import { RootState } from '../../types'
-import { RulesState } from './types'
+import type { RootState } from '../../types'
+import type { RulesState } from './types'
 
 export const RULE_MAX_NUMBER_WARNING = 65
 export const RULE_MAX_NUMBER = 70

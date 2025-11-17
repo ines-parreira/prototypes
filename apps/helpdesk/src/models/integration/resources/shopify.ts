@@ -1,12 +1,12 @@
-import {
+import type {
     ShopifyCollection,
     ShopifyCollectionResponse,
     ShopifyCustomerSegment,
     ShopifyCustomerTags,
     ShopifyOrderTags,
     ShopifySegmentResponse,
-    ShopifyTags,
 } from 'models/integration/types'
+import { ShopifyTags } from 'models/integration/types'
 
 import client from '../../api/resources'
 

@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -14,7 +15,7 @@ import {
     useDuplicateWorkflowConfiguration,
     useGetWorkflowConfigurations,
 } from 'models/workflows/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useStoreWorkflowsApi } from '../useStoreWorkflowsApi'

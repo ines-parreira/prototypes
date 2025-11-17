@@ -15,8 +15,8 @@ import {
     postEnrichedReporting,
     postReportingV1,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery } from 'domains/reporting/models/scopes/scope'
-import { ReportingParams } from 'domains/reporting/models/types'
+import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
+import type { ReportingParams } from 'domains/reporting/models/types'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

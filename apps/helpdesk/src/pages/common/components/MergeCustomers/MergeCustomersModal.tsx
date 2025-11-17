@@ -1,7 +1,8 @@
 import { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, List, Map, Set } from 'immutable'
+import type { List, Map, Set } from 'immutable'
+import { fromJS } from 'immutable'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
@@ -13,12 +14,12 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { Customer } from 'models/customer/types'
-import {
+import type { Customer } from 'models/customer/types'
+import type {
     CustomerChannel,
     MultiSelectBinaryChoiceFieldOption,
 } from 'models/customerChannel/types'
-import { SourceType } from 'models/ticket/types'
+import type { SourceType } from 'models/ticket/types'
 import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {

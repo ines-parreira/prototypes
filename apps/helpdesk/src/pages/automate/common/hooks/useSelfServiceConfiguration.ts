@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { Draft } from 'immer'
+import type { Draft } from 'immer'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -10,12 +10,10 @@ import {
     useGetSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { notify } from 'state/notifications/actions'
-import {
-    AlertNotification,
-    NotificationStatus,
-} from 'state/notifications/types'
+import type { AlertNotification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { useSelfServiceConfigurationUpdate } from './useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'

@@ -6,7 +6,7 @@ import {
     LegacyLabel as Label,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
-import { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
+import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'

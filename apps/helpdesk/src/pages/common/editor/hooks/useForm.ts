@@ -1,7 +1,8 @@
-import { FormEvent, useCallback, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { TicketStatus } from 'business/types/ticket'
-import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
+import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 
 export default function useForm(submit: (args: SubmitArgs) => any) {
     const [ticketStatus, setTicketStatus] = useState<TicketStatus>(

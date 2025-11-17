@@ -1,7 +1,10 @@
 import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from '../../../../business/types/ticket'
-import { QuotedTweet, TicketMessage } from '../../../../models/ticket/types'
+import type {
+    QuotedTweet,
+    TicketMessage,
+} from '../../../../models/ticket/types'
 
 export function mapQuotedTweetTicketMessageToEmbeddedCard(
     quotedTweetTicketMessage: TicketMessage,

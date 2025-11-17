@@ -1,6 +1,7 @@
-import { ComponentProps, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useRef, useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

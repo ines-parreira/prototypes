@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
@@ -9,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
 
-import { Infobar } from '../../../common/components/infobar/Infobar/Infobar'
+import type { Infobar } from '../../../common/components/infobar/Infobar/Infobar'
 import { CustomerInfobarContainer } from '../CustomerInfobarContainer'
 
 jest.mock('state/widgets/actions')

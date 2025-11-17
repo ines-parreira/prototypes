@@ -1,14 +1,15 @@
 import { useState } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Card, CardBody } from 'reactstrap'
 
 import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
 import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue-filled.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
-import { Actor, Meta, Source } from 'models/ticket/types'
+import type { Actor, Meta, Source } from 'models/ticket/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

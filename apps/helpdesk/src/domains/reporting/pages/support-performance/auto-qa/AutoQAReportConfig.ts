@@ -1,10 +1,11 @@
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
 import { AccuracyTrendCard } from 'domains/reporting/pages/support-performance/auto-qa/AccuracyTrendCard'

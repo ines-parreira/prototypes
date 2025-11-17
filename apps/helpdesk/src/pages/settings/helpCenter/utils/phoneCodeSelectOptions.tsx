@@ -1,9 +1,5 @@
-import {
-    CountryCallingCode,
-    CountryCode,
-    getCountryCallingCode,
-    isSupportedCountry,
-} from 'libphonenumber-js'
+import type { CountryCallingCode, CountryCode } from 'libphonenumber-js'
+import { getCountryCallingCode, isSupportedCountry } from 'libphonenumber-js'
 
 export type Country = {
     value: CountryCode

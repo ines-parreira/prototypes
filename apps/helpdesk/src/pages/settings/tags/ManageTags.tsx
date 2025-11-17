@@ -1,20 +1,21 @@
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
-import axios, { AxiosError, CancelToken } from 'axios'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Form, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
+import type {
     CursorPaginationMeta,
-    ListTagsOrderBy,
     ListTagsParams,
-    OrderDirection,
     Tag,
 } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,7 +23,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { CursorDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
-import { OrderBy, OrderByOrderDir } from 'models/tag/types'
+import type { OrderBy, OrderByOrderDir } from 'models/tag/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'

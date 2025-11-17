@@ -1,12 +1,13 @@
-import React, { Component, createRef, KeyboardEvent, RefObject } from 'react'
+import type { KeyboardEvent, RefObject } from 'react'
+import React, { Component, createRef } from 'react'
 
 import classnames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
-import { ActionInjectedProps } from 'pages/common/draftjs/plugins/toolbar/types'
+import type { ActionInjectedProps } from 'pages/common/draftjs/plugins/toolbar/types'
 import { addImage } from 'pages/common/draftjs/plugins/utils'
 import FileField from 'pages/common/forms/FileField'
 import TextInput from 'pages/common/forms/input/TextInput'

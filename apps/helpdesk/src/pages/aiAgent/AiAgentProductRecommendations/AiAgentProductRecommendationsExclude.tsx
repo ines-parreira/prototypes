@@ -17,7 +17,7 @@ import { ProductRecommendationRuleCard } from './components/ProductRecommendatio
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
 import usePaginatedProductsByIds from './hooks/usePaginatedProductsByIds'
-import { ProductRecommendationRuleType } from './types'
+import type { ProductRecommendationRuleType } from './types'
 import { formatProductRecommendationRules } from './utils/format-product-recommendation-rules'
 
 import css from './AiAgentProductRecommendations.less'

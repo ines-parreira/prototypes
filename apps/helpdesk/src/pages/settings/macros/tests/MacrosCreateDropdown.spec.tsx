@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import { user } from 'fixtures/users'
 import { createJob } from 'models/job/resources'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { MacrosCreateDropdown } from '../MacrosCreateDropdown'

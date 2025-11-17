@@ -2,11 +2,11 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { FeedbackMutation } from '@gorgias/knowledge-service-types'
+import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useUpsertFeedback } from 'models/knowledgeService/mutations'
-import { useGetFeedback } from 'models/knowledgeService/queries'
+import type { useUpsertFeedback } from 'models/knowledgeService/mutations'
+import type { useGetFeedback } from 'models/knowledgeService/queries'
 import { getTicketState } from 'state/ticket/selectors'
 
 import { useGetAiAgentFeedback } from '../../../../../../models/aiAgentFeedback/queries'

@@ -4,7 +4,7 @@ import axios from 'axios'
 import { createMockHttpIntegrationPayload } from 'pages/aiAgent/Playground/utils/playground-ticket.util'
 
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
-import {
+import type {
     AiAgentCustomToneOfVoiceResponse,
     AiAgentInput,
     AiAgentResponse,

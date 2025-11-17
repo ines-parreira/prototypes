@@ -1,8 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

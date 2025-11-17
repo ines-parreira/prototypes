@@ -1,6 +1,8 @@
-import React, { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { SteppedSlider } from './SteppedSlider'
 

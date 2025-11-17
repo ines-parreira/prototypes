@@ -1,11 +1,14 @@
-import { User } from 'config/types/user'
-import {
-    fetchTableReportData,
+import type { User } from 'config/types/user'
+import type {
     TableDataSources,
     TableSummaryDataSources,
+} from 'domains/reporting/hooks/common/useTableReportData'
+import {
+    fetchTableReportData,
     useTableReportData,
 } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
@@ -18,7 +21,6 @@ import {
     fetchOnlineTimeMetric,
     fetchTicketAverageHandleTimeMetric,
     fetchTicketsRepliedMetric,
-    Metric,
 } from 'domains/reporting/hooks/metrics'
 import {
     fetchClosedTicketsMetricPerAgent,
@@ -45,7 +47,7 @@ import {
     fetchMessagesSentPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { fetchMessagesSentPerHourPerAgent } from 'domains/reporting/hooks/useMessagesSentPerHourPerAgent'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchShouldIncludeBots,
     useShouldIncludeBots,
@@ -60,19 +62,19 @@ import {
     fetchTicketsRepliedPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
 import { fetchTicketsRepliedPerHourPerAgent } from 'domains/reporting/hooks/useTicketsRepliedPerHourPerAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
-import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
+import type { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { createAgentsReport } from 'domains/reporting/services/agentsPerformanceReportingService'
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import {
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type {
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
 } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 
 export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 

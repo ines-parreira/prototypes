@@ -17,7 +17,7 @@ import {
 import { campaign } from 'fixtures/campaign'
 import { integrationsState } from 'fixtures/integrations'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({

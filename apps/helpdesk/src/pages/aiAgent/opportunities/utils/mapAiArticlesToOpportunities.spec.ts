@@ -1,4 +1,4 @@
-import { AILibraryArticleItem } from 'models/helpCenter/types'
+import type { AILibraryArticleItem } from 'models/helpCenter/types'
 
 import { OpportunityType } from '../enums'
 import { mapAiArticlesToOpportunities } from './mapAiArticlesToOpportunities'

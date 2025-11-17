@@ -1,8 +1,8 @@
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
 } from 'models/integration/types'
 
 type Props = {

@@ -7,10 +7,10 @@ import {
     isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
 import { LanguageChat } from 'constants/languages'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { parseToFriendlyErrorMessage } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import {
+import type {
     TextsMultiLanguage,
     TextsPerLanguage,
 } from 'rest_api/gorgias_chat_protected_api/types'

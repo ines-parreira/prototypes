@@ -1,4 +1,5 @@
-import React, { Component, ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import Lightbox from 'react-images'
 

@@ -6,7 +6,7 @@ import { WARNING_ICON } from 'pages/common/components/SourceIcon'
 
 import { trackstarDefinitionKeys } from '../../../models/workflows/queries'
 import { getAiAgentNavigationRoutes } from '../../../pages/aiAgent/hooks/useAiAgentNavigation'
-import { WorkflowConfigurationUpdatedNotificationPayload } from '../types'
+import type { WorkflowConfigurationUpdatedNotificationPayload } from '../types'
 
 type Props = {
     notification: Notification<WorkflowConfigurationUpdatedNotificationPayload>

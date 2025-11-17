@@ -3,7 +3,7 @@ import { Component } from 'react'
 import { fromJS, List, Map } from 'immutable'
 
 import DEPRECATED_InputField from '../../../forms/DEPRECATED_InputField'
-import { SelectableOption as SelectOption } from '../../../forms/SelectField/types'
+import type { SelectableOption as SelectOption } from '../../../forms/SelectField/types'
 
 type Props = {
     onChange: () => void

@@ -7,7 +7,8 @@ import { TicketChannel } from 'business/types/ticket'
 import useLanguagesMismatchWarnings from '../../../workflows/hooks/useLanguagesMismatchWarnings'
 import { WorkflowChannelSupportContext } from '../../../workflows/hooks/useWorkflowChannelSupport'
 import WorkflowItem from '../WorkflowItem'
-import WorkflowsFeatureList, { Entrypoint } from '../WorkflowsFeatureList'
+import type { Entrypoint } from '../WorkflowsFeatureList'
+import WorkflowsFeatureList from '../WorkflowsFeatureList'
 
 jest.mock('../../../workflows/hooks/useLanguagesMismatchWarnings', () => ({
     __esModule: true,

@@ -1,10 +1,5 @@
-import {
-    ContentState,
-    convertToRaw,
-    EditorState,
-    Modifier,
-    RawDraftContentBlock,
-} from 'draft-js'
+import type { RawDraftContentBlock } from 'draft-js'
+import { ContentState, convertToRaw, EditorState, Modifier } from 'draft-js'
 import _pickBy from 'lodash/pickBy'
 
 import { getEntitySelectionState } from '../../../../../utils/editor'

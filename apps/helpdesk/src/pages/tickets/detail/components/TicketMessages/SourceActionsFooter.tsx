@@ -1,7 +1,9 @@
-import React, { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component } from 'react'
 
 import classNamesBind from 'classnames/bind'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Badge } from 'reactstrap'
 
 import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
@@ -15,7 +17,7 @@ import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
 import wowIcon from 'assets/img/integrations/facebook-reaction-wow.svg'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { FacebookReactionType } from 'constants/integrations/facebook'
-import {
+import type {
     FacebookReaction,
     FacebookReactionCounter,
     Meta,

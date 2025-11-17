@@ -9,11 +9,11 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
-import {
+import type {
     LlmTriggeredExecution,
     TemplateConfiguration,
 } from 'pages/aiAgent/actions/types'
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import FailedWorkflowMessage from '../AiAgentFailedWorkflowMessage'
 

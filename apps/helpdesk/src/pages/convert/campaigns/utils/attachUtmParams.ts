@@ -4,7 +4,7 @@ import { parse } from 'qs'
 import { getLDClient } from 'utils/launchDarkly'
 import { attachSearchParamsToUrl } from 'utils/url'
 
-import { CampaignProduct } from '../types/CampaignProduct'
+import type { CampaignProduct } from '../types/CampaignProduct'
 
 export function shouldAppendUtmParam(
     isConvertSubscriber: boolean,

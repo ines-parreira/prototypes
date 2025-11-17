@@ -1,4 +1,4 @@
-import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
+import type { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 
 import css from './TopElementItem.less'
 

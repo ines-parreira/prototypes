@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { PageType } from '../types/PageType'
-import { RawListItem } from '../types/RawListItem'
+import type { PageType } from '../types/PageType'
+import type { RawListItem } from '../types/RawListItem'
 
 /**
  * @description

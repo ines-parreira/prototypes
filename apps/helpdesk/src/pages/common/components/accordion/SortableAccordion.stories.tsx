@@ -1,6 +1,7 @@
-import { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { createDragDropManager } from 'dnd-core'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 

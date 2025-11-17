@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { DATE_VARIABLE_TOOLTIP_TEXT } from 'config/integrations/constants'
 import {
@@ -9,7 +9,7 @@ import {
 import { IntegrationType } from 'models/integration/types'
 import { momentToLDMLFormat } from 'pages/common/utils/template'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { formatDatetime } from 'utils'
 
 /**

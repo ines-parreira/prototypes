@@ -10,7 +10,7 @@ import {
 import css from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent/CampaignSalesDrillDownTableContent.less'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetCampaignSalesDrillDownData } from 'domains/reporting/pages/convert/hooks/useGetCampaignSalesDrillDownData'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

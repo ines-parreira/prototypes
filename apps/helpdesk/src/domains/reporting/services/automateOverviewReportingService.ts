@@ -13,11 +13,11 @@ import {
 import { calculateGreyArea } from 'domains/reporting/hooks/automate/utils'
 import { useTimeSeriesPerDimensionReportData } from 'domains/reporting/hooks/common/useTimeSeriesReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     AUTOMATE_AI_AGENT_INTERACTIONS_FILENAME,
     AUTOMATE_AI_AGENT_SALES_LABEL,
@@ -29,7 +29,7 @@ import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
 } from 'domains/reporting/pages/self-service/constants'
-import { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
+import type { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
 import {
     CURRENT_PERIOD_LABEL,
     EMPTY_LABEL,

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 
 import { SORT_OPTIONS_WITH_ORDERS } from '../../constants'
-import {
+import type {
     FilterKey,
     InteractionFilterType,
     SortOption,

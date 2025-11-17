@@ -1,10 +1,10 @@
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import {
     isContactFormChannel,
     isHelpCenterChannel,
 } from '../../../helpers/isIntegration'
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 import isChannelAlreadyMapped from '../helpers/isChannelAlreadyMapped'
 
 export const shouldShowDeleteButton = (

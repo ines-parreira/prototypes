@@ -5,7 +5,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react'
 import { getLDClient } from 'utils/launchDarkly'
 
 import { categories, notifications } from '../../data'
-import { Settings } from '../../types'
+import type { Settings } from '../../types'
 import EventSettings from '../EventSettings'
 
 jest.mock('utils/launchDarkly', () => ({

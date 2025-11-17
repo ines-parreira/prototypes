@@ -1,8 +1,11 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
-import { DefaultValues } from 'react-hook-form'
+import type { DefaultValues } from 'react-hook-form'
 
-import { CreateVoiceQueue, UpdateVoiceQueue } from '@gorgias/helpdesk-queries'
+import type {
+    CreateVoiceQueue,
+    UpdateVoiceQueue,
+} from '@gorgias/helpdesk-queries'
 import {
     validateCreateVoiceQueue,
     validateUpdateVoiceQueue,

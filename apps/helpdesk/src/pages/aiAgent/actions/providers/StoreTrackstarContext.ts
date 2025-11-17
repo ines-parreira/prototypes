@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react'
 
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { TrackstarConnection } from 'pages/automate/workflows/types'
+import type { TrackstarConnection } from 'pages/automate/workflows/types'
 
 export type StoreTrackstarContextType = {
     connections: Partial<{

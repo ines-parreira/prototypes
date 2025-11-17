@@ -13,7 +13,7 @@ import {
     initialState,
     toggleHeatmapMode,
 } from 'domains/reporting/state/ui/stats/channelsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 describe('ChannelsHeatmapSwitch', () => {

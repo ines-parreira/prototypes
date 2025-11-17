@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
 
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 
 import DisplayedDate from '../DisplayedDate'
-import { SortOption } from '../types'
+import type { SortOption } from '../types'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => {
     return jest.fn(() => <div>Mocked DatetimeLabel</div>)

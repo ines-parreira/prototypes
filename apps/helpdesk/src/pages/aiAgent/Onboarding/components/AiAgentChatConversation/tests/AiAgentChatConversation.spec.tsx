@@ -8,11 +8,10 @@ import configureMockStore from 'redux-mock-store'
 import { AttachmentEnum } from 'common/types'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import AiAgentChatConversation, {
-    ConversationMessage,
-} from '../AiAgentChatConversation'
+import type { ConversationMessage } from '../AiAgentChatConversation'
+import AiAgentChatConversation from '../AiAgentChatConversation'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

@@ -1,4 +1,5 @@
-import { PropsWithChildren, useCallback } from 'react'
+import type { PropsWithChildren } from 'react'
+import { useCallback } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -12,10 +13,8 @@ import {
     DomainsConfig,
     MetricsConfig,
 } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
-import {
-    DrillDownMetric,
-    setMetricData,
-} from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 export const TRIGGER_ID = 'drill-down'

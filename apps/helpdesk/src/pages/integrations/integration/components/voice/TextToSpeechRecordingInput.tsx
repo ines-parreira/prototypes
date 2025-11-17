@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { TEXT_TO_SPEECH_MAX_LENGTH } from 'models/integration/constants'
-import {
+import type {
     VoiceMessage,
     VoiceMessageTextToSpeech,
-    VoiceMessageType,
 } from 'models/integration/types'
+import { VoiceMessageType } from 'models/integration/types'
 import Textarea from 'pages/common/forms/TextArea'
 import { countLines } from 'utils/string'
 

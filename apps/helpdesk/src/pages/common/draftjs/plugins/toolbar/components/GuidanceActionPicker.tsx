@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
 import GuidanceActionDropdown from './GuidanceActionDropdown'

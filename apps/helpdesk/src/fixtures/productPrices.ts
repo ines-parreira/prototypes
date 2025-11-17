@@ -1,16 +1,14 @@
-import {
+import type {
     AutomatePlan,
     AutomatePlanFeatures,
-    Cadence,
     ConvertPlan,
     HelpdeskPlan,
     HelpdeskPlanFeatures,
-    HelpdeskPlanTier,
     Product,
-    ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import { CurrentProductsUsages } from 'state/billing/types'
+import { Cadence, HelpdeskPlanTier, ProductType } from 'models/billing/types'
+import type { CurrentProductsUsages } from 'state/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 
 export const basicHelpdeskPlanFeatures: HelpdeskPlanFeatures = {

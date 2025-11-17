@@ -1,9 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import WrapperEditActions, { FormData } from '../WrapperEditActions'
+import type { FormData } from '../WrapperEditActions'
+import WrapperEditActions from '../WrapperEditActions'
 import WrapperEditForm from '../WrapperEditForm'
 
 const MOCK_EDIT_FORM_ID = 'wrapper-edit-form'

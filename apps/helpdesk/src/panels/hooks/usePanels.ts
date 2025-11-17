@@ -1,16 +1,10 @@
-import {
-    MouseEvent as ReactMouseEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent as ReactMouseEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 
-import { Config } from '../types'
+import type { Config } from '../types'
 import { computeDefaultWidths, createConfig, mutatePanels } from '../utils'
 import useScreenSize from './useScreenSize'
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
@@ -23,8 +24,8 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
 import useCustomToneOfVoicePreview from '../hooks/useCustomToneOfVoicePreview'
-import { FormValues } from '../types'
-import { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
+import type { FormValues } from '../types'
+import type { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
 import { HeaderSection } from './HeaderSection'
 import { useAiAgentOnboardingWizard } from './hooks/useAiAgentOnboardingWizard'
 import { TicketPreview } from './TicketPreview'

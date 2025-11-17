@@ -1,7 +1,8 @@
 // g/integrations/email/schemas.py
 import type { SenderVerification } from 'models/singleSenderVerification/types'
 
-import { EmailProvider, IntegrationType } from '../constants'
+import type { EmailProvider } from '../constants'
+import { IntegrationType } from '../constants'
 import type { Integration } from './'
 import type { IntegrationBase } from './base'
 

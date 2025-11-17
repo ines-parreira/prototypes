@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import {
+import type {
     GorgiasChatEmailCaptureType,
     GorgiasChatIntegration,
 } from 'models/integration/types'

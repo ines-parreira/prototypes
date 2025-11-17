@@ -1,8 +1,8 @@
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
 
 import {

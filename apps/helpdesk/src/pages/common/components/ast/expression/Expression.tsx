@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react'
 
 import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
 import BinaryExpression from 'pages/common/components/ast/expression/BinaryExpression'
@@ -9,7 +9,7 @@ import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpre
 import Identifier from 'pages/common/components/ast/Identifier'
 import Literal from 'pages/common/components/ast/Literal'
 import UnknownSyntax from 'pages/common/components/ast/UnknownSyntax'
-import { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
+import type { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
 
 const types = {
     BinaryExpression,

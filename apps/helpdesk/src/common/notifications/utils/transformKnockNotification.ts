@@ -1,6 +1,6 @@
-import { FeedItem } from '@knocklabs/client'
+import type { FeedItem } from '@knocklabs/client'
 
-import { Notification, RawNotification } from '../types'
+import type { Notification, RawNotification } from '../types'
 
 export default function transformKnockNotification(
     item: FeedItem<RawNotification>,

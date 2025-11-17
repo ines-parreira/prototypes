@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { statFetched } from './actions'
-import { StatsState } from './types'
+import type { StatsState } from './types'
 
 const initialState: StatsState = {}
 

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import { createMemoryHistory } from 'history'
 
-import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
+import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'

@@ -5,10 +5,8 @@ import type { Map } from 'immutable'
 import logo from 'assets/img/infobar/magento.svg'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import {
-    CardCustomization,
-    ExpandAllButton,
-} from 'Widgets/modules/Template/modules/Card/'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/'
+import { ExpandAllButton } from 'Widgets/modules/Template/modules/Card/'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'

@@ -1,20 +1,19 @@
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { FeedbackMutation } from '@gorgias/knowledge-service-types'
+import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { useUpsertFeedback } from 'models/knowledgeService/mutations'
-import { useGetFeedback } from 'models/knowledgeService/queries'
-import { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { useUpsertFeedback } from 'models/knowledgeService/mutations'
+import type { useGetFeedback } from 'models/knowledgeService/queries'
+import type { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    SuggestedResourceValue,
-} from '../types'
-import { useEnrichFeedbackData } from '../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
-import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
+import type { SuggestedResourceValue } from '../types'
+import { AiAgentKnowledgeResourceTypeEnum } from '../types'
+import type { useEnrichFeedbackData } from '../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
+import type { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 
 interface UseFeedbackActionsParams {
     upsertFeedback: ReturnType<typeof useUpsertFeedback>['mutateAsync']

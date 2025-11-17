@@ -1,6 +1,9 @@
-import { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 
-import { LegacyStatsFilters, Stat } from 'domains/reporting/models/stat/types'
+import type {
+    LegacyStatsFilters,
+    Stat,
+} from 'domains/reporting/models/stat/types'
 import client from 'models/api/resources'
 
 export async function fetchStat(

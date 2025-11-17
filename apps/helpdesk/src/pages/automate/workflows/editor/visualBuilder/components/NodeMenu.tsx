@@ -1,10 +1,6 @@
+import type { Dispatch, ReactNode, Ref, RefObject, SetStateAction } from 'react'
 import React, {
-    Dispatch,
     forwardRef,
-    ReactNode,
-    Ref,
-    RefObject,
-    SetStateAction,
     useCallback,
     useEffect,
     useMemo,
@@ -30,7 +26,7 @@ import {
     hasParentNodeInPath,
     isNodeUniquePerPath,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     ReusableLLMPromptTrigger,
     WorkflowConfiguration,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
@@ -38,8 +34,8 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 
-import { Components } from '../../../../../../rest_api/workflows_api/client.generated'
-import { App } from '../../../../actionsPlatform/types'
+import type { Components } from '../../../../../../rest_api/workflows_api/client.generated'
+import type { App } from '../../../../actionsPlatform/types'
 import MenuCategoryItem from './MenuCategoryItem'
 import MenuItem from './MenuItem'
 

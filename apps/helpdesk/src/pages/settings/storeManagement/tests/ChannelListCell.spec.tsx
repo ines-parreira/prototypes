@@ -3,7 +3,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { IntegrationType } from '../../../../models/integration/constants'
-import { Integration } from '../../../../models/integration/types'
+import type { Integration } from '../../../../models/integration/types'
 import { mockStoresWithAssignedChannels } from '../fixtures'
 import ChannelListCell from '../storeManagementTable/StoreManagementTableRow/ChannelListCell'
 

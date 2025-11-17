@@ -3,8 +3,8 @@ import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getA
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
-import { RootState } from 'state/types'
+import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import HelpCenterArticleModalAdvancedViewContent from '../HelpCenterArticleModalAdvancedViewContent'

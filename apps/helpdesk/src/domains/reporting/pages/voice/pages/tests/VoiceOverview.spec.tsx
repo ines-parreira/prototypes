@@ -1,10 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,13 +13,13 @@ import thunk from 'redux-thunk'
 import { useFlag } from 'core/flags'
 import { useReportRestrictions } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StatsFilters,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
@@ -51,7 +52,7 @@ import {
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { AccountFeature } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock(

@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import {
@@ -13,6 +15,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,
@@ -28,7 +31,6 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    LanguageItem,
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
@@ -45,10 +47,8 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import {
-    Language,
-    LanguagePicker,
-} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import { LanguagePicker } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

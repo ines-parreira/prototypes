@@ -6,7 +6,7 @@ import moment from 'moment'
 
 import { useCommentHighlights } from 'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import CommentHighlightsCarousel from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
 import CommentHighlightsChart from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'

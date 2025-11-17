@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { ArticleTemplateKey } from 'models/helpCenter/types'
+import type { ArticleTemplateKey } from 'models/helpCenter/types'
 import {
     getArticleFixture,
     getCreateArticleDtoFixture,

@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback, useEffect } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'

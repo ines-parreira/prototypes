@@ -1,4 +1,4 @@
-import { Meta } from 'models/ticket/types'
+import type { Meta } from 'models/ticket/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import { SourceDetailsFrom } from './SourceDetailsFrom'

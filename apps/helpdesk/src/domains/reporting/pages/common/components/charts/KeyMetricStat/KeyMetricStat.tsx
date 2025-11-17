@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { KeyMetricCell } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCell'
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat.less'

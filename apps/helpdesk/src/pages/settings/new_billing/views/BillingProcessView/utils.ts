@@ -1,6 +1,7 @@
-import { Cadence, Plan } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
+import type { AlertNotification } from 'state/notifications/types'
 import {
-    AlertNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'

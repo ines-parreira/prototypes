@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import * as segment from '@repo/logging'
 import { screen } from '@testing-library/react'
@@ -9,7 +9,7 @@ import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { HelpCenterNavigation } from '../HelpCenterNavigation'

@@ -1,4 +1,5 @@
-import { CustomerFixedGmvBand, CustomerSummary } from '@gorgias/helpdesk-types'
+import type { CustomerSummary } from '@gorgias/helpdesk-types'
+import { CustomerFixedGmvBand } from '@gorgias/helpdesk-types'
 
 import checkIsEnterpriseGMV from 'pages/settings/new_billing/utils/checkIsEnterpriseGMV'
 

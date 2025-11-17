@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import UseActiveChannel from '../useActiveChannel'
 
 describe('useActiveChannel', () => {

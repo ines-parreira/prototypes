@@ -4,11 +4,8 @@ import { endsWith } from 'lodash'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 
 import { countryOptions, phoneCountryConfig } from 'business/twilio'
-import {
-    PhoneCountry,
-    PhoneNumberMeta,
-    PhoneType,
-} from 'models/phoneNumber/types'
+import type { PhoneNumberMeta } from 'models/phoneNumber/types'
+import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'

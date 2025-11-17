@@ -2,7 +2,8 @@ import { NavLink } from 'react-router-dom'
 
 import { PhoneFunction } from 'business/twilio'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType, PhoneIntegration } from 'models/integration/types'
+import type { PhoneIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
 

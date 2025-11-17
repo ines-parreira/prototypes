@@ -2,11 +2,11 @@ import { useCallback } from 'react'
 
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 
-import { JourneyApiDTO } from '@gorgias/convert-client'
-import { Integration } from '@gorgias/helpdesk-types'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import type { Integration } from '@gorgias/helpdesk-types'
 
 import { useTestSms } from 'AIJourney/queries'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

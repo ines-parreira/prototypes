@@ -1,4 +1,5 @@
-import { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'

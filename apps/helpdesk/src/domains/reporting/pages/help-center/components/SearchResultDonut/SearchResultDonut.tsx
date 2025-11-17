@@ -2,7 +2,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import css from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut.less'
 import {
     SEARCH_RESULTS_DONUT_TITLE,

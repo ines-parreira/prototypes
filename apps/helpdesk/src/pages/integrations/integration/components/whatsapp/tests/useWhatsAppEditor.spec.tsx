@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { TicketChannel } from 'business/types/ticket'
-import { MacroAction } from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 import { mockStore } from 'utils/testing'
 

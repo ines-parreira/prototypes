@@ -1,6 +1,6 @@
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
-import { UncontrolledTooltipProps } from 'reactstrap'
+import type { UncontrolledTooltipProps } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

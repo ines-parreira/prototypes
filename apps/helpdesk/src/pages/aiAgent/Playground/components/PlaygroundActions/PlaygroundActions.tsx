@@ -1,5 +1,5 @@
 import { PlaygroundActionsItem } from './PlaygroundActionsItem'
-import { PlaygroundAction } from './types'
+import type { PlaygroundAction } from './types'
 
 import css from './PlaygroundActions.less'
 

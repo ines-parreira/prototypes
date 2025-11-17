@@ -1,3 +1,3 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 export type TeamsState = Map<any, any>

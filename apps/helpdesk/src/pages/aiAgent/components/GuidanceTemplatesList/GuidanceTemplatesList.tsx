@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
-import { GuidanceTemplate } from '../../types'
+import type { GuidanceTemplate } from '../../types'
 import { CreateNewGuidanceCard } from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import { GuidanceTemplateCard } from '../GuidanceTemplateCard/GuidanceTemplateCard'
 

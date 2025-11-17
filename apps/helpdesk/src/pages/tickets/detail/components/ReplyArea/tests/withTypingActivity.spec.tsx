@@ -3,7 +3,8 @@ import { act, render, waitFor } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 
-import withTypingActivity, { TypingActivityProps } from '../withTypingActivity'
+import type { TypingActivityProps } from '../withTypingActivity'
+import withTypingActivity from '../withTypingActivity'
 
 jest.mock('utils/errors')
 jest.mock('core/flags')

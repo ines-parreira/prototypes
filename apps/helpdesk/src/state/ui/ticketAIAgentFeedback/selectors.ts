@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect'
 
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
-import { TicketAIAgentFeedbackState } from './types'
+import type { TicketAIAgentFeedbackState } from './types'
 
 const getTicketAIAgentFeedbackState = (
     state: StoreState,

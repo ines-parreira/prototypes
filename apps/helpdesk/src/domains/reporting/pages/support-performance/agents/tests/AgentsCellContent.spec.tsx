@@ -1,9 +1,9 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import {
     TicketDimension,
     TicketMeasure,
@@ -15,10 +15,10 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

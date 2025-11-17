@@ -1,7 +1,7 @@
 import { section } from '../../../../fixtures/section'
-import { RootState } from '../../../types'
+import type { RootState } from '../../../types'
 import { getSectionIdByName } from '../selectors'
-import { SectionsState } from '../types'
+import type { SectionsState } from '../types'
 
 describe('sections selectors', () => {
     describe('getSectionIdByName', () => {

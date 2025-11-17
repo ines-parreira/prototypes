@@ -1,7 +1,5 @@
-import {
-    CampaignTemplateLabelType,
-    CampaignTemplateSectionType,
-} from 'pages/convert/campaigns/templates/types'
+import type { CampaignTemplateSectionType } from 'pages/convert/campaigns/templates/types'
+import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
 import { renderWithRouter } from 'utils/testing'
 
 import CampaignLibrarySection from '../CampaignLibrarySection'

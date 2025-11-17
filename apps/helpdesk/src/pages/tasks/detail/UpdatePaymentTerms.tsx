@@ -1,14 +1,15 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
+import type { LegacySelectFieldRawOption as SelectFieldRawOption } from '@gorgias/axiom'
 import {
     LegacyButton as Button,
     LegacySelectField as SelectField,
-    LegacySelectFieldRawOption as SelectFieldRawOption,
     Skeleton,
 } from '@gorgias/axiom'
-import { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
+import type { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
 
 import { Form, FormField } from 'core/forms'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { IntegrationType } from 'models/integration/constants'
 import ActionsPlatformTemplatesFilters from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplatesFilters'

@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { RuleRecipe } from 'models/ruleRecipe/types'
-import { ManagedRule, Rule, RuleType } from 'state/rules/types'
+import type { RuleRecipe } from 'models/ruleRecipe/types'
+import type { ManagedRule, Rule } from 'state/rules/types'
+import { RuleType } from 'state/rules/types'
 
 import RuleRecipeCard from './components/RuleRecipeCard'
 import { RuleTemplateRecipeSlugs } from './constants'

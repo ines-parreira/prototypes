@@ -8,15 +8,14 @@ import thunk from 'redux-thunk'
 import { useFlag } from 'core/flags'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 import { useGetShopifyPages } from '../../../queries'
 import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCenterAutoEmbedCard'
-import HelpCenterAutoEmbedPublishSection, {
-    HelpCenterAutoEmbedPublishSectionProps,
-} from '../HelpCenterAutoEmbedPublishSection'
+import type { HelpCenterAutoEmbedPublishSectionProps } from '../HelpCenterAutoEmbedPublishSection'
+import HelpCenterAutoEmbedPublishSection from '../HelpCenterAutoEmbedPublishSection'
 
 jest.mock('core/flags')
 

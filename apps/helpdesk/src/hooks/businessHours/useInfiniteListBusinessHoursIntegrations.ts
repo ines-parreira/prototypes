@@ -1,15 +1,13 @@
-import {
-    useInfiniteQuery,
-    UseInfiniteQueryOptions,
-} from '@tanstack/react-query'
+import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
-import {
+import type {
     HttpError,
     HttpResponse,
-    listBusinessHoursIntegrations,
     ListBusinessHoursIntegrations200,
     ListBusinessHoursIntegrationsParams,
 } from '@gorgias/helpdesk-client'
+import { listBusinessHoursIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 export default function useInfiniteListBusinessHoursIntegrations<

@@ -1,12 +1,13 @@
-import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AlertBannerTypes } from 'AlertBanners'
 
-import { StoreDispatch } from '../../types'
+import type { StoreDispatch } from '../../types'
 import { handleUsageBanner, INITIAL_MESSAGE, notify } from '../actions'
-import { Notification } from '../types'
+import type { Notification } from '../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(

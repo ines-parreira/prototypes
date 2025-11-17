@@ -1,4 +1,5 @@
-import React, { AnchorHTMLAttributes, ComponentProps, forwardRef } from 'react'
+import type { AnchorHTMLAttributes, ComponentProps } from 'react'
+import React, { forwardRef } from 'react'
 
 import BaseButton from './BaseButton'
 

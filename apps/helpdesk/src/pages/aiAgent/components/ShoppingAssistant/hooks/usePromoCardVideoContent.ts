@@ -6,7 +6,7 @@ import shoppingAssistantTrialVideo from 'assets/video/ai-agent-sales-video.mp4'
 import aiAgentTrialVideo from 'assets/video/ai-agent-trial-promo.mp4'
 import { useFlag } from 'core/flags'
 
-import { TrialType } from '../types/ShoppingAssistant'
+import type { TrialType } from '../types/ShoppingAssistant'
 
 import css from '../../AiAgentNavbar/AiAgentNavbar.less'
 

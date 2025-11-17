@@ -5,7 +5,7 @@ import knowledgeSourceArticleEditorReducer, {
 } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import { changeTicketMessage } from './actions'
-import {
+import type {
     TicketAIAgentFeedbackState,
     TicketDetailAIAgentFeedbackState,
 } from './types'

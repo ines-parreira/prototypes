@@ -1,4 +1,5 @@
-import React, { HTMLProps, ReactNode } from 'react'
+import type { HTMLProps, ReactNode } from 'react'
+import React from 'react'
 
 import { Link } from 'react-router-dom'
 

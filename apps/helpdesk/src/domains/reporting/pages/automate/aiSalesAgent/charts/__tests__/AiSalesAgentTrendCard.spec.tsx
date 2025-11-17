@@ -13,7 +13,7 @@ import {
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({

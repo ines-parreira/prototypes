@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
-import { Plugin } from '../plugins/types'
+import type { Plugin } from '../plugins/types'
 import { createEditorStateFromHtml } from './draftTestUtils'
 
 type Props = {

@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { UserViewsOrderingSettingData } from '../../../config/types/user'
-import { AccountViewsOrderingSettingData } from '../../currentAccount/types'
+import type { UserViewsOrderingSettingData } from '../../../config/types/user'
+import type { AccountViewsOrderingSettingData } from '../../currentAccount/types'
 import {
     OPTIMISTIC_ACCOUNT_SETTINGS_RESET,
     OPTIMISTIC_ACCOUNT_SETTINGS_SET,

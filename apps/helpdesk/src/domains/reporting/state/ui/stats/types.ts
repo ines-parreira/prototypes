@@ -1,7 +1,7 @@
-import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
-import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import { AgentPerformanceState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import {
+import type { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
+import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import type { AgentPerformanceState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
+import type {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
@@ -9,12 +9,12 @@ import {
     PRODUCTS_PER_TICKET_SLICE_NAME,
     VOICE_AGENTS_PERFORMANCE_SLICE_NAME,
 } from 'domains/reporting/state/ui/stats/constants'
-import { createTableSlice } from 'domains/reporting/state/ui/stats/createTableSlice'
-import { IntentState } from 'domains/reporting/state/ui/stats/insightsSlice'
-import { ProductInsightsSliceState } from 'domains/reporting/state/ui/stats/productInsightsSlice'
-import { ProductsPerTicketState } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
-import { OrderDirection } from 'models/api/types'
-import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { createTableSlice } from 'domains/reporting/state/ui/stats/createTableSlice'
+import type { IntentState } from 'domains/reporting/state/ui/stats/insightsSlice'
+import type { ProductInsightsSliceState } from 'domains/reporting/state/ui/stats/productInsightsSlice'
+import type { ProductsPerTicketState } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
+import type { OrderDirection } from 'models/api/types'
+import type { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 
 export enum AgentsTableColumn {
     AgentName = 'agent_name',

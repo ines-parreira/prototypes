@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from '../../../../../business/types/ticket'
-import { TicketMessage } from '../../../../../models/ticket/types'
+import type { TicketMessage } from '../../../../../models/ticket/types'
 import Error from './Error'
 
 type Props = {

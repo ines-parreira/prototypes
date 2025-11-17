@@ -1,8 +1,9 @@
-import React, { ComponentType, useEffect, useState } from 'react'
+import type { ComponentType } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Loader from '../../Loader/Loader'
 import loadAce from './loadAce'
-import { ACEProps, EditorProps, WindowWithACE } from './types'
+import type { ACEProps, EditorProps, WindowWithACE } from './types'
 
 function withACEEditor(Component: ComponentType<any>) {
     function WrappedComponent(props: EditorProps & ACEProps) {

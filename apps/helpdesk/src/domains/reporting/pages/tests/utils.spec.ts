@@ -1,4 +1,4 @@
-import { ChartArea, TooltipItem } from 'chart.js'
+import type { ChartArea, TooltipItem } from 'chart.js'
 import moment from 'moment'
 
 import colors from '@gorgias/design-tokens/tokens/colors'

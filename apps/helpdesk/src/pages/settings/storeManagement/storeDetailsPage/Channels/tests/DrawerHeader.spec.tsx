@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 import DrawerHeader from '../ChannelsDrawer/DrawerHeader'
 
 describe('DrawerHeader', () => {

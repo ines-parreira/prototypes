@@ -1,8 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { LeafTemplate, LeafType, Source } from 'models/widget/types'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
-import Field from 'Widgets/modules/Template/modules/Field'
+import type { LeafTemplate, LeafType, Source } from 'models/widget/types'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import type Field from 'Widgets/modules/Template/modules/Field'
 
 export type FieldCustomization = {
     dataMatcher?: RegExp

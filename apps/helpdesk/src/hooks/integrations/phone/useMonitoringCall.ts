@@ -15,7 +15,7 @@ import {
     MONITORING_SWITCH_ERROR,
 } from 'models/voiceCall/constants'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
-import { MonitoringErrorCode } from 'models/voiceCall/types'
+import type { MonitoringErrorCode } from 'models/voiceCall/types'
 
 import useVoiceDevice from './useVoiceDevice'
 

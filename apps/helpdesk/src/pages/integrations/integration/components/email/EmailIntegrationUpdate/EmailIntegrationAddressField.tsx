@@ -11,7 +11,7 @@ import {
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,

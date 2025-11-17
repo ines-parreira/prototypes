@@ -1,5 +1,5 @@
 import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
-import { BillingContactDetailResponse } from 'state/billing/types'
+import type { BillingContactDetailResponse } from 'state/billing/types'
 
 export type ITaxIdRowsProps = {
     taxIDs: BillingContactDetailResponse['tax_ids']

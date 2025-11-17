@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
 
-import { ActionTemplate } from '../types'
+import type { ActionTemplate } from '../types'
 
 const useGetIsActionStepEnabled = () => {
     const enabledSteps = useFlag(FeatureFlagKey.ActionSteps)

@@ -6,7 +6,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import CheckBox from 'pages/common/forms/CheckBox'

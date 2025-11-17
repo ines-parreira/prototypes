@@ -3,14 +3,12 @@ import { assumeMock } from '@repo/testing'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { exampleResponseData } from 'domains/reporting/pages/convert/components/DownloadOverviewData/__tests__/DownloadOverviewData.spec'
-import {
-    CampaignReportContext,
-    fetchCampaignReportData,
-} from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
+import type { CampaignReportContext } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
+import { fetchCampaignReportData } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
 import { fetchGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { campaign } from 'fixtures/campaign'
 import { shopifyIntegration } from 'fixtures/integrations'
-import { CampaignPreview } from 'models/convert/campaign/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
 
 jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
 const fetchGetTableStatMock = assumeMock(fetchGetTableStat)

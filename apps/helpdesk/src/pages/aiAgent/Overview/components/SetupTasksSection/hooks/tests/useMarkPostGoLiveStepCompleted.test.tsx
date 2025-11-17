@@ -2,10 +2,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useUpdatePostStoreInstallationStepPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
-    PostStoreInstallationSteps,
-    PostStoreInstallationStepStatus,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 
 import { useMarkPostGoLiveStepCompleted } from '../useMarkPostGoLiveStepCompleted'
 

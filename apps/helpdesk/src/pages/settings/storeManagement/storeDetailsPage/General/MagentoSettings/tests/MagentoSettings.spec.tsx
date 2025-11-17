@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

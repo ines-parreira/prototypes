@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -16,7 +16,7 @@ import { automationSubscriptionProductPrices } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { initialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)

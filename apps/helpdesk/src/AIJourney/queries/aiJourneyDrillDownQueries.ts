@@ -4,19 +4,17 @@ import {
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyUniqClicksQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
+import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    AiSalesAgentConversationsCube,
-    AiSalesAgentConversationsDimension,
-} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import {
-    AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const aiJourneyOrdersDrillDownQueryFactory = (
     filters: StatsFilters,

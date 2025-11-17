@@ -1,4 +1,4 @@
-import { InterpretAs } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
+import type { InterpretAs } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 
 export function getTrendColorFromSign(
     sign: number,

@@ -1,4 +1,5 @@
-import { getPreviewsForPreviewType, Preview, PreviewId } from './constants'
+import type { Preview, PreviewId } from './constants'
+import { getPreviewsForPreviewType } from './constants'
 import { PersonalityPreviewItem } from './PersonalityPreviewItem'
 
 import css from './PersonalityPreviewGroup.less'

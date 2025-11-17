@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrderCustomersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { mockStore } from 'utils/testing'
 

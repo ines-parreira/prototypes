@@ -18,7 +18,7 @@ import {
     useGetHelpCenterArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -30,7 +30,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 

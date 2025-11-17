@@ -1,4 +1,4 @@
-import { StripeError } from '@stripe/stripe-js'
+import type { StripeError } from '@stripe/stripe-js'
 
 const STRIPE_USER_ERROR_CODES = [
     'card_declined',

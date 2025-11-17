@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
-import {
-    CampaignTableKeys,
-    isCampaignTableKey,
-} from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
+import { isCampaignTableKey } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { getDataFromTableCell } from 'domains/reporting/pages/convert/utils/getDataFromTableCell'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 type Options = {
     offset: number

@@ -2,10 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { Language } from 'constants/languages'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatAutoResponderReply,
     GorgiasChatEmailCaptureType,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'

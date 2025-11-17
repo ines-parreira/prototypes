@@ -1,11 +1,11 @@
 import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import useAllIntegrations from 'hooks/useAllIntegrations'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
 import enrichStores from '../helpers/enrichStores'
 import getUnassignedChannels from '../helpers/getUnassignedChannels'
-import { StoreMappingResponse } from '../types'
+import type { StoreMappingResponse } from '../types'
 
 export default function useStoresWithMaps() {
     const {

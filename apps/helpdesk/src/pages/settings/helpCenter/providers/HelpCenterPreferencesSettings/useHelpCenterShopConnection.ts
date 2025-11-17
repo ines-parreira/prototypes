@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
     useCreateStoreMapping,
     useDeleteStoreMapping,

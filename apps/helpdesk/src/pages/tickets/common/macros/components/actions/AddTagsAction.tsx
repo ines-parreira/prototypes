@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Tag, TicketTag } from '@gorgias/helpdesk-types'
+import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 

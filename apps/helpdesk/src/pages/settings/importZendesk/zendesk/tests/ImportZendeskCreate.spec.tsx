@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { fireEvent, RenderResult, screen } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { RenderResult } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { renderWithRouter } from 'utils/testing'
 
-import {
-    IntegrationType,
-    ZendeskIntegration,
-} from '../../../../../models/integration/types'
-import { StoreDispatch } from '../../../../../state/types'
+import type { ZendeskIntegration } from '../../../../../models/integration/types'
+import { IntegrationType } from '../../../../../models/integration/types'
+import type { StoreDispatch } from '../../../../../state/types'
 import { ImportZendeskCreate } from '../ImportZendeskCreate'
 import { ZENDESK_CONNECTION_TYPE } from '../types'
 import { failedImport, pendingImport, successImport } from './fixtures'

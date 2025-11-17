@@ -6,7 +6,7 @@ import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
-import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type Props = {
     productAutomationClicked: (

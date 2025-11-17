@@ -1,5 +1,5 @@
 import { Form } from 'core/forms/components/Form'
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 
 import ActionButtons from './ActionButtons'
 import { useMagentoSettings } from './hooks/useMagentoSettings'

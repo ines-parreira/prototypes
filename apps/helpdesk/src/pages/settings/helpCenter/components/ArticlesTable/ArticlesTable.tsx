@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
 import { chain as _chain } from 'lodash'
 import _noop from 'lodash/noop'
 import _sortBy from 'lodash/sortBy'
 
-import { Article } from 'models/helpCenter/types'
+import type { Article } from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import { ArticleRowActionTypes } from '../../constants'
+import type { ArticleRowActionTypes } from '../../constants'
 import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { ArticleRow } from './components/ArticleRow'
 

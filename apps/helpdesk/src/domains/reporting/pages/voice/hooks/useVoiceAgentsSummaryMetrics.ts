@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,

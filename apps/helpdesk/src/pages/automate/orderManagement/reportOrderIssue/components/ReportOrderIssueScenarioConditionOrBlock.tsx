@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import {
+import type {
     JsonLogicOrBlock,
     JsonLogicRuleOverVariable,
 } from 'models/selfServiceConfiguration/types'

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 
 import { useHasEmailToStoreConnection } from './useHasEmailToStoreConnection'
-import { StoreWithHelpCenters } from './useTopQuestionsStoresWithHelpCenters'
+import type { StoreWithHelpCenters } from './useTopQuestionsStoresWithHelpCenters'
 import { isAIArticleWithoutReviewAction } from './utils'
 
 type FirstMatchingStoreAndHelpCenter = {

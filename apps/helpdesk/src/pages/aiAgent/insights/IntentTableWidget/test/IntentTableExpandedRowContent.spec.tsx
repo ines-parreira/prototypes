@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -7,7 +7,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { IntentTableExpandedRowContent } from '../IntentTableExpandedRowContent'
-import { Intent, IntentTableColumn } from '../types'
+import type { Intent } from '../types'
+import { IntentTableColumn } from '../types'
 
 jest.mock('../hooks/useGetCustomTicketsFieldsDefinitionData', () => ({
     useGetCustomTicketsFieldsDefinitionData: jest.fn().mockReturnValue({

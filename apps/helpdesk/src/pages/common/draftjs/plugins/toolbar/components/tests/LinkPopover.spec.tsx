@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'

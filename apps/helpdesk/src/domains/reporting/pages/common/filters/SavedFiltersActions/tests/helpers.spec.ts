@@ -1,14 +1,14 @@
 import { assumeMock } from '@repo/testing'
 
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import {
     areFiltersFilled,
     isFilterFilled,

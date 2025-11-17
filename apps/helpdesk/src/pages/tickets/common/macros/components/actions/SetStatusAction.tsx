@@ -1,4 +1,5 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
 import { TICKET_STATUSES } from 'config'

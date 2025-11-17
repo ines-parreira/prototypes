@@ -1,4 +1,4 @@
-import { KeyboardEvent, RefObject } from 'react'
+import type { KeyboardEvent, RefObject } from 'react'
 
 export default function focusOnNextItem(
     e: KeyboardEvent<HTMLElement>,

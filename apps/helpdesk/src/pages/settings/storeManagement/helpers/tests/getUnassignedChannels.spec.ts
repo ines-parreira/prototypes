@@ -1,5 +1,6 @@
-import { Integration, IntegrationType } from 'models/integration/types'
-import { StoreMapping } from 'models/storeMapping/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { StoreMapping } from 'models/storeMapping/types'
 
 import getUnassignedChannels from '../getUnassignedChannels'
 

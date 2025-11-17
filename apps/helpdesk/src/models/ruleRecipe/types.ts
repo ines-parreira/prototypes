@@ -1,6 +1,6 @@
-import { RuleDraft } from '../rule/types'
-import { TagDraft } from '../tag/types'
-import { ViewDraft } from '../view/types'
+import type { RuleDraft } from '../rule/types'
+import type { TagDraft } from '../tag/types'
+import type { ViewDraft } from '../view/types'
 
 export enum RuleRecipeTag {
     AUTO_CLOSE = 'Auto Close',

@@ -1,4 +1,5 @@
-import React, {
+import type React from 'react'
+import {
     createContext,
     useCallback,
     useContext,
@@ -12,7 +13,7 @@ import { useDebouncedValue, useThrottledValue } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
-import { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
+import type { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
 import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfiguration,
@@ -31,16 +32,16 @@ import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from '../models/visualBuilderGraph.model'
-import {
+import type {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from '../models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
-import {
+import type {
     LanguageCode,
     WorkflowConfiguration,
 } from '../models/workflowConfiguration.types'
-import { WorkflowConfigurationUpsertDto } from '../types'
+import type { WorkflowConfigurationUpsertDto } from '../types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
@@ -49,10 +50,8 @@ import { mapServerErrorsToGraph } from '../utils/serverValidationErrors'
 import useTouchWorkflowGraph from './useTouchWorkflowGraph'
 import useUntouchWorkflowGraph from './useUntouchWorkflowGraph'
 import useValidateWorkflowGraph from './useValidateWorkflowGraph'
-import {
-    useVisualBuilderGraphReducer,
-    VisualBuilderGraphAction,
-} from './useVisualBuilderGraphReducer'
+import type { VisualBuilderGraphAction } from './useVisualBuilderGraphReducer'
+import { useVisualBuilderGraphReducer } from './useVisualBuilderGraphReducer'
 import { computeNodesPositions } from './useVisualBuilderGraphReducer/utils'
 import useWorkflowTranslations, {
     emptyTranslatedTexts,

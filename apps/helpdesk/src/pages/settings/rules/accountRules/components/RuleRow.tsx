@@ -1,10 +1,5 @@
-import React, {
-    MouseEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { MouseEvent } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -35,15 +30,14 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { ManagedRuleDisplayName } from 'state/rules/constants'
-import {
+import type {
     AnyManagedRuleSettings,
     AutoReplyFAQSettings,
     ManagedRule,
     ManagedRuleSettings,
-    ManagedRulesSlugs,
     Rule,
-    RuleType,
 } from 'state/rules/types'
+import { ManagedRulesSlugs, RuleType } from 'state/rules/types'
 import { formatDatetime } from 'utils'
 
 import { getRuleActions } from './ruleEditors/utils'

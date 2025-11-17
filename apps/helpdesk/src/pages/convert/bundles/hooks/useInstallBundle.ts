@@ -4,10 +4,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import { bundleKeys } from 'models/convert/bundle/queries'
-import {
-    BundleActionResponse,
-    BundleInstallationMethod,
-} from 'models/convert/bundle/types'
+import type { BundleActionResponse } from 'models/convert/bundle/types'
+import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import { convertStatusKeys } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { transformBundleError } from 'pages/convert/common/utils/transformBundleError'
 import { notify } from 'state/notifications/actions'

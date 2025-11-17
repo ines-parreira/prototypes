@@ -1,4 +1,5 @@
-import { FC, useRef } from 'react'
+import type { FC } from 'react'
+import { useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -7,7 +8,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { Article, HelpCenter } from 'models/helpCenter/types'
+import type { Article, HelpCenter } from 'models/helpCenter/types'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -18,7 +19,7 @@ import {
     getRootCategory,
 } from 'state/entities/helpCenter/categories'
 
-import { ArticleRowActionTypes } from '../../constants'
+import type { ArticleRowActionTypes } from '../../constants'
 import { useSearchContext } from '../../providers/SearchContext'
 import { CategoriesTableSkeleton } from '../CategoriesTableSkeleton'
 import { ImportSection } from '../Imports/components/ImportSection'

@@ -17,7 +17,7 @@ import {
     sidePanelSlice,
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock(

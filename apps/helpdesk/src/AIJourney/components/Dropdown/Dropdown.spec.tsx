@@ -2,7 +2,7 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import { Dropdown } from './Dropdown'
 

@@ -1,4 +1,5 @@
-import { KeyboardEvent, useCallback, useEffect, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useUnmount, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'

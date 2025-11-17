@@ -1,10 +1,10 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
 import { useFlag } from 'core/flags'
-import { Locale } from 'models/helpCenter/types'
+import type { Locale } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 
 import { getHelpCentersResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'

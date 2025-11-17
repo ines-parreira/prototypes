@@ -1,6 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-import { Banner, BannerFillStyle, BannerVariant } from '@gorgias/axiom'
+import type { BannerFillStyle, BannerVariant } from '@gorgias/axiom'
+import { Banner } from '@gorgias/axiom'
 
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { sanitizeHtmlDefault } from 'utils/html'

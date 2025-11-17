@@ -1,19 +1,18 @@
+import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Button,
-    ColumnDef,
     createSortableColumn,
     Text,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import CategoryChip from '../CategoryChip/CategoryChip'
-import MetafieldTypeItem, {
-    MetafieldType,
-} from '../MetafieldTypeItem/MetafieldTypeItem'
-import { MetafieldCategory } from '../types'
+import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
+import MetafieldTypeItem from '../MetafieldTypeItem/MetafieldTypeItem'
+import type { MetafieldCategory } from '../types'
 import VisibilityChip from '../VisibilityChip/VisibilityChip'
-import { Field, MetafieldsTableMeta } from './types'
+import type { Field, MetafieldsTableMeta } from './types'
 
 export const columns: ColumnDef<Field>[] = [
     createSortableColumn<Field>('name', 'Name', (info) => {

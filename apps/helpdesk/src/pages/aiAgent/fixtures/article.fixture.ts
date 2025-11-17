@@ -1,4 +1,8 @@
-import { Article, CreateArticleDto, LocaleCode } from 'models/helpCenter/types'
+import type {
+    Article,
+    CreateArticleDto,
+    LocaleCode,
+} from 'models/helpCenter/types'
 
 export const getCreateArticleDtoFixture = (
     overrides: Partial<CreateArticleDto> = {},

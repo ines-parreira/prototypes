@@ -1,8 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     CustomFieldCondition,
     ListCustomFieldConditionsResult,
+} from '@gorgias/helpdesk-queries'
+import {
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
 } from '@gorgias/helpdesk-queries'

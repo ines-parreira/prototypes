@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import type { QueryKey, UseInfiniteQueryOptions } from '@tanstack/react-query'
 
-import { HttpResponse, PaginationMeta } from '@gorgias/helpdesk-client'
+import type { HttpResponse, PaginationMeta } from '@gorgias/helpdesk-client'
 
 type ListResponse<ListItemType> = {
     meta: PaginationMeta

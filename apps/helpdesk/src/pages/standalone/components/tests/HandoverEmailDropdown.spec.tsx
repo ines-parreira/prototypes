@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { EmailItem, HandoverEmailDropdown } from '../HandoverEmailDropdown'
+import type { EmailItem } from '../HandoverEmailDropdown'
+import { HandoverEmailDropdown } from '../HandoverEmailDropdown'
 
 describe('HandoverEmailDropdown', () => {
     const mockEmailItems: EmailItem[] = [

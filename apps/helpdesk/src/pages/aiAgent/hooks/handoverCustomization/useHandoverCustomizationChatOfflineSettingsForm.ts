@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
     initialFormFieldValues,
@@ -13,7 +13,7 @@ import { mapFormValuesToHandoverConfigurationData } from 'pages/aiAgent/utils/ha
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { CHANGES_SAVED_SUCCESS } from '../../constants'
-import { HandoverCustomizationChatOfflineSettingsFormValues } from '../../types'
+import type { HandoverCustomizationChatOfflineSettingsFormValues } from '../../types'
 import { useAiAgentHandoverConfigurationMutation } from './useAiAgentHandoverConfigurationMutation'
 import { useFetchAiAgentStoreHandoverConfiguration } from './useFetchAiAgentHandoverConfiguration'
 

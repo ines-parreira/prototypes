@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 
 import { decideChatWarning } from '../../PostOnboardingTasksSection/utils'
 import { ChatToggle } from '../ChatToggle'

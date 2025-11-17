@@ -1,10 +1,10 @@
 import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
-import { ShopifyMetafield } from '@gorgias/helpdesk-types'
+import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import { Metafield } from 'Widgets/modules/Shopify/modules/Metafields'
 
-import { MetafieldProps } from './types'
+import type { MetafieldProps } from './types'
 
 import css from './CustomerMetafields.less'
 

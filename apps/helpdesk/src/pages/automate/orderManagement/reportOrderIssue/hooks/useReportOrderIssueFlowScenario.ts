@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'

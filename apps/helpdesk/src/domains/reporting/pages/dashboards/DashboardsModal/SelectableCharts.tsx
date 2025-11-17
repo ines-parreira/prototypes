@@ -6,7 +6,7 @@ import {
     CHARTS_MODAL_ICONS,
 } from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon'
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableCharts.less'
-import { ChartConfig } from 'domains/reporting/pages/dashboards/types'
+import type { ChartConfig } from 'domains/reporting/pages/dashboards/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { notify } from 'state/notifications/actions'

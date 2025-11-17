@@ -11,7 +11,7 @@ import {
     mapTicketChannelsToAutomateChannels,
 } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 
 describe('billableTicketDatasetAdditionalFilters', () => {

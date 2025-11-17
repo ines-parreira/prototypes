@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
+import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 
 export default function useHighlightedElements() {
     const state = useState<HighlightedElements | null>(null)

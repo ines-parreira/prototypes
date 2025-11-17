@@ -6,7 +6,7 @@ import {
     LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { BusinessHoursConfig } from '@gorgias/helpdesk-types'
+import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'

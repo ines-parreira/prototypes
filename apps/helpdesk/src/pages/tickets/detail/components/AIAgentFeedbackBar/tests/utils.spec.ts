@@ -1,8 +1,8 @@
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
-import { Knowledge } from 'models/aiAgentFeedback/types'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { Knowledge } from 'models/aiAgentFeedback/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'

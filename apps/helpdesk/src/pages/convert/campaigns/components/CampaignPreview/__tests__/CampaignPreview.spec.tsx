@@ -15,7 +15,7 @@ import {
 } from 'fixtures/productPrices'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import CampaignPreview from '../CampaignPreview'
 

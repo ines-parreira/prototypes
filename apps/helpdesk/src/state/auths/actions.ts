@@ -1,8 +1,8 @@
 import client from '../../models/api/resources'
-import { ApiListResponseLegacyPagination } from '../../models/api/types'
-import { StoreDispatch } from '../types'
+import type { ApiListResponseLegacyPagination } from '../../models/api/types'
+import type { StoreDispatch } from '../types'
 import * as constants from './constants'
-import { AuthItem } from './types'
+import type { AuthItem } from './types'
 
 export const fetchCurrentAuths =
     () =>

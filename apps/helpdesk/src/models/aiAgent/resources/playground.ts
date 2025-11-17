@@ -1,6 +1,6 @@
-import { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
+import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 
-import {
+import type {
     AiAgentPlaygroundOptions,
     CreateTestSessionResponse,
     PlaygroundExecutions,

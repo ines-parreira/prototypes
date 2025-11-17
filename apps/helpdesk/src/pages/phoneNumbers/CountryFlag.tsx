@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 import { ReactCountryFlag } from 'react-country-flag'
 
 import css from './CountryFlag.less'

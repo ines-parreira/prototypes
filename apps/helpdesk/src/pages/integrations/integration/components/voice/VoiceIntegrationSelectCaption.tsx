@@ -1,4 +1,4 @@
-import { PhoneIntegration } from '@gorgias/helpdesk-types'
+import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 

@@ -1,13 +1,14 @@
-import { Component, ReactNode } from 'react'
-import type { ComponentType } from 'react'
+import { Component } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
 import classnames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { clamp, useSavedSizes } from 'core/layout/panels'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import * as layoutSelectors from 'state/layout/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from './Infobar.less'
 

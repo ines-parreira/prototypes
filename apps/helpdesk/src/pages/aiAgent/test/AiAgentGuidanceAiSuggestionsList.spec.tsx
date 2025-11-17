@@ -1,7 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import React from 'react'
+import type React from 'react'
 
 import { history } from '@repo/routing'
 import { userEvent } from '@repo/testing'

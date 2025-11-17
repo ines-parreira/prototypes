@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 
-import { StaticContext } from 'react-router'
-import { RouteComponentProps } from 'react-router-dom'
+import type { StaticContext } from 'react-router'
+import type { RouteComponentProps } from 'react-router-dom'
 
 import { AGENT_ROLE } from 'config/user'
 import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'

@@ -4,22 +4,20 @@ import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     emptyFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.HelpCenters]

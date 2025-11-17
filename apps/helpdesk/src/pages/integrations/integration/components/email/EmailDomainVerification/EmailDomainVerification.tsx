@@ -1,6 +1,9 @@
-import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import type {
+    EmailIntegration,
+    GmailIntegration,
+} from '@gorgias/helpdesk-queries'
 
-import { OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 

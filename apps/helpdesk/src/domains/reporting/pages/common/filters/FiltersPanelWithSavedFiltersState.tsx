@@ -1,4 +1,5 @@
-import { ComponentProps, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { connect } from 'react-redux'
@@ -9,7 +10,7 @@ import { SAVEABLE_FILTERS } from 'domains/reporting/pages/common/filters/constan
 import { FiltersPanelComponent } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { SavedFilterComponentMap } from 'domains/reporting/pages/common/filters/FiltersPanelConfig'
 import { getStatsFiltersFromSavedFilters } from 'domains/reporting/state/ui/stats/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export const FiltersPanelWithCustomFilters = (
     props: ComponentProps<typeof FiltersPanelComponent>,

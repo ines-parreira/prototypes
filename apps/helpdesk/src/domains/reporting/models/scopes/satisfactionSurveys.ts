@@ -1,7 +1,8 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { Context, defineScope } from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 // TODO use correct type to dimensions in scope
 export type SatisfactionSurveysDimension =

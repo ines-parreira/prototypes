@@ -1,7 +1,8 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 import { size } from 'lodash'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
@@ -10,16 +11,15 @@ import { channels as mockChannels } from 'fixtures/channels'
 import { integrationsState } from 'fixtures/integrations'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import {
+import type {
     EmailIntegration,
     Integration,
-    IntegrationType,
-    isPhoneIntegration,
     PhoneIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
+import { IntegrationType, isPhoneIntegration } from 'models/integration/types'
 import { getChannelBySlug } from 'services/channels'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     DEPRECATED_getIntegrations,

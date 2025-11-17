@@ -7,12 +7,12 @@ import { FilterComponentKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import { logSegmentEvent } from 'domains/reporting/pages/common/filters/helpers'
-import { OptionalFilterProps } from 'domains/reporting/pages/common/filters/types'
+import type { OptionalFilterProps } from 'domains/reporting/pages/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getSelectedCustomField,
     setSelectedCustomField,

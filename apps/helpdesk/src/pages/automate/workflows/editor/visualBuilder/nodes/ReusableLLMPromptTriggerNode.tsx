@@ -1,14 +1,12 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 
 import { Badge } from '@gorgias/axiom'
 
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import VisualBuilderNode from './VisualBuilderNode'
 

@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -7,20 +8,21 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { CustomerSummary } from '@gorgias/helpdesk-types'
+import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, Plan, ProductType } from 'models/billing/types'
+import type { Plan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import {
     getProductLabel,
     isHelpdesk,
     isStarterTier,
 } from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
-import { CurrentProductsUsages } from 'state/billing/types'
+import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
@@ -30,7 +32,7 @@ import {
 } from '../../constants'
 import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
 import { formatNumTickets } from '../../utils/formatAmount'
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
 import Badge, { BadgeType } from '../Badge'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'

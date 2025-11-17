@@ -1,22 +1,20 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import {
+import type {
     ArticleTranslationResponseDto,
     ArticleWithLocalTranslation,
 } from 'models/helpCenter/types'
-import { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { KnowledgeEditorGuidanceCreateView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceCreateView'
 import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceReadView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceReadView'
-import { GuidanceFormFields } from 'pages/aiAgent/types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceFormFields } from 'pages/aiAgent/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
-import {
-    GuidanceMode,
-    KnowledgeEditorTopBarGuidanceControls,
-} from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import type { GuidanceMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import { KnowledgeEditorTopBarGuidanceControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 
 import css from './KnowledgeEditorGuidanceView.less'
 

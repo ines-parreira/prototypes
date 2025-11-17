@@ -14,7 +14,7 @@ import { channelConnection } from 'fixtures/channelConnection'
 import { integrationsState } from 'fixtures/integrations'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

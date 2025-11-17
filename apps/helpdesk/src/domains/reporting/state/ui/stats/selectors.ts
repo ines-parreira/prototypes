@@ -20,7 +20,7 @@ import {
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { periodAndAggregationWindowToReportingGranularity } from 'domains/reporting/utils/reporting'
 import { getTimezone } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export const isCleanStatsDirty = (state: RootState) =>
     state.ui.stats.filters.isFilterDirty

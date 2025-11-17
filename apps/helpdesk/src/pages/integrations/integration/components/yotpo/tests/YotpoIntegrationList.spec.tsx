@@ -13,7 +13,7 @@ import {
     YOTPO_INTEGRATION_TYPE,
 } from 'constants/integration'
 import YotpoIntegrationList from 'pages/integrations/integration/components/yotpo/YotpoIntegrationList'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

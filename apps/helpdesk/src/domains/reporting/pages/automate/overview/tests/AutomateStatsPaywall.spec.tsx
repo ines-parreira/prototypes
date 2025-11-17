@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ import AutomateStatsPaywall from 'domains/reporting/pages/automate/AutomateStats
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { TrialPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

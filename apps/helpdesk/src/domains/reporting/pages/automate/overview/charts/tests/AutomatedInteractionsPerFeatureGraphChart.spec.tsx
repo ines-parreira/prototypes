@@ -2,7 +2,7 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 
-import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
+import type { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import {
     useAutomateMetricsTimeSeries,

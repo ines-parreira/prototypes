@@ -1,14 +1,14 @@
-import { RequestedData } from 'domains/reporting/hooks/types'
-import { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { RequestedData } from 'domains/reporting/hooks/types'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { ticketCountPerProductAndIntentQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 import { notUndefined } from 'utils/types'
 

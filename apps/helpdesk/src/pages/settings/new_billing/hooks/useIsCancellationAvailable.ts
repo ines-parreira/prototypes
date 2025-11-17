@@ -1,9 +1,9 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { CustomerSummary } from '@gorgias/helpdesk-types'
+import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import { HelpdeskPlan } from 'models/billing/types'
+import type { HelpdeskPlan } from 'models/billing/types'
 
 import checkIsEnterpriseGMV from '../utils/checkIsEnterpriseGMV'
 import useAutomatedHelpdeskCancellationFlowAvailable from './useAutomatedHelpdeskCancellationFlowAvailable'

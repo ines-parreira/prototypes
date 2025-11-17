@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -7,7 +8,7 @@ import { createStore } from 'redux'
 
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { IntegrationType } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const defaultState = {
     integrations: fromJS({

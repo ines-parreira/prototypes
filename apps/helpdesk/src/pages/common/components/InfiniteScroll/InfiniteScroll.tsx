@@ -1,12 +1,5 @@
-import React, {
-    HTMLProps,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { HTMLProps, ReactNode } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 

@@ -15,10 +15,8 @@ import {
     SatisfactionReportConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import * as constants from 'domains/reporting/pages/report-chart-restrictions/config'
-import {
-    RestrictedComponentType,
-    RestrictionsPerCustomer,
-} from 'domains/reporting/pages/report-chart-restrictions/config'
+import type { RestrictionsPerCustomer } from 'domains/reporting/pages/report-chart-restrictions/config'
+import { RestrictedComponentType } from 'domains/reporting/pages/report-chart-restrictions/config'
 import {
     getAccountRestrictions,
     getUserChartsRestrictions,

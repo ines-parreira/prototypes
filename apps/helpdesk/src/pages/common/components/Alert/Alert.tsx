@@ -1,9 +1,5 @@
-import React, {
-    HTMLAttributes,
-    isValidElement,
-    MouseEvent,
-    ReactNode,
-} from 'react'
+import type { HTMLAttributes, MouseEvent, ReactNode } from 'react'
+import React, { isValidElement } from 'react'
 
 import classnames from 'classnames'
 

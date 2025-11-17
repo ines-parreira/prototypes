@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
-    WorkflowTemplate,
-    WorkflowTemplateLabelType,
-} from '../models/workflowConfiguration.types'
+import type { WorkflowTemplate } from '../models/workflowConfiguration.types'
+import { WorkflowTemplateLabelType } from '../models/workflowConfiguration.types'
 import { WorkflowTemplateModal } from './WorkflowTemplateModal'
 
 import css from './WorkflowTemplateCard.less'

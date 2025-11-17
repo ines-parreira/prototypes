@@ -1,9 +1,9 @@
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export type ContactFormIntegration =
     | EmailIntegration

@@ -1,10 +1,8 @@
 import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import {
-    formatMetricValue,
-    MetricValueFormat,
-} from 'domains/reporting/pages/common/utils'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'

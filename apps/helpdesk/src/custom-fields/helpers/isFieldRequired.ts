@@ -1,6 +1,6 @@
 import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 
 export const isFieldRequired = (
     fieldDefinition: CustomField,

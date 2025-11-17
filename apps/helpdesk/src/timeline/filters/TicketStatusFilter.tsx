@@ -7,7 +7,7 @@ import FilterName from 'pages/common/forms/FilterInput/FilterName'
 import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 
 import { STATUS_FILTERS } from '../constants'
-import { FilterKey } from '../types'
+import type { FilterKey } from '../types'
 import { getOptionLabels } from './helpers/statusFilter'
 
 import css from './Filters.less'

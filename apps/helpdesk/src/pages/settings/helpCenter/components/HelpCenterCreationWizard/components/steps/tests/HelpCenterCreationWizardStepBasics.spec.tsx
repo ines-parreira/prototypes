@@ -11,12 +11,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { shopifyIntegration } from 'fixtures/integrations'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
-    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import { NEXT_ACTION } from 'pages/settings/helpCenter/constants'
 import {
@@ -24,7 +24,7 @@ import {
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'

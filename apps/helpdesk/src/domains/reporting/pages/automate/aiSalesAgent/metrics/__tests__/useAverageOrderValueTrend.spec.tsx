@@ -3,17 +3,17 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
+import type { MultipleMetricsData } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import {
     fetchMultipleMetricsTrends,
-    MultipleMetricsData,
     useMultipleMetricsTrends,
 } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAverageOrderValueTrend,
     useAverageOrderValueTrend,

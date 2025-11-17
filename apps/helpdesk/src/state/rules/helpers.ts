@@ -1,10 +1,10 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
 
 import { isImmutable, toImmutable } from 'common/utils'
 
-import { Rule, RuleDraft } from './types'
+import type { Rule, RuleDraft } from './types'
 
 /**
  * Return array of event types of a rule (ex: ['ticket-updated', 'ticket-created'])

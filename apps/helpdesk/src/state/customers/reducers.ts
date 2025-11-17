@@ -1,9 +1,10 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { ViewType } from 'models/view/types'
 import * as constants from 'state/customers/constants'
-import { CustomersState } from 'state/customers/types'
-import { GorgiasAction } from 'state/types'
+import type { CustomersState } from 'state/customers/types'
+import type { GorgiasAction } from 'state/types'
 import * as viewsConstants from 'state/views/constants'
 
 export const initialState: CustomersState = fromJS({

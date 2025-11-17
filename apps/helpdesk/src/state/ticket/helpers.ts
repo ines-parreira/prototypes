@@ -1,9 +1,12 @@
-import { fromJS, List, Map } from 'immutable'
-import moment, { Moment } from 'moment'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { Moment } from 'moment'
+import moment from 'moment'
 
 import { TicketStatus } from 'business/types/ticket'
 import { TAGS_ADDED_KEY, TAGS_REMOVED_KEY } from 'models/event/constants'
-import { TICKET_EVENT_TYPES, TicketEventType } from 'models/event/types'
+import type { TicketEventType } from 'models/event/types'
+import { TICKET_EVENT_TYPES } from 'models/event/types'
 
 const MAX_DIFF_SECONDS = 5
 

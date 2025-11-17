@@ -24,28 +24,24 @@ import {
     TrialType,
 } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { logTrialBannerEvent } from 'pages/aiAgent/components/ShoppingAssistant/utils/eventLogger'
-import { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
-import { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
-import { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
-import { TrialOptOutModalProps } from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
-import { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import type { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
+import type { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
+import type { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
+import type { TrialOptOutModalProps } from 'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal'
+import type { UpgradePlanModalProps } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import {
-    TrialAccess,
-    useTrialAccess,
-} from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
-import {
-    TrialMetrics,
-    useTrialMetrics,
-} from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { toPercentage } from 'pages/aiAgent/trial/utils/utils'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
-import { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
-import { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
-import {
+import type { RequestTrialModalProps } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import type { TrialFinishSetupModalProps } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import type {
     TrialFeature,
     TrialTryModalProps,
 } from 'pages/common/components/TrialTryModal/TrialTryModal'

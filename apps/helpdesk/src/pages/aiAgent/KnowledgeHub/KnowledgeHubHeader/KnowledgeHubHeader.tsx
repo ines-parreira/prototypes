@@ -1,6 +1,6 @@
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import { GroupedKnowledgeItem } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
 import { HeaderActions } from './ActionButtons'
 import { BackButton } from './BackButton'
 import { HeaderTitle } from './HeaderTitle'

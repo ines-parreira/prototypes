@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
@@ -8,7 +9,7 @@ import {
     KnowledgeSourceSideBarContext,
     KnowledgeSourceSideBarMode,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
-import {
+import type {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResourcePreview,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

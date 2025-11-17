@@ -1,5 +1,5 @@
 import { usePhoneNumberCapabilitiesMap } from 'models/phoneNumber/queries'
-import {
+import type {
     CountryPhoneCapabilities,
     PhoneCountry,
 } from 'models/phoneNumber/types'

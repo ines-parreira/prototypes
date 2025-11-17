@@ -4,7 +4,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
-import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
+import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,

@@ -1,10 +1,5 @@
-import React, {
-    PropsWithChildren,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { PropsWithChildren } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
@@ -14,23 +9,23 @@ import FilterDropdownItemLabel from 'domains/reporting/pages/common/components/F
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import LogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
 import cssLogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
     FILTER_NAME_MAX_WIDTH,
     FILTER_SELECT_ALL_LABEL,
     FILTER_VALUE_MAX_WIDTH,
-    LogicalOperatorEnum,
     LogicalOperatorLabel,
     REMOVE_FILTER_LABEL,
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import css from 'domains/reporting/pages/common/components/Filter/Filter.less'
+import type { FilterOptionWithOptionalLabel } from 'domains/reporting/pages/common/filters/utils'
 import {
-    FilterOptionWithOptionalLabel,
     filterValidOptions,
     getFilterError,
 } from 'domains/reporting/pages/common/filters/utils'
-import {
+import type {
     DropdownOption,
     FilterOptionGroup,
 } from 'domains/reporting/pages/types'

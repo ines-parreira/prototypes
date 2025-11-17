@@ -1,19 +1,19 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import {
     TAGS_FETCH_ERROR_MESSAGE,
     useTagSearch,
 } from 'domains/reporting/hooks/common/useTagSearch'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('models/tag/resources')
 const fetchTagsMock = assumeMock(fetchTags)

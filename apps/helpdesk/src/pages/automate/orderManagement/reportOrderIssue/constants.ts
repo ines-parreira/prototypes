@@ -1,8 +1,8 @@
-import {
-    AUTOMATED_RESPONSE,
+import type {
     ReportIssueCaseReasonAction,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
+import { AUTOMATED_RESPONSE } from 'models/selfServiceConfiguration/types'
 
 export const SCENARIO_NAME_MAX_LENGTH = 20
 export const SCENARIO_DESCRIPTION_MAX_LENGTH = 200

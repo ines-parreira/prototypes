@@ -6,7 +6,7 @@ import { MISSING_AI_AGENT_USER_ID } from 'domains/reporting/hooks/automate/utils
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 
 export function AutomatedInteractionsMetricCard({

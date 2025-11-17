@@ -12,7 +12,8 @@ import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
-import routerDom, { useParams } from 'react-router-dom'
+import type routerDom from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -33,8 +34,8 @@ import {
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
-import { RootState, StoreDispatch } from 'state/types'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'

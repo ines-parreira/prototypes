@@ -1,12 +1,9 @@
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import {
-    ExpressionProps,
-    RuleContext,
-    StatementProps,
-} from '../rule/RuleProvider'
+import type { ExpressionProps, StatementProps } from '../rule/RuleProvider'
+import { RuleContext } from '../rule/RuleProvider'
 import { useRuleContext } from '../useRuleContext'
 
 const MockExpression: ComponentType = () => <div>Mock Expression</div>

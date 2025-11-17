@@ -1,6 +1,7 @@
-import React, { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useState } from 'react'
 
-import { Meta, StoryFn, StoryObj } from '@storybook/react'
+import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,10 +12,8 @@ import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 
-import {
-    AIArticleRecommendationItem,
-    AllRecommendationsStatus,
-} from '../hooks/useAIArticleRecommendationItems'
+import type { AIArticleRecommendationItem } from '../hooks/useAIArticleRecommendationItems'
+import { AllRecommendationsStatus } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
 
 const currentUser = Map({

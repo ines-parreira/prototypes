@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 export function sortViews(view1: Map<any, any>, view2: Map<any, any>) {
     const isView1Hidden = view1.get('hide', false)

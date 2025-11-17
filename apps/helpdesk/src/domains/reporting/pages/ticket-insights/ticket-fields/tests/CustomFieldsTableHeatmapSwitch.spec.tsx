@@ -12,7 +12,7 @@ import {
     ticketInsightsSlice,
     toggleHeatmapMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

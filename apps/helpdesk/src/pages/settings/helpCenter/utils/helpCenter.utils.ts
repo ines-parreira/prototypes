@@ -1,10 +1,9 @@
 import { isDevelopment } from '@repo/utils'
 import copy from 'copy-to-clipboard'
 
-import {
+import type {
     AIArticle,
     Article,
-    ARTICLE_TEMPLATES_KEYS,
     ArticleTemplateKey,
     ArticleTranslationWithRating,
     CreateArticleDto,
@@ -14,10 +13,11 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import { ARTICLE_TEMPLATES_KEYS } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
 
 import {
@@ -27,8 +27,9 @@ import {
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DOMAIN,
 } from '../constants'
-import { ArticleOrigin } from '../types/articleOrigin.enum'
-import { HelpCenterLayout, isHelpCenterLayout } from '../types/layout.enum'
+import type { ArticleOrigin } from '../types/articleOrigin.enum'
+import type { HelpCenterLayout } from '../types/layout.enum'
+import { isHelpCenterLayout } from '../types/layout.enum'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto

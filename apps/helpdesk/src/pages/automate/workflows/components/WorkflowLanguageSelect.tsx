@@ -15,10 +15,8 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {
-    LanguageCode,
-    supportedLanguages,
-} from '../models/workflowConfiguration.types'
+import type { LanguageCode } from '../models/workflowConfiguration.types'
+import { supportedLanguages } from '../models/workflowConfiguration.types'
 
 import css from './WorkflowLanguageSelect.less'
 

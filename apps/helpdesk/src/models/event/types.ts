@@ -1,9 +1,9 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import { ApiPaginationParams, OrderParams } from 'models/api/types'
-import { RuleEvent } from 'state/rules/types'
+import type { ApiPaginationParams, OrderParams } from 'models/api/types'
+import type { RuleEvent } from 'state/rules/types'
 
 export type TicketTagsAddedEventData = {
     tags_added: number[]

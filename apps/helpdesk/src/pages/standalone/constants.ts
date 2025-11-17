@@ -1,7 +1,7 @@
 import intercomSchema from 'pages/standalone/assets/httpSchemas/ticket-intercom.json'
 import zendeskSchema from 'pages/standalone/assets/httpSchemas/ticket-zendesk.json'
 
-import { HelpdeskIntegration } from './types'
+import type { HelpdeskIntegration } from './types'
 
 export const TICKET_HANDOVER_TRIGGER = 'ticket-handed-over'
 export const HANDOVER_DEFAULT_METHOD = 'POST'

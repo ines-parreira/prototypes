@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
@@ -9,8 +9,8 @@ import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
 import Literal from 'pages/common/components/ast/Literal'
-import { RuleItemActions } from 'pages/settings/rules/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

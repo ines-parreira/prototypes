@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 
-import { MetafieldCategory } from '../../types'
+import type { MetafieldCategory } from '../../types'
 
 type WizardState =
     | { step: 'categories'; selectedCategory: null }

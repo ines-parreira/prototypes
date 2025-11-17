@@ -1,5 +1,5 @@
-import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 // GENERAL
 

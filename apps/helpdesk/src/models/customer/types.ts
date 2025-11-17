@@ -1,9 +1,9 @@
-import { Order } from 'constants/integrations/types/shopify'
-import { CustomerChannel } from 'models/customerChannel/types'
-import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
-import { CustomerExternalData } from 'models/customerExternalData/types'
-import { IntegrationType } from 'models/integration/types'
-import { Subscription } from 'state/billing/types'
+import type { Order } from 'constants/integrations/types/shopify'
+import type { CustomerChannel } from 'models/customerChannel/types'
+import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { CustomerExternalData } from 'models/customerExternalData/types'
+import type { IntegrationType } from 'models/integration/types'
+import type { Subscription } from 'state/billing/types'
 
 type CustomerInformation = {
     city: string

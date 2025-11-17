@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
@@ -16,7 +16,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import {
     coerceResourceType,
     parseReasoningResources,
@@ -28,7 +28,7 @@ import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/component
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { AiAgentReasoning } from '../AiAgentReasoning'
 

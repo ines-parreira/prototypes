@@ -3,9 +3,10 @@ import React from 'react'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { BadgeItemProps } from 'pages/common/components/BadgetItem'
+import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
-import { BadgeSelectItem, DynamicBadgeList } from '../DynamicBadgeList'
+import type { BadgeSelectItem } from '../DynamicBadgeList'
+import { DynamicBadgeList } from '../DynamicBadgeList'
 
 const availableList: BadgeSelectItem[] = [
     { id: 'en-US', label: 'English', text: 'English', value: 'en' },

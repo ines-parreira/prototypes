@@ -1,4 +1,5 @@
-import React, { MouseEvent, useEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

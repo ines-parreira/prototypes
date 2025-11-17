@@ -1,16 +1,19 @@
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
-import { TransitoryAttachmentData } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {
-    attachmentIsContactCaptureForm,
+import type { TransitoryAttachmentData } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import type {
     AttachmentType,
     CampaignFormExtra,
+} from 'pages/convert/campaigns/types/CampaignAttachment'
+import {
+    attachmentIsContactCaptureForm,
     ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { addAttachment, deleteAttachment } from 'state/newMessage/actions'
-import { TicketState } from 'state/ticket/types'
-import { StoreDispatch } from 'state/types'
+import type { TicketState } from 'state/ticket/types'
+import type { StoreDispatch } from 'state/types'
 
 export const transformTransitoryToAttachment = (
     transitoryAttachmentData: TransitoryAttachmentData,

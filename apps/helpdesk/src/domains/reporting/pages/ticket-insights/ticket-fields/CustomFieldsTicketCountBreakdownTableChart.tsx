@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { CustomFieldsTableHeatmapSwitch } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
 import { CustomFieldsTicketCountBreakdownTable } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
 import {

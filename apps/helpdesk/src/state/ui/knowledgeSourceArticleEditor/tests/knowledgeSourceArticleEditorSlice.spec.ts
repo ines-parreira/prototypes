@@ -1,6 +1,6 @@
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { KnowledgePendingCloseType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     getCounters,

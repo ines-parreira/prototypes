@@ -1,16 +1,16 @@
-import React, { ComponentType, useCallback, useMemo } from 'react'
+import type { ComponentType } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from 'pages/common/utils/withCancellableRequest'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
+import withCancellableRequest from 'pages/common/utils/withCancellableRequest'
 import { fieldEnumSearch } from 'state/views/actions'
-import { FieldSearchResult } from 'state/views/types'
+import type { FieldSearchResult } from 'state/views/types'
 
 type Props = {
     plural: string

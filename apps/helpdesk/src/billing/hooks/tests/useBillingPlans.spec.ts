@@ -3,7 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { mockBillingState, mockCurrentPlans } from '@gorgias/helpdesk-mocks'
 
 import { useBillingPlans } from '../useBillingPlans'
-import { ResponseBillingState, useBillingState } from '../useBillingState'
+import type { ResponseBillingState } from '../useBillingState'
+import { useBillingState } from '../useBillingState'
 
 jest.mock('billing/hooks/useBillingState')
 

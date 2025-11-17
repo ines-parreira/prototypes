@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
 
 import { campaignKeys } from 'models/convert/campaign/queries'
 

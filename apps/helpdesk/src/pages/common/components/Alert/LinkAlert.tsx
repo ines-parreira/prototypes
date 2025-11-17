@@ -1,4 +1,5 @@
-import React, { ComponentProps, MouseEvent, useMemo } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
+import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 

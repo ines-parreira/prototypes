@@ -8,7 +8,7 @@ import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
-import { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundChat.types'
+import type { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundChat.types'
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',

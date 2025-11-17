@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 describe('useStatsFilters', () => {

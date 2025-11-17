@@ -4,7 +4,7 @@ import {
     DEFAULT_TTS_LANGUAGE,
 } from 'pages/integrations/integration/components/voice/VoiceMessageTTS/constants'
 
-import { VoiceMessageNone } from './types'
+import type { VoiceMessageNone } from './types'
 
 // src/services/statusPageManager/constants.ts
 export enum IntegrationType {

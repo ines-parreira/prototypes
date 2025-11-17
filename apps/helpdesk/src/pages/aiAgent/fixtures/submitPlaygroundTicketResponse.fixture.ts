@@ -1,4 +1,5 @@
-import { AiAgentResponse, TicketOutcome } from 'models/aiAgentPlayground/types'
+import type { AiAgentResponse } from 'models/aiAgentPlayground/types'
+import { TicketOutcome } from 'models/aiAgentPlayground/types'
 
 export const getSubmitPlaygroundTicketResponseFixture = (
     props?: Partial<AiAgentResponse>,

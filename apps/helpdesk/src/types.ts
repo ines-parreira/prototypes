@@ -1,24 +1,24 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { RecentChatTicket } from 'business/types/recentChats'
-import { User } from 'config/types/user'
-import {
+import type { RecentChatTicket } from 'business/types/recentChats'
+import type { User } from 'config/types/user'
+import type {
     Integration,
     IntegrationAuthentication,
     IntegrationExtra,
     IntegrationType,
 } from 'models/integration/types'
-import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
-import { Section } from 'models/section/types'
-import { Team } from 'models/team/types'
-import { View } from 'models/view/types'
-import { Application } from 'services/applications'
-import { Channel } from 'services/channels'
-import { BillingProducts } from 'state/billing/types'
-import { Account } from 'state/currentAccount/types'
-import { CompanyTier } from 'state/currentCompany/types'
+import type { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
+import type { Section } from 'models/section/types'
+import type { Team } from 'models/team/types'
+import type { View } from 'models/view/types'
+import type { Application } from 'services/applications'
+import type { Channel } from 'services/channels'
+import type { BillingProducts } from 'state/billing/types'
+import type { Account } from 'state/currentAccount/types'
+import type { CompanyTier } from 'state/currentCompany/types'
 
 export type KeysMatching<T, V> = {
     [K in keyof T]-?: T[K] extends V ? K : never

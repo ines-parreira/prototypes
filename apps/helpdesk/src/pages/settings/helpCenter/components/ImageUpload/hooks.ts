@@ -1,9 +1,5 @@
-import {
-    ChangeEvent,
-    MouseEvent as ReactMouseEvent,
-    useEffect,
-    useState,
-} from 'react'
+import type { ChangeEvent, MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useLocalImage = ({
     file,

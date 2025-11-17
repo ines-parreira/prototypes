@@ -4,7 +4,7 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { commentHighlightsQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/commentHighlightsQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     NotSpamNorTrashedTicketsFilter,

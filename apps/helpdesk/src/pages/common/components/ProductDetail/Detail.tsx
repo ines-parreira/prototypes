@@ -3,7 +3,7 @@ import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import Header from './Header'
 import InfoCard from './InfoCard'
 import Slides from './Slides'
-import { ProductDetail } from './types'
+import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 

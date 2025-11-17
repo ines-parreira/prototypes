@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { logEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
@@ -8,14 +9,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
-import ViewLink from 'domains/reporting/pages/common/ViewLink'
+import type ViewLink from 'domains/reporting/pages/common/ViewLink'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
 import { channels } from 'fixtures/channels'
 import { integrationsState } from 'fixtures/integrations'
 import * as channelsService from 'services/channels'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

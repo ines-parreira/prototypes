@@ -1,6 +1,6 @@
+import type { ReactNode } from 'react'
 import {
     createContext,
-    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -10,7 +10,7 @@ import {
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
-import {
+import type {
     InboundSettings,
     PlaygroundModes,
     SupportedPlaygroundModes,

@@ -1,8 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { ArchiveMacroAsUserResult, Macro } from '@gorgias/helpdesk-queries'
 import {
-    ArchiveMacroAsUserResult,
-    Macro,
     queryKeys,
     useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
 } from '@gorgias/helpdesk-queries'

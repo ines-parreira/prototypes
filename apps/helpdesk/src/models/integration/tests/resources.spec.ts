@@ -17,7 +17,7 @@ import {
     requestNewIntegration,
 } from '../resources'
 import { fetchShopifyCollections } from '../resources/shopify'
-import { IntegrationRequest, ShopifyCollectionResponse } from '../types'
+import type { IntegrationRequest, ShopifyCollectionResponse } from '../types'
 
 const mockedServer = new MockAdapter(client)
 

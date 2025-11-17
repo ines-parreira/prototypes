@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { ZendeskIntegrationMeta } from 'models/integration/types'
+import type { ZendeskIntegrationMeta } from 'models/integration/types'
 import ImportStatusAlert from 'pages/settings/importZendesk/zendesk/ImportStatusAlert'
 import {
     failedImport,

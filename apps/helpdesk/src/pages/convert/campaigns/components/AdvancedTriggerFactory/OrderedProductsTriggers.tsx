@@ -6,17 +6,15 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useProductsFromShopifyIntegration } from 'models/integration/queries'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { useIntegrationContext } from '../../containers/IntegrationProvider'
-import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
-import {
-    isPurchasedProductValue,
-    PurchasedProductValue,
-} from '../../types/CampaignValue'
-import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import type { PurchasedProductValue } from '../../types/CampaignValue'
+import { isPurchasedProductValue } from '../../types/CampaignValue'
+import type { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
 import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 

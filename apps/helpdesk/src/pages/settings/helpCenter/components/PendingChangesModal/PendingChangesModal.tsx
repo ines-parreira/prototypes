@@ -1,6 +1,7 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import { UnregisterCallback } from 'history'
+import type { UnregisterCallback } from 'history'
 import { useHistory } from 'react-router-dom'
 
 import { CloseModal } from '../articles/CloseModal'

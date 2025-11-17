@@ -22,11 +22,8 @@ import {
     getCurrentSmsPlan,
     getCurrentVoicePlan,
 } from 'state/billing/selectors'
-import {
-    BillingBanner,
-    CurrentProductsUsages,
-    TicketPurpose,
-} from 'state/billing/types'
+import type { BillingBanner, CurrentProductsUsages } from 'state/billing/types'
+import { TicketPurpose } from 'state/billing/types'
 import {
     getCurrentSubscription,
     hasCreditCard as getHasCreditCard,

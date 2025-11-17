@@ -1,14 +1,16 @@
-import { ComponentType, useCallback, useMemo } from 'react'
+import type { ComponentType } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { OrderDirection, UpdateViewItemsOrderBy } from '@gorgias/helpdesk-types'
+import type { UpdateViewItemsOrderBy } from '@gorgias/helpdesk-types'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { getConfigByName } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { TicketSearchSortableProperties } from 'models/search/types'
+import type { TicketSearchSortableProperties } from 'models/search/types'
 import { EntityType } from 'models/view/types'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
 import {

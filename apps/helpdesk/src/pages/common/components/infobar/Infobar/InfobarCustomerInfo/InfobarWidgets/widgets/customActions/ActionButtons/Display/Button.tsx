@@ -16,11 +16,11 @@ import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { mapActionToActionPayload } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
-import {
+import type {
     Action,
     Parameter,
-    ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import Modal from 'pages/common/components/modal/Modal'
 import { AppContext } from 'providers/infobar/AppContext'
 import { CustomerContext } from 'providers/infobar/CustomerContext'

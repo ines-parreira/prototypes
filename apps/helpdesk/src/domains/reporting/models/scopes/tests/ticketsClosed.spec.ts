@@ -11,7 +11,7 @@ import {
     closedTicketsTimeseries,
     closedTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsClosed'
-import {
+import type {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'

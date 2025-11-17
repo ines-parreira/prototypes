@@ -1,4 +1,5 @@
-import { RefObject, useEffect } from 'react'
+import type { RefObject } from 'react'
+import { useEffect } from 'react'
 
 import _throttle from 'lodash/throttle'
 import scrollIntoView from 'scroll-into-view-if-needed'

@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { agents } from 'fixtures/agents'
 import { handleError } from 'hooks/agents/errorHandler'
 import { useGetAgent } from 'models/agents/queries'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 import { useGetAgentWithEffects } from '../useGetAgentWithEffect'
 

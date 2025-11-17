@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -8,7 +9,7 @@ import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDat
 import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import css from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard.less'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
 

@@ -2,10 +2,13 @@ import { useMemo } from 'react'
 
 import { type Map } from 'immutable'
 
-import { EmailIntegration, GmailIntegration } from '@gorgias/helpdesk-queries'
+import type {
+    EmailIntegration,
+    GmailIntegration,
+} from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { OutlookIntegration } from 'models/integration/types'
+import type { OutlookIntegration } from 'models/integration/types'
 import {
     EmailVerificationStatus,
     getEmailVerificationStatus,

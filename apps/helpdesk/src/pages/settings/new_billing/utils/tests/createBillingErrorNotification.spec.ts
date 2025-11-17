@@ -1,5 +1,5 @@
 import { TicketPurpose } from 'state/billing/types'
-import { AlertNotification } from 'state/notifications/types'
+import type { AlertNotification } from 'state/notifications/types'
 
 import createBillingErrorNotification from '../createBillingErrorNotification'
 

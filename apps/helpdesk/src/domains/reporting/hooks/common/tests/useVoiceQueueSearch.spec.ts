@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
-import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
+import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 import { mocked } from 'jest-mock'
 
-import {
+import type {
     HttpResponse,
     ListVoiceQueues200,
     VoiceQueue,

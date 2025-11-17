@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { ContactFormAutomationSettings } from 'models/contactForm/types'
+import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 import { ContactFormsAutomationSettingsActions } from 'state/entities/contactForm/contactFormsAutomationSettings/types'
 
 export const contactFormAutomationSettingsFetched = createAction<{

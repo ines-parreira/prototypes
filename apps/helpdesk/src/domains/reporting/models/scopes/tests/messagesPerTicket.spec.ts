@@ -2,7 +2,7 @@ import {
     messagesPerTicketCount,
     messagesPerTicketCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/messagesPerTicket'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'

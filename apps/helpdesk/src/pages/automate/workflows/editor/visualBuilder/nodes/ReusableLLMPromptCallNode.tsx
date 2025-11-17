@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { NodeProps } from '@xyflow/react'
+import type { NodeProps } from '@xyflow/react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
@@ -14,12 +14,10 @@ import {
 } from 'pages/automate/actionsPlatform/utils'
 import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {
-    useVisualBuilderNodeProps,
-    VisualBuilderNodeProps,
-} from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
+import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { getReusableLLMPromptCallNodeStatuses } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

@@ -1,4 +1,4 @@
-import { List as ImmutableList, Map } from 'immutable'
+import type { List as ImmutableList, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

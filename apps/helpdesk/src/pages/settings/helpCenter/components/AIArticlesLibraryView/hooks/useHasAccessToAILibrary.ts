@@ -1,5 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 export const useHasAccessToAILibrary = () => {

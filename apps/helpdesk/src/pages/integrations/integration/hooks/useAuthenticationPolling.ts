@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import {
     fetchIntegration,
     triggerCreateSuccess,

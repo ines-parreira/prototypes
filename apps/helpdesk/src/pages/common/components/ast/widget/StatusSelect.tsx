@@ -1,8 +1,9 @@
-import { List } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { TicketStatus } from '../../../../../business/types/ticket'
-import { RootState } from '../../../../../state/types'
+import type { TicketStatus } from '../../../../../business/types/ticket'
+import type { RootState } from '../../../../../state/types'
 import Select from './ReactSelect'
 
 type Props = {

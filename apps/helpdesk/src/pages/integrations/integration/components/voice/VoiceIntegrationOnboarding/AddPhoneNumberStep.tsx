@@ -9,14 +9,15 @@ import {
     Label,
     LegacySelectField as SelectField,
 } from '@gorgias/axiom'
-import { PhoneFunction, PhoneIntegration } from '@gorgias/helpdesk-queries'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'

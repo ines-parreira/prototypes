@@ -5,8 +5,8 @@ import { fireEvent, render } from '@testing-library/react'
 
 import { TicketsCreatedCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/TicketsCreatedCell/TicketsCreatedCell'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),

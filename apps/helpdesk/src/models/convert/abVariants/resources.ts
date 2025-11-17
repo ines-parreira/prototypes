@@ -1,6 +1,6 @@
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
-import { ABStopRequestPayload, ABVariantParams } from './types'
+import type { ABStopRequestPayload, ABVariantParams } from './types'
 
 export const createABGroup = async (
     client: RevenueAddonClient | undefined,

@@ -1,7 +1,8 @@
-import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { Modifier, SelectionState } from 'draft-js'
 import _capitalize from 'lodash/capitalize'
 
-import {
+import type {
     GuidanceVariable,
     GuidanceVariableGroup,
     GuidanceVariableList,

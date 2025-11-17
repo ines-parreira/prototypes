@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 

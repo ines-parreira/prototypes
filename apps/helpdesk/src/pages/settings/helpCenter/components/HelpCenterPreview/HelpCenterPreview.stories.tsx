@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { HelpCenterLayout } from '../../types/layout.enum'
 import logoUrl from './assets/preview-story-example.png'

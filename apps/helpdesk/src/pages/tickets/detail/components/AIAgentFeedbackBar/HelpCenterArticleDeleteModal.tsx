@@ -1,6 +1,6 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 import {
     getPendingDeleteLocaleOptionItem,

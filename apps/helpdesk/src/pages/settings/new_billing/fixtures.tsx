@@ -18,15 +18,13 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {
+import type {
     BillingState,
-    Cadence,
-    ProductType,
     ProductUsages,
-    SubscriptionStatus,
     SubscriptionSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
+import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
 
 export const storeWithTrialingSubscription = {
     currentAccount: fromJS({

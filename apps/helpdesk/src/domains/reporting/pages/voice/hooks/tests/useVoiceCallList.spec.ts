@@ -7,18 +7,16 @@ import {
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
-import {
-    usePostReporting,
-    UsePostReportingQueryData,
-} from 'domains/reporting/models/queries'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
+import { usePostReporting } from 'domains/reporting/models/queries'
 import { voiceCallListQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import {
     selectVoiceCallData,
     useVoiceCallList,
 } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
-import { VoiceCallStatListItem } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallStatListItem } from 'domains/reporting/pages/voice/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'

@@ -4,7 +4,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import { CreditCard } from 'models/billing/types'
+import type { CreditCard } from 'models/billing/types'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,

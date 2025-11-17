@@ -1,14 +1,15 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import MacroNoResults from '../MacroNoResults'
 

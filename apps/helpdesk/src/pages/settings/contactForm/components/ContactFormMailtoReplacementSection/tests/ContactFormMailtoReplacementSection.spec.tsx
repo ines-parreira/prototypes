@@ -7,11 +7,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {
+import type {
     GmailIntegration,
-    IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

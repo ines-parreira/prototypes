@@ -3,17 +3,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import moment from 'moment'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
 import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
+import type { TopQuestionsSectionProps } from './TopQuestionsSection'
 import {
     TopQuestionsSection,
     TopQuestionsSectionAllReviewed,
     TopQuestionsSectionConnectStoreToEmail,
     TopQuestionsSectionLoading,
     TopQuestionsSectionNoRecommendations,
-    TopQuestionsSectionProps,
 } from './TopQuestionsSection'
 import { useHasEmailToStoreConnection } from './useHasEmailToStoreConnection'
 import { useTopQuestionsArticles } from './useTopQuestionsArticles'

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { ListItem, SelectField } from '@gorgias/axiom'
-import { Ticket } from '@gorgias/helpdesk-client'
+import type { Ticket } from '@gorgias/helpdesk-client'
 
 import { CustomerSearchDropdownSelectView } from '../../../components/CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import { TicketSearchDropdownSelectView } from '../../../components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView'
@@ -9,7 +9,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../../constants'
-import { PlaygroundCustomer } from '../../types'
+import type { PlaygroundCustomer } from '../../types'
 import { extractTicketData } from '../../utils/ticket-extraction.utils'
 
 import css from './PlaygroundCustomerSelection.less'

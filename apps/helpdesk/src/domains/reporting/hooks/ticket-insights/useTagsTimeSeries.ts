@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import { getTagValuesByOperator } from 'domains/reporting/hooks/helpers'
@@ -18,10 +18,10 @@ import {
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { useTagsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
-import { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketTagsEnrichedMember } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getTagName } from 'domains/reporting/pages/ticket-insights/tags/helpers'
 import { OrderDirection } from 'models/api/types'
 

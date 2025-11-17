@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { editorFocused, linkEditionEnded, linkEditionStarted } from './actions'
-import { EditorState } from './types'
+import type { EditorState } from './types'
 
 export const initialState = {
     isEditingLink: false,

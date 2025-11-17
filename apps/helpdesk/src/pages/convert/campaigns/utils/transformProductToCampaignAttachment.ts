@@ -1,9 +1,9 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
-import { Product } from 'constants/integrations/types/shopify'
-import { IntegrationDataItem } from 'models/integration/types'
-import { CampaignAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { Product } from 'constants/integrations/types/shopify'
+import type { IntegrationDataItem } from 'models/integration/types'
+import type { CampaignAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { getIconFromUrl } from 'utils'
 import { findCheapestProductVariant } from 'utils/findCheapestProductVariant'
 

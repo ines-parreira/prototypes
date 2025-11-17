@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useParams } from 'react-router-dom'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {
+import type {
     EnrichedTicketCustomFieldsWithSuccessRate,
     EnrichedTicketCustomFieldsWithSuccessRateUpliftOpportunity,
 } from 'domains/reporting/hooks/automate/types'
@@ -22,9 +22,9 @@ import {
 } from 'domains/reporting/hooks/automate/useAIAgentInsightsL2Dataset'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { filterMetricDataByIntentLevel } from 'domains/reporting/hooks/automate/utils'
-import { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { OrderDirection } from 'models/api/types'

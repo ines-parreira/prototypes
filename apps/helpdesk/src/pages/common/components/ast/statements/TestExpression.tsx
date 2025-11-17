@@ -1,9 +1,9 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 import Expression from '../expression/Expression'
-import { ExpressionProps } from '../expression/expressionReference'
+import type { ExpressionProps } from '../expression/expressionReference'
 import AddLogicalCondition from '../operations/AddLogicalCondition'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
 import { computeLeftPadding } from '../utils'

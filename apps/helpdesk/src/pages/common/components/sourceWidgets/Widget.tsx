@@ -1,9 +1,8 @@
+import type { Source, Template } from 'models/widget/types'
 import {
     isCardTemplate,
     isListTemplate,
     isWrapperTemplate,
-    Source,
-    Template,
 } from 'models/widget/types'
 import { seekNextValues } from 'Widgets/modules/Template/helpers/iterator'
 

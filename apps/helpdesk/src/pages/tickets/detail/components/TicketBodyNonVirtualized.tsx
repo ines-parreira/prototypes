@@ -3,16 +3,18 @@ import { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import _xor from 'lodash/xor'
-import moment, { Moment } from 'moment'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Moment } from 'moment'
+import moment from 'moment'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import * as ticketSelectors from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import MessageQuoteContext from './MessageQuoteContext'
 

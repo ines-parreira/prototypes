@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useGetActionsApp } from 'models/workflows/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'

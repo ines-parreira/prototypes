@@ -13,7 +13,8 @@ import {
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { useFlag } from 'core/flags'
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

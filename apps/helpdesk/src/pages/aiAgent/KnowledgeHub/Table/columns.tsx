@@ -1,14 +1,15 @@
+import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Color,
-    ColumnDef,
     createSelectableColumn,
     createSortableColumn,
     Icon,
     Text,
 } from '@gorgias/axiom'
 
-import { GroupedKnowledgeItem, KnowledgeVisibility, typeConfig } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeVisibility, typeConfig } from '../types'
 
 import css from './KnowledgeHubTable.less'
 

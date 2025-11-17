@@ -1,10 +1,10 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
 import reducer, { initialState } from '../reducers'
-import { Widget } from '../types'
+import type { Widget } from '../types'
 
 describe('reducers', () => {
     describe('widgets', () => {

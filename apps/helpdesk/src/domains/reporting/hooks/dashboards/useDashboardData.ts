@@ -9,28 +9,30 @@ import {
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useSanitizedDashboard } from 'domains/reporting/hooks/dashboards/useSanitizedDashboard'
-import { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
+import type { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
-import {
+import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
+import type {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'
 import { AutomateOverviewReportConfig } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
-import {
+import type {
     MetricTrendFormat,
     MetricValueFormat,
 } from 'domains/reporting/pages/common/utils'
 import { CampaignsLegacyReportConfig } from 'domains/reporting/pages/convert/campaigns/CampaignsLegacyReportConfig'
 import { CampaignsPerformanceReportConfig } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
-import {
+import type {
     ChartConfig,
     DashboardChild,
-    DashboardChildType,
     DashboardSchema,
-    DataExportFormat,
     ReportFetch,
+} from 'domains/reporting/pages/dashboards/types'
+import {
+    DashboardChildType,
+    DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'

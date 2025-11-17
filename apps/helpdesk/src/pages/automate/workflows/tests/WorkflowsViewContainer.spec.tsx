@@ -2,7 +2,8 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
-import { createMemoryHistory, MemoryHistory } from 'history'
+import type { MemoryHistory } from 'history'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route, Router } from 'react-router-dom'
@@ -11,7 +12,7 @@ import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { TableWithNestedRows } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { OrderDirection } from 'models/api/types'
-import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
 enum Column {
     Name = 'name',

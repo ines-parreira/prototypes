@@ -1,8 +1,10 @@
-import React, { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-import { getPreviewsForPreviewType, PreviewId } from './constants'
+import type { PreviewId } from './constants'
+import { getPreviewsForPreviewType } from './constants'
 import { PersonalityPreviewGroup } from './PersonalityPreviewGroup'
 
 const storyConfig: Meta<typeof PersonalityPreviewGroup> = {

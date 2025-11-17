@@ -1,4 +1,4 @@
-import { Template } from 'models/widget/types'
+import type { Template } from 'models/widget/types'
 
 /**
  * Return true if you can drop something at source path to a card in target path

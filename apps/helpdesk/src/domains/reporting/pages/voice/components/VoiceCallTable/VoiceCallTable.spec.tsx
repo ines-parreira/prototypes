@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -7,18 +7,16 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import { useVoiceCallList } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
-import {
-    VoiceCallFilterDirection,
-    VoiceCallSummary,
-} from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')
 const useVoiceCallListMock = assumeMock(useVoiceCallList)

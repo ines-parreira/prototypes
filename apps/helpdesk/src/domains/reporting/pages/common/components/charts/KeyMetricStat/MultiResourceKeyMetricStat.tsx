@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { OneDimensionalChart, Stat } from 'domains/reporting/models/stat/types'
+import type {
+    OneDimensionalChart,
+    Stat,
+} from 'domains/reporting/models/stat/types'
 import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
 
 type Props = {

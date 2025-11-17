@@ -1,5 +1,5 @@
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import {
-    NewPhoneNumber,
     PhoneConnectionType,
     PhoneCountry,
     PhoneType,

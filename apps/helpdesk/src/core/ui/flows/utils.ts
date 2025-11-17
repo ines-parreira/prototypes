@@ -1,7 +1,7 @@
-import { Edge, Node } from '@xyflow/react'
+import type { Edge, Node } from '@xyflow/react'
 
 import { DEFAULT_INTERMEDIARY_NODE_ID } from './constants'
-import { ConvergencePoint } from './types'
+import type { ConvergencePoint } from './types'
 
 export function createFlowGraph<TNode extends Node>(
     nodes: TNode[],

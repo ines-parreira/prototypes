@@ -16,7 +16,7 @@ import { AchievementRateTrendCard } from 'domains/reporting/pages/sla/components
 import { SlaMetricConfig } from 'domains/reporting/pages/sla/SlaConfig'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { SlaMetric } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 jest.mock('domains/reporting/hooks/sla/useTicketSlaAchievementRate')
 const useTicketSlaAchievementRateTrendMock = assumeMock(

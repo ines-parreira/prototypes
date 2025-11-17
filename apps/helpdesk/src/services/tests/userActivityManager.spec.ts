@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable'
-import configureMockStore, { MockStore } from 'redux-mock-store'
+import type { MockStore } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { SocketEventType } from 'services/socketManager/types'

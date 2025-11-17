@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 import { createTrigger } from '../../utils/createTrigger'

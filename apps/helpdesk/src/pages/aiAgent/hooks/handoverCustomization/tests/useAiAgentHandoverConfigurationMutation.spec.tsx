@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -8,7 +9,7 @@ import {
     handoverConfigurationKeys,
     useUpsertStoreHandoverConfiguration,
 } from 'models/aiAgent/queries'
-import { HandoverConfigurationData } from 'models/aiAgent/types'
+import type { HandoverConfigurationData } from 'models/aiAgent/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

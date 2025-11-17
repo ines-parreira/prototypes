@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { FilterKey } from 'domains/reporting/models/stat/types'

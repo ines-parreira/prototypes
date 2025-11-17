@@ -1,12 +1,13 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
-import { LegacyPaginationMeta } from 'models/api/types'
-import { GorgiasAction } from 'state/types'
+import type { LegacyPaginationMeta } from 'models/api/types'
+import type { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import { TagsState } from './types'
+import type { TagsState } from './types'
 
 export const initialState: TagsState = fromJS({
     _internal: {},

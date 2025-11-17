@@ -26,7 +26,7 @@ import useEditActionTemplate from './hooks/useEditActionTemplate'
 import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
 import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import { ActionTemplate } from './types'
+import type { ActionTemplate } from './types'
 
 import css from './ActionsPlatformEditStepView.less'
 

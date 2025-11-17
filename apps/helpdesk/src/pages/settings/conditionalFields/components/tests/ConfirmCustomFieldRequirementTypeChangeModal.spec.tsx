@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -8,7 +8,7 @@ import { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import ConfirmCustomFieldRequirementTypeChangeModal from '../ConfirmCustomFieldRequirementTypeChangeModal'

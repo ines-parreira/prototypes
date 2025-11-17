@@ -1,4 +1,5 @@
-import React, { ComponentProps, ComponentType, ReactNode } from 'react'
+import type { ComponentProps, ComponentType, ReactNode } from 'react'
+import React from 'react'
 
 import useHasCanduContent from 'hooks/candu/useHasCanduContent'
 

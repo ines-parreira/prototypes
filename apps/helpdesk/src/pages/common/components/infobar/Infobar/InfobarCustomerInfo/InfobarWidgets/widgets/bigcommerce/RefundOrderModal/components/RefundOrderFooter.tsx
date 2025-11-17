@@ -1,4 +1,5 @@
-import React, { Dispatch, useRef, useState } from 'react'
+import type { Dispatch } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
@@ -15,10 +16,8 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from '../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
+import { BigCommerceRefundActionType } from '../types'
 
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './RefundOrderFooter.less'

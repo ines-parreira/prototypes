@@ -1,11 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { render, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 
 import { mockImportItems } from '../../fixture'
-import { ImportItem } from '../../types'
+import type { ImportItem } from '../../types'
 import { TableRow } from '../TableRow'
 
 type TableRowProps = ComponentProps<typeof TableRow>

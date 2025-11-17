@@ -7,7 +7,7 @@ import { Badge, LegacyButton as Button } from '@gorgias/axiom'
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { AIGuidance } from 'pages/aiAgent/types'
+import type { AIGuidance } from 'pages/aiAgent/types'
 
 import css from './AiGuidanceEmptyState.less'
 

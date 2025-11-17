@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
-import { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
 
 import { useOpportunitiesNavigation } from './useOpportunitiesNavigation'
 

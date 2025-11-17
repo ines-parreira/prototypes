@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { getDomainFromEmailAddress } from '../../helpers'
 import DomainVerificationProvider from '../DomainVerificationProvider'

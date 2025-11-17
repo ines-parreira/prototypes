@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { account as accountFixture } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import { user as userFixture } from 'fixtures/users'
-import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
 import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -18,7 +18,7 @@ import {
     useDeletePageEmbedment,
     useUpdatePageEmbedment,
 } from 'pages/settings/helpCenter/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

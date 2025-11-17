@@ -1,4 +1,5 @@
-import React, { UIEventHandler, useCallback, useMemo, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import { Link } from 'react-router-dom'
@@ -9,8 +10,8 @@ import { CampaignPerformanceConfig } from 'domains/reporting/pages/convert/compo
 import { ITEMS_PER_PAGE } from 'domains/reporting/pages/convert/constants/campaignPerformanceTable'
 import { useCampaignPerformanceTableSetting } from 'domains/reporting/pages/convert/hooks/useCampaignPerformanceTableSetting'
 import { useSortedAndPaginatedTableRows } from 'domains/reporting/pages/convert/hooks/useSortedAndPaginatedTableRows'
-import { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
-import { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
+import type { CampaignTableColumn } from 'domains/reporting/pages/convert/types/CampaignTableColumn'
+import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { getDataFromTableCell } from 'domains/reporting/pages/convert/utils/getDataFromTableCell'
 import { opposite, OrderDirection } from 'models/api/types'
@@ -22,7 +23,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 
 type Props = {

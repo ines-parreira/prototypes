@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import { INITIAL_FORM_VALUES } from '../constants'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
-import { FormValues } from '../types'
+import type { FormValues } from '../types'
 import { isAiAgentEnabled } from '../util'
 import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 

@@ -6,7 +6,7 @@ import { withCanduPaywall } from 'pages/common/components/Paywall/CanduPaywall'
 import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView'
 import { ConvertFeatures } from 'pages/convert/common/components/ConvertPaywallView/constants'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 
 const TITLE = 'Performance'
 

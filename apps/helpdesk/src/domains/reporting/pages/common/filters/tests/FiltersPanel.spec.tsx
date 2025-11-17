@@ -6,18 +6,21 @@ import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { Tag, useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     CleanFilterComponentKeys,
-    FilterComponentKey,
-    FilterKey,
     StateOnlyFilterKeys,
     StaticFilter,
+} from 'domains/reporting/models/stat/types'
+import {
+    FilterComponentKey,
+    FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import {
@@ -60,11 +63,11 @@ import { billingState } from 'fixtures/billing'
 import { customFieldsMockResponse } from 'fixtures/customField'
 import { tags } from 'fixtures/tag'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const mockedLocales = [

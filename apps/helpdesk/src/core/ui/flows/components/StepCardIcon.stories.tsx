@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import { StepCardIcon } from './StepCardIcon'
 

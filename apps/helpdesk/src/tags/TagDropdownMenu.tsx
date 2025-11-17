@@ -1,23 +1,16 @@
-import React, {
-    KeyboardEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { KeyboardEvent } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
-import { QueryKey, useQueryClient } from '@tanstack/react-query'
+import type { QueryKey } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
 
-import {
-    ListTagsOrderBy,
-    ListTagsParams,
-    queryKeys,
-    Tag,
-} from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy, queryKeys } from '@gorgias/helpdesk-queries'
 
-import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
+import { Body, Context, focusOnNextItem } from 'components/Dropdown'
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'

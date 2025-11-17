@@ -1,6 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import axios from 'axios'
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import {

@@ -8,28 +8,26 @@ import {
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { useCustomFieldsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
-import {
-    getPeriodDateTimes,
-    TimeSeriesDataItem,
-} from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
+import type {
+    TicketCustomFieldsTicketCountTimeSeriesData,
+    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
+} from 'domains/reporting/hooks/withBreakdown'
 import {
     BREAKDOWN_FIELD,
     selectTimeSeriesWithBreakdown,
-    TicketCustomFieldsTicketCountTimeSeriesData,
-    TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
-import {
+import type {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import {
-    getCustomFieldsOrder,
-    TicketInsightsOrder,
-} from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
+import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import { notUndefined } from 'utils/types'
 
 const breakdownTimeSeries = (

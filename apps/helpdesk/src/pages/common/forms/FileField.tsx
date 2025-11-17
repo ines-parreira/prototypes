@@ -1,24 +1,28 @@
-import { createRef, RefObject } from 'react'
+import type { RefObject } from 'react'
+import { createRef } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _omit from 'lodash/omit'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
-import { InputType } from 'reactstrap/lib/Input'
+import type { InputType } from 'reactstrap/lib/Input'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
 import IconButton from 'pages/common/components/button/IconButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getFileTooLargeError } from 'utils/file'
 
-import DEPRECATED_InputField, { InputFieldProps } from './DEPRECATED_InputField'
+import type { InputFieldProps } from './DEPRECATED_InputField'
+import DEPRECATED_InputField from './DEPRECATED_InputField'
 
 import css from './FileField.less'
 

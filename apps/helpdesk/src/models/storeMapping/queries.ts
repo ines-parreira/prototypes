@@ -1,7 +1,8 @@
-import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { AxiosError } from 'axios'
 
-import { MutationOverrides } from '../../types/query'
+import type { MutationOverrides } from '../../types/query'
 import {
     createStoreMapping,
     deleteStoreMapping,

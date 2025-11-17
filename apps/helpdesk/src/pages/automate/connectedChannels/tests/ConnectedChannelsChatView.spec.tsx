@@ -25,7 +25,7 @@ import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integration
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,

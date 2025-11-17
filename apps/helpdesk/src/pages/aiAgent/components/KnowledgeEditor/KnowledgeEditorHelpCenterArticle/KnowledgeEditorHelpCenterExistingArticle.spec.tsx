@@ -19,9 +19,9 @@ import {
     useGetHelpCenterArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import { flattenCategories } from 'models/helpCenter/utils'
-import { Props as HelpCenterEditorProps } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
+import type { Props as HelpCenterEditorProps } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getCategoriesResponseEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'

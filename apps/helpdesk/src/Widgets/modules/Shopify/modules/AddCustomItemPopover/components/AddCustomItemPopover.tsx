@@ -1,15 +1,16 @@
-import React, {
+import type {
     ChangeEvent,
     ComponentProps,
     FormEvent,
     KeyboardEvent,
-    PureComponent,
     RefObject,
 } from 'react'
+import React, { PureComponent } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import {
     Button,
     Form,

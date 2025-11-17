@@ -3,7 +3,7 @@ import { SegmentEvent } from '@repo/logging'
 import { ProductImage } from 'domains/reporting/pages/voice-of-customer/components/ProductImage'
 import { CellWrapper } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/CellWrapper'
 import css from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent.less'
-import { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
+import type { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 

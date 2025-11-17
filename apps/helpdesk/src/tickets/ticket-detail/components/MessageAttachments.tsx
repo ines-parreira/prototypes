@@ -1,7 +1,7 @@
 import classNamesBind from 'classnames/bind'
 import { fromJS } from 'immutable'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 

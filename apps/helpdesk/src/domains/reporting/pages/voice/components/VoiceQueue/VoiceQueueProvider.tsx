@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useListVoiceQueues, VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useListVoiceQueues } from '@gorgias/helpdesk-queries'
 
 import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 

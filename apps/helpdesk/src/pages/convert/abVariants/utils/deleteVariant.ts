@@ -1,4 +1,4 @@
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 export const deleteVariant = (
     currentVariants: CampaignVariant[],

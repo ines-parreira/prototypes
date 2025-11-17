@@ -4,7 +4,7 @@ import { useEffectOnce, useLocalStorageWithExpiry } from '@repo/hooks'
 import { useLocation } from 'react-router'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { PendingTasksSection } from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'

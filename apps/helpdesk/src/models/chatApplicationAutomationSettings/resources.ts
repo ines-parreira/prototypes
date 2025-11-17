@@ -1,6 +1,6 @@
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 
-import { ChatApplicationAutomationSettings } from './types'
+import type { ChatApplicationAutomationSettings } from './types'
 
 export const fetchChatsApplicationAutomationSettings = async (
     applicationIds: string[],

@@ -5,20 +5,18 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
-import {
-    TrialAccess,
-    useTrialAccess,
-} from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
+import type { PromoCardContent } from '../types/ShoppingAssistant'
 import {
-    PromoCardContent,
     PromoCardVariant,
     TrialEventType,
     TrialType,

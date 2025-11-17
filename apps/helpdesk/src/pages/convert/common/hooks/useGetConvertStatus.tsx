@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
-import { Components } from 'rest_api/revenue_addon_api/client.generated'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { Components } from 'rest_api/revenue_addon_api/client.generated'
 
 export enum BundleOnboardingStatus {
     INSTALLED = 'installed',

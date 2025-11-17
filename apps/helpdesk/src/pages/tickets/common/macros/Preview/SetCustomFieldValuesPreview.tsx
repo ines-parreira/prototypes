@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { MacroAction } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
 
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 import { MacroActionName } from 'models/macroAction/types'
 
 import { CustomFieldName } from './CustomFieldName'

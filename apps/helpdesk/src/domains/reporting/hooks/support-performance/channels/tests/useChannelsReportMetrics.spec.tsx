@@ -21,7 +21,7 @@ import { columnsOrder } from 'domains/reporting/pages/support-performance/channe
 import { saveReport } from 'domains/reporting/services/channelsReportingService'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { channels } from 'fixtures/channels'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useSortedChannels')

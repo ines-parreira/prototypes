@@ -5,7 +5,7 @@ import {
     toggleCommentHighlightsCsatSentiment,
 } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('qualityManagementSlice reducer', () => {
     it('should return the initial state when an unknown action is passed', () => {

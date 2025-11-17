@@ -1,27 +1,20 @@
-import React, { HTMLProps } from 'react'
+import type { HTMLProps } from 'react'
+import type React from 'react'
 
-import {
-    ScoredSurveyDataKey,
-    ScoredSurveysData,
-} from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
-import AssigneeBodyCell, {
-    Props as AssigneeBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell'
-import CommentBodyCell, {
-    Props as CommentBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
-import CustomerNameBodyCell, {
-    Props as CustomerNameBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
-import ScoredDateBodyCell, {
-    Props as ScoredDateBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell'
-import SurveyScoreBodyCell, {
-    Props as SurveyScoreBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/SurveyScoreBodyCell'
-import TicketIdBodyCell, {
-    Props as TicketIdBodyCellProps,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/TicketIdBodyCell'
+import type { ScoredSurveysData } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
+import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
+import type { Props as AssigneeBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell'
+import AssigneeBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell'
+import type { Props as CommentBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
+import CommentBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
+import type { Props as CustomerNameBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
+import CustomerNameBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
+import type { Props as ScoredDateBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell'
+import ScoredDateBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell'
+import type { Props as SurveyScoreBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/SurveyScoreBodyCell'
+import SurveyScoreBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/SurveyScoreBodyCell'
+import type { Props as TicketIdBodyCellProps } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/TicketIdBodyCell'
+import TicketIdBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/TicketIdBodyCell'
 import { OrderDirection } from 'models/api/types'
 
 type ColProps = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {

@@ -1,12 +1,14 @@
 import React, { useContext } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
-import { Integration, IntegrationType } from 'models/integration/types'
-import { ImmutableSource, Source, Template } from 'models/widget/types'
+import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { ImmutableSource, Source, Template } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
@@ -19,7 +21,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import { getWidgetsState } from 'state/widgets/selectors'
-import { WidgetEnvironment, WidgetType } from 'state/widgets/types'
+import type { WidgetEnvironment, WidgetType } from 'state/widgets/types'
 import { getSourcePathFromContext } from 'state/widgets/utils'
 import { compare } from 'utils'
 import RootWidget from 'Widgets/modules/Widget'

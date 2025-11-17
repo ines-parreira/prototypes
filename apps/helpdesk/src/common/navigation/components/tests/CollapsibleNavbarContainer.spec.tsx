@@ -2,9 +2,9 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
+import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {
     NavBarContext,
-    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'

@@ -1,8 +1,9 @@
-import { AxiosHeaders, AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
+import { AxiosHeaders } from 'axios'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {
     return {

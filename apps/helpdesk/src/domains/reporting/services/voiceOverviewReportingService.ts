@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import {
     ABANDONED_CALLS_METRIC_TITLE,

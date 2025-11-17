@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import { RuleTemplateRecipeSlugs } from '../../constants'
-import { DefaultModalProps } from '../InstallRuleModalBody'
+import type { DefaultModalProps } from '../InstallRuleModalBody'
 import { AiAgentRequirements } from './components/AiAgentRequirement'
 import TargetCount from './components/TargetCount'
 

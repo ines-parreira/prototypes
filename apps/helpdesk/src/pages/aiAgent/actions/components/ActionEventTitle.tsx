@@ -1,6 +1,6 @@
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 import ActionStatus from './ActionsStatus'
 
 import css from './ActionEventTitle.less'

@@ -1,5 +1,8 @@
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
-import { Components, Paths } from 'rest_api/revenue_addon_api/client.generated'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type {
+    Components,
+    Paths,
+} from 'rest_api/revenue_addon_api/client.generated'
 
 export type CampaignParams = (
     | Paths.GetCampaign.PathParameters

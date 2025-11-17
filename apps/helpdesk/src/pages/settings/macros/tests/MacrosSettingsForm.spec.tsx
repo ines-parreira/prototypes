@@ -1,10 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { useParams } from 'react-router-dom'
@@ -18,14 +19,14 @@ import {
     mockMacro,
     mockUpdateMacroHandler,
 } from '@gorgias/helpdesk-mocks'
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
+import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import type { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getDefaultMacro } from 'state/macro/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

@@ -1,14 +1,12 @@
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { TrendIcon } from '@repo/reporting'
 import classNames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
-import {
-    ProductTicketCountsPerIntentItem,
-    useProductsTicketCountsPerIntentDistribution,
-} from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
+import type { ProductTicketCountsPerIntentItem } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
+import { useProductsTicketCountsPerIntentDistribution } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import { TableWithNestedRowsCell } from 'domains/reporting/pages/common/components/Table/TableWithNestedRowsCell'
 import {
@@ -22,7 +20,7 @@ import {
     TopIntentsColumns,
     TopProductsTableColumnsForProducts,
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
-import { TopProductsRowProps } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'
+import type { TopProductsRowProps } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'
 import { ProductImage } from 'domains/reporting/pages/voice-of-customer/components/ProductImage'
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 
 export default function useActiveChannel(channels: ChannelWithMetadata[]) {
     const [activeChannelType, setActiveChannelType] = useState<string | null>(

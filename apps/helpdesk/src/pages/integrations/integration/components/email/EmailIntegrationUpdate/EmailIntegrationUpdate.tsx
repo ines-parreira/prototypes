@@ -1,20 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
 
 import { Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
-    IntegrationType,
     OutlookIntegration,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import EmailGenericModal from 'pages/integrations/integration/components/email/components/EmailGenericModal'
 import EmailIntegrationAddressField from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
@@ -28,7 +29,7 @@ import {
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 import { getRedirectUri } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { isBaseEmailAddress } from '../helpers'
 

@@ -1,5 +1,5 @@
-import { IntegrationType } from 'models/integration/constants'
-import {
+import type { IntegrationType } from 'models/integration/constants'
+import type {
     WorkflowConfiguration,
     WorkflowConfigurationShallow,
     WorkflowStepMessage,

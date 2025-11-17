@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     AIArticle,
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
@@ -20,7 +20,7 @@ import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enu
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { AIArticleArchiveModalHandle } from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
+import type { AIArticleArchiveModalHandle } from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
 
 export type onEditorSaveProps = {
     article?: AILibraryArticleItem

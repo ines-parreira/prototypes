@@ -1,14 +1,11 @@
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { Order } from 'constants/integrations/types/shopify'
+import type { Order } from 'constants/integrations/types/shopify'
 
 import { ALL_FILTERS, INTERACTION_FILTER_OPTIONS } from '../../../constants'
 import { fromOrder, fromTicket } from '../../../helpers/timelineItem'
-import {
-    InteractionFilterType,
-    TimelineItem,
-    TimelineItemKind,
-} from '../../../types'
+import type { InteractionFilterType, TimelineItem } from '../../../types'
+import { TimelineItemKind } from '../../../types'
 import { filterTicketsByType, getTypeOptionLabels } from '../interactionFilter'
 
 describe('interactionFilter', () => {

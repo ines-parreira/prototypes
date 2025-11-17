@@ -1,4 +1,4 @@
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     CURRENT_PERIOD_LABEL,
     EMPTY_LABEL,

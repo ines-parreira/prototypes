@@ -10,10 +10,11 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
-import CancelAAOModal, { CancelAAOModalProps } from '../CancelAAOModal'
+import type { CancelAAOModalProps } from '../CancelAAOModal'
+import CancelAAOModal from '../CancelAAOModal'
 
 jest.mock('../../../utils/sendRemoveNotificationZap', () => ({
     sendRemoveNotificationZap: jest.fn(),

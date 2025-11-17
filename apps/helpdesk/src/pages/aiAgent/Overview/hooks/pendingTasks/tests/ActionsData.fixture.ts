@@ -1,4 +1,4 @@
-import { ActionsData } from '../useFetchActionsData'
+import type { ActionsData } from '../useFetchActionsData'
 
 type AllKeys = keyof ActionsDataFixture
 type ConfiguredActionsDataFixture<

@@ -3,11 +3,11 @@ import { useCallback, useRef } from 'react'
 import { useId } from '@repo/hooks'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { Language } from '@gorgias/helpdesk-types'
+import type { Language } from '@gorgias/helpdesk-types'
 
 import Loader from 'pages/common/components/Loader/Loader'
 
-import { ActionInjectedProps } from '../../types'
+import type { ActionInjectedProps } from '../../types'
 import Button from '../Button'
 import { useLanguageDropdown } from './hooks/useLanguageDropdown'
 import { useOutboundTranslation } from './hooks/useOutboundTranslation'

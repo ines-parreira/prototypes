@@ -1,4 +1,5 @@
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { PerformanceCampaignSalesGraphChart } from 'domains/reporting/pages/convert/charts/PerformanceCampaignSalesGraphChart'
 import { PerformanceCampaignSalesKpiChart } from 'domains/reporting/pages/convert/charts/PerformanceCampaignSalesKpiChart'
 import { PerformanceEngagementKpiChart } from 'domains/reporting/pages/convert/charts/PerformanceEngagementKpiChart'
@@ -15,10 +16,10 @@ import {
 } from 'domains/reporting/pages/convert/containers/CampaignPerformanceTable'
 import { CampaignsTotalsMetricNames } from 'domains/reporting/pages/convert/services/constants'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { STATS_ROUTES } from 'routes/constants'
 

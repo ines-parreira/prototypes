@@ -1,16 +1,17 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { AttachmentEnum } from 'common/types'
-import { Product } from 'constants/integrations/types/shopify'
-import {
+import type { Product } from 'constants/integrations/types/shopify'
+import type {
     IntegrationDataItem,
     ProductCardDetails,
 } from 'models/integration/types'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import { getIconFromUrl } from 'utils'
 import { findCheapestProductVariant } from 'utils/findCheapestProductVariant'
 
-import { TooltipTourConfigurationType } from './types'
+import type { TooltipTourConfigurationType } from './types'
 
 export const getTooltipTourConfiguration = (
     action: string,

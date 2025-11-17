@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'

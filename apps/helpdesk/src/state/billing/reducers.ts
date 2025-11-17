@@ -1,8 +1,9 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as constants from './constants'
-import { BillingImmutableState } from './types'
+import type { BillingImmutableState } from './types'
 
 export const initialState: BillingImmutableState = fromJS({})
 

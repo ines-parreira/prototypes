@@ -14,22 +14,20 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import {
-    HelpCenter,
-    HelpCenterCreationWizardStep,
-} from 'models/helpCenter/types'
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import SelectStore, {
-    HelpCenterContactFormIntegrationTypes,
-} from 'pages/settings/common/SelectStore/SelectStore'
+import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
+import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
@@ -39,10 +37,8 @@ import {
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import { mapEntrypointsToAutomationSettings } from '../../HelpCenterCreationWizardUtils'
-import {
-    useHelpCenterAutomationForm,
-    UseHelpCenterAutomationFormState,
-} from '../../hooks/useHelpCenterAutomationForm'
+import type { UseHelpCenterAutomationFormState } from '../../hooks/useHelpCenterAutomationForm'
+import { useHelpCenterAutomationForm } from '../../hooks/useHelpCenterAutomationForm'
 import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
 import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'

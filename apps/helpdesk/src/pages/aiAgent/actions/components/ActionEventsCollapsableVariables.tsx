@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import type { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import css from './ActionEventSidePanel.less'
 

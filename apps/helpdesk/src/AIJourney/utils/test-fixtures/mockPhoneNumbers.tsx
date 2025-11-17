@@ -1,4 +1,4 @@
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 export const mockPhoneNumbers: Record<string, NewPhoneNumber> = {
     '1': {

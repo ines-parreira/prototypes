@@ -1,6 +1,7 @@
-import React, { ComponentProps, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useRef, useState } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

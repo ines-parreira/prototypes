@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { SummaryItemData } from './types'
+import type { SummaryItemData } from './types'
 
 import css from './SummaryLineItem.less'
 

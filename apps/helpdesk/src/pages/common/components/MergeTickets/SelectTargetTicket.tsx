@@ -1,7 +1,9 @@
 import { Component } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import * as viewsConfig from 'config/views'
 import { EntityType } from 'models/view/types'

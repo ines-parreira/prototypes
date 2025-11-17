@@ -1,21 +1,25 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import client from 'models/api/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 import rawTypeOptions from 'pages/integrations/integration/components/phone/options/types.json'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import settingsCss from 'pages/settings/settings.less'
 import { notify as notifyAction } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 const typeOptions: Option[] = rawTypeOptions
 

@@ -10,12 +10,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {
-    EmbeddablePage,
-    PageEmbedmentPosition,
-} from 'pages/common/components/PageEmbedmentForm'
+import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm'
+import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

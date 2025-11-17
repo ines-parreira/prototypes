@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
 
 import {
     NEW_PHONE_NUMBER_CREATED,

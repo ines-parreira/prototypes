@@ -2,7 +2,8 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -16,11 +17,11 @@ import {
     NO_SEARCH_RESULT,
     READ_MORE_ABOUT_CHARTS,
 } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
-import {
-    DashboardChildType,
+import type {
     DashboardSchema,
     ReportsModalConfig,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import {
     OverviewMetric,

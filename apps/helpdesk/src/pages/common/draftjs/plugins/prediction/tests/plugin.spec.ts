@@ -1,8 +1,10 @@
 import { assumeMock, flushPromises } from '@repo/testing'
-import { ContentState, EditorState, SelectionState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { ContentState, SelectionState } from 'draft-js'
+import { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
+import type { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
 import { getLDClient } from 'utils/launchDarkly'
 

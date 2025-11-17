@@ -3,7 +3,7 @@ import { waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetArticleTranslations } from 'models/helpCenter/queries'
-import {
+import type {
     ArticleTranslationWithRating,
     LocaleCode,
 } from 'models/helpCenter/types'

@@ -1,13 +1,11 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { ScoredSurveySortingType } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { ScoredSurveySortingType } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,

@@ -10,10 +10,8 @@ import {
     UpdateShopifyPermissionsBody,
     VerifyEmailDomainBody,
 } from 'pages/aiAgent/Overview/components/SetupTasksSection/SetupTaskBodies'
-import {
-    TaskConfigTemplate,
-    TasksCategory,
-} from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
+import type { TaskConfigTemplate } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
+import { TasksCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
 
 export const RULE_ENGINE_TASK_TO_STEP_NAME = new Map([
     ['VerifyYourEmailDomainTask', StepName.VERIFY_EMAIL_DOMAIN],

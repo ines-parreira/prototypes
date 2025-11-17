@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 
-import { EditorState } from 'draft-js'
-import { connect, ConnectedProps } from 'react-redux'
+import type { EditorState } from 'draft-js'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { TicketChannel } from '../../../../business/types/ticket'
 import { addEmailExtra } from '../../../../state/newMessage/actions'
@@ -20,7 +21,7 @@ import {
     DEPRECATED_getTicket,
     getBody,
 } from '../../../../state/ticket/selectors'
-import { RootState } from '../../../../state/types'
+import type { RootState } from '../../../../state/types'
 import { convertFromHTML } from '../../../../utils/editor'
 import Ellipsis from '../../components/Ellipsis'
 

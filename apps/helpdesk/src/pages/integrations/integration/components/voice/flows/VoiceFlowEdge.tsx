@@ -1,4 +1,5 @@
-import { ComponentProps, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import { useMemo } from 'react'
 
 import { CustomEdge } from 'core/ui/flows/components/CustomEdge'
 

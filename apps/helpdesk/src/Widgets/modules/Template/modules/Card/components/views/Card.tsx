@@ -1,9 +1,10 @@
-import React, { ComponentProps, ReactNode, useState } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import React, { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { CardEditFormState } from '../../types'
-import CardEditForm from './CardEditForm'
+import type { CardEditFormState } from '../../types'
+import type CardEditForm from './CardEditForm'
 import CardHeader from './CardHeader'
 
 import css from './Card.less'

@@ -1,4 +1,6 @@
-import React, { RefObject, useEffect, useMemo, useState } from 'react'
+import type { RefObject } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -8,7 +10,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Search from 'pages/common/components/Search'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { useToolbarContext } from '../ToolbarContext'
 

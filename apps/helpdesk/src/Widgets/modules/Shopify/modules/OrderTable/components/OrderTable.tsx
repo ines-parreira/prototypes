@@ -1,9 +1,11 @@
-import React, { memo, RefObject } from 'react'
+import type { RefObject } from 'react'
+import React, { memo } from 'react'
 
-import { fromJS, Map as ImmutableMap, List } from 'immutable'
+import type { Map as ImmutableMap, List } from 'immutable'
+import { fromJS } from 'immutable'
 import { Table } from 'reactstrap'
 
-import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderLineItemRow from './OrderLineItemRow'
 

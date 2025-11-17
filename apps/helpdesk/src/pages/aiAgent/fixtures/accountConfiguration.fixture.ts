@@ -1,4 +1,4 @@
-import {
+import type {
     AccountConfiguration,
     AccountConfigurationWithHttpIntegration,
 } from 'models/aiAgent/types'

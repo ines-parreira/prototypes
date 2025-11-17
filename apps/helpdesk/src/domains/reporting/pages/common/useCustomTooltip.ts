@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Chart, TooltipModel } from 'chart.js'
+import type { Chart, TooltipModel } from 'chart.js'
 import _isEqual from 'lodash/isEqual'
 
 export type TooltipStyle = {

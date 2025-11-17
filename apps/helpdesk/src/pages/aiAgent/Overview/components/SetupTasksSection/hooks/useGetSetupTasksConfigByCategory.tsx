@@ -2,14 +2,10 @@ import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
-import {
-    PostStoreInstallationSteps,
-    PostStoreInstallationStepType,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
-import {
-    TasksCategory,
-    TasksConfigByCategory,
-} from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
+import type { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { TasksConfigByCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
+import { TasksCategory } from 'pages/aiAgent/Overview/components/SetupTasksSection/types'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 

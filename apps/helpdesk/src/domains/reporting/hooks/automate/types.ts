@@ -1,6 +1,6 @@
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,

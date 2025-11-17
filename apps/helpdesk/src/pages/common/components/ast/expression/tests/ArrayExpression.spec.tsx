@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
 import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 const mockStore = configureMockStore([thunk])
 

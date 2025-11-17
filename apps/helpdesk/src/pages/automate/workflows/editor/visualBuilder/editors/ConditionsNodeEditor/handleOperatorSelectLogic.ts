@@ -1,10 +1,10 @@
 import { produce } from 'immer'
 
-import {
+import type {
     ConditionKey,
     ConditionSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 import {
     getDefaultValueForType,

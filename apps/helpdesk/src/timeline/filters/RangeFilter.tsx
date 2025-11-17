@@ -9,7 +9,7 @@ import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
 import { getTimezone } from 'state/currentUser/selectors'
 
 import { END_OF_TODAY_DATE, MIN_RANGE_DATE } from '../constants'
-import { Range } from '../types'
+import type { Range } from '../types'
 import { getRangeLabel } from './helpers/rangeFilter'
 
 import css from './Filters.less'

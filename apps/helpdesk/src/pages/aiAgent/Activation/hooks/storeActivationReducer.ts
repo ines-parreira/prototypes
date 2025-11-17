@@ -2,19 +2,20 @@ import { useReducer } from 'react'
 
 import cloneDeep from 'lodash/cloneDeep'
 
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
-import { HelpCenter } from 'models/helpCenter/types'
-import {
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import type { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { ChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 
 export const isSalesEnabledWithNewActivationXp = ({

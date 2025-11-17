@@ -1,7 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
 import { useFlag } from 'core/flags'
-import { ContactForm, ContactFormPageEmbedment } from 'models/contactForm/types'
+import type {
+    ContactForm,
+    ContactFormPageEmbedment,
+} from 'models/contactForm/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'

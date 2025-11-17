@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { getTicketState } from 'state/ticket/selectors'
 
-import {
+import type {
     Action,
     Feedback,
     FeedbackOnResource,
@@ -17,7 +17,8 @@ import {
 } from '../../../../../models/aiAgentFeedback/types'
 import IconButton from '../../../../common/components/button/IconButton'
 import { useFeedbackTracking } from './hooks/useFeedbackTracking'
-import { ActionStatus, ResourceSection } from './types'
+import type { ResourceSection } from './types'
+import { ActionStatus } from './types'
 
 import css from './AIAgentFeedbackBar.less'
 

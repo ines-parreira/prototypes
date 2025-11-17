@@ -1,10 +1,11 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import { createSelector } from 'reselect'
 
 import { createImmutableSelector, makeGetPlainJS } from '../../utils'
-import { RootState } from '../types'
-import { TeamsState } from './types'
+import type { RootState } from '../types'
+import type { TeamsState } from './types'
 
 export const getState = (state: RootState) =>
     (state.teams || fromJS({})) as TeamsState

@@ -1,22 +1,26 @@
 import { useCallback } from 'react'
 
-import { DropTargetMonitor } from 'react-dnd'
-import { connect, ConnectedProps } from 'react-redux'
+import type { DropTargetMonitor } from 'react-dnd'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { UserViewsOrderingSettingData } from 'config/types/user'
-import { Section } from 'models/section/types'
-import { View, ViewVisibility } from 'models/view/types'
-import TicketNavbarDropTarget, {
+import type { UserViewsOrderingSettingData } from 'config/types/user'
+import type { Section } from 'models/section/types'
+import type { View } from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
+import type {
     TicketNavbarDragObject,
-    TicketNavbarDropDirection,
     TicketNavbarDropResult,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
-import { SectionsState } from 'state/entities/sections/types'
+import TicketNavbarDropTarget, {
+    TicketNavbarDropDirection,
+} from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import type { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
+import type { SectionsState } from 'state/entities/sections/types'
 import { viewUpdated } from 'state/entities/views/actions'
-import { ViewsState } from 'state/entities/views/types'
+import type { ViewsState } from 'state/entities/views/types'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     optimisticAccountSettingsSet,
     optimisticUserSettingsSet,

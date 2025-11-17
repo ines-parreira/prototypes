@@ -1,6 +1,6 @@
 import type { AnyAction } from '@reduxjs/toolkit'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import { changeTicketMessage } from '../actions'
 import reducer, { initialState } from '../reducer'

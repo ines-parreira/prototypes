@@ -1,15 +1,10 @@
-import {
-    HTMLAttributes,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import AccordionContext, { AccordionContextType } from './AccordionContext'
+import type { AccordionContextType } from './AccordionContext'
+import AccordionContext from './AccordionContext'
 
 import css from './Accordion.less'
 

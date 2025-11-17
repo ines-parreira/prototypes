@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
 import { Badge } from '@gorgias/axiom'
-import { User } from '@gorgias/helpdesk-types'
+import type { User } from '@gorgias/helpdesk-types'
 
 import {
     AvailabilityStatusChannel,

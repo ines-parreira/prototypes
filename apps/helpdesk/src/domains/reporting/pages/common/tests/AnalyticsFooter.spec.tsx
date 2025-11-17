@@ -9,7 +9,7 @@ import {
 } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
-import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { mockStore } from 'utils/testing'
 

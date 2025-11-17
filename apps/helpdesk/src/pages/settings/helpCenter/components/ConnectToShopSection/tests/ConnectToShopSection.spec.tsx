@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -15,7 +15,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { ConnectToShopSection } from '../ConnectToShopSection'

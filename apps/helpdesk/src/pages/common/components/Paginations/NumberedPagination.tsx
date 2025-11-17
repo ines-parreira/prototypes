@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { PaginationItem } from './components/PaginationItem'
 import { usePaginatedItems } from './hooks/usePaginatedItems'
-import { NavigationSize } from './types/NavigationSize'
-import { UiListItem } from './types/UiListItem'
+import type { NavigationSize } from './types/NavigationSize'
+import type { UiListItem } from './types/UiListItem'
 
 import css from './style.less'
 

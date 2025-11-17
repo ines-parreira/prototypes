@@ -1,14 +1,8 @@
-import React, {
-    ChangeEvent,
-    MouseEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ChangeEvent, MouseEvent } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import pluralize from 'pluralize'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
@@ -19,7 +13,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,

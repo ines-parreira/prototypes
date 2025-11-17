@@ -1,11 +1,11 @@
-import { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
-import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
+import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 export const slaPolicy1: SLAPolicy = {
     uuid: '1',

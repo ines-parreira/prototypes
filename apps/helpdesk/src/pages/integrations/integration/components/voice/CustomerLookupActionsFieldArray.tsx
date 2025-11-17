@@ -1,5 +1,5 @@
 import { Box, Button, Icon } from '@gorgias/axiom'
-import {
+import type {
     CustomerFieldBranchOption,
     CustomerFieldsConditionalStep,
     CustomField,

@@ -1,13 +1,8 @@
-import React, {
-    createContext,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type React from 'react'
+import { createContext, useCallback, useEffect, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
-import { Location } from 'history'
+import type { Location } from 'history'
 import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
 

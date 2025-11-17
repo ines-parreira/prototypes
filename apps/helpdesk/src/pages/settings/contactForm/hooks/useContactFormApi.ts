@@ -5,7 +5,7 @@ import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     ContactForm,
     CreateContactFormDto,
     UpdateContactFormDto,

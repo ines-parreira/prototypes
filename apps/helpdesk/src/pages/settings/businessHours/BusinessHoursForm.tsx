@@ -3,8 +3,8 @@ import { Input } from 'reactstrap'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
-import { BusinessHour } from 'state/currentAccount/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { BusinessHour } from 'state/currentAccount/types'
 
 import { DEPRECATED_DAYS_OPTIONS } from './constants'
 

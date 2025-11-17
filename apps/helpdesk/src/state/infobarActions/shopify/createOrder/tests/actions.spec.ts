@@ -1,8 +1,10 @@
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
-import { AnyAction } from 'redux'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { AnyAction } from 'redux'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
@@ -21,7 +23,7 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { executeAction } from 'state/infobar/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import * as actions from '../actions'

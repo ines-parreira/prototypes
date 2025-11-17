@@ -1,4 +1,5 @@
-import React, {
+import type React from 'react'
+import {
     createContext,
     useCallback,
     useContext,
@@ -7,11 +8,12 @@ import React, {
     useState,
 } from 'react'
 
-import { Draft, produce } from 'immer'
+import type { Draft } from 'immer'
+import { produce } from 'immer'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
+import type {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
     LocaleCode,

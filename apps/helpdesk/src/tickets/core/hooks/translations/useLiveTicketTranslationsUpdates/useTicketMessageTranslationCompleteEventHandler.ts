@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import {
+import type {
     HttpResponse,
     ListTicketMessageTranslations200,
     TicketLanguage,

@@ -1,9 +1,10 @@
-import { UIEventHandler, useEffect, useMemo, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
@@ -12,8 +13,8 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import {
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type {
     AggregationWindow,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

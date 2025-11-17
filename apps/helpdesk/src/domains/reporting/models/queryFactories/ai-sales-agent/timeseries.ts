@@ -1,17 +1,17 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
-    AiSalesAgentOrdersCube,
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { aiSalesAgentOrdersDefaultFiltersMembers } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingFilter,
-    ReportingFilterOperator,
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     getFilterDateRange,
     statsFiltersToReportingFilters,

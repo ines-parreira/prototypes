@@ -8,7 +8,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

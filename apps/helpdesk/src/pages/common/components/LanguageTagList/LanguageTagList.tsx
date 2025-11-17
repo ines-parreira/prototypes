@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import BadgeItem from 'pages/common/components/BadgetItem'
 
-import { Locale } from '../../../../models/helpCenter/types'
+import type { Locale } from '../../../../models/helpCenter/types'
 import { moveLocaleToBack } from '../../utils/locale'
 
 import css from './LanguageTagList.less'

@@ -7,7 +7,7 @@ import {
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { automationDatasetQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 

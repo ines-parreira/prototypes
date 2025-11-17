@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react'
 
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../constants'
 import { fromTreeKey } from '../helpers/buildTreeOfChoices'
 import { getFullValueFromCurrentPath } from '../helpers/getFullValueFromCurrentPath'
-import { ChoicesTree, SearchResults } from '../types'
+import type { ChoicesTree, SearchResults } from '../types'
 
 export function useSearch({
     choices,

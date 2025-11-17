@@ -10,7 +10,7 @@ import { QUALITY_MANAGEMENT_SLICE_NAME } from 'domains/reporting/state/ui/stats/
 import { toggleCommentHighlightsCsatSentiment } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')

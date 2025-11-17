@@ -1,16 +1,14 @@
 import React, { useRef } from 'react'
 
-import {
-    Label,
-    LegacySelectFieldOption as SelectFieldOption,
-} from '@gorgias/axiom'
+import type { LegacySelectFieldOption as SelectFieldOption } from '@gorgias/axiom'
+import { Label } from '@gorgias/axiom'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import { MerchantInput } from '../types'
+import type { MerchantInput } from '../types'
 
 import css from './ActionFormMerchantInputValue.less'
 

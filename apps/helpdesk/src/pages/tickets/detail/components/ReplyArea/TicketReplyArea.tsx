@@ -1,18 +1,21 @@
-import React, { Component, KeyboardEvent as KeyboardEventReact } from 'react'
+import type { KeyboardEvent as KeyboardEventReact } from 'react'
+import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { clearMacroBeforeApply } from 'business/macro'
-import { MacrosProperties } from 'models/macro/types'
+import type { MacrosProperties } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
@@ -20,7 +23,7 @@ import {
 import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
 import { getPreferences } from 'state/currentUser/selectors'
 import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
-import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 import { notify } from 'state/notifications/actions'
 import { applyMacro, clearAppliedMacro } from 'state/ticket/actions'
 import {
@@ -29,7 +32,7 @@ import {
     getInTicketSuggestionState,
     getTopRankMacroState,
 } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { nestedReplace } from 'tickets/common/utils'
 
 import TicketMacros from './TicketMacros'

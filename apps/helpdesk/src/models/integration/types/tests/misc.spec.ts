@@ -1,4 +1,4 @@
-import { Integration } from '..'
+import type { Integration } from '..'
 import { IntegrationType } from '../../constants'
 import { isStoreIntegration } from '../misc'
 

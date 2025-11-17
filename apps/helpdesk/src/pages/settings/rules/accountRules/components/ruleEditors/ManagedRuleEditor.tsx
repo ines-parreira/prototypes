@@ -1,6 +1,6 @@
-import React, {
-    ComponentProps,
-    ForwardedRef,
+import type { ComponentProps, ForwardedRef } from 'react'
+import type React from 'react'
+import {
     forwardRef,
     useCallback,
     useEffect,
@@ -23,11 +23,12 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
 import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
-import { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
+import type { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
 import { ruleUpdated } from 'state/entities/rules/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { ManagedRuleSettings, ManagedRulesSlugs } from 'state/rules/types'
+import type { ManagedRuleSettings } from 'state/rules/types'
+import { ManagedRulesSlugs } from 'state/rules/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
 
 import type { EditorHandle, ManagedRuleEditorProps } from '../RuleFormEditor'

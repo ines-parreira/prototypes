@@ -1,7 +1,9 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
-import { createBrowserHistory, History } from 'history'
+import type { History } from 'history'
+import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'

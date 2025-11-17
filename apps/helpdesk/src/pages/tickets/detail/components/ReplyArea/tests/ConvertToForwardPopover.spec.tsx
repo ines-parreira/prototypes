@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { setShowConvertToForwardPopover } from 'state/newMessage/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import ConvertToForwardPopover from '../ConvertToForwardPopover'
 

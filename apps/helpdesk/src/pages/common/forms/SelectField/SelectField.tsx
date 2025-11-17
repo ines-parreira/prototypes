@@ -1,10 +1,7 @@
-import React, {
+import type {
     ChangeEvent,
-    Component,
     ComponentProps,
-    createRef,
     CSSProperties,
-    Fragment,
     HTMLAttributes,
     KeyboardEvent,
     MouseEvent,
@@ -12,6 +9,7 @@ import React, {
     RefObject,
     SyntheticEvent,
 } from 'react'
+import React, { Component, createRef, Fragment } from 'react'
 
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -29,7 +27,7 @@ import {
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
 import Caption from '../Caption/Caption'
-import { Option, SelectableOption, Value } from './types'
+import type { Option, SelectableOption, Value } from './types'
 
 import css from './SelectField.less'
 

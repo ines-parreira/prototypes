@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 
 import useStoreUpdater from '../../hooks/useStoreUpdater'
 

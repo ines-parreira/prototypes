@@ -1,10 +1,6 @@
-import React, {
-    MouseEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { Link, useHistory, useParams } from 'react-router-dom'
 
@@ -20,7 +16,7 @@ import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
-import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'

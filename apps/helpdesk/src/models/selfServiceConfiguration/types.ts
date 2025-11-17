@@ -1,4 +1,4 @@
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 
 export type SelfServiceConfigurationFilter = {
     key: string

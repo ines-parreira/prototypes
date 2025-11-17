@@ -8,7 +8,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { StoresWorkflowConfiguration } from '../types'
+import type { StoresWorkflowConfiguration } from '../types'
 import { handleError } from './errorHandler'
 
 export default function useDeleteAction(

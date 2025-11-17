@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import Shoutout from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
 import { personNames } from 'fixtures/personNames'

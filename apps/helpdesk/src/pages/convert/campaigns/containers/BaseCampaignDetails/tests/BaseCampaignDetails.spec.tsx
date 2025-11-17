@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { campaign as campaignFixture } from 'fixtures/campaign'
 import { entitiesInitialState } from 'fixtures/entities'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { BaseCampaignDetails } from '../BaseCampaignDetails'
 

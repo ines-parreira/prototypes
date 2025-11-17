@@ -1,6 +1,6 @@
-import { ContentType, HttpMethod } from 'models/api/types'
+import type { ContentType, HttpMethod } from 'models/api/types'
 
-import { useTemplateContext } from './hooks/useTemplateContext'
+import type { useTemplateContext } from './hooks/useTemplateContext'
 
 export type TemplateContext = ReturnType<typeof useTemplateContext>
 

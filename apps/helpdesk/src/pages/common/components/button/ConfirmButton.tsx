@@ -1,6 +1,7 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import React from 'react'
 
-import { Popover } from 'reactstrap'
+import type { Popover } from 'reactstrap'
 
 import {
     LegacyButton as Button,

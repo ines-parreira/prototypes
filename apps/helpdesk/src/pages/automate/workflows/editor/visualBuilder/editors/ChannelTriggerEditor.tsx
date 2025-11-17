@@ -4,7 +4,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

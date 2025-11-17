@@ -1,4 +1,5 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -7,11 +8,11 @@ import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashb
 import { AddChartToDashboardModal } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
 import css from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu.less'
 import { MAX_DASHBOARDS_ALLOWED } from 'domains/reporting/pages/dashboards/constants'
-import {
+import type {
     DashboardChild,
-    DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import useAppSelector from 'hooks/useAppSelector'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

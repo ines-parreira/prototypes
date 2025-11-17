@@ -1,6 +1,6 @@
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { TicketFieldsMetric } from 'domains/reporting/state/ui/stats/types'
 
 export enum TicketInsightsFieldsMetric {

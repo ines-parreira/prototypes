@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 export const useGetGuidancesAvailableActions = (
     shopName: string,

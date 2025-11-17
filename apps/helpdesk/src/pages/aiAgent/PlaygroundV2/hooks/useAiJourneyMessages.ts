@@ -1,17 +1,17 @@
 import { useCallback } from 'react'
 
-import {
+import type {
     JourneyConfigurationApiDTO,
     JourneyTypeEnum,
 } from '@gorgias/convert-client'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { useTriggerAIJourney } from 'models/aiAgent/queries'
-import { CreateAIJourneyPlaygroundOptions } from 'models/aiAgent/resources/ai-journey'
+import type { CreateAIJourneyPlaygroundOptions } from 'models/aiAgent/resources/ai-journey'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
-import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
+import type { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
 
 type CreateAIJourneyPayloadParams = {
     accountId: number

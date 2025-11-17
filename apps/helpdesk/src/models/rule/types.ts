@@ -1,11 +1,11 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import esprima from 'esprima'
+import type esprima from 'esprima'
 
 import type { User } from 'config/types/user'
-import { HttpMethod } from 'models/api/types'
+import type { HttpMethod } from 'models/api/types'
 import type { Team } from 'models/team/types'
-import {
+import type {
     AnyManagedRuleSettings,
     ObjectExpressionPropertyKey,
 } from 'state/rules/types'

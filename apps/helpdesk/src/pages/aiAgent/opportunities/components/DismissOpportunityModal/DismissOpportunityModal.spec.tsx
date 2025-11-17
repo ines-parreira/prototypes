@@ -11,7 +11,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { OpportunityDismissReason } from '../../../../tickets/detail/components/AIAgentFeedbackBar/types'
 import { OpportunityType } from '../../enums'
-import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { DismissOpportunityModal } from './DismissOpportunityModal'
 
 jest.mock('state/notifications/actions', () => ({

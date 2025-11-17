@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasApiError } from 'models/api/types'
-import { EmailProvider } from 'models/integration/constants'
+import type { GorgiasApiError } from 'models/api/types'
+import type { EmailProvider } from 'models/integration/constants'
 import { createDomainVerification as createDomainVerificationRequest } from 'models/integration/resources/email'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

@@ -1,11 +1,5 @@
-import React, {
-    KeyboardEvent,
-    RefObject,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { KeyboardEvent, RefObject } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { EditorState } from 'draft-js'
 import ReactPlayer from 'react-player'
@@ -18,7 +12,7 @@ import { fixVideoUrlForReactPlayer, insertLink, insertText } from 'utils'
 
 import { addVideo } from '../../utils'
 import { useToolbarContext } from '../ToolbarContext'
-import { ActionInjectedProps } from '../types'
+import type { ActionInjectedProps } from '../types'
 
 import css from './AddVideo.less'
 

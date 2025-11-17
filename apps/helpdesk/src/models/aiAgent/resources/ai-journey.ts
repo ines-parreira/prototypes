@@ -1,6 +1,9 @@
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { TriggerAIJourneyPayload, TriggerAIJourneyResponse } from '../types'
+import type {
+    TriggerAIJourneyPayload,
+    TriggerAIJourneyResponse,
+} from '../types'
 import { apiClient } from './message-processing'
 
 export type CreateAIJourneyPlaygroundOptions = {

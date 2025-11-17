@@ -4,7 +4,8 @@ import { EditorState } from 'draft-js'
 import { useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Language, useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
+import type { Language } from '@gorgias/helpdesk-queries'
+import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

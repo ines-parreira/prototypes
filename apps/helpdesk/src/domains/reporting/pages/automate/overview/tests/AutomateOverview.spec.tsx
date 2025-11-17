@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
@@ -14,7 +14,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useFlag } from 'core/flags'
 import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
-import { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
+import type { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
 import { useAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useAIAgentInteractionsBySkillTimeSeries } from 'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries'
@@ -27,12 +27,10 @@ import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAuto
 import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionTimeSeries'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import {
-    FilterKey,
-    LegacyStatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
 import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/automate/overview/AutomateOverviewDownloadDataButton'
 import { TimeSavedByAgentsKPIChart } from 'domains/reporting/pages/automate/overview/charts/TimeSavedByAgentsKPIChart'
@@ -40,7 +38,7 @@ import { BarChart } from 'domains/reporting/pages/common/components/charts/BarCh
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { ADD_FILTER_BUTTON_LABEL } from 'domains/reporting/pages/common/filters/AddFilterButton'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -49,7 +47,7 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { IntegrationType } from 'models/integration/constants'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

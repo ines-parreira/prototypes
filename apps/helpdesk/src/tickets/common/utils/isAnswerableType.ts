@@ -1,5 +1,6 @@
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
-import { ChannelLike, toChannel } from 'services/channels'
+import type { ChannelLike } from 'services/channels'
+import { toChannel } from 'services/channels'
 import { USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
 /**

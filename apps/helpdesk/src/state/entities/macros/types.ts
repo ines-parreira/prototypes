@@ -1,8 +1,8 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
-import {
+import type {
     MACRO_CREATED,
     MACRO_DELETED,
     MACRO_FETCHED,

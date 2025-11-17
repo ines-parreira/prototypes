@@ -6,7 +6,7 @@ import {
     useLocalStorageWithExpiry,
 } from '@repo/hooks'
 
-import { IntegrationType } from 'models/integration/types'
+import type { IntegrationType } from 'models/integration/types'
 
 export const LOCAL_STORAGE_KEY = 'aiagent_onboarding_integration_redirection'
 export const LOCAL_STORAGE_ID_KEY = 'aiagent_onboarding_integration_id'

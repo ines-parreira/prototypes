@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 import { useResponseCursor } from '../useResponseCursor'
 

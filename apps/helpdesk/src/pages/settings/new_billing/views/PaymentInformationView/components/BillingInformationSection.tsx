@@ -8,7 +8,7 @@ import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView
 import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
 import { TaxIdRows } from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
-import {
+import type {
     BillingContact,
     BillingContactDetailResponse,
 } from 'state/billing/types'

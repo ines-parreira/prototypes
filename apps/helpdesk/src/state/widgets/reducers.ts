@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _initial from 'lodash/initial'
 import _isObject from 'lodash/isObject'
 import _last from 'lodash/last'
@@ -11,9 +12,10 @@ import {
     stripLastListsFromPath,
 } from 'pages/common/components/infobar/utils'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as types from './constants'
-import { WidgetEnvironment, WidgetsState } from './types'
+import type { WidgetsState } from './types'
+import { WidgetEnvironment } from './types'
 import {
     itemsWithContext,
     itemsWithUpdatedWidgets,

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Skeleton } from '@gorgias/axiom'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import {
+import type {
     CommentHighlightsData,
     FormattedCommentHighlightQueryData,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights'

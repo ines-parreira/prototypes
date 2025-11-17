@@ -1,11 +1,13 @@
-import React, {
-    createContext,
+import type {
     FocusEvent,
     ForwardedRef,
-    forwardRef,
     HTMLAttributes,
     ReactNode,
     RefObject,
+} from 'react'
+import React, {
+    createContext,
+    forwardRef,
     useCallback,
     useContext,
     useImperativeHandle,

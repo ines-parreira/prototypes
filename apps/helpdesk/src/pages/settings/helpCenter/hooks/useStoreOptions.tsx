@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Integration, IntegrationType } from 'models/integration/types'
-import { Option } from 'pages/common/forms/SelectField/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { Option } from 'pages/common/forms/SelectField/types'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 

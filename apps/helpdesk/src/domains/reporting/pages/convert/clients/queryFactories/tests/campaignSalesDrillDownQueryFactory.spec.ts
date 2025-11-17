@@ -3,7 +3,7 @@ import moment from 'moment'
 import { TicketChannel } from 'business/types/ticket'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     Cube,

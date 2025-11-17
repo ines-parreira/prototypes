@@ -2,11 +2,11 @@ import { useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { ListMacrosParams } from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { MacrosProperties } from 'models/macro/types'
-import { Ticket } from 'models/ticket/types'
+import type { MacrosProperties } from 'models/macro/types'
+import type { Ticket } from 'models/ticket/types'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import ChannelSelect from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
 import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
@@ -14,7 +14,7 @@ import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketRep
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
-import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
+import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'

@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import {
     macroCreated,
@@ -9,7 +9,7 @@ import {
     macrosFetched,
     macroUpdated,
 } from './actions'
-import { MacrosState } from './types'
+import type { MacrosState } from './types'
 
 const initialState: MacrosState = {}
 

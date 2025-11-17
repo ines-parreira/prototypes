@@ -6,7 +6,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 
-import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
 
 import css from './style.less'
 

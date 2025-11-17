@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
@@ -8,7 +9,7 @@ import {
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,

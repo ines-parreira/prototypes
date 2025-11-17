@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import * as customersActions from '../../../state/customers/actions'
 import { getActiveCustomerId } from '../../../state/customers/selectors'
-import { RootState, StoreDispatch } from '../../../state/types'
+import type { RootState, StoreDispatch } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
 import { getSources } from '../../../state/widgets/selectors'
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'

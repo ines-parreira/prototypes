@@ -1,11 +1,12 @@
-import React, { ReactNode, useEffect, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useCurrentFilters from 'domains/reporting/hooks/useCurrentFilters'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import {

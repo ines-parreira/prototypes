@@ -9,7 +9,7 @@ import { AgentNameCellContent } from 'domains/reporting/pages/support-performanc
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { agents } from 'fixtures/agents'
 import { STATS_ROUTES } from 'routes/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

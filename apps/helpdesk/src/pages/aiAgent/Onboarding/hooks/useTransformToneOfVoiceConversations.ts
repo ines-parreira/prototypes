@@ -7,23 +7,19 @@ import moment from 'moment/moment'
 
 import { AttachmentEnum } from 'common/types'
 import { useFlag } from 'core/flags'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
-import { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
+import type { TransformToneOfVoiceConversation } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
-import {
-    PreviewId,
-    PRODUCT_RECOMMENDATION_MESSAGE_ID,
-} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
-import {
-    ConversationExamples,
-    conversationExamples,
-} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
+import type { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import type { ConversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
+import { conversationExamples } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/conversationsExamples'
 import useTopProducts from 'pages/aiAgent/Onboarding/components/TopProductsCard/hooks'
-import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
-import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import type { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 

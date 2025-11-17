@@ -1,6 +1,7 @@
 import { isGorgiasApiError } from 'models/api/types'
 import { TicketPurpose } from 'state/billing/types'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 export default function createBillingErrorNotification(
     error: unknown,

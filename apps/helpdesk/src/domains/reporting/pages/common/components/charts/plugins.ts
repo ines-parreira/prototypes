@@ -1,5 +1,6 @@
-import { Chart, Plugin, Tick } from 'chart.js'
-import moment, { Moment } from 'moment'
+import type { Chart, Plugin, Tick } from 'chart.js'
+import type { Moment } from 'moment'
+import moment from 'moment'
 
 import colorTokens from '@gorgias/design-tokens/tokens/colors'
 

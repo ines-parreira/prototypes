@@ -1,9 +1,11 @@
 import { history } from '@repo/routing'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
-import {
+import type {
     Notification,
     NotificationButton,
+} from 'state/notifications/types'
+import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'

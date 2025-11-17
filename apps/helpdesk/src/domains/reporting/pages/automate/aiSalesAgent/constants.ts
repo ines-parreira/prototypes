@@ -1,4 +1,4 @@
-import { ProductTableColumn } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
+import type { ProductTableColumn } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 
 export const MIN_DATE_FOR_SALES_AGENT_STATS = '2025-02-21'
 

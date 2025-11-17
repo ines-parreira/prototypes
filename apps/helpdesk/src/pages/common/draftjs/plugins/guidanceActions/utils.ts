@@ -1,6 +1,7 @@
-import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { Modifier, SelectionState } from 'draft-js'
 
-import { GuidanceAction } from './types'
+import type { GuidanceAction } from './types'
 
 export const guidanceActionRegex = /\$\$\$([^\$]*)\$\$\$/g
 

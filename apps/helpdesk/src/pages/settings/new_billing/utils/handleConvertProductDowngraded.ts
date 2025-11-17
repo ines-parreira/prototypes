@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { ConvertPlan } from 'models/billing/types'
+import type { ConvertPlan } from 'models/billing/types'
 
 export const handleConvertProductDowngraded = (
     oldProduct: ConvertPlan | undefined,

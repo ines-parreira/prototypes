@@ -1,11 +1,5 @@
-import {
-    ComponentProps,
-    ReactNode,
-    SyntheticEvent,
-    useCallback,
-    useMemo,
-    useState,
-} from 'react'
+import type { ComponentProps, ReactNode, SyntheticEvent } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useId, useIsMounted } from '@repo/hooks'
 import classnames from 'classnames'

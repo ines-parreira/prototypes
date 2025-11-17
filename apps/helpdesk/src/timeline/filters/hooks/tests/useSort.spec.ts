@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { GorgiasInitialState } from 'types'
+import type { GorgiasInitialState } from 'types'
 
 import { useSort } from '../useSort'
 

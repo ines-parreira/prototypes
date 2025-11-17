@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
@@ -10,10 +11,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    isWhatsAppIntegration,
-    WhatsAppIntegration,
-} from 'models/integration/types'
+import type { WhatsAppIntegration } from 'models/integration/types'
+import { isWhatsAppIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences.less'

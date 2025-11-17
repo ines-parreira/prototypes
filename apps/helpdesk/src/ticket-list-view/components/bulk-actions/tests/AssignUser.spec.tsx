@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import AssignUser from '../AssignUser'
-import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
+import type UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
 
 jest.mock(
     '../UserAssigneeDropdownMenu',

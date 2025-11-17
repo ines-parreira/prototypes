@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { ChannelWithMetadata } from '../../../types'
+import type { ChannelWithMetadata } from '../../../types'
 
 interface MappedChannelsDrawerInfoBlockProps {
     channel: ChannelWithMetadata

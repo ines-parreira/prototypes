@@ -7,7 +7,7 @@ import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hoo
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetCurrencyForStore } from 'domains/reporting/pages/convert/hooks/useGetCurrencyForStore'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 

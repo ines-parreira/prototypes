@@ -1,8 +1,6 @@
-import { ConversationMessage } from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
-import {
-    PreviewId,
-    PRODUCT_RECOMMENDATION_MESSAGE_ID,
-} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import type { ConversationMessage } from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
+import type { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 
 export type ConversationExamples = Record<
     PreviewId,

@@ -1,6 +1,7 @@
 import { userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 
 import { views } from 'config/views'

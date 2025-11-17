@@ -23,7 +23,7 @@ import {
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

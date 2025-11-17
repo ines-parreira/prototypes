@@ -34,8 +34,8 @@ import { medianResolutionTimePerAgentQueryV2Factory } from 'domains/reporting/mo
 import { ticketAverageHandleTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { ticketsRepliedCountPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { OrderDirection } from 'models/api/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const useMedianFirstResponseTimeMetricPerAgent = (
     filters: StatsFilters,

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { useDrag } from 'react-dnd'

@@ -1,8 +1,7 @@
-import React, {
-    ComponentProps,
-    ForwardedRef,
+import type { ComponentProps, ForwardedRef, ReactNode } from 'react'
+import type React from 'react'
+import {
     forwardRef,
-    ReactNode,
     useCallback,
     useEffect,
     useImperativeHandle,
@@ -13,8 +12,8 @@ import React, {
 
 import { useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
+import type { CountryCode } from 'libphonenumber-js'
 import {
-    CountryCode,
     getCountryCallingCode,
     isValidPhoneNumber,
     parsePhoneNumber,

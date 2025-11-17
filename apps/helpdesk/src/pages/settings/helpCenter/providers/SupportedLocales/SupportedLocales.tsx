@@ -1,12 +1,8 @@
-import React, {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
-import { Locale } from '../../../../../models/helpCenter/types'
+import type { Locale } from '../../../../../models/helpCenter/types'
 import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
 
 const SupportedLocalesContext = createContext<Locale[] | null>(null)

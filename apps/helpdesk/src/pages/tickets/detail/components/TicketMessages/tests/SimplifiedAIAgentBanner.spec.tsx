@@ -13,9 +13,9 @@ import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
 

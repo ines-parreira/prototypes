@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { MacrosProperties } from 'models/macro/types'
+import type { MacrosProperties } from 'models/macro/types'
 import { getMacroParametersOptions } from 'state/macro/selectors'
 import { getTicket } from 'state/ticket/selectors'
 

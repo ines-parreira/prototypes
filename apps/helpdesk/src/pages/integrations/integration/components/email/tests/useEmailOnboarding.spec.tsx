@@ -9,30 +9,32 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { EmailIntegration } from '@gorgias/helpdesk-client'
 import {
     createIntegration,
     deleteIntegration,
-    EmailIntegration,
     sendVerificationEmail,
     updateIntegration,
 } from '@gorgias/helpdesk-client'
-import { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
+import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import socketManager from 'services/socketManager'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
+import type {
+    UseEmailOnboardingHookOptions,
+    UseEmailOnboardingHookResult,
+} from '../hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
     stepUrl,
     useEmailOnboarding,
     useEmailOnboardingCompleteCheck,
-    UseEmailOnboardingHookOptions,
-    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])

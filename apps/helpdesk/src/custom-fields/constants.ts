@@ -1,6 +1,6 @@
 import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
-import {
+import type {
     CustomFieldManagedType,
     CustomFieldObjectTypes,
     ExhaustiveUIDataType,

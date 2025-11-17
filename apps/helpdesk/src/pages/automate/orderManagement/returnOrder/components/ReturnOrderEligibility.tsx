@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react'
 
 import { ReturnsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
-import {
-    FilterOperatorEnum,
-    SelfServiceConfigurationFilter,
-} from 'models/selfServiceConfiguration/types'
+import type { SelfServiceConfigurationFilter } from 'models/selfServiceConfiguration/types'
+import { FilterOperatorEnum } from 'models/selfServiceConfiguration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

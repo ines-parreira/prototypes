@@ -1,17 +1,16 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Route, Router } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
-import {
-    KNOWLEDGE_ALERT_KIND,
-    State,
-} from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { State } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useActivateStore } from 'pages/aiAgent/Activation/hooks/useActivateStore'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'

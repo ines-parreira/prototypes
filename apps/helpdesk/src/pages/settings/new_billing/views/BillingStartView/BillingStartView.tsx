@@ -31,7 +31,8 @@ import {
     getCurrentProductsUsage,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
-import { BillingBanner, TicketPurpose } from 'state/billing/types'
+import type { BillingBanner } from 'state/billing/types'
+import { TicketPurpose } from 'state/billing/types'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
@@ -61,7 +62,7 @@ import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddre
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'
 import BillingProcessView from '../BillingProcessView'
-import { SelectedPlans } from '../BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../BillingProcessView/BillingProcessView'
 import PaymentsHistoryView from '../PaymentHistoryView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
 import UsageAndPlansView from '../UsageAndPlansView'

@@ -10,8 +10,8 @@ import {
     LegacyLabel as Label,
 } from '@gorgias/axiom'
 
-import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import IconButton from 'pages/common/components/button/IconButton'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

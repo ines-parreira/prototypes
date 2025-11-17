@@ -1,4 +1,5 @@
-import { ComponentProps, useEffect, useRef, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 import cn from 'classnames'

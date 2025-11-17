@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableReports.less'
-import {
+import type {
     ReportConfig,
     ReportsModalConfig,
 } from 'domains/reporting/pages/dashboards/types'

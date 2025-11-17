@@ -11,7 +11,7 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
-import { OnToggleUnreadFn } from 'tickets/dtp'
+import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { InfobarNavigationPanel } from 'tickets/navigation'
 import { TicketDetailPanel } from 'tickets/ticket-detail'
 import { TicketInfobarPanel } from 'tickets/ticket-infobar'

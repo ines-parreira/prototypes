@@ -6,7 +6,7 @@ import { DocumentFilters } from './DocumentFilters/DocumentFilters'
 import { EmptyStates } from './EmptyState/EmptyStates'
 import { KnowledgeHubHeader } from './KnowledgeHubHeader/KnowledgeHubHeader'
 import { KnowledgeHubTable } from './Table/KnowledgeHubTable'
-import { GroupedKnowledgeItem, KnowledgeType } from './types'
+import type { GroupedKnowledgeItem, KnowledgeType } from './types'
 import { useKnowledgeHub } from './useKnowledgeHub'
 
 import css from './KnowledgeHubContainer.less'

@@ -1,7 +1,8 @@
-import { ReactElement, useRef } from 'react'
+import type { ReactElement } from 'react'
+import { useRef } from 'react'
 
 import { useConditionalShortcuts } from '@repo/utils'
-import { LocationDescriptor } from 'history'
+import type { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
 import { Link } from 'react-router-dom'
 

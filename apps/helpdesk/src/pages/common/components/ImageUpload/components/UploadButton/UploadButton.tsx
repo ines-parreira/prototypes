@@ -1,4 +1,6 @@
-import React, { ChangeEvent, createRef, FunctionComponent } from 'react'
+import type { ChangeEvent, FunctionComponent } from 'react'
+import type React from 'react'
+import { createRef } from 'react'
 
 import css from './UploadButton.less'
 

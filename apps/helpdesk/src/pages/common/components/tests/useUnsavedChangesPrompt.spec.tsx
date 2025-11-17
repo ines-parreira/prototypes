@@ -1,9 +1,9 @@
-import React from 'react'
+import type React from 'react'
 
 import { history } from '@repo/routing'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import * as H from 'history'
+import type * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'
 

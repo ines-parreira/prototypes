@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import {
@@ -17,7 +18,7 @@ import {
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
-import {
+import type {
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
@@ -29,7 +30,7 @@ import {
     mergeCustomerEcommerceDataShopper,
     mergeCustomerEcommerceDataShopperAddress,
 } from 'state/ticket/actions'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,

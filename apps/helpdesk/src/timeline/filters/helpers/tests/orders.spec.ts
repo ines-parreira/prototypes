@@ -1,4 +1,4 @@
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 
 import { extractOrders } from '../../../helpers/orders'
 

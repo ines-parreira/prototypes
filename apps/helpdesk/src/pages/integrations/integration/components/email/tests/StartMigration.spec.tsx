@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 

@@ -1,12 +1,13 @@
-import React, { Dispatch } from 'react'
+import type { Dispatch } from 'react'
+import React from 'react'
 
 import { CommonReasonLabel } from '../constants'
-import {
+import type {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReason,
-    CancellationReasonsActionType,
     CancellationReasonsState,
 } from '../types'
+import { CancellationReasonsActionType } from '../types'
 import Instruction from '../UI/Instruction'
 import OtherReason from '../UI/OtherReason'
 import PrimaryReasons from '../UI/PrimaryReasons'

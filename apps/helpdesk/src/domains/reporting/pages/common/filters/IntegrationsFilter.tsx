@@ -4,15 +4,11 @@ import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
-import {
-    FilterKey,
-    StatsFiltersWithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
-import {
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     FilterLabels,
     integrationsFilterLogicalOperators,
@@ -22,11 +18,11 @@ import {
     emptyFilter,
     logSegmentEvent,
 } from 'domains/reporting/pages/common/filters/helpers'
-import {
+import type {
     OptionalFilterProps,
     RemovableFilter,
 } from 'domains/reporting/pages/common/filters/types'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
@@ -41,9 +37,9 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Integrations]

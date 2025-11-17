@@ -9,7 +9,7 @@ import {
     useWorkflowStepDatasetTrend,
 } from 'domains/reporting/hooks/automate/useWorkflowDataset'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
-import { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
+import type { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

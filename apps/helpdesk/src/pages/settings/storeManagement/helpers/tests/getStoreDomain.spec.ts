@@ -1,5 +1,5 @@
 import { IntegrationType } from 'models/integration/constants'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 
 import getStoreDomain from '../getStoreDomain'
 

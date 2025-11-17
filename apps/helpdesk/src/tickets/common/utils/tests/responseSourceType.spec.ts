@@ -2,7 +2,7 @@ import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallUtils from 'models/voiceCall/types'
 import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'

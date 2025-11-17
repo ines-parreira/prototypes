@@ -1,11 +1,11 @@
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { USER_ROLES } from 'config/user'
 import { fetchAgents } from 'models/agents/resources'
-import { FetchAgentsOptions } from 'models/agents/types'
+import type { FetchAgentsOptions } from 'models/agents/types'
 import GorgiasApi from 'services/gorgiasApi'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
-import {
+import type {
     FeedbackStatus,
     ResourceSection,
 } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'

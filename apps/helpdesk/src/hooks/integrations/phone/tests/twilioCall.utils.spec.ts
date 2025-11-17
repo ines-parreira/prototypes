@@ -13,7 +13,7 @@ import {
     handleCallEvents,
     logCallEnd,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'

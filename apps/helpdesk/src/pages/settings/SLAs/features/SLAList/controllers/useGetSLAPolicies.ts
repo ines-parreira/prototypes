@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 
-import {
+import type {
     HttpResponse,
     ListSlaPolicies200,
-    useListSlaPolicies,
 } from '@gorgias/helpdesk-queries'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
-import { UISLAPolicy } from '../types'
+import type { UISLAPolicy } from '../types'
 import makeUISLAPolicy from './makeUISLAPolicy'
 
 export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes

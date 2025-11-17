@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { useFeedbackTracking } from '../../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { AiAgentBinaryFeedbackEnum } from '../../AIAgentFeedbackBar/types'

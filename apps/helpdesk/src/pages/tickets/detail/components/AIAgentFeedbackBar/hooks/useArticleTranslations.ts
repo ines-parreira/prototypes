@@ -2,13 +2,13 @@ import { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetArticleTranslations } from 'models/helpCenter/queries'
-import { Article, LocaleCode } from 'models/helpCenter/types'
+import type { Article, LocaleCode } from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     getNewArticleTranslation,
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage } from 'state/ui/helpCenter'

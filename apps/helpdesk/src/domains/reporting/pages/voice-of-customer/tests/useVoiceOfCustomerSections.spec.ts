@@ -2,7 +2,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import {
     VOICE_OF_CUSTOMER_NAVBAR_SECTIONS_KEY,
     VoiceOfCustomerViewSections,

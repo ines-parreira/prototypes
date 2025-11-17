@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 
-import { Icon, IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
 
 import css from './StepCardIcon.less'
 

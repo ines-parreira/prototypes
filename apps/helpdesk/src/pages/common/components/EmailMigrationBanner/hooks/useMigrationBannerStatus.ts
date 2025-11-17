@@ -1,5 +1,5 @@
 import { useAsyncFn } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchEmailMigrationBannerStatus } from 'models/integration/resources/email'

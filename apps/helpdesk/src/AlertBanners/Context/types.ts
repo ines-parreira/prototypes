@@ -1,6 +1,6 @@
-import { BannerNotification } from 'state/notifications/types'
+import type { BannerNotification } from 'state/notifications/types'
 
-import { BannerCategory, ContextBanner } from '../types'
+import type { BannerCategory, ContextBanner } from '../types'
 
 export const BannerActionTypes = {
     ADD: 'add',

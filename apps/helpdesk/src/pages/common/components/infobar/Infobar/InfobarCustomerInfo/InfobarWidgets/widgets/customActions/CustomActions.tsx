@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import classnames from 'classnames'
 
-import { CardTemplate, Source } from 'models/widget/types'
+import type { CardTemplate, Source } from 'models/widget/types'
 
 import ActionButtons from './ActionButtons'
 import Links from './Links'

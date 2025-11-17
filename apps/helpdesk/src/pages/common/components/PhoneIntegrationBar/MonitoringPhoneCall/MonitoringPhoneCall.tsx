@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
 import { Button } from '@gorgias/axiom'
 

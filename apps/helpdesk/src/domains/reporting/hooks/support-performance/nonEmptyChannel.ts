@@ -1,6 +1,6 @@
-import { ChannelsReportData } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
+import type { ChannelsReportData } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
-import { Channel } from 'services/channels'
+import type { Channel } from 'services/channels'
 import { notEmpty } from 'utils'
 
 export const nonEmptyChannels = (

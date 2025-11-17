@@ -1,7 +1,7 @@
 import { AiAgentScope } from 'models/aiAgent/types'
 import { getChatActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
 export class EnableAskAnythingInputTask extends Task {

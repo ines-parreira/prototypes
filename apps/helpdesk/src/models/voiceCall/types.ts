@@ -3,7 +3,7 @@ import {
     VoiceCallTerminationStatus,
 } from '@gorgias/helpdesk-queries'
 
-import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import type { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 
 export type VoiceCallDirection = 'inbound' | 'outbound'
 

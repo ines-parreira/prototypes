@@ -16,11 +16,9 @@ import {
 } from 'fixtures/shopify'
 import { useListProducts } from 'models/integration/queries'
 import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {
-    CampaignProductRecommendation,
-    ProductRecommendationScenario,
-} from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import type { CampaignProductRecommendation } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import { pickNRandomShopifyProducts } from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
 import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'

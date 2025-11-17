@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'

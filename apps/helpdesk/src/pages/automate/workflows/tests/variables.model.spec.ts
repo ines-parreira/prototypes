@@ -12,12 +12,10 @@ import {
     prerenderVariables,
     toLiquidSyntax,
 } from '../models/variables.model'
-import {
-    SHIPMONK_APPLICATION_ID,
-    WorkflowVariableList,
-} from '../models/variables.types'
+import type { WorkflowVariableList } from '../models/variables.types'
+import { SHIPMONK_APPLICATION_ID } from '../models/variables.types'
 import { buildNodeCommonProperties } from '../models/visualBuilderGraph.model'
-import {
+import type {
     CreateDiscountCodeNodeType,
     EditOrderNoteNodeType,
     LiquidTemplateNodeType,

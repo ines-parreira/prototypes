@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -6,8 +7,8 @@ import configureMockStore from 'redux-mock-store'
 
 import { capabilities as capabilitiesFixtures } from 'fixtures/phoneNumber'
 import * as apiCalls from 'models/phoneNumber/resources'
-import { PhoneNumber } from 'models/phoneNumber/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { PhoneNumber } from 'models/phoneNumber/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'

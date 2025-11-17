@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import type React from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
 
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { getRGB } from 'gorgias-design-system/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import {
     Card,
     CardContent,

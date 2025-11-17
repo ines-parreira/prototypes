@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
@@ -12,7 +12,7 @@ import {
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { usePerformanceByArticleMetrics } from 'domains/reporting/pages/help-center/hooks/usePerformanceByArticleMetrics'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 jest.mock('domains/reporting/hooks/useMetric', () => ({
     useMetric: jest.fn(),

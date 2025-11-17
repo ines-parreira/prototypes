@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
 import OnboardingDomainVerificationPrompt from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt'

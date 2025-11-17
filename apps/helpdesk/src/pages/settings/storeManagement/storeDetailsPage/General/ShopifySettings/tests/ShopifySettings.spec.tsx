@@ -3,11 +3,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import ShopifySettings, { ShopifySettingsProps } from '../ShopifySettings'
+import type { ShopifySettingsProps } from '../ShopifySettings'
+import ShopifySettings from '../ShopifySettings'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

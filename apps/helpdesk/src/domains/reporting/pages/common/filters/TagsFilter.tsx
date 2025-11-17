@@ -4,9 +4,9 @@ import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
+import type { TagFilter } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
-    TagFilter,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
@@ -19,7 +19,7 @@ import {
     tagsFilterLogicalOperators,
 } from 'domains/reporting/pages/common/filters/constants'
 import { logSegmentEvent } from 'domains/reporting/pages/common/filters/helpers'
-import {
+import type {
     OptionalFilterProps,
     RemovableFilter,
 } from 'domains/reporting/pages/common/filters/types'
@@ -27,7 +27,7 @@ import {
     createFilterOptions,
     getFilterError,
 } from 'domains/reporting/pages/common/filters/utils'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
@@ -41,7 +41,7 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type DispatchProps = {
     dispatchUpdate: (value: TagFilter[]) => void

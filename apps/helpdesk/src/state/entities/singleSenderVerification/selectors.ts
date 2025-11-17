@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
-import { SingleSenderVerificationsState } from './types'
+import type { SingleSenderVerificationsState } from './types'
 
 export const getSingleSenderVerifications = (
     state: RootState,

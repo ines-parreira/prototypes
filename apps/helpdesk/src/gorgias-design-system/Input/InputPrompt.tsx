@@ -4,10 +4,11 @@ import styled from '@emotion/styled'
 
 import IconButton from 'gorgias-design-system/Buttons/IconButton'
 import { getContrastColor } from 'gorgias-design-system/utils'
-import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 import ArrowIcon from './icons/ArrowIcon'
-import TextField, { TextFieldProps } from './TextField'
+import type { TextFieldProps } from './TextField'
+import TextField from './TextField'
 
 const IconButtonContainer = styled.div`
     height: 44px;

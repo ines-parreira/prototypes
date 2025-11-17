@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { ChoicesTree } from '../../types'
+import type { ChoicesTree } from '../../types'
 import { useSearch } from '../useSearch'
 
 describe('useSearch', () => {

@@ -1,8 +1,8 @@
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 
-import { FailedData } from '../types'
+import type { FailedData } from '../types'
 
 export function integrationErrorTransformer(
     message: TicketMessage,

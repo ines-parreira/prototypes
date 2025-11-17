@@ -1,16 +1,17 @@
-import React, {
+import type {
     ChangeEvent,
-    Component,
     ComponentProps,
     FormEvent,
     KeyboardEvent,
     ReactNode,
     RefObject,
 } from 'react'
+import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import {
     Button,
     Form,
@@ -21,7 +22,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import { DraftOrderInvoice } from 'constants/integrations/types/shopify'
+import type { DraftOrderInvoice } from 'constants/integrations/types/shopify'
 import { focusElement } from 'utils/html'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

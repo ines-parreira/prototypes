@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import pluralize from 'pluralize'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

@@ -21,10 +21,8 @@ import {
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { returnMentionsPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { ticketCountPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

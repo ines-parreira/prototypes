@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/types'
 
 import { sortStoresByName } from '../StoreManagementProvider.helpers'
-import { StoreWithAssignedChannels } from '../types'
+import type { StoreWithAssignedChannels } from '../types'
 
 describe('StoreManagementProvider.helpers', () => {
     describe('sortStoresByName', () => {

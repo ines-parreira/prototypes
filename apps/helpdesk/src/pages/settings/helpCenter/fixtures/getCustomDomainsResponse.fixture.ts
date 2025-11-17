@@ -1,4 +1,4 @@
-import {
+import type {
     CustomDomain,
     CustomDomainsListPage,
 } from '../../../../models/helpCenter/types'

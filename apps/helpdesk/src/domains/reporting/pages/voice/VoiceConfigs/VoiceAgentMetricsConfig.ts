@@ -7,11 +7,9 @@ import {
     declinedVoiceCallsPerAgentQueryFactory,
     transferredInboundVoiceCallsPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { VoiceAgentsMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const VoiceAgentsMetricsConfig: Record<

@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -20,7 +20,7 @@ import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { customFieldsMockResponse } from 'fixtures/customField'
 import { integrationsState } from 'fixtures/integrations'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const defaultState = {
     stats: {

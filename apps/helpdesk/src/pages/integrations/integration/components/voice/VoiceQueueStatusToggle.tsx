@@ -8,7 +8,8 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
-import { VoiceQueue, VoiceQueueStatus } from '@gorgias/helpdesk-types'
+import type { VoiceQueue } from '@gorgias/helpdesk-types'
+import { VoiceQueueStatus } from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

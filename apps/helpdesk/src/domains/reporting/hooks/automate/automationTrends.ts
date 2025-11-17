@@ -2,7 +2,7 @@ import {
     fetchMultipleMetricsTrends,
     useMultipleMetricsTrends,
 } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
@@ -11,8 +11,8 @@ import {
     billableTicketDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useTrendFromMultipleMetricsTrend = <

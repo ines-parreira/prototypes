@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryObserverResult } from '@tanstack/react-query'
+import type { QueryObserverResult } from '@tanstack/react-query'
 
 import { useFlag } from 'core/flags'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'

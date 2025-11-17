@@ -15,9 +15,8 @@ import BackLink from 'pages/common/components/BackLink'
 import useClipboard from 'pages/common/hooks/useClipboard'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { ContactFormAutoEmbedReadinessStatus } from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
-import ContactFormIntegrationWarningBanner, {
-    ContactFormIntegrationWarningBannerProps,
-} from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
+import type { ContactFormIntegrationWarningBannerProps } from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
+import ContactFormIntegrationWarningBanner from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
 import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
 import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,

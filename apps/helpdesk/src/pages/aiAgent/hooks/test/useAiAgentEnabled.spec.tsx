@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
@@ -9,14 +10,13 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChatChannels, {
-    SelfServiceChatChannel,
-} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useRules } from 'state/entities/rules/hooks'
-import { RulesState } from 'state/entities/rules/types'
+import type { RulesState } from 'state/entities/rules/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { RuleType } from 'state/rules/types'

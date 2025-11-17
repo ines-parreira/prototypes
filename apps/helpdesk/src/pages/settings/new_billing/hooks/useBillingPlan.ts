@@ -31,7 +31,7 @@ import {
     getCurrentVoicePlan,
     getIsVettedForPhone,
 } from 'state/billing/selectors'
-import { ProductData } from 'state/billing/types'
+import type { ProductData } from 'state/billing/types'
 import {
     setCurrentSubscription,
     updateSubscriptionsForPlans,
@@ -43,8 +43,8 @@ import {
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
+import type { Notification } from 'state/notifications/types'
 import {
-    Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
@@ -57,7 +57,7 @@ import {
     ZAPIER_BILLING_HOOK,
 } from '../constants'
 import { sendSupportTicket } from '../utils/sendSupportTicket'
-import { SelectedPlans } from '../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../views/BillingProcessView/BillingProcessView'
 import {
     setAutomationNotification,
     setConvertNotification,

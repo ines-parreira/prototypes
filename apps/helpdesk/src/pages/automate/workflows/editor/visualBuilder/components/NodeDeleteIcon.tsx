@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import type { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

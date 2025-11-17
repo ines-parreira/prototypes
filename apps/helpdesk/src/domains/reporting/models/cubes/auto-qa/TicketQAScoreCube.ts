@@ -1,5 +1,8 @@
-import { TicketCube } from 'domains/reporting/models/cubes/TicketCube'
-import { Cube, JoinedCubesWithMapping } from 'domains/reporting/models/types'
+import type { TicketCube } from 'domains/reporting/models/cubes/TicketCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum TicketQAScoreMeasure {
     TicketCount = 'TicketQAScore.ticketCount',

@@ -7,7 +7,7 @@ import {
     sortingSet,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('productsPerTicketSlice', () => {
     it('should keep sorting field, direction and loading state', () => {

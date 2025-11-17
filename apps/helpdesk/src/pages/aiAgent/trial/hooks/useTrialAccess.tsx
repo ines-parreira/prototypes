@@ -5,7 +5,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
-import { AutomatePlan, HelpdeskPlanTier } from 'models/billing/types'
+import type { AutomatePlan } from 'models/billing/types'
+import { HelpdeskPlanTier } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import {
     OnboardingState,

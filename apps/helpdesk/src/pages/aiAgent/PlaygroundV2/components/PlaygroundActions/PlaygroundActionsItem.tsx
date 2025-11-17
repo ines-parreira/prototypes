@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import { sanitizeHtmlDefault } from 'utils/html'
 
-import { PlaygroundAction } from './types'
+import type { PlaygroundAction } from './types'
 
 import css from './PlaygroundActionsItem.less'
 

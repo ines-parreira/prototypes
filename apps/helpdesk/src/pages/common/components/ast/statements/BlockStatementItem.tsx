@@ -1,7 +1,7 @@
-import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 
-import { BlockStatementItemProps } from '../types'
+import type { BlockStatementItemProps } from '../types'
 
 export default function BlockStatementItem({
     actions,

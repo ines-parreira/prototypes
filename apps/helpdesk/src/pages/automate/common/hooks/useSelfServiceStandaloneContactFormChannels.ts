@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import { ContactForm } from 'models/contactForm/types'
+import type { ContactForm } from 'models/contactForm/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getContactFormsList } from 'state/entities/contactForm/contactForms'
 

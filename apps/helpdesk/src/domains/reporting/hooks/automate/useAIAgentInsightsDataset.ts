@@ -22,7 +22,7 @@ import {
     filterMetricDataByIntentLevel,
     transformIntentName,
 } from 'domains/reporting/hooks/automate/utils'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import {
     TicketDimension,
@@ -42,16 +42,15 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/metrics'
 import { AI_AGENT_TICKETS_CHANNELS } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import {
-    IntentMetrics,
-    IntentTableColumn,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { IntentMetrics } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 
 export const useAIAgentMetrics = (

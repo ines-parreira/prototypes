@@ -1,6 +1,6 @@
-import { BadgeItemProps } from 'pages/common/components/BadgetItem'
+import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
-import { Locale } from '../../../../../../../models/helpCenter/types'
+import type { Locale } from '../../../../../../../models/helpCenter/types'
 import { FlagLanguageItem } from '../../../../../../common/components/LanguageBulletList'
 
 export function transformToSelectedLocale(

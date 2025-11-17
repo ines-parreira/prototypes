@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
@@ -12,11 +13,11 @@ import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
-import {
+import type {
     AccountSettingBusinessHours,
-    AccountSettingType,
     BusinessHour,
 } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { getMomentTimezoneNames } from 'utils/date'
 
 import BusinessHoursForm from './BusinessHoursForm'

@@ -1,14 +1,13 @@
-import { User, VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
+import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
 
-import {
+import type {
     AgentWithStatus,
-    AvailabilityStatusTag,
     User as GorgiasStateUser,
 } from 'config/types/user'
-import {
-    TransferTarget,
-    TransferType,
-} from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import { AvailabilityStatusTag } from 'config/types/user'
+import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 
 export const mergeAgentData = (
     agentsData: GorgiasStateUser[],

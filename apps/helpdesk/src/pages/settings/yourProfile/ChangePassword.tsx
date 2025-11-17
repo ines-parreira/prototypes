@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classnames from 'classnames'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -10,7 +11,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 import { changePassword } from 'state/currentUser/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import css from './ChangePassword.less'
 

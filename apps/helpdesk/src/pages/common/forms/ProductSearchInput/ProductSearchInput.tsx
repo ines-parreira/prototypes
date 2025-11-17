@@ -3,14 +3,14 @@ import React, { useCallback, useContext } from 'react'
 import _noop from 'lodash/noop'
 
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { SearchResultType } from 'services/gorgiasApi'
+import type { SearchResultType } from 'services/gorgiasApi'
 
-import SearchInput, {
-    Props as SearchInputProps,
-} from '../SearchInput/SearchInput'
-import Result, { Props as ResultProps } from './Result'
+import type { Props as SearchInputProps } from '../SearchInput/SearchInput'
+import SearchInput from '../SearchInput/SearchInput'
+import type { Props as ResultProps } from './Result'
+import Result from './Result'
 
 interface Props<
     ItemType extends IntegrationDataItem<unknown>,

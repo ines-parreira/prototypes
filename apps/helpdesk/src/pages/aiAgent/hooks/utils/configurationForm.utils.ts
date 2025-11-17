@@ -1,9 +1,7 @@
-import {
-    AiAgentOnboardingWizardStep,
-    StoreConfiguration,
-} from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
-import { FormValues } from '../../types'
+import type { FormValues } from '../../types'
 
 export function isAiAgentOnboardingWizardStep(
     value: any,

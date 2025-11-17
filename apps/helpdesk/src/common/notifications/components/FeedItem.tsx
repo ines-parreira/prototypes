@@ -5,7 +5,7 @@ import cn from 'classnames'
 import IconButton from 'pages/common/components/button/IconButton'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
-import { Notification } from '../types'
+import type { Notification } from '../types'
 import getNotificationConfig from '../utils/getNotificationConfig'
 
 import css from './FeedItem.less'

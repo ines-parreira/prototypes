@@ -4,16 +4,16 @@ import {
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import type { AiSalesAgentDrillDownMetrics } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import {
     AiSalesAgentChart,
-    AiSalesAgentDrillDownMetrics,
     AiSalesAgentMetricsWithDrillDownConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 const useTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(

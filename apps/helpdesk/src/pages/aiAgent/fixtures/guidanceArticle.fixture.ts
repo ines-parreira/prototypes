@@ -1,4 +1,4 @@
-import { GuidanceArticle } from '../types'
+import type { GuidanceArticle } from '../types'
 
 export const getGuidanceArticleFixture = (
     id: number,

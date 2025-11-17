@@ -1,5 +1,6 @@
 import { Box } from '@gorgias/axiom'
-import { PhoneIntegration, useGetIntegration } from '@gorgias/helpdesk-queries'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'

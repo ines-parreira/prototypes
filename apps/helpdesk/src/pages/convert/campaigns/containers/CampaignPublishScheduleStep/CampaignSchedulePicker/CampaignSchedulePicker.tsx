@@ -1,10 +1,14 @@
-import React, { MouseEvent, useMemo, useState } from 'react'
+import type { MouseEvent } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import DatePicker, { DatePickerProps } from 'pages/common/forms/DatePicker'
+import type { DatePickerProps } from 'pages/common/forms/DatePicker'
+import DatePicker from 'pages/common/forms/DatePicker'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
 import { formatDatetime } from 'utils'

@@ -1,4 +1,5 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
@@ -9,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { tags } from 'fixtures/tag'
 import useAppSelector from 'hooks/useAppSelector'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

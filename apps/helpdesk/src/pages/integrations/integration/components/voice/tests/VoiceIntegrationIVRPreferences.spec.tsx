@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
-import { render, RenderResult, screen } from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { useFlag } from 'core/flags'
@@ -7,7 +8,7 @@ import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
-import { PhoneIntegration } from 'models/integration/types'
+import type { PhoneIntegration } from 'models/integration/types'
 import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
 
 import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'

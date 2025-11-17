@@ -1,10 +1,8 @@
 import { TicketChannel, TicketVia } from 'business/types/ticket'
-import { TicketElement, TicketMessage } from 'models/ticket/types'
+import type { TicketElement, TicketMessage } from 'models/ticket/types'
 
-import {
-    InfluencedOrderSource,
-    ShoppingAssistantEvent,
-} from './hooks/useInsertShoppingAssistantEventElements'
+import type { ShoppingAssistantEvent } from './hooks/useInsertShoppingAssistantEventElements'
+import { InfluencedOrderSource } from './hooks/useInsertShoppingAssistantEventElements'
 import { isShoppingAssistantEvent } from './utils'
 
 describe('isShoppingAssistantEvent', () => {

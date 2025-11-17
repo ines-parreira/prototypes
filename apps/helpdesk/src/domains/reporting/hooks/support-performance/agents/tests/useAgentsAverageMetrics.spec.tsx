@@ -19,7 +19,7 @@ import { useZeroTouchTicketsMetricTrend } from 'domains/reporting/hooks/support-
 import { useMessagesSentPerHour } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { useTicketsClosedPerHour } from 'domains/reporting/hooks/useTicketsClosedPerHour'
 import { useTicketsRepliedPerHour } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import useAppSelector from 'hooks/useAppSelector'
 

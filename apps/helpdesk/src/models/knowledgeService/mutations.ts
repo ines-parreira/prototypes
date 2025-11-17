@@ -1,8 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     FindFeedbackParams,
     FindFeedbackResult,
+} from '@gorgias/knowledge-service-queries'
+import {
     queryKeys,
     useUpsertFeedback as useUpsertFeedbackMutation,
     useUpsertRulesProductRecommendation as useUpsertRulesProductRecommendationMutation,

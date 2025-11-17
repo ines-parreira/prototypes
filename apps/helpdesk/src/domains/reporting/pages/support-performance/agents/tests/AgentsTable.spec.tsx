@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
+import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { AgentsSummaryRow } from 'domains/reporting/pages/support-performance/agents/AgentsSummaryRow'
@@ -33,7 +33,7 @@ import {
 } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter, renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')

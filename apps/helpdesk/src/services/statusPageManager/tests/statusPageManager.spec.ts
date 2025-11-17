@@ -16,12 +16,11 @@ import {
     MAINTENANCE_STATUSES,
 } from '../constants'
 import statusPageManager from '../statusPageManager'
-import {
-    ComponentStatus,
-    IncidentImpact,
+import type {
     StatusPageIncidentsResponseData,
     StatusPageScheduledMaintenanceResponseData,
 } from '../types'
+import { ComponentStatus, IncidentImpact } from '../types'
 
 const notifySpy = jest.spyOn(actions, 'notify')
 const dismissNotificationSpy = jest.spyOn(reapop, 'dismissNotification')

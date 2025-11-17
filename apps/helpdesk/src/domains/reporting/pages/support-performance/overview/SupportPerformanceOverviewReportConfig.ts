@@ -4,10 +4,10 @@ import {
 } from 'domains/reporting/hooks/distributions'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { CustomerSatisfactionTrendCard } from 'domains/reporting/pages/support-performance/overview/charts/CustomerSatisfactionTrendCard'
 import { HumanResponseTimeAfterAiHandoffChart } from 'domains/reporting/pages/support-performance/overview/charts/HumanResponseTimeAfterAiHandoffChart'

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { ActionTemplateApp, App } from '../types'
+import type { ActionTemplateApp, App } from '../types'
 
 export type GetAppFromTemplateApp = (
     templateApp: ActionTemplateApp,

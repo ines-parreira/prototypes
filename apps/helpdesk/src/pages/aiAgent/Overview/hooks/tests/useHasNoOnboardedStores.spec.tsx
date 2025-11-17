@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import { useHasNoOnboardedStores } from '../useHasNoOnboardedStores'

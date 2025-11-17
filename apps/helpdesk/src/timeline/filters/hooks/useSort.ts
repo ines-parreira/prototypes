@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { DEFAULT_SORT_OPTION } from '../../constants'
-import { SortOption, TimelineItem } from '../../types'
+import type { SortOption, TimelineItem } from '../../types'
 import { sortTickets } from '../helpers/sortTickets'
 
 export function useSort(tickets: TimelineItem[]) {

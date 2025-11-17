@@ -1,5 +1,5 @@
-import { Integration } from 'models/integration/types'
-import { ShopType } from 'models/selfServiceConfiguration/types'
+import type { Integration } from 'models/integration/types'
+import type { ShopType } from 'models/selfServiceConfiguration/types'
 
 export const shopifyShopIntegrationFixture = {
     type: 'shopify' as ShopType,

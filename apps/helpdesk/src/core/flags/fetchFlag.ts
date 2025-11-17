@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import type { FeatureFlagKey } from '@repo/feature-flags'
 
 import { getLDClient } from 'utils/launchDarkly'
 

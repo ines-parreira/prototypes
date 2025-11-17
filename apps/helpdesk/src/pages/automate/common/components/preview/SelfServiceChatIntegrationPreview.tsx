@@ -6,11 +6,13 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
+import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatIntegration,
+} from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
-    GorgiasChatIntegration,
 } from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 

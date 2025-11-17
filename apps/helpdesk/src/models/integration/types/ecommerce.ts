@@ -1,4 +1,4 @@
-import { IntegrationType } from '../constants'
+import type { IntegrationType } from '../constants'
 import type { IntegrationBase } from './base'
 
 export type EcommerceIntegration = IntegrationBase & {

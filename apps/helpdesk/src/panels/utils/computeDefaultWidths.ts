@@ -1,4 +1,4 @@
-import { Config, PanelConfig } from '../types'
+import type { Config, PanelConfig } from '../types'
 import clamp from './clamp'
 
 type Options = {

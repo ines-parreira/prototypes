@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { FilterKey, InteractionFilterType, Range } from '../types'
-import { ActiveFilters } from './hooks/useTimelineFilters'
+import type { FilterKey, InteractionFilterType, Range } from '../types'
+import type { ActiveFilters } from './hooks/useTimelineFilters'
 import { InteractionType } from './InteractionType'
 import { RangeFilter } from './RangeFilter'
 import { TicketStatusFilter } from './TicketStatusFilter'

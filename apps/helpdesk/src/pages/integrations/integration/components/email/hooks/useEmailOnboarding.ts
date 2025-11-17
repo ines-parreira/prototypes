@@ -5,26 +5,25 @@ import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
-import {
+import type {
     CreateIntegrationBody,
     EmailIntegration,
     GmailIntegration,
     HttpResponse,
     UpdateIntegrationBody,
+} from '@gorgias/helpdesk-queries'
+import {
     useCreateIntegration,
     useDeleteIntegration,
     useSendVerificationEmail,
     useUpdateIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import { FormErrors } from 'core/forms'
+import type { FormErrors } from 'core/forms'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import {
-    Integration,
-    IntegrationType,
-    OutlookIntegration,
-} from 'models/integration/types'
+import type { Integration, OutlookIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import socketManager from 'services/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'

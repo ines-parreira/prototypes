@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
+import type { StoreIntegration } from 'models/integration/types'
 import {
     isBigCommerceIntegration,
     isMagento2Integration,
     isShopifyIntegration,
-    StoreIntegration,
 } from 'models/integration/types'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 

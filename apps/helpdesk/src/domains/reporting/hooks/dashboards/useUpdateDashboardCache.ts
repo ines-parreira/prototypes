@@ -2,12 +2,10 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
-    GetAnalyticsCustomReportResult,
-    queryKeys,
-} from '@gorgias/helpdesk-queries'
+import type { GetAnalyticsCustomReportResult } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { createDashboardPayload } from 'domains/reporting/pages/dashboards/utils'
 
 export const useUpdateDashboardCache = (id: number) => {

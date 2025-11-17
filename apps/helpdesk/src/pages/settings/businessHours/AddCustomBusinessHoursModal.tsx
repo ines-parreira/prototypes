@@ -1,9 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
-import {
-    BusinessHoursCreate,
-    queryKeys,
-    useCreateBusinessHours,
-} from '@gorgias/helpdesk-queries'
+import type { BusinessHoursCreate } from '@gorgias/helpdesk-queries'
+import { queryKeys, useCreateBusinessHours } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { FormSubmitButton } from 'core/forms'

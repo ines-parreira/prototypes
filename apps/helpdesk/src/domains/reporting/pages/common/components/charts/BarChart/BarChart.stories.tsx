@@ -1,11 +1,12 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import moment from 'moment'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
-import { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
+import type { ChartColors } from 'domains/reporting/pages/common/components/charts/types'
 import type { AnalyticsTheme } from 'domains/reporting/pages/common/theme'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
 

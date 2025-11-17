@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { MacroAction, MacroActionType } from '@gorgias/helpdesk-types'
+import type { MacroAction } from '@gorgias/helpdesk-types'
+import { MacroActionType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { ticketInputFieldDefinition as mockTicketInputFieldDefinition } from 'fixtures/customField'

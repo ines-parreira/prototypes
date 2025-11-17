@@ -29,7 +29,7 @@ import {
     RecommendedResourcesMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     csatPerIntentMetric,
     customFieldsMetric,
@@ -39,10 +39,8 @@ import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { OrderDirection } from 'models/api/types'
 import useIsSingleStore from 'pages/aiAgent/hooks/useIsSingleStore'
-import {
-    IntentMetrics,
-    IntentTableColumn,
-} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import type { IntentMetrics } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

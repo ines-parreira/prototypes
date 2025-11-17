@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -14,7 +15,7 @@ import ShoppingAssistantLightMode from 'assets/img/ai-agent/shopping-assistant-l
 import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'
 import { usePaywallConfig } from 'pages/aiAgent/hooks/usePaywallConfig'
-import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import type { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import * as ToggleButton from 'pages/common/components/ToggleButton'

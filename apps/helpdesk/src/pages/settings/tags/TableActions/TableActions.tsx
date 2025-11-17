@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getTags } from 'state/tags/selectors'

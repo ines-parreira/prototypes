@@ -7,7 +7,7 @@ import { UncontrolledTooltip } from 'reactstrap'
 import { IntegrationType } from 'models/integration/constants'
 import { ShopifyCustomerTagsInput } from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 import { ErrorMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
-import {
+import type {
     StepProps,
     TransitoryAttachmentData,
     TransitoryAttachmentSubscriber,

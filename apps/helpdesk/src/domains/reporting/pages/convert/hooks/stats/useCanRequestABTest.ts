@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { getCampaignABTestEvents } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import {
+import type {
     CubeFilterParams,
     CubeMetric,
 } from 'domains/reporting/pages/convert/clients/types'

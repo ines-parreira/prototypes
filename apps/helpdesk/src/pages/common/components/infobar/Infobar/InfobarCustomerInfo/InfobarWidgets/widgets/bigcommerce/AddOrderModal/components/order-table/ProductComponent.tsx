@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import errorIcon from 'assets/img/icons/error.svg'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomProduct,

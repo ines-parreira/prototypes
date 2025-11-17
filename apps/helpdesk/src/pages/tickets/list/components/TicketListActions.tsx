@@ -1,9 +1,11 @@
-import { MouseEvent, useMemo, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import {
     ButtonDropdown,

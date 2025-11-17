@@ -16,11 +16,12 @@ import moment from 'moment-timezone'
 
 import './polyfills'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import type { SegmentEvent } from '@repo/logging'
+import { logEvent } from '@repo/logging'
 import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
 
 import { store } from 'common/store'
-import { EditableUserProfile } from 'config/types/user'
+import type { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 import { initializeNewReleaseHandler } from 'models/api/resources'
 import {
@@ -28,7 +29,7 @@ import {
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'

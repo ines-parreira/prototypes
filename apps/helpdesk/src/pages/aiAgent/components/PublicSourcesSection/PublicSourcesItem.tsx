@@ -15,7 +15,7 @@ import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
-import { SourceItem } from './types'
+import type { SourceItem } from './types'
 import { DOCUMENT_EXTENSIONS } from './utils'
 
 import css from './PublicSourcesItem.less'

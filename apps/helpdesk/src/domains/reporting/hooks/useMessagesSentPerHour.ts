@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'domains/reporting/hooks/helpers'
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
     fetchMessagesSentMetric,
     fetchOnlineTimeMetric,
-    Metric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
 } from 'domains/reporting/hooks/metrics'
@@ -19,7 +19,7 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import {
+import type {
     AgentOnlyFilters,
     Period,
     StatsFilters,

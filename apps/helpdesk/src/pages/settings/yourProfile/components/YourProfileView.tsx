@@ -1,4 +1,5 @@
-import { SyntheticEvent, useCallback, useMemo } from 'react'
+import type { SyntheticEvent } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -18,7 +19,7 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
+import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { UploadType } from 'common/types'
 import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
@@ -32,7 +33,7 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/input/InputField'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
@@ -41,7 +42,7 @@ import { useScrollToHash } from '../hooks/useScrollToHash'
 import { useUpdateCurrentUserProfilePicture } from '../hooks/useUpdateCurrentUserProfile'
 import { useYourProfileForm } from '../hooks/useYourProfileForm'
 import { useYourProfileMutations } from '../hooks/useYourProfileMutations'
-import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
+import type { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
 import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
 import css from './YourProfileView.less'

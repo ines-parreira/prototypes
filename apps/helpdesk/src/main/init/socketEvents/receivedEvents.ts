@@ -1,7 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
 
@@ -14,11 +15,12 @@ import { isSpecificTicketPath } from 'common/utils'
 import { MAX_RECENT_CHATS } from 'config/recentChats'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
-import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import type { UseListVoiceCalls } from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
-import { SocketManager } from 'services/socketManager/socketManager'
-import {
+import type { SocketManager } from 'services/socketManager/socketManager'
+import type {
     AccountUpdatedEvent,
     ActionExecutedEvent,
     AgentAvailabilityUpdatedEvent,
@@ -32,7 +34,6 @@ import {
     ReceivedEvent,
     ShopperAddressEvent,
     ShopperEvent,
-    SocketEventType,
     TicketChatUpdatedEvent,
     TicketMessageActionFailedEvent,
     TicketMessageChatCreatedEvent,
@@ -56,6 +57,7 @@ import {
     WhatsAppOnboardingFailedEvent,
     WhatsAppOnboardingSucceededEvent,
 } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 import * as agentsActions from 'state/agents/actions'
 import * as currentBillingSelectors from 'state/billing/selectors'
 import * as chatsActions from 'state/chats/actions'
@@ -83,7 +85,7 @@ import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getTeams } from 'state/teams/selectors'
 import * as ticketActions from 'state/ticket/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import * as viewsActions from 'state/views/actions'
 import * as viewsConstants from 'state/views/constants'
 import { isViewSharedWithUser } from 'state/views/utils'

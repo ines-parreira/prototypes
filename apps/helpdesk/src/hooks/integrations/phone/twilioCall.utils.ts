@@ -1,24 +1,27 @@
-import { Call, TwilioError } from '@twilio/voice-sdk'
+import type { TwilioError } from '@twilio/voice-sdk'
+import { Call } from '@twilio/voice-sdk'
 import crypto from 'crypto'
 import { pick } from 'lodash'
 
 import { appQueryClient } from 'api/queryClient'
-import { TwilioSocketEvent, TwilioSocketEventType } from 'business/twilio'
+import type { TwilioSocketEvent } from 'business/twilio'
+import { TwilioSocketEventType } from 'business/twilio'
 import {
     acceptCall,
     cancelCall,
     disconnectCall,
 } from 'hooks/integrations/phone/api'
-import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
-import { TwilioMessage } from 'models/voiceCall/twilioMessageTypes'
-import { ListVoiceCallsParams } from 'models/voiceCall/types'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { UseListVoiceCalls } from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
+import type { TwilioMessage } from 'models/voiceCall/twilioMessageTypes'
+import type { ListVoiceCallsParams } from 'models/voiceCall/types'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
 
 import * as twilioCallUtils from './twilioCall.utils'

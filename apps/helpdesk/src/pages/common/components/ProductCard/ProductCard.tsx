@@ -4,7 +4,7 @@ import { useMeasure } from '@repo/hooks'
 import { darken, getLuminance, lighten } from 'color2k'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { updateCampaignProductPosition } from 'state/newMessage/actions'
 
 import { ProductCardEdit } from './components/ProductCardEdit'

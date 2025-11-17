@@ -1,8 +1,6 @@
 import css from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
-import {
-    LogicalOperatorEnum,
-    LogicalOperatorLabel,
-} from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
 type Props = {

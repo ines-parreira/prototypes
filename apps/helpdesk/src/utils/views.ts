@@ -1,5 +1,5 @@
-import { Section } from 'models/section/types'
-import { View } from 'models/view/types'
+import type { Section } from 'models/section/types'
+import type { View } from 'models/view/types'
 
 // Icons for known system views (not used in logic yet)
 export const systemViewIcons = {

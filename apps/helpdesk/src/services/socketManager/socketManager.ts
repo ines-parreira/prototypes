@@ -7,7 +7,7 @@ import { AlertBannerTypes } from 'AlertBanners'
 import { store } from 'common/store'
 import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 import { devLog } from 'utils'
 
 import {
@@ -19,16 +19,18 @@ import {
     fallbackBroadcastChannelAdapter,
     fallbackWorkerAdapter,
 } from './fallbackWorkerAdapter'
-import {
-    BroadcastChannelEvent,
+import type {
     JoinEventType,
-    MessagePortEvent,
     ReceivedEvent,
     SendData,
     SendEvent,
     ServerMessage,
-    SocketEventType,
     WSMessage,
+} from './types'
+import {
+    BroadcastChannelEvent,
+    MessagePortEvent,
+    SocketEventType,
 } from './types'
 
 const CONNECTION_TIMEOUT = 10

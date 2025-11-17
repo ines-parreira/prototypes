@@ -1,9 +1,13 @@
-import React, { Component, SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { parse } from 'qs'
-import { connect, ConnectedProps } from 'react-redux'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
+import type { RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

@@ -15,12 +15,11 @@ import {
 import { Cadence } from 'models/billing/types'
 import { isOtherCadenceDowngrade } from 'models/billing/utils'
 import { TicketPurpose } from 'state/billing/types'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import NavigateToChangeBillingFrequency, {
-    NavigateToChangeBillingFrequencyProps,
-} from '../NavigateToChangeBillingFrequency'
+import type { NavigateToChangeBillingFrequencyProps } from '../NavigateToChangeBillingFrequency'
+import NavigateToChangeBillingFrequency from '../NavigateToChangeBillingFrequency'
 
 import css from './NavigateToChangeBillingFrequency.less'
 

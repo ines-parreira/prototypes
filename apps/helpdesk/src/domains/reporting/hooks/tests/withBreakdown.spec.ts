@@ -1,15 +1,17 @@
+import type {
+    TicketCustomFieldsTicketCountData,
+    TicketCustomFieldsTicketCountTimeSeriesData,
+} from 'domains/reporting/hooks/withBreakdown'
 import {
     BREAKDOWN_FIELD,
     selectTimeSeriesWithBreakdown,
     selectWithBreakdown,
     TAG_SEPARATOR,
-    TicketCustomFieldsTicketCountData,
-    TicketCustomFieldsTicketCountTimeSeriesData,
     VALUE_FIELD,
     withBreakdown,
 } from 'domains/reporting/hooks/withBreakdown'
-import { UsePostReportingQueryData } from 'domains/reporting/models/queries'
-import { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { OrderDirection } from 'models/api/types'
 
 describe('withBreakdown', () => {

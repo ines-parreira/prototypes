@@ -4,10 +4,10 @@ import classnames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { CustomerList } from 'models/aiAgentPlayground/types'
+import type { CustomerList } from 'models/aiAgentPlayground/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import css from './CustomerSearchDropdownSelectComponent.less'
 

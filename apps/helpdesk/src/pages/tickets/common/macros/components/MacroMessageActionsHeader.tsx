@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classNames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -12,10 +12,8 @@ import {
 } from 'reactstrap'
 
 import { useFlag } from 'core/flags'
-import {
-    MacroActionName,
-    MacroResponseActionName,
-} from 'models/macroAction/types'
+import type { MacroResponseActionName } from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 
 import css from './MacroMessageActionsHeader.less'
 

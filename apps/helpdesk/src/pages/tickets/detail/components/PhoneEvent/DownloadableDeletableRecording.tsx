@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -13,7 +13,8 @@ import { voiceCallsKeys } from 'models/voiceCall/queries'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify as notifyAction } from 'state/notifications/actions'
-import { Notification, NotificationStatus } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 import { hasRole, replaceAttachmentURL } from 'utils'
 import { saveFileAsDownloaded } from 'utils/file'
 

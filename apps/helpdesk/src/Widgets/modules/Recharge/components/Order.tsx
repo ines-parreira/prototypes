@@ -1,17 +1,14 @@
-import {
-    Component,
-    ContextType,
-    createContext,
-    FunctionComponent,
-    ReactNode,
-    useContext,
-} from 'react'
+import type { ContextType, FunctionComponent, ReactNode } from 'react'
+import { Component, createContext, useContext } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
@@ -22,9 +19,9 @@ import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
 import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { devLog, humanizeString, isCurrentlyOnTicket } from 'utils'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import { formatRechargeDateTime } from '../helpers/formatRechargeDateTime'

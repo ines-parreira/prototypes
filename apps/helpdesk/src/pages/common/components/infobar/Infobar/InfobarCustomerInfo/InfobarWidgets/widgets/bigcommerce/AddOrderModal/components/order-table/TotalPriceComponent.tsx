@@ -1,4 +1,4 @@
-import {
+import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'

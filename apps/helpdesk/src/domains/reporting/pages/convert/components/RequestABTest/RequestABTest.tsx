@@ -12,16 +12,14 @@ import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/u
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListABTests } from 'models/convert/abTest/queries'
-import { ABTestListOptions as ABTestListOptionsParams } from 'models/convert/abTest/types'
-import {
-    GorgiasChatIntegration,
-    IntegrationType,
-} from 'models/integration/types'
+import type { ABTestListOptions as ABTestListOptionsParams } from 'models/convert/abTest/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { useCreateABTest } from 'pages/convert/abTests/hooks/useCreateABTest'
 import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 

@@ -1,9 +1,10 @@
-import { createContext, ReactNode, useContext, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useAiAgentHttpIntegration } from '../hooks/useAiAgentHttpIntegration'

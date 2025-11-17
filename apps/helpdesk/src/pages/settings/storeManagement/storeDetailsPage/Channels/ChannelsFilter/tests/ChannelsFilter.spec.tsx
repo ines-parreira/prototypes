@@ -1,10 +1,10 @@
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import { renderWithStore } from 'utils/testing'
 
-import { ChannelWithMetadata } from '../../../../types'
+import type { ChannelWithMetadata } from '../../../../types'
 import ChannelsFilter from '../ChannelsFilter'
 
 const mockStores = [

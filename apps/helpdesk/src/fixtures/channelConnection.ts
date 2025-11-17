@@ -1,7 +1,5 @@
-import {
-    ChannelConnection,
-    ChannelConnectionChannel,
-} from 'models/convert/channelConnection/types'
+import type { ChannelConnection } from 'models/convert/channelConnection/types'
+import { ChannelConnectionChannel } from 'models/convert/channelConnection/types'
 
 export const channelConnectionId = 'ca920935-acda-48a4-b885-bae77fcada05'
 

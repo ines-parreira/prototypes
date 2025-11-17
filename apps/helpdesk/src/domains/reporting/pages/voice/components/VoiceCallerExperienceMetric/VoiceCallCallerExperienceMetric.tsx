@@ -1,8 +1,8 @@
 import moment from 'moment'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { getAdvancedVoicePeriodFilters } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
@@ -12,8 +12,8 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { VoiceMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 type VoiceCallCallerExperienceMetricProps = {

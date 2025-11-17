@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
     aiJourneyFailedMessagesQueryFactory,
@@ -10,10 +10,10 @@ import {
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-import { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyDeliverySuccessRate = (
     integrationId: string,

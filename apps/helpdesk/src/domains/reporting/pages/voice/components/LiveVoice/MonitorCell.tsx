@@ -1,4 +1,4 @@
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getCallMonitorability } from 'hooks/integrations/phone/monitoring.utils'
 import useAppSelector from 'hooks/useAppSelector'
 import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'

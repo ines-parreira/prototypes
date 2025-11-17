@@ -11,7 +11,7 @@ import {
 import { TopUsedTagsChart } from 'domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/support-performance/useTagsDistribution')

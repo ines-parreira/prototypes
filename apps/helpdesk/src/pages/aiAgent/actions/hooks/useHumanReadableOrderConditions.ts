@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { getDisplayValue } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/NumberConditionType'
 import { getOperatorListByVariable } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/constants'
-import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
 import { parseWorkflowVariable } from 'pages/automate/workflows/models/variables.model'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 type Props = {
     variables: WorkflowVariableList

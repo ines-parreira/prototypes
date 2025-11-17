@@ -1,4 +1,4 @@
-import { CampaignAuthor } from './CampaignAgent'
+import type { CampaignAuthor } from './CampaignAgent'
 
 export type CampaignDisplaysInSession = {
     value: number

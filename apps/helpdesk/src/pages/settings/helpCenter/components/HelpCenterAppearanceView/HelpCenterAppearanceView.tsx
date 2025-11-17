@@ -1,4 +1,5 @@
-import React, { createRef, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { createRef, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
@@ -11,10 +12,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
+import type { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
 import InputField from 'pages/common/forms/input/InputField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,
@@ -23,18 +24,17 @@ import {
     HELP_CENTER_DEFAULT_THEME,
 } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {
-    FileUpload,
-    useFileUpload,
-} from 'pages/settings/helpCenter/hooks/useFileUpload'
+import type { FileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
+import { useFileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
 import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {
-    HelpCenterTheme,
-    isHelpCenterTheme,
-} from 'pages/settings/helpCenter/types'
+import type { HelpCenterTheme } from 'pages/settings/helpCenter/types'
+import { isHelpCenterTheme } from 'pages/settings/helpCenter/types'
 import settingsCss from 'pages/settings/settings.less'
-import { Client, Components } from 'rest_api/help_center_api/client.generated'
+import type {
+    Client,
+    Components,
+} from 'rest_api/help_center_api/client.generated'
 import { hasNestedCategories } from 'state/entities/helpCenter/categories'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
@@ -43,7 +43,8 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { reportError } from 'utils/errors'
 
 import { FontSelectField } from '../../../common/FontSelectField/FontSelectField'
-import { HelpCenterLayout, isHelpCenterLayout } from '../../types/layout.enum'
+import type { HelpCenterLayout } from '../../types/layout.enum'
+import { isHelpCenterLayout } from '../../types/layout.enum'
 import { getHelpCenterLayout } from '../../utils/helpCenter.utils'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import { ImageRepositioningModal } from '../ImageRepositioningModal'

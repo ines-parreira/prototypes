@@ -1,15 +1,14 @@
 import { useMemo } from 'react'
 
-import {
-    LegacyCheckBoxField as CheckBoxField,
-    LegacyCheckBoxFieldProps as CheckBoxFieldProps,
-} from '@gorgias/axiom'
+import type { LegacyCheckBoxFieldProps as CheckBoxFieldProps } from '@gorgias/axiom'
+import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
-import { CustomRecordingType, EnqueueStep } from '@gorgias/helpdesk-types'
+import type { EnqueueStep } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceCallbackRequests } from '@gorgias/helpdesk-validators'
 
 import { FormField, useFormContext, useWatch } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import {
     StaticVerticalStep,

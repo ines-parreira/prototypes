@@ -2,7 +2,8 @@ import React from 'react'
 
 import { act, fireEvent, render } from '@testing-library/react'
 
-import { LinkItem, Props } from '../LinkItem'
+import type { Props } from '../LinkItem'
+import { LinkItem } from '../LinkItem'
 
 const ErrMessage = {
     invalidUrl: 'URL is invalid',

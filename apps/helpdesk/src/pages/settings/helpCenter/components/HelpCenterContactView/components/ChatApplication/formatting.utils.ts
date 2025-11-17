@@ -2,7 +2,7 @@ import moment from 'moment'
 
 import { localeTimeFormatConfigs } from '../../../../../../../config/locales'
 import { LanguageTimeFormat } from '../../../../../../../constants/languages'
-import { HelpCenterState } from '../../../../../../../state/ui/helpCenter'
+import type { HelpCenterState } from '../../../../../../../state/ui/helpCenter'
 
 export const getTimezoneAbbreviation = (timezone: string) => {
     return moment().tz(timezone).format('z')

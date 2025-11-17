@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
+import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 import ChannelListCell from '../ChannelListCell'
 

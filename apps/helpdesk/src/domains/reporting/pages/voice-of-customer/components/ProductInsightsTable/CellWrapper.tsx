@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import {
     getColumnAlignment,
@@ -6,7 +6,7 @@ import {
     getIsLeadColumn,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { ProductTableBodyCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductTable'
-import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import type { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 
 export const CellWrapper = ({
     children,

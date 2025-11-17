@@ -14,9 +14,9 @@ import {
     mergeStatsFilters,
 } from 'domains/reporting/state/stats/statsSlice'
 import { integrationsState } from 'fixtures/integrations'
-import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { IntegrationType } from 'models/integration/constants'
+import type { Integration } from 'models/integration/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

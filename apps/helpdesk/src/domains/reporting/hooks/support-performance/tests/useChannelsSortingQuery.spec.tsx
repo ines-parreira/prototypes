@@ -6,10 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useChannelsSortingQuery } from 'domains/reporting/hooks/support-performance/useChannelsSortingQuery'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
-import { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -26,7 +26,7 @@ import {
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { opposite, OrderDirection } from 'models/api/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { notEmpty } from 'utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

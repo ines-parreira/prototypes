@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 
 type StoreApp = Omit<
     Components.Schemas.ListStoreAppResponseDto[number],

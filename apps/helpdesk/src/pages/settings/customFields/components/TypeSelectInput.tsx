@@ -1,7 +1,10 @@
 import React, { useRef, useState } from 'react'
 
 import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
-import { ExhaustiveUIDataType, SupportedUIDataType } from 'custom-fields/types'
+import type {
+    ExhaustiveUIDataType,
+    SupportedUIDataType,
+} from 'custom-fields/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

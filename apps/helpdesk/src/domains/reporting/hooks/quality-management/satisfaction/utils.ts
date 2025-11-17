@@ -3,7 +3,7 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import { TimeSeriesPerDimensionHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesPerDimensionHook } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 

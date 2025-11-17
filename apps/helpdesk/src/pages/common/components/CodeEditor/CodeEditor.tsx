@@ -9,7 +9,7 @@ import {
 } from '@gorgias/axiom'
 
 import ReactACE from './WithACEEditor/ReactACE'
-import { ACEProps } from './WithACEEditor/types'
+import type { ACEProps } from './WithACEEditor/types'
 
 import css from './CodeEditor.less'
 

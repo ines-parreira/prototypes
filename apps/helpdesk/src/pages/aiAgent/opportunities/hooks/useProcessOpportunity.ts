@@ -4,11 +4,13 @@ import {
     queryKeys,
     useProcessOpportunityOpportunity,
 } from '@gorgias/knowledge-service-queries'
-import {
+import type {
     ProcessOpportunity,
+    ProcessOpportunityOneOfFourDismissReason,
+} from '@gorgias/knowledge-service-types'
+import {
     ProcessOpportunityOneOfAction,
     ProcessOpportunityOneOfFourAction,
-    ProcessOpportunityOneOfFourDismissReason,
     ProcessOpportunityOneOfVisibilityStatus,
 } from '@gorgias/knowledge-service-types'
 

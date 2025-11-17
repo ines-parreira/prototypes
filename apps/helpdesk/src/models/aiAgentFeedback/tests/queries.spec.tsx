@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ReportIssueOption } from '../constants'
@@ -20,7 +20,7 @@ import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
 } from '../resources'
-import { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'
+import type { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'
 
 jest.mock('../resources', () => ({
     getAIAgentTicketMessagesFeedback: jest.fn(),

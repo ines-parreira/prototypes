@@ -1,7 +1,7 @@
 import 'draft-js/dist/Draft.css'
 
+import type { ForwardedRef } from 'react'
 import React, {
-    ForwardedRef,
     forwardRef,
     memo,
     useCallback,
@@ -13,7 +13,8 @@ import React, {
 } from 'react'
 
 import classnames from 'classnames'
-import { ContentState, EditorState } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 
@@ -21,7 +22,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
-import {
+import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'

@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import TicketCard from './TicketCard'
 

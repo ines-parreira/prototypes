@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import { DEPRECATED_ScoreStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ScoreStatsFilter'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

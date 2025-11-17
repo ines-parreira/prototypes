@@ -14,14 +14,14 @@ import {
     ProductTableKeys,
 } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useSortedAndPaginatedTableRows } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useSortedAndPaginatedTableRows'
-import {
+import type {
     ProductTableColumn,
     ProductTableContentCell,
 } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatNumber } from 'domains/reporting/pages/common/utils'
-import { AiSalesAgentMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { AiSalesAgentMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { opposite, OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

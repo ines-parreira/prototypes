@@ -1,12 +1,13 @@
-import { Expression, Literal, Super } from 'estree'
-import { fromJS, Iterable, List, Map } from 'immutable'
+import type { Expression, Literal, Super } from 'estree'
+import type { Iterable, Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 
 import { toImmutable } from 'common/utils'
-import { CodeASTType } from 'pages/settings/rules/types'
+import type { CodeASTType } from 'pages/settings/rules/types'
 import { ACTION_DEFAULT_STATE } from 'state/rules/constants'
 import { RuleOperation } from 'state/rules/types'
 import { getObjectExpression, updateCallExpression } from 'state/rules/utils'
-import { SchemasState } from 'state/schemas/types'
+import type { SchemasState } from 'state/schemas/types'
 import { getAST, getCode, toJS } from 'utils'
 
 export const BASIC_PADDING = 0

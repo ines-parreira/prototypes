@@ -9,11 +9,9 @@ import thunk from 'redux-thunk'
 import { ulid } from 'ulidx'
 
 import { campaign, campaignSchedule } from 'fixtures/campaign'
-import {
-    CampaignDetailsFormApi,
-    CampaignDetailsFormProvider,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignDetailsFormApi } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import { CampaignDetailsFormProvider } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import {
     CampaignScheduleModeEnum,
@@ -23,7 +21,7 @@ import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import {
     CampaignPublishScheduleStep,

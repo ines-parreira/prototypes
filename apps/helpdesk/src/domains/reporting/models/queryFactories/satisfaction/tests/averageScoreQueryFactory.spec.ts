@@ -14,7 +14,7 @@ import {
     SatisfactionSurveyScore,
 } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,

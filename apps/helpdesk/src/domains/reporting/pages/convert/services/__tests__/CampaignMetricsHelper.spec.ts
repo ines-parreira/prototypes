@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { Stat } from 'domains/reporting/models/stat/types'
+import type { Stat } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     CampaignOrderEventsDimension,
@@ -34,7 +34,7 @@ import {
     CampaignsTotalsMetricNames,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'domains/reporting/pages/convert/services/constants'
-import { RevenueByDate } from 'domains/reporting/pages/convert/services/types'
+import type { RevenueByDate } from 'domains/reporting/pages/convert/services/types'
 
 describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {

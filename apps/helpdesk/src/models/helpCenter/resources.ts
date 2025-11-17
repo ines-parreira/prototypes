@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 
-import {
+import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
 } from './types'

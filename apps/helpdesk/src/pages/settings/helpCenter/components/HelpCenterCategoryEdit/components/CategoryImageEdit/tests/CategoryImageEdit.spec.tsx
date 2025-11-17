@@ -6,7 +6,8 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../../../../../hooks/useFileUpload'
-import { CategoryImageEdit, CategoryImageEditProps } from '../CategoryImageEdit'
+import type { CategoryImageEditProps } from '../CategoryImageEdit'
+import { CategoryImageEdit } from '../CategoryImageEdit'
 
 window.URL.createObjectURL = jest.fn((file: File) => file.name) // avoid upload image error
 

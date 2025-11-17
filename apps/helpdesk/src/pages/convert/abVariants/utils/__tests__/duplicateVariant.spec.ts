@@ -1,7 +1,7 @@
 import { variants as variantsFixtures } from 'fixtures/abGroup'
 import { campaign } from 'fixtures/campaign'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 import { duplicateVariant } from '../duplicateVariant'
 

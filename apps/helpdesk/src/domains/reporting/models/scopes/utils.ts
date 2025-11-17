@@ -1,10 +1,13 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
-import { ScopeFilters, ScopeMeta } from 'domains/reporting/models/scopes/scope'
-import {
+import type {
+    ScopeFilters,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type {
     CustomFieldsFilter,
     DateFilter,
     FilterGroup,
@@ -16,14 +19,14 @@ import {
     StringStandardFilter,
     TagsFilter,
 } from 'domains/reporting/models/scopes/types'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type {
     Cube,
     ReportingFilter,
-    ReportingFilterOperator,
     ReportingQuery,
     ReportingTimeDimension,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'

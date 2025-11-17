@@ -1,20 +1,16 @@
-import React, {
-    ComponentType,
-    ForwardedRef,
-    forwardRef,
-    ReactNode,
-} from 'react'
+import type { ComponentType, ForwardedRef, ReactNode } from 'react'
+import type React from 'react'
+import { forwardRef } from 'react'
 
-import {
+import type {
     GroupContent,
-    GroupedVirtuoso,
     GroupedVirtuosoHandle,
-    Virtuoso,
     VirtuosoHandle,
     VirtuosoProps,
 } from 'react-virtuoso'
+import { GroupedVirtuoso, Virtuoso } from 'react-virtuoso'
 
-import {
+import type {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,

@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -8,10 +8,8 @@ import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
-    getPeriodDateTimes,
-    TimeSeriesDataItem,
-} from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatDates } from 'domains/reporting/pages/utils'

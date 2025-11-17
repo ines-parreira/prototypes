@@ -1,15 +1,13 @@
-import { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import type { KnowledgeStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import type { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { EnableAskAnythingInputTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/EnableAskAnythingInput.task'
 import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
 import { SetUpYourEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
-import { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
+import type { Task } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/Task'
 import { UpdateShopifyPermissionsTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/UpdateShopifyPermissions.task'
-import {
-    AiAgentType,
-    getAiAgentTypeFromScopes,
-} from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import { getAiAgentTypeFromScopes } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ConnectAHelpCenterTask } from './tasks/ConnectAHelpCenter.task'
 import { ConnectYourDefaultEmailTask } from './tasks/ConnectYourDefaultEmail.task'

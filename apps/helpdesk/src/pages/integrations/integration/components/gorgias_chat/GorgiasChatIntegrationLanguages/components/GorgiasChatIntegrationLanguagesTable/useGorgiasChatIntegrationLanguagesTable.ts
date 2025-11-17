@@ -2,22 +2,23 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
+import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    LanguageItem,
     mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import type { Language } from 'constants/languages'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
-import { LanguageItemRow } from './types'
+import type { LanguageItemRow } from './types'
 
 const getLanguageLabel = (languageItem: LanguageItem) => {
     const language = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {

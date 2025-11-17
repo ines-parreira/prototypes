@@ -1,5 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { LocationState } from 'history'
+import type { LocationState } from 'history'
 import {
     matchPath,
     Route,

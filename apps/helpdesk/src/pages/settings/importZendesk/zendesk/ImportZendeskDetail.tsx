@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -23,7 +24,7 @@ import { useAppNode } from 'appNode'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
-import { ZendeskIntegration } from 'models/integration/types'
+import type { ZendeskIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
@@ -33,7 +34,7 @@ import {
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import EditCredentialsForm from './EditCredentialsForm'
 import ImportStatusAlert from './ImportStatusAlert'

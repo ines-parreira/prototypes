@@ -6,10 +6,10 @@ import { FormGroup, FormText, Label } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { HTTPForm } from 'models/integration/types'
+import type { HTTPForm } from 'models/integration/types'
 import Select from 'pages/common/components/ast/widget/ReactSelect'
 import JsonField from 'pages/common/forms/JsonField'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import { CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM } from './constants'
 

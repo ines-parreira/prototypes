@@ -6,7 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
-import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import type { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
 import TopProductItem, { TopProductItemSkeleton } from './TopProductItem'
 

@@ -4,14 +4,14 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
+import type { VoiceCallRecording } from 'models/voiceCall/types'
 import {
-    VoiceCallRecording,
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
-import { VoiceRecordingsContextState } from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
+import type { VoiceRecordingsContextState } from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
 
 import VoiceCallTranscription from '../VoiceCallTranscription'
 

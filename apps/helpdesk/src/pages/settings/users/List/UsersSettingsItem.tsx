@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { Badge, ColorType } from '@gorgias/axiom'
-import { User } from '@gorgias/helpdesk-types'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
+import type { User } from '@gorgias/helpdesk-types'
 
 import { AvailabilityStatusTag, UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'

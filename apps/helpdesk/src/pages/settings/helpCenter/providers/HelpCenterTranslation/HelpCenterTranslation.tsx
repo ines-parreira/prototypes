@@ -1,4 +1,5 @@
-import React, {
+import type React from 'react'
+import {
     createContext,
     useCallback,
     useContext,
@@ -9,8 +10,11 @@ import React, {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ContactForm, UpdateSubjectLinesProps } from 'models/contactForm/types'
-import {
+import type {
+    ContactForm,
+    UpdateSubjectLinesProps,
+} from 'models/contactForm/types'
+import type {
     ContactInfoDto,
     EmailIntegration,
     HelpCenter,
@@ -21,7 +25,7 @@ import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { getContactFormById } from 'state/entities/contactForm/contactForms'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

@@ -1,6 +1,6 @@
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics'
 import { OVERALL_AUTOMATED_INTERACTIONS_LABEL } from 'pages/automate/automate-metrics/constants'
 

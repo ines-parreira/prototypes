@@ -6,7 +6,7 @@ import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import { IntegrationType } from 'models/integration/constants'
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 import {
     getApplicationById,
     getApplications,

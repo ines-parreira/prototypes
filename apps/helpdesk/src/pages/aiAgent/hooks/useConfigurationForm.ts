@@ -9,7 +9,7 @@ import _isEqual from 'lodash/isEqual'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import type { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -18,7 +18,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'
 import { CHANGES_SAVED_SUCCESS, DEFAULT_FORM_VALUES } from '../constants'
-import { FormValues, UpdateValue, ValidFormValues } from '../types'
+import type { FormValues, UpdateValue, ValidFormValues } from '../types'
 import {
     ConfigurationPage,
     getConfigurationPage,

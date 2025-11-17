@@ -1,13 +1,13 @@
 import { httpIntegration } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/types'
-import { WrapperTemplate } from 'models/widget/types'
+import type { WrapperTemplate } from 'models/widget/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import { WidgetType } from 'state/widgets/types'
+import type { WidgetType } from 'state/widgets/types'
 import { humanizeString } from 'utils'
 
 import { getWidgetId, getWidgetTitle, LABELS } from '../helpers'

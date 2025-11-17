@@ -6,7 +6,7 @@ import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider } from 'models/integration/constants'
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,

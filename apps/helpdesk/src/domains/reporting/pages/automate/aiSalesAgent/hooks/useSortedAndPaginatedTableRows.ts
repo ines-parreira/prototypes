@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
-import { OrderDirection } from 'models/api/types'
+import type { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
+import type { OrderDirection } from 'models/api/types'
 
 type Options = {
     offset: number

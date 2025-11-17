@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { Stat } from 'domains/reporting/models/stat/types'
+import type { Stat } from 'domains/reporting/models/stat/types'
 
 import { STAT_FETCHED } from './constants'
 

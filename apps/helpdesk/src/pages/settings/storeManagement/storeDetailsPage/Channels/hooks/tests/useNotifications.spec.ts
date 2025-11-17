@@ -2,12 +2,12 @@ import { renderHook } from '@repo/testing'
 
 import { useNotify } from 'hooks/useNotify'
 import { IntegrationType } from 'models/integration/constants'
-import {
+import type {
     EmailIntegration,
     GorgiasChatIntegration,
 } from 'models/integration/types'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import { useNotifications } from '../useNotifications'
 
 jest.mock('hooks/useNotify')

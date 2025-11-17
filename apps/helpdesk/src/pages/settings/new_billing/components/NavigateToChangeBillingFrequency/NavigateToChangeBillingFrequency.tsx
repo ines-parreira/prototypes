@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyTooltip as Tooltip,
-    LegacyTooltipProps as TooltipProps,
-} from '@gorgias/axiom'
+import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'

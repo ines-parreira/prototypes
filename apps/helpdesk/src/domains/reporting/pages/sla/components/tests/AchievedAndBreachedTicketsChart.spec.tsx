@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useSatisfiedOrBreachedTicketsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'

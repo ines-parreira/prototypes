@@ -1,17 +1,18 @@
 import { useCallback, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 import { filter } from 'lodash'
 
-import { ListTagsOrderBy, ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { OrderDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
-import { OrderByOrderDir } from 'models/tag/types'
+import type { OrderByOrderDir } from 'models/tag/types'
 import { tagsFetched } from 'state/entities/tags/actions'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { notify } from 'state/notifications/actions'

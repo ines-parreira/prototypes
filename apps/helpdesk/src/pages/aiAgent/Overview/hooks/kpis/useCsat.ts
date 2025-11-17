@@ -6,13 +6,14 @@ import {
     customerSatisfactionForAIAgentTicketsQueryFactory,
     customerSatisfactionQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import type { KpiMetric } from 'pages/aiAgent/Overview/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 

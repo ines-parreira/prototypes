@@ -3,7 +3,8 @@
 // draft-convert removes newlines in convertFromHTML and convertFromText
 // resulting html and text.
 import { ContentState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { ticket } from '../../../fixtures/ticket'
 import {
@@ -11,7 +12,7 @@ import {
     getContentStateBlocksSnapshot,
 } from '../../../utils/editor'
 import { addEmailExtra } from '../actions'
-import { ReplyThreadMessage } from '../emailExtraUtils'
+import type { ReplyThreadMessage } from '../emailExtraUtils'
 import reducer, { initialState } from '../reducers'
 
 describe('new message reducer', () => {

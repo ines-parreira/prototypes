@@ -1,16 +1,14 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { HelpCenterTrackingEventCube } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import {
-    HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     HelpCenterStatsFiltersMembers,
     statsFiltersToReportingFilters,

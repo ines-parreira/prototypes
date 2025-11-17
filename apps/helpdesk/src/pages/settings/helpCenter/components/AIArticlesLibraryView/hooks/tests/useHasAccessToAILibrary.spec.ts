@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { useHasAccessToAILibrary } from '../useHasAccessToAILibrary'
 

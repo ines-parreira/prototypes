@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { billingState } from 'fixtures/billing'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'

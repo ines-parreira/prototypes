@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -15,14 +15,11 @@ import {
     mockTicketMessageTranslation,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import {
-    Language,
-    TicketMessageTranslation,
-    UserSettingType,
-} from '@gorgias/helpdesk-types'
+import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
+import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import { TicketMessageTranslationDisplayProvider } from '../TicketMessageTranslationDisplayProvider'
 import { withMessageTranslations } from '../withMessageTranslations'

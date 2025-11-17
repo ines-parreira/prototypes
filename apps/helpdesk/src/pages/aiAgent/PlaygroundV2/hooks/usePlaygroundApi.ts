@@ -3,16 +3,14 @@ import { useCallback, useRef } from 'react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
-    isApiEligiblePlaygroundMessage,
-    PlaygroundMessage,
-} from 'models/aiAgentPlayground/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
+import { isApiEligiblePlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { reportError } from 'utils/errors'
 
 import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundCustomer,

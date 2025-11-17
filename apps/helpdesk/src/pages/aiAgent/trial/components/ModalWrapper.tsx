@@ -1,14 +1,11 @@
 import classNames from 'classnames'
-import {
-    Modal,
-    ModalBody,
+import type {
     ModalBodyProps,
-    ModalFooter,
     ModalFooterProps,
-    ModalHeader,
     ModalHeaderProps,
     ModalProps,
 } from 'reactstrap'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import css from './ModalWrapper.less'
 

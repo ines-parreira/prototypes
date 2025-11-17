@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { DropdownItem } from 'reactstrap'
 
-import {
+import type {
     BigCommerceCustomProduct,
     BigCommerceProduct,
     BigCommerceProductVariant,

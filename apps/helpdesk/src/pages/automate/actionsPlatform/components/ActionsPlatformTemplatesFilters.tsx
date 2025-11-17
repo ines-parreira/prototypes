@@ -3,10 +3,10 @@ import React, { useMemo } from 'react'
 import _noop from 'lodash/noop'
 
 import Filter from 'domains/reporting/pages/common/components/Filter'
-import { DropdownOption } from 'domains/reporting/pages/types'
+import type { DropdownOption } from 'domains/reporting/pages/types'
 import Search from 'pages/common/components/Search'
 
-import { App } from '../types'
+import type { App } from '../types'
 
 import css from './ActionsPlatformTemplatesFilters.less'
 

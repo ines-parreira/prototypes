@@ -1,17 +1,19 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
+import type { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
 import { getStoreIntegrations } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import useChatMigrationBanner from '../useChatMigrationBanner'
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'

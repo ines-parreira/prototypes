@@ -5,7 +5,7 @@ import { ReactCountryFlag } from 'react-country-flag'
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import { Drawer } from 'pages/common/components/Drawer'
 import { getLanguageDisplayName } from 'utils'

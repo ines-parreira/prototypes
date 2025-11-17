@@ -1,16 +1,17 @@
-import React, {
+import type {
     ChangeEvent,
-    Component,
     ComponentProps,
     FormEvent,
     KeyboardEvent,
     ReactNode,
     RefObject,
 } from 'react'
+import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import { Button, Form, Input, Popover, PopoverBody } from 'reactstrap'
 
 import { formatPrice } from 'business/shopify/number'

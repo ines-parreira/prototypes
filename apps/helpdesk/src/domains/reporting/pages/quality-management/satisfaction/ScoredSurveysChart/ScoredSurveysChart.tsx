@@ -8,10 +8,9 @@ import {
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import ScoredSurveysTable, {
-    TableState,
-} from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { TableState } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import css from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable.less'
 import {
     SCORED_SURVEYS,

@@ -1,6 +1,6 @@
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import { PlaygroundMessageList } from '../PlaygroundMessageList/PlaygroundMessageList'
-import { BaseContentViewProps } from './ContentView'
+import type { BaseContentViewProps } from './ContentView'
 
 // TODO: extract the style into a dedicated file
 import css from './InboundContentView.less'

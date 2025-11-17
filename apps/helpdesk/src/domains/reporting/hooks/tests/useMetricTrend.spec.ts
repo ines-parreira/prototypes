@@ -1,17 +1,17 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)

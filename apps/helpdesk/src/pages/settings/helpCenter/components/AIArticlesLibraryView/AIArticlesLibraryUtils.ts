@@ -1,8 +1,5 @@
-import {
-    AIArticle,
-    AIArticleToggleOptionValue,
-    AILibraryArticleItem,
-} from 'models/helpCenter/types'
+import type { AIArticle, AILibraryArticleItem } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import { replaceNewLinesWithBr } from '../HelpCenterCreationWizard/HelpCenterCreationWizardUtils'
 

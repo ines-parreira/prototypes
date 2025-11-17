@@ -6,7 +6,7 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 
 import useOrderDates from './hooks/useOrderDates'
 import useTrackPagePreview from './hooks/useTrackPagePreview'

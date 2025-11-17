@@ -1,4 +1,5 @@
-import React, { ReactElement, ReactNode } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'

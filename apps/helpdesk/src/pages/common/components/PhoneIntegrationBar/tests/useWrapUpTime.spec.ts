@@ -10,7 +10,7 @@ import {
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { useNotify } from 'hooks/useNotify'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'

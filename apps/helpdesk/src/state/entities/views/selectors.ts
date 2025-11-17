@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 
 import { ViewType } from 'models/view/types'
 import { makeGetSettingsByType } from 'state/currentUser/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export const getTicketViews = createSelector(
     (state: RootState) => state.entities.views || {},

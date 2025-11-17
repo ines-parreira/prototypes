@@ -3,10 +3,10 @@ import { memo, useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 
-import { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
 import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 export enum PlaceholderType {

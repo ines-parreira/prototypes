@@ -1,4 +1,5 @@
-import React, { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'

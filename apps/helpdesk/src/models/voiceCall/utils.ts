@@ -3,16 +3,16 @@ import moment from 'moment'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getMoment, stringToDatetime } from 'utils/date'
 
-import {
+import type {
     VoiceCall,
     VoiceCallEvent,
     VoiceCallMonitoringStatus,
     VoiceCallSubject,
-    VoiceCallSubjectType,
 } from './types'
+import { VoiceCallSubjectType } from './types'
 
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
     const finalStatuses: VoiceCallStatus[] = [

@@ -1,4 +1,4 @@
-import { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
@@ -6,7 +6,7 @@ import {
     fetchShouldIncludeBots,
     useShouldIncludeBots,
 } from 'domains/reporting/hooks/useShouldIncludeBots'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
@@ -32,7 +32,7 @@ import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
-import {
+import type {
     MetricQueryFactory,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
@@ -41,13 +41,13 @@ import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scope
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { openTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsOpen'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
-import {
+import type {
     StatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 type QueryFactory<TCube extends Cubes> = (
     statsFilters: StatsFilters,

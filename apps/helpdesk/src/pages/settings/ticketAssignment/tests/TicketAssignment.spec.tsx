@@ -1,7 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -13,14 +14,12 @@ import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
 import { user } from 'fixtures/users'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import type MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
-import {
-    AccountSettingTicketAssignment,
-    AccountSettingType,
-} from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { AccountSettingTicketAssignment } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
+import type { RootState } from 'state/types'
 
 import TicketAssignment from '../TicketAssignment'
 

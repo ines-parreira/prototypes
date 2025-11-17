@@ -1,6 +1,6 @@
-import { CustomField } from '@gorgias/helpdesk-types'
+import type { CustomField } from '@gorgias/helpdesk-types'
 
-import { ExhaustiveUIDataType } from 'custom-fields/types'
+import type { ExhaustiveUIDataType } from 'custom-fields/types'
 
 export function getUIDataType(
     dataType: CustomField['definition']['data_type'],

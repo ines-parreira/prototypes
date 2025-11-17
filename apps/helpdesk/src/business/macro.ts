@@ -1,9 +1,9 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from 'models/macroAction/types'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { Notification } from './types/notification'
+import type { Notification } from './types/notification'
 import { TicketMessageSourceType } from './types/ticket'
 
 export type MacroClearingResult = {

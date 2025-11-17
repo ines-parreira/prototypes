@@ -2,8 +2,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
-import { StoreState } from 'state/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { StoreState } from 'state/types'
 
 import { useStoreIntegrationByShopName } from '../useStoreIntegrationByShopName'
 

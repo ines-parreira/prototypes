@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../types'
+import type { GorgiasAction } from '../types'
 import * as constants from './constants'
-import { AuthItem, AuthsState } from './types'
+import type { AuthItem, AuthsState } from './types'
 
 export const initialState: AuthsState = fromJS([])
 

@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
 import { TransferTargetLabel } from './TransferTargetLabel'
-import { TransferTarget, TransferType } from './types'
+import type { TransferTarget } from './types'
+import { TransferType } from './types'
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',

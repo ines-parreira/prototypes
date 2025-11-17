@@ -1,11 +1,12 @@
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { voiceCall } from 'fixtures/voiceCalls'
 import * as momentUtils from 'utils/date'
 
-import { VoiceCall, VoiceCallEvent, VoiceCallSubjectType } from '../types'
+import type { VoiceCall, VoiceCallEvent } from '../types'
+import { VoiceCallSubjectType } from '../types'
 import {
     DEPRECATED_processEvents,
     getAnsweringVoiceSubject,

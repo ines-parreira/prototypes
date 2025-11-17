@@ -1,7 +1,8 @@
-import { Expression } from 'estree'
+import type { Expression } from 'estree'
 
-import { ObjectExpressionPropertyKey } from '../../state/rules/types'
-import { IdentifierCategoryKey, RuleObject } from './types'
+import type { ObjectExpressionPropertyKey } from '../../state/rules/types'
+import type { RuleObject } from './types'
+import { IdentifierCategoryKey } from './types'
 
 export function getAstPath(
     property: ObjectExpressionPropertyKey,

@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react'
+import type React from 'react'
+import { useRef, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { BigCommerceCustomProduct } from 'models/integration/types'
+import type { BigCommerceCustomProduct } from 'models/integration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 import { getMoneySymbol } from 'utils/getMoneySymbol'

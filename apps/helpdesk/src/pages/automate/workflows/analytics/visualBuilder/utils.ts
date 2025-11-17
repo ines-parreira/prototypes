@@ -1,11 +1,11 @@
 import { flatMap, uniq } from 'lodash'
 import moment from 'moment-timezone'
 
-import {
+import type {
     WorkflowStepMetrics,
     WorkflowStepMetricsMap,
 } from 'domains/reporting/hooks/automate/utils'
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import { last7DaysStatsFilters } from 'pages/automate/common/utils/last7DaysStatsFilters'
 

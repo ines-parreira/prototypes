@@ -2,7 +2,7 @@ import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { fetchSubscription } from 'models/billing/resources'
-import { Plan, SubscriptionCycle } from 'models/billing/types'
+import type { Plan, SubscriptionCycle } from 'models/billing/types'
 import { getAvailablePlansMapByPlanId } from 'state/billing/selectors'
 
 interface ScheduledDowngrade {

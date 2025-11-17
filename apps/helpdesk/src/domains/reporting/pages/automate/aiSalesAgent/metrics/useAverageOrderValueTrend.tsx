@@ -9,7 +9,7 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { averageOrderValueQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 

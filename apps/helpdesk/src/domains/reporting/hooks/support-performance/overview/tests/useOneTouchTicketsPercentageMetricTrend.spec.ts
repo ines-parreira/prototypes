@@ -10,7 +10,7 @@ import {
     fetchOneTouchTicketsPercentageMetricTrend,
     useOneTouchTicketsPercentageMetricTrend,
 } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/metricTrends')
 const useOneTicketsTrendMock = assumeMock(useOneTouchTicketsTrend)

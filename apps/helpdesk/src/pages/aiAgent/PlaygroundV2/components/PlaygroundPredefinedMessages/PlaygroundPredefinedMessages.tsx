@@ -7,7 +7,7 @@ import { Chip } from '@gorgias/axiom'
 import { Popover } from 'components/Popover'
 import { sanitizeHtmlDefault } from 'utils/html'
 
-import { PlaygroundTemplateMessage } from '../../types'
+import type { PlaygroundTemplateMessage } from '../../types'
 
 import css from './PlaygroundPredefinedMessages.less'
 

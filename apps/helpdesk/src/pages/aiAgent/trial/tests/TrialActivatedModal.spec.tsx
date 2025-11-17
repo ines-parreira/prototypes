@@ -1,10 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import {
-    TrialActivatedModal,
-    TrialActivatedModalProps,
-} from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
+import type { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
+import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 
 describe('TrialActivatedModal', () => {
     const defaultProps: TrialActivatedModalProps = {

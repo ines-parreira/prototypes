@@ -7,7 +7,7 @@ import {
     useCreateStoreConfigurationPure,
     useUpsertStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {
+import type {
     CreateStoreConfigurationPayload,
     StoreConfiguration,
 } from 'models/aiAgent/types'

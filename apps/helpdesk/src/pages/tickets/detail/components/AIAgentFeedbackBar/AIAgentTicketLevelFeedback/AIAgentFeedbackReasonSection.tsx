@@ -3,13 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDebouncedCallback } from '@repo/hooks'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
+import type { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
+import type { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 
-import { AiAgentBadInteractionReason } from '../types'
+import type { AiAgentBadInteractionReason } from '../types'
 import {
     badInteractionOptions,
     badInteractionReasonsChoices,

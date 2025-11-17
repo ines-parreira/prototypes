@@ -1,6 +1,7 @@
 import { Button } from '@gorgias/axiom'
 
-import { BillingState, SubscriptionStatus } from 'models/billing/types'
+import type { BillingState } from 'models/billing/types'
+import { SubscriptionStatus } from 'models/billing/types'
 
 import ProductCardForCoupon from '../../components/ProductCardForCoupon'
 import UpcomingInvoiceCard from '../../components/UpcomingInvoiceCard'

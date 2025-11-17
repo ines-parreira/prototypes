@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
 
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'

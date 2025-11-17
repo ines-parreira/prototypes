@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { getOnboardingDataByShopName } from 'models/aiAgent/resources/configuration'
-import { OnboardingData } from 'models/aiAgent/types'
+import type { OnboardingData } from 'models/aiAgent/types'
 
 export const useGetOnboardingDataByShopName = ({
     shopName,

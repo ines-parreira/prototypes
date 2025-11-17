@@ -9,7 +9,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
-import {
+import type {
     CampaignCreatePayload,
     CampaignParams,
     CampaignUpdatePayload,

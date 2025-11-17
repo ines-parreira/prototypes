@@ -5,10 +5,10 @@ import classNames from 'classnames'
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import { Components } from 'rest_api/ssp_api/client.generated'
+import type { Components } from 'rest_api/ssp_api/client.generated'
 
 import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
 import DeletedArticlePreview from './DeletedArticlePreview'

@@ -1,15 +1,18 @@
-import React, { ReactNode, SyntheticEvent, useState } from 'react'
+import type { ReactNode, SyntheticEvent } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import cs from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import { LeafType } from 'models/widget/types'
+import type { LeafType } from 'models/widget/types'
 
-import { FieldEditFormData, HiddenFields } from '../../types'
+import type { FieldEditFormData, HiddenFields } from '../../types'
 import FieldContainer from './FieldContainer'
-import FieldEditForm, { TypeOption } from './FieldEditForm'
+import type { TypeOption } from './FieldEditForm'
+import FieldEditForm from './FieldEditForm'
 import FieldLabel from './FieldLabel'
 import FieldValue from './FieldValue'
 

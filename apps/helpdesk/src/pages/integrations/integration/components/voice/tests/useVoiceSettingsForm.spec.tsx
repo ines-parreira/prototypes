@@ -4,11 +4,10 @@ import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
+import type { HttpResponse, PhoneIntegration } from '@gorgias/helpdesk-client'
 import {
     deleteIntegration,
-    HttpResponse,
     IntegrationType,
-    PhoneIntegration,
     updateAllPhoneSettings,
     VoiceMessageType,
 } from '@gorgias/helpdesk-client'

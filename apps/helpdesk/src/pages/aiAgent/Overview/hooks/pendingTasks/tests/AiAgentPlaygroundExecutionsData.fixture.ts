@@ -1,4 +1,4 @@
-import { AiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
+import type { AiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
 
 type AllKeys = keyof AiAgentPlaygroundExecutionsDataFixture
 type ConfiguredAiAgentPlaygroundExecutionsDataFixture<

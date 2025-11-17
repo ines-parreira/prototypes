@@ -1,19 +1,19 @@
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 import { isObject } from 'lodash'
 
-import {
+import type {
     SearchVoiceCalls200DataItemHighlights,
     SearchVoiceCallsParams,
 } from '@gorgias/helpdesk-types'
 
-import {
+import type {
     ApiListResponse,
     ApiPaginationParams,
     OrderParams,
 } from 'models/api/types'
-import { Customer } from 'models/customer/types'
-import { Ticket } from 'models/ticket/types'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { Customer } from 'models/customer/types'
+import type { Ticket } from 'models/ticket/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 
 export enum SearchType {
     Agent = 'agent',

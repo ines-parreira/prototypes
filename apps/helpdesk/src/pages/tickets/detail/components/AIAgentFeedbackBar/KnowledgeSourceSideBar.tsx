@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
-import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
+import type { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { HelpCenterArticleModalView } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -14,10 +14,8 @@ import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentF
 
 import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
 import { ManageGuidanceForm } from './ManageGuidanceForm'
-import {
-    AiAgentKnowledgeResourceTypeEnum,
-    SuggestedResourceValue,
-} from './types'
+import type { SuggestedResourceValue } from './types'
+import { AiAgentKnowledgeResourceTypeEnum } from './types'
 import { getHelpcenterIdAsString } from './utils'
 
 import css from './KnowledgeSourceSideBar.less'

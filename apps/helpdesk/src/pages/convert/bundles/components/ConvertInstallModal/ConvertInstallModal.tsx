@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
+import type { BundleActionResponse } from 'models/convert/bundle/types'
 import {
-    BundleActionResponse,
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'

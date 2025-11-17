@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _compact from 'lodash/compact'
 import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
@@ -14,20 +15,19 @@ import _pickBy from 'lodash/pickBy'
 import _size from 'lodash/size'
 import _sortBy from 'lodash/sortBy'
 import _toLower from 'lodash/toLower'
-import moment, { MomentInput } from 'moment'
+import type { MomentInput } from 'moment'
+import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
 import { isImmutable } from 'common/utils'
-import { DateTimeResultFormatType } from 'constants/datetime'
-import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { DateTimeResultFormatType } from 'constants/datetime'
+import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import type { CardTemplate, Source, Template } from 'models/widget/types'
 import {
-    CardTemplate,
     isCardTemplate,
     isListTemplate,
     isSourceRecord,
     isWrapperTemplate,
-    Source,
-    Template,
 } from 'models/widget/types'
 import {
     CUSTOM_WIDGET_TYPE,

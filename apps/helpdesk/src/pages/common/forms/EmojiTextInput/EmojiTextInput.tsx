@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback } from 'react'
 
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import Caption from 'pages/common/forms/Caption/Caption'

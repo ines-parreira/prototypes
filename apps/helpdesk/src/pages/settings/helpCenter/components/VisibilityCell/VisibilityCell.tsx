@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { VisibilityStatus } from 'models/helpCenter/types'
+import type { VisibilityStatus } from 'models/helpCenter/types'
 
 import css from './VisibilityCell.less'
 

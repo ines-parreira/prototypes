@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import FailedWorkflowMessage from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage'
 import { getFailedWorkflowData } from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage.util'

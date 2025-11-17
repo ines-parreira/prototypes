@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -11,7 +12,7 @@ import { billingState } from 'fixtures/billing'
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { RuleLimitStatus } from 'state/rules/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { RulesList } from '../RulesList'
 

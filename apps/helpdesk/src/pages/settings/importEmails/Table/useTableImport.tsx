@@ -5,7 +5,7 @@ import { ListImportsOrderBy } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 
-import { ImportItem } from '../types'
+import type { ImportItem } from '../types'
 
 const PAGE_SIZE = 8
 const REFETCH_INTERVAL = 60000 // 1 minute

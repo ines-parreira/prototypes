@@ -1,11 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
-import { DateTimeResultFormatType } from 'constants/datetime'
+import type { DateTimeResultFormatType } from 'constants/datetime'
 import { ISO639English } from 'constants/languages'
 import { MacroActionName } from 'models/macroAction/types'
 import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'

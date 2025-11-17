@@ -1,7 +1,8 @@
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 
 import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
-import { GroupedKnowledgeItem, KnowledgeType, typeConfig } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeType, typeConfig } from '../types'
 import { AddGuidanceTemplateModal } from './AddGuidanceTemplateModal'
 
 import css from './EmptyState.less'
@@ -262,7 +263,7 @@ export const EmptyStateURL = () => {
             <Heading size={'md'}>Add URLs</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
                 <Text size={'md'} align={'center'}>
-                    Add links to public pages AI Agent can learn from like blog
+                    Add links to public pages AI Agent can learn from like blog
                     posts or external documentation.
                 </Text>
                 <Button variant="primary">Add URL</Button>

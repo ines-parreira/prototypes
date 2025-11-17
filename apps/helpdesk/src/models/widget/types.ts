@@ -1,11 +1,11 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import { ApiPaginationParams } from 'models/api/types'
-import {
+import type { ApiPaginationParams } from 'models/api/types'
+import type {
     Button,
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import { THIRD_PARTY_APP_NAME_KEY } from 'state/widgets/constants'
+import type { THIRD_PARTY_APP_NAME_KEY } from 'state/widgets/constants'
 import { isRecord } from 'utils/types'
 
 import { LEAF_TYPES } from './constants'

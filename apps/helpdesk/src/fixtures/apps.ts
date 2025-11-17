@@ -2,9 +2,8 @@ import {
     appDataToAppDetailMapper,
     appListDataToAppListMapper,
 } from 'models/integration/resources'
+import type { AppData, AppListData } from 'models/integration/types/app'
 import {
-    AppData,
-    AppListData,
     Category,
     PricingPlan,
     TrialPeriod,

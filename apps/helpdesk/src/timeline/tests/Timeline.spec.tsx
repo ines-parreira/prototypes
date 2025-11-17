@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import * as timelineItem from 'timeline/helpers/timelineItem'

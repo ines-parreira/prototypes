@@ -1,6 +1,10 @@
-import { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios'
+import type {
+    AxiosRequestConfig,
+    AxiosRequestHeaders,
+    AxiosResponse,
+} from 'axios'
 
-import { GorgiasApiError } from 'models/api/types'
+import type { GorgiasApiError } from 'models/api/types'
 
 export const exampleGorgiasApiError: GorgiasApiError = {
     name: 'AxiosError',

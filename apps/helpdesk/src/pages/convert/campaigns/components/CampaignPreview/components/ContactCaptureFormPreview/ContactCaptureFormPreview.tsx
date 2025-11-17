@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
-import { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
+import type { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
 
 import { ContactCaptureStep } from './ContactCaptureStep'
 import { Wrapper } from './styled'

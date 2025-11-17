@@ -1,11 +1,11 @@
-import {
-    ArticleTemplateType,
+import type {
     HelpCenter,
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
+import { ArticleTemplateType } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { HELP_CENTER_LANGUAGE_DEFAULT_UI } from 'pages/settings/helpCenter/constants'
 import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {

@@ -1,7 +1,7 @@
 import CopyButton from 'components/CopyButton/CopyButton'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { LEAF_TYPES } from 'models/widget/constants'
-import { LeafTemplate, LeafType } from 'models/widget/types'
+import type { LeafTemplate, LeafType } from 'models/widget/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -9,9 +9,9 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 
-import { FieldEditFormData, HiddenFields } from '../types'
+import type { FieldEditFormData, HiddenFields } from '../types'
 import UIField from './views'
-import { TypeOption } from './views/FieldEditForm'
+import type { TypeOption } from './views/FieldEditForm'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

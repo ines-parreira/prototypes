@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'

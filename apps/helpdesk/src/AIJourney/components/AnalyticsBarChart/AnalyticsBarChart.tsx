@@ -3,11 +3,9 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import moment from 'moment'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import {
-    formatMetricValue,
-    MetricValueFormat,
-} from 'domains/reporting/pages/common/utils'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 
 import { Tooltip } from '../Tooltip/Tooltip'
 

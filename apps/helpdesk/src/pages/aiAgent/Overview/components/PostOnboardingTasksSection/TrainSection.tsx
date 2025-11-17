@@ -5,21 +5,19 @@ import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
-import {
-    PostStoreInstallationStepStatus,
-    StepConfiguration,
-} from 'models/aiAgentPostStoreInstallationSteps/types'
+import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { DeleteModal } from '../AiAgentTasks/DeleteModal'
 import { SuccessModal } from '../AiAgentTasks/SuccessModal'
 import { GuidanceList } from './GuidanceList'
 import { GuidanceTemplatesModal } from './GuidanceTemplatesModal'
 import { TrainButton } from './TrainButton'
-import { PostOnboardingStepMetadata } from './types'
+import type { PostOnboardingStepMetadata } from './types'
 import { MAX_VISIBLE_GUIDANCES_TRAIN_SECTION } from './utils'
 
 import css from './TrainSection.less'

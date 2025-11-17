@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,12 +7,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Tag } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { createTag } from 'models/tag/resources'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { RootState } from 'state/types'
+import type MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import type SelectField from 'pages/common/forms/SelectField/SelectField'
+import type { RootState } from 'state/types'
 
 import TagsSelect from '../TagsSelect'
 

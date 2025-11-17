@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { GenericAttachment } from 'common/types'
+import type { GenericAttachment } from 'common/types'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { getBase64 } from 'utils/file'
 

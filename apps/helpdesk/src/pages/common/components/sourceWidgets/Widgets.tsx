@@ -1,6 +1,7 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Source, Template } from 'models/widget/types'
+import type { Source, Template } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 

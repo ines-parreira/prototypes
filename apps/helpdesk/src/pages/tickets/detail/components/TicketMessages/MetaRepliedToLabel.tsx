@@ -1,4 +1,4 @@
-import { ReplyMetaTicketMessage } from 'models/ticket/types'
+import type { ReplyMetaTicketMessage } from 'models/ticket/types'
 
 import MetaLabel from './MetaLabel'
 

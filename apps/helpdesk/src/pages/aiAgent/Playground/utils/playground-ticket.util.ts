@@ -1,5 +1,5 @@
 import { getAiAgentCustomer } from 'models/aiAgentPlayground/resources'
-import {
+import type {
     AiAgentInput,
     CreatePlaygroundBody,
     GetPlaygroundCustomerRequest,
@@ -10,7 +10,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
-import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
+import type { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
 
 const PLAYGROUND_TICKET_ID = '123'
 const PLAYGROUND_INTEGRATION_ID = -1

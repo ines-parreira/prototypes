@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 
 type TestResult = {

@@ -1,7 +1,9 @@
-import React, { Component, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React, { Component } from 'react'
 
-import { fromJS, Map } from 'immutable'
-import { DropdownMenu } from 'reactstrap'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { DropdownMenu } from 'reactstrap'
 
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 

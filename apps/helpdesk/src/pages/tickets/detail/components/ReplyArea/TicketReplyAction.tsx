@@ -1,15 +1,18 @@
 import { Component } from 'react'
 
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _debounce from 'lodash/debounce'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { withAppNode, WithAppNodeProps } from 'appNode'
+import type { WithAppNodeProps } from 'appNode'
+import { withAppNode } from 'appNode'
 import { FORM_CONTENT_TYPE } from 'config'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 import { getIconFromActionType } from 'models/macroAction/helpers'
 import { MacroActionName } from 'models/macroAction/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'

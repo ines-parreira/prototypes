@@ -1,4 +1,4 @@
-import { TooltipItem } from 'chart.js'
+import type { TooltipItem } from 'chart.js'
 import moment from 'moment'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
@@ -27,9 +27,9 @@ import {
     sortAllData,
     sortByAutomateFeatureLabels,
 } from 'domains/reporting/hooks/automate/utils'
-import { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import {
     RecommendedResourcesDimension,
@@ -37,7 +37,7 @@ import {
 } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { SHORT_FORMAT } from 'domains/reporting/pages/common/utils'
 import {

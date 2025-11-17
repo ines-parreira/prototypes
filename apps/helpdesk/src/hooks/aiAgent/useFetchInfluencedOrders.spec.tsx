@@ -13,10 +13,8 @@ import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
-import {
-    InfluencedOrdersParams,
-    useFetchInfluencedOrders,
-} from './useFetchInfluencedOrders'
+import type { InfluencedOrdersParams } from './useFetchInfluencedOrders'
+import { useFetchInfluencedOrders } from './useFetchInfluencedOrders'
 
 jest.mock('domains/reporting/models/resources')
 const mockPostReporting = jest.mocked(postReportingV1)

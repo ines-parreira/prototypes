@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce, usePrevious } from '@repo/hooks'
-import { convertFromRaw, RawDraftContentState, SelectionState } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { RawDraftContentState, SelectionState } from 'draft-js'
+import { convertFromRaw } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Ticket } from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {
@@ -33,7 +35,7 @@ import {
     getOriginalContentState,
     isNewMessageEmailExtraAdded,
 } from 'state/newMessage/selectors'
-import { Message } from 'state/newMessage/types'
+import type { Message } from 'state/newMessage/types'
 import {
     restoreTicketDraft,
     restoreTicketDraftApplyMacro,

@@ -1,9 +1,11 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { history } from '@repo/routing'
 import { render } from '@testing-library/react'
-import { Location } from 'history'
-import { fromJS, Map } from 'immutable'
+import type { Location } from 'history'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _identity from 'lodash/identity'
 import { stringify } from 'qs'
 

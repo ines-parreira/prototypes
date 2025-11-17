@@ -1,4 +1,5 @@
-import React, { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useState } from 'react'
 
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
 

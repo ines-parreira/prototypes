@@ -1,4 +1,4 @@
-import {
+import type {
     CUSTOM_FIELD_AI_AGENT_CLOSE,
     CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from 'domains/reporting/hooks/automate/types'
@@ -26,13 +26,13 @@ import {
     aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
     aiAgentTicketsPerIntentCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     getPreviousPeriod,
     NotSpamNorTrashedTicketsFilter,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const HOURS_FOR_AUTOMATED_INTERACTIONS = 72
 

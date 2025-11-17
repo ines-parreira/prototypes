@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import { getSourceNodes } from '../../utils'
 import { IntermediaryNode } from '../IntermediaryNode'
 

@@ -21,11 +21,11 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { formatValue } from 'pages/settings/billing/automate/ROICalculator/utils'
 import { submitSettingSuccess } from 'state/currentAccount/actions'
 import { getAgentCostsSettings } from 'state/currentAccount/selectors'
-import {
+import type {
     AccountSettingAgentCosts,
     AccountSettingAgentCostType,
-    AccountSettingType,
 } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 const defaultAgentCostPerTicket = 3.1
 const defaultHourlyRateMultiplier = 5

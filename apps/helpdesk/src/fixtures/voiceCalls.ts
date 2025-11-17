@@ -1,6 +1,6 @@
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 
 export const voiceCall: VoiceCall = {
     id: 123,

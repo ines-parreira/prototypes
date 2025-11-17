@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import { emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { RuleFormEditor } from '../RuleFormEditor'

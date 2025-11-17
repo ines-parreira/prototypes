@@ -7,7 +7,7 @@ import { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
 
 import { Role } from '../Role'
-import { AgentState } from '../types'
+import type { AgentState } from '../types'
 
 const props = {
     role: UserRole.Agent,

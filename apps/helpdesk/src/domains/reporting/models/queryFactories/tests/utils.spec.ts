@@ -14,15 +14,17 @@ import {
     toLowerCaseString,
     withDefaultLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     CustomFieldFilter,
-    FilterKey,
     StatsFilters,
     TagFilter,
-    TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import {
-    ReportingFilter,
+    FilterKey,
+    TagFilterInstanceId,
+} from 'domains/reporting/models/stat/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
+import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'

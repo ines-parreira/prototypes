@@ -1,15 +1,18 @@
-import React, { UIEventHandler, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { BusiestTimesOfDaysCellContent } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent'
-import {
+import type {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
+} from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
+import {
     columnsOrder,
     isHourCell,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'

@@ -5,7 +5,7 @@ import type { Location } from 'history'
 import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { JourneyApiDTO } from '@gorgias/convert-client'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { mockStore, renderWithRouter } from 'utils/testing'

@@ -1,5 +1,5 @@
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
+import type { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
 import {
     ARTICLE_RECOMMENDATION as ARTICLE_RECOMMENDATION_LABEL,
     FLOWS,

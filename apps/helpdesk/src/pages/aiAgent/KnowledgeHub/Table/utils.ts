@@ -1,4 +1,4 @@
-import { GroupedKnowledgeItem, KnowledgeItem } from '../types'
+import type { GroupedKnowledgeItem, KnowledgeItem } from '../types'
 
 export const groupKnowledgeItemsBySource = (
     items: KnowledgeItem[],

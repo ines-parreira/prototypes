@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'

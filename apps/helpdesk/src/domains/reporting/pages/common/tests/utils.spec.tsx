@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import _keyBy from 'lodash/keyBy'
@@ -7,14 +7,16 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { AnalyticsFilter } from '@gorgias/helpdesk-queries'
+import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
-import {
-    FilterKey,
+import type {
     LegacyStatsFilters,
     SavedFilterDraft,
+} from 'domains/reporting/models/stat/types'
+import {
+    FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -52,7 +54,7 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
 import { tags } from 'fixtures/tag'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

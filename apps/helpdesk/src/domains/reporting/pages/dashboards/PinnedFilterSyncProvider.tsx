@@ -1,4 +1,5 @@
-import { ReactNode, useEffect } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 
 import { useSavedFilterById } from 'domains/reporting/hooks/filters/useSavedFilterById'
 import { useSyncPinnedFilter } from 'domains/reporting/hooks/filters/useSyncPinnedFilter'

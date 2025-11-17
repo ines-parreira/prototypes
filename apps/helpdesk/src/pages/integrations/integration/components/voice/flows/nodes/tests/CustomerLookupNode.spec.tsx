@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -16,18 +17,15 @@ import {
     mockTextDataTypeDefinition,
     mockTextInputSettings,
 } from '@gorgias/helpdesk-mocks'
-import {
-    CustomField,
-    ListCustomFields200,
-    ObjectType,
-} from '@gorgias/helpdesk-types'
+import type { CustomField, ListCustomFields200 } from '@gorgias/helpdesk-types'
+import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowNode } from '../../types'
+import type { VoiceFlowNode } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { CustomerLookupNode } from '../CustomerLookupNode'
 

@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import type { RootState } from '../types'
-import { LayoutState } from './types'
+import type { LayoutState } from './types'
 
 export const getLayoutState = (state: RootState): LayoutState =>
     state.layout || fromJS({})

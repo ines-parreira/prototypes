@@ -7,18 +7,18 @@ import {
     useOneTouchTicketsMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     calculatePercentage,
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const assigneeIdField = TicketDimension.AssigneeUserId
 const ticketCountField = TicketMeasure.TicketCount

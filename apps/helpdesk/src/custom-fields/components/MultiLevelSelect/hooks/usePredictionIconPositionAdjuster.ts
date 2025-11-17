@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
-import { CustomFieldValue } from 'custom-fields/types'
+import type { CustomFieldValue } from 'custom-fields/types'
 
 const ICON_WIDTH = 17
 const SPACE = 6

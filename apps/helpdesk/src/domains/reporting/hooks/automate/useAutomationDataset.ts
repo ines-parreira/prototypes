@@ -4,10 +4,8 @@ import {
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
 } from 'domains/reporting/hooks/automate/timeSeries'
-import {
-    AutomateTrendMetrics,
-    AutomateTimeseries as CalculatedTimeSeries,
-} from 'domains/reporting/hooks/automate/types'
+import type { AutomateTimeseries as CalculatedTimeSeries } from 'domains/reporting/hooks/automate/types'
+import { AutomateTrendMetrics } from 'domains/reporting/hooks/automate/types'
 import {
     fetchAutomationRateTimeSeriesData,
     useAutomationRateTimeSeriesData,
@@ -17,9 +15,9 @@ import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/aut
 import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { fetchFilteredAutomatedInteractionsSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionsSeries'
 import { automateInteractionsByEventTypeToTimeSeries } from 'domains/reporting/hooks/automate/utils'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 
 export const useAutomateMetricsTimeSeries = (
     filters: StatsFilters,

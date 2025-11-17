@@ -1,13 +1,11 @@
 import classNames from 'classnames'
-import { FieldValues, Path } from 'react-hook-form'
+import type { FieldValues, Path } from 'react-hook-form'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import {
-    FormInputField,
-    IFormInputFieldProps,
-} from 'pages/settings/new_billing/components/FormInputField/FormInputField'
-import { TaxIdType } from 'state/billing/types'
+import type { IFormInputFieldProps } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
+import { FormInputField } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
+import type { TaxIdType } from 'state/billing/types'
 
 import css from './TaxIdField.less'
 

@@ -1,7 +1,9 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
 import { fromJS } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
@@ -12,13 +14,14 @@ import {
 } from '@gorgias/axiom'
 
 import { ZENDESK_IMPORTED_TICKETS_FOR_YEARS } from 'config'
-import { IntegrationType, ZendeskIntegration } from 'models/integration/types'
+import type { ZendeskIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
 import { createImportIntegration } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
 
 import { ZENDESK_CONNECTION_TYPE } from './types'

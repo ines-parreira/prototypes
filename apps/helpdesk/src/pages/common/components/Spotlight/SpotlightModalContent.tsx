@@ -1,18 +1,18 @@
-import { RefObject, useEffect, useRef } from 'react'
+import type { RefObject } from 'react'
+import { useEffect, useRef } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
-import { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
+import type { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
 
-import { SearchRank } from 'hooks/useSearchRankScenario'
-import {
-    isCustomer,
-    isTicket,
+import type { SearchRank } from 'hooks/useSearchRankScenario'
+import type {
     PickedCustomer,
     PickedCustomerWithHighlights,
     PickedTicket,
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,
 } from 'models/search/types'
+import { isCustomer, isTicket } from 'models/search/types'
 import { ViewType } from 'models/view/types'
 import { isVoiceCall } from 'models/voiceCall/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'

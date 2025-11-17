@@ -1,6 +1,8 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
-import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
+import { getAllJourneysPublic } from '@gorgias/convert-client'
 
 import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'

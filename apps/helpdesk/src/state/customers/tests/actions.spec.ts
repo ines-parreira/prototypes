@@ -1,12 +1,13 @@
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import { Customer, CustomerDraft } from 'models/customer/types'
-import { StoreDispatch } from 'state/types'
+import type { Customer, CustomerDraft } from 'models/customer/types'
+import type { StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
 import { initialState } from '../reducers'

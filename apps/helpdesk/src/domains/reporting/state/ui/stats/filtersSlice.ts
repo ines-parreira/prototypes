@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createSelector } from 'reselect'
 
-import {
+import type {
     CustomFieldFilter,
     CustomFieldSavedFilter,
-    FilterKey,
     SavedFilter,
     SavedFilterDraft,
     SavedFilterSupportedFilters,
@@ -12,13 +12,14 @@ import {
     StatsFiltersWithLogicalOperator,
     TagsSavedFilter,
 } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { toApiFormatted } from 'domains/reporting/pages/common/filters/helpers'
 import {
     fromLegacyStatsFilters,
     isCustomFieldSavedFilter,
     savedFilterDraftFiltersFromFiltersWithLogicalOperators,
 } from 'domains/reporting/state/stats/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export type FiltersSliceState = {
     isFilterDirty: boolean

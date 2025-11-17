@@ -23,19 +23,20 @@ import {
 } from 'fixtures/productPrices'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
-import {
+import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
+import type {
     ContactForm,
     ContactFormAutomationSettings,
 } from 'models/contactForm/types'
-import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
-import { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

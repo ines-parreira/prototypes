@@ -3,8 +3,8 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketCubeWithJoins,
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
@@ -12,17 +12,15 @@ import {
     getCustomFieldValueSerializer,
     TICKET_CUSTOM_FIELDS_API_SEPARATOR,
 } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingQuery,
-} from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketMessagesEnrichedFirstResponseTimesMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const RETURN_MENTION_L1_INTENT = 'Return'
 

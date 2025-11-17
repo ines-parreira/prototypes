@@ -7,7 +7,7 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
+import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

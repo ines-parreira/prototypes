@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-import { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
+import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
 
 export type CustomBusinessHoursContextState = {
     businessHoursId?: number

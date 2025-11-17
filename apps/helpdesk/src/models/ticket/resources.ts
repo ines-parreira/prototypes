@@ -3,18 +3,18 @@ import { stringify } from 'qs'
 import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
 
 import client from 'models/api/resources'
-import {
+import type {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
-import {
+import type {
     PickedTicketWithHighlights,
     TicketSearchOptions,
     TicketWithHighlightsResponse,
 } from 'models/search/types'
 import { mergeEntitiesWithHighlights } from 'models/search/utils'
-import { Ticket } from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 
 export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
     const res = await client.get<ApiListResponseCursorPagination<Ticket[]>>(

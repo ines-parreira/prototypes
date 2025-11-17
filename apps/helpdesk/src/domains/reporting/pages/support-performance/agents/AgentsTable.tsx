@@ -1,20 +1,19 @@
-import React, { FunctionComponent, UIEventHandler, useState } from 'react'
+import type { FunctionComponent, UIEventHandler } from 'react'
+import React, { useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentNameCellContent } from 'domains/reporting/pages/support-performance/agents/AgentNameCellContent'
-import {
-    AgentsCellContent,
-    AgentsCellContentProps,
-} from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
+import type { AgentsCellContentProps } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
+import { AgentsCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsCellContent'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { AgentsSummaryRow } from 'domains/reporting/pages/support-performance/agents/AgentsSummaryRow'
 import {
@@ -32,10 +31,8 @@ import {
     isSortingMetricLoading,
     pageSet,
 } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import {
-    AgentsTableColumn,
-    VoiceAgentsTableColumn,
-} from 'domains/reporting/state/ui/stats/types'
+import type { VoiceAgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
+import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { NumberedPagination } from 'pages/common/components/Paginations'

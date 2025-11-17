@@ -4,7 +4,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import {
+import type {
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'

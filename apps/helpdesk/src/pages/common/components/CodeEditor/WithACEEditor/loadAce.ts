@@ -1,7 +1,7 @@
 // This code was borrowed from the package "react-ace-cdn".
 // It's a temporary solution to load ACE editor from a CDN
 // until we can lazy load it properly.
-import { WindowWithACE } from './types'
+import type { WindowWithACE } from './types'
 
 export const available = () => !!(window as WindowWithACE).ace
 

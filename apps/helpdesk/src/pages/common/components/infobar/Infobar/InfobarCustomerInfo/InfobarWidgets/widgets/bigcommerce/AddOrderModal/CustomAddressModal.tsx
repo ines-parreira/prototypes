@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 import classNames from 'classnames'
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 import { Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import type { BigCommerceCustomerAddress } from 'models/integration/types'
 import {
-    BigCommerceCustomerAddress,
     BigCommerceCustomerAddressType,
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,

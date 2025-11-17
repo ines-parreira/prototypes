@@ -1,4 +1,5 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { createSelector } from 'reselect'
 
 import { TicketVia } from 'business/types/ticket'
@@ -8,24 +9,25 @@ import {
     isTicketMessage,
     shouldMessagesBeGrouped,
 } from 'models/ticket/predicates'
-import {
+import type {
     TicketElement,
     TicketEvent,
     TicketMessage,
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
-import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { UseListVoiceCalls } from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
+import type { VoiceCall } from 'models/voiceCall/types'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { InTicketSuggestionState } from 'state/entities/rules/types'
-import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import type { InTicketSuggestionState } from 'state/entities/rules/types'
+import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
 import { getQueryData } from 'state/queries/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
 import { createImmutableSelector } from 'utils'
 
-import { TicketState, TicketStateWithoutImmutable } from './types'
+import type { TicketState, TicketStateWithoutImmutable } from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
     state.ticket || fromJS({})

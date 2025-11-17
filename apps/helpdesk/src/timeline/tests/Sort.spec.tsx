@@ -8,7 +8,7 @@ import userEventDefault from '@testing-library/user-event'
 import { useFlag } from 'core/flags'
 
 import { Sort } from '../Sort'
-import { SortOption } from '../types'
+import type { SortOption } from '../types'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

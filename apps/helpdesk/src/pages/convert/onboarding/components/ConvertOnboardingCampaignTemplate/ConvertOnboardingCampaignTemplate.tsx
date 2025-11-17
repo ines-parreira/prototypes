@@ -1,15 +1,13 @@
 import React, { useMemo, useState } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    CampaignTemplate,
-    CampaignTemplateLabelType,
-} from 'pages/convert/campaigns/templates/types'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'

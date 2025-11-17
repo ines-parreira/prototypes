@@ -6,11 +6,11 @@ import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { MAX_HEADER_LENGTH } from 'config'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {
+import type {
     OnChangeAction,
     Parameter,
-    ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

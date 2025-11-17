@@ -1,8 +1,10 @@
+import type {
+    SavedFilter,
+    SavedFilterDraft,
+} from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    SavedFilter,
-    SavedFilterDraft,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {

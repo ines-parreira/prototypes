@@ -1,9 +1,10 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Provider } from 'react-redux'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
@@ -26,7 +27,7 @@ import { customFieldCondition } from 'fixtures/customFieldCondition'
 import TicketFields from 'pages/tickets/detail/components/TicketFields/TicketFields'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { initialState as ticketState } from 'state/ticket/reducers'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 import triggerTicketFieldsRefreshAndInvalidation from '../triggerTicketFieldsRefreshAndInvalidation'
 

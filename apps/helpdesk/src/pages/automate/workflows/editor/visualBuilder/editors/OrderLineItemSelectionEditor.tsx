@@ -4,8 +4,8 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import { OrderLineItemSelectionNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { MessageContent } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { OrderLineItemSelectionNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { MessageContent } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 

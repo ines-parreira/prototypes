@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { GreyArea } from 'domains/reporting/hooks/automate/types'
+import type { GreyArea } from 'domains/reporting/hooks/automate/types'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomateMetricsTimeSeries } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'

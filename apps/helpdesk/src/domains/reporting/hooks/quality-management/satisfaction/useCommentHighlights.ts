@@ -5,7 +5,7 @@ import { useMetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/use
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { commentHighlightsQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/commentHighlightsQueryFactory'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'

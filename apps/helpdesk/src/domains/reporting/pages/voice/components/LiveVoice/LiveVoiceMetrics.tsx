@@ -3,11 +3,11 @@ import { useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import { useFlag } from 'core/flags'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'

@@ -1,5 +1,5 @@
 import { TicketChannel } from 'business/types/ticket'
-import {
+import type {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,

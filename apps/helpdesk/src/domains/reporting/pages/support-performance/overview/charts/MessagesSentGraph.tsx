@@ -1,4 +1,4 @@
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChartCard } from 'domains/reporting/pages/support-performance/components/OverviewChartCard'
 import {
     OverviewChartConfig,

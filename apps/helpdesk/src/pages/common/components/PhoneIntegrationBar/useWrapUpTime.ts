@@ -10,13 +10,13 @@ import {
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { useNotify } from 'hooks/useNotify'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
-import {
+import type {
     ServerMessage,
-    SocketEventType,
     VoiceCallWrapUpTimeStartedEvent,
 } from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 
 export default function useWrapUpTime() {
     const { call } = useVoiceDevice()

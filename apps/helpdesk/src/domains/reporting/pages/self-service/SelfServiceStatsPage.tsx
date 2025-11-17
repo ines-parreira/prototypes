@@ -4,10 +4,8 @@ import classnames from 'classnames'
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 
-import {
-    paywallConfigs as defaultPaywallConfigs,
-    PaywallConfig,
-} from 'config/paywalls'
+import type { PaywallConfig } from 'config/paywalls'
+import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
@@ -16,7 +14,7 @@ import {
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
-import {
+import type {
     LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'

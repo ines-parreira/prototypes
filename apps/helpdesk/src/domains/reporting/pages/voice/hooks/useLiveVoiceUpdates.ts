@@ -1,24 +1,20 @@
-import {
-    MutableRefObject,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-} from 'react'
+import type { MutableRefObject } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { omit } from 'lodash'
 
-import { DomainEvent } from '@gorgias/events'
+import type { DomainEvent } from '@gorgias/events'
+import type { ListLiveCallQueueVoiceCallsParams } from '@gorgias/helpdesk-queries'
 import {
-    ListLiveCallQueueVoiceCallsParams,
     useListLiveCallQueueAgents,
     useListLiveCallQueueVoiceCalls,
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
 import { AgentStatus } from '@gorgias/helpdesk-types'
-import { ChannelNameOptions, useAccountId } from '@gorgias/realtime'
+import type { ChannelNameOptions } from '@gorgias/realtime'
+import { useAccountId } from '@gorgias/realtime'
 
 import { useFlag } from 'core/flags'
 import {

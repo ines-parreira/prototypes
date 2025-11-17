@@ -5,12 +5,12 @@ import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'
-import {
-    MessageType,
+import type {
     PlaygroundMessage,
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
+import { MessageType } from 'models/aiAgentPlayground/types'
 import { PlaygroundGenericErrorMessage } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundGenericErrorMessage/PlaygroundGenericErrorMessage'
 import {
     AI_AGENT_SENDER,
@@ -21,7 +21,8 @@ import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { reportError } from 'utils/errors'
 
-import { PlaygroundCustomer, PlaygroundEvent } from '../types'
+import type { PlaygroundCustomer } from '../types'
+import { PlaygroundEvent } from '../types'
 import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,

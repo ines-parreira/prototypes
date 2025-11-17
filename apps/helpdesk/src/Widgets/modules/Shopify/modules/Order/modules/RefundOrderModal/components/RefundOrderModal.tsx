@@ -1,10 +1,13 @@
-import { ChangeEvent, useCallback, useContext, useMemo } from 'react'
+import type { ChangeEvent } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Button, Form } from 'reactstrap'
 
 import { LoadingSpinner } from '@gorgias/axiom'
@@ -14,9 +17,10 @@ import {
     getFormattedRefundAmount,
 } from 'business/shopify/order'
 import { getRefundAmount } from 'business/shopify/refund'
-import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -31,7 +35,7 @@ import {
 } from 'state/infobarActions/shopify/refundOrder/actions'
 import { getRefundOrderState } from 'state/infobarActions/shopify/refundOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import OrderForm from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
 
 import css from './RefundOrderModal.less'

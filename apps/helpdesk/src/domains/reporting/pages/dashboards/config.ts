@@ -15,7 +15,7 @@ import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
-import {
+import type {
     ChartConfig,
     ReportConfig,
     ReportsModalConfig,

@@ -1,4 +1,4 @@
-import { StoreMapping } from 'models/storeMapping/types'
+import type { StoreMapping } from 'models/storeMapping/types'
 
 export const integrationIsAlreadyMapped = (
     integrationId: number,

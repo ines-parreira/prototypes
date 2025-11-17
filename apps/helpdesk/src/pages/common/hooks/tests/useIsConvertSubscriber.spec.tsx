@@ -1,4 +1,4 @@
-import { ComponentType, ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
@@ -10,7 +10,7 @@ import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { initialState } from 'state/billing/reducers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { useIsConvertSubscriber } from '../useIsConvertSubscriber'
 

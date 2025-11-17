@@ -1,7 +1,7 @@
 import { forEach } from 'lodash'
 
+import type { DataResponse } from 'domains/reporting/hooks/withDeciles'
 import {
-    DataResponse,
     getDecilesIndex,
     selectWithDeciles,
     withDeciles,

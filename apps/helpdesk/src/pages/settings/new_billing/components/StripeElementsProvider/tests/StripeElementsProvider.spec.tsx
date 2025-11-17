@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe, Stripe } from '@stripe/stripe-js'
+import type { Stripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'

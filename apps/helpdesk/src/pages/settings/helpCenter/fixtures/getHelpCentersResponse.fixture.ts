@@ -1,4 +1,4 @@
-import { HelpCenter, HelpCentersListPage } from 'models/helpCenter/types'
+import type { HelpCenter, HelpCentersListPage } from 'models/helpCenter/types'
 
 export const getHelpCentersResponseFixture: HelpCentersListPage = {
     data: [

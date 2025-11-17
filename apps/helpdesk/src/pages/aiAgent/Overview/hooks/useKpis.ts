@@ -1,14 +1,15 @@
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import { FilterKey, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
-import { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
+import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 
-import { KpiMetric } from '../types'
+import type { KpiMetric } from '../types'
 import { useAiAgentTicketNoHandover } from './kpis/useAiAgentTicketNoHandover'
 
 export const useAiAgentAutomationTickets = (

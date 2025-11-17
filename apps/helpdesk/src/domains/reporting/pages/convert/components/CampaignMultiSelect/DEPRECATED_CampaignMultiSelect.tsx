@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
-import { CampaignPreview } from 'models/convert/campaign/types'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 type Props = {
     campaigns: CampaignPreview[]

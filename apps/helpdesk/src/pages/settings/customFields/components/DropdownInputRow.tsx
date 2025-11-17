@@ -1,11 +1,12 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react'
+import type React from 'react'
+import { memo, useCallback, useEffect, useRef } from 'react'
 
 import classnames from 'classnames'
 
-import { CreateCustomField } from '@gorgias/helpdesk-types'
+import type { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
-import { CustomField, CustomFieldInput } from 'custom-fields/types'
+import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'

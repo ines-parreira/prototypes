@@ -3,8 +3,8 @@ import { useMemo, useState } from 'react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'
-import { GuidanceArticle } from 'pages/aiAgent/types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
 import css from './GuidanceActionsBadge.less'

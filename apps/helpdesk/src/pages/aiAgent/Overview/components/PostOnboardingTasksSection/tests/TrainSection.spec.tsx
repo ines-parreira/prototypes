@@ -5,10 +5,10 @@ import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter, Route, Switch } from 'react-router-dom'
 
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { TrainSection } from '../TrainSection'
-import { PostOnboardingStepMetadata } from '../types'
+import type { PostOnboardingStepMetadata } from '../types'
 import { MAX_VISIBLE_GUIDANCES_TRAIN_SECTION } from '../utils'
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticles', () => ({

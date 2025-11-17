@@ -1,4 +1,4 @@
-import { FormEvent } from 'react'
+import type { FormEvent } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'

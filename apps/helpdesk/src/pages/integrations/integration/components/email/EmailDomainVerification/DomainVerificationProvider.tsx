@@ -1,9 +1,10 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useInterval, useLocalStorage } from '@repo/hooks'
 
+import type { EmailDomain } from '@gorgias/helpdesk-queries'
 import {
-    EmailDomain,
     useGetEmailIntegrationDomain,
     useUpdateEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,

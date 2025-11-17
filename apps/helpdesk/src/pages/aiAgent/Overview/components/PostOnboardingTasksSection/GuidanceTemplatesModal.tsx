@@ -2,7 +2,7 @@ import { Heading, Text } from '@gorgias/axiom'
 
 import { GuidanceTemplateCard } from 'pages/aiAgent/components/GuidanceTemplateCard/GuidanceTemplateCard'
 import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
-import { GuidanceTemplate } from 'pages/aiAgent/types'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

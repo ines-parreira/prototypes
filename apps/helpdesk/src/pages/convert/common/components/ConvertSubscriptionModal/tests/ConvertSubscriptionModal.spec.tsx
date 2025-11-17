@@ -10,7 +10,7 @@ import { billingState } from 'fixtures/billing'
 import client from 'models/api/resources'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('react-router-dom', () => ({

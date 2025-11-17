@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
+import type { HelpCenter } from 'models/helpCenter/types'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 

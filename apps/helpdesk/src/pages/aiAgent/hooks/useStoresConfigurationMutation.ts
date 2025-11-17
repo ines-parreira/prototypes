@@ -6,7 +6,7 @@ import {
     storeConfigurationKeys,
     useUpsertStoresConfigurationPure,
 } from 'models/aiAgent/queries'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 
 export const useStoresConfigurationMutation = ({
     accountDomain,

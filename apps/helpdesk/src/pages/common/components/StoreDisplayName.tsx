@@ -1,4 +1,4 @@
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { getIconFromType, isIntegrationType } from 'state/integrations/helpers'
 
 import css from './StoreDisplayName.less'

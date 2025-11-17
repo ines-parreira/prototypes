@@ -9,7 +9,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import {
+import type {
     StoresWorkflowConfiguration,
     StoreWorkflowsConfiguration,
 } from '../types'

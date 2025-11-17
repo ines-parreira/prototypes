@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -15,10 +15,10 @@ import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { mockStore } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
+import type { TicketNavbarElement } from '../TicketNavbarContent'
 import {
     getNextSettings,
     TicketNavbarContentContainer,
-    TicketNavbarElement,
 } from '../TicketNavbarContent'
 import { TicketNavbarDropDirection } from '../TicketNavbarDropTarget'
 

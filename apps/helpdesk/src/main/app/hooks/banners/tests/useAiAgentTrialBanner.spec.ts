@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
+import type { ContextBanner } from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getHasAutomate } from 'state/billing/selectors'

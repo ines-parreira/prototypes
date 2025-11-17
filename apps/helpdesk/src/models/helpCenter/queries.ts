@@ -1,18 +1,14 @@
 import { useCallback, useMemo } from 'react'
 
-import {
-    useMutation,
-    useQueries,
-    useQuery,
-    UseQueryOptions,
-} from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 
-import { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
-import { MutationOverrides } from 'types/query'
+import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { MutationOverrides } from 'types/query'
 
 import { useHelpCenterApi } from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { Paths } from '../../rest_api/help_center_api/client.generated'
+import type { Paths } from '../../rest_api/help_center_api/client.generated'
 import {
     checkHelpCenterWithSubdomainExists,
     copyArticle,
@@ -47,7 +43,7 @@ import {
     updateHelpCenter,
     updateIngestedResource,
 } from './resources'
-import { KnowledgeHubArticlesQueryParams } from './types'
+import type { KnowledgeHubArticlesQueryParams } from './types'
 
 const STALE_TIME = 10 * 60 * 1000
 const CACHE_TIME = 10 * 60 * 1000 // 10 minutes

@@ -1,13 +1,12 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    FilterKey,
-    WithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { WithLogicalOperator } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { useFirstStoreWithAiSalesData } from 'domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
@@ -19,9 +18,9 @@ import { isCleanStatsDirty } from 'domains/reporting/state/ui/stats/selectors'
 import { periodAndAggregationWindowToReportingGranularity } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
-import { ConvertRouteParams } from 'pages/convert/common/types'
+import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'
 
 type Props = {

@@ -6,8 +6,8 @@ import { List, Map } from 'immutable'
 import _noop from 'lodash/noop'
 
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
-import { FieldSearchResult } from 'state/views/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { FieldSearchResult } from 'state/views/types'
 
 import { FilterMultiSelectField } from '../FilterMultiSelectField'
 

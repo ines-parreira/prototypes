@@ -1,19 +1,20 @@
 import { history } from '@repo/routing'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Progress, Table } from 'reactstrap'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
-import {
-    IntegrationType,
+import type {
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import {
     getDateAndTimeFormatter,
     getTimezone,
 } from 'state/currentUser/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { assetsUrl } from 'utils'
 
 import { ImportStatus } from './types'

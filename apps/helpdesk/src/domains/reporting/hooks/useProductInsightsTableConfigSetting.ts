@@ -3,7 +3,7 @@ import {
     columnsOrder,
     productInsightsTableActiveView,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import type { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { submitProductInsightsTableConfigView } from 'state/currentAccount/actions'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 

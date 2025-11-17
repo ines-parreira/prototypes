@@ -1,6 +1,6 @@
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AutomationRateMetric } from 'pages/automate/automate-metrics'
 import { OVERALL_AUTOMATION_RATE_LABEL } from 'pages/automate/automate-metrics/constants'
 

@@ -9,11 +9,12 @@ import { IntegrationType } from 'models/integration/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
-import ManageHelpCenters, { ManageHelpCentersProps } from '../ManageHelpCenters'
+import type { ManageHelpCentersProps } from '../ManageHelpCenters'
+import ManageHelpCenters from '../ManageHelpCenters'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {

@@ -17,7 +17,7 @@ import {
     TicketDistributionChart,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
-import { RuleItemActions } from '../../../../settings/rules/types'
+import type { RuleItemActions } from '../../../../settings/rules/types'
 import useHoverable from '../../../hooks/useHoverable'
 import Expression from '../expression/Expression'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'

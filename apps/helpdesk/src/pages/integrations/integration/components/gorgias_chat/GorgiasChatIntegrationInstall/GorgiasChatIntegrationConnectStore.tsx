@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'

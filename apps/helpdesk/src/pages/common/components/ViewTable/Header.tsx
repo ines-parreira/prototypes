@@ -1,9 +1,11 @@
-import { Component, createRef, KeyboardEvent, type ReactNode } from 'react'
+import { Component, createRef } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -17,7 +19,7 @@ import Search from 'pages/common/components/Search'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import css from 'pages/common/components/ViewTable/Header.less'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     fetchViewItems,
     removeFieldFilter,

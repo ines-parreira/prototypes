@@ -1,12 +1,12 @@
 import classnames from 'classnames'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from 'models/selfServiceConfiguration/constants'
-import { ReportIssueCaseReasonAction } from 'models/selfServiceConfiguration/types'
+import type { ReportIssueCaseReasonAction } from 'models/selfServiceConfiguration/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'

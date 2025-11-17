@@ -9,7 +9,7 @@ import { getSingleHelpCenterResponseFixture as helpCenter } from 'pages/settings
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { SearchResults } from '../SearchResults'
 import { searchResultsResponseFixture as results } from '../SearchResults.response.fixture'

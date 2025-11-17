@@ -7,12 +7,14 @@ import {
     getReportConfig,
     getReportConfigFromPath,
 } from 'domains/reporting/pages/dashboards/config'
-import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
+import type { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type {
     ChartRestriction,
     ModuleRestriction,
-    RBAC_RESTRICTIONS,
     ReportRestriction,
+} from 'domains/reporting/pages/report-chart-restrictions/config'
+import {
+    RBAC_RESTRICTIONS,
     RestrictedComponentType,
 } from 'domains/reporting/pages/report-chart-restrictions/config'
 import useAppSelector from 'hooks/useAppSelector'

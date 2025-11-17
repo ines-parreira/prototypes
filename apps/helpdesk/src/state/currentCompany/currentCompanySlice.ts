@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 export enum CompanyTier {
     Tier1 = 'tier_1', // SMB 1

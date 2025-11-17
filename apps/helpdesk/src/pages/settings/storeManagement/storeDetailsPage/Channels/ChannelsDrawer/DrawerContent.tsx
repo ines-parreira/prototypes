@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useEffect, useState } from 'react'
 
-import { ChannelChange, ChannelWithMetadata } from '../../../types'
+import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 import ChannelsFilter from '../ChannelsFilter/ChannelsFilter'
 import ChannelsList from '../ChannelsList/ChannelsList'
 import determineChannelLabels from '../helpers/determineChannelLabels'

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
-import {
+import type {
     AIJourneySettings,
     InboundSettings,
     PlaygroundChannels,

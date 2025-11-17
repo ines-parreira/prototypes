@@ -1,9 +1,6 @@
-import React, {
-    FunctionComponent,
-    MouseEvent,
-    useEffect,
-    useState,
-} from 'react'
+import type { FunctionComponent, MouseEvent } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     DropText,
@@ -11,7 +8,8 @@ import {
     HelpText,
     Title,
 } from '../../../../common/components/ImageUpload'
-import { ImageUploadProps, useLocalImage } from '../ImageUpload'
+import type { ImageUploadProps } from '../ImageUpload'
+import { useLocalImage } from '../ImageUpload'
 import { DraggablePreviewImage } from './components/DraggablePreviewImage'
 
 import imageUploadCss from '../ImageUpload/ImageUpload.less'

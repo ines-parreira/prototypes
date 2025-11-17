@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import moment from 'moment'
 
 import {
@@ -30,11 +31,11 @@ import {
     useAutomateMetricsTrend,
 } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
-import {
+import type {
     TimeSeriesDataItem,
     TimeSeriesResult,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

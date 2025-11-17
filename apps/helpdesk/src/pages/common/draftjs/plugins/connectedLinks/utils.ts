@@ -1,4 +1,5 @@
-import { EditorChangeType, EditorState } from 'draft-js'
+import type { EditorChangeType } from 'draft-js'
+import { EditorState } from 'draft-js'
 
 export type ConnectedLinksEntityData = { url?: string; connected?: boolean }
 

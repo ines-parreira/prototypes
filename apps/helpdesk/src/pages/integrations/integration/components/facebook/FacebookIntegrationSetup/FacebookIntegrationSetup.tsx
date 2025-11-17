@@ -1,10 +1,13 @@
-import { Component, FormEvent } from 'react'
+import type { FormEvent } from 'react'
+import { Component } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _truncate from 'lodash/truncate'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -39,7 +42,7 @@ import {
     getOnboardingIntegrations,
     getOnboardingMeta,
 } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import {
     canEnableMetaSetting,

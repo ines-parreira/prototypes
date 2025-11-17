@@ -6,8 +6,8 @@ import {
     errorMessage,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
-import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import { State } from 'state/twilio/voiceDevice'
+import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import type { State } from 'state/twilio/voiceDevice'
 
 enum PhoneAlertBanner {
     Error = 'phone-error-banner',

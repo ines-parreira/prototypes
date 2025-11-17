@@ -1,4 +1,4 @@
-import { EventTrigger } from '@gorgias/event-tracker-api'
+import type { EventTrigger } from '@gorgias/event-tracker-api'
 
 export const NotificationEvent: EventTrigger = {
     eventType: 'command.process',

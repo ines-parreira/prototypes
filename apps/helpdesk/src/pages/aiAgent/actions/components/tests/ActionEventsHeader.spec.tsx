@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import { billingState } from 'fixtures/billing'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 

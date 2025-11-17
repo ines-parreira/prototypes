@@ -4,8 +4,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { events } from 'fixtures/event'
-import { EventObjectType, EventType } from 'models/event/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { EventType } from 'models/event/types'
+import { EventObjectType } from 'models/event/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import UserAuditRow from '../UserAuditRow'

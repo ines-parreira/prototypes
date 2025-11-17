@@ -1,7 +1,7 @@
 import { useAsyncFn } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { UpdateHelpCenterDto } from 'models/helpCenter/types'
+import type { UpdateHelpCenterDto } from 'models/helpCenter/types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'

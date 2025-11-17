@@ -1,12 +1,13 @@
 import { useContext, useMemo } from 'react'
 
 import _isNumber from 'lodash/isNumber'
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
-import { DateTimeResultFormatType } from 'constants/datetime'
-import { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { DateTimeResultFormatType } from 'constants/datetime'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
@@ -17,8 +18,8 @@ import {
     DatetimeOperator,
     EqualityOperator,
 } from 'state/rules/types'
-import { RootState } from 'state/types'
-import { ViewFilter } from 'state/views/types'
+import type { RootState } from 'state/types'
+import type { ViewFilter } from 'state/views/types'
 import { formatDatetime } from 'utils'
 
 /**

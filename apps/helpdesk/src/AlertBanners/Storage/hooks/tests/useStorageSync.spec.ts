@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useBannersContext } from '../../../Context'
-import { BannerCategories, ContextBanner } from '../../../types'
+import type { ContextBanner } from '../../../types'
+import { BannerCategories } from '../../../types'
 import { useStorageSync } from '../useStorageSync'
 
 jest.mock('../../../Context', () => ({

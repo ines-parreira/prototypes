@@ -10,12 +10,14 @@ import {
     LoadingSpinner,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { ActionTemplate, ActionTemplateExecution } from 'config'
+import type { ActionTemplate } from 'config'
+import { ActionTemplateExecution } from 'config'
 import { ContentType } from 'models/api/types'
 import { MacroActionName } from 'models/macroAction/types'
-import { Action, ActionStatus } from 'models/ticket/types'
+import type { Action } from 'models/ticket/types'
+import { ActionStatus } from 'models/ticket/types'
 import { JSONTree } from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'

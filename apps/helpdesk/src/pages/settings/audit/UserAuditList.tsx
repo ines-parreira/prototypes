@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect, usePrevious } from '@repo/hooks'
-import axios, { AxiosError, CancelToken } from 'axios'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 import { Table } from 'reactstrap'
 
-import { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
+import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
@@ -17,11 +18,8 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { CursorDirection } from 'models/api/types'
 import { fetchEvents } from 'models/event/resources'
-import {
-    EventsDatetimeOperator,
-    EventType,
-    FetchEventsOptions,
-} from 'models/event/types'
+import type { FetchEventsOptions } from 'models/event/types'
+import { EventsDatetimeOperator, EventType } from 'models/event/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'

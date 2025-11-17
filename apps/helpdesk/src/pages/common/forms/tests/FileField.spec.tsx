@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import { Input } from 'reactstrap'
+import type { Input } from 'reactstrap'
 
 import { uploadFiles } from 'common/utils'
 

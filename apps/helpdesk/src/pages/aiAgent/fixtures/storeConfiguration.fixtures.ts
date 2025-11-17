@@ -1,4 +1,5 @@
-import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 
 import { ToneOfVoice } from '../constants'
 

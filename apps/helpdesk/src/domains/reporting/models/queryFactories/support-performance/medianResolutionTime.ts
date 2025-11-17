@@ -1,5 +1,5 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
+import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketSegment,
@@ -10,8 +10,8 @@ import {
     TicketMessagesSegment,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
@@ -20,7 +20,7 @@ import {
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const medianResolutionTimeQueryFactory = (
     statsFilters: StatsFilters,

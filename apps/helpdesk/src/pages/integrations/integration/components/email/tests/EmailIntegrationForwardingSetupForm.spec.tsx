@@ -3,13 +3,13 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import EmailIntegrationForwardingSetupForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationForwardingSetupForm'
+import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
-    UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
 const renderComponent = () => render(<EmailIntegrationForwardingSetupForm />)

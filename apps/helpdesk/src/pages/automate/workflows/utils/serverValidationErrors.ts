@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import _set from 'lodash/set'
 
-import { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
+import type { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
 
 interface ServerValidationError {
     message: string[]

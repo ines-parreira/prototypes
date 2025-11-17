@@ -9,12 +9,10 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
-import {
-    GorgiasChatIntegration,
-    GorgiasChatPositionAlignmentEnum,
-} from 'models/integration/types'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ArticleRecommendationPreview from '../ArticleRecommendationPreview'

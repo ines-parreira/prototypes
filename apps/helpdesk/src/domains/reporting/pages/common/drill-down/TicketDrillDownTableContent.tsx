@@ -21,7 +21,7 @@ import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/dri
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
-import { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import {
     formatMetricValue,
@@ -42,7 +42,7 @@ import {
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
     TrendCardConfig,
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
-import {
+import type {
     AutoQAAgentMetric,
     DrillDownMetric,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'

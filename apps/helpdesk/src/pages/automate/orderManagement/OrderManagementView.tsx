@@ -9,10 +9,8 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
-import {
-    PolicyKey,
-    ReturnActionType,
-} from 'models/selfServiceConfiguration/types'
+import type { PolicyKey } from 'models/selfServiceConfiguration/types'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'

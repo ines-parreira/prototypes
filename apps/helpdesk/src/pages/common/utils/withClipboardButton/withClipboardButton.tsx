@@ -1,4 +1,5 @@
-import React, { ComponentType, useEffect, useRef, useState } from 'react'
+import type { ComponentType } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import Clipboard from 'clipboard'

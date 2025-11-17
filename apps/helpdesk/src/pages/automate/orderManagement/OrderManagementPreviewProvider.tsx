@@ -1,17 +1,16 @@
-import React, { ReactNode, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import useSelfServiceChannels, {
-    SelfServiceChannel,
-} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
-import OrderManagementPreviewContext, {
-    OrderManagementPreviewContextType,
-} from './OrderManagementPreviewContext'
+import type { OrderManagementPreviewContextType } from './OrderManagementPreviewContext'
+import OrderManagementPreviewContext from './OrderManagementPreviewContext'
 
 type Props = {
     children: ReactNode

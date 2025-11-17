@@ -27,18 +27,14 @@ import {
     voiceProduct,
 } from 'fixtures/productPrices'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import {
-    Cadence,
-    HelpdeskPlan,
-    ProductType,
-    SMSOrVoicePlan,
-} from 'models/billing/types'
+import type { HelpdeskPlan, SMSOrVoicePlan } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceUpgrade } from 'models/billing/utils'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
-import { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
+import type { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
 import {
     BILLING_PAYMENT_FREQUENCY_PATH,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,

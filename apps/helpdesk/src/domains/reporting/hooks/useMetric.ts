@@ -1,12 +1,15 @@
-import { Metric } from 'domains/reporting/hooks/metrics'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { Metric } from 'domains/reporting/hooks/metrics'
+import type { Cubes } from 'domains/reporting/models/cubes'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     fetchPostReportingV2,
-    UsePostReportingQueryData,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 

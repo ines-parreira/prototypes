@@ -1,8 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
-import { fromJS, Map } from 'immutable'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,15 +14,15 @@ import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
-import { OnboardingData } from 'models/aiAgent/types'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { OnboardingData } from 'models/aiAgent/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {
+import type {
     StoreConfiguration,
     StoreConfigurationsResponse,
 } from '../../../../models/aiAgent/types'

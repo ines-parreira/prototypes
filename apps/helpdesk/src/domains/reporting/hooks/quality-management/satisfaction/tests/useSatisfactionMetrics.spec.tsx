@@ -8,7 +8,7 @@ import { useSatisfactionScoreTrend } from 'domains/reporting/hooks/quality-manag
 import { useSurveyScores } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveyScores'
 import { useSurveysSentTrend } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveysSentTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'

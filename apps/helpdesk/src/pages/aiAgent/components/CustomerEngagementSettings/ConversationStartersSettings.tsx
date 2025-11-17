@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { STATS_ROUTES } from 'routes/constants'
 import { assetsUrl } from 'utils'

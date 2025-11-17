@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { fireEvent } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -13,18 +13,19 @@ import { section } from 'fixtures/section'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
 import client from 'models/api/resources'
-import { View, ViewType, ViewVisibility } from 'models/view/types'
+import type { View } from 'models/view/types'
+import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { NotificationStatus } from 'state/notifications/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-import DeleteSectionModal from '../DeleteSectionModal'
-import SectionFormModal from '../SectionFormModal'
+import type DeleteSectionModal from '../DeleteSectionModal'
+import type SectionFormModal from '../SectionFormModal'
 import { TicketNavbarContainer } from '../TicketNavbar'
-import { TicketNavbarBlock } from '../TicketNavbarBlock'
-import TicketNavbarContent from '../TicketNavbarContent'
+import type { TicketNavbarBlock } from '../TicketNavbarBlock'
+import type TicketNavbarContent from '../TicketNavbarContent'
 
 jest.mock('common/navigation', () => ({
     ActiveContent: { Tickets: 'tickets' },

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-import { HelpCenter } from '../../../../models/helpCenter/types'
+import type { HelpCenter } from '../../../../models/helpCenter/types'
 import Dropdown from '../../../common/components/dropdown/Dropdown'
 import DropdownBody from '../../../common/components/dropdown/DropdownBody'
 import DropdownItem from '../../../common/components/dropdown/DropdownItem'

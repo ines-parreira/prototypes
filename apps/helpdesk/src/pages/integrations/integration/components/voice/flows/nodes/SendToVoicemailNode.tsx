@@ -4,14 +4,12 @@ import { useWatch } from 'react-hook-form'
 
 import { Banner, LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
-import {
-    CustomRecordingType,
-    SendToVoicemailStep,
-} from '@gorgias/helpdesk-types'
+import type { SendToVoicemailStep } from '@gorgias/helpdesk-types'
+import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
 import { FormField } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
 import VoiceMessageField from '../../VoiceMessageField'

@@ -13,7 +13,7 @@ import { message } from 'models/ticket/tests/mocks'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'

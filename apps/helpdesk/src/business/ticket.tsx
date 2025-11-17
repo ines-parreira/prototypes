@@ -2,13 +2,13 @@ import type { ReactNode } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Sender } from 'hooks/useOutboundChannels'
+import type { Sender } from 'hooks/useOutboundChannels'
 import { getReconnectUrlByChannel } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
 import { isNewChannel } from 'services/channels'
 
 import { NotificationStatus } from '../state/notifications/types'
 import { humanize } from './format'
-import { Notification } from './types/notification'
+import type { Notification } from './types/notification'
 import { TicketChannel, TicketMessageSourceType } from './types/ticket'
 
 export function canReply(

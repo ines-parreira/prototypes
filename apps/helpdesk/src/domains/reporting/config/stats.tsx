@@ -1,8 +1,10 @@
-import React, { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
+import type { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
+import React from 'react'
 
-import { ChartType, defaults, Scale, TooltipItem } from 'chart.js'
+import type { ChartType, Scale, TooltipItem } from 'chart.js'
+import { defaults } from 'chart.js'
 import classNames from 'classnames'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _isString from 'lodash/isString'
 import _merge from 'lodash/merge'
 import moment from 'moment'
@@ -19,7 +21,7 @@ import {
 import { IntentName } from 'models/intent/types'
 import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
-import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { humanizeString, lightenDarkenColor } from 'utils'
 
 // Available Stats. These names should match names in `g/stats/config`

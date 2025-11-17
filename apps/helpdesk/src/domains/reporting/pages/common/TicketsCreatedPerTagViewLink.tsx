@@ -1,4 +1,5 @@
-import React, { ReactNode, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo } from 'react'
 
 import { logEvent, SegmentEvent, StatViewLinkClickedStat } from '@repo/logging'
 import _isEqual from 'lodash/isEqual'
@@ -8,7 +9,7 @@ import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'
 import ViewLink from 'domains/reporting/pages/common/ViewLink'
 import { ViewField } from 'models/view/types'
 import { CollectionOperator } from 'state/rules/types'
-import { ViewFilter } from 'state/views/types'
+import type { ViewFilter } from 'state/views/types'
 
 type Props = {
     tagName: string

@@ -1,4 +1,5 @@
-import { Invoice, PaymentIntentStatus, PaymentType } from 'state/billing/types'
+import type { Invoice } from 'state/billing/types'
+import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
 
 export const invoices: Invoice[] = [
     {

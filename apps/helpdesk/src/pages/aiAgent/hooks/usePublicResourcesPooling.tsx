@@ -10,19 +10,17 @@ import {
     helpCenterKeys,
     useGetArticleIngestionLogs,
 } from 'models/helpCenter/queries'
-import { getArticleIngestionLogs } from 'models/helpCenter/resources'
+import type { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
-import { Components } from 'rest_api/help_center_api/client.generated'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
 import { PAGE_NAME } from '../AiAgentScrapedDomainContent/constant'
 import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/utils'
-import {
-    ArticleIngestionLogsStatus,
-    WIZARD_POST_COMPLETION_QUERY_KEY,
-} from '../constants'
+import type { ArticleIngestionLogsStatus } from '../constants'
+import { WIZARD_POST_COMPLETION_QUERY_KEY } from '../constants'
 import { useAiAgentNavigation } from './useAiAgentNavigation'
 
 const UPDATE_STATUS_INTERVAL = 5000

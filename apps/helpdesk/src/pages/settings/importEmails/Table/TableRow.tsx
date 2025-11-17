@@ -6,7 +6,7 @@ import {
     getStatusBadge,
 } from 'pages/settings/importEmails/Table/utils'
 
-import { ImportItem } from '../types'
+import type { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'
 
 import css from '../ImportEmail.less'

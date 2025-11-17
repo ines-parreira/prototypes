@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 
-import { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
+import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'
 import { DateFormatType, TimeFormatType } from 'constants/datetime'
@@ -9,7 +9,7 @@ import {
     useYourProfileForm,
     validateLanguagePreferences,
 } from '../hooks/useYourProfileForm'
-import { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
+import type { ApplicationUserPreferencesSettings, CurrentUser } from '../types'
 
 describe('useYourProfileForm', () => {
     const mockCurrentUser: Partial<CurrentUser['data']> = {

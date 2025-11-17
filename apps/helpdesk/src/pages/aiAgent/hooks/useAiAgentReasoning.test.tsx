@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
+import type { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
 
 import {
     ReasoningResponseType,

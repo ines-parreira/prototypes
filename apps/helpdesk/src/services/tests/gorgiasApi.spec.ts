@@ -1,6 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 import querystring from 'querystring'
 import url from 'url'
 
@@ -13,15 +14,15 @@ import {
     shopifyInvoicePayloadFixture,
 } from 'fixtures/shopify'
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
+import type { Event } from 'models/event/types'
 import {
-    Event,
     EventObjectType,
     SATISFACTION_SURVEY_EVENT_TYPES,
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 import {
-    IntegrationDataItem,
     IntegrationDataItemType,
     IntegrationType,
 } from 'models/integration/types'

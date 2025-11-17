@@ -1,10 +1,12 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
 import { ActionTemplateExecution } from 'config'
-import { MacroDraft } from 'models/macro/types'
-import { MacroAction, MacroActionName } from 'models/macroAction/types'
+import type { MacroDraft } from 'models/macro/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 import { Preview } from 'pages/tickets/common/macros/Preview/Preview'
 import { getActionTemplate } from 'utils'
 

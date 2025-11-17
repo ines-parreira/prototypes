@@ -1,5 +1,5 @@
-import { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
-import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
+import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import type { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 /**

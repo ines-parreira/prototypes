@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import PhoneNumbersList from '../PhoneNumbersList'
 

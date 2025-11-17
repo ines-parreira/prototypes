@@ -1,6 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import VisibilityCell, { VisibilityCellProps } from './VisibilityCell'
+import type { VisibilityCellProps } from './VisibilityCell'
+import VisibilityCell from './VisibilityCell'
 
 const storyConfig: Meta = {
     title: 'Help Center/VisibilityCell',

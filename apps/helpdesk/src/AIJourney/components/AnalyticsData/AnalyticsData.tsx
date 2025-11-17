@@ -1,7 +1,7 @@
 import { LoadingSpinner } from '@gorgias/axiom'
 
 import { AnalyticsBarChart } from 'AIJourney/components/AnalyticsBarChart/AnalyticsBarChart'
-import { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 

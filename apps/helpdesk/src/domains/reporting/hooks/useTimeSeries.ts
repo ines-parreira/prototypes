@@ -1,30 +1,32 @@
-import { TwoDimensionalDataItem } from '@repo/reporting'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { TwoDimensionalDataItem } from '@repo/reporting'
+import type { UseQueryResult } from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { BREAKDOWN_FIELD } from 'domains/reporting/hooks/withBreakdown'
-import { DataResponse } from 'domains/reporting/hooks/withDeciles'
-import { Cubes } from 'domains/reporting/models/cubes'
+import type { DataResponse } from 'domains/reporting/hooks/withDeciles'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import {
     fetchPostReportingV2,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import {
+import type {
     BuiltQuery,
     ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
-import {
+import type {
     AggregationWindow,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import {
+import type {
     ReportingFilter,
+    TimeSeriesQuery,
+} from 'domains/reporting/models/types'
+import {
     ReportingFilterOperator,
     ReportingGranularity,
-    TimeSeriesQuery,
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'

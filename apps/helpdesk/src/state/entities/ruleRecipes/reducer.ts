@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { ruleRecipesFetched } from './actions'
-import { RuleRecipesState } from './types'
+import type { RuleRecipesState } from './types'
 
 const initialState: RuleRecipesState = {}
 

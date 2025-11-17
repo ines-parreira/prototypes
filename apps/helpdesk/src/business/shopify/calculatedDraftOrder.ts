@@ -1,4 +1,5 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 /**
  * On the GraphQL API, Shopify is using camel case for the keys. Also, on the `draftOrderCalculate` mutation, some

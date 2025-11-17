@@ -1,4 +1,5 @@
-import { Children, cloneElement, Fragment, ReactElement } from 'react'
+import type { ReactElement } from 'react'
+import { Children, cloneElement, Fragment } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'

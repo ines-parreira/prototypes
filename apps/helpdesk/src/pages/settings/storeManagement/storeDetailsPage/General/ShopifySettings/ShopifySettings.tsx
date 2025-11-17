@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 

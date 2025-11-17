@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react'
 
-import { PlaygroundChannelAvailability, PlaygroundChannels } from '../types'
+import type {
+    PlaygroundChannelAvailability,
+    PlaygroundChannels,
+} from '../types'
 
 type UsePlaygroundChannelReturn = {
     channel: PlaygroundChannels

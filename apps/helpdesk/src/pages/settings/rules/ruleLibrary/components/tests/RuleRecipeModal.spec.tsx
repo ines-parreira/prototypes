@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -12,7 +13,7 @@ import { emptyManagedRule } from 'fixtures/rule'
 import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { ManagedRuleSettings } from 'state/rules/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { RuleRecipeModal } from '../RuleRecipeModal'
 

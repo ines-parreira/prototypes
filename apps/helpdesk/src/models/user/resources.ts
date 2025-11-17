@@ -1,4 +1,4 @@
-import { UserSetting } from '../../config/types/user'
+import type { UserSetting } from '../../config/types/user'
 import client from '../api/resources'
 
 export const createUserSetting = async (data: Omit<UserSetting, 'id'>) => {

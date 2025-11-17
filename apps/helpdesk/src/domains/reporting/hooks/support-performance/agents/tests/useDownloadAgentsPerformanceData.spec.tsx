@@ -22,7 +22,7 @@ import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 jest.mock('domains/reporting/hooks/common/useTableReportData')

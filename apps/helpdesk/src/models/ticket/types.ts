@@ -1,24 +1,24 @@
-import {
+import type {
     SatisfactionSurvey,
     Tag,
     TicketMessageAuthCustomerIdentity,
     TicketPriority,
 } from '@gorgias/helpdesk-queries'
 
-import {
+import type {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
     TicketVia,
 } from 'business/types/ticket'
-import { FacebookReactionType } from 'constants/integrations/facebook'
-import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import { CustomFields } from 'custom-fields/types'
-import { Customer } from 'models/customer/types'
-import { Event } from 'models/event/types'
-import { Integration } from 'models/integration/types'
-import { MacroActionName } from 'models/macroAction/types'
-import { Team } from 'models/team/types'
+import type { FacebookReactionType } from 'constants/integrations/facebook'
+import type { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import type { CustomFields } from 'custom-fields/types'
+import type { Customer } from 'models/customer/types'
+import type { Event } from 'models/event/types'
+import type { Integration } from 'models/integration/types'
+import type { MacroActionName } from 'models/macroAction/types'
+import type { Team } from 'models/team/types'
 
 export type Ticket = {
     id: number

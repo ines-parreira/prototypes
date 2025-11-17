@@ -1,5 +1,5 @@
 import { useElements } from '@stripe/react-stripe-js'
-import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { useController, useFormContext } from 'react-hook-form'
 
 import { StripeAddressElement } from 'pages/settings/new_billing/components/StripeAddressElement/StripeAddressElement'

@@ -1,13 +1,8 @@
-import React, {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
-import { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
-import { LanguageCode } from '../models/workflowConfiguration.types'
+import type { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
+import type { LanguageCode } from '../models/workflowConfiguration.types'
 import { useWorkflowEditorContext } from './useWorkflowEditor'
 
 export const TranslationsPreviewContext = createContext<

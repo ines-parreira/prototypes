@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { Language as LanguageEnum } from 'constants/languages'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { Value } from 'pages/common/forms/SelectField/types'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
 

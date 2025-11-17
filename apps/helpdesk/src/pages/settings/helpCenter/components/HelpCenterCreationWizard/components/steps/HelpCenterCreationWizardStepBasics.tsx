@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -6,16 +7,14 @@ import { history } from '@repo/routing'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
-    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
-import {
-    Language,
-    LanguagePicker,
-} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
+import { LanguagePicker } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import WizardFooter, {
@@ -27,9 +26,8 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import SelectStore, {
-    HelpCenterContactFormIntegrationTypes,
-} from 'pages/settings/common/SelectStore/SelectStore'
+import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
+import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
 import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_STEPS_DESCRIPTIONS,

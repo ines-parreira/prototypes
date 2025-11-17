@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@testing-library/react'

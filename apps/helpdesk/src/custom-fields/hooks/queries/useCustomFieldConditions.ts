@@ -1,10 +1,10 @@
+import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 import {
-    CustomFieldCondition,
     queryKeys,
     useListCustomFieldConditions,
 } from '@gorgias/helpdesk-queries'
 
-import { CustomFieldObjectTypes } from 'custom-fields/types'
+import type { CustomFieldObjectTypes } from 'custom-fields/types'
 import { useNotify } from 'hooks/useNotify'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour

@@ -1,4 +1,4 @@
-import { Import } from '@gorgias/helpdesk-types'
+import type { Import } from '@gorgias/helpdesk-types'
 
 import type { Notification } from 'common/notifications'
 

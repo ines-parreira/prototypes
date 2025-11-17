@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import { usePostReporting } from 'domains/reporting/models/queries'
-import { AggregationWindow } from 'domains/reporting/models/stat/types'
+import type { AggregationWindow } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getRevenueShareGraphData } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import {
+import type {
     CubeData,
     CubeFilterParams,
     CubeMetric,
@@ -15,7 +15,7 @@ import {
     getDataFromResult,
     transformToCampaignRevenueOverTime,
 } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
-import { RevenueGraphDataPoint } from 'domains/reporting/pages/convert/services/types'
+import type { RevenueGraphDataPoint } from 'domains/reporting/pages/convert/services/types'
 
 const OVERRIDES = {
     select: getDataFromResult,

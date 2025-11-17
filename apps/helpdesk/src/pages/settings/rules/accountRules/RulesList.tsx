@@ -1,4 +1,5 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 import { Table } from 'reactstrap'
@@ -14,11 +15,8 @@ import {
 } from '../../../../state/entities/rules/actions'
 import { notify } from '../../../../state/notifications/actions'
 import { NotificationStatus } from '../../../../state/notifications/types'
-import {
-    Rule,
-    RuleLimitStatus,
-    RulePriority,
-} from '../../../../state/rules/types'
+import type { Rule, RulePriority } from '../../../../state/rules/types'
+import { RuleLimitStatus } from '../../../../state/rules/types'
 import ReactSortable from '../../../common/components/dragging/ReactSortable'
 import RuleRow from './components/RuleRow'
 

@@ -1,7 +1,8 @@
-import React, { SyntheticEvent, useCallback, useRef } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { useCallback, useRef } from 'react'
 
 import { useNow } from '@repo/hooks'
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 

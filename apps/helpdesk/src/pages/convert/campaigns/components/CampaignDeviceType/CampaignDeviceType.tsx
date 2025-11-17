@@ -1,7 +1,7 @@
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
 import { DEVICE_TYPE_VALUES } from 'pages/convert/campaigns/constants/triggerValueLabels'
-import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './CampaignDeviceType.less'

@@ -3,7 +3,7 @@ import React from 'react'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { renderWithRouter } from 'utils/testing'
 

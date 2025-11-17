@@ -4,7 +4,7 @@ import _omit from 'lodash/omit'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
-import { CampaignTrigger } from '../../types/CampaignTrigger'
+import type { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 import { createTrigger } from '../../utils/createTrigger'
 import { useManageTriggers } from '../useManageTriggers'

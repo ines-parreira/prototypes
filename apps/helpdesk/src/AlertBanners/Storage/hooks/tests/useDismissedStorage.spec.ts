@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'

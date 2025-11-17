@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
 import { useFileIngestion } from '../../hooks/useFileIngestion'

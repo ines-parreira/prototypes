@@ -65,9 +65,9 @@ import {
     ticketsRepliedTimeseries,
     ticketsRepliedTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsReplied'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     Sentiment,
-    StatsFilters,
     TagFilterInstanceId,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'

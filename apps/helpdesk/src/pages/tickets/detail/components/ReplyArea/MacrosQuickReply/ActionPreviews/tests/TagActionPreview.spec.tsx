@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +8,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { addTagsAction } from '../../../../../../../../fixtures/macro'
-import { RootState, StoreDispatch } from '../../../../../../../../state/types'
+import type {
+    RootState,
+    StoreDispatch,
+} from '../../../../../../../../state/types'
 import { TagActionPreview } from '../TagActionPreview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

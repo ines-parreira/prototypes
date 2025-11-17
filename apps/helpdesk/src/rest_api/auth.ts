@@ -1,6 +1,7 @@
 import { getHelpCenterAuthApiBaseUrl } from '@repo/utils'
 
-import { helpCenterAPI, HelpCenterClient } from './help_center_api/client'
+import type { HelpCenterClient } from './help_center_api/client'
+import { helpCenterAPI } from './help_center_api/client'
 
 export function isValidAccessToken(token: string | null): boolean {
     if (!token) {

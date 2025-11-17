@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import type React from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
 import { useDebouncedEffect, useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
@@ -13,9 +14,9 @@ import {
     startMigration,
     validateVerificationCode,
 } from 'models/integration/resources/whatsapp'
+import type { WhatsAppMigrationProgress } from 'models/integration/types'
 import {
     WhatsAppCodeVerificationMethod,
-    WhatsAppMigrationProgress,
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'

@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import DropdownAlertBanner, { AlertBannerData } from '../DropdownAlertBanner'
+import type { AlertBannerData } from '../DropdownAlertBanner'
+import DropdownAlertBanner from '../DropdownAlertBanner'
 
 describe('<DropdownAlertBanner />', () => {
     const mockOnClear = jest.fn()

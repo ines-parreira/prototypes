@@ -10,8 +10,13 @@ import {
 } from '@gorgias/axiom'
 
 import { EmptyStateWrapper } from '../EmptyState/EmptyStates'
-import { GroupedKnowledgeItem, KnowledgeItem, KnowledgeType } from '../types'
-import { AddFilterButton, FilterOption } from './AddFilterButton'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeItem,
+    KnowledgeType,
+} from '../types'
+import type { FilterOption } from './AddFilterButton'
+import { AddFilterButton } from './AddFilterButton'
 import { getColumns } from './columns'
 import { ItemCount } from './ItemCount'
 import { SearchInput } from './SearchInput'

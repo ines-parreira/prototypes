@@ -1,15 +1,14 @@
-import {
+import type {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItem,
     LiveCallQueueVoiceCall,
     User,
-    VoiceCallDirection,
-    VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import {

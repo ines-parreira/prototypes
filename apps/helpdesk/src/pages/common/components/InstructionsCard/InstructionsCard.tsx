@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 import { Card, CardBody, CardHeader, Collapse } from 'reactstrap'
@@ -6,7 +7,7 @@ import { Card, CardBody, CardHeader, Collapse } from 'reactstrap'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
-import { InstructionTab } from './types'
+import type { InstructionTab } from './types'
 
 import css from './InstructionsCard.less'
 

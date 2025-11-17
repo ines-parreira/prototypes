@@ -5,7 +5,8 @@ import { fromJS } from 'immutable'
 
 import { baseHttp, httpIntegration } from 'fixtures/integrations'
 import { ContentType, HttpMethod } from 'models/api/types'
-import { HTTPForm, IntegrationType } from 'models/integration/types'
+import type { HTTPForm } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 

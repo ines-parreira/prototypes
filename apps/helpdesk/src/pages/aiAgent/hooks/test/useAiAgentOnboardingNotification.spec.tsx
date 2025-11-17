@@ -22,7 +22,7 @@ import { NotificationEvent } from 'services/notificationTracker/constants'
 import * as notificationTracker from 'services/notificationTracker/notificationTracker'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
 import {

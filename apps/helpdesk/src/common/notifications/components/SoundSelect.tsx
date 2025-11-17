@@ -8,7 +8,8 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import { sounds, SoundValue } from 'services/NotificationSounds'
+import type { SoundValue } from 'services/NotificationSounds'
+import { sounds } from 'services/NotificationSounds'
 
 import css from './SoundSelect.less'
 

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { GorgiasAutomateChatIntegration } from '../GorgiasAutomateChatIntegration'
 

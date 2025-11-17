@@ -1,6 +1,6 @@
-import { List } from 'immutable'
+import type { List } from 'immutable'
 
-import { TicketPriority } from '@gorgias/helpdesk-types'
+import type { TicketPriority } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 

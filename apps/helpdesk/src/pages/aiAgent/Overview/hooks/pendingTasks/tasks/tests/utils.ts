@@ -1,4 +1,4 @@
-import { RuleEngineData, RuleEngineRoutes } from '../../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../../ruleEngine'
 
 export const buildRuleEngineData = (
     data: Partial<RuleEngineData>,

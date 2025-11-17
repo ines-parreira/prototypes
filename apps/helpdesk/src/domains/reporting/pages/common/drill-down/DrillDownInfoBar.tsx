@@ -1,13 +1,13 @@
-import { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
+import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
 import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
-import {
+import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownInfobar.less'
-import { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
-import { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import Loader from 'pages/common/components/Loader/Loader'
 

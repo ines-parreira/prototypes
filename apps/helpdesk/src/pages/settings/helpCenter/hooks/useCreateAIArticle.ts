@@ -1,7 +1,7 @@
 import { useCreateArticle } from 'models/helpCenter/queries'
-import { AIArticle, LocaleCode } from 'models/helpCenter/types'
+import type { AIArticle, LocaleCode } from 'models/helpCenter/types'
 
-import { ArticleOrigin } from '../types/articleOrigin.enum'
+import type { ArticleOrigin } from '../types/articleOrigin.enum'
 import { mapAILibraryArticleItemToArticle } from '../utils/helpCenter.utils'
 
 export const useCreateAIArticle = (

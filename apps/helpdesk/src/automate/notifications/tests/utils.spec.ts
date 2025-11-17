@@ -1,4 +1,4 @@
-import { OnboardingNotificationState } from 'models/aiAgent/types'
+import type { OnboardingNotificationState } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 

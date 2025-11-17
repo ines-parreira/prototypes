@@ -1,10 +1,13 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
-import { CreateCustomField } from '@gorgias/helpdesk-types'
+import type { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
-import { CustomFieldInput, CustomFieldObjectTypes } from 'custom-fields/types'
+import type {
+    CustomFieldInput,
+    CustomFieldObjectTypes,
+} from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import FieldForm from './FieldForm'

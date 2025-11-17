@@ -1,25 +1,25 @@
-import { User } from 'config/types/user'
-import {
-    fetchTableReportData,
+import type { User } from 'config/types/user'
+import type {
     TableDataSources,
     TableSummaryDataSources,
 } from 'domains/reporting/hooks/common/useTableReportData'
+import { fetchTableReportData } from 'domains/reporting/hooks/common/useTableReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { Metric } from 'domains/reporting/hooks/metrics'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
-    VoiceCallCube,
     VoiceCallDimension,
     VoiceCallMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { VoiceEventsByAgentCube } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import {
-    VoiceEventsByAgentCube,
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
 } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

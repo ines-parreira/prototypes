@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 
 import { debounce, isArray } from 'lodash'
 
 import { SearchType, useSearch } from '@gorgias/helpdesk-queries'
 
-import { isUserSearchResult, UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
+import { isUserSearchResult } from 'models/search/types'
 
 const SEARCH_DEBOUNCE_VALUE = 500
 

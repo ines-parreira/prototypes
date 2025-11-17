@@ -1,11 +1,11 @@
 import { Component } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { RuleOperation } from '../../../../../state/rules/types'
-import { RuleItemActions } from '../../../../settings/rules/types'
+import type { RuleItemActions } from '../../../../settings/rules/types'
 
 type Props = {
     rule: Map<any, any>

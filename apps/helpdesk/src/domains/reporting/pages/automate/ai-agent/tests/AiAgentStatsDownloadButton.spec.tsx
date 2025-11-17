@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useAIAgentReportMetrics } from 'domains/reporting/hooks/automate/useAIAgentReportMetrics'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { AiAgentStatsDownloadButton } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsDownloadButton'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'

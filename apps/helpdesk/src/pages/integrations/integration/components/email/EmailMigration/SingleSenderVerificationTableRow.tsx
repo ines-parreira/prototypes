@@ -5,8 +5,8 @@ import { isEmpty } from 'lodash'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
-import { SenderInformation } from 'models/singleSenderVerification/types'
+import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
+import type { SenderInformation } from 'models/singleSenderVerification/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 

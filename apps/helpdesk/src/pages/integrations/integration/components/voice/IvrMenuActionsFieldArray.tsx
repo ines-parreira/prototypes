@@ -1,5 +1,5 @@
 import { Box, Button, Icon } from '@gorgias/axiom'
-import { BranchOptions } from '@gorgias/helpdesk-types'
+import type { BranchOptions } from '@gorgias/helpdesk-types'
 
 import { useFieldArray, useWatch } from 'core/forms'
 

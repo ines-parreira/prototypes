@@ -1,10 +1,10 @@
-import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import type { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import type { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
+import type { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import type { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>

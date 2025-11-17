@@ -1,4 +1,5 @@
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import {
     fetchMessagesReceivedTimeSeries,
@@ -12,7 +13,7 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
+import type {
     TimeSeriesDataItem,
     TimeSeriesFetch,
     TimeSeriesHook,
@@ -21,7 +22,7 @@ import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
-import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { stringToDatetimeWithTimeZone } from 'utils/date'
 
 export const weekDayLabel = (weekDay: number) => {

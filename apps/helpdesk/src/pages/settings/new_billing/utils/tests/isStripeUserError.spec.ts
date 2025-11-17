@@ -1,4 +1,4 @@
-import { StripeError } from '@stripe/stripe-js'
+import type { StripeError } from '@stripe/stripe-js'
 
 import { isStripeUserError } from '../isStripeUserError'
 

@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useGetFeatureFlagMigration } from 'core/flags/hooks/useGetFeatureFlagMigration'
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
-import { MigrationStage } from 'core/flags/utils/readMigration'
+import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 

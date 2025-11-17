@@ -4,7 +4,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import Button from 'gorgias-design-system/Buttons/Button'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { LinkIcon } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
 
 import useOrderDates from './hooks/useOrderDates'

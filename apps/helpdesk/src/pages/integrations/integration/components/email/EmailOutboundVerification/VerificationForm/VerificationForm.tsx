@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import classNames from 'classnames'
 import { Form, FormGroup, Label } from 'reactstrap'
@@ -7,7 +8,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { states } from 'config/states'
 import { states as countries } from 'fixtures/states'
-import { SenderInformation } from 'models/singleSenderVerification/types'
+import type { SenderInformation } from 'models/singleSenderVerification/types'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 

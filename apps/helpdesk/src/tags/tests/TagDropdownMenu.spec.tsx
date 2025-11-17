@@ -1,6 +1,8 @@
-import React, { ComponentProps, ContextType } from 'react'
+import type { ComponentProps, ContextType } from 'react'
+import React from 'react'
 
-import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
+import type { QueryKey } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'

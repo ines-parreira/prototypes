@@ -1,4 +1,5 @@
-import { CSSProperties, useRef } from 'react'
+import type { CSSProperties } from 'react'
+import { useRef } from 'react'
 
 import cn from 'classnames'
 

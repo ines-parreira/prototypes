@@ -1,7 +1,8 @@
 import { PureComponent } from 'react'
 
 import classnames from 'classnames'
-import { List, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { List } from 'immutable'
 import _debounce from 'lodash/debounce'
 import { Label } from 'reactstrap'
 

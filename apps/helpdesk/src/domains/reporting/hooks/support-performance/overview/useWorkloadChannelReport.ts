@@ -5,7 +5,7 @@ import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'domains/reporting/hooks/distributions'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { WORKLOAD_BY_CHANNEL_LABEL } from 'domains/reporting/services/constants'
 
 export const useWorkloadChannelReport = (

@@ -1,8 +1,6 @@
 import { assumeMock } from '@repo/testing'
-import {
-    InfiniteQueryObserverSuccessResult,
-    useInfiniteQuery,
-} from '@tanstack/react-query'
+import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
 import { listBusinessHoursIntegrations } from '@gorgias/helpdesk-client'

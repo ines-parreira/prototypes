@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 
-import { PartialOptionsParams } from './context'
+import type { PartialOptionsParams } from './context'
 
 export function updateUrlWithSearchParams(params: PartialOptionsParams) {
     const currentParams = new URLSearchParams(location.search)

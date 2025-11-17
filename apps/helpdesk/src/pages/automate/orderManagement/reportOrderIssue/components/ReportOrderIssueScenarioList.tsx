@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react'
 import _isEqual from 'lodash/isEqual'
 import _uniqueId from 'lodash/uniqueId'
 
-import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioItem from './ReportOrderIssueScenarioItem'
 

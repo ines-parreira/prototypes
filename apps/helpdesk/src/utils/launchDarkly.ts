@@ -1,8 +1,8 @@
 import { isDevelopment } from '@repo/utils'
 import * as LDClient from 'launchdarkly-js-client-sdk'
 
-import { User } from 'config/types/user'
-import { Account } from 'state/currentAccount/types'
+import type { User } from 'config/types/user'
+import type { Account } from 'state/currentAccount/types'
 
 let client: LDClient.LDClient
 export let LDContext: LDClient.LDContext = {}

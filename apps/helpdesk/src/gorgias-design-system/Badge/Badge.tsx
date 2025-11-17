@@ -3,7 +3,8 @@ import type { FC, HTMLAttributes } from 'react'
 
 import styled from '@emotion/styled'
 
-import { ColorType, gorgiasColors } from 'gorgias-design-system/styles'
+import type { ColorType } from 'gorgias-design-system/styles'
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 export type BadgeColor = Extract<
     ColorType,

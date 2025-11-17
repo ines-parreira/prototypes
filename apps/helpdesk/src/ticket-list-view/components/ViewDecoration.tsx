@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 
-import { View, ViewCategory } from 'models/view/types'
+import type { View } from 'models/view/types'
+import { ViewCategory } from 'models/view/types'
 import { systemViewIcons } from 'utils/views'
 
 import css from './ViewDecoration.less'

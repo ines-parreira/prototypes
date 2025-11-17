@@ -1,11 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import {
+import type {
     CustomerCustomFieldWithValue,
     HttpResponse,
     ListCustomerCustomFieldsValues200,
-    useListCustomerCustomFieldsValues,
 } from '@gorgias/helpdesk-queries'
+import { useListCustomerCustomFieldsValues } from '@gorgias/helpdesk-queries'
 
 import {
     apiListCursorPaginationResponse,

@@ -1,20 +1,22 @@
-import { ComponentType, useMemo } from 'react'
+import type { ComponentType } from 'react'
+import { useMemo } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
 import { stringify } from 'qs'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import { getConfigByName } from 'config/views'
 import { useSearch } from 'hooks/useSearch'
-import { EntityType } from 'models/view/types'
-import { RootState } from 'state/types'
+import type { EntityType } from 'models/view/types'
+import type { RootState } from 'state/types'
 import { updateView } from 'state/views/actions'
 import { areFiltersValid, getActiveView } from 'state/views/selectors'
 

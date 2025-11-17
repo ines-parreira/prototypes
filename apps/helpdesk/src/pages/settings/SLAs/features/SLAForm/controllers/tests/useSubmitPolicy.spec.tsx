@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ import {
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import { SLAFormValues } from '../useFormValues'
+import type { SLAFormValues } from '../useFormValues'
 import useSubmitPolicy from '../useSubmitPolicy'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({

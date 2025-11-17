@@ -2,26 +2,23 @@ import { useGridSize } from '@repo/hooks'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper, {
-    FiltersPanelWrapperProps,
-} from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapperProps } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import {
-    DashboardChart,
-    DashboardChartProps,
-} from 'domains/reporting/pages/dashboards/DashboardChart'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/DashboardChart'
+import { DashboardChart } from 'domains/reporting/pages/dashboards/DashboardChart'
 import { DashboardsRow } from 'domains/reporting/pages/dashboards/DashboardsRow'
 import { DashboardsSection } from 'domains/reporting/pages/dashboards/DashboardsSection'
 import {
     DraggablePreview,
     Dropzone,
 } from 'domains/reporting/pages/dashboards/DraggableGridCell'
-import {
+import type {
     DashboardChild,
-    DashboardChildType,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 import { updateChartPosition } from 'domains/reporting/pages/dashboards/utils'
 

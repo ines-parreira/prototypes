@@ -2,16 +2,16 @@ import { useEffect } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { UpdateTicketCustomFieldBody } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
-    UpdateTicketCustomFieldBody,
     useDeleteTicketCustomField,
     useUpdateTicketCustomField,
 } from '@gorgias/helpdesk-queries'
 
 import { createOnErrorHandler } from 'custom-fields/helpers/createOnErrorHandler'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import { CustomFieldPrediction } from 'custom-fields/types'
+import type { CustomFieldPrediction } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { updateCustomFieldPrediction } from 'state/ticket/actions'
 

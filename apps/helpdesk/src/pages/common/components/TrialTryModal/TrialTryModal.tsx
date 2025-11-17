@@ -1,4 +1,5 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -11,7 +12,7 @@ import {
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
-import { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import {
     hasTrialExpired,
     hasTrialOptedIn,

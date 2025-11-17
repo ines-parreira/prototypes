@@ -1,6 +1,6 @@
 import { ulid } from 'ulidx'
 
-import { WorkflowConfiguration } from '../models/workflowConfiguration.types'
+import type { WorkflowConfiguration } from '../models/workflowConfiguration.types'
 
 export const workflowConfigurationFactory = (
     workflowId: string,

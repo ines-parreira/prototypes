@@ -8,9 +8,10 @@ import {
     ExpressionOperator,
 } from '@gorgias/helpdesk-queries'
 
-import { useFieldArray, useFormState, UseFormStateReturn } from 'core/forms'
+import type { UseFormStateReturn } from 'core/forms'
+import { useFieldArray, useFormState } from 'core/forms'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { CustomField } from 'custom-fields/types'
+import type { CustomField } from 'custom-fields/types'
 
 import { AddButton } from '../AddButton'
 import { ExpressionField } from '../ExpressionField'

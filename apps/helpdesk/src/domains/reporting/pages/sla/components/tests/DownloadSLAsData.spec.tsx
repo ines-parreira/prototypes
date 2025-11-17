@@ -10,7 +10,7 @@ import {
     useDownloadSLAsData,
 } from 'domains/reporting/hooks/sla/useDownloadSLAsData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
     DEFAULT_TIMEZONE,

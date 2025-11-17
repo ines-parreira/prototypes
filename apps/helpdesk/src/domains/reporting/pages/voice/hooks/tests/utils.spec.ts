@@ -1,11 +1,10 @@
 import moment from 'moment'
 
-import {
-    AgentStatus,
+import type {
     ListLiveCallQueueVoiceCallsParams,
     LiveCallQueueVoiceCall,
-    queryKeys,
 } from '@gorgias/helpdesk-queries'
+import { AgentStatus, queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import { VALID_LIVE_STATUSES } from 'domains/reporting/pages/voice/constants/liveVoice'

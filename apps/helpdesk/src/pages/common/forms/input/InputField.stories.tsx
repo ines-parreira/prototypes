@@ -1,10 +1,11 @@
-import { ComponentProps, CSSProperties, useState } from 'react'
+import type { ComponentProps, CSSProperties } from 'react'
+import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import IconInput from './IconInput'
 import InputField from './InputField'
-import TextInput from './TextInput'
+import type TextInput from './TextInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/InputField',

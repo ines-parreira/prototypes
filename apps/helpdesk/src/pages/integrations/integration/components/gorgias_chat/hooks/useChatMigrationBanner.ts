@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'

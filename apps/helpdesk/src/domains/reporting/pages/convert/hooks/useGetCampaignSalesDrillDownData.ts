@@ -2,11 +2,11 @@ import { useMemo } from 'react'
 
 import _get from 'lodash/get'
 
-import {
+import type {
     CampaignSaleDetails,
     ConvertDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { CampaignPreview } from 'models/convert/campaign/types'
+import type { CampaignPreview } from 'models/convert/campaign/types'
 
 export type CampaignSalesDrillDownData = CampaignSaleDetails & {
     campaignName: string

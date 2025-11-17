@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -13,7 +13,7 @@ import {
     useCustomFieldsTicketCountPerCustomFields,
 } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { useCustomFieldsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
-import { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,
@@ -25,7 +25,7 @@ import {
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { notUndefined } from 'utils/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

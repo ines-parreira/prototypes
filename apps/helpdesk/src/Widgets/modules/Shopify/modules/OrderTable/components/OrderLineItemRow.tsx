@@ -1,8 +1,10 @@
-import React, { memo, RefObject, useCallback, useEffect, useState } from 'react'
+import type { RefObject } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'

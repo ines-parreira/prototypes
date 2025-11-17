@@ -1,4 +1,5 @@
-import { ComponentProps, Fragment, useEffect, useMemo, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 
 import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classnames from 'classnames'
@@ -10,7 +11,7 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
+import type { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'
 import TicketTag from 'pages/common/components/TicketTag'

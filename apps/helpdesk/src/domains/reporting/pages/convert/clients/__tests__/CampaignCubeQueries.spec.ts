@@ -11,7 +11,7 @@ import {
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import { SharedDimension } from 'domains/reporting/pages/convert/clients/constants'
-import { GroupDimension } from 'domains/reporting/pages/convert/clients/types'
+import type { GroupDimension } from 'domains/reporting/pages/convert/clients/types'
 
 describe('Getting Cube queries', () => {
     const props = {

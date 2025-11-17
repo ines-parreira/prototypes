@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import { CustomTypeDefinitionNumber } from 'custom-fields/types'
+import type { CustomTypeDefinitionNumber } from 'custom-fields/types'
 import {
     ticketBooleanFieldDefinition,
     ticketDropdownFieldDefinition,

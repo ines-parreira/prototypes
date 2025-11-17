@@ -1,4 +1,4 @@
-import { Components } from '../rest_api/revenue_addon_api/client.generated'
+import type { Components } from '../rest_api/revenue_addon_api/client.generated'
 
 export const convertStatusOk = {
     status: 'active',

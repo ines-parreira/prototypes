@@ -10,7 +10,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import { AUTH_TYPE_LABEL_BY_TYPE, DISABLED_AUTH_TYPES } from '../constants'
-import { ActionsApp } from '../types'
+import type { ActionsApp } from '../types'
 
 import css from './ActionsPlatformAuthTypeSelectBox.less'
 

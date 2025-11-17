@@ -4,8 +4,8 @@ import 'tests/__mocks__/intersectionObserverMock'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import type { HelpCenter } from 'models/helpCenter/types'
 import {
-    HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'

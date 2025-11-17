@@ -1,13 +1,16 @@
-import React, { Component, SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { Component } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _clone from 'lodash/clone'
 import _find from 'lodash/find'
 import _isError from 'lodash/isError'
 import _isUndefined from 'lodash/isUndefined'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
@@ -18,12 +21,13 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import { submitCustomer } from 'state/customers/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import CustomerChannelFieldArray, {
+import type {
     CustomerChannelContact,
     CustomerChannelContactType,
 } from './CustomerChannelFieldArray'
+import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
 import css from './CustomerForm.less'
 

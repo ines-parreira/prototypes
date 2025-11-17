@@ -3,11 +3,11 @@ import { produce } from 'immer'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import {
+import type {
     IvrForwardCallMenuAction,
     IvrMenuAction,
-    IvrMenuActionType,
 } from 'models/integration/types'
+import { IvrMenuActionType } from 'models/integration/types'
 
 import IvrMenuActionField from './IvrMenuActionField'
 

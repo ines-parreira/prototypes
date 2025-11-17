@@ -7,7 +7,7 @@ import {
     LegacyIconButton as IconButton,
     Label,
 } from '@gorgias/axiom'
-import {
+import type {
     AccountSettingsItem,
     ListAccountSettings200DataItem,
 } from '@gorgias/helpdesk-types'

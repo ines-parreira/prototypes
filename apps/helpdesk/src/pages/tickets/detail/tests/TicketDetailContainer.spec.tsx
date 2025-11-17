@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
@@ -6,7 +6,8 @@ import { shortcutManager } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -44,7 +45,7 @@ import * as customFieldsUtils from 'utils/customFields'
 import { makeExecuteKeyboardAction, renderWithRouter } from 'utils/testing'
 
 // oxlint-disable-next-line no-named-as-default
-import TicketView from '../components/TicketView'
+import type TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
 import { TicketDetailContainer } from '../TicketDetailContainer'
 

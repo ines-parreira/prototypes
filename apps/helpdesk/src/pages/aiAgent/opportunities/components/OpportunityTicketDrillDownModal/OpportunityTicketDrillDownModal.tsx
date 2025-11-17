@@ -3,10 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 
 import { useListTickets } from '@gorgias/helpdesk-queries'
-import { TicketCompact } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { TicketChannel, TicketStatus } from 'business/types/ticket'
-import { User } from 'config/types/user'
+import type { TicketChannel, TicketStatus } from 'business/types/ticket'
+import type { User } from 'config/types/user'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'

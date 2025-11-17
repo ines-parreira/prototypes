@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { fromJS, List } from 'immutable'
+import type { List } from 'immutable'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'

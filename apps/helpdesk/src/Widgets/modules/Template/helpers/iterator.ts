@@ -1,11 +1,11 @@
-import {
+import type {
     CardTemplate,
-    isSourceRecord,
     ListTemplate,
     Source,
     Template,
     WrapperTemplate,
 } from 'models/widget/types'
+import { isSourceRecord } from 'models/widget/types'
 
 /**
  * Unfold next iteration of template and source

@@ -8,7 +8,7 @@ import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreIns
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import { useAiAgentOverviewModeEnabled } from '../useAiAgentOverviewModeEnabled'

@@ -1,9 +1,6 @@
 import { Banner, LegacyButton as Button } from '@gorgias/axiom'
-import {
-    UpdateVoiceQueue,
-    useUpdateVoiceQueue,
-    VoiceQueue,
-} from '@gorgias/helpdesk-queries'
+import type { UpdateVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
+import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'

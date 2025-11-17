@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { GorgiasAction } from '../../../types'
+import type { GorgiasAction } from '../../../types'
 import {
     SET_INITIAL_STATE,
     SET_LINE_ITEMS,
@@ -11,7 +11,7 @@ import {
     SET_RESTOCK,
     SET_TRANSACTIONS,
 } from './constants'
-import { RefundOrderState } from './types'
+import type { RefundOrderState } from './types'
 
 export const initialState: RefundOrderState = fromJS({
     loading: false,

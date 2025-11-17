@@ -1,17 +1,15 @@
-import React, {
-    ReactNode,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
-import { fromJS, List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { EntityType } from 'models/view/types'
@@ -25,9 +23,9 @@ import Row from 'pages/common/components/ViewTable/Table/Row'
 import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
 import CheckBox from 'pages/common/forms/CheckBox'
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
+import type { fetchViewItems } from 'state/views/actions'
 import {
-    fetchViewItems,
     resetView,
     toggleIdInSelectedItemsIds,
     toggleViewSelection,
@@ -37,11 +35,8 @@ import {
     areAllActiveViewItemsSelected,
     isEditMode,
 } from 'state/views/selectors'
-import {
-    FetchViewItemsOptions,
-    ViewImmutable,
-    ViewNavDirection,
-} from 'state/views/types'
+import type { FetchViewItemsOptions, ViewImmutable } from 'state/views/types'
+import { ViewNavDirection } from 'state/views/types'
 
 import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
 

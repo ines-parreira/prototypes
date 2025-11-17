@@ -1,7 +1,7 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
-import { Edge, Node } from '@xyflow/react'
+import type { Meta, StoryObj } from '@storybook/react'
+import type { Edge, Node } from '@xyflow/react'
 
 import { ActionLabel, Background, Flow, NodeWrapper, StepCard } from '../index'
 import { CustomControls } from './CustomControls'

@@ -10,7 +10,7 @@ import WhatsAppEditorProvider from 'pages/integrations/integration/components/wh
 import { getTicket } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
-import { SubmitArgs } from '../TicketDetailContainer'
+import type { SubmitArgs } from '../TicketDetailContainer'
 import TypingActivity from './TypingActivity'
 
 export type TicketFooterContext = {

@@ -1,10 +1,10 @@
-import { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
 
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
-import { Event, FetchEventsOptions } from './types'
+import type { Event, FetchEventsOptions } from './types'
 
 export const fetchEvents = async (
     options: FetchEventsOptions = {},

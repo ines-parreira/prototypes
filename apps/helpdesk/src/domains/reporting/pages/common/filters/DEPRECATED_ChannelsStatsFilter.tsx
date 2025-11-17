@@ -3,18 +3,14 @@ import React, { useCallback } from 'react'
 import isString from 'lodash/isString'
 
 import { TicketChannel } from 'business/types/ticket'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import { filterChannels } from 'domains/reporting/pages/common/filters/helpers'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
-    Channel,
-    ChannelIdentifier,
-    getChannels,
-    toChannel,
-} from 'services/channels'
+import type { Channel, ChannelIdentifier } from 'services/channels'
+import { getChannels, toChannel } from 'services/channels'
 
 type Props = {
     value: LegacyStatsFilters['channels']

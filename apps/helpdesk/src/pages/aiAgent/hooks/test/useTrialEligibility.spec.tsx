@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
-import { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import * as aiSalesAgentTrialUtils from 'pages/aiAgent/utils/aiSalesAgentTrialUtils'
 
 import {

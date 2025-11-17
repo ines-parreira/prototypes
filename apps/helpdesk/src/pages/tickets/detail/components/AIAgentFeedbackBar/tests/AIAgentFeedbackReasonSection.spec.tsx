@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import {
+import type {
     FeedbackExecutionsItem,
     FeedbackExecutionsItemFeedbackItemOneOfSix,
 } from '@gorgias/knowledge-service-types'

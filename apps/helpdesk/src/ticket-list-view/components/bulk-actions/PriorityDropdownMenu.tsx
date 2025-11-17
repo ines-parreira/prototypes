@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { Body, Context, Item } from 'components/Dropdown'
+import type { Item } from 'components/Dropdown'
+import { Body, Context } from 'components/Dropdown'
 
 import PriorityDropdownItem from './PriorityDropdownItem'
 

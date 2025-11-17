@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
@@ -15,13 +15,13 @@ import {
     IvrMenuActionType,
     VoiceMessageType,
 } from 'models/integration/constants'
-import {
+import type {
     LocalWaitMusicPreferences,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
 } from 'models/integration/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import * as utils from '../../utils'
 import useVoiceMessageValidation from '../useVoiceMessageValidation'

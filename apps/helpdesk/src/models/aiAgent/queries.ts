@@ -1,10 +1,6 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import {
-    useMutation,
-    useQuery,
-    useQueryClient,
-    UseQueryOptions,
-} from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
 import { useFlag } from 'core/flags'
@@ -36,17 +32,17 @@ import {
     searchCustomer,
     searchTickets,
 } from 'models/aiAgentPlayground/resources'
-import {
+import type {
     SearchCustomerRequest,
     SearchTicketsRequest,
 } from 'models/aiAgentPlayground/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { Paths } from 'rest_api/help_center_api/client.generated'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 import { createContextAndTriggerAIJourney } from './resources/ai-journey'
 import { getAIGeneratedGuidances } from './resources/guidances'
@@ -59,7 +55,7 @@ import {
     getPlaygroundExecutions,
     getTestSessionLogs,
 } from './resources/playground'
-import {
+import type {
     GetOnboardingNotificationStateParams,
     GetPlaygroundExecutionsParams,
     GetStoreConfigurationForAccountParams,

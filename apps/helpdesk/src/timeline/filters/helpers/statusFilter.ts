@@ -1,7 +1,7 @@
 import { toTicket } from 'timeline/helpers/timelineItem'
 
 import { ALL_FILTERS, STATUS_FILTERS } from '../../constants'
-import { FilterKey, TimelineItem } from '../../types'
+import type { FilterKey, TimelineItem } from '../../types'
 
 export function getOptionLabels(selectedStatus: FilterKey[]): string[] {
     return selectedStatus.length === STATUS_FILTERS.length

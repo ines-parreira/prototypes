@@ -1,4 +1,4 @@
-import {
+import type {
     WhatsAppCodeVerificationMethod,
     WhatsAppMigrationProgress,
 } from 'models/integration/types'

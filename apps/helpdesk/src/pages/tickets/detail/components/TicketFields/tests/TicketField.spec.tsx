@@ -4,11 +4,11 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {
+import type {
     CustomField,
     ManagedCustomerFieldType,
-    ManagedTicketFieldType,
 } from '@gorgias/helpdesk-types'
+import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import {

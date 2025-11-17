@@ -1,6 +1,7 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
-import { LocationDescriptor } from 'history'
+import type { LocationDescriptor } from 'history'
 import { Link } from 'react-router-dom'
 
 import BaseCard from './BaseCard'

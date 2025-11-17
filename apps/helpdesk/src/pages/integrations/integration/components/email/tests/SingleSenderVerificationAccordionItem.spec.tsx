@@ -7,7 +7,7 @@ import {
     migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
-import { EmailMigrationOutboundVerification } from 'models/integration/types'
+import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'

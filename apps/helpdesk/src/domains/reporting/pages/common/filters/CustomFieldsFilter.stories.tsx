@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
-import { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -14,7 +14,7 @@ import CustomFieldsFilter from 'domains/reporting/pages/common/filters/CustomFie
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { customFieldsMockResponse } from 'fixtures/customField'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 const defaultState = {
     stats: initialState,

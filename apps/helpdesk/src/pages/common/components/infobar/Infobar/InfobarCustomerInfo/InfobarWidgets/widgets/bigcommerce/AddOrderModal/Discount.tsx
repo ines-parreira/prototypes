@@ -8,9 +8,11 @@ import {
     LoadingSpinner,
 } from '@gorgias/axiom'
 
-import {
+import type {
     BigCommerceActionType,
     BigCommerceCart,
+} from 'models/integration/types'
+import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'

@@ -1,8 +1,5 @@
-import {
-    Integration,
-    IntegrationType,
-    isBigCommerceIntegration,
-} from '../types'
+import type { Integration } from '../types'
+import { IntegrationType, isBigCommerceIntegration } from '../types'
 
 describe('bigcommerce', () => {
     it('should return true for bigCommerce integration', () => {

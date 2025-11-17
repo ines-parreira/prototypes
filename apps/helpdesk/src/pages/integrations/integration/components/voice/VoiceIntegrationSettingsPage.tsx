@@ -3,11 +3,11 @@ import { useEffect } from 'react'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
-import {
+import type {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
-    useGetIntegration,
 } from '@gorgias/helpdesk-queries'
+import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'

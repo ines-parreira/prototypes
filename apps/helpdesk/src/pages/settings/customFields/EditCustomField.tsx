@@ -8,10 +8,8 @@ import {
     OBJECT_TYPES,
 } from 'custom-fields/constants'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {
-    CustomFieldObjectTypes,
-    isCustomFieldAIManagedType,
-} from 'custom-fields/types'
+import type { CustomFieldObjectTypes } from 'custom-fields/types'
+import { isCustomFieldAIManagedType } from 'custom-fields/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Card, CardBody } from 'reactstrap'
 
-import { Infocard } from './types'
+import type { Infocard } from './types'
 
 import css from './Detail.less'
 

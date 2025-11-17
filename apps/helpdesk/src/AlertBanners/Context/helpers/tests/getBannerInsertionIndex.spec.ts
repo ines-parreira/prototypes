@@ -1,4 +1,5 @@
-import { AlertBannerTypes, ContextBanner } from '../../../types'
+import type { ContextBanner } from '../../../types'
+import { AlertBannerTypes } from '../../../types'
 import { getBannerInsertionIndex } from '../getBannerInsertionIndex'
 
 describe('getBannerInsertionIndex', () => {

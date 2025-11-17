@@ -26,7 +26,7 @@ import * as filtersActions from 'domains/reporting/state/ui/stats/actions'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { campaignsList } from 'fixtures/campaign'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.Campaigns]

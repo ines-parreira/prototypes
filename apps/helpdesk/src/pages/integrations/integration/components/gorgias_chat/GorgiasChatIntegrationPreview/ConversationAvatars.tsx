@@ -1,12 +1,10 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 import AvatarGroup from 'gorgias-design-system/Avatar/AvatarGroup'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    GorgiasChatAvatarImageType,
-    GorgiasChatAvatarSettings,
-} from 'models/integration/types'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
+import { GorgiasChatAvatarImageType } from 'models/integration/types'
 import { getHumanAgents } from 'state/agents/selectors'
 
 type Props = {

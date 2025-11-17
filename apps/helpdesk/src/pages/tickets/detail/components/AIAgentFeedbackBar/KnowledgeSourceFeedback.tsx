@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
 
 import cn from 'classnames'
 
@@ -11,11 +11,11 @@ import {
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
-import {
-    AiAgentBinaryFeedbackEnum,
+import type {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { AiAgentBinaryFeedbackEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 
 const OPEN_IN_NEW_TAB_ICON = 'open_in_new'

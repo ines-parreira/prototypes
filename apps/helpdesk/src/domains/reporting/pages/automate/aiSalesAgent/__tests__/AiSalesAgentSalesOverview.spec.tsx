@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
@@ -10,7 +10,7 @@ import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('core/flags')

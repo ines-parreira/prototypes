@@ -1,8 +1,8 @@
-import { Edge } from '@xyflow/react'
+import type { Edge } from '@xyflow/react'
 import { cloneDeep } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-import {
+import type {
     CallRoutingFlow,
     CallRoutingFlowSteps,
     CustomerFieldsConditionalStep,
@@ -11,14 +11,14 @@ import {
     PlayMessageStep,
     SendToSMSStep,
     SendToVoicemailStep,
-    TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
     VoiceCallbackRequests,
     VoiceGender,
     VoiceLanguage,
 } from '@gorgias/helpdesk-types'
+import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
-import { ConvergencePoint } from 'core/ui/flows/types'
+import type { ConvergencePoint } from 'core/ui/flows/types'
 import {
     findConvergencePoints,
     insertConvergenceNodes,
@@ -30,7 +30,7 @@ import {
     INCOMING_CALL_NODE,
     VoiceFlowNodeType,
 } from './constants'
-import {
+import type {
     CustomerLookupNode,
     CustomerLookupOptionNode,
     EnqueueNode,

@@ -1,23 +1,24 @@
-import { Article, Category, LocaleCode } from 'models/helpCenter/types'
+import type { Article, Category, LocaleCode } from 'models/helpCenter/types'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
 import { MAX_CATEGORY_DEPTH } from '../../constants'
-import { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
-import {
+import type { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
+import type {
     AlgoliaHit,
     EntitiesArticleRecord,
     EntitiesCategoryRecord,
-    isArticleAlgoliaHit,
-    isCategoryAlgoliaHit,
     NestedParentCategory,
 } from '../../types/algolia'
+import { isArticleAlgoliaHit, isCategoryAlgoliaHit } from '../../types/algolia'
+import type {
+    SearchResult,
+    SearchResultCategory,
+    SearchResultsTree,
+} from './types'
 import {
     isLoading,
     isSearchResultArticle,
     isSearchResultCategory,
-    SearchResult,
-    SearchResultCategory,
-    SearchResultsTree,
 } from './types'
 
 const createCategorySearchResultById = (

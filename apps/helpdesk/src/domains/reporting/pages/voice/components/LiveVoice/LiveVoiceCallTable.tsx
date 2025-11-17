@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { useFlag } from 'core/flags'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'

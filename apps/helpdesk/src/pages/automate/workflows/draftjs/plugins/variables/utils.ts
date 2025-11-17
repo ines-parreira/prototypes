@@ -1,10 +1,11 @@
-import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
+import { Modifier, SelectionState } from 'draft-js'
 
 import {
     extractVariablesFromText,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 export const addEntityToVariable = (
     block: ContentBlock,

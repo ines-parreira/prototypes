@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppSelector from 'hooks/useAppSelector'
-import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import type MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 
 import ApplyMacro from '../ApplyMacro'
 

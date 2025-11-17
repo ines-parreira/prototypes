@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom'
 import { Badge } from '@gorgias/axiom'
 
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
-import { GmailIntegration, OutlookIntegration } from 'models/integration/types'
+import type {
+    GmailIntegration,
+    OutlookIntegration,
+} from 'models/integration/types'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 

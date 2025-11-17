@@ -1,4 +1,4 @@
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useAccuracyPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyPerAgent'
 import { useBrandVoicePerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useBrandVoicePerAgent'
 import { useCommunicationSkillsPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsPerAgent'
@@ -15,15 +15,13 @@ import { internalComplianceDrillDownQueryFactory } from 'domains/reporting/model
 import { languageProficiencyDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import { resolutionCompletenessDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import { reviewedClosedTicketsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { MetricQueryPerAgentQuery } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import {
     AGENT_NAME_COLUMN_WIDTH,
     METRIC_COLUMN_WIDTH,
-    MetricQueryPerAgentQuery,
     MOBILE_AGENT_NAME_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
 } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
@@ -38,8 +36,8 @@ import {
     REVIEWED_CLOSED_TICKETS_LABEL,
     TrendCardConfig,
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
-import { TooltipData } from 'domains/reporting/pages/types'
-import { AutoQAAgentMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { TooltipData } from 'domains/reporting/pages/types'
+import type { AutoQAAgentMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 

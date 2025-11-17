@@ -6,7 +6,7 @@ import { Box } from '@gorgias/axiom'
 import { useSynthesizeSpeechPreview } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
-import { VoiceMessageTextToSpeech } from 'models/integration/types'
+import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'

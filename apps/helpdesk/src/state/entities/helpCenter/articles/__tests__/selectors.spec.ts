@@ -4,7 +4,7 @@ import { createArticleFromDto } from 'models/helpCenter/utils'
 import { getArticlesResponseFixture } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {

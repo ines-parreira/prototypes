@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
 
-import { AlertBannerProps } from 'AlertBanners'
+import type { AlertBannerProps } from 'AlertBanners'
 
 export type Infocard = {
     isHidden?: boolean

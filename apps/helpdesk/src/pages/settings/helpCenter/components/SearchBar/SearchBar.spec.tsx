@@ -4,7 +4,10 @@ import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
 import { SearchContextProvider } from '../../providers/SearchContext'
-import { AlgoliaSearchResult, EntitiesBaseRecord } from '../../types/algolia'
+import type {
+    AlgoliaSearchResult,
+    EntitiesBaseRecord,
+} from '../../types/algolia'
 import { SearchBar } from './SearchBar'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return

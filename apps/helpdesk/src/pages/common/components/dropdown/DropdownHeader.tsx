@@ -1,8 +1,6 @@
+import type { ForwardedRef, HTMLProps, ReactNode } from 'react'
 import React, {
-    ForwardedRef,
     forwardRef,
-    HTMLProps,
-    ReactNode,
     useCallback,
     useImperativeHandle,
     useMemo,

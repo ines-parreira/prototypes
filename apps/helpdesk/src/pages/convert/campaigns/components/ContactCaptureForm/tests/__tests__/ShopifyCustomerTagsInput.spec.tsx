@@ -1,7 +1,8 @@
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import * as shopifyModels from 'models/integration/resources/shopify'
-import { ShopifyIntegration, ShopifyTags } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
+import { ShopifyTags } from 'models/integration/types'
 import { ShopifyCustomerTagsInput } from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@repo/hooks'
 
+import type { LegacyTextFieldProps as TextFieldProps } from '@gorgias/axiom'
 import {
     LegacyButton as Button,
     LegacyTextField as TextField,
-    LegacyTextFieldProps as TextFieldProps,
 } from '@gorgias/axiom'
 
 export type CopyableTextFieldProps = TextFieldProps & {

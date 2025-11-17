@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
+import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
-    ColumnDef,
     HeaderRowGroup,
     TableBodyContent,
     TableHeader,
@@ -17,7 +17,7 @@ import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibil
 import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
 import ImportAction from './ImportAction'
-import { MetafieldsTableMeta } from './types'
+import type { MetafieldsTableMeta } from './types'
 
 import styles from './MetafieldsTable.less'
 

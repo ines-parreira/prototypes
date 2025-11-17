@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { AddFilterButton, FilterOption } from '../AddFilterButton'
+import type { FilterOption } from '../AddFilterButton'
+import { AddFilterButton } from '../AddFilterButton'
 
 describe('AddFilterButton', () => {
     const mockOptions: FilterOption[] = [

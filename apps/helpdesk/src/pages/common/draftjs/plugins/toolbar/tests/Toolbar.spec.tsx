@@ -1,13 +1,14 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { ContentState, EditorState } from 'draft-js'
+import type { ContentState } from 'draft-js'
+import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 
 import { useFlag } from 'core/flags'
-import { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
+import type { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
 import { mockStore, renderWithRouter } from 'utils/testing'

@@ -11,7 +11,7 @@ import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import {
+import type {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
@@ -29,7 +29,7 @@ import {
     useDownloadTagsReportData,
     useTagsReportData,
 } from 'domains/reporting/services/tagsReportingService'
-import { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
+import type { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import { createCsv, saveZippedFiles } from 'utils/file'

@@ -1,4 +1,4 @@
-import { Cadence, ConvertPlan } from 'models/billing/types'
+import type { Cadence, ConvertPlan } from 'models/billing/types'
 
 const convertPlansMapping: Record<string, string> = {
     Starter: 'convert-01',

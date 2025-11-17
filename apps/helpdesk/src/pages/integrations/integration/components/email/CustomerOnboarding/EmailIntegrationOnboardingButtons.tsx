@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import OnboardingDomainVerificationButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons'

@@ -1,6 +1,7 @@
 import { Component } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 
 import {

@@ -1,5 +1,5 @@
-import { ABGroup } from 'models/convert/campaign/types'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { ABGroup } from 'models/convert/campaign/types'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 export type VariantTableEntry = {
     variant: CampaignVariant | null // control version is marked as null

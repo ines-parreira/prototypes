@@ -11,7 +11,7 @@ import {
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
     EmailProvider,
 } from 'models/integration/constants'
-import {
+import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,

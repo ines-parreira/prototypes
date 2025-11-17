@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 

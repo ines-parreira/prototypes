@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 import { channels as mockChannels } from 'fixtures/channels'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     channelsSlice,
     initialState,

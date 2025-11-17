@@ -1,7 +1,7 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { Options } from 'daterangepicker'
+import type { Options } from 'daterangepicker'
 import moment from 'moment-timezone'
 
 import { THEME_NAME, useTheme } from 'core/theme'

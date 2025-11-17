@@ -1,6 +1,6 @@
 import { ImportProvider } from '@gorgias/helpdesk-types'
 
-import { ImportItem } from './types'
+import type { ImportItem } from './types'
 
 export const mockImportItems: ImportItem[] = [
     {

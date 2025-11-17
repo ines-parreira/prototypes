@@ -1,11 +1,12 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { List } from 'immutable'
+import type { AxiosError, AxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import type { List } from 'immutable'
 
-import { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { fetchTags as fetchTagsResources } from 'models/tag/resources'
-import { OrderByOrderDir, TagDraft } from 'models/tag/types'
+import type { OrderByOrderDir, TagDraft } from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

@@ -1,4 +1,5 @@
-import React, { ReactChild, ReactNode } from 'react'
+import type { ReactChild, ReactNode } from 'react'
+import React from 'react'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'

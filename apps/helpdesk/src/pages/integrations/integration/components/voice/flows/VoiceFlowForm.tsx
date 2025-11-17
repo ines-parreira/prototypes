@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import omit from 'lodash/omit'
 
-import { PhoneIntegration } from '@gorgias/helpdesk-types'
+import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
 import { Form, toFormErrors } from 'core/forms'
@@ -12,7 +12,7 @@ import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChanges
 import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
 import TextToSpeechProvider from '../VoiceMessageTTS/TextToSpeechProvider'
 import { VoiceFlowNodeType } from './constants'
-import { VoiceFlowFormValues } from './types'
+import type { VoiceFlowFormValues } from './types'
 import { useVoiceFlowForm } from './utils/useVoiceFlowForm'
 
 import css from './VoiceFlowForm.less'

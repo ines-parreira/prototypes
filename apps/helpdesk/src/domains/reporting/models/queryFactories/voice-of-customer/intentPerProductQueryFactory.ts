@@ -2,7 +2,7 @@ import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,
 } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -10,12 +10,15 @@ import {
 import { customFieldsTicketCountTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { injectCustomFieldId } from 'domains/reporting/models/queryFactories/utils'
 import { ticketsWithProductsQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
-import { Sentiment, StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
+import type {
+    Sentiment,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
 } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 

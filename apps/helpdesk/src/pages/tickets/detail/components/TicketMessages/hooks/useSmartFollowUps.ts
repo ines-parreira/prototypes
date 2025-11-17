@@ -2,7 +2,8 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { z } from 'zod'
 
 import { useFlag } from 'core/flags'
-import { Meta, SmartFollowUp, SmartFollowUpType } from 'models/ticket/types'
+import type { Meta, SmartFollowUp } from 'models/ticket/types'
+import { SmartFollowUpType } from 'models/ticket/types'
 
 const isSmartFollowUpsMeta = (
     value: unknown,

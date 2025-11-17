@@ -1,5 +1,5 @@
 import { Navigation } from 'components/Navigation/Navigation'
-import { UserRole } from 'config/types/user'
+import type { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'

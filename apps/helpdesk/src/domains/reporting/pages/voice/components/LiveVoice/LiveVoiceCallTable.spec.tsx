@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
+import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'
@@ -18,7 +18,7 @@ import {
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
-import { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
+import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import useAppSelector from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 

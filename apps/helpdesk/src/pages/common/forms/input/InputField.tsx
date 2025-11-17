@@ -1,4 +1,5 @@
-import { ComponentProps, createContext, forwardRef, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import { createContext, forwardRef } from 'react'
 
 import { useId } from '@repo/hooks'
 

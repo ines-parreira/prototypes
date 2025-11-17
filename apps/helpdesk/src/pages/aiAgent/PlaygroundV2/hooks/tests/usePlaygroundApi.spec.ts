@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     DEFAULT_PLAYGROUND_CUSTOMER,
     PLAYGROUND_CUSTOMER_MOCK,

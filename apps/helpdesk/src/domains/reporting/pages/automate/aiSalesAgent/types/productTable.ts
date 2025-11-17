@@ -1,6 +1,6 @@
-import { Product } from 'constants/integrations/types/shopify'
-import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { Product } from 'constants/integrations/types/shopify'
+import type { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 
 export interface ProductTable extends Product {
     url?: string

@@ -1,4 +1,4 @@
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 
 export const useMagentoSettings = (integration: Magento2Integration) => {
     const storeUrl = integration.meta.store_url

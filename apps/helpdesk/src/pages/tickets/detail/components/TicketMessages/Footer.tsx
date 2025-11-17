@@ -1,6 +1,6 @@
 import classNamesBind from 'classnames/bind'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import SourceDetailsFooter from './SourceDetailsFooter'
 

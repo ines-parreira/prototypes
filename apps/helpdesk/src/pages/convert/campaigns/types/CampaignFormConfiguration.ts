@@ -1,9 +1,7 @@
-import {
-    ActionName,
-    TooltipTourConfigurationType,
-} from 'pages/common/draftjs/plugins/toolbar/types'
+import type { TooltipTourConfigurationType } from 'pages/common/draftjs/plugins/toolbar/types'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 
-import { CampaignStepsKeys } from './CampaignSteps'
+import type { CampaignStepsKeys } from './CampaignSteps'
 
 export enum TooltipActionType {
     Link = ActionName.Link,

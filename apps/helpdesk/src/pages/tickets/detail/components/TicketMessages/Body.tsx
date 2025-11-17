@@ -2,9 +2,9 @@ import classNamesBind from 'classnames/bind'
 import { noop } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
 
-import { TicketMessageTranslation } from '@gorgias/helpdesk-types'
+import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import { mapQuotedTweetTicketMessageToEmbeddedCard } from 'pages/common/components/TicketMessageEmbeddedCard/utils'

@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
 import { produce } from 'immer'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'
-import {
+import type {
     CampaignFrequencySettings,
     MaxCampaignDisplaysInSession,
     MinimumTimeBetweenCampaigns,

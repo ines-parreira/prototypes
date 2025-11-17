@@ -2,7 +2,7 @@ import isURL from 'validator/lib/isURL'
 
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import { ValidatorType } from './types'
+import type { ValidatorType } from './types'
 import { ValidationError } from './validationError'
 
 export const validateCurrentUrl: ValidatorType = (value, operator) => {

@@ -1,8 +1,8 @@
-import { IsURLOptions } from 'validator/lib/isURL'
+import type { IsURLOptions } from 'validator/lib/isURL'
 
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import {
+import type {
     LocaleCode,
     LocalNavigationLink,
     LocalSocialNavigationLink,

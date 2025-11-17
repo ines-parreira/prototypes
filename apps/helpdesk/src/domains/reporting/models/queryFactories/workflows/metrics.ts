@@ -4,7 +4,7 @@ import {
     WorkflowDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/WorkflowDatasetCube'
 import { workflowDatasetDefaultFilters } from 'domains/reporting/models/queryFactories/workflows/filters'
-import { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
+import type { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
 
 export const workflowDatasetCountQueryFactory = (
     filters: WorkflowStatsFilters,

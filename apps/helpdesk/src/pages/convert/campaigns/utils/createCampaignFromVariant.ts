@@ -3,8 +3,8 @@ import { ulid } from 'ulidx'
 
 import { removeLinksFromHtml } from 'utils/html'
 
-import { Campaign, CampaignCreatePayload } from '../types/Campaign'
-import { CampaignVariant } from '../types/CampaignVariant'
+import type { Campaign, CampaignCreatePayload } from '../types/Campaign'
+import type { CampaignVariant } from '../types/CampaignVariant'
 import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
 import { createTriggerRule } from './createTriggerRule'
 

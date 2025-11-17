@@ -1,4 +1,6 @@
-import React, { ReactElement, useCallback, useMemo, useState } from 'react'
+import type { ReactElement } from 'react'
+import type React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { Badge } from 'reactstrap'
@@ -6,7 +8,7 @@ import { Badge } from 'reactstrap'
 import { LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Article } from 'models/helpCenter/types'
+import type { Article } from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import { ARTICLES_PER_PAGE } from 'pages/settings/helpCenter/constants'

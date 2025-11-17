@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
 
@@ -29,18 +30,17 @@ import MigrationCredentialsModal from './components/MigrationCredentialsModal'
 import MigrationStateModal from './components/MigrationStateModal'
 import ProviderSelectModal from './components/ProviderSelectModal'
 import { csvProviderMeta } from './csv-provider-meta'
-import {
+import type {
     AutoOpenSessionLocationState,
     FetchedMigrationSessionState,
     FetchedProvidersState,
     HelpCenterMigrationConfig,
     ImportArticlesModalState,
     MigrationProviderType,
-    MigrationSessionStatus,
     MigrationStartPayload,
     MigrationState,
-    MigrationStatus,
 } from './types'
+import { MigrationSessionStatus, MigrationStatus } from './types'
 import {
     getErrorMessage,
     getSessionCreateData,

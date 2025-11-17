@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'

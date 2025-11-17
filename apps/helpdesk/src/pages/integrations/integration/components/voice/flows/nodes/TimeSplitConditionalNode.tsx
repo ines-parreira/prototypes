@@ -4,14 +4,14 @@ import { useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { Banner } from '@gorgias/axiom'
-import {
+import type {
     BusinessHoursTimeframe,
-    TimeSplitConditionalRuleType,
     TimeSplitConditionalStep,
 } from '@gorgias/helpdesk-types'
+import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
 import { FormField } from 'core/forms'
-import { NodeProps } from 'core/ui/flows'
+import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useIntegrationBusinessHours } from 'hooks/businessHours/useIntegrationBusinessHours'

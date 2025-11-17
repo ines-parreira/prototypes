@@ -1,4 +1,5 @@
-import React, { DragEvent, ReactNode, useState } from 'react'
+import type { DragEvent, ReactNode } from 'react'
+import React, { useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -6,18 +7,18 @@ import { EditorState } from 'draft-js'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 import { useFlag } from 'core/flags'
-import {
+import type {
     GuidanceVariable,
     GuidanceVariableList,
 } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
-import {
+import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
@@ -41,7 +42,8 @@ import {
 import WorkflowVariablePicker from './components/WorkflowVariablePicker'
 import { isDisplayedAction } from './index'
 import { useToolbarContext } from './ToolbarContext'
-import { ActionInjectedProps, ActionName } from './types'
+import type { ActionInjectedProps } from './types'
+import { ActionName } from './types'
 
 import css from './Toolbar.less'
 

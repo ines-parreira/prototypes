@@ -34,7 +34,7 @@ import {
     WizardPostCompletionPathway,
 } from '../constants'
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
-import { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
+import type { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
 import { useAiAgentOnboardingWizard } from './hooks/useAiAgentOnboardingWizard'
 
 import css from './AiAgentOnboardingWizardKnowledge.less'

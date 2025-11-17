@@ -1,8 +1,9 @@
 import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
-import InstructionsCard, { InstructionsCardProps } from '../InstructionsCard'
-import { InstructionTab } from '../types'
+import type { InstructionsCardProps } from '../InstructionsCard'
+import InstructionsCard from '../InstructionsCard'
+import type { InstructionTab } from '../types'
 
 const tabA: InstructionTab = {
     id: 'a',

@@ -1,13 +1,11 @@
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
-import {
-    getSyntaxTreeLeaves,
-    SyntaxTree,
-} from 'pages/common/components/ast/utils'
-import { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
+import type { SyntaxTree } from 'pages/common/components/ast/utils'
+import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
+import type { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 
 type LogicalExpressionProps = {
     rule: Map<any, any>

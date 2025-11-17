@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import { ViewType } from 'models/view/types'
 import * as types from 'state/customers/constants'
 import reducer, { initialState } from 'state/customers/reducers'
-import { GorgiasAction } from 'state/types'
+import type { GorgiasAction } from 'state/types'
 import * as viewTypes from 'state/views/constants'
 
 describe('customers reducers', () => {

@@ -1,11 +1,5 @@
-import React, {
-    ComponentProps,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
@@ -21,7 +15,7 @@ import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import TextInput from 'pages/common/forms/input/TextInput'
+import type TextInput from 'pages/common/forms/input/TextInput'
 
 import { getCountryLabel, getCountrySelectOptions } from './utils'
 

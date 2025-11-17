@@ -5,11 +5,16 @@ import _isArray from 'lodash/isArray'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketChannel } from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
-import { Meta, SourceAddress, Source as SourceType } from 'models/ticket/types'
+import type {
+    Meta,
+    SourceAddress,
+    Source as SourceType,
+} from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'

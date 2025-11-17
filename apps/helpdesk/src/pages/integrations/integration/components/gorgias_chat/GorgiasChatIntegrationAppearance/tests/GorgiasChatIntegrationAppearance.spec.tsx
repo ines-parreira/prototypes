@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
@@ -25,8 +26,8 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import * as IntegrationsActions from 'state/integrations/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type * as IntegrationsActions from 'state/integrations/actions'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { GorgiasChatIntegrationAppearanceComponent } from '../GorgiasChatIntegrationAppearance'

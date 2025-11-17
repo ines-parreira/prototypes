@@ -3,13 +3,11 @@ import React from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 
-import { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
+import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import Dimension from 'auto_qa/components/Dimension'
-import {
-    dimensionConfig,
-    SupportedTicketQAScoreDimension,
-} from 'auto_qa/config'
+import type { SupportedTicketQAScoreDimension } from 'auto_qa/config'
+import { dimensionConfig } from 'auto_qa/config'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),

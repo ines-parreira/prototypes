@@ -3,7 +3,7 @@ import { userEvent } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 import { CampaignToolsCell } from '../CampaignToolsCell'
 

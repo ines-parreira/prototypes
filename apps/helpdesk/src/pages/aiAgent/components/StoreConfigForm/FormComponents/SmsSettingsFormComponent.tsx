@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import classnames from 'classnames'
 
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
     SettingsCardContent,

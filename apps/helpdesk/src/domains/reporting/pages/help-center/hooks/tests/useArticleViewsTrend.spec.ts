@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useArticleViewsTrend } from 'domains/reporting/pages/help-center/hooks/useArticleViewsTrend'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 

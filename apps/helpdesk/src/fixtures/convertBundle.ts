@@ -1,9 +1,9 @@
-import {
+import type {
     Bundle,
     BundleActionResponse,
     BundleInstallationMethod,
-    BundleStatus,
 } from 'models/convert/bundle/types'
+import { BundleStatus } from 'models/convert/bundle/types'
 
 export const convertBundleId = 'ca920935-acda-48a4-b885-bae77fcada05'
 

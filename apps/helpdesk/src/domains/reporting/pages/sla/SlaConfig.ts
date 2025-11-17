@@ -1,16 +1,14 @@
 import { useBreachedSlaTicketsTrend } from 'domains/reporting/hooks/sla/useSLAsTicketsTrends'
 import { useTicketSlaAchievementRateTrend } from 'domains/reporting/hooks/sla/useTicketSlaAchievementRate'
-import { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { SlaMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const SLA_STATUS_COLUMN_LABEL = 'SLA status'

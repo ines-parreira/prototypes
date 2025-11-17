@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import {
+import type {
     FeedbackExecutionsItem,
     FeedbackExecutionsItemResourcesItem,
     FindFeedbackResult,

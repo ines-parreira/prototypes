@@ -1,5 +1,5 @@
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

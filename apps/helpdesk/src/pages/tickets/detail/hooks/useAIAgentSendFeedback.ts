@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,21 +10,19 @@ import {
     useDeleteAIAgentTicketMessagesFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
-import {
+import type {
     DeleteMessageFeedback,
     SubmitMessageFeedback,
     TicketFeedback,
 } from 'models/aiAgentFeedback/types'
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 
-import {
-    FeedbackStatus,
-    ResourceSection,
-} from '../components/AIAgentFeedbackBar/types'
+import type { ResourceSection } from '../components/AIAgentFeedbackBar/types'
+import { FeedbackStatus } from '../components/AIAgentFeedbackBar/types'
 
 export const useAIAgentSendFeedback = () => {
     const aiMessages = useAppSelector(getAIAgentMessages)

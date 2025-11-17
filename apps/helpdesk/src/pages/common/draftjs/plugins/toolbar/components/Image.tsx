@@ -1,7 +1,7 @@
 import { Component, type ImgHTMLAttributes } from 'react'
 
 import classnames from 'classnames'
-import {
+import type {
     ContentBlock,
     ContentState,
     DraftDecorator,

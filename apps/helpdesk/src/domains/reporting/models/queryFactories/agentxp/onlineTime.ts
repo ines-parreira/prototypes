@@ -1,17 +1,17 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import {
-    AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import {
     AgentTimeTrackingStatsFiltersMembers,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 export const onlineTimeQueryFactory = (
     filters: StatsFilters,

@@ -1,10 +1,10 @@
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
-import { ActionType } from 'models/rule/types'
+import type { ActionType } from 'models/rule/types'
 
 import Action from '../Action'
 

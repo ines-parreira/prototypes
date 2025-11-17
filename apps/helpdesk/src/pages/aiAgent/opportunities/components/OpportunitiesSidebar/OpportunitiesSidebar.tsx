@@ -5,7 +5,7 @@ import { Virtuoso } from 'react-virtuoso'
 import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
 import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
 import { checkAndTriggerAutoFetch } from '../../utils/autoFetchScrollChecker'
-import { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
 

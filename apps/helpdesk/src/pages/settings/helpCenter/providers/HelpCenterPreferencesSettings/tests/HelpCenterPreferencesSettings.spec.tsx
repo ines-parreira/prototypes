@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
@@ -7,13 +7,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import * as useHelpCenterActions from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import * as helpCenterApi from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
-import { RootState, StoreDispatch } from 'state/types'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
 import {

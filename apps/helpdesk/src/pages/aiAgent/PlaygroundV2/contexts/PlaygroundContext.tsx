@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { AIJourneyProvider } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { ConfigurationProvider } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
@@ -6,7 +6,7 @@ import { CoreProvider } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { EventsProvider } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { MessagesProvider } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { SettingsProvider } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
-import { SupportedPlaygroundModes } from 'pages/aiAgent/PlaygroundV2/types'
+import type { SupportedPlaygroundModes } from 'pages/aiAgent/PlaygroundV2/types'
 
 type PlaygroundProviderProps = {
     children: ReactNode

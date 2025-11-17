@@ -4,10 +4,8 @@ import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import { Badge, BadgeIcon, LegacyLabel as Label } from '@gorgias/axiom'
 
-import {
-    ReportIssueLabels,
-    ReportIssueOption,
-} from 'models/aiAgentFeedback/constants'
+import type { ReportIssueOption } from 'models/aiAgentFeedback/constants'
+import { ReportIssueLabels } from 'models/aiAgentFeedback/constants'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {

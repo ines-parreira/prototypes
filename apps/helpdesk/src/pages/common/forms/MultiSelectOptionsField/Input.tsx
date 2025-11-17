@@ -1,4 +1,5 @@
-import React, { ChangeEvent, Component, FocusEvent, KeyboardEvent } from 'react'
+import type { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
+import React, { Component } from 'react'
 
 import classnames from 'classnames'
 

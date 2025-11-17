@@ -5,7 +5,7 @@ import client from '../../../../../../models/api/resources'
 import { IntegrationType } from '../../../../../../models/integration/types'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'
-import { RootState, StoreDispatch } from '../../../../../../state/types'
+import type { RootState, StoreDispatch } from '../../../../../../state/types'
 import { updatePhoneVoicemailConfiguration } from '../actions'
 
 describe('updatePhoneVoicemailConfiguration', () => {

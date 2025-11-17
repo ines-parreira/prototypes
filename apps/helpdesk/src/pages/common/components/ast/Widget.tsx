@@ -1,25 +1,25 @@
-import { ComponentProps, useCallback, useEffect, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { EditorState } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { EditorState } from 'draft-js'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
 import { Input } from 'reactstrap'
-import { InputType } from 'reactstrap/lib/Input'
+import type { InputType } from 'reactstrap/lib/Input'
 
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 import { BASIC_OPERATORS } from 'config'
 import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
 } from 'config/rules'
-import {
-    DateAndTimeFormatting,
-    DateTimeResultFormatType,
-} from 'constants/datetime'
+import type { DateTimeResultFormatType } from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import DatePicker from 'pages/common/forms/DatePicker'
@@ -27,7 +27,7 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
-import { RuleItemActions } from 'pages/settings/rules/types'
+import type { RuleItemActions } from 'pages/settings/rules/types'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { isTimedeltaOperator, RuleOperation } from 'state/rules/types'

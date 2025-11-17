@@ -1,10 +1,11 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { Expression } from 'estree'
-import { fromJS, Map } from 'immutable'
+import type { Expression } from 'estree'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,7 +25,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
 import { IdentifierCategoryKey } from 'models/rule/types'
 import { generateExpression } from 'models/rule/utils'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { MemberExpression } from '../MemberExpression'
 

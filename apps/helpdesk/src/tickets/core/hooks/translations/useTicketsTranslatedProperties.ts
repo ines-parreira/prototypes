@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { isNumber } from 'lodash'
 
 import { useListTicketTranslations } from '@gorgias/helpdesk-queries'
-import {
+import type {
     HttpResponse,
     ListTicketTranslations200,
     TicketLanguage,

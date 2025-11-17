@@ -25,7 +25,7 @@ import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
 const customFieldId = 123

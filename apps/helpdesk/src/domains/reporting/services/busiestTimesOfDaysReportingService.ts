@@ -1,15 +1,15 @@
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
-import { Period, StatsFilters } from 'domains/reporting/models/stat/types'
+import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'
+import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import {
-    BusiestTimeOfDaysMetrics,
     DayOfWeek,
     HOUR_COLUMN,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { useAggregatedBusiestTimesOfDayData } from 'domains/reporting/pages/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+import type { BTODData } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 import {
-    BTODData,
     get24Hours,
     getAggregatedBusiestTimesOfDayData,
     getMetricFetch,

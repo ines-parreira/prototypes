@@ -3,8 +3,8 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { AIAgentInteractionsBySkillTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/timeseries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 
 // P2/P3
 export const useAIAgentInteractionsBySkillTimeSeries = (

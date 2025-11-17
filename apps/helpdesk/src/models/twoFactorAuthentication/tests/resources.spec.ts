@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { authenticatorData as authenticatorDataFixture } from '../../../fixtures/authenticatorData'

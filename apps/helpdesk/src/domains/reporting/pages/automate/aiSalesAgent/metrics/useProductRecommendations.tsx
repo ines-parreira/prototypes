@@ -22,9 +22,9 @@ import {
     productRecommendationsQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { isFilterWithLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
+import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { mapMetrics } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'

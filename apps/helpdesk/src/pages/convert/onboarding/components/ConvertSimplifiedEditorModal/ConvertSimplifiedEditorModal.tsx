@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { produce } from 'immer'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { Badge, BadgeIcon, LegacyButton as Button } from '@gorgias/axiom'
 
@@ -16,7 +18,7 @@ import { useFlag } from 'core/flags'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
@@ -30,20 +32,18 @@ import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPrevi
 import { useManageTriggers } from 'pages/convert/campaigns/hooks/useManageTriggers'
 import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
-import {
-    CampaignDetailsFormApi,
-    CampaignDetailsFormProvider,
-} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import {
+import type { CampaignDetailsFormApi } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import { CampaignDetailsFormProvider } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import { createCampaignPayload } from 'pages/convert/campaigns/utils/createCampaignPayload'
 import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import { transformAttachmentsToDiscountOffers } from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'

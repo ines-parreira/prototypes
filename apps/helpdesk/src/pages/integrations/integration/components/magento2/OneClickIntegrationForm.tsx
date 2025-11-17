@@ -1,6 +1,8 @@
-import React, { FormEvent, useState } from 'react'
+import type { FormEvent } from 'react'
+import React, { useState } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Form } from 'reactstrap'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'

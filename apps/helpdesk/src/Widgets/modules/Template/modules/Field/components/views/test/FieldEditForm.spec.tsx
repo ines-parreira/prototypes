@@ -1,17 +1,18 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
 import { LEAF_TYPES } from 'models/widget/constants'
-import { LeafType } from 'models/widget/types'
+import type { LeafType } from 'models/widget/types'
 
-import { FieldEditFormData, HiddenFields } from '../../../types'
+import type { FieldEditFormData, HiddenFields } from '../../../types'
+import type { TypeOption } from '../FieldEditForm'
 import FieldEditForm, {
     CANCEL_BUTTON_TEXT,
     SUBMIT_BUTTON_TEXT,
     TITLE_FIELD_LABEL,
     TYPE_FIELD_LABEL,
-    TypeOption,
 } from '../FieldEditForm'
 
 describe('FieldEditForm', () => {

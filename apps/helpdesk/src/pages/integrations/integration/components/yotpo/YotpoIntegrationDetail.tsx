@@ -1,9 +1,12 @@
-import React, { Component, MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
+import React, { Component } from 'react'
 
 import classNames from 'classnames'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { parse } from 'qs'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import type { RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,7 +17,7 @@ import {
 } from 'reactstrap'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -23,7 +26,7 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import withRouter from 'pages/common/utils/withRouter'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
-import {
+import type {
     deleteIntegration,
     fetchIntegration,
     triggerCreateSuccess,

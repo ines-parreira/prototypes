@@ -13,7 +13,7 @@ import {
 } from 'domains/reporting/pages/common/utils'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
 import { getDrillDownMetricData } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
+import type { PropsWithProduct } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/types'
 import {
     VoiceOfCustomerMetric,
     VoiceOfCustomerMetricConfig,

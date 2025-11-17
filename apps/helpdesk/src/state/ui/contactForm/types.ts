@@ -1,4 +1,4 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
 export enum UiActions {
     ChangeContactFormId = 'UI/CONTACTFORM/CHANGE_ID',

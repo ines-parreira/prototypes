@@ -5,7 +5,7 @@ import {
     TRIGGERED_ON_EXIT_INTENT,
     TRIGGERED_OUTSIDE_BUSINESS_HOURS,
 } from '../constants/filters'
-import { Campaign } from '../types/Campaign'
+import type { Campaign } from '../types/Campaign'
 import {
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,

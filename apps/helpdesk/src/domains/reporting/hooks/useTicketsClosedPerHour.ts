@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { calculateTotalCapacity } from 'domains/reporting/hooks/helpers'
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
+import type { Metric } from 'domains/reporting/hooks/metrics'
 import {
     fetchClosedTicketsMetric,
     fetchOnlineTimeMetric,
-    Metric,
     useClosedTicketsMetric,
     useOnlineTimeMetric,
 } from 'domains/reporting/hooks/metrics'
@@ -20,7 +20,7 @@ import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
     let metricValue: number | null = null

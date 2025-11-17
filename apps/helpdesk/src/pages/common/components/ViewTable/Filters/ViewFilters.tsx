@@ -1,10 +1,10 @@
-import {
+import type {
     Expression,
     ExpressionStatement,
     LogicalExpression,
     Program,
 } from 'estree'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

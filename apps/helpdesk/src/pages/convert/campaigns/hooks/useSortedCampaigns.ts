@@ -5,7 +5,7 @@ import { history } from '@repo/routing'
 import { useSearch } from 'hooks/useSearch'
 import { opposite, OrderDirection } from 'models/api/types'
 
-import { Campaign } from '../types/Campaign'
+import type { Campaign } from '../types/Campaign'
 import { isActiveStatus } from '../types/enums/CampaignStatus.enum'
 
 function sortActiveFirst(campaigns: Campaign[]): Campaign[] {

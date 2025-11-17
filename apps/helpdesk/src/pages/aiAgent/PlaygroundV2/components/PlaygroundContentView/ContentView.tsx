@@ -1,4 +1,4 @@
-import { PlaygroundMessage } from 'models/aiAgentPlayground/types'
+import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
 
 export type BaseContentViewProps = {
     accountId: number

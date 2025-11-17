@@ -1,17 +1,18 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import { useDeleteMacro } from 'hooks/macros'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { TicketMacros } from '../TicketMacros'
 

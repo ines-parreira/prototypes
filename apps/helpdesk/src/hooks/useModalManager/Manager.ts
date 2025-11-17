@@ -1,7 +1,6 @@
-import {
+import type {
     CallbackFunction,
     Callbacks,
-    Event,
     Modal,
     ModalInstanceInterface,
     ModalParams,
@@ -10,6 +9,7 @@ import {
     OpenModalsList,
     Subscribers,
 } from './typings'
+import { Event } from './typings'
 
 export class ModalManager implements ModalInstanceInterface {
     modals: ModalsList = []

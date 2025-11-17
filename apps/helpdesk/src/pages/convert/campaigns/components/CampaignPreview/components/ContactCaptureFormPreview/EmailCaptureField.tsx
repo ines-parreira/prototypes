@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 
-import { ContactFormField } from 'pages/convert/campaigns/types/CampaignAttachment'
+import type { ContactFormField } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 import { ErrorMessage, MailInput } from './styled'
 

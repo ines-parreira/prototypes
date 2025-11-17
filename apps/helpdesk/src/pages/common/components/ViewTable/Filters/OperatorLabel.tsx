@@ -1,4 +1,4 @@
-import { LogicalOperator } from 'estree'
+import type { LogicalOperator } from 'estree'
 
 import css from './CallExpression.less'
 

@@ -2,7 +2,8 @@ import classNames from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
 
-import { GroupedKnowledgeItem, KnowledgeType } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeType } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 

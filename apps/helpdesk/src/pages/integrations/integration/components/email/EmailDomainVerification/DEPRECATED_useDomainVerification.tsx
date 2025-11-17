@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useInterval, useLocalStorage } from '@repo/hooks'
 
+import type { EmailDomain } from '@gorgias/helpdesk-queries'
 import {
-    EmailDomain,
     useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,

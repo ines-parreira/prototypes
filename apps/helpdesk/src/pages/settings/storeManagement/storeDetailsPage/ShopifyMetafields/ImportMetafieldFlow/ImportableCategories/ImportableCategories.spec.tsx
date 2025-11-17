@@ -3,7 +3,7 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { MetafieldCategory } from '../../types'
+import type { MetafieldCategory } from '../../types'
 import ImportableCategories from './ImportableCategories'
 
 describe('ImportableCategories', () => {

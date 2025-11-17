@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 
 import rootReducer from 'state/reducers'
 import serverErrorHandler from 'store/middlewares/serverErrorHandler'
-import { InitialRootState } from 'types'
+import type { InitialRootState } from 'types'
 
 export default function configureStore(
     initialState: InitialRootState = {} as InitialRootState,

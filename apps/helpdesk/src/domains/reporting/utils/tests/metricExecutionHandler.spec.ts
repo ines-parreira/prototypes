@@ -1,22 +1,23 @@
 import { assumeMock } from '@repo/testing'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 import {
     postReportingV1,
     postReportingV2,
     postReportingV2Query,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import { compareAndReportQueries } from 'domains/reporting/models/scopes/utils'
-import {
+import type {
     ReportingParams,
     ReportingResponse,
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
-import {
-    ExecuteMetricConfig,
-    metricExecutionHandler,
-} from 'domains/reporting/utils/metricExecutionHandler'
+import type { ExecuteMetricConfig } from 'domains/reporting/utils/metricExecutionHandler'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { reportError } from 'utils/errors'
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')

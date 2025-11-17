@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
@@ -17,7 +17,7 @@ import {
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../constants'

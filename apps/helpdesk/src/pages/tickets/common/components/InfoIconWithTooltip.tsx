@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
 
-import { Placement } from '@floating-ui/react'
+import type { Placement } from '@floating-ui/react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

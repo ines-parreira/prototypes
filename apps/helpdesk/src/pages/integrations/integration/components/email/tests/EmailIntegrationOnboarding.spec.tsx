@@ -13,7 +13,7 @@ import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as billingFixtures from 'fixtures/billing'
 import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
@@ -22,12 +22,12 @@ import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/int
 import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
 import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import { getDomainFromEmailAddress } from 'pages/integrations/integration/components/email/helpers'
+import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
-    UseEmailOnboardingHookResult,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('@repo/routing', () => ({

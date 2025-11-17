@@ -7,13 +7,13 @@ import {
     LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { CreateCustomField } from '@gorgias/helpdesk-types'
+import type { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import {
     DROPDOWN_NESTING_DELIMITER,
     OBJECT_TYPES,
 } from 'custom-fields/constants'
-import {
+import type {
     CustomField,
     CustomFieldInput,
     CustomFieldObjectTypes,

@@ -19,10 +19,8 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
-import {
-    mapAiArticlesToOpportunities,
-    Opportunity,
-} from '../../utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from '../OpportunitiesContent/OpportunitiesContent'
 import { OpportunitiesSidebar } from '../OpportunitiesSidebar/OpportunitiesSidebar'
 

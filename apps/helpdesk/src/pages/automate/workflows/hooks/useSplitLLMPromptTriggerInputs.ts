@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import {
+import type {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

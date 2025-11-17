@@ -1,15 +1,15 @@
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
     FilterKey,
-    StaticFilter,
 } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
-    ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallCallerExperienceAverageTalkTime } from 'domains/reporting/pages/voice/charts/VoiceCallCallerExperienceAverageTalkTime'
 import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'domains/reporting/pages/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'

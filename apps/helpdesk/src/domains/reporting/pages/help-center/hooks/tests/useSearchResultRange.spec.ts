@@ -6,7 +6,7 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useSearchResultRange } from 'domains/reporting/pages/help-center/hooks/useSearchResultRange'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 

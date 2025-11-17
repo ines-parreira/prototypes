@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import {
+import type {
     GorgiasChatIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'

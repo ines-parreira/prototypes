@@ -3,7 +3,7 @@ import React from 'react'
 import { Icon, LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { useOpportunitiesNavigation } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesNavigation'
-import { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
 
 import css from './OpportunitiesNavigation.less'
 

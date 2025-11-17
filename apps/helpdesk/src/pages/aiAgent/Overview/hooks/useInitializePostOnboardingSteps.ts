@@ -7,8 +7,8 @@ import {
     useGetPostStoreInstallationStepsPure,
     useUpdatePostStoreInstallationStepPure,
 } from 'models/aiAgentPostStoreInstallationSteps/queries'
+import type { CreatePostStoreInstallationStepPayload } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
-    CreatePostStoreInstallationStepPayload,
     PostStoreInstallationStepStatus,
     PostStoreInstallationStepType,
 } from 'models/aiAgentPostStoreInstallationSteps/types'

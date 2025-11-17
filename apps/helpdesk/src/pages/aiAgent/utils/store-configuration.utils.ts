@@ -1,4 +1,4 @@
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { isAiAgentEnabled } from 'pages/aiAgent/util'
 
 /**

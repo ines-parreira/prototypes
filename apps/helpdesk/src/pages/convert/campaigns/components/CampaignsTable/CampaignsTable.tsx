@@ -1,16 +1,11 @@
-import React, {
-    Fragment,
-    MouseEvent,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent } from 'react'
+import type React from 'react'
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link, useHistory } from 'react-router-dom'
 
 import {
@@ -19,14 +14,14 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import type { LanguageUI } from 'config/integrations/gorgias_chat'
 import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageFromChatConfig,
-    LanguageUI,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import type { Language } from 'constants/languages'
 import { useFlag } from 'core/flags'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'
 import { NumberedPagination } from 'pages/common/components/Paginations/NumberedPagination'
@@ -45,8 +40,9 @@ import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useI
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 
-import { SortingKeys, useSortedCampaigns } from '../../hooks/useSortedCampaigns'
-import { Campaign } from '../../types/Campaign'
+import type { SortingKeys } from '../../hooks/useSortedCampaigns'
+import { useSortedCampaigns } from '../../hooks/useSortedCampaigns'
+import type { Campaign } from '../../types/Campaign'
 import {
     CampaignStatus,
     isActiveStatus,

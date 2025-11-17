@@ -1,10 +1,10 @@
 // Suggest bundles when a single item is in cart
 import { ulid } from 'ulidx'
 
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     BannerType,
     TooltipActionType,
-    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
@@ -15,7 +15,7 @@ import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRu
 import { assetsUrl } from 'utils'
 
 import { CampaignConfigurationBuilder } from '../constructor'
-import { CampaignConfiguration, CampaignTemplate } from '../types'
+import type { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
     slug: 'suggest-bundles-when-single-item',

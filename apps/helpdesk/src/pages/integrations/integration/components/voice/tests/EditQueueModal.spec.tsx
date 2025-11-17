@@ -3,7 +3,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
 import { updateVoiceQueue } from '@gorgias/helpdesk-client'
-import { VoiceQueue } from '@gorgias/helpdesk-queries'
+import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'

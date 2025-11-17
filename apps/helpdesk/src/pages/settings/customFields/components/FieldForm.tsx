@@ -12,12 +12,8 @@ import {
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
-import {
-    CustomField,
-    CustomFieldInput,
-    isCustomField,
-    isCustomFieldSystemReadOnly,
-} from 'custom-fields/types'
+import type { CustomField, CustomFieldInput } from 'custom-fields/types'
+import { isCustomField, isCustomFieldSystemReadOnly } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'

@@ -1,4 +1,4 @@
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import CountryFlag from './CountryFlag'
 import { countryCode } from './utils'

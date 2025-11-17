@@ -2,7 +2,7 @@ import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 
-import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
+import type { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
 import {
     OBJECT_TYPE_SETTINGS,

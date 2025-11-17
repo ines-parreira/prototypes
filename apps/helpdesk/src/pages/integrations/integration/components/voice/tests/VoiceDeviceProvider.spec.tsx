@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
@@ -11,7 +11,7 @@ import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
 import useHasPhone from 'hooks/useHasPhone'
 import { isDesktopDevice } from 'utils/device'
 
-import { VoiceDeviceContextState } from '../VoiceDeviceContext'
+import type { VoiceDeviceContextState } from '../VoiceDeviceContext'
 import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')

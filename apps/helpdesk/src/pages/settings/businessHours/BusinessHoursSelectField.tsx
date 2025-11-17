@@ -7,9 +7,11 @@ import {
     LegacyLabel as Label,
     Skeleton,
 } from '@gorgias/axiom'
-import {
+import type {
     BusinessHours,
     BusinessHoursConfig,
+} from '@gorgias/helpdesk-queries'
+import {
     useGetBusinessHoursDetails,
     useListAccountSettings,
 } from '@gorgias/helpdesk-queries'

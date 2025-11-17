@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
-import { useQueries, UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
@@ -12,7 +13,7 @@ import { mapArticleIngestionLogsToSourceItem } from 'pages/aiAgent/components/Pu
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { reportError } from 'utils/errors'
 
-import { BaseArticle } from '../AiAgentScrapedDomainContent/types'
+import type { BaseArticle } from '../AiAgentScrapedDomainContent/types'
 
 export const usePublicResources = ({
     helpCenterId,

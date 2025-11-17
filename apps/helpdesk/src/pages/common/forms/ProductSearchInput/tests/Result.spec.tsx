@@ -2,17 +2,14 @@ import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 
-import {
-    InventoryManagement,
-    Product,
-    Variant,
-} from 'constants/integrations/types/shopify'
+import type { Product, Variant } from 'constants/integrations/types/shopify'
+import { InventoryManagement } from 'constants/integrations/types/shopify'
 import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 
 import { shopifyDataMappers } from '../Mappings'
 import Result from '../Result'

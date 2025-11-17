@@ -1,4 +1,4 @@
-import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
+import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import Pagination from 'pages/common/components/Pagination'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'

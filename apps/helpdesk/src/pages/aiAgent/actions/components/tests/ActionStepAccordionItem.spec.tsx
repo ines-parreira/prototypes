@@ -3,13 +3,12 @@ import React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 
-import { Components } from 'rest_api/workflows_api/client.generated'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import ActionStepAccordionItem, {
-    ActionStepAccordionItemProps,
-} from '../ActionStepAccordionItem'
+import type { ActionStepAccordionItemProps } from '../ActionStepAccordionItem'
+import ActionStepAccordionItem from '../ActionStepAccordionItem'
 
 const queryClient = mockQueryClient()
 

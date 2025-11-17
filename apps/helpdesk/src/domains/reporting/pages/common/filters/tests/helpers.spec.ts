@@ -1,18 +1,20 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import {
+import type {
     CustomFieldSavedFilter,
-    FilterKey,
     SavedFilterAPI,
     SavedFilterWithLogicalOperator,
-    TagFilterInstanceId,
     TagsSavedFilter,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import {
+    FilterKey,
+    TagFilterInstanceId,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import { ActiveFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { ActiveFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import {
     activeFiltersToOptions,
     filterChannels,
@@ -23,7 +25,7 @@ import {
     TICKET_FIELDS_FILTERS_LABEL,
     toApiFormatted,
 } from 'domains/reporting/pages/common/filters/helpers'
-import { Channel } from 'services/channels'
+import type { Channel } from 'services/channels'
 
 function getMockedChannels() {
     return [

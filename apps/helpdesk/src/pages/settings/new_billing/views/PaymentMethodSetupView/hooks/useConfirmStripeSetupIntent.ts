@@ -1,8 +1,8 @@
 import { useElements, useStripe } from '@stripe/react-stripe-js'
-import {
+import type {
     SetupIntentResult,
     StripeError,
-    type StripeErrorType,
+    StripeErrorType,
 } from '@stripe/stripe-js'
 import { useMutation } from '@tanstack/react-query'
 
@@ -13,7 +13,7 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 export const useConfirmStripeSetupIntent = (
     overrides?: MutationOverrides<() => Promise<SetupIntentResult>>,

@@ -1,5 +1,5 @@
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 export const updateVariant = (
     currentVariants: CampaignVariant[],

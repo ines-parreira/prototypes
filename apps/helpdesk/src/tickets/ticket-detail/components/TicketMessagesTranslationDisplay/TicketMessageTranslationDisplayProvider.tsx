@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import type {
+    DisplayType,
+    TicketMessagesTranslationDisplay,
+} from './context/ticketMessageTranslationDisplayContext'
 import {
     DisplayedContent,
-    DisplayType,
     FetchingState,
-    TicketMessagesTranslationDisplay,
     TicketMessagesTranslationDisplayContext,
     TicketMessagesTranslationDisplayMap,
 } from './context/ticketMessageTranslationDisplayContext'

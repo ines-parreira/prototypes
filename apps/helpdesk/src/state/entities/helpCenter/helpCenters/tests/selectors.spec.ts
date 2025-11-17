@@ -4,7 +4,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {

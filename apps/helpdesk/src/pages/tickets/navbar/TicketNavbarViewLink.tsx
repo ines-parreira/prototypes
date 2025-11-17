@@ -1,10 +1,5 @@
-import {
-    ForwardedRef,
-    forwardRef,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-} from 'react'
+import type { ForwardedRef } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import classnames from 'classnames'
@@ -16,7 +11,7 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import useViewId from 'hooks/useViewId'
-import { View } from 'models/view/types'
+import type { View } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import { useSplitTicketView } from 'split-ticket-view-toggle'

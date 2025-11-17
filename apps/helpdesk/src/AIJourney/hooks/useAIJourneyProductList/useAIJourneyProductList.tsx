@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { useListProducts } from 'models/integration/queries'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { IntegrationDataItem } from 'models/integration/types'
 
 type useAIJourneyProductListParams = {
     integrationId?: number

@@ -1,8 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -14,12 +15,12 @@ import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatStatusEnum,
 } from 'models/integration/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import * as hookGorgiasChatIntegrationStatusData from '../../../hooks/useGorgiasChatIntegrationStatusData'
+import type { GorgiasChatIntegrationListRowProps } from '../GorgiasChatIntegrationListRow'
 import GorgiasChatIntegrationListRow, {
-    GorgiasChatIntegrationListRowProps,
     GorgiasChatIntegrationStatusFeedbackMapping,
 } from '../GorgiasChatIntegrationListRow'
 

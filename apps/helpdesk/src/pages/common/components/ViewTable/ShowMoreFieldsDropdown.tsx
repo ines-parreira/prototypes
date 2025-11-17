@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
 import _throttle from 'lodash/throttle'
 import {
     DropdownItem,

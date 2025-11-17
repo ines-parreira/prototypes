@@ -1,9 +1,9 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { useGridSize } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
 
-import { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
@@ -11,14 +11,14 @@ import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
-    MetricTrendFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { getBadgeTooltipForPreviousPeriod } from 'domains/reporting/pages/utils'
-import { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { AIInsightsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 import css from './IntentPerformance.less'
 

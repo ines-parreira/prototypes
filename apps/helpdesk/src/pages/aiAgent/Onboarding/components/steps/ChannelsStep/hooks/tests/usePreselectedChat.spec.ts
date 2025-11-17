@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { usePreselectedChat } from '../usePreselectedChat'
 

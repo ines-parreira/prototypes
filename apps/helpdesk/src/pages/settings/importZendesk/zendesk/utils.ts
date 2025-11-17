@@ -1,5 +1,5 @@
-import { DateTimeResultFormatType } from 'constants/datetime'
-import { ZendeskIntegration } from 'models/integration/types'
+import type { DateTimeResultFormatType } from 'constants/datetime'
+import type { ZendeskIntegration } from 'models/integration/types'
 import { formatDatetime } from 'utils'
 
 import { ImportStatus } from './types'

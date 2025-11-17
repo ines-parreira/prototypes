@@ -2,7 +2,8 @@ import React, { useContext, useMemo, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -11,15 +12,15 @@ import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getActiveCustomerId } from 'state/customers/selectors'
 import { executeAction } from 'state/infobar/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { isEditing } from 'state/widgets/selectors'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
-import { FieldCustomization } from 'Widgets/modules/Template/types'
+import type { FieldCustomization } from 'Widgets/modules/Template/types'
 
 import { ShopifyContext } from '../contexts/ShopifyContext'
 

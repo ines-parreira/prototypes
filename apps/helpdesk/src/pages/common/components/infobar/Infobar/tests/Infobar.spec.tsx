@@ -1,4 +1,5 @@
-import { ComponentProps, useState as mockUseState } from 'react'
+import type { ComponentProps } from 'react'
+import { useState as mockUseState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -11,10 +12,10 @@ import { agents } from 'fixtures/agents'
 import { mockSearchRank } from 'fixtures/searchRank'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
-import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import type InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
-import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
-import Search from 'pages/common/components/Search'
+import type InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import type Search from 'pages/common/components/Search'
 import {
     fetchPreviewCustomer,
     searchWithHighlights,

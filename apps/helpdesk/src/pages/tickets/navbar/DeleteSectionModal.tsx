@@ -5,7 +5,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import { Section } from '../../../models/section/types'
+import type { Section } from '../../../models/section/types'
 
 import css from './DeleteSectionModal.less'
 

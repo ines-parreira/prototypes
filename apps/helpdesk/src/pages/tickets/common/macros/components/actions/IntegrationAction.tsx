@@ -1,8 +1,8 @@
 import { Component } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from 'models/integration/constants'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getActionTemplate } from 'utils'
 

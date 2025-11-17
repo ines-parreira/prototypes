@@ -1,8 +1,10 @@
-import { FormEvent, useCallback, useState } from 'react'
+import type { FormEvent } from 'react'
+import { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
-import { List } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Button, Form } from 'reactstrap'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
@@ -20,13 +22,15 @@ import {
     getAccessSettings,
     getTwoFAEnforcedDatetime,
 } from 'state/currentAccount/selectors'
-import {
+import type {
     AccountSettingAccess,
-    AccountSettingType,
     CustomSSOProviders,
+} from 'state/currentAccount/types'
+import {
+    AccountSettingType,
     AccountSettingAccessSignupMode as SignupMode,
 } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import CustomSsoProviders from './CustomSsoProviders'
 import SsoToggleButton from './SsoToggleButton'

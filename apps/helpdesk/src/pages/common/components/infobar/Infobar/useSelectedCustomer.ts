@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { SearchRank } from 'hooks/useSearchRankScenario'
-import { ApiListResponseLegacyPagination } from 'models/api/types'
-import { Customer } from 'models/customer/types'
+import type { SearchRank } from 'hooks/useSearchRankScenario'
+import type { ApiListResponseLegacyPagination } from 'models/api/types'
+import type { Customer } from 'models/customer/types'
 import { fetchPreviewCustomer } from 'state/infobar/actions'
 import { FETCH_PREVIEW_CUSTOMER_SUCCESS } from 'state/infobar/constants'
 

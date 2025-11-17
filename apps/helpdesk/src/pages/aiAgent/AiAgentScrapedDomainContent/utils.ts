@@ -1,4 +1,4 @@
-import { IngestionLog } from './types'
+import type { IngestionLog } from './types'
 
 const dateOptions: Intl.DateTimeFormatOptions = {
     year: '2-digit',

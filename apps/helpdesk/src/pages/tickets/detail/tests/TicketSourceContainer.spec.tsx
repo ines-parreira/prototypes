@@ -1,9 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fromJS } from 'immutable'
 
 import { renderWithRouter } from '../../../../utils/testing'
-import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
+import type SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
 import { TicketSourceContainer } from '../TicketSourceContainer'
 
 jest.mock(

@@ -3,7 +3,7 @@ import _get from 'lodash/get'
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
 
-import { TicketMessage } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import {

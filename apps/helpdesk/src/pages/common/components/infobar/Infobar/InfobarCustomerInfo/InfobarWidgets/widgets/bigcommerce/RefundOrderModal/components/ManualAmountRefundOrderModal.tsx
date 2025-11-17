@@ -1,20 +1,20 @@
-import React, { Dispatch, useEffect, useState } from 'react'
+import type { Dispatch } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 
-import {
-    BigCommerceRefundableItemType,
+import type {
     BigCommerceRefundItemsPayload,
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
+import { BigCommerceRefundableItemType } from 'models/integration/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import { getMoneySymbol } from 'utils/getMoneySymbol'
 
-import {
-    BIGCOMMERCE_REFUND_ACTION_TYPE,
-    BigCommerceRefundActionType,
-} from '../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
+import { BigCommerceRefundActionType } from '../types'
 import { formatAmount } from '../utils'
 
 import cssRefundOrderModal from '../RefundOrderModal.less'

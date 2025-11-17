@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { useParams } from 'react-router-dom'
 
 import { useStoreManagementState } from '../../../../StoreManagementProvider'
-import { ChannelWithMetadata } from '../../../../types'
+import type { ChannelWithMetadata } from '../../../../types'
 import { useChannels } from '../useChannels'
 
 jest.mock('react-router-dom', () => ({

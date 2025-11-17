@@ -1,13 +1,11 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import {
-    VoiceCallMeasure,
-    VoiceCallSegment,
-} from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { VoiceCallMeasure } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
-import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import type { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 export const useVoiceCallCount = (
     filters: StatsFilters,

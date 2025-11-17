@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
+import type { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
@@ -21,7 +21,7 @@ import {
 import { getHeatmapMode } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppSelector from 'hooks/useAppSelector'
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
 export const ChannelsCellContent = ({

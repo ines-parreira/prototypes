@@ -1,5 +1,5 @@
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     LLMPromptTriggerNodeType,
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,

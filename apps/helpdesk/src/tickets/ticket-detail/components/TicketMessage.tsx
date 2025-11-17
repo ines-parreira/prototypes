@@ -8,7 +8,7 @@ import { useSmartFollowUps } from 'pages/tickets/detail/components/TicketMessage
 import SmartFollowUps from 'pages/tickets/detail/components/TicketMessages/SmartFollowUps'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'
-import { TicketMessageElement } from '../types'
+import type { TicketMessageElement } from '../types'
 import { MessageAvatar } from './MessageAvatar'
 import { MessageBody } from './MessageBody'
 import { MessageContent } from './MessageContent'

@@ -1,4 +1,5 @@
-import { FormEvent, memo, useCallback, useState } from 'react'
+import type { FormEvent } from 'react'
+import { memo, useCallback, useState } from 'react'
 
 import { produce } from 'immer'
 import { set as _set } from 'lodash'
@@ -7,7 +8,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { httpMethodsWithBody } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
-import {
+import type {
     Button as ButtonType,
     OnSubmitButton,
     Parameter,

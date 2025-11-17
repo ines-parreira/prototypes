@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
-import { Field } from '../MetafieldsTable/types'
+import type { Field } from '../MetafieldsTable/types'
 import { METAFIELDS_QUERY_KEY } from './useMetafields'
 import { useToggleMetafieldVisibility } from './useToggleMetafieldVisibility'
 

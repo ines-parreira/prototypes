@@ -1,4 +1,4 @@
-import {
+import type {
     MouseEvent as MouseEventReact,
     SyntheticEvent,
     TouchEvent as TouchEventReact,
@@ -10,7 +10,8 @@ import { EditorState, Modifier } from 'draft-js'
 import escodegen from 'escodegen'
 import * as esprima from 'esprima'
 import htmlparser from 'htmlparser2'
-import Immutable, { fromJS, Iterable, List, Map } from 'immutable'
+import type { Iterable, List, Map } from 'immutable'
+import Immutable, { fromJS } from 'immutable'
 import _filter from 'lodash/filter'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
@@ -22,35 +23,30 @@ import _startCase from 'lodash/startCase'
 import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
-import moment, { Moment } from 'moment-timezone'
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
 import { isMoment } from 'moment/moment'
-import { Route } from 'react-router-dom'
-import {
-    createSelector,
-    createSelectorCreator,
-    defaultMemoize,
-    Selector,
-} from 'reselect'
+import type { Route } from 'react-router-dom'
+import type { Selector } from 'reselect'
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
 
 import { fromAST, isImmutable, isPrivateAsset } from 'common/utils'
-import { TicketEvent } from 'models/ticket/types'
-import { VoiceCall } from 'models/voiceCall/types'
+import type { TicketEvent } from 'models/ticket/types'
+import type { VoiceCall } from 'models/voiceCall/types'
 
 import { humanize } from './business/format'
 import { TicketChannel } from './business/types/ticket'
 import { ACTION_TEMPLATES } from './config'
 import { UserRole } from './config/types/user'
 import { USER_ROLES_ORDERED_BY_PRIVILEGES } from './config/user'
-import { DateTimeResultFormatType } from './constants/datetime'
-import { GorgiasApiResponseDataError } from './models/api/types'
-import {
-    AlertNotification,
-    NotificationStatus,
-} from './state/notifications/types'
-import { RootState } from './state/types'
-import { ViewsState } from './state/views/types'
-import { NonEmptyArray, Schemas } from './types'
+import type { DateTimeResultFormatType } from './constants/datetime'
+import type { GorgiasApiResponseDataError } from './models/api/types'
+import type { AlertNotification } from './state/notifications/types'
+import { NotificationStatus } from './state/notifications/types'
+import type { RootState } from './state/types'
+import type { ViewsState } from './state/views/types'
+import type { NonEmptyArray, Schemas } from './types'
 import { sanitizeHtmlDefault } from './utils/html'
 import { linkify } from './utils/linkify'
 

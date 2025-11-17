@@ -1,12 +1,14 @@
-import {
+import type {
     CustomFieldCondition,
     ExpressionFieldSource,
+} from '@gorgias/helpdesk-types'
+import {
     ExpressionFieldType,
     ExpressionOperator,
 } from '@gorgias/helpdesk-types'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import {
+import type {
     CustomFieldConditionsEvaluationResults,
     CustomFieldObjectTypes,
 } from 'custom-fields/types'

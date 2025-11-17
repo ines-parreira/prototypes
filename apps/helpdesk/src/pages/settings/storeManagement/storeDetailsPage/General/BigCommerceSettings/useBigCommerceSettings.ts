@@ -1,4 +1,4 @@
-import { BigCommerceIntegration } from 'models/integration/types'
+import type { BigCommerceIntegration } from 'models/integration/types'
 import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
 
 export const useBigCommerceSettings = (integration: BigCommerceIntegration) => {

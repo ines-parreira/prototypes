@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import { DATE_TIME_FORMAT } from 'domains/reporting/services/constants'
 
 export const getCsvFileNameWithDates = (period: Period, reportName: string) => {

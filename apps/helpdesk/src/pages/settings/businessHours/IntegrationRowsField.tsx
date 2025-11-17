@@ -3,7 +3,7 @@ import {
     LegacyCheckBoxField as CheckBoxField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import {
+import type {
     IntegrationType,
     IntegrationWithBusinessHoursAndStore,
 } from '@gorgias/helpdesk-types'

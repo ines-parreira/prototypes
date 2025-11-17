@@ -5,7 +5,7 @@ import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 import { useTaskDisplayLimit } from 'pages/aiAgent/Overview/hooks/pendingTasks/useTaskDisplayLimit'
 
-import { Task } from '../../hooks/pendingTasks/tasks/Task'
+import type { Task } from '../../hooks/pendingTasks/tasks/Task'
 import { PendingTask } from '../PendingTask/PendingTask'
 import { PendingTasksCompletionBar } from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
 import { Expander } from './Expander'

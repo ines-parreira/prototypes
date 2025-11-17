@@ -3,7 +3,8 @@ import React from 'react'
 import { render } from '@testing-library/react'
 
 import { PhoneCountry } from 'business/twilio'
-import { AddressInformation, AddressType } from 'models/phoneNumber/types'
+import type { AddressInformation } from 'models/phoneNumber/types'
+import { AddressType } from 'models/phoneNumber/types'
 
 import PhoneAddressFields from '../PhoneAddressFields'
 

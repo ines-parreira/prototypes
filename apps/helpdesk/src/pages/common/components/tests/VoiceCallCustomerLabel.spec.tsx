@@ -1,8 +1,8 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { cleanup, render, screen } from '@testing-library/react'
 
-import { CustomerLabel } from 'pages/common/utils/labels'
+import type { CustomerLabel } from 'pages/common/utils/labels'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
 import VoiceCallCustomerLabel from '../VoiceCallCustomerLabel/VoiceCallCustomerLabel'

@@ -16,12 +16,10 @@ import {
     useTicketsRepliedTimeSeries,
     useZeroTouchTicketsTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
+import type { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    StatsFilters,
-    TagFilterInstanceId,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { CHART_TOOLTIP_TARGET as barChartTooltipTarget } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { CHART_TOOLTIP_TARGET as lineChartTooltipTarget } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
@@ -31,7 +29,7 @@ import { OverviewChartConfig } from 'domains/reporting/pages/support-performance
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)

@@ -1,7 +1,7 @@
 import { Component, type ComponentType, type CSSProperties } from 'react'
 
 import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
-import { Option } from './MultiSelectOptionsField/types'
+import type { Option } from './MultiSelectOptionsField/types'
 
 type Props = {
     allowCustomValues: boolean

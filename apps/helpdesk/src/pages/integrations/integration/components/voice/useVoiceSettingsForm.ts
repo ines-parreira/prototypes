@@ -2,10 +2,12 @@ import { history } from '@repo/routing'
 import { merge } from 'lodash'
 import cloneDeep from 'lodash/cloneDeep'
 
-import {
+import type {
     HttpResponse,
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
+} from '@gorgias/helpdesk-queries'
+import {
     useDeleteIntegration,
     useUpdateAllPhoneSettings,
 } from '@gorgias/helpdesk-queries'

@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
@@ -8,8 +9,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import { notify } from 'state/notifications/actions'
+import type { Notification } from 'state/notifications/types'
 import {
-    Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
@@ -20,7 +21,7 @@ import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
 } from '../../constants'
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
 import css from './SummaryFooter.less'
 

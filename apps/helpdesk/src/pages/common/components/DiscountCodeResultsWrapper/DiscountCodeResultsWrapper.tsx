@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
-import { DiscountCode } from 'models/discountCodes/types'
+import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import type { DiscountCode } from 'models/discountCodes/types'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

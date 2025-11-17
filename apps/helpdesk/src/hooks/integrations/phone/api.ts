@@ -1,4 +1,4 @@
-import { Call } from '@twilio/voice-sdk'
+import type { Call } from '@twilio/voice-sdk'
 
 import client from 'models/api/resources'
 import { reportError } from 'utils/errors'

@@ -8,7 +8,8 @@
  */
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _noop from 'lodash/noop'
-import io, { Socket } from 'socket.io-client'
+import type { Socket } from 'socket.io-client'
+import io from 'socket.io-client'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -17,7 +18,8 @@ import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
 } from './constants'
 import IncrementalBackoff from './incrementalBackoff'
-import { BroadcastChannelEvent, WSMessage } from './types'
+import type { WSMessage } from './types'
+import { BroadcastChannelEvent } from './types'
 
 export class FallbackWorker {
     socket: Socket | null = null

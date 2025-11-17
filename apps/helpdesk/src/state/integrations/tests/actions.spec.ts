@@ -1,22 +1,23 @@
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 import type { Client } from 'rest_api/gorgias_chat_protected_api/client.generated'
-import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
+import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
 
 import client from '../../../models/api/resources'
+import type { Integration } from '../../../models/integration/types'
 import {
     GorgiasChatStatusEnum,
-    Integration,
     IntegrationType,
 } from '../../../models/integration/types'
-import { StoreDispatch } from '../../types'
+import type { StoreDispatch } from '../../types'
 import * as actions from '../actions'
 import * as gorgiasChatActions from '../actions/gorgias-chat.actions'
 import * as helpers from '../helpers'

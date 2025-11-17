@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import { MacroDraft } from 'models/macro/types'
+import type { MacroDraft } from 'models/macro/types'
 
 import { ActionPreviews } from './ActionPreviews/ActionPreviews'
 

@@ -7,7 +7,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import Button from 'gorgias-design-system/Buttons/Button'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 
 import MousePointer from './components/MousePointer'
 import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'

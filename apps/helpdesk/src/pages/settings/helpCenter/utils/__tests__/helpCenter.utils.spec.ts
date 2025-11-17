@@ -1,7 +1,10 @@
 import { assumeMock } from '@repo/testing'
 import copy from 'copy-to-clipboard'
 
-import { ShopifyIntegration, StoreIntegration } from 'models/integration/types'
+import type {
+    ShopifyIntegration,
+    StoreIntegration,
+} from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'

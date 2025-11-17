@@ -4,15 +4,15 @@ import { produce } from 'immer'
 import _set from 'lodash/set'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getConditionsNodeErrors,
     getGraphAppAppErrors,
     getHTTPRequestNodeErrors,
     getLLMPromptTriggerNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
 

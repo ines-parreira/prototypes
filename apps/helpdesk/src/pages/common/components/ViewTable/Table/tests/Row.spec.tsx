@@ -1,8 +1,10 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'

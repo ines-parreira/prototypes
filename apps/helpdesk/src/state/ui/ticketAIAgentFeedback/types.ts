@@ -1,5 +1,5 @@
-import { TicketMessage } from 'models/ticket/types'
-import { KnowledgeSourceArticleEditorState } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
+import type { TicketMessage } from 'models/ticket/types'
+import type { KnowledgeSourceArticleEditorState } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 export enum UIActions {
     ChangeTicketMessage = 'CHANGE_TICKET_MESSAGE',

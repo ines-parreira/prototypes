@@ -2,10 +2,8 @@ import React from 'react'
 
 import { cleanup, render, screen } from '@testing-library/react'
 
-import {
-    EmailMigrationInboundVerification,
-    EmailMigrationInboundVerificationStatus,
-} from 'models/integration/types'
+import type { EmailMigrationInboundVerification } from 'models/integration/types'
+import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 
 import EmailForwardingTable from '../EmailMigration/EmailForwardingTable'
 

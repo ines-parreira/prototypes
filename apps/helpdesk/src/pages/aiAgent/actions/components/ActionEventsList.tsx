@@ -12,7 +12,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 import ActionEventRow from './ActionEventRow'
 
 import css from './ActionEventsList.less'

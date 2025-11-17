@@ -1,9 +1,11 @@
-import React, { HTMLProps, ReactNode, useEffect, useRef, useState } from 'react'
+import type { HTMLProps, ReactNode } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { DropTargetHookSpec, DropTargetMonitor, useDrop } from 'react-dnd'
+import type { DropTargetHookSpec, DropTargetMonitor } from 'react-dnd'
+import { useDrop } from 'react-dnd'
 
-import { ViewCategoryNavbar } from 'models/view/types'
+import type { ViewCategoryNavbar } from 'models/view/types'
 
 import css from './TicketNavbarDropTarget.less'
 

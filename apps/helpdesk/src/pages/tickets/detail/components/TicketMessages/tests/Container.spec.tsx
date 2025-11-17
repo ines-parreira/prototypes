@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
@@ -11,8 +12,9 @@ import {
     duplicatedHiddenFacebookMessage,
     message,
 } from 'models/ticket/tests/mocks'
-import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import type { TicketMessage } from 'models/ticket/types'
+import { MessageMetadataType } from 'models/ticket/types'
+import type Avatar from 'pages/common/components/Avatar/Avatar'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 
 import Container from '../Container'

@@ -1,9 +1,11 @@
-import React, { Component, FormEvent } from 'react'
+import type { FormEvent } from 'react'
+import React, { Component } from 'react'
 
 import { history } from '@repo/routing'
 import classNames from 'classnames'
-import { Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { Map } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -38,7 +40,7 @@ import {
     getForwardingEmailAddress,
 } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 type OwnProps = {
     integration: Map<any, any>

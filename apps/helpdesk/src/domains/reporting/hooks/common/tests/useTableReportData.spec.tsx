@@ -9,18 +9,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
+import type { TableDataSources } from 'domains/reporting/hooks/common/useTableReportData'
 import {
     fetchTableReportData,
-    TableDataSources,
     useTableReportData,
     useTables,
 } from 'domains/reporting/hooks/common/useTableReportData'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
-import { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
@@ -39,7 +39,7 @@ import {
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)

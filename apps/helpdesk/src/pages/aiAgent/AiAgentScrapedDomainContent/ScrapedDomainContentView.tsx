@@ -11,7 +11,7 @@ import {
 
 import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {
+import type {
     ContentType,
     ProductIngestedResourceWithArticleId,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'

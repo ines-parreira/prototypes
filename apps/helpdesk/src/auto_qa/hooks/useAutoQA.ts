@@ -2,17 +2,15 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
+import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 import {
-    TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/helpdesk-queries'
 
-import {
-    dimensionOrderOfManualDimensions,
-    SupportedTicketQAScoreDimension,
-} from '../config'
+import type { SupportedTicketQAScoreDimension } from '../config'
+import { dimensionOrderOfManualDimensions } from '../config'
 import type { DimensionSummary } from '../types'
 import useSaveState from './useSaveState'
 

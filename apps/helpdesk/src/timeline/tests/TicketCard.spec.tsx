@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TicketCompact } from '@gorgias/helpdesk-queries'
+import type { TicketCompact } from '@gorgias/helpdesk-queries'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'

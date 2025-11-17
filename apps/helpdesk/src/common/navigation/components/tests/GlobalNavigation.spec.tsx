@@ -4,9 +4,9 @@ import { fromJS } from 'immutable'
 
 import GlobalNavigation from 'common/navigation/components/GlobalNavigation'
 import useActiveItem from 'common/navigation/hooks/useActiveItem'
+import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {
     NavBarContext,
-    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { UserRole } from 'config/types/user'

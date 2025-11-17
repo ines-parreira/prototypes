@@ -1,11 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
@@ -22,7 +23,7 @@ import {
     ConvertTrackingEventsDimension,
     ConvertTrackingEventsMeasure,
 } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchProductRecommendations,
     useProductRecommendations,
@@ -31,7 +32,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 

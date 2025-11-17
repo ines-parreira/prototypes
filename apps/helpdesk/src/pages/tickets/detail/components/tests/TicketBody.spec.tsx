@@ -1,11 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
-import { VirtuosoProps } from 'react-virtuoso'
+import type { VirtuosoProps } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,9 +15,9 @@ import { useSearch } from 'hooks/useSearch'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import type { ShoppingAssistantEvent } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import {
     InfluencedOrderSource,
-    ShoppingAssistantEvent,
     useInsertShoppingAssistantEventElements,
 } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import { getQueryData } from 'state/queries/selectors'

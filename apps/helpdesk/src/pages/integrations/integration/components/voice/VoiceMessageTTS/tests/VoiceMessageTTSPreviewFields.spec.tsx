@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
-import { VoiceMessageTextToSpeech } from 'models/integration/types'
+import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import TextToSpeechContext from '../TextToSpeechContext'
 import VoiceMessageTTSPreviewFields from '../VoiceMessageTTSPreviewFields'

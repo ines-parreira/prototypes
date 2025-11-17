@@ -1,6 +1,7 @@
-import { ComponentProps, useState } from 'react'
+import type { ComponentProps } from 'react'
+import { useState } from 'react'
 
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'

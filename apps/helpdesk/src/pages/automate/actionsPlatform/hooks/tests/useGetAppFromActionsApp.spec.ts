@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import { App } from '../../types'
+import type { App } from '../../types'
 import useGetAppFromActionsApp from '../useGetAppFromActionsApp'
 
 describe('useGetAppFromActionsApp()', () => {

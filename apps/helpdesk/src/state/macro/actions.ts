@@ -1,17 +1,19 @@
-import axios, { AxiosError, CancelToken } from 'axios'
-import { fromJS, List, Map } from 'immutable'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
+import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import client from 'models/api/resources'
 import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'
 import GorgiasApi from 'services/gorgiasApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 import * as constants from './constants'
-import { MacroApiError } from './types'
+import type { MacroApiError } from './types'
 import { getErrorReason } from './utils'
 
 export function fetchMacros(

@@ -7,7 +7,7 @@ import {
     buildNodeCommonProperties,
     walkVisualBuilderGraph,
 } from '../../models/visualBuilderGraph.model'
-import {
+import type {
     AutomatedMessageNodeType,
     CancelOrderNodeType,
     CancelSubscriptionNodeType,
@@ -36,7 +36,7 @@ import {
     VisualBuilderNode,
     VisualBuilderTriggerNode,
 } from '../../models/visualBuilderGraph.types'
-import { WorkflowTransition } from '../../models/workflowConfiguration.types'
+import type { WorkflowTransition } from '../../models/workflowConfiguration.types'
 
 export function greyOutBranch(
     graph: VisualBuilderGraph,

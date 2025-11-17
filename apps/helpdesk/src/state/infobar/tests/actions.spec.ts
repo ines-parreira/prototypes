@@ -1,13 +1,15 @@
 import { assumeMock } from '@repo/testing'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { fromJS, Map } from 'immutable'
-import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { MockStoreEnhanced } from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
 import { searchCustomers } from 'models/customer/resources'
-import { Customer } from 'models/customer/types'
+import type { Customer } from 'models/customer/types'
 import * as actions from 'state/infobar/actions'
 import {
     SEARCH_CUSTOMERS_ERROR,
@@ -15,7 +17,7 @@ import {
     SEARCH_CUSTOMERS_SUCCESS,
 } from 'state/infobar/constants'
 import { initialState } from 'state/infobar/reducers'
-import { StoreDispatch } from 'state/types'
+import type { StoreDispatch } from 'state/types'
 
 import { isCurrentlyOnTicket } from '../../../utils'
 

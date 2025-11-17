@@ -1,4 +1,5 @@
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiAgentTableChart } from 'domains/reporting/pages/automate/ai-agent/AiAgentTableChart'
 import { AutomatedInteractionsMetricCard } from 'domains/reporting/pages/automate/ai-agent/AutomatedInteractionsMetricCard'
 import {
@@ -6,10 +7,8 @@ import {
     AutomatedInteractionsOverTimeChart,
 } from 'domains/reporting/pages/automate/ai-agent/AutomatedInteractionsOverTimeChart'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
-    ChartType,
-    ReportConfig,
-} from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { PAGE_TITLE_AI_AGENT } from 'domains/reporting/pages/self-service/constants'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { TicketDistributionChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable'

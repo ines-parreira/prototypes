@@ -1,6 +1,6 @@
 import _get from 'lodash/get'
 
-import {
+import type {
     ChartConfig,
     ReportChildrenConfig,
     ReportConfig,

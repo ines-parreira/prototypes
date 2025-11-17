@@ -5,7 +5,8 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { integrationsState } from 'fixtures/integrations'
-import { IntegrationType, PhoneIntegration } from 'models/integration/types'
+import type { PhoneIntegration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { PhoneFunction } from 'models/phoneNumber/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 

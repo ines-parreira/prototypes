@@ -1,10 +1,9 @@
-import { FilterKey, StaticFilter } from 'domains/reporting/models/stat/types'
-import { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
+import type { StaticFilter } from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
+import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
-import {
-    ChartType,
-    ReportConfig,
-} from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import ArticleViewsGraph from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 import { ArticleViewsTrendCard } from 'domains/reporting/pages/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 import NoSearchTable, {

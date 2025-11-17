@@ -1,4 +1,4 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { ActionTemplateExecution } from 'config'
 import { getDefaultMacro } from 'state/macro/utils'

@@ -1,4 +1,4 @@
-import { getContrast } from 'color2k'
+import type { getContrast } from 'color2k'
 
 import { getEnoughContrastedColor, isValidColor } from '../colors'
 

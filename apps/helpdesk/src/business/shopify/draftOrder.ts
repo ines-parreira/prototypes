@@ -1,7 +1,11 @@
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import { ulid } from 'ulidx'
 
-import { Product, Variant } from '../../constants/integrations/types/shopify'
+import type {
+    Product,
+    Variant,
+} from '../../constants/integrations/types/shopify'
 import { refreshAppliedDiscounts } from './discount'
 import { initLineItemAppliedDiscount } from './lineItem'
 

@@ -1,21 +1,14 @@
-import React, {
-    createContext,
-    Dispatch,
-    SetStateAction,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import type React from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import _debounce from 'lodash/debounce'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import {
-    AlgoliaSearchClient,
-    initSearchClient,
-} from 'pages/settings/helpCenter/utils/algolia'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { AlgoliaSearchClient } from 'pages/settings/helpCenter/utils/algolia'
+import { initSearchClient } from 'pages/settings/helpCenter/utils/algolia'
 
-import {
+import type {
     AlgoliaHit,
     AlgoliaRecordTags,
     EntitiesArticleRecord,

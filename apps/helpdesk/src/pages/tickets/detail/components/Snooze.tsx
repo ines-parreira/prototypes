@@ -3,7 +3,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import cn from 'classnames'
-import { Moment } from 'moment'
+import type { Moment } from 'moment'
 
 import {
     LegacyButton as Button,

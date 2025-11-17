@@ -27,13 +27,8 @@ import {
     voicePlan2,
     voiceProduct,
 } from 'fixtures/productPrices'
-import {
-    Cadence,
-    HelpdeskPlan,
-    Plan,
-    Product,
-    ProductType,
-} from 'models/billing/types'
+import type { HelpdeskPlan, Plan, Product } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import {
     getCadenceName,
     isOtherCadenceDowngrade,
@@ -42,14 +37,15 @@ import {
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import BillingFrequencyView, {
+import type {
     PlanByProductType,
     PlansByProductType,
 } from '../BillingFrequencyView'
+import BillingFrequencyView from '../BillingFrequencyView'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

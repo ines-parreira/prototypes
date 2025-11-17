@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, useState } from 'react'
 
 import moment from 'moment'
 
@@ -7,7 +8,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { MinimumTimeBetweenCampaigns } from 'pages/convert/campaigns/types/CampaignMeta'
+import type { MinimumTimeBetweenCampaigns } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import {
     DEFAULT_DESCRIPTION,

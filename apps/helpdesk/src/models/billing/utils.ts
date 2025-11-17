@@ -1,17 +1,16 @@
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
-import { ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
 
-import {
+import type {
     AutomatePlan,
-    Cadence,
     ConvertPlan,
     HelpdeskPlan,
     Plan,
-    ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { ENTERPRISE_PLAN_ID } from 'pages/settings/new_billing/constants'
 
 import {

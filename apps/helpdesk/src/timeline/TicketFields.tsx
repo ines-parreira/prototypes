@@ -4,21 +4,23 @@ import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import cn from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-import {
+import type {
     CustomField,
-    ObjectType,
     Ticket,
     TicketCompact,
     TicketCompactCustomFieldsAnyOf,
-    useListCustomFields,
 } from '@gorgias/helpdesk-queries'
+import { ObjectType, useListCustomFields } from '@gorgias/helpdesk-queries'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import { isFieldVisible } from 'custom-fields/helpers/isFieldVisible'
-import { CustomFieldAIManagedType, CustomFieldValue } from 'custom-fields/types'
+import type {
+    CustomFieldAIManagedType,
+    CustomFieldValue,
+} from 'custom-fields/types'
 
 import { useCustomFieldsConditionsEvaluationResults } from '../custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 

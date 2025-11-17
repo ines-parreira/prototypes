@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import {
     removeFieldFilter,
     updateFieldFilter,
@@ -14,7 +15,7 @@ import {
 } from 'state/views/actions'
 
 import { view as viewFixture } from '../../../../../../fixtures/views'
-import { CallExpression } from '../CallExpression'
+import type { CallExpression } from '../CallExpression'
 import ViewFilters from '../ViewFilters'
 
 jest.mock('state/views/actions')

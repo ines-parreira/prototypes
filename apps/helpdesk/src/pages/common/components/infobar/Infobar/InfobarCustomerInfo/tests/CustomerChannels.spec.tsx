@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import * as segmentTracker from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
@@ -17,7 +17,7 @@ import {
 } from 'constants/user'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { customerFieldDefinitions } from 'fixtures/customField'
-import { CustomerChannel } from 'models/customerChannel/types'
+import type { CustomerChannel } from 'models/customerChannel/types'
 import { initialState } from 'state/twilio/voiceDevice'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

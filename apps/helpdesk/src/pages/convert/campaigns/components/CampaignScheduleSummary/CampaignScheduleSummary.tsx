@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
+import type { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { formatDatetime } from 'utils'

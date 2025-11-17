@@ -1,4 +1,4 @@
-import { UseQueryOptions } from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
 
 import { useGetFileIngestionArticleTitlesAndStatus } from 'models/helpCenter/queries'
 

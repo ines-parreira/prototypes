@@ -1,11 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'

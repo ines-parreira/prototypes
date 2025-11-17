@@ -2,9 +2,8 @@ import { render } from '@testing-library/react'
 
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import { IntegrationType } from 'models/integration/types'
+import type { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
 import {
-    NewPhoneNumber,
-    OldPhoneNumber,
     PhoneConnectionType,
     PhoneCountry,
     PhoneType,

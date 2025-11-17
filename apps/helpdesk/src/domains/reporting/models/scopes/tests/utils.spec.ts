@@ -1,13 +1,13 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { MetricScope } from 'domains/reporting/hooks/metricNames'
-import { ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import type { ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     compareAndReportQueries,
     createScopeFilters,
 } from 'domains/reporting/models/scopes/utils'
-import { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
-import { ReportingQuery } from 'domains/reporting/models/types'
+import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { ReportingQuery } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('utils', () => {

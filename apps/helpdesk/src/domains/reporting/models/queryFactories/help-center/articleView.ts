@@ -1,11 +1,11 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { HelpCenterTrackingEventCube } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import {
-    HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,

@@ -1,18 +1,14 @@
 import { useEffect } from 'react'
 
-import {
-    useInfiniteQuery,
-    useQueries,
-    useQuery,
-    UseQueryOptions,
-} from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query'
 
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import { ApiListResponse } from 'models/api/types'
+import type { ApiListResponse } from 'models/api/types'
 import { fetchIntegrationProducts } from 'models/integration/resources'
 import GorgiasApi from 'services/gorgiasApi'
 import {
@@ -27,12 +23,12 @@ import {
     fetchShopifyCollections,
     fetchShopTags,
 } from './resources/shopify'
-import {
+import type {
     GetInstallationSnippetParams,
     IntegrationDataItem,
     ShopifyTags,
 } from './types'
-import { AppData, AppListData } from './types/app'
+import type { AppData, AppListData } from './types/app'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes

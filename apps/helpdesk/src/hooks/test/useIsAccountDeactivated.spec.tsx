@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 const renderUseIsAccountDeactivated = (

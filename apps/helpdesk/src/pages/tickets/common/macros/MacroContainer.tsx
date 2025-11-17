@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { Filters } from 'models/macro/types'
+import type { Filters } from 'models/macro/types'
 import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
 import { getHumanAgents } from 'state/agents/selectors'
 

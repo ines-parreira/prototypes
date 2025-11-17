@@ -9,8 +9,8 @@ import {
 import Card from 'gorgias-design-system/Cards/Card'
 import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
-import { GorgiasChatAvatarSettings } from 'models/integration/types'
-import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { GorgiasChatAvatarSettings } from 'models/integration/types'
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 
 import ConversationAvatars from './ConversationAvatars'
 import { AddIcon, BoxIcon, ChevronRightIcon, PlaneIcon } from './icon-utils'

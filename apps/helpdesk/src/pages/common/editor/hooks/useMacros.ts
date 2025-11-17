@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { MacrosProperties } from 'models/macro/types'
+import type { MacrosProperties } from 'models/macro/types'
 
 type Options = {
     initialFilters: MacrosProperties

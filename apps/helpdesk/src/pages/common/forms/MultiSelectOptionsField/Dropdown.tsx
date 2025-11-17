@@ -1,4 +1,5 @@
-import { ComponentType, useState } from 'react'
+import type { ComponentType } from 'react'
+import { useState } from 'react'
 
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -8,7 +9,7 @@ import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
 import Input from './Input'
 import Menu from './Menu'
-import { Option } from './types'
+import type { Option } from './types'
 
 import css from './Dropdown.less'
 

@@ -33,7 +33,7 @@ import useCreateActionTemplate from './hooks/useCreateActionTemplate'
 import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
 import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import { ActionTemplate, ActionTemplateApp } from './types'
+import type { ActionTemplate, ActionTemplateApp } from './types'
 
 import css from './ActionsPlatformEditStepView.less'
 

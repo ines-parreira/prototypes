@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'

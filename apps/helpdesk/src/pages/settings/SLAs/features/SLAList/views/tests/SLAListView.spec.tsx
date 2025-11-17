@@ -4,7 +4,7 @@ import {
 } from 'pages/settings/SLAs/fixtures/fixtures'
 import { renderWithRouter } from 'utils/testing'
 
-import { TableColumn } from '../../types'
+import type { TableColumn } from '../../types'
 import * as SLATableConfig from '../config'
 import { columnConfig } from '../config'
 import SLAListView from '../SLAListView'

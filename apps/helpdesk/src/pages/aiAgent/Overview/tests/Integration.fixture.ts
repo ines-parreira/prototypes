@@ -1,8 +1,10 @@
-import {
+import type {
     EmailIntegrationMeta,
-    GorgiasChatCreationWizardStatus,
     GorgiasChatIntegrationMeta,
     Integration,
+} from 'models/integration/types'
+import {
+    GorgiasChatCreationWizardStatus,
     IntegrationType,
 } from 'models/integration/types'
 

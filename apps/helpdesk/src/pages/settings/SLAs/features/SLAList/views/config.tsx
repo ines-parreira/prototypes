@@ -1,8 +1,9 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import { isExtraLargeScreen } from 'pages/common/utils/mobile'
 import ChannelListCell from 'pages/settings/SLAs/features/SLAList/views/ChannelListCell'
 import DatetimeCell from 'pages/settings/SLAs/features/SLAList/views/DatetimeCell'

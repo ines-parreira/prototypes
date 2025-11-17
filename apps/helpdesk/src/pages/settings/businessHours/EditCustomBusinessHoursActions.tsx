@@ -2,7 +2,7 @@ import { history } from '@repo/routing'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
+import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 
 import { FormSubmitButton } from 'core/forms'
 import FormActions from 'core/forms/components/FormActions'

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { ulid } from 'ulidx'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
@@ -17,7 +17,7 @@ import { Conditions } from 'pages/convert/campaigns/containers/CampaignAudienceS
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
-import {
+import type {
     CampaignDisplaysInSession,
     MinimumTimeBetweenCampaigns,
 } from 'pages/convert/campaigns/types/CampaignMeta'

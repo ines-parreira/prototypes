@@ -1,6 +1,7 @@
-import React, { Ref } from 'react'
+import type { Ref } from 'react'
+import type React from 'react'
 
-import { SuggestionStates } from './InTicketSuggestion'
+import type { SuggestionStates } from './InTicketSuggestion'
 
 import css from './SuggestionHeader.less'
 

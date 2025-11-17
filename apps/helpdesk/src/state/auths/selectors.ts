@@ -1,6 +1,6 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { RootState } from '../types'
+import type { RootState } from '../types'
 
 export const getApiKey = (state: RootState): string => {
     const apiKey: Maybe<Map<any, any>> = state.auths.find(

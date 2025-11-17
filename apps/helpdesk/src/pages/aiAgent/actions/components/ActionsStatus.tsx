@@ -1,6 +1,6 @@
 import { Badge } from '@gorgias/axiom'
 
-import { LlmTriggeredExecution } from '../types'
+import type { LlmTriggeredExecution } from '../types'
 
 const success = <Badge type={'light-success'}>SUCCESS</Badge>
 const error = <Badge type={'light-error'}>ERROR</Badge>

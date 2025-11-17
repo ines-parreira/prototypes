@@ -7,14 +7,16 @@ import {
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
-    BigCommerceGeneralErrorMessage,
     BigCommerceOrder,
     BigCommerceOrderProduct,
-    BigCommerceRefundableItemType,
     CalculateOrderRefundDataNestedResponse,
     CalculateOrderRefundQuotesDataResponse,
+} from 'models/integration/types'
+import {
+    BigCommerceGeneralErrorMessage,
+    BigCommerceRefundableItemType,
 } from 'models/integration/types'
 import * as integrationHelpers from 'state/integrations/helpers'
 

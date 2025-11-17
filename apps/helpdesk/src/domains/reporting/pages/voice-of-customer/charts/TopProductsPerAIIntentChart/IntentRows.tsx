@@ -1,4 +1,5 @@
-import { CSSProperties, useState } from 'react'
+import type { CSSProperties } from 'react'
+import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { TrendIcon } from '@repo/reporting'
@@ -19,7 +20,7 @@ import {
     TopIntentsColumns,
     TopProductsTableColumnsForIntents,
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
-import { TopIntentsRowProps } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'
+import type { TopIntentsRowProps } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 

@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 
-import { NavigationSize } from '../../types/NavigationSize'
-import { isPageType, PageType } from '../../types/PageType'
+import type { NavigationSize } from '../../types/NavigationSize'
+import type { PageType } from '../../types/PageType'
+import { isPageType } from '../../types/PageType'
 
 import css from './PaginationItem.less'
 

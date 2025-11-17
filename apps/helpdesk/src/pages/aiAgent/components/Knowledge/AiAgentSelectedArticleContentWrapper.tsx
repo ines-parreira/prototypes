@@ -1,12 +1,10 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
-import { HelpCenter } from 'models/helpCenter/types'
-import {
-    CONTENT_TYPE,
-    IngestedResourceStatus,
-} from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { IngestedResourceStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { CONTENT_TYPE } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import ScrapedDomainSelectedContent from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent'
-import { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
+import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

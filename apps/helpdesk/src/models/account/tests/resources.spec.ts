@@ -1,10 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
-import {
-    AccountSetting,
-    AccountSettingType,
-} from '../../../state/currentAccount/types'
+import type { AccountSetting } from '../../../state/currentAccount/types'
+import { AccountSettingType } from '../../../state/currentAccount/types'
 import client from '../../api/resources'
 import {
     createAccountSetting,

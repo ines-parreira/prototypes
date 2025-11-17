@@ -1,3 +1,4 @@
+import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import {
     getCustomFieldsOrder,
     getHeatmapMode,
@@ -6,14 +7,13 @@ import {
     initialState,
     setOrder,
     setSelectedCustomField,
-    TicketInsightsOrder,
     ticketInsightsSlice,
     toggleHeatmapMode,
     toggleValueMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('ticketInsightsSlice', () => {
     const fieldId = 123

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { TransitionsState } from '../types'
+import type { TransitionsState } from '../types'
 import TransitionConditionsAccordion from './TransitionConditionsAccordion'
 
 const mockTransition: TransitionsState = {

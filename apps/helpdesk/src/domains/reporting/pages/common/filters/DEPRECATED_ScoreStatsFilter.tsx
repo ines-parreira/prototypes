@@ -1,6 +1,7 @@
-import React, { ComponentProps, useCallback, useMemo } from 'react'
+import type { ComponentProps } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { useHelpCenterStatsFilters } from 'domains/reporting/pages/help-center/hooks/useHelpCenterStatsFilters'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 describe('useHelpCenterStatsFilters', () => {
     const START_DATE = '2021-02-03T00:00:00.000Z'

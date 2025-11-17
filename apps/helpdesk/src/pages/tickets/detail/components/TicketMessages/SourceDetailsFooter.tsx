@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { TicketMessage } from 'models/ticket/types'
+import type { TicketMessage } from 'models/ticket/types'
 
 import SourceActionsFooter from './SourceActionsFooter'
 

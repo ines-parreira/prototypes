@@ -2,10 +2,10 @@ import { useCallback, useRef } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { BannerCategory } from '../../types'
+import type { BannerCategory } from '../../types'
 import { DISMISSED_BANNER_STORAGE_KEY } from '../constants'
 import { isBannerDismissed as isBannerDismissedInternal } from '../helpers/isBannerDismissed'
-import { AlertBannerStorage } from '../types'
+import type { AlertBannerStorage } from '../types'
 import { useStorageCleanup } from './useStorageCleanup'
 import { useStorageSync } from './useStorageSync'
 

@@ -4,7 +4,7 @@ import { Col, Collapse, Container, Row } from 'reactstrap'
 
 import { Badge } from '@gorgias/axiom'
 
-import { ProductDetails } from 'models/ticket/types'
+import type { ProductDetails } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'
 import { getIconFromUrl } from 'utils'
 

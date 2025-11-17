@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react'
-import { AxiosError } from 'axios'
-import { Middleware } from 'redux'
+import type { AxiosError } from 'axios'
+import type { Middleware } from 'redux'
 
 import { reportError } from 'utils/errors'
 

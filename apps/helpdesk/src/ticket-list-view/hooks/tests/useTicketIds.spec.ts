@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import { TicketCompact } from '../../types'
+import type { TicketCompact } from '../../types'
 import useTicketIds from '../useTicketIds'
 
 describe('useTicketIds', () => {

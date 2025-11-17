@@ -24,18 +24,18 @@ import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
     PlaygroundCustomer,
-    PlaygroundEvent,
     PlaygroundTemplateMessage,
 } from '../../types'
+import { PlaygroundEvent } from '../../types'
 import { mapPlaygroundFormValuesToMessage } from '../../utils/playground-messages.utils'
+import type { TicketData } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import {
     PlaygroundCustomerSelection,
     SenderTypeValues,
-    TicketData,
 } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { PlaygroundPredefinedMessages } from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
 import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'

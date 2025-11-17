@@ -8,7 +8,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
 import { useSearchParam } from '../../../../hooks/useSearchParam'

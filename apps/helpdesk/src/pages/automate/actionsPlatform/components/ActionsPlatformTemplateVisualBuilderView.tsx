@@ -9,7 +9,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import WorkflowVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {
+import type {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'

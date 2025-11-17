@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
 import { logPageChange } from '@repo/logging'
+import type { RouteComponentProps } from 'react-router-dom'
 import {
     Redirect,
     Route,
-    RouteComponentProps,
     Switch,
     useLocation,
     useRouteMatch,

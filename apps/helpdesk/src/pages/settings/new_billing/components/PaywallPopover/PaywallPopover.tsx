@@ -1,4 +1,5 @@
-import React, { ReactNode, RefObject } from 'react'
+import type { ReactNode, RefObject } from 'react'
+import React from 'react'
 
 import { Popover, PopoverBody } from 'reactstrap'
 

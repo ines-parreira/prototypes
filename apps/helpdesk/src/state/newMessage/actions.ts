@@ -2,9 +2,11 @@ import { createAction } from '@reduxjs/toolkit'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
-import axios, { AxiosError, CancelToken } from 'axios'
+import type { AxiosError, CancelToken } from 'axios'
+import axios from 'axios'
 import { ContentState, convertFromHTML } from 'draft-js'
-import { fromJS, List, Map } from 'immutable'
+import type { List, Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _assign from 'lodash/assign'
 import _isNull from 'lodash/isNull'
 import _omit from 'lodash/omit'
@@ -12,7 +14,7 @@ import _pick from 'lodash/pick'
 import _split from 'lodash/split'
 import _throttle from 'lodash/throttle'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import {
     TicketChannel,
@@ -23,7 +25,8 @@ import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import { AttachmentEnum, GenericAttachment } from 'common/types'
+import type { GenericAttachment } from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import { isImmutable, uploadFiles } from 'common/utils'
 import { ActionTemplateExecution } from 'config'
 import { UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS } from 'config/integrations/shopify'
@@ -31,23 +34,21 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import client from 'models/api/resources'
-import { Customer } from 'models/customer/types'
-import { DiscountCode } from 'models/discountCodes/types'
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from 'models/macroAction/types'
+import type { Customer } from 'models/customer/types'
+import type { DiscountCode } from 'models/discountCodes/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import { search } from 'models/search/resources'
-import { SearchType, UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
+import { SearchType } from 'models/search/types'
 import { mapNormalizedToArray } from 'models/ticket/mappers'
-import {
+import type {
     Attachment,
     TicketAssignee,
     Ticket as TicketResponse,
 } from 'models/ticket/types'
 import { renderTemplate } from 'pages/common/utils/template'
-import {
+import type {
     AttachmentPosition,
     AttachmentType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
@@ -67,7 +68,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import * as ticketConstants from 'state/ticket/constants'
 import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import * as ticketSelectors from 'state/ticket/selectors'
-import { FullTicketStateWithoutImmutable } from 'state/ticket/types'
+import type { FullTicketStateWithoutImmutable } from 'state/ticket/types'
 import {
     getLastSameSourceTypeMessage,
     getNewMessageSender,
@@ -87,12 +88,12 @@ import { getMomentNow } from 'utils/date'
 import { convertToHTML } from 'utils/editor'
 import { reportError } from 'utils/errors'
 
-import { CustomerChannel } from '../../models/customerChannel/types'
+import type { CustomerChannel } from '../../models/customerChannel/types'
 import * as constants from './constants'
+import type { EmailExtraArgs } from './emailExtraUtils'
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
-    EmailExtraArgs,
     getReplyThreadMessages,
     hasOnlySignatureText,
 } from './emailExtraUtils'
@@ -100,15 +101,15 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from './errors'
+import type { MessageContext } from './responseUtils'
 import {
-    MessageContext,
     selectionAfter,
     setSourceTypeCache,
     toReplyAreaState,
     updateNewMessageWithContentState,
 } from './responseUtils'
 import * as selectors from './selectors'
-import { MacroActions, Message, NewMessage, ReplyAreaState } from './types'
+import type { MacroActions, Message, NewMessage, ReplyAreaState } from './types'
 import {
     applyExternalTemplateAction,
     getProductCardAttachmentsDeletionOrder,

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import {
     cleanup,
@@ -10,7 +11,7 @@ import {
 import { Provider } from 'react-redux'
 
 import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
-import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
+import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 import { mockStore } from 'utils/testing'
 

@@ -2,17 +2,16 @@ import React from 'react'
 
 import { userEvent } from '@repo/testing'
 import { render, waitFor } from '@testing-library/react'
-import { CancelToken } from 'axios'
+import type { CancelToken } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from '../../../../models/api/resources'
-import { StoreDispatch } from '../../../../state/types'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../withCancellableRequest'
+import type { StoreDispatch } from '../../../../state/types'
+import type { CancellableRequestInjectedProps } from '../withCancellableRequest'
+import withCancellableRequest from '../withCancellableRequest'
 
 const mockStore = configureMockStore([thunk])
 const mockApi = new MockAdapter(client)

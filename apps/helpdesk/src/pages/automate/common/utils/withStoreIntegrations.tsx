@@ -1,4 +1,5 @@
-import React, { ComponentProps, ComponentType } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
+import React from 'react'
 
 import StoreIntegrationView from '../components/StoreIntegrationView'
 import useStoreIntegrations from '../hooks/useStoreIntegrations'

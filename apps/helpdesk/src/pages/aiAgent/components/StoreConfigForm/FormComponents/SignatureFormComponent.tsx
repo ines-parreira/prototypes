@@ -9,7 +9,7 @@ import {
     INITIAL_FORM_VALUES,
     SIGNATURE_MAX_LENGTH,
 } from 'pages/aiAgent/constants'
-import { FormValues, UpdateValue } from 'pages/aiAgent/types'
+import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
     SettingsCardContent,

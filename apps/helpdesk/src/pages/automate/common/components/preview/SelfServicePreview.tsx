@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { History } from 'history'
+import type { History } from 'history'
 import _uniqueId from 'lodash/uniqueId'
 import { Router, Switch } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import SelfServiceChatIntegrationPreview from './SelfServiceChatIntegrationPreview'
 import SelfServiceHelpCenterPreview from './SelfServiceHelpCenterPreview'

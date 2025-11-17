@@ -4,11 +4,10 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import { GroupedKnowledgeItem, KnowledgeType } from '../types'
-import {
-    KnowledgeHubHeader,
-    KnowledgeHubHeaderProps,
-} from './KnowledgeHubHeader'
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeType } from '../types'
+import type { KnowledgeHubHeaderProps } from './KnowledgeHubHeader'
+import { KnowledgeHubHeader } from './KnowledgeHubHeader'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 

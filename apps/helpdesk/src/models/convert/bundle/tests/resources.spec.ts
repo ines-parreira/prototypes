@@ -1,5 +1,5 @@
 import { convertBundle } from 'fixtures/convertBundle'
-import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 

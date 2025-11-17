@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
+import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
 
 import useIsAutomateSubscriber from '../useIsAutomateSubscriber'
 

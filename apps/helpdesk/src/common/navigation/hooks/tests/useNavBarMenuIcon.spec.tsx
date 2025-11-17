@@ -1,6 +1,7 @@
 import { renderHook } from '@repo/testing'
 
-import { NavBarContextType, NavBarDisplayMode } from '../useNavBar/context'
+import type { NavBarContextType } from '../useNavBar/context'
+import { NavBarDisplayMode } from '../useNavBar/context'
 import { useNavBar } from '../useNavBar/useNavBar'
 import { NavBarMenuIcons, useNavBarMenuIcon } from '../useNavBarMenuIcon'
 

@@ -1,6 +1,6 @@
 import { AiAgentScope } from 'models/aiAgent/types'
 
-import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { PrepareTriggerOnSearchTask } from './PrepareTriggerOnSearch.task'
 
 describe('PrepareTriggerOnSearchTask', () => {

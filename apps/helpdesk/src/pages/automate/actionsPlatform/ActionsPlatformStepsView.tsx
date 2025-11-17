@@ -15,7 +15,7 @@ import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTempla
 import useApps from './hooks/useApps'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
-import { App } from './types'
+import type { App } from './types'
 
 import css from './ActionsPlatformTemplatesView.less'
 

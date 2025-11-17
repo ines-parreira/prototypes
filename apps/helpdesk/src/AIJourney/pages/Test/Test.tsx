@@ -17,7 +17,7 @@ import {
 } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 
 import { ProductSelectField } from '../Activation/fields'
 import { JourneyMessageInstructionsField } from '../Setup/fields'

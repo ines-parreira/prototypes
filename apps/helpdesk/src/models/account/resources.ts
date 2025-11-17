@@ -1,4 +1,4 @@
-import { AccountSetting } from '../../state/currentAccount/types'
+import type { AccountSetting } from '../../state/currentAccount/types'
 import client from '../api/resources'
 
 export const createAccountSetting = async (

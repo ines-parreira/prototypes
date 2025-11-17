@@ -1,17 +1,14 @@
 import React from 'react'
 
-import {
-    cleanup,
-    fireEvent,
-    render,
-    RenderResult,
-} from '@testing-library/react'
+import type { RenderResult } from '@testing-library/react'
+import { cleanup, fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
-import VerificationForm, { Props } from '../VerificationForm/VerificationForm'
+import type { Props } from '../VerificationForm/VerificationForm'
+import VerificationForm from '../VerificationForm/VerificationForm'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const store = mockStore({} as RootState)

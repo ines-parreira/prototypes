@@ -1,11 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
+import type {
     ListCustomFieldsParams,
     ListCustomFieldsResult,
-    queryKeys,
-    useUpdateCustomFields,
 } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateCustomFields } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

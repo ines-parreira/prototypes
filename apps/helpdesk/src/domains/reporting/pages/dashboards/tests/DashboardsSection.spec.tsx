@@ -3,11 +3,11 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 
 import { DashboardsSection } from 'domains/reporting/pages/dashboards/DashboardsSection'
-import {
-    DashboardChildType,
+import type {
     DashboardRowSchema,
     DashboardSectionSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 const CHILD_COMPONENT_CONTENT = 'some content'
 const ChildComponent = () => <div>{CHILD_COMPONENT_CONTENT}</div>

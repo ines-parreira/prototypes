@@ -1,10 +1,7 @@
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
-import {
-    MacroAction,
-    MacroActionName,
-    MacroActionType,
-} from 'models/macroAction/types'
+import type { MacroAction } from 'models/macroAction/types'
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 
 import { clearMacroBeforeApply } from '../macro'
 import { TicketMessageSourceType } from '../types/ticket'

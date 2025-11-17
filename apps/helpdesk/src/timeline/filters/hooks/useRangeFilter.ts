@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Range, TimelineItem } from '../../types'
+import type { Range, TimelineItem } from '../../types'
 import { filterTicketsByRange } from '../helpers/rangeFilter'
 
 export function useRangeFilter(tickets: TimelineItem[]) {

@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { Magento2Integration } from 'models/integration/types'
+import type { Magento2Integration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import { useMagentoSettings } from './hooks/useMagentoSettings'

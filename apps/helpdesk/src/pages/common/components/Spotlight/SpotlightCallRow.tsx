@@ -8,7 +8,7 @@ import { TicketStatus } from 'business/types/ticket'
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { EntityType } from 'hooks/useSearchRankScenario'
-import { PicketVoiceCallWithHighlights } from 'models/search/types'
+import type { PicketVoiceCallWithHighlights } from 'models/search/types'
 import {
     getInboundDisplayStatus,
     getOutboundDisplayStatus,

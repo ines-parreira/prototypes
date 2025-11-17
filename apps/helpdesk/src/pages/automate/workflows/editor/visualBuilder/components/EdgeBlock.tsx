@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react'
 
-import {
-    useVisualBuilderContext,
-    VisualBuilderContextType,
-} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import EdgeIconButton from './EdgeIconButton'
 import EdgeLabel from './EdgeLabel'

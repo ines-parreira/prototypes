@@ -1,7 +1,7 @@
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { ShopifyIntegration } from 'models/integration/types'
+import type { ShopifyIntegration } from 'models/integration/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { getTicketState } from 'state/ticket/selectors'

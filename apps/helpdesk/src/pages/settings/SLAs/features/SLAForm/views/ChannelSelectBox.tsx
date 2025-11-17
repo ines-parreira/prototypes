@@ -9,7 +9,7 @@ import React, {
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { Channel } from 'models/channel/types'
+import type { Channel } from 'models/channel/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

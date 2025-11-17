@@ -1,4 +1,4 @@
-import { WorkflowDropoffMetricTiers } from '../hooks/useWorkflowDropoffMetricTiers'
+import type { WorkflowDropoffMetricTiers } from '../hooks/useWorkflowDropoffMetricTiers'
 
 export const getDropoffColor = (
     dropOffRate: number,

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -15,7 +16,7 @@ import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { PublicSourcesSection } from '../PublicSourcesSection'
-import { SourceItem } from '../types'
+import type { SourceItem } from '../types'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling', () => ({

@@ -1,18 +1,14 @@
-import {
-    useMutation,
-    useQuery,
-    useQueryClient,
-    UseQueryOptions,
-} from '@tanstack/react-query'
+import type { UseQueryOptions } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _mapValues from 'lodash/mapValues'
 
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
-import {
+import type {
     OperationMethods,
     Paths,
 } from 'rest_api/workflows_api/client.generated'
-import { MutationOverrides } from 'types/query'
+import type { MutationOverrides } from 'types/query'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes

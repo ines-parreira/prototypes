@@ -1,6 +1,6 @@
-import { AutomatePlan } from 'models/billing/types'
-import { StoreIntegration } from 'models/integration/types'
-import { ShopType } from 'models/selfServiceConfiguration/types'
+import type { AutomatePlan } from 'models/billing/types'
+import type { StoreIntegration } from 'models/integration/types'
+import type { ShopType } from 'models/selfServiceConfiguration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 

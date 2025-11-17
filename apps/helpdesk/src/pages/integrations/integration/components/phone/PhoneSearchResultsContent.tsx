@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
 

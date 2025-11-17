@@ -1,16 +1,16 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { history } from '@repo/routing'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useListCampaigns } from 'models/convert/campaign/queries'
-import { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'
+import type { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'
 import { toJS } from 'utils'
 
-import { Campaign } from '../../../campaigns/types/Campaign'
+import type { Campaign } from '../../../campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from '../../hooks/useGetOrCreateChannelConnection'
 import ConvertCampaignsNewHomeInfobar from './ConvertCampaignsNewHomeInfobar'
 import ConvertCampaignsTablePlaceholder from './ConvertCampaignsTablePlaceholder'

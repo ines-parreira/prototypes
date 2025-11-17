@@ -1,10 +1,10 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import { KeyboardEvent } from 'react'
+import type { KeyboardEvent } from 'react'
 
 import decorateComponentWithProps from 'decorate-component-with-props'
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { Map } from 'immutable'
 
 import Mention from './Mention'
@@ -12,7 +12,7 @@ import mentionStrategy from './mentionStrategy'
 import MentionSuggestions from './MentionSuggestions'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'
 import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'
-import {
+import type {
     ClientRectFunction,
     GetSetEditorState,
     MentionPluginStore,

@@ -5,12 +5,10 @@ import { ReactCountryFlag } from 'react-country-flag'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { isWhatsAppIntegration } from 'models/integration/types'
-import { SourceAddress } from 'models/ticket/types'
+import type { SourceAddress } from 'models/ticket/types'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
-import {
-    WhatsAppMessageTemplate,
-    WhatsAppMessageTemplateStatus,
-} from 'models/whatsAppMessageTemplates/types'
+import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import Loader from 'pages/common/components/Loader/Loader'
 import { whatsAppFlagCodes } from 'pages/integrations/integration/components/whatsapp/constants'

@@ -2,7 +2,11 @@ import cn from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
 
-import { TasksCategory, TasksCategoryKey, TasksConfigByCategory } from './types'
+import type {
+    TasksCategory,
+    TasksCategoryKey,
+    TasksConfigByCategory,
+} from './types'
 
 import css from './CategoryList.less'
 

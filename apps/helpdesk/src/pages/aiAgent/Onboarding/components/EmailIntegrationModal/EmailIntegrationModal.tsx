@@ -1,4 +1,6 @@
-import React, { FC, useCallback } from 'react'
+import type { FC } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import gmailLogo from 'assets/img/integrations/gmail.svg'
 import microsoftLogo from 'assets/img/integrations/office.svg'

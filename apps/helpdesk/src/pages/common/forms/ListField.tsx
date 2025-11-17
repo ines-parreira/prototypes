@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import classNames from 'classnames'
-import { List } from 'immutable'
+import type { List } from 'immutable'
 import { Button, Col, Row } from 'reactstrap'
 
 import TextInput from './input/TextInput'

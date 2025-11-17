@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import moment, { Moment } from 'moment'
+import type { Moment } from 'moment'
+import moment from 'moment'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

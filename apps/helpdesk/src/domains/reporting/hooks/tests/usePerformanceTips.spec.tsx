@@ -8,7 +8,7 @@ import { usePerformanceTips } from 'domains/reporting/hooks/usePerformanceTips'
 import { MetricName } from 'domains/reporting/services/constants'
 import * as tipProvider from 'domains/reporting/services/supportPerformanceTipService'
 import useAppSelector from 'hooks/useAppSelector'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { PlanName } from 'utils/paywalls'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

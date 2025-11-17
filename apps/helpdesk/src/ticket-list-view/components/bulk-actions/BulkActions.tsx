@@ -4,12 +4,13 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { JobType } from '@gorgias/helpdesk-queries'
 
-import { Update, useBulkAction } from 'jobs'
+import type { Update } from 'jobs'
+import { useBulkAction } from 'jobs'
 
 import AssignUser from './AssignUser'
 import CloseTickets from './CloseTickets'
 import MoreActions from './MoreActions'
-import { Action, Job } from './types'
+import type { Action, Job } from './types'
 
 import css from './style.less'
 

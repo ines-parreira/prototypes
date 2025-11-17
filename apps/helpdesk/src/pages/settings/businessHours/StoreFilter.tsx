@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { StoreIntegration } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 

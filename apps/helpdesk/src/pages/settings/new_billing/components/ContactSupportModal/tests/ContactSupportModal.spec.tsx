@@ -11,7 +11,7 @@ import { HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
 import client from 'models/api/resources'
 import { TicketPurpose } from 'state/billing/types'
 import * as actions from 'state/notifications/actions'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import ContactSupportModal from '../ContactSupportModal'
 

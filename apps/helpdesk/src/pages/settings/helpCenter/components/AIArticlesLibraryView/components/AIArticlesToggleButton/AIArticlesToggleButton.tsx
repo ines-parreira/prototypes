@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import {
+import type {
     AIArticleToggleOption,
     AIArticleToggleOptionValue,
 } from 'models/helpCenter/types'

@@ -1,14 +1,16 @@
 import { SCENARIO_CONFIG } from 'pages/convert/campaigns/constants/productRecommendationScenarios'
 
-import {
+import type {
     AttachmentType,
     CampaignAttachment,
+    DiscountOfferAttachment,
+    ProductRecommendationAttachment,
+} from '../types/CampaignAttachment'
+import {
     campaignAttachmentIsContactForm,
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
     campaignAttachmentIsProductRecommendation,
-    DiscountOfferAttachment,
-    ProductRecommendationAttachment,
 } from '../types/CampaignAttachment'
 
 export const transformCampaignAttachmentsToDetails = (

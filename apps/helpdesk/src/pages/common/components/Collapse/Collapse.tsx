@@ -1,4 +1,5 @@
-import React, { ReactNode, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import classnames from 'classnames'

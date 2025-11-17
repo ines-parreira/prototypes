@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { DeactivatedAccountGuard } from './DeactivatedAccountGuard'
 

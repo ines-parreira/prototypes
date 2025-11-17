@@ -1,7 +1,7 @@
 import { ContentState } from 'draft-js'
 import { fromJS, List } from 'immutable'
 
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducers'
 import * as selectors from '../selectors'

@@ -1,11 +1,11 @@
-import { ComponentType, KeyboardEvent, ReactNode } from 'react'
+import type { ComponentType, KeyboardEvent, ReactNode } from 'react'
 
-import { ContentBlock, ContentState, EditorState } from 'draft-js'
+import type { ContentBlock, ContentState, EditorState } from 'draft-js'
 
-import { UploadType } from 'common/types'
+import type { UploadType } from 'common/types'
 
-import { notify } from '../../../../state/notifications/actions'
-import { ConnectedAction } from '../../../../state/types'
+import type { notify } from '../../../../state/notifications/actions'
+import type { ConnectedAction } from '../../../../state/types'
 
 export type PluginMethods = {
     getEditorState: () => EditorState

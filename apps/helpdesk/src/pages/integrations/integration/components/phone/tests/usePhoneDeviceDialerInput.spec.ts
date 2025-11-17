@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { isValidNumber } from 'libphonenumber-js'
 
-import { UserSearchResult } from 'models/search/types'
+import type { UserSearchResult } from 'models/search/types'
 
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 import usePhoneDeviceDialerInput from '../usePhoneDeviceDialerInput'

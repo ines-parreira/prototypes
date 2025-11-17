@@ -1,4 +1,5 @@
-import { Call, Device } from '@twilio/voice-sdk'
+import type { Device } from '@twilio/voice-sdk'
+import { Call } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
 
 export const mockDevice = (): Partial<Device> => ({})

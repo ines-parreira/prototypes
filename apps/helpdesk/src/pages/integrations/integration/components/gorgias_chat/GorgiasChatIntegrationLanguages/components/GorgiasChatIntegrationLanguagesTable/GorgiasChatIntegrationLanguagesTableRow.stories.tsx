@@ -1,14 +1,12 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { Language } from 'constants/languages'
 
 import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
-import {
-    GorgiasChatIntegrationLanguagesTableRow,
-    GorgiasChatIntegrationLanguagesTableRowProps,
-} from './GorgiasChatIntegrationLanguagesTableRow'
-import { LanguageItemRow } from './types'
+import type { GorgiasChatIntegrationLanguagesTableRowProps } from './GorgiasChatIntegrationLanguagesTableRow'
+import { GorgiasChatIntegrationLanguagesTableRow } from './GorgiasChatIntegrationLanguagesTableRow'
+import type { LanguageItemRow } from './types'
 
 const storyConfig: Meta = {
     argTypes: {},

@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 import { useLocation } from 'react-router-dom'
@@ -9,7 +10,7 @@ import {
 } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import { Plan, ProductType } from 'models/billing/types'
+import type { Plan, ProductType } from 'models/billing/types'
 import {
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
@@ -22,7 +23,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
 import { getNextTier } from '../../utils/getNextTier'
-import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
 import css from './AutoUpgradeToggle.less'
 

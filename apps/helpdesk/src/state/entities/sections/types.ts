@@ -1,7 +1,7 @@
-import { PayloadActionCreator } from '@reduxjs/toolkit'
+import type { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import { Section } from '../../../models/section/types'
-import {
+import type { Section } from '../../../models/section/types'
+import type {
     SECTION_CREATED,
     SECTION_DELETED,
     SECTION_UPDATED,

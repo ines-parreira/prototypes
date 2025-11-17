@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 
-import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioItem'
 

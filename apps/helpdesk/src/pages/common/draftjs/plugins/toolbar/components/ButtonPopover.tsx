@@ -1,11 +1,5 @@
-import React, {
-    MouseEvent,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { MouseEvent, ReactNode } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Popover } from 'reactstrap'
 

@@ -1,6 +1,6 @@
 import client from 'models/api/resources'
-import { ApiListResponseCursorPagination } from 'models/api/types'
-import { HTTPIntegrationEvent } from 'models/integration/types/http'
+import type { ApiListResponseCursorPagination } from 'models/api/types'
+import type { HTTPIntegrationEvent } from 'models/integration/types/http'
 
 export async function getHTTPEvents(integrationId: number) {
     const response = await client.get<

@@ -4,7 +4,7 @@ import uniq from 'lodash/uniq'
 
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from '../../../common/forms/SelectField/SelectFieldDropdownAction'
-import { Option, Value } from '../../../common/forms/SelectField/types'
+import type { Option, Value } from '../../../common/forms/SelectField/types'
 import {
     FontCatalogueModal,
     getMultipleFontLink,

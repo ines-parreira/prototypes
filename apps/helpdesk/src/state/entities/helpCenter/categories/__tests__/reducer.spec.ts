@@ -1,7 +1,7 @@
 import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
 
-import { Category } from 'models/helpCenter/types'
+import type { Category } from 'models/helpCenter/types'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
 import { getSingleCategoryEnglish as categoryResponse } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 import {
@@ -20,7 +20,7 @@ import {
     updateCategory,
 } from '../actions'
 import reducer, { initialState } from '../reducer'
-import { CategoriesAction } from '../types'
+import type { CategoriesAction } from '../types'
 
 const categoriesResponse: Category[] = getCategoriesFlatSorted
 

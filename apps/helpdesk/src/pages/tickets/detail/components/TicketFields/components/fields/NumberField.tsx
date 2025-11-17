@@ -8,7 +8,7 @@ import Label from 'custom-fields/components/Label'
 import StealthInput from 'custom-fields/components/StealthInput'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
-import { CustomFieldState } from 'custom-fields/types'
+import type { CustomFieldState } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {

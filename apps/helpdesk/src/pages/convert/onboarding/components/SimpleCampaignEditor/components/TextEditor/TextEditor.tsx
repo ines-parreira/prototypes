@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
-import { EditorState } from 'draft-js'
+import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import RichField from 'pages/common/forms/RichField/RichField'
+import type RichField from 'pages/common/forms/RichField/RichField'
 import { CampaignMessage } from 'pages/convert/campaigns/components/CampaignMessage'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { deleteAttachment } from 'state/newMessage/actions'
 import { convertToHTML, editorStateWithReplacedText } from 'utils/editor'
 

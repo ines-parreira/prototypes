@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import PromptModal from 'pages/common/components/PromptModal'
 

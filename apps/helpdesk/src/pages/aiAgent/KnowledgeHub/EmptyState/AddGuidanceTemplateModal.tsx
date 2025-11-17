@@ -7,7 +7,7 @@ import { Heading, Icon, Modal, Text } from '@gorgias/axiom'
 import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
 
 import { GuidanceTemplateCard } from '../../components/GuidanceTemplateCard/GuidanceTemplateCard'
-import { GuidanceTemplate } from '../../types'
+import type { GuidanceTemplate } from '../../types'
 import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
 
 import css from './EmptyState.less'

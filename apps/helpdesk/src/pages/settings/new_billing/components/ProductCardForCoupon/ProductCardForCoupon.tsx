@@ -5,7 +5,7 @@ import moment from 'moment/moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { CouponSummary, Plan } from 'models/billing/types'
+import type { CouponSummary, Plan } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'
 
 import { DATE_FORMAT } from '../../constants'

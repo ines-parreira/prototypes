@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,

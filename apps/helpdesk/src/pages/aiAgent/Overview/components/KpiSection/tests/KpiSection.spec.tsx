@@ -1,7 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import { createMemoryHistory, History } from 'history'
+import type { History } from 'history'
+import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,7 @@ import { initialState as initialStatsFiltersState } from 'domains/reporting/stat
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAiAgentTypeForAccount } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
 import { useKpis } from 'pages/aiAgent/Overview/hooks/useKpis'
-import { RootState, StoreDispatch, StoreState } from 'state/types'
+import type { RootState, StoreDispatch, StoreState } from 'state/types'
 
 import { KpiSection } from '../KpiSection'
 

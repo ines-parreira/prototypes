@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 
-import AccordionHeader, { AccordionHeaderProps } from './AccordionHeader'
+import type { AccordionHeaderProps } from './AccordionHeader'
+import AccordionHeader from './AccordionHeader'
 import { useSortableAccordionContext } from './SortableAccordionContext'
 import { useSortableAccordionItemContext } from './SortableAccordionItemContext'
 

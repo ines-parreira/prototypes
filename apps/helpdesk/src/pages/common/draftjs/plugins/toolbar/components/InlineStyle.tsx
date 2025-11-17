@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { RichUtils } from 'draft-js'
 
 import { ORDERED_LIST_ITEM, UNORDERED_LIST_ITEM } from '../constants'
-import { ActionInjectedProps } from '../types'
+import type { ActionInjectedProps } from '../types'
 import Button from './Button'
 
 type Props = {

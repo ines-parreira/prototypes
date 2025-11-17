@@ -14,8 +14,9 @@ import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
 
-import { SubmitArgs } from '../TicketDetailContainer'
-import TicketFooter, { TicketFooterContext } from './TicketFooter'
+import type { SubmitArgs } from '../TicketDetailContainer'
+import type { TicketFooterContext } from './TicketFooter'
+import TicketFooter from './TicketFooter'
 import TicketHeaderWrapper from './TicketHeaderWrapper/TicketHeaderWrapper'
 
 import css from './TicketView.less'

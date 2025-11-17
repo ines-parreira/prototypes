@@ -1,5 +1,5 @@
-import { SLAPolicy } from '@gorgias/helpdesk-queries'
-import { SLAPolicyMetric } from '@gorgias/helpdesk-types'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicyMetric } from '@gorgias/helpdesk-types'
 
 export type MappedFormSLAPolicy = ReturnType<typeof makeMappedFormSLAPolicy>
 

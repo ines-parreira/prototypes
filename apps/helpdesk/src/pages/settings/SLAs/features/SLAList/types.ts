@@ -1,8 +1,8 @@
-import { DropTargetMonitor } from 'react-dnd'
+import type { DropTargetMonitor } from 'react-dnd'
 
-import { SLAPolicy } from '@gorgias/helpdesk-queries'
+import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 
-import { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
+import type { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
 
 export type UISLAPolicy = {
     uuid: string

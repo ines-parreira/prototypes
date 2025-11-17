@@ -9,7 +9,7 @@ import {
 } from '@gorgias/axiom'
 
 import { EmailProvider } from 'models/integration/constants'
-import { EmailIntegration } from 'models/integration/types'
+import type { EmailIntegration } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 

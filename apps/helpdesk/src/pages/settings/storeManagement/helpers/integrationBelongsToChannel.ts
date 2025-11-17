@@ -1,6 +1,6 @@
-import { Integration } from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
 
-import { ChannelTypes } from '../types'
+import type { ChannelTypes } from '../types'
 import {
     isChatChannel,
     isContactFormChannel,

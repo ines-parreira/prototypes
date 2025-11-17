@@ -2,7 +2,8 @@ import { screen } from '@testing-library/react'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { DiscountCard, DiscountCardProps } from './DiscountCard'
+import type { DiscountCardProps } from './DiscountCard'
+import { DiscountCard } from './DiscountCard'
 
 const renderDiscountCard = (props: DiscountCardProps = {}) => {
     return renderWithRouter(<DiscountCard {...props} />, {

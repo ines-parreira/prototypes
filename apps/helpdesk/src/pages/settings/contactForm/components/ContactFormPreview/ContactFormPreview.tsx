@@ -1,4 +1,5 @@
-import React, { Ref } from 'react'
+import type { Ref } from 'react'
+import React from 'react'
 
 import css from './ContactFormPreview.less'
 

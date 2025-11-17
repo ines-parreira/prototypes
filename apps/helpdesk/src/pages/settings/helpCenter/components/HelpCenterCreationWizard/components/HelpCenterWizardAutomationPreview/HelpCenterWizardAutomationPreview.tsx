@@ -1,6 +1,6 @@
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
-import { HelpCenter } from 'models/helpCenter/types'
-import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
 import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 

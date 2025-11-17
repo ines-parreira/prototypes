@@ -8,8 +8,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Product } from 'constants/integrations/types/shopify'
-import { IntegrationDataItem } from 'models/integration/types'
+import type { Product } from 'constants/integrations/types/shopify'
+import type { IntegrationDataItem } from 'models/integration/types'
 import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 
 import { PRODUCTS_PER_PAGE } from '../../../../../constants/integration'

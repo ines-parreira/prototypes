@@ -1,12 +1,13 @@
 import { ContentState, convertFromRaw, SelectionState } from 'draft-js'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { DiscountCode } from 'models/discountCodes/types'
+import type { DiscountCode } from 'models/discountCodes/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
 import { renderTemplate } from 'pages/common/utils/template'
 import { isRichType } from 'tickets/common/utils'
@@ -14,16 +15,17 @@ import { toJS } from 'utils'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
 import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
-import { CurrentUser, StoreState } from '../types'
+import type { CurrentUser, StoreState } from '../types'
+import type { Signature } from './emailExtraUtils'
 import {
     deleteEmailExtraContent,
     hasEmailExtraContent,
     hasOnlySignatureText,
-    Signature,
 } from './emailExtraUtils'
 import * as selectors from './selectors'
-import ticketReplyCache, { TopRankMacroState } from './ticketReplyCache'
-import { NewMessage, ReplyAreaState } from './types'
+import type { TopRankMacroState } from './ticketReplyCache'
+import ticketReplyCache from './ticketReplyCache'
+import type { NewMessage, ReplyAreaState } from './types'
 
 export type MessageContext = {
     action: {

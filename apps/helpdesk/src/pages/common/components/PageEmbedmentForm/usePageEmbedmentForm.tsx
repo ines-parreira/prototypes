@@ -1,12 +1,12 @@
-import { Dispatch, useCallback, useReducer } from 'react'
+import type { Dispatch } from 'react'
+import { useCallback, useReducer } from 'react'
 
-import {
+import type {
     EmbeddablePage,
-    EmbedMode,
     PageEmbedmentFormValueStateWithError,
-    PageEmbedmentPosition,
     SelectedPage,
 } from './types'
+import { EmbedMode, PageEmbedmentPosition } from './types'
 
 export type PageEmbedmentFormReducerState = {
     embedMode: EmbedMode

@@ -2,7 +2,7 @@ import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 
-import { TransitionsState } from '../types'
+import type { TransitionsState } from '../types'
 
 import css from './TransitionConditionsAccordion.less'
 

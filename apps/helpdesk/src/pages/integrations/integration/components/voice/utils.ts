@@ -1,17 +1,19 @@
-import {
+import type {
     CreateVoiceQueue,
     PhoneIntegration,
     PhoneIntegrationSettingsNoneVoiceMessage,
     PhoneIntegrationSettingsTextToSpeechVoiceMessage,
     PhoneIntegrationSettingsVoiceRecordingVoiceMessage,
-    PhoneRingingBehaviour,
     UpdateVoiceQueue,
-    VoiceMessageType,
     VoiceQueue,
+} from '@gorgias/helpdesk-queries'
+import {
+    PhoneRingingBehaviour,
+    VoiceMessageType,
     VoiceQueueTargetScope,
 } from '@gorgias/helpdesk-queries'
 
-import { VoiceMessage } from 'models/integration/types'
+import type { VoiceMessage } from 'models/integration/types'
 
 import {
     DEFAULT_QUEUE_VALUES,

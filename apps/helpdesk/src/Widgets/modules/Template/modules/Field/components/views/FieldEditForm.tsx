@@ -1,11 +1,12 @@
-import React, { SyntheticEvent, useState } from 'react'
+import type { SyntheticEvent } from 'react'
+import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { LeafType } from 'models/widget/types'
+import type { LeafType } from 'models/widget/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
-import { FieldEditFormData, HiddenFields } from '../../types'
+import type { FieldEditFormData, HiddenFields } from '../../types'
 
 export const TITLE_FIELD_LABEL = 'Title'
 export const TYPE_FIELD_LABEL = 'Type'

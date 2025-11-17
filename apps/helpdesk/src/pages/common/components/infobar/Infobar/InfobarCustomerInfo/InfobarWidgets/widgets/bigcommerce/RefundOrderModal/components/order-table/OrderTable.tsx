@@ -1,10 +1,10 @@
-import React, { Dispatch, useMemo, useState } from 'react'
+import type { Dispatch } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import { Table } from 'reactstrap'
 
-import {
+import type {
     BigCommerceAvailablePaymentOptionsData,
-    BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,
     GiftWrappingItemRefundData,
     HandlingItemRefundData,
@@ -12,8 +12,9 @@ import {
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
+import { BigCommerceRefundableItemType } from 'models/integration/types'
 
-import { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../../types'
+import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../../types'
 import { OrderLineItemRow } from './OrderLineItemRow'
 import { TotalsSummaryComponent } from './TotalsSummaryComponent'
 

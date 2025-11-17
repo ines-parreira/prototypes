@@ -13,7 +13,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

@@ -3,7 +3,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import { Language } from 'constants/languages'
 import { useNotify } from 'hooks/useNotify'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import {
     getInitialFormValues,

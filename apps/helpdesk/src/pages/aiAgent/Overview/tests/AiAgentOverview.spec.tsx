@@ -28,7 +28,7 @@ import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
-import { RootState, StoreDispatch, StoreState } from 'state/types'
+import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { AiAgentOverview } from '../AiAgentOverview'

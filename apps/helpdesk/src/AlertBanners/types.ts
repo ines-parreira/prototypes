@@ -1,6 +1,6 @@
-import { ComponentProps, HTMLProps } from 'react'
+import type { ComponentProps, HTMLProps } from 'react'
 
-import { Link } from 'react-router-dom'
+import type { Link } from 'react-router-dom'
 
 import type { AlertBannerProps } from './components/AlertBanner'
 

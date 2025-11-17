@@ -1,6 +1,6 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import { Cube } from 'domains/reporting/models/types'
-import { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
+import type { Cube } from 'domains/reporting/models/types'
+import type { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
 
 export enum VoiceCallSummaryMeasure {
     VoiceCallSummaryTotal = 'VoiceCallSummary.total',

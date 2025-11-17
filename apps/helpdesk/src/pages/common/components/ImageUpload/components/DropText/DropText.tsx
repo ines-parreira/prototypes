@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import type { FC } from 'react'
+import React from 'react'
 
 import classNames from 'classnames'
 
 import imageIcon from 'assets/img/icons/image-icon.svg'
 
-import { DropZoneProps } from './../../../../components/ImageUpload'
+import type { DropZoneProps } from './../../../../components/ImageUpload'
 
 import css from './DropText.less'
 

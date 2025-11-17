@@ -4,8 +4,8 @@ import { render } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../../helper/ChannelBlock'
 import useOnlySupportedChannels from '../../helper/useOnlySupportedChannels'

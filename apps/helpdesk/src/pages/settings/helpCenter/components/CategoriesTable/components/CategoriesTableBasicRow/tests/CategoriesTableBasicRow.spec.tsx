@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { Provider as ReduxProvider } from 'react-redux'
-import { DeepPartial } from 'redux'
+import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,7 +10,7 @@ import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getA
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import { getCategoriesFlatSorted } from '../../../../../fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { CategoriesTableBasicRow } from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'

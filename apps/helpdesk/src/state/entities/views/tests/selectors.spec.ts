@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 
 import { user } from '../../../../fixtures/users'
 import { ViewType } from '../../../../models/view/types'
-import { RootState } from '../../../types'
+import type { RootState } from '../../../types'
 import { getOrderedViewsByType, getTicketViews } from '../selectors'
 
 describe('selectors', () => {

@@ -9,7 +9,7 @@ import {
 
 import { useFlag } from 'core/flags'
 
-import { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
+import type { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
 export type SLAFormValues = ReturnType<typeof useFormValues>
 

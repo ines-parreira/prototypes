@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { PRODUCT_BANNER_KEY } from './constants'
-import { ProductBannerItem } from './types/ProductBannerItem'
-import { ProductBannerRecord } from './types/ProductBannerRecord'
+import type { PRODUCT_BANNER_KEY } from './constants'
+import type { ProductBannerItem } from './types/ProductBannerItem'
+import type { ProductBannerRecord } from './types/ProductBannerRecord'
 
 export function useProductBannerStorage() {
     const [products, setProducts] = useLocalStorage<ProductBannerRecord | null>(

@@ -6,7 +6,8 @@ import { useFlag } from 'core/flags'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 
-import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
+import type { BillingFrequencyProps } from '../BillingFrequency'
+import BillingFrequency from '../BillingFrequency'
 
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),

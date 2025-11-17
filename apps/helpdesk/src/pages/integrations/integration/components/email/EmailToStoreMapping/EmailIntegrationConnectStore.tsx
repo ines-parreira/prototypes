@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -20,7 +21,7 @@ import {
     useListStoreMappings,
     useUpdateStoreMapping,
 } from '../../../../../../models/storeMapping/queries'
-import { StoreMapping } from '../../../../../../models/storeMapping/types'
+import type { StoreMapping } from '../../../../../../models/storeMapping/types'
 import { StoreNameDropdown } from './StoreNameDropdown'
 
 import css from './EmailIntegrationConnectStore.less'

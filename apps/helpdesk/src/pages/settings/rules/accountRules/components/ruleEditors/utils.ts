@@ -1,7 +1,7 @@
-import { Literal, Statement } from 'estree'
+import type { Literal, Statement } from 'estree'
 
-import { ActionType, Rule } from 'models/rule/types'
-import { RuleDraft } from 'state/rules/types'
+import type { ActionType, Rule } from 'models/rule/types'
+import type { RuleDraft } from 'state/rules/types'
 
 export const getRuleActions = (draft: RuleDraft | Rule): ActionType[] => {
     const traverseNodes = (

@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 
-import { VisualBuilderEdgeProps } from '../editor/visualBuilder/components/EdgeBlock'
-import { VisualBuilderDeleteProps } from '../editor/visualBuilder/components/NodeDeleteIcon'
+import type { VisualBuilderEdgeProps } from '../editor/visualBuilder/components/EdgeBlock'
+import type { VisualBuilderDeleteProps } from '../editor/visualBuilder/components/NodeDeleteIcon'
 import { workflowVariableRegex } from '../models/variables.model'
 import { getIncoming } from '../models/visualBuilderGraph.model'
 import { useVisualBuilderContext } from './useVisualBuilder'

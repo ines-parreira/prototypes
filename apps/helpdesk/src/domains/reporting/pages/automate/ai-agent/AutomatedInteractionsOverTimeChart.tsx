@@ -8,7 +8,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { AutomatedInteractionsOverTime } from 'domains/reporting/pages/automate/ai-agent/AutomatedInteractionsOverTime'
 import { getGreyAreaHint } from 'domains/reporting/pages/automate/overview/utils'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AUTOMATED_INTERACTION_TOOLTIP } from 'pages/automate/automate-metrics/constants'
 
 export const AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE =

@@ -1,16 +1,10 @@
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
-import {
-    Props as ImpactProps,
-    KnowledgeEditorSidePanelSectionImpact,
-} from '../KnowledgeEditorSidePanelSectionImpact'
-import {
-    KnowledgeEditorSidePanelSectionRelatedTickets,
-    Props as RelatedTicketsProps,
-} from '../KnowledgeEditorSidePanelSectionRelatedTickets'
-import {
-    KnowledgeEditorSidePanelSectionStoreSnippetDetails,
-    Props as StoreSnippetDetailsProps,
-} from './KnowledgeEditorSidePanelSectionStoreSnippetDetails'
+import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
+import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
+import type { Props as RelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import type { Props as StoreSnippetDetailsProps } from './KnowledgeEditorSidePanelSectionStoreSnippetDetails'
+import { KnowledgeEditorSidePanelSectionStoreSnippetDetails } from './KnowledgeEditorSidePanelSectionStoreSnippetDetails'
 
 type Props = {
     details: Omit<StoreSnippetDetailsProps, 'sectionId'>

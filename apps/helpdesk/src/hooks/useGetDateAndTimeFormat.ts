@@ -1,4 +1,4 @@
-import { DateAndTimeFormatting } from 'constants/datetime'
+import type { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 

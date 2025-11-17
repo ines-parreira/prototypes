@@ -12,7 +12,7 @@ import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { notify } from 'state/notifications/actions'
-import { Notification } from 'state/notifications/types'
+import type { Notification } from 'state/notifications/types'
 
 import WorkflowEditorView from './WorkflowEditorView'
 

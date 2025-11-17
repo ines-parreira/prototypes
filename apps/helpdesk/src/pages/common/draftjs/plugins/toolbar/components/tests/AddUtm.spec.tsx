@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 
 import { utmConfiguration } from 'fixtures/utmConfiguration'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
 
 import AddUtm from '../AddUtm'
 

@@ -1,4 +1,4 @@
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import type { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 export type StepProps = {
     totalSteps: number

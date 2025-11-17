@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { FailedMigrationState } from '../../../../types'
+import type { FailedMigrationState } from '../../../../types'
 
 import css from './MigrationFailedActions.less'
 

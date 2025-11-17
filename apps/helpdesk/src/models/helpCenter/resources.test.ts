@@ -1,11 +1,11 @@
-import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import { getKnowledgeHubArticles } from './resources'
-import {
-    KnowledgeHubArticleSourceType,
+import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
 } from './types'
+import { KnowledgeHubArticleSourceType } from './types'
 
 describe('getKnowledgeHubArticles', () => {
     const mockQueryParams: KnowledgeHubArticlesQueryParams = {

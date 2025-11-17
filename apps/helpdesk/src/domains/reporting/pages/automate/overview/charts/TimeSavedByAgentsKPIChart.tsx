@@ -1,6 +1,6 @@
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
-import { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { TimeSavedByAgentsMetric } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
 
 export const TimeSavedByAgentsKPIChart = ({

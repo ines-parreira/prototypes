@@ -2,7 +2,7 @@ import React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { useToolbarContext } from '../../ToolbarContext'
 import GuidanceActionDropdown from '../GuidanceActionDropdown'

@@ -30,7 +30,7 @@ import {
     fetchReviewedClosedTicketsTrend,
     useReviewedClosedTicketsTrend,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import {
+import type {
     MetricTrendFetch,
     MetricTrendHook,
 } from 'domains/reporting/hooks/useMetricTrend'
@@ -42,12 +42,10 @@ import { internalComplianceDrillDownQueryFactory } from 'domains/reporting/model
 import { languageProficiencyDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import { resolutionCompletenessDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import { reviewedClosedTicketsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {
-    Domain,
-    DrillDownQueryFactory,
-} from 'domains/reporting/pages/common/drill-down/types'
-import { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
-import { TooltipData } from 'domains/reporting/pages/types'
+import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import type { TooltipData } from 'domains/reporting/pages/types'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const REVIEWED_CLOSED_TICKETS_LABEL = 'Reviewed tickets'

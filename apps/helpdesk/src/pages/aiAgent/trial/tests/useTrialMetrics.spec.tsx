@@ -3,7 +3,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
-import { Store } from 'redux'
+import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
 import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'

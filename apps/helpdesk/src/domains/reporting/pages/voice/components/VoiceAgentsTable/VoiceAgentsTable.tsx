@@ -1,11 +1,12 @@
-import React, { UIEventHandler, useState } from 'react'
+import type { UIEventHandler } from 'react'
+import React, { useState } from 'react'
 
 import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { getTableCell } from 'domains/reporting/pages/support-performance/agents/AgentsTable'

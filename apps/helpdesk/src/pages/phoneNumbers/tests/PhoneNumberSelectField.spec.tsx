@@ -6,8 +6,8 @@ import configureMockStore from 'redux-mock-store'
 
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { IntegrationType } from 'models/integration/types'
-import { NewPhoneNumber } from 'models/phoneNumber/types'
-import { RootState, StoreDispatch } from 'state/types'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import PhoneNumberSelectField from '../PhoneNumberSelectField'
 

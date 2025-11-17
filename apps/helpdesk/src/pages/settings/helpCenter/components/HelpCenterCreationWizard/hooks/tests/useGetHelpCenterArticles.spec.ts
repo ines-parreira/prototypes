@@ -16,7 +16,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
 import { findArticleByKey } from '../../HelpCenterCreationWizardUtils'
 import { useGetHelpCenterArticles } from '../useGetHelpCenterArticles'

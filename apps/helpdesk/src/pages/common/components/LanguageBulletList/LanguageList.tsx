@@ -1,6 +1,6 @@
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { Locale } from '../../../../models/helpCenter/types'
+import type { Locale } from '../../../../models/helpCenter/types'
 import { moveLocaleToBack, moveLocaleToFront } from '../../utils/locale'
 import { FlagLanguageItem } from './FlagLanguageItem'
 import { LanguageBullet } from './LanguageBullet'

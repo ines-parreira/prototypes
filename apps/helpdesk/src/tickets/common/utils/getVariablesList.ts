@@ -1,4 +1,5 @@
-import { Variable, VARIABLES } from 'tickets/common/config'
+import type { Variable } from 'tickets/common/config'
+import { VARIABLES } from 'tickets/common/config'
 
 /**
  * Return array of configs of variables

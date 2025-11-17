@@ -1,7 +1,8 @@
 import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
 
-import { PaywallConfig, paywallConfigs } from 'config/paywalls'
+import type { PaywallConfig } from 'config/paywalls'
+import { paywallConfigs } from 'config/paywalls'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'

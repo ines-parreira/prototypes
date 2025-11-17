@@ -2,14 +2,14 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { DeepPartial } from 'redux'
+import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.fixture'

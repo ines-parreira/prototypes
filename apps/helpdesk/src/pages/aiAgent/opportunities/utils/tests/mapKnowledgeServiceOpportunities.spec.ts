@@ -1,4 +1,4 @@
-import { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
+import type { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../../enums'
 import { mapKnowledgeServiceOpportunities } from '../mapKnowledgeServiceOpportunities'

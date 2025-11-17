@@ -6,7 +6,7 @@ import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import {
     MAX_ACTIVE_FLOWS,

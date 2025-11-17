@@ -13,14 +13,12 @@ import {
     addOptionalFilter,
     isFilterWithLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import {
+import type {
     StatsFilters,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilter,
-    ReportingFilterOperator,
-} from 'domains/reporting/models/types'
+import type { ReportingFilter } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 export const automationDatasetDefaultFilters = (

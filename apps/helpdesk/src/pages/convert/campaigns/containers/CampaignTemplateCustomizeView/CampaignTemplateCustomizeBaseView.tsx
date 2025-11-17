@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
@@ -10,18 +10,18 @@ import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_ch
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useListCampaigns } from 'models/convert/campaign/queries'
-import {
+import type {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
-import { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import { CampaignDetailsForm } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
 import { CAMPAIGN_TEMPLATES } from 'pages/convert/campaigns/templates'
-import { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import { HeaderReturnButton } from 'pages/convert/common/components/HeaderReturnButton'
 import {
@@ -29,7 +29,7 @@ import {
     CONVERT_ROUTE_TEMPLATE_PARAM_NAME,
 } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import { ConvertRouteTemplateParams } from 'pages/convert/common/types'
+import type { ConvertRouteTemplateParams } from 'pages/convert/common/types'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'

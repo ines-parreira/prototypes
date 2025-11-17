@@ -4,10 +4,8 @@ import { cleanup, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import {
-    EmailMigrationBannerStatus,
-    EmailMigrationStatus,
-} from 'models/integration/types'
+import type { EmailMigrationBannerStatus } from 'models/integration/types'
+import { EmailMigrationStatus } from 'models/integration/types'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailMigration from '../EmailMigration/EmailMigration'

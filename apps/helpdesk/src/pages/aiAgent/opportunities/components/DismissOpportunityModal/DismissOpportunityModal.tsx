@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
-import { FeedbackMutation } from '@gorgias/knowledge-service-types'
+import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
-import { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -17,7 +17,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'

@@ -3,8 +3,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { Source } from 'models/widget/types'
-import {
+import type { Source } from 'models/widget/types'
+import type {
     Button as ButtonType,
     OnOpenForm,
     OnRemoveButton,

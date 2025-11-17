@@ -1,9 +1,10 @@
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
-import { MacroAction } from '@gorgias/helpdesk-queries'
+import type { MacroAction } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { ActionTemplate } from 'config'
+import type { ActionTemplate } from 'config'
 import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {

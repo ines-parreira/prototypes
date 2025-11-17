@@ -9,7 +9,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
-import { LocalWaitMusicPreferences } from 'models/integration/types/phone'
+import type { LocalWaitMusicPreferences } from 'models/integration/types/phone'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import useVoiceMessageValidation from '../hooks/useVoiceMessageValidation'

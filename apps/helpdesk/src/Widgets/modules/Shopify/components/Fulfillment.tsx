@@ -1,9 +1,10 @@
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
-import { Badge, ColorType } from '@gorgias/axiom'
+import type { ColorType } from '@gorgias/axiom'
+import { Badge } from '@gorgias/axiom'
 
 import { humanizeString } from 'utils'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 type BeforeContentProps = {

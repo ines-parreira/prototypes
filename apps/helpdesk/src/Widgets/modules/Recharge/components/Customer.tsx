@@ -1,17 +1,16 @@
-import React, { ReactNode, useContext } from 'react'
+import type { ReactNode } from 'react'
+import React, { useContext } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/recharge.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderTemplate } from 'pages/common/utils/template'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import {
-    CardCustomization,
-    ExpandAllButton,
-} from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { ExpandAllButton } from 'Widgets/modules/Template/modules/Card'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'

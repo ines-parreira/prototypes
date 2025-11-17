@@ -2,8 +2,8 @@ import { createNullCache } from '@algolia/cache-common'
 import algoliasearch from 'algoliasearch'
 import type { SearchIndex } from 'algoliasearch'
 
-import { HelpCenter } from 'models/helpCenter/types'
-import { AlgoliaSearchResult } from 'pages/settings/helpCenter/types/algolia'
+import type { HelpCenter } from 'models/helpCenter/types'
+import type { AlgoliaSearchResult } from 'pages/settings/helpCenter/types/algolia'
 
 export interface AlgoliaSearchClient<T> {
     search: (

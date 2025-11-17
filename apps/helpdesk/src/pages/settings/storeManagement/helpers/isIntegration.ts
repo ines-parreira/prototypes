@@ -1,8 +1,5 @@
-import {
-    Integration,
-    IntegrationType,
-    isAppIntegration,
-} from 'models/integration/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType, isAppIntegration } from 'models/integration/types'
 
 export const isEmailChannel = (channel: Integration) => {
     return [

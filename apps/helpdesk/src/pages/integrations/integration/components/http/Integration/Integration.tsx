@@ -1,22 +1,24 @@
-import { Component, SyntheticEvent } from 'react'
+import type { SyntheticEvent } from 'react'
+import { Component } from 'react'
 
 import { fromJS } from 'immutable'
 import { isArray } from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import { connect, ConnectedProps } from 'react-redux'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'
-import {
+import type {
     HTTPForm,
     HttpIntegration,
     HttpIntegrationMeta,
-    IntegrationType,
 } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -25,9 +27,8 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { DEFAULT_FORM } from 'pages/integrations/integration/components/http/Integration/constants'
 import { validateHeaderName } from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
 import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
-import ObjectListField, {
-    Field,
-} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import type { Field } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import InfoIconWithTooltip from 'pages/tickets/common/components/InfoIconWithTooltip'
@@ -38,7 +39,7 @@ import {
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 import { getIntegrationsLoading } from 'state/integrations/selectors'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
 type Props = {

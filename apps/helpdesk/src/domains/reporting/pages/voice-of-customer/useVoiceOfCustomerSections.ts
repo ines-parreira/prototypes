@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
-import { AccordionValues } from 'components/Accordion/utils/types'
+import type { AccordionValues } from 'components/Accordion/utils/types'
 import {
     VOICE_OF_CUSTOMER_NAVBAR_SECTIONS_KEY,
     VoiceOfCustomerViewSections,

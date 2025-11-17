@@ -1,6 +1,6 @@
-import { StoreState } from 'state/types'
+import type { StoreState } from 'state/types'
 
-import { ContactFormsAutomationSettingsState } from './types'
+import type { ContactFormsAutomationSettingsState } from './types'
 
 export const getContactFormsAutomationSettings = (
     state: StoreState,

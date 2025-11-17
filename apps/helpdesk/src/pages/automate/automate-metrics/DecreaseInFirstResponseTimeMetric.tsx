@@ -3,7 +3,7 @@ import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
 
 import { DECREASE_IN_FIRST_RESPONSE } from './constants'
-import { BaseAutomateMetricProps } from './types'
+import type { BaseAutomateMetricProps } from './types'
 import { getTrendProps, toDuration } from './utils'
 
 export const DECREASE_IN_FIRST_RESPONSE_TOOLTIP = {

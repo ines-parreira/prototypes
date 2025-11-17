@@ -3,19 +3,19 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { shortcutManager } from '@repo/utils'
 import _debounce from 'lodash/debounce'
-import { DropTargetMonitor } from 'react-dnd'
-import { connect, ConnectedProps } from 'react-redux'
+import type { DropTargetMonitor } from 'react-dnd'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { Navigation } from 'components/Navigation/Navigation'
-import {
-    UserRole,
+import type {
     UserSetting,
-    UserSettingType,
     UserViewsOrderingSettingData,
 } from 'config/types/user'
+import { UserRole, UserSettingType } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { createAccountSetting, updateAccountSetting } from 'models/account'
@@ -25,10 +25,11 @@ import {
     fetchSections,
     updateSection,
 } from 'models/section/resources'
-import { Section, SectionDraft } from 'models/section/types'
+import type { Section, SectionDraft } from 'models/section/types'
 import { createUserSetting, updateUserSetting } from 'models/user/resources'
 import { fetchViewsPaginated, updateView } from 'models/view/resources'
-import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
+import type { View, ViewCategoryNavbar } from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
@@ -38,11 +39,11 @@ import {
 } from 'split-ticket-view-toggle'
 import { submitSettingSuccess as submitAccountSettingSuccess } from 'state/currentAccount/actions'
 import { getViewsOrderingSetting } from 'state/currentAccount/selectors'
-import {
+import type {
     AccountSetting,
-    AccountSettingType,
     AccountViewsOrderingSettingData,
 } from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import { submitSettingSuccess } from 'state/currentUser/actions'
 import { getViewsOrderingUserSetting } from 'state/currentUser/selectors'
 import {
@@ -54,7 +55,7 @@ import {
 import { viewsFetched, viewUpdated } from 'state/entities/views/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
@@ -80,11 +81,14 @@ import { PlaceCallNavbarButton } from './PlaceCallNavbarButton'
 import { RecentChats } from './RecentChats'
 import SectionFormModal from './SectionFormModal'
 import { TicketNavbarBlock } from './TicketNavbarBlock'
-import TicketNavbarContent, { TicketNavbarElement } from './TicketNavbarContent'
-import TicketNavbarDropTarget, {
+import type { TicketNavbarElement } from './TicketNavbarContent'
+import TicketNavbarContent from './TicketNavbarContent'
+import type {
     TicketNavbarDragObject,
-    TicketNavbarDropDirection,
     TicketNavbarDropResult,
+} from './TicketNavbarDropTarget'
+import TicketNavbarDropTarget, {
+    TicketNavbarDropDirection,
 } from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
 import { useStoredNavigationSections } from './useStoredNavigationSections'

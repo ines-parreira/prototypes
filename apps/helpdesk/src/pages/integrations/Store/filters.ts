@@ -1,5 +1,6 @@
-import { Integration, IntegrationType } from 'models/integration/types'
-import { IntegrationListItem } from 'state/integrations/types'
+import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import type { IntegrationListItem } from 'state/integrations/types'
 
 export function hasTwitterIntegrations(integrations: Integration[]) {
     return integrations.some(

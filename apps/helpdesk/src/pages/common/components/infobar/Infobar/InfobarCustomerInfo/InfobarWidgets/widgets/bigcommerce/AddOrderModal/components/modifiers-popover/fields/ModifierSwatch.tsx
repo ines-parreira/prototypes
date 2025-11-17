@@ -1,10 +1,11 @@
-import React, { PropsWithChildren, useRef, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import React, { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { BigCommerceProductSwatchModifier } from 'models/integration/types'
+import type { BigCommerceProductSwatchModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,7 +13,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import { FieldProps } from './types'
+import type { FieldProps } from './types'
 
 import css from './ModifierSwatch.less'
 import sharedCss from './Shared.less'

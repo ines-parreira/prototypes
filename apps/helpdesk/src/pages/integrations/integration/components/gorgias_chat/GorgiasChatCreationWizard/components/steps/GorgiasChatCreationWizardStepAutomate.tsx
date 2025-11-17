@@ -1,8 +1,10 @@
-import React, { useMemo, useState } from 'react'
+import type React from 'react'
+import { useMemo, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     LegacyButton as Button,
@@ -13,11 +15,13 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
-import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
-import {
-    GorgiasChatCreationWizardSteps,
+import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
+import type {
     GorgiasChatIntegration,
     IntegrationFromType,
+} from 'models/integration/types'
+import {
+    GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'

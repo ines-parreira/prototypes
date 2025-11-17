@@ -1,9 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { DomainEvent } from '@gorgias/events'
-import {
+import type { DomainEvent } from '@gorgias/events'
+import type {
     ListLiveCallQueueAgentsResult,
     LiveCallQueueVoiceCall,
+} from '@gorgias/helpdesk-queries'
+import {
     queryKeys,
     VoiceCallDirection,
     VoiceCallStatus,

@@ -1,4 +1,5 @@
-import React, { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
+import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { User } from '../../../../../config/types/user'
+import type { User } from '../../../../../config/types/user'
 import { deleteTwoFASecret } from '../../../../../models/twoFactorAuthentication/resources'
 import TwoFactorAuthenticationDisableModal from '../TwoFactorAuthenticationDisableModal'
 

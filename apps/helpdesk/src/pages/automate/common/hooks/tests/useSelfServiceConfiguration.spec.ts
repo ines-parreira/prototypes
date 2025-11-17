@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

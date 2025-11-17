@@ -9,7 +9,7 @@ import {
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
-import {
+import type {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'domains/reporting/hooks/useMetricPerDimension'
@@ -21,12 +21,12 @@ import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'domains/reporting/utils/reporting'
-import { OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
 
 const assigneeUserId = TicketDimension.AssigneeUserId
 const userIdField = AgentTimeTrackingDimension.UserId

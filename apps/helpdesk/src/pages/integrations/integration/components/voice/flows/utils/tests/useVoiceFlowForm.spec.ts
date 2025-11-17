@@ -6,8 +6,9 @@ import {
     mockPhoneIntegration,
     mockUpdateAllPhoneSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
-import { PhoneIntegration, queryKeys } from '@gorgias/helpdesk-queries'
-import { CallRoutingFlow } from '@gorgias/helpdesk-types'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
@@ -15,7 +16,7 @@ import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { VoiceFlowNodeType } from '../../constants'
-import { VoiceFlowFormValues } from '../../types'
+import type { VoiceFlowFormValues } from '../../types'
 import { useVoiceFlowForm } from '../useVoiceFlowForm'
 
 jest.mock('hooks/useNotify', () => ({

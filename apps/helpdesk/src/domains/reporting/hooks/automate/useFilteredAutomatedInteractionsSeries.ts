@@ -1,6 +1,6 @@
 import { fetchAutomationDatasetTimeSeries } from 'domains/reporting/hooks/automate/timeSeries'
-import { StatsFilters } from 'domains/reporting/models/stat/types'
-import { ReportingGranularity } from 'domains/reporting/models/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type { ReportingGranularity } from 'domains/reporting/models/types'
 
 export const fetchFilteredAutomatedInteractionsSeries = async (
     filters: StatsFilters,

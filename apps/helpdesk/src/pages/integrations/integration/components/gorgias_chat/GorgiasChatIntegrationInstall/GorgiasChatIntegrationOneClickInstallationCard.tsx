@@ -2,7 +2,8 @@ import { useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
-import { fromJS, Map } from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -26,9 +27,8 @@ import useShopifyThemeAppExtension from '../hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from '../hooks/useThemeAppExtensionInstallation'
-import GorgiasChatIntegrationVisibilityControls, {
-    GorgiasChatIntegrationVisibilityControlsHandle,
-} from './GorgiasChatIntegrationVisibilityControls'
+import type { GorgiasChatIntegrationVisibilityControlsHandle } from './GorgiasChatIntegrationVisibilityControls'
+import GorgiasChatIntegrationVisibilityControls from './GorgiasChatIntegrationVisibilityControls'
 
 import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 

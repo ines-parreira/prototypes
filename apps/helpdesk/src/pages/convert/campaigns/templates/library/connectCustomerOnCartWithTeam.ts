@@ -1,7 +1,7 @@
 // Connect customers on your cart page with your team
 import { ulid } from 'ulidx'
 
-import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import type { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
@@ -11,7 +11,7 @@ import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRu
 import { assetsUrl } from 'utils'
 
 import { CampaignConfigurationBuilder } from '../constructor'
-import { CampaignConfiguration, CampaignTemplate } from '../types'
+import type { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
     slug: 'connect-customer-on-cart-with-team',

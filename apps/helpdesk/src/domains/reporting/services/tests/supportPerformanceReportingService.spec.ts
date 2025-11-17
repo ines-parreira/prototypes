@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { Period } from 'domains/reporting/models/stat/types'
+import type { Period } from 'domains/reporting/models/stat/types'
 import {
     MESSAGES_SENT_LABEL,
     OPEN_TICKETS_LABEL,
@@ -9,10 +9,10 @@ import {
     TICKETS_REPLIED_LABEL,
     WORKLOAD_BY_CHANNEL_LABEL,
 } from 'domains/reporting/services/constants'
+import type { TimeSeriesDataWithLabels } from 'domains/reporting/services/supportPerformanceReportingService'
 import {
     createTimeSeriesReport,
     createTrendReport,
-    TimeSeriesDataWithLabels,
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import * as files from 'utils/file'
 

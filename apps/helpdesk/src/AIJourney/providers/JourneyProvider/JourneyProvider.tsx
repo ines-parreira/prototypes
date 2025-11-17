@@ -1,20 +1,21 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import type React from 'react'
+import { createContext, useContext, useMemo } from 'react'
 
 import { matchPath, useLocation, useParams } from 'react-router-dom'
 
-import {
+import type {
     JourneyApiDTO,
     JourneyDetailApiDTO,
-    JourneyTypeEnum,
 } from '@gorgias/convert-client'
-import { Integration } from '@gorgias/helpdesk-types'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+import type { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 import { useJourneys } from 'AIJourney/queries/useJourneys/useJourneys'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useIntegrations } from '../IntegrationsProvider/IntegrationsProvider'

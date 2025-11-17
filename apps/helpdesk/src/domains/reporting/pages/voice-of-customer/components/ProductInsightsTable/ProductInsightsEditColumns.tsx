@@ -6,7 +6,7 @@ import {
     ProductInsightsTableLabels,
     ProductInsightsTableViews,
 } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import type { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 
 export const ProductInsightsEditColumns = () => {

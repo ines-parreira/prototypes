@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent } from '@repo/logging'
 import { fireEvent, waitFor } from '@testing-library/react'

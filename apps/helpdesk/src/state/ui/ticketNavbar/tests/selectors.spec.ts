@@ -5,7 +5,7 @@ import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { ViewType, ViewVisibility } from 'models/view/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 
 import { initialState } from '../reducer'
 import {

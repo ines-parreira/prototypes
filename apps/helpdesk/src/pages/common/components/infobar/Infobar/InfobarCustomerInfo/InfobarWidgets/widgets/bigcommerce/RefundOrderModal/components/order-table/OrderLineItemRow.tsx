@@ -1,4 +1,4 @@
-import {
+import type {
     GiftWrappingItemRefundData,
     ProductItemRefundData,
 } from 'models/integration/types'

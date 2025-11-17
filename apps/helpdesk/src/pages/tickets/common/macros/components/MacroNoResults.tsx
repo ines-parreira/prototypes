@@ -2,8 +2,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import { Filters } from 'models/macro/types'
-import { RootState } from 'state/types'
+import type { Filters } from 'models/macro/types'
+import type { RootState } from 'state/types'
 import { hasRole } from 'utils'
 
 type Props = {

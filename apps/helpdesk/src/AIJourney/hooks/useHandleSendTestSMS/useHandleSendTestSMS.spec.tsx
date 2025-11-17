@@ -8,7 +8,7 @@ import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { useTestSms } from 'AIJourney/queries'
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

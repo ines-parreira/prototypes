@@ -1,12 +1,12 @@
 import React, { useContext, useMemo } from 'react'
 
-import { Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { EditOrderShippingAddressModal } from 'Widgets/modules/Shopify/modules/Order'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
-import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'

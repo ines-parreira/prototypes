@@ -1,5 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { Location } from 'history'
+import type { Location } from 'history'
 
 import { getLDClient } from 'utils/launchDarkly'
 

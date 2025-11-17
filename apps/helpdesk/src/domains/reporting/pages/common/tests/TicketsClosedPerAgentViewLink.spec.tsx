@@ -4,17 +4,17 @@ import { logEvent } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { LinkProps } from 'react-router-dom'
+import type { LinkProps } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
+import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import TicketsClosedPerAgentViewLink from 'domains/reporting/pages/common/TicketsClosedPerAgentViewLink'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
 import { agents as agentsFixtures } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
-import { RootState, StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

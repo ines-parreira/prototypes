@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import { List, Map } from 'immutable'
+import type { List } from 'immutable'
+import { Map } from 'immutable'
 import { Col, Row } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'

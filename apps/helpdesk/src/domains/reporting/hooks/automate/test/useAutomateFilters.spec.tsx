@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 describe('useNewAutomateFilters', () => {

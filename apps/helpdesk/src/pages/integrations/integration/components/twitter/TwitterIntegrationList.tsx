@@ -1,12 +1,13 @@
-import { List, Map } from 'immutable'
-import { connect, ConnectedProps } from 'react-redux'
+import type { List, Map } from 'immutable'
+import type { ConnectedProps } from 'react-redux'
+import { connect } from 'react-redux'
 
 import twitterWhiteIcon from 'assets/img/integrations/twitter-white.svg'
 
 import { IntegrationType } from '../../../../../models/integration/types'
 import { getCurrentAccountFeatures } from '../../../../../state/currentAccount/selectors'
 import { AccountFeature } from '../../../../../state/currentAccount/types'
-import { RootState } from '../../../../../state/types'
+import type { RootState } from '../../../../../state/types'
 import IntegrationList from '../IntegrationList'
 import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
 import TwitterIntegrationListItem from './TwitterIntegrationListItem'

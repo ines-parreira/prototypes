@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
 
@@ -21,10 +21,10 @@ import { ActiveIntentItem } from './ActiveIntentItem'
 import { AvailableIntentItem } from './AvailableIntentItem'
 import { Messages } from './constants'
 import { IntentsFeedbackDropdown } from './IntentsFeedbackDropdown'
+import type { UserSubmissionSubEventProps } from './intentsFeedbackSegmentEvents'
 import {
     logDropdownOpenEvent,
     logUserSubmissionEvent,
-    UserSubmissionSubEventProps,
     UserSubmissionSubEventType,
 } from './intentsFeedbackSegmentEvents'
 

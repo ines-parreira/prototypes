@@ -1,7 +1,7 @@
 import { ulid } from 'ulidx'
 
 import { ContentType, HttpMethod } from 'models/api/types'
-import {
+import type {
     Action,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'

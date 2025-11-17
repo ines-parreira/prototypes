@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
-import { Product } from 'constants/integrations/types/shopify'
+import type { Product } from 'constants/integrations/types/shopify'
 import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
 import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
-import { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
+import type { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
 import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'
 import { RecommendationRuleCard } from './RecommendationRuleCard'

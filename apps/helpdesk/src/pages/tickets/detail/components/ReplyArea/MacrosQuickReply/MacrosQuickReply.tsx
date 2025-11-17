@@ -5,15 +5,15 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import { UncontrolledTooltip } from 'reactstrap'
 
-import { Macro } from '@gorgias/helpdesk-queries'
+import type { Macro } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { CurrentAccountState } from 'state/currentAccount/types'
+import type { CurrentAccountState } from 'state/currentAccount/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { CurrentUserState } from 'state/currentUser/types'
+import type { CurrentUserState } from 'state/currentUser/types'
 import { DEPRECATED_getTicket } from 'state/ticket/selectors'
-import { TicketState } from 'state/ticket/types'
+import type { TicketState } from 'state/ticket/types'
 
 import { MacroButton } from './MacroButton'
 

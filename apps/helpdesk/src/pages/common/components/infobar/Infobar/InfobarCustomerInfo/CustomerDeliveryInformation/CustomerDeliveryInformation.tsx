@@ -1,4 +1,4 @@
-import { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js'
 
 import { LegacyTextField as TextField } from '@gorgias/axiom'
 
@@ -6,7 +6,7 @@ import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
-import { FormState } from '../CustomerSyncForm/useCustomerSyncForm'
+import type { FormState } from '../CustomerSyncForm/useCustomerSyncForm'
 import ProvinceInputNew from './ProvinceInputNew'
 
 import css from './CustomerDeliveryInformation.less'

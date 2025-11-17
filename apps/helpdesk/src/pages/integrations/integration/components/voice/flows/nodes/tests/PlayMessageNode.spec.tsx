@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { screen } from '@testing-library/react'
 
@@ -6,13 +6,13 @@ import {
     mockCallRoutingFlow,
     mockPlayMessageStep,
 } from '@gorgias/helpdesk-mocks'
-import { PlayMessageStep } from '@gorgias/helpdesk-types'
+import type { PlayMessageStep } from '@gorgias/helpdesk-types'
 
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { VoiceFlowFormValues } from '../../types'
+import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { PlayMessageNode } from '../PlayMessageNode'
 

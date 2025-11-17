@@ -6,14 +6,13 @@ import { fireEvent, render } from '@testing-library/react'
 
 import { useFlag } from 'core/flags'
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
-import {
-    BannerNotification,
-    NotificationStyle,
-} from 'state/notifications/types'
+import type { BannerNotification } from 'state/notifications/types'
+import { NotificationStyle } from 'state/notifications/types'
 
 import { useBannersContext } from '../../Context'
 import { useBannerCarousel } from '../../hooks/useBannerCarousel'
-import { AlertBannerTypes, BannerCategories, ContextBanner } from '../../types'
+import type { ContextBanner } from '../../types'
+import { AlertBannerTypes, BannerCategories } from '../../types'
 import AlertBanners from '../AlertBanners'
 
 jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())

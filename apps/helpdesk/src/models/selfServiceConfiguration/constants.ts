@@ -1,14 +1,19 @@
-import { Option as MultiSelectOption } from 'pages/common/forms/MultiSelectOptionsField/types'
-import { Option, SelectableOption } from 'pages/common/forms/SelectField/types'
+import type { Option as MultiSelectOption } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type {
+    Option,
+    SelectableOption,
+} from 'pages/common/forms/SelectField/types'
 
+import type {
+    ReportIssueCaseReason,
+    ReportIssueCaseReasonAction,
+} from './types'
 import {
     AUTOMATED_RESPONSE,
     FilterKeyEnum,
     FinancialStatuses,
     FulfillmentStatuses,
     OrderStatuses,
-    ReportIssueCaseReason,
-    ReportIssueCaseReasonAction,
     SelfServiceOrderStatusEnum,
     ShipmentStatuses,
 } from './types'

@@ -1,15 +1,18 @@
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { readMigration } from 'core/flags/utils/readMigration'
-import { MetricName } from 'domains/reporting/hooks/metricNames'
-import { UsePostReportingQueryData } from 'domains/reporting/models/queries'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     postReportingV1,
     postReportingV2,
     postReportingV2Query,
 } from 'domains/reporting/models/resources'
-import { BuiltQuery, ScopeMeta } from 'domains/reporting/models/scopes/scope'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import { compareAndReportQueries } from 'domains/reporting/models/scopes/utils'
-import {
+import type {
     Cube,
     ReportingParams,
     ReportingQuery,

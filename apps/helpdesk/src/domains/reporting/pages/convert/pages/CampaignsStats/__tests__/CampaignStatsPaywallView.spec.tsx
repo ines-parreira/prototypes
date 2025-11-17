@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import CampaignStatsPaywallView from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import { RootState } from 'state/types'
+import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 import { mockStore } from 'utils/testing'
 

@@ -1,11 +1,11 @@
 import { produce } from 'immer'
 import { ulid } from 'ulidx'
 
-import {
-    isReusableLLMPromptTriggerNodeType,
+import type {
     ReusableLLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
+import { isReusableLLMPromptTriggerNodeType } from '../../models/visualBuilderGraph.types'
 
 export type VisualBuilderReusableLLMPromptTriggerAction =
     | {

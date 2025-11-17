@@ -1,7 +1,5 @@
-import {
-    AIArticleToggleOption,
-    AIArticleToggleOptionValue,
-} from 'models/helpCenter/types'
+import type { AIArticleToggleOption } from 'models/helpCenter/types'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 export const AI_ARTICLES_TOGGLE_OPTIONS: AIArticleToggleOption[] = [
     {

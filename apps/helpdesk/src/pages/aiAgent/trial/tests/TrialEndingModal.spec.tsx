@@ -14,12 +14,10 @@ import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
-import {
-    TrialModalProps,
-    useTrialModalProps,
-} from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import type { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
-import { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import type { TrialFinishSetupFeature } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TrialEndedModal } from '../components/TrialEndedModal/TrialEndedModal'

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import { User } from 'config/types/user'
+import type { User } from 'config/types/user'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { useAutomateMetricsTimeSeries } from 'domains/reporting/hooks/automate/useAutomationDataset'

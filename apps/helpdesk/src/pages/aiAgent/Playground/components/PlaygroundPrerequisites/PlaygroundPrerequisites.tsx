@@ -1,8 +1,9 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import { LoadingSpinner } from '@gorgias/axiom'
 
-import { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 
 import { useFileIngestion } from '../../../hooks/useFileIngestion'
 import { usePublicResources } from '../../../hooks/usePublicResources'

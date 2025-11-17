@@ -5,16 +5,16 @@ import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useFlag } from 'core/flags'
-import { StoreConfiguration } from 'models/aiAgent/types'
-import {
-    MessageType,
+import type { StoreConfiguration } from 'models/aiAgent/types'
+import type {
     PlaygroundMessage,
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
+import { MessageType } from 'models/aiAgentPlayground/types'
 import { reportError } from 'utils/errors'
 
-import {
+import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
@@ -23,7 +23,7 @@ import {
     GREETING_MESSAGE_TEXT,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import { PlaygroundCustomer } from '../types'
+import type { PlaygroundCustomer } from '../types'
 import {
     handleAiAgentResponse,
     handleAiAgentTestSessionLog,

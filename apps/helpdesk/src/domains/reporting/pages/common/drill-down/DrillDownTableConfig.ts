@@ -1,26 +1,24 @@
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 
 import { AIJourneyDrillDownConfig } from 'AIJourney/configs/AIJourneyDrillDownConfig'
+import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
 import {
     defaultEnrichmentFields,
-    DrillDownDataHook,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
 import { AiSalesAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
-import {
+import type {
     ConvertDrillDownRowData,
-    formatTicketDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
+import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
-import {
-    ColumnConfig,
-    Domain,
-} from 'domains/reporting/pages/common/drill-down/types'
+import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
+import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { ConvertDrillDownConfig } from 'domains/reporting/pages/convert/constants/CampaignsDrillDownConfig'
 import {
     SatisfactionAverageSurveyScoreMetricConfig,
@@ -28,32 +26,26 @@ import {
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { SlaMetricConfig } from 'domains/reporting/pages/sla/SlaConfig'
 import { AgentsColumnConfig } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
-import {
-    AutoQAAgentsColumnConfig,
-    AutoQAAgentsTableColumn,
-} from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { AutoQAAgentsColumnConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { ChannelColumnConfig } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
-import {
-    OverviewMetric,
-    OverviewMetricConfig,
-} from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import type { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
+import { OverviewMetricConfig } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TagsMetricConfig } from 'domains/reporting/pages/ticket-insights/tags/TagsMetricConfig'
 import { TicketFieldsMetricConfig } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { TicketVolumeConfig } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ticketVolumeConfig'
 import { ProductInsightsColumnWithDrillDownConfig } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
-import {
-    VoiceOfCustomerMetricWithDrillDown,
-    VoiceOfCustomerMetricWithDrillDownConfig,
-} from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
+import type { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
+import { VoiceOfCustomerMetricWithDrillDownConfig } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
 import { VoiceDrillDownConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceDrillDownConfig'
-import {
+import type {
     AgentMetricColumn,
     DrillDownMetric,
     ProductMetricColumn,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
-import {
+import type { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
+import type {
     AgentsTableColumn,
     AIInsightsMetric,
     AutoQAMetric,

@@ -7,10 +7,8 @@ import {
     useOpenDrillDownModal,
 } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import {
-    DrillDownMetric,
-    setMetricData,
-} from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     VoiceAgentsMetric,
     VoiceMetric,

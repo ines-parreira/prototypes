@@ -11,7 +11,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { helpCenterKeys } from 'models/helpCenter/queries'
-import { getArticleIngestionLogs } from 'models/helpCenter/resources'
+import type { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
@@ -26,7 +26,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import { PublicSourcesItem } from './PublicSourcesItem'
-import { SourceItem } from './types'
+import type { SourceItem } from './types'
 
 import css from './PublicSourcesSection.less'
 

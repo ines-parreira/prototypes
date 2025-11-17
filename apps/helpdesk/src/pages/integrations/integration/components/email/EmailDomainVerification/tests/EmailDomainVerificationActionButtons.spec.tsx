@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import { EmailIntegration } from '@gorgias/helpdesk-queries'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { renderWithRouter } from 'utils/testing'
 

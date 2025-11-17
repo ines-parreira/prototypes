@@ -1,8 +1,9 @@
-import React, { ComponentType } from 'react'
+import type { ComponentType } from 'react'
+import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import { SearchRank } from 'hooks/useSearchRankScenario'
+import type { SearchRank } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import useSearchRankScenarioContext from '../useSearchRankScenarioContext'

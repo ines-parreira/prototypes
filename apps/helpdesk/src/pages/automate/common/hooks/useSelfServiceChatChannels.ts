@@ -2,9 +2,9 @@ import { useCallback, useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardStatus,
-    GorgiasChatIntegration,
     IntegrationType,
 } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'

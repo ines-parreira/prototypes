@@ -1,13 +1,15 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
-import {
+import type {
     CreateVoiceQueue,
-    PhoneRingingBehaviour,
     UpdateVoiceQueue,
+} from '@gorgias/helpdesk-queries'
+import {
+    PhoneRingingBehaviour,
     VoiceQueueTargetScope,
 } from '@gorgias/helpdesk-queries'
 import * as validators from '@gorgias/helpdesk-validators'

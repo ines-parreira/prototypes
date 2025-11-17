@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import { AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'
+import type { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'
 import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import Loader from 'pages/common/components/Loader/Loader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

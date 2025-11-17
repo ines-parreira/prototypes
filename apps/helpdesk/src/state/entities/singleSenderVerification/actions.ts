@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-import { SenderVerification } from 'models/singleSenderVerification/types'
+import type { SenderVerification } from 'models/singleSenderVerification/types'
 
 import { REMOVE_VERIFICATION, SET_VERIFICATION } from './constants'
 

@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
 import classnames from 'classnames'
 
 import cssNavbar from 'assets/css/navbar.less'
-import NavbarLink, {
-    NavbarLinkProps,
-} from 'pages/common/components/navbar/NavbarLink'
+import type { NavbarLinkProps } from 'pages/common/components/navbar/NavbarLink'
+import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 
 import css from './AutomateNavbarPaywallNavbarLink.less'
 

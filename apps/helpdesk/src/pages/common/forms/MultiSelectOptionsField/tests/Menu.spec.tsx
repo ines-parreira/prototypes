@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import Menu from 'pages/common/forms/MultiSelectOptionsField/Menu'
-import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 describe('MultiSelectField Menu', () => {
     const options: Option[] = [
