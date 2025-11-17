@@ -1,8 +1,8 @@
 {
   "summary": {
     "totalEntries": 77,
-    "totalUsages": 1606,
-    "reportGeneratedAt": "2025-11-12T09:24:40.934Z"
+    "totalUsages": 1605,
+    "reportGeneratedAt": "2025-11-14T13:15:19.111Z"
   },
   "entries": [
     {
@@ -2347,7 +2347,7 @@
           ]
         },
         {
-          "usageCount": 28,
+          "usageCount": 27,
           "name": "@gorgias.LegacyIconButton",
           "nodeType": "Identifier",
           "deprecationDate": "2025-10-15",
@@ -2376,7 +2376,6 @@
               "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneSelectField.tsx",
               "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHours.tsx",
               "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/Channels/ChannelsList/ChannelItem.tsx",
-              "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/CategoriesList/CategoriesList.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketHeader.tsx",
