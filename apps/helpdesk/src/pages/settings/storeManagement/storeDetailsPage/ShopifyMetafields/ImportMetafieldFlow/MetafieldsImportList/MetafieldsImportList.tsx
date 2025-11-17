@@ -19,6 +19,7 @@ import {
 import type { Field } from '../../MetafieldsTable/types'
 import type { MetafieldCategory } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
+import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { columns } from './Columns'
 import { mockImportableFields } from './data'
@@ -77,7 +78,9 @@ export default function MetafieldsImportList({
             globalFilterFn: 'includesString',
         },
         selectionConfig: {
-            enableRowSelection: true,
+            enableRowSelection: (row) => {
+                return isSupportedMetafieldType(row.original.type)
+            },
             initialRowSelection,
             onRowSelectionChange: handleRowSelectionChange,
         },

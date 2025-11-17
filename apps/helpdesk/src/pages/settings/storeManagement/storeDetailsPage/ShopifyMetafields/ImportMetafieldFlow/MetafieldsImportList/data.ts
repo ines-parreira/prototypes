@@ -29,4 +29,11 @@ export const mockImportableFields: Field[] = [
         category: 'draft_order',
         isVisible: false,
     },
+    {
+        id: '_5',
+        name: 'New Order package size 3',
+        type: 'page',
+        category: 'draft_order',
+        isVisible: false,
+    },
 ]

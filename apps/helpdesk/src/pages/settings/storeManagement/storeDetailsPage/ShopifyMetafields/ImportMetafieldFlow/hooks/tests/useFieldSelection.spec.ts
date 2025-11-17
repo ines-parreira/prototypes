@@ -7,7 +7,7 @@ describe('useFieldSelection', () => {
     const mockCustomerField: Field = {
         id: 'customer-1',
         name: 'Customer Field',
-        type: 'string',
+        type: 'integer',
         category: 'customer',
         isVisible: true,
     }
@@ -15,7 +15,7 @@ describe('useFieldSelection', () => {
     const mockOrderField: Field = {
         id: 'order-1',
         name: 'Order Field',
-        type: 'number',
+        type: 'integer',
         category: 'order',
         isVisible: true,
     }

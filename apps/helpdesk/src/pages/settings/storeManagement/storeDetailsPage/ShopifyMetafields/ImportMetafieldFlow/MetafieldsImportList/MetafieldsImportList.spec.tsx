@@ -204,7 +204,7 @@ describe('MetafieldsImportList', () => {
             />,
         )
 
-        expect(screen.getByText(/2 items selected/i)).toBeInTheDocument()
+        expect(screen.getByText(/3 items selected/i)).toBeInTheDocument()
     })
 
     it('should handle multiple row selection', async () => {

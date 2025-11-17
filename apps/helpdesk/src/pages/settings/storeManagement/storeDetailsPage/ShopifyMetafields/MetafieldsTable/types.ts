@@ -1,9 +1,11 @@
 import type { TableMeta } from '@gorgias/axiom'
 
+import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
+
 export type Field = {
     id: string
     name: string
-    type: string
+    type: MetafieldType
     category: string
     isVisible?: boolean
 }

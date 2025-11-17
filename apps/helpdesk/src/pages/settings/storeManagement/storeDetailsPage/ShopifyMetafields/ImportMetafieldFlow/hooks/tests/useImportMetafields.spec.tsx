@@ -13,7 +13,7 @@ describe('useImportMetafields', () => {
     const mockField1: Field = {
         id: 'field-1',
         name: 'Customer Email',
-        type: 'string',
+        type: 'integer',
         category: 'customer',
         isVisible: true,
     }
@@ -21,7 +21,7 @@ describe('useImportMetafields', () => {
     const mockField2: Field = {
         id: 'field-2',
         name: 'Order Total',
-        type: 'number',
+        type: 'integer',
         category: 'order',
         isVisible: true,
     }

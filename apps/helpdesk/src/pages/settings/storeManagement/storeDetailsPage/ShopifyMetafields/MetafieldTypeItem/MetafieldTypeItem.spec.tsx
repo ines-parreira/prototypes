@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
+import type { MetafieldType } from './MetafieldTypeItem'
 import MetafieldTypeItem from './MetafieldTypeItem'
 
 describe('MetafieldTypeItem', () => {
@@ -33,5 +34,11 @@ describe('MetafieldTypeItem', () => {
 
         const icon = screen.getByRole('img', { hidden: true })
         expect(icon).not.toHaveAttribute('aria-disabled')
+    })
+
+    it('handles unknown type with empty defaults', () => {
+        render(<MetafieldTypeItem type={'unknown_type' as MetafieldType} />)
+
+        expect(screen.queryByRole('img', { hidden: true })).toBeInTheDocument()
     })
 })
