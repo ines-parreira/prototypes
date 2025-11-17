@@ -1,5 +1,7 @@
 import { Button, Icon, MultiButton } from '@gorgias/axiom'
 
+import { HELP_CENTER_SELECT_MODAL_OPEN } from '../constants'
+import { dispatchDocumentEvent } from '../EmptyState/utils'
 import { KnowledgeType, typeConfig } from '../types'
 
 import css from './DocumentFilters.less'
@@ -21,6 +23,10 @@ export const DocumentFilters = ({
             icon: typeConfig[type].icon,
         })),
     ]
+
+    const helpCenterSettings = () => {
+        dispatchDocumentEvent(HELP_CENTER_SELECT_MODAL_OPEN)
+    }
 
     return (
         <div className={css.container}>
@@ -44,6 +50,13 @@ export const DocumentFilters = ({
                     )
                 })}
             </MultiButton>
+            {selectedFilter === KnowledgeType.FAQ && (
+                <Button
+                    variant="secondary"
+                    icon="settings"
+                    onClick={helpCenterSettings}
+                />
+            )}
         </div>
     )
 }

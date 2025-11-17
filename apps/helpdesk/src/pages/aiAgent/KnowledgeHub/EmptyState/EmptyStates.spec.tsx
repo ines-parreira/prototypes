@@ -1,5 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import { EMPTY_HELP_CENTER_ID } from '../../../automate/common/components/HelpCenterSelect'
+import {
+    HELP_CENTER_SELECT_MODAL_OPEN,
+    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+} from '../constants'
 import type { GroupedKnowledgeItem } from '../types'
 import { KnowledgeType, KnowledgeVisibility } from '../types'
 import {
@@ -11,11 +17,44 @@ import {
     EmptyStateURL,
     EmptyStateWrapper,
 } from './EmptyStates'
+import { useFaqHelpCenter } from './useFaqHelpCenter'
+import { dispatchDocumentEvent } from './utils'
+
+jest.mock('./useFaqHelpCenter')
+jest.mock('./utils', () => ({
+    dispatchDocumentEvent: jest.fn(),
+    useListenToDocumentEvent: jest.fn(),
+}))
+
+const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
+    typeof useFaqHelpCenter
+>
+const mockDispatchDocumentEvent = dispatchDocumentEvent as jest.MockedFunction<
+    typeof dispatchDocumentEvent
+>
+
+const defaultMockValues = {
+    faqHelpCenters: [],
+    selectedHelpCenter: {
+        id: EMPTY_HELP_CENTER_ID,
+        name: 'No help center',
+    },
+    setHelpCenterId: jest.fn(),
+    handleOnSave: jest.fn(),
+    shopName: 'test-shop',
+    isPendingCreateOrUpdate: false,
+    helpCenterItems: [{ id: -1, name: 'No help center' }],
+}
+
+beforeEach(() => {
+    jest.clearAllMocks()
+    mockUseFaqHelpCenter.mockReturnValue(defaultMockValues)
+})
 
 describe('EmptyStates', () => {
     describe('EmptyStates (main component)', () => {
         it('renders create new content section', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(
                 screen.getByRole('heading', { name: 'Create new content' }),
@@ -23,7 +62,7 @@ describe('EmptyStates', () => {
         })
 
         it('renders sync or upload external content section', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(
                 screen.getByRole('heading', {
@@ -33,7 +72,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays Guidance card in create section', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(screen.getByText('Guidance')).toBeInTheDocument()
             expect(
@@ -44,7 +83,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays FAQ card in create section', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(screen.getByText('Help Center articles')).toBeInTheDocument()
             expect(
@@ -55,7 +94,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays Website card when hasWebsiteSync is false', () => {
-            render(<EmptyStates hasWebsiteSync={false} />)
+            render(<EmptyStates hasWebsiteSync={false} helpCenterId={null} />)
 
             expect(screen.getByText('Store website')).toBeInTheDocument()
             expect(
@@ -64,13 +103,13 @@ describe('EmptyStates', () => {
         })
 
         it('does not display Website card when hasWebsiteSync is true', () => {
-            render(<EmptyStates hasWebsiteSync={true} />)
+            render(<EmptyStates hasWebsiteSync={true} helpCenterId={null} />)
 
             expect(screen.queryByText('Store website')).not.toBeInTheDocument()
         })
 
         it('displays URL card', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(screen.getByText('URLs')).toBeInTheDocument()
             expect(
@@ -79,7 +118,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays Documents card', () => {
-            render(<EmptyStates />)
+            render(<EmptyStates helpCenterId={null} />)
 
             expect(screen.getByText('Documents')).toBeInTheDocument()
             expect(
@@ -88,7 +127,7 @@ describe('EmptyStates', () => {
         })
 
         it('applies center alignment by default', () => {
-            const { container } = render(<EmptyStates />)
+            const { container } = render(<EmptyStates helpCenterId={null} />)
 
             const headings = container.querySelectorAll('h4')
             expect(headings.length).toBeGreaterThan(0)
@@ -96,7 +135,7 @@ describe('EmptyStates', () => {
 
         it('applies custom alignment when provided', () => {
             const { container } = render(
-                <EmptyStates titleAlignment="flex-start" />,
+                <EmptyStates titleAlignment="flex-start" helpCenterId={null} />,
             )
 
             const headings = container.querySelectorAll('h4')
@@ -413,6 +452,112 @@ describe('EmptyStates', () => {
                     'Create and publish articles to make them available to AI Agent.',
                 ),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('User Interactions', () => {
+        describe('EmptyStates main component', () => {
+            it('dispatches OPEN_CREATE_GUIDANCE_ARTICLE_MODAL when Guidance card is clicked', async () => {
+                render(<EmptyStates helpCenterId={null} />)
+
+                const guidanceCard = screen.getByText('Guidance').closest('div')
+                await act(() => userEvent.click(guidanceCard!))
+
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+                )
+            })
+
+            it('dispatches HELP_CENTER_SELECT_MODAL_OPEN when FAQ card is clicked and no helpCenterId', async () => {
+                render(<EmptyStates helpCenterId={null} />)
+
+                const faqCard = screen
+                    .getByText('Help Center articles')
+                    .closest('div')
+                await act(() => userEvent.click(faqCard!))
+
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    HELP_CENTER_SELECT_MODAL_OPEN,
+                )
+            })
+
+            it('does not dispatch event when FAQ card is clicked with helpCenterId', async () => {
+                render(<EmptyStates helpCenterId={123} />)
+
+                const faqCard = screen
+                    .getByText('Help Center articles')
+                    .closest('div')
+                await act(() => userEvent.click(faqCard!))
+
+                expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+            })
+        })
+
+        describe('EmptyStateGuidance', () => {
+            it('dispatches OPEN_CREATE_GUIDANCE_ARTICLE_MODAL when Create Guidance button is clicked', async () => {
+                render(<EmptyStateGuidance />)
+
+                const createButton = screen.getByRole('button', {
+                    name: 'Create Guidance',
+                })
+                await act(() => userEvent.click(createButton))
+
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+                )
+            })
+        })
+
+        describe('EmptyStateFAQ', () => {
+            it('dispatches HELP_CENTER_SELECT_MODAL_OPEN when Connect Help Center button is clicked', async () => {
+                render(<EmptyStateFAQ helpCenterId={null} articles={[]} />)
+
+                const connectButton = screen.getByRole('button', {
+                    name: 'Connect Help Center',
+                })
+                await act(() => userEvent.click(connectButton))
+
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    HELP_CENTER_SELECT_MODAL_OPEN,
+                )
+            })
+
+            it('does not dispatch event when Create Help Center article button is clicked with no articles', async () => {
+                render(<EmptyStateFAQ helpCenterId={123} articles={[]} />)
+
+                const createButton = screen.getByRole('button', {
+                    name: 'Create Help Center article',
+                })
+                await act(() => userEvent.click(createButton))
+
+                expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+            })
+
+            it('does not dispatch event when Create Help Center article button is clicked with articles', async () => {
+                const mockArticles = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        title: 'Test Article',
+                        lastUpdatedAt: '2024-01-15T10:00:00Z',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                        id: '1',
+                    },
+                ]
+
+                render(
+                    <EmptyStateFAQ
+                        helpCenterId={123}
+                        articles={mockArticles}
+                    />,
+                )
+
+                const createButton = screen.getByRole('button', {
+                    name: 'Create Help Center article',
+                })
+                await act(() => userEvent.click(createButton))
+
+                expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+            })
         })
     })
 })

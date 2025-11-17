@@ -2,13 +2,12 @@ import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
+import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-
-import { KnowledgeType } from './types'
-import { transformKnowledgeHubArticlesToKnowledgeItems } from './utils/transformKnowledgeHubArticles'
 
 export const useKnowledgeHub = () => {
     const accountId = useAppSelector(getCurrentAccountId)

@@ -1,7 +1,45 @@
 import { render, screen } from '@testing-library/react'
 
+import { EMPTY_HELP_CENTER_ID } from '../../../../automate/common/components/HelpCenterSelect'
+import { useFaqHelpCenter } from '../../EmptyState/useFaqHelpCenter'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import { KnowledgeHubTable } from '../KnowledgeHubTable'
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(() => ({ shopName: 'test-shop' })),
+}))
+
+jest.mock('../../../hooks/useSyncStoreDomain', () => ({
+    useSyncStoreDomain: jest.fn(() => ({
+        storeDomain: 'example.com',
+        storeUrl: 'https://example.com',
+        storeDomainIngestionLog: null,
+        isFetchLoading: false,
+        syncTriggered: false,
+        handleTriggerSync: jest.fn(),
+        handleOnSync: jest.fn(),
+        handleOnCancel: jest.fn(),
+    })),
+}))
+
+jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(() => ({
+        storeConfiguration: { helpCenterId: 1 },
+        isLoading: false,
+    })),
+}))
+
+jest.mock('../../EmptyState/utils', () => ({
+    dispatchDocumentEvent: jest.fn(),
+    useListenToDocumentEvent: jest.fn(),
+}))
+
+jest.mock('../../EmptyState/useFaqHelpCenter')
+
+const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
+    typeof useFaqHelpCenter
+>
 
 const mockData = [
     {
@@ -43,6 +81,21 @@ describe('KnowledgeHubTable', () => {
         onRowClick: jest.fn(),
         selectedFolder: null,
     }
+
+    beforeEach(() => {
+        mockUseFaqHelpCenter.mockReturnValue({
+            faqHelpCenters: [],
+            selectedHelpCenter: {
+                id: EMPTY_HELP_CENTER_ID,
+                name: 'No help center',
+            },
+            setHelpCenterId: jest.fn(),
+            handleOnSave: jest.fn(),
+            shopName: 'test-shop',
+            isPendingCreateOrUpdate: false,
+            helpCenterItems: [{ id: -1, name: 'No help center' }],
+        })
+    })
 
     const renderComponent = (props = {}) => {
         return render(<KnowledgeHubTable {...defaultProps} {...props} />)

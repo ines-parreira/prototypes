@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -9,6 +9,7 @@ import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
 import { GuidanceTemplateCard } from '../../components/GuidanceTemplateCard/GuidanceTemplateCard'
 import type { GuidanceTemplate } from '../../types'
 import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
+import { useListenToDocumentEvent } from './utils'
 
 import css from './EmptyState.less'
 
@@ -19,31 +20,23 @@ export const AddGuidanceTemplateModal = () => {
     const [isOpen, setIsOpen] = useState(false)
 
     const toggleModal = useCallback(() => {
-        setIsOpen(!isOpen)
-    }, [isOpen])
+        setIsOpen((prev) => !prev)
+    }, [])
 
-    useEffect(() => {
-        document.addEventListener(
-            OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
-            toggleModal,
-        )
-        return () => {
-            document.removeEventListener(
-                OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
-                toggleModal,
-            )
-        }
-    }, [toggleModal])
+    useListenToDocumentEvent(OPEN_CREATE_GUIDANCE_ARTICLE_MODAL, toggleModal)
 
-    const onGuidanceTemplateClick = (template: GuidanceTemplate) => {
-        logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
-            source: 'empty',
-            type: 'template',
-            name: template.name,
-        })
+    const onGuidanceTemplateClick = useCallback(
+        (template: GuidanceTemplate) => {
+            logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
+                source: 'empty',
+                type: 'template',
+                name: template.name,
+            })
 
-        // TODO: open knowledge editor
-    }
+            // TODO: open knowledge editor
+        },
+        [],
+    )
 
     return (
         <Modal isOpen={isOpen} onOpenChange={toggleModal} size="lg">

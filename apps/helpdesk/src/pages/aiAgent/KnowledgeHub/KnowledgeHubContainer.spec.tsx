@@ -1,11 +1,24 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import type { Store } from 'redux'
 
+import { appQueryClient } from 'api/queryClient'
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
+import {
+    useGetHelpCenterList,
+    useGetHelpCenterListMulti,
+    useGetKnowledgeHubArticles,
+} from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
+import {
+    getCurrentAccountId,
+    getCurrentAccountState,
+} from 'state/currentAccount/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { KnowledgeHubContainer } from './KnowledgeHubContainer'
 import { KnowledgeVisibility } from './types'
@@ -29,12 +42,17 @@ jest.mock('./DocumentFilters/DocumentFilters', () => ({
         </div>
     ),
 }))
+jest.mock('./EmptyState/HelpCenterSelectModal', () => ({
+    HelpCenterSelectModal: () => <div data-testid="help-center-select-modal" />,
+}))
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
 const mockUseGetKnowledgeHubArticles = useGetKnowledgeHubArticles as jest.Mock
+const mockUseGetHelpCenterList = useGetHelpCenterList as jest.Mock
+const mockUseGetHelpCenterListMulti = useGetHelpCenterListMulti as jest.Mock
 const mockTransformKnowledgeHubArticlesToKnowledgeItems =
     transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
 
@@ -56,14 +74,34 @@ describe('KnowledgeHubContainer', () => {
 
     const originalLocation = window.location
 
+    const mocksStore = {
+        getState: () => ({}),
+        dispatch: jest.fn(),
+        subscribe: jest.fn(),
+        replaceReducer: jest.fn(),
+    } as unknown as Store
+
     beforeEach(() => {
         jest.clearAllMocks()
         delete (window as any).location
-        window.location = { href: 'http://localhost/app' } as Location
+        window.location = {
+            href: 'http://localhost/app',
+            pathname: '/app',
+        } as Location
 
-        mockUseAppSelector
-            .mockReturnValueOnce(123) // getCurrentAccountId
-            .mockReturnValueOnce(mockShopifyIntegrations) // getShopifyIntegrationsSortedByName
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) return 123
+            if (selector === getShopifyIntegrationsSortedByName)
+                return mockShopifyIntegrations
+            if (selector === getCurrentAccountState)
+                return {
+                    get: (key: string) => {
+                        if (key === 'domain') return 'test-domain.com'
+                        return undefined
+                    },
+                }
+            return undefined
+        })
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -79,6 +117,16 @@ describe('KnowledgeHubContainer', () => {
         mockUseGetKnowledgeHubArticles.mockReturnValue({
             data: { articles: [] },
             isInitialLoading: false,
+        })
+
+        mockUseGetHelpCenterList.mockReturnValue({
+            data: { data: { data: [] } },
+            isLoading: false,
+        })
+
+        mockUseGetHelpCenterListMulti.mockReturnValue({
+            data: [],
+            isLoading: false,
         })
 
         mockTransformKnowledgeHubArticlesToKnowledgeItems.mockImplementation(
@@ -105,7 +153,11 @@ describe('KnowledgeHubContainer', () => {
     const renderComponent = () => {
         return render(
             <MemoryRouter>
-                <KnowledgeHubContainer />
+                <Provider store={mocksStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <KnowledgeHubContainer />
+                    </QueryClientProvider>
+                </Provider>
             </MemoryRouter>,
         )
     }

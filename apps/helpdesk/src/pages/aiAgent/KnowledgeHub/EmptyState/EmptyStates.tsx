@@ -1,18 +1,24 @@
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 
-import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
-import type { GroupedKnowledgeItem } from '../types'
-import { KnowledgeType, typeConfig } from '../types'
-import { AddGuidanceTemplateModal } from './AddGuidanceTemplateModal'
+import {
+    HELP_CENTER_SELECT_MODAL_OPEN,
+    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+} from 'pages/aiAgent/KnowledgeHub/constants'
+import { AddGuidanceTemplateModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal'
+import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './EmptyState.less'
 
 export const EmptyStates = ({
     hasWebsiteSync = false,
     titleAlignment = 'center',
+    helpCenterId,
 }: {
     hasWebsiteSync?: boolean
     titleAlignment?: string
+    helpCenterId?: number | null
 }) => {
     return (
         <Box flexDirection="column" gap="xxl">
@@ -28,10 +34,8 @@ export const EmptyStates = ({
                     <div
                         className={css.card}
                         onClick={() => {
-                            document.dispatchEvent(
-                                new CustomEvent(
-                                    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
-                                ),
+                            dispatchDocumentEvent(
+                                OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
                             )
                         }}
                     >
@@ -56,7 +60,18 @@ export const EmptyStates = ({
                         </Box>
                         <AddGuidanceTemplateModal />
                     </div>
-                    <Card className={css.card}>
+                    <div
+                        className={css.card}
+                        onClick={() => {
+                            if (!helpCenterId) {
+                                dispatchDocumentEvent(
+                                    HELP_CENTER_SELECT_MODAL_OPEN,
+                                )
+                            } else {
+                                //         TODO open editor
+                            }
+                        }}
+                    >
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
@@ -75,7 +90,7 @@ export const EmptyStates = ({
                                 </Text>
                             </div>
                         </Box>
-                    </Card>
+                    </div>
                 </Box>
             </Box>
             {/* Bottom row*/}
@@ -140,9 +155,7 @@ export const EmptyStates = ({
 
 export const EmptyStateGuidance = () => {
     const toggleModal = () => {
-        document.dispatchEvent(
-            new CustomEvent(OPEN_CREATE_GUIDANCE_ARTICLE_MODAL),
-        )
+        dispatchDocumentEvent(OPEN_CREATE_GUIDANCE_ARTICLE_MODAL)
     }
 
     return (
@@ -176,24 +189,34 @@ export const EmptyStateFAQ = ({
     helpCenterId?: number | null
     articles: GroupedKnowledgeItem[]
 }) => {
+    const openSelectModal = () => {
+        dispatchDocumentEvent(HELP_CENTER_SELECT_MODAL_OPEN)
+    }
+
+    const openEditor = () => {
+        //     TODO Open editor
+    }
     const EMPTY_STATE_CONTENT = {
         noHelpCenter: {
             title: 'Connect your Help Center',
             description:
                 'Let AI Agent use your published Help Center articles as knowledge.',
             buttonText: 'Connect Help Center',
+            action: openSelectModal,
         },
         helpCenterWithoutArticles: {
             title: 'Get started with Help Center articles',
             description:
                 'Let AI Agent use your published Help Center articles as knowledge.',
             buttonText: 'Create Help Center article',
+            action: openEditor,
         },
         helpCenterWithArticles: {
             title: 'Get started with Help Center articles',
             description:
                 'Create and publish articles to make them available to AI Agent.',
             buttonText: 'Create Help Center article',
+            action: openEditor,
         },
     }
 
@@ -220,7 +243,9 @@ export const EmptyStateFAQ = ({
                 <Text size={'md'} align={'center'}>
                     {content.description}
                 </Text>
-                <Button variant="primary">{content.buttonText}</Button>
+                <Button variant="primary" onClick={content.action}>
+                    {content.buttonText}
+                </Button>
             </Box>
         </Box>
     )
@@ -320,6 +345,6 @@ export const EmptyStateWrapper = ({
         case KnowledgeType.URL:
             return <EmptyStateURL />
         default:
-            return <EmptyStates />
+            return <EmptyStates helpCenterId={helpCenterId} />
     }
 }

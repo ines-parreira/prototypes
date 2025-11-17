@@ -2,12 +2,16 @@ import { useState } from 'react'
 
 import { Modal, OverlayHeader } from '@gorgias/axiom'
 
-import { DocumentFilters } from './DocumentFilters/DocumentFilters'
-import { EmptyStates } from './EmptyState/EmptyStates'
-import { KnowledgeHubHeader } from './KnowledgeHubHeader/KnowledgeHubHeader'
-import { KnowledgeHubTable } from './Table/KnowledgeHubTable'
-import type { GroupedKnowledgeItem, KnowledgeType } from './types'
-import { useKnowledgeHub } from './useKnowledgeHub'
+import { DocumentFilters } from 'pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters'
+import { EmptyStates } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
+import { HelpCenterSelectModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/HelpCenterSelectModal'
+import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
+import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeType,
+} from 'pages/aiAgent/KnowledgeHub/types'
+import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
 
 import css from './KnowledgeHubContainer.less'
 
@@ -74,6 +78,7 @@ export const KnowledgeHubContainer = () => {
                     titleAlignment="flex-start"
                 />
             </Modal>
+            <HelpCenterSelectModal />
         </div>
     )
 }
