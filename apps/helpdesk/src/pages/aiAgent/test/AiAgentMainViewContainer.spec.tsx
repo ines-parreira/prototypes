@@ -30,7 +30,9 @@ import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: () => <div data-testid="loading-spinner">Loading...</div>,
+    LegacyLoadingSpinner: () => (
+        <div data-testid="loading-spinner">Loading...</div>
+    ),
 }))
 jest.mock(
     'pages/settings/billing/automate/AutomateSubscriptionModal',

@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-types'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

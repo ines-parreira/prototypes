@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Redirect, useParams } from 'react-router-dom'
 
-import { Heading, LoadingSpinner } from '@gorgias/axiom'
+import { Heading, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'

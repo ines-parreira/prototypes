@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { Card, CardBody, CardTitle } from 'reactstrap'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { Customer } from 'models/customer/types'
 import type { PickedCustomerWithHighlights } from 'models/search/types'

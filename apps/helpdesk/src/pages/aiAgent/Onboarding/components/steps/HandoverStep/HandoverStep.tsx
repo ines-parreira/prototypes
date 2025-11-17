@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-types'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'

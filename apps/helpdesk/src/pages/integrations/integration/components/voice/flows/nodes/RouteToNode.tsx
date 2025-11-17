@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { NodeProps } from '@xyflow/react'
 import { useParams } from 'react-router-dom'
 
-import { Banner, Box } from '@gorgias/axiom'
+import { LegacyBanner as Banner, Box } from '@gorgias/axiom'
 import { useGetIntegration, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import type {
     EnqueueStep,

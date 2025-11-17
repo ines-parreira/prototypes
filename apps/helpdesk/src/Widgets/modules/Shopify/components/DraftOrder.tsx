@@ -4,7 +4,7 @@ import React, { useContext } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'

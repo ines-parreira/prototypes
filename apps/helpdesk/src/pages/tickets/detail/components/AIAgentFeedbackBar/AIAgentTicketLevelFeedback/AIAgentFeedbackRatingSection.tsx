@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 import cn from 'classnames'
 
-import { BadgeIcon, LegacyButton as Button } from '@gorgias/axiom'
+import {
+    LegacyBadgeIcon as BadgeIcon,
+    LegacyButton as Button,
+} from '@gorgias/axiom'
 import type { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
 import AutoSaveBadge from '../AutoSaveBadge'

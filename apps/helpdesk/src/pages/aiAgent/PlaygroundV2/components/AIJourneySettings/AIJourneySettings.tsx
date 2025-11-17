@@ -3,10 +3,10 @@ import { useCallback, useMemo, useRef } from 'react'
 import classNames from 'classnames'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     Button,
     ListItem,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     Select,
     SelectField,
     SelectTrigger,

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './MigrationQuickSummary.less'
 

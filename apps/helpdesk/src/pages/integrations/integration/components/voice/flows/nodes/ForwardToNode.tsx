@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { useWatch } from 'react-hook-form'
 
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 import { useListPhoneNumbers } from '@gorgias/helpdesk-queries'
 import type { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 

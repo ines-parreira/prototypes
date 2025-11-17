@@ -6,8 +6,8 @@ import classNames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import type { Map } from 'immutable'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { isImmutable } from 'common/utils'
 import { UserRole } from 'config/types/user'

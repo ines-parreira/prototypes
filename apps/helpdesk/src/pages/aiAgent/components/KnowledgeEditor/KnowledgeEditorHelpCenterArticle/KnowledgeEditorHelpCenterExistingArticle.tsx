@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { useNotify } from 'hooks/useNotify'

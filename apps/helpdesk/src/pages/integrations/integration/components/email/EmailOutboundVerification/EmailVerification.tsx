@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { history } from '@repo/routing'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

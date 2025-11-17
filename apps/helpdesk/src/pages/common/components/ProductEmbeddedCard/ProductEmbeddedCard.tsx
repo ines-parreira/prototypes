@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Col, Collapse, Container, Row } from 'reactstrap'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { ProductDetails } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'

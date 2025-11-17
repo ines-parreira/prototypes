@@ -4,7 +4,7 @@ import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'

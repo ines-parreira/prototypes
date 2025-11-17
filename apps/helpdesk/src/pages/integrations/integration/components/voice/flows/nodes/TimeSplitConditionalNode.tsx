@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 import type {
     BusinessHoursTimeframe,
     TimeSplitConditionalStep,

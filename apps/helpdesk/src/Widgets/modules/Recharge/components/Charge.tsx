@@ -8,8 +8,8 @@ import _lowerCase from 'lodash/lowerCase'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { LineItem } from 'constants/integrations/types/shopify'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'

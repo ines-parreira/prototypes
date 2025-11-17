@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 import { FormField } from 'core/forms'
 import NewToggleField from 'pages/common/forms/NewToggleField'

@@ -4,7 +4,10 @@ import { Elements } from '@stripe/react-stripe-js'
 import type { Stripe } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'

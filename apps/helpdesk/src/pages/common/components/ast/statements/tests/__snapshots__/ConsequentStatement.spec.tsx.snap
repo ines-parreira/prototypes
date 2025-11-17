@@ -58,7 +58,7 @@ exports[`<ConsequentStatement/> component should render 1`] = `
     </span>
     <div>
       <div
-        class="ui-badge-badge-7025 unknownstatement ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >

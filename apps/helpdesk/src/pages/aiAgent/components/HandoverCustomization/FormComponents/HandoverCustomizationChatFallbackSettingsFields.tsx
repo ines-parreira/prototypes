@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import {
     getGorgiasChatLanguageByCode,

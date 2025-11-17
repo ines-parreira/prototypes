@@ -3,7 +3,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { useParams } from 'react-router'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

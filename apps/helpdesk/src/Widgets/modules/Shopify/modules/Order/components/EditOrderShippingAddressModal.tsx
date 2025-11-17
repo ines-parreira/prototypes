@@ -20,7 +20,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { states } from 'fixtures/states'
 import type { ShopifyIntegration } from 'models/integration/types'

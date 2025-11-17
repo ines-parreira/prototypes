@@ -1,6 +1,6 @@
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

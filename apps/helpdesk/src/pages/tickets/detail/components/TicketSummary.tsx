@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyButton as Button,
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'

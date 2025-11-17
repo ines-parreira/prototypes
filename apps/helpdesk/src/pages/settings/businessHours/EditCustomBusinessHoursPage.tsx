@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 import { useGetBusinessHoursDetails } from '@gorgias/helpdesk-queries'
 

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import Lightbox from 'react-images'
 import { Col, Row } from 'reactstrap'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { PLAN_NAME_TO_BADGE_COLOR } from 'models/billing/utils'

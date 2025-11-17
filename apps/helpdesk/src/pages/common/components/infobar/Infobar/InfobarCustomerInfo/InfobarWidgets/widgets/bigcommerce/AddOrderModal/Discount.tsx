@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
 import type {

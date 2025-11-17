@@ -3,12 +3,12 @@ import React from 'react'
 
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import type { LoadingSpinner } from '@gorgias/axiom'
+import type { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import InfiniteScroll from '../InfiniteScroll'
 
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: ({ size }: ComponentProps<typeof LoadingSpinner>) => (
+    LegacyLoadingSpinner: ({ size }: ComponentProps<typeof LoadingSpinner>) => (
         <div>
             SpinnerMock
             <div>size-{size}</div>

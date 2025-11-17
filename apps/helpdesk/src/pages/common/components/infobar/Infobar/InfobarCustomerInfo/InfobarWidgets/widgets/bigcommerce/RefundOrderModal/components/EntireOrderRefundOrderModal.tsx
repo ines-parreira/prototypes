@@ -1,7 +1,7 @@
 import type { Dispatch } from 'react'
 import React, { useEffect } from 'react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type {
     BigCommerceAvailablePaymentOptionsData,

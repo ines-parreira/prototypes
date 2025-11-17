@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import css from './TranslationLoader.less'
 

@@ -9,7 +9,7 @@ jest.mock('./ConfigurationSection.less', () => ({}))
 
 jest.mock('@gorgias/axiom', () => ({
     __esModule: true,
-    Badge: ({
+    LegacyBadge: ({
         children,
         className,
     }: {

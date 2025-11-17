@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'

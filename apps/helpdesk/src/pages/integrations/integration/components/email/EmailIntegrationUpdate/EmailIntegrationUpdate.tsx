@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { Col, Container } from 'reactstrap'
 
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

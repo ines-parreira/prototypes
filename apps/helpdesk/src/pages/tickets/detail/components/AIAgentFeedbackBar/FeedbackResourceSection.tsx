@@ -2,7 +2,7 @@ import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useCookies } from 'react-cookie'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'

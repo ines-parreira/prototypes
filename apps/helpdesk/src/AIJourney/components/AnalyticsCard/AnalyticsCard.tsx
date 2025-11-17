@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 

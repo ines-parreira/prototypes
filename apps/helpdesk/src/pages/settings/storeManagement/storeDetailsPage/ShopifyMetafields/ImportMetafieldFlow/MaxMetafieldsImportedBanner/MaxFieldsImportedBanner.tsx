@@ -1,4 +1,4 @@
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 export default function MaxFieldsImportedBanner() {
     return (

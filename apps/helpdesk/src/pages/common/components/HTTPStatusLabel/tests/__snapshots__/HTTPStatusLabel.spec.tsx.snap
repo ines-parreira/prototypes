@@ -2,7 +2,7 @@
 
 exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -12,7 +12,7 @@ exports[`HTTPStatusLabel should render a danger label for 4xx HTTP status code 1
 
 exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -22,7 +22,7 @@ exports[`HTTPStatusLabel should render a danger label for 5xx HTTP status code 1
 
 exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -32,7 +32,7 @@ exports[`HTTPStatusLabel should render a primary label for 3xx HTTP status code 
 
 exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -42,7 +42,7 @@ exports[`HTTPStatusLabel should render a secondary label for 1xx HTTP status cod
 
 exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -52,7 +52,7 @@ exports[`HTTPStatusLabel should render a secondary label for unknown HTTP status
 
 exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -62,7 +62,7 @@ exports[`HTTPStatusLabel should render a success label for 2xx HTTP status code 
 
 exports[`HTTPStatusLabel should render an error label for undefined requests 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >
@@ -72,7 +72,7 @@ exports[`HTTPStatusLabel should render an error label for undefined requests 1`]
 
 exports[`HTTPStatusLabel should render an error label for undefined statusCode 1`] = `
 <div
-  class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+  class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
   data-name="badge"
   style="border-radius: 100px;"
 >

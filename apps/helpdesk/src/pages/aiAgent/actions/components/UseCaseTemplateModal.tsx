@@ -5,7 +5,7 @@ import { ulid } from 'ulidx'
 
 import {
     LegacyButton as Button,
-    Chip,
+    LegacyChip as Chip,
     LegacyLabel as Label,
     Skeleton,
 } from '@gorgias/axiom'

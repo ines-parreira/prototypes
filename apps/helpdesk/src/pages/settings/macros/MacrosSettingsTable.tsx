@@ -3,7 +3,10 @@ import { useCallback, useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router-dom'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { DateAndTimeFormatting } from 'constants/datetime'

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import pluralize from 'pluralize'
 import { useFormContext } from 'react-hook-form'
 
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import AssignIntegrationsModal from './AssignIntegrationsModal'
 import type { EditCustomBusinessHoursFormValues } from './types'

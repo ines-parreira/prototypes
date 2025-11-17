@@ -10,7 +10,7 @@ import Context from '../Context'
 import focusOnNextItem from '../focusOnNextItem'
 
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: () => 'SpinnerMock',
+    LegacyLoadingSpinner: () => 'SpinnerMock',
 }))
 
 jest.mock('../focusOnNextItem')

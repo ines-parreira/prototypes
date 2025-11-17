@@ -1,6 +1,6 @@
 import cs from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import shopifyLogo from 'assets/img/icons/shopifyStore.svg'
 import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'

@@ -4,7 +4,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-import { Badge, Skeleton } from '@gorgias/axiom'
+import { LegacyBadge as Badge, Skeleton } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'

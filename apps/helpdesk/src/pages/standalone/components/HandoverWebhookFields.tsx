@@ -3,7 +3,7 @@ import type React from 'react'
 
 import type { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
-import { Banner, LegacyLabel as Label } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyLabel as Label } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import type { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'

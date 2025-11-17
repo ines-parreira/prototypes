@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'

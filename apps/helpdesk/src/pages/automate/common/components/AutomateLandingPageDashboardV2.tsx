@@ -3,7 +3,10 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'

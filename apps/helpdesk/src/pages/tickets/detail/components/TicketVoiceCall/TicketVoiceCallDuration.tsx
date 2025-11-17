@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { useInterval } from '@repo/hooks'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import type { VoiceCall } from 'models/voiceCall/types'

@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-types'
 
 import {
@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
-    Badge: jest.fn(({ children, type }) => (
+    LegacyBadge: jest.fn(({ children, type }) => (
         <div data-testid={`badge-${type}`}>{children}</div>
     )),
 }))

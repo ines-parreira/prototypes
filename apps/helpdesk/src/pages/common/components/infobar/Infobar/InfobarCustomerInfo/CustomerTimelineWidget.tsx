@@ -8,7 +8,7 @@ import {
     Button,
     Icon,
     LegacyButton,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     Text,
 } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'

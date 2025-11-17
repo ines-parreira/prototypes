@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { Label } from 'gorgias-design-system/Input/Label'
 import type { GorgiasChatEmailCaptureType } from 'models/integration/types'

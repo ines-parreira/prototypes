@@ -3,12 +3,12 @@ import { useEffect, useRef, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
-import type { ColorType } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import {
     LegacyButton as Button,
     LegacyCheckBoxField as CheckBoxField,
     LegacyIconButton as IconButton,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -4,7 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { Button } from 'AIJourney/components'
 import { JOURNEY_TYPE_MAP_FROM_URL, JOURNEY_TYPES } from 'AIJourney/constants'

@@ -2,7 +2,11 @@ import { useCallback, useRef, useState } from 'react'
 
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
-import { Badge, BadgeIcon, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyBadgeIcon as BadgeIcon,
+    LegacyLabel as Label,
+} from '@gorgias/axiom'
 
 import type { ReportIssueOption } from 'models/aiAgentFeedback/constants'
 import { ReportIssueLabels } from 'models/aiAgentFeedback/constants'

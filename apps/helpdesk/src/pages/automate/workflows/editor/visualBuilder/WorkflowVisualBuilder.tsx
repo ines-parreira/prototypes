@@ -18,7 +18,7 @@ import {
 } from '@xyflow/react'
 import classNames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'

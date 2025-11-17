@@ -1,4 +1,4 @@
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 import { usePhoneNumberCapabilities } from 'hooks/integrations/phone/usePhoneNumberCapabilities'
 import type { PhoneCountry, PhoneType } from 'models/phoneNumber/types'

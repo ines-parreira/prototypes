@@ -2,7 +2,11 @@ import { useCallback, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Banner, Box, LegacyButton as Button } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    Box,
+    LegacyButton as Button,
+} from '@gorgias/axiom'
 
 import { getActionTemplate, stripErrorMessage } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'

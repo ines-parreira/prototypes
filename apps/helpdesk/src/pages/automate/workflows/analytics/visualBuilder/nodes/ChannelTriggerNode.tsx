@@ -4,7 +4,7 @@ import type { NodeProps } from '@xyflow/react'
 import { Handle, Position } from '@xyflow/react'
 import classNames from 'classnames'
 
-import { Badge, LegacyLabel as Label } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'

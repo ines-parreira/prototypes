@@ -17,7 +17,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         class="headerControls"
       >
         <div
-          class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
           data-name="badge"
           id="editingState"
           style="border-radius: 100px;"
@@ -197,7 +197,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         class="headerControls"
       >
         <div
-          class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
           data-name="badge"
           id="editingState"
           style="border-radius: 100px;"
@@ -307,7 +307,7 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
         class="headerControls"
       >
         <div
-          class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
           data-name="badge"
           id="editingState"
           style="border-radius: 100px;"

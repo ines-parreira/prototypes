@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetInstallationSnippet } from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'

@@ -20,7 +20,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'

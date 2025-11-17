@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'

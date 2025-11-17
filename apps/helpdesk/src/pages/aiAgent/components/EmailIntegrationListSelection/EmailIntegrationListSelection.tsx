@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react'
 import React, { useRef, useState } from 'react'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

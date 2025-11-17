@@ -6,7 +6,7 @@ import { TranslationLoader } from '../TranslationLoader'
 
 // Mock the LoadingSpinner from @gorgias/axiom
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: ({ size, className }: any) => (
+    LegacyLoadingSpinner: ({ size, className }: any) => (
         <div
             data-testid="loading-spinner"
             data-size={size}

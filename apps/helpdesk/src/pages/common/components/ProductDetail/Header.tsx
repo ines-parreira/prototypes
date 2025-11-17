@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { assetsUrl } from 'utils'
 

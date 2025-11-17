@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import type { ColorType } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 
 import type { AlertBannerProps } from 'AlertBanners'
 

@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import {
     endNodeActionIconByAction,

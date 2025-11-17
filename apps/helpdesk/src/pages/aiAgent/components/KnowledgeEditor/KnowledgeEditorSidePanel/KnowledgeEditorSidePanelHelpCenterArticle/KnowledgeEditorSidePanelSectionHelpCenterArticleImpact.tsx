@@ -1,4 +1,4 @@
-import { Chip } from '@gorgias/axiom'
+import { LegacyChip as Chip } from '@gorgias/axiom'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'

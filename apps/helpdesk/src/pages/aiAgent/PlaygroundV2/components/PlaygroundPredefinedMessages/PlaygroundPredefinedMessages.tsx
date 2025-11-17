@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Chip } from '@gorgias/axiom'
+import { LegacyChip as Chip } from '@gorgias/axiom'
 
 import { Popover } from 'components/Popover'
 import { sanitizeHtmlDefault } from 'utils/html'

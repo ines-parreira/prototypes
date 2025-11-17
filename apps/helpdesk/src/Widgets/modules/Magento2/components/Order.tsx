@@ -6,8 +6,8 @@ import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'

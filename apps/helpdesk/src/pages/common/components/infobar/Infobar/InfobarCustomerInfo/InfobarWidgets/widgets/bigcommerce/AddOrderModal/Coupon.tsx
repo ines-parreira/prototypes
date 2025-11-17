@@ -2,7 +2,10 @@ import React, { useReducer, useRef, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import type { BigCommerceCart } from 'models/integration/types'
 import {

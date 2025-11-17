@@ -1,4 +1,4 @@
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 import type { UpdateVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import cn from 'classnames'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyCheckBoxField as CheckBoxField,
     Skeleton,
 } from '@gorgias/axiom'

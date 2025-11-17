@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { BaseButtonContext } from './BaseButton'
 

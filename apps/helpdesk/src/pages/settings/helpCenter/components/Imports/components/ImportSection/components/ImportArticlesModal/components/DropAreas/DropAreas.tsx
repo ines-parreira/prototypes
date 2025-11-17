@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { FetchedProvidersState } from '../../../../types'
 

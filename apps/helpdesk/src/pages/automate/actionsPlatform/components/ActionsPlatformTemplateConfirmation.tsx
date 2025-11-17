@@ -4,7 +4,7 @@ import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     LegacyButton as Button,
     LegacyCheckBoxField as CheckBoxField,
 } from '@gorgias/axiom'

@@ -9,7 +9,7 @@ import type { Map } from 'immutable'
 import { Link, useHistory } from 'react-router-dom'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

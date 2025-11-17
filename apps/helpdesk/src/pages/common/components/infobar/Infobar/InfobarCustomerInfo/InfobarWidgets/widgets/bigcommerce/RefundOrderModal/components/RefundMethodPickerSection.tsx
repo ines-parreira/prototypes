@@ -3,7 +3,7 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type {
     BigCommerceAvailablePaymentOptionsData,

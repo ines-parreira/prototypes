@@ -7,7 +7,10 @@ import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 import { Badge } from 'reactstrap'
 
-import { LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyLoadingSpinner as LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

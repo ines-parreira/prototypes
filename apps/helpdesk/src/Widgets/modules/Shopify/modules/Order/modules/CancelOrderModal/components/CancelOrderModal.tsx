@@ -10,7 +10,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Button, Form } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { getFinalCancelOrderPayload } from 'business/shopify/order'
 import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'

@@ -5,7 +5,7 @@ import { createContext, useContext } from 'react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ThemeProvider as UIKitThemeProvider } from '@gorgias/axiom'
+import { LegacyThemeProvider as UIKitThemeProvider } from '@gorgias/axiom'
 
 import ThemeContext from './ThemeContext'
 import useThemeContext from './useThemeContext'

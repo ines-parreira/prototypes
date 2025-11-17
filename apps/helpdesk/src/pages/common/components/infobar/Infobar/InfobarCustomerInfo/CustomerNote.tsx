@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { CustomerDraft } from 'models/customer/types'

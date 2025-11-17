@@ -1,4 +1,4 @@
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import css from './DraftBadge.less'
 

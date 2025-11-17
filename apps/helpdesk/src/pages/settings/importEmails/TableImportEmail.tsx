@@ -1,6 +1,9 @@
 import cn from 'classnames'
 
-import { Badge, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import officeIcon from 'assets/img/integrations/office.svg'

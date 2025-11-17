@@ -1,7 +1,7 @@
 import cn from 'classnames'
 
 import {
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 

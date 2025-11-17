@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 import { UserSettingType } from '@gorgias/helpdesk-types'

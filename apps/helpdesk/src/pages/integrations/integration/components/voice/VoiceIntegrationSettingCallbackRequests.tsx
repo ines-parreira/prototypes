@@ -1,5 +1,5 @@
 import {
-    Banner,
+    LegacyBanner as Banner,
     LegacyCheckBoxField as CheckBoxField,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'

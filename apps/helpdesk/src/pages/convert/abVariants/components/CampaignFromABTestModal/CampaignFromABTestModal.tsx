@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { history } from '@repo/routing'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { CampaignCreatePayload } from 'models/convert/campaign/types'

@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { Member } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'

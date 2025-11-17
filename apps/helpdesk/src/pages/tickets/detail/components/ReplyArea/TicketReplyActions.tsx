@@ -5,7 +5,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Collapse } from 'reactstrap'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { ActionTemplateExecution } from 'config'
 import useAppSelector from 'hooks/useAppSelector'

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 import { useListIntegrations } from '@gorgias/helpdesk-queries'
 import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'

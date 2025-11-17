@@ -4,14 +4,14 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -19,7 +19,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -52,7 +52,7 @@ exports[`<ScriptTagMigrationBanner /> should contain both re-install and permiss
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -62,14 +62,14 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -77,7 +77,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -100,7 +100,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -110,14 +110,14 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -125,7 +125,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -148,7 +148,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only permission update link
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -158,14 +158,14 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -173,7 +173,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -203,7 +203,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for a 
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -213,14 +213,14 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -228,7 +228,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -258,7 +258,7 @@ exports[`<ScriptTagMigrationBanner /> should contain only re-install link for mu
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -268,14 +268,14 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -283,7 +283,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -316,7 +316,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for a singl
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>
@@ -326,14 +326,14 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
 <div>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-error-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-error-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -341,7 +341,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           <b>
@@ -374,7 +374,7 @@ exports[`<ScriptTagMigrationBanner /> should contain re-install link for multipl
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
 </div>

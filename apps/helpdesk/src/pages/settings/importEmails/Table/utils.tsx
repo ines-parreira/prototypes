@@ -1,4 +1,7 @@
-import { Badge, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 import type { ImportStatus } from '@gorgias/helpdesk-types'
 import { ImportProvider } from '@gorgias/helpdesk-types'
 

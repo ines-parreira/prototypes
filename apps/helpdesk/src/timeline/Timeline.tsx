@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo, useState } from 'react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import Filters from './filters/Filters'
 import { useTimelineFilters } from './filters/hooks/useTimelineFilters'

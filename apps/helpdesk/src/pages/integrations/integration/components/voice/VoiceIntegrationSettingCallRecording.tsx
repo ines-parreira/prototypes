@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import { Banner, Box } from '@gorgias/axiom'
+import { LegacyBanner as Banner, Box } from '@gorgias/axiom'
 import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 

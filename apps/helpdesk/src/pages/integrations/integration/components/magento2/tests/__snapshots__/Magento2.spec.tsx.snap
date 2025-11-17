@@ -71,7 +71,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
         class="heroMeta"
       >
         <div
-          class="ui-badge-badge-7025 badge ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
           data-name="badge"
           style="border-radius: 100px;"
         >
@@ -345,14 +345,14 @@ exports[`<Magento2/> Integration should render 1`] = `
               class="loadingIcon"
             >
               <svg
-                class="ui-loadingspinner-spinner-4660 ui-loadingspinner-dark-4660 ui-loadingspinner-small-4660"
+                class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-dark-fc79 ui-loadingspinner-small-fc79"
                 data-name="loading-spinner"
                 preserveAspectRatio="xMidYMid meet"
                 role="status"
                 viewBox="0 0 20 20"
               >
                 <circle
-                  class="ui-loadingspinner-dot-4660"
+                  class="ui-loadingspinner-dot-fc79"
                   cx="10"
                   cy="10"
                   fill="none"
@@ -360,7 +360,7 @@ exports[`<Magento2/> Integration should render 1`] = `
                   stroke-width="2"
                 />
                 <circle
-                  class="ui-loadingspinner-circle-4660"
+                  class="ui-loadingspinner-circle-fc79"
                   cx="10"
                   cy="10"
                   fill="none"

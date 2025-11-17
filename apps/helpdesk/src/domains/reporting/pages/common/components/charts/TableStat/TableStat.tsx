@@ -11,7 +11,7 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'

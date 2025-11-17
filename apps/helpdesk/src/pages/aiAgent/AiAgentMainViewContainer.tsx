@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'

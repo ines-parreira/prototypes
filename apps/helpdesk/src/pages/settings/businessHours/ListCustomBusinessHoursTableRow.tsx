@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyIconButton as IconButton,
     Label,
     LegacyTooltip as Tooltip,

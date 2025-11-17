@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     LegacyButton as Button,
     Label,
     LegacyTextField as TextField,

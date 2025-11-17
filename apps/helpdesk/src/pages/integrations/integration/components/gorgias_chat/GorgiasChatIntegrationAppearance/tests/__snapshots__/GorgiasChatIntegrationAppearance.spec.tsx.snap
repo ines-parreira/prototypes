@@ -2409,7 +2409,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   type="button"
                 >
                   <svg
-                    class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+                    class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
                     data-name="loading-spinner"
                     height="22"
                     preserveAspectRatio="xMidYMid meet"
@@ -2418,7 +2418,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     width="22"
                   >
                     <circle
-                      class="ui-loadingspinner-dot-4660"
+                      class="ui-loadingspinner-dot-fc79"
                       cx="10"
                       cy="10"
                       fill="none"
@@ -2426,7 +2426,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       stroke-width="2"
                     />
                     <circle
-                      class="ui-loadingspinner-circle-4660"
+                      class="ui-loadingspinner-circle-fc79"
                       cx="10"
                       cy="10"
                       fill="none"

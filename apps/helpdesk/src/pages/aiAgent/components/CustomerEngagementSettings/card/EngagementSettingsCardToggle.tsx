@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
 
-import { Badge, LegacyIconButton as IconButton } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 

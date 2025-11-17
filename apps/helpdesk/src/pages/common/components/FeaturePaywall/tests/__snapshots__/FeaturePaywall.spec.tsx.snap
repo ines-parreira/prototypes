@@ -48,7 +48,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
               class="flex align-items-center"
             >
               <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                 data-name="badge"
                 style="border-radius: 100px;"
               >
@@ -65,7 +65,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                 chevron_right
               </i>
               <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                 data-name="badge"
                 style="border-radius: 100px;"
               >
@@ -230,7 +230,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
               class="flex align-items-center"
             >
               <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                 data-name="badge"
                 style="border-radius: 100px;"
               >
@@ -247,7 +247,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                 chevron_right
               </i>
               <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                 data-name="badge"
                 style="border-radius: 100px;"
               >
@@ -416,7 +416,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
               class="flex align-items-center"
             >
               <div
-                class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                 data-name="badge"
                 style="border-radius: 100px;"
               >

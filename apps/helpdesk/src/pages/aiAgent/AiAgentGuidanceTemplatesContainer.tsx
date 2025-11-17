@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { AiAgentGuidanceTemplatesView } from './AiAgentGuidanceTemplatesView'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'

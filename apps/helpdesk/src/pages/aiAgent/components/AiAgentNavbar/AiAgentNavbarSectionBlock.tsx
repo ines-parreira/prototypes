@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { useFlag } from 'core/flags'

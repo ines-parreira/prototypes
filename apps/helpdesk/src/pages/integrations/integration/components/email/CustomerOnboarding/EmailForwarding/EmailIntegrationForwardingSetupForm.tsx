@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import {
     LegacyCheckBoxField as CheckBoxField,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 

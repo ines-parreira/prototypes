@@ -2,7 +2,7 @@ import type React from 'react'
 
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { ThemeContext } from '@gorgias/axiom'
+import { LegacyThemeContext as ThemeContext } from '@gorgias/axiom'
 
 import PhoneBarContainer from './PhoneBarContainer'
 

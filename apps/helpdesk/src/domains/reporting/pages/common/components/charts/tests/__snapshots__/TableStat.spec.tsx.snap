@@ -363,7 +363,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         >
           <div>
             <div
-              class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+              class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
               data-name="badge"
               style="border-radius: 100px;"
             >
@@ -969,7 +969,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         >
           <div>
             <div
-              class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+              class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
               data-name="badge"
               style="border-radius: 100px;"
             >
@@ -1768,7 +1768,7 @@ exports[`TableStat should render a table chart 1`] = `
         >
           <div>
             <div
-              class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+              class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
               data-name="badge"
               style="border-radius: 100px;"
             >
@@ -2248,7 +2248,7 @@ exports[`TableStat should render a table with online status disabled badge 1`] =
         >
           <div>
             <div
-              class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+              class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
               data-name="badge"
               style="border-radius: 100px;"
             >
@@ -2625,7 +2625,7 @@ exports[`TableStat should render a table with the expand button and one line vis
         >
           <div>
             <div
-              class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+              class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
               data-name="badge"
               style="border-radius: 100px;"
             >

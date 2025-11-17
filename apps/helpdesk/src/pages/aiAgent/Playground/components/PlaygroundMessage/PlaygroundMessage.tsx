@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import { Badge, LoadingSpinner, Skeleton } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Skeleton,
+} from '@gorgias/axiom'
 
 import error from 'assets/img/icons/error.svg'
 import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'

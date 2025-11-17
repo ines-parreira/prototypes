@@ -1,5 +1,5 @@
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { WhatsAppMessageTemplateCategory } from 'models/whatsAppMessageTemplates/types'
 

@@ -7,7 +7,7 @@ import {
     Icon,
     ListItem,
     ListSection,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     Select,
     Tag,
 } from '@gorgias/axiom'

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useJourneyContext } from 'AIJourney/providers'
 

@@ -1,4 +1,4 @@
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { File, MacroAction } from '@gorgias/helpdesk-types'
 
 import { fileIconFromContentType } from 'pages/tickets/common/utils'

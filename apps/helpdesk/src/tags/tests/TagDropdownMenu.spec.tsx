@@ -24,7 +24,7 @@ jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock
 
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: () => 'SpinnerMock',
+    LegacyLoadingSpinner: () => 'SpinnerMock',
 }))
 
 const mockStore = configureMockStore([thunk])

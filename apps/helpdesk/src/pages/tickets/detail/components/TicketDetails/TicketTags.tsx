@@ -6,8 +6,8 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
 import {
-    Badge,
-    BadgeIcon,
+    LegacyBadge as Badge,
+    LegacyBadgeIcon as BadgeIcon,
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

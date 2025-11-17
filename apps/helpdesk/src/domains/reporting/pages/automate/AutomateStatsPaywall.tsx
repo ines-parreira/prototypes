@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'

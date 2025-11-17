@@ -20,7 +20,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -68,7 +68,7 @@ exports[`<RestrictedPage/> should render for admin role and include higher permi
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -116,7 +116,7 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -164,7 +164,7 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -212,7 +212,7 @@ exports[`<RestrictedPage/> should render for bot role and include higher permiss
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -260,7 +260,7 @@ exports[`<RestrictedPage/> should render for internal-agent role and include hig
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -308,7 +308,7 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -356,7 +356,7 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
       class="badge"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >

@@ -541,7 +541,7 @@ exports[`Body should display the Yotpo product card if there's matching metadata
                     </td>
                     <th>
                       <div
-                        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+                        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
                         data-name="badge"
                         style="border-radius: 100px;"
                       >

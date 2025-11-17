@@ -7,7 +7,7 @@ import SaveBadge from '../SaveBadge'
 jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
-        LoadingSpinner: () => <div>Spinner</div>,
+        LegacyLoadingSpinner: () => <div>Spinner</div>,
     } as Record<string, unknown>
 })
 

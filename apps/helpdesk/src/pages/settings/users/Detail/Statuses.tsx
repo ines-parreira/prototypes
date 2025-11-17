@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'

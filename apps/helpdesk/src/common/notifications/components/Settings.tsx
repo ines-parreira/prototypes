@@ -4,7 +4,10 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import { useMouseRelease } from '@repo/hooks'
 import cn from 'classnames'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'

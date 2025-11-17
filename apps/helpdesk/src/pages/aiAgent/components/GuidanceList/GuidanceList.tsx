@@ -2,7 +2,10 @@ import { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { OrderDirection } from 'models/api/types'
 import type { StoreIntegration } from 'models/integration/types'

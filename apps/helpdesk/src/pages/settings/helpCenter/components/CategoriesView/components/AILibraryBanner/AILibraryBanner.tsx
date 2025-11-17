@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { assetsUrl } from 'utils'

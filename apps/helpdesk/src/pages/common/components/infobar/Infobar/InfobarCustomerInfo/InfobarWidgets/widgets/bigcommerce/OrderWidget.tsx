@@ -7,8 +7,8 @@ import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import type { Map } from 'immutable'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'

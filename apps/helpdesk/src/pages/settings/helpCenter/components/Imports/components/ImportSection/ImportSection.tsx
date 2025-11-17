@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

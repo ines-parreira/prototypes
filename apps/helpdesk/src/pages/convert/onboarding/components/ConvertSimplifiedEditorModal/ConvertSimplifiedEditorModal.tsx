@@ -6,7 +6,11 @@ import { produce } from 'immer'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Badge, BadgeIcon, LegacyButton as Button } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyBadgeIcon as BadgeIcon,
+    LegacyButton as Button,
+} from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import {

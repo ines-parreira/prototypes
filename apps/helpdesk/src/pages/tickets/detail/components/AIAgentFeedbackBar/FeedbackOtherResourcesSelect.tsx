@@ -3,8 +3,8 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import {
-    Badge,
-    BadgeIcon,
+    LegacyBadge as Badge,
+    LegacyBadgeIcon as BadgeIcon,
     Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

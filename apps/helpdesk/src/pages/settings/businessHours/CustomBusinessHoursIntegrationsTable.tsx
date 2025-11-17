@@ -4,8 +4,8 @@ import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
 
 import {
-    Badge,
-    Banner,
+    LegacyBadge as Badge,
+    LegacyBanner as Banner,
     Box,
     LegacyCheckBoxField as CheckBoxField,
     Skeleton,

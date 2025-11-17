@@ -8,7 +8,7 @@ import { TicketDetail } from '../TicketDetail'
 import { TicketHeader } from '../TicketHeader'
 
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: () => <div>LoadingSpinner</div>,
+    LegacyLoadingSpinner: () => <div>LoadingSpinner</div>,
 }))
 
 jest.mock('../../hooks/useTicket', () => ({ useTicket: jest.fn() }))

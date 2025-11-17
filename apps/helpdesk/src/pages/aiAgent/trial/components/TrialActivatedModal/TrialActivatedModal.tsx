@@ -2,7 +2,12 @@ import type { FC } from 'react'
 
 import classNames from 'classnames'
 
-import { Badge, Box, LegacyButton as Button, Separator } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    Box,
+    LegacyButton as Button,
+    Separator,
+} from '@gorgias/axiom'
 
 import {
     ModalBodyWrapper,

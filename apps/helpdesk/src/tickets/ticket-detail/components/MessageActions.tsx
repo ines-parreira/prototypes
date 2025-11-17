@@ -7,7 +7,7 @@ import { Badge } from 'reactstrap'
 
 import {
     LegacyButton as Button,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'

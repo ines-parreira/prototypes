@@ -42,7 +42,7 @@ jest.mock('../components/YourProfileView', () => ({
 
 // Mock the LoadingSpinner component
 jest.mock('@gorgias/axiom', () => ({
-    LoadingSpinner: jest.fn(() => (
+    LegacyLoadingSpinner: jest.fn(() => (
         <div data-testid="loading-spinner">Loading...</div>
     )),
 }))

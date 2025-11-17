@@ -1,4 +1,7 @@
-import { Badge, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { KnowledgeSourceType } from '../types'
 import ChatIcon from './icons/ChatIcon'

@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { noop } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

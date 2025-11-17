@@ -4,7 +4,11 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 
-import { Badge, LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { NumberedPagination } from 'pages/common/components/Paginations'

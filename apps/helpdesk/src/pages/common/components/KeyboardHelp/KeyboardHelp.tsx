@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { shortcutManager, shortcuts, useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'

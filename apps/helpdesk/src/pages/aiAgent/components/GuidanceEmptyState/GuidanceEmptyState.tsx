@@ -3,7 +3,7 @@ import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 

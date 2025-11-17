@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 
 import _noop from 'lodash/noop'
 
-import { LoadingSpinner, SidePanel } from '@gorgias/axiom'
+import {
+    LegacyLoadingSpinner as LoadingSpinner,
+    SidePanel,
+} from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
 import type {

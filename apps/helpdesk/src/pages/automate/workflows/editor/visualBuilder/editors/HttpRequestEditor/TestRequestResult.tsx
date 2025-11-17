@@ -5,7 +5,7 @@ import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyButton as Button,
     LegacyLabel as Label,
 } from '@gorgias/axiom'

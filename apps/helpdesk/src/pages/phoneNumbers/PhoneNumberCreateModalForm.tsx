@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

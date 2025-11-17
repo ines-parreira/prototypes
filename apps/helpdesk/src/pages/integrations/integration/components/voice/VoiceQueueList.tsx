@@ -5,7 +5,7 @@ import type { VirtuosoHandle } from 'react-virtuoso'
 import { TableVirtuoso } from 'react-virtuoso'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyIconButton as IconButton,
     Label,
     Skeleton,

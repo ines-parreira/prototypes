@@ -3,7 +3,7 @@ import React, { isValidElement } from 'react'
 
 import classnames from 'classnames'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
 import closeIcon from 'assets/img/icons/close.svg'

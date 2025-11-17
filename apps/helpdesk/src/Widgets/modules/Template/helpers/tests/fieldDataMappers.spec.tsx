@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
@@ -20,7 +20,9 @@ jest.mock('@gorgias/axiom', () => {
     return {
         __esModule: true,
         ...jest.requireActual('@gorgias/axiom'),
-        Badge: jest.fn(({ children }: { children: ReactNode }) => children),
+        LegacyBadge: jest.fn(
+            ({ children }: { children: ReactNode }) => children,
+        ),
     } as Record<string, unknown>
 })
 jest.mock('pages/common/components/StarRating', () => {

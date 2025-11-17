@@ -3,7 +3,11 @@ import React from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
-import { Banner, LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 type SyncNotificationProps = {
     platform: string

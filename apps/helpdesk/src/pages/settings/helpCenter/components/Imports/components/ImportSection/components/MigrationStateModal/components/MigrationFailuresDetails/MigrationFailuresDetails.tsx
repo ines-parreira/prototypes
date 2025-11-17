@@ -3,7 +3,7 @@ import { Fragment, useMemo, useState } from 'react'
 
 import cn from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 

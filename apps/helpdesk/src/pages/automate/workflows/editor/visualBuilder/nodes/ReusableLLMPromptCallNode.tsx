@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'

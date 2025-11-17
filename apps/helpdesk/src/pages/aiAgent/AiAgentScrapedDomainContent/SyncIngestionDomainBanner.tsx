@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 
-import { Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import {
     IngestionLogStatus,

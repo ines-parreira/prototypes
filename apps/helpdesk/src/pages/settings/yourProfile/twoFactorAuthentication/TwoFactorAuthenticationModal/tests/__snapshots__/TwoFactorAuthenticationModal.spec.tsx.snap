@@ -565,7 +565,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 type="button"
               >
                 <svg
-                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+                  class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
                   data-name="loading-spinner"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
@@ -574,7 +574,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   width="22"
                 >
                   <circle
-                    class="ui-loadingspinner-dot-4660"
+                    class="ui-loadingspinner-dot-fc79"
                     cx="10"
                     cy="10"
                     fill="none"
@@ -582,7 +582,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     stroke-width="2"
                   />
                   <circle
-                    class="ui-loadingspinner-circle-4660"
+                    class="ui-loadingspinner-circle-fc79"
                     cx="10"
                     cy="10"
                     fill="none"
@@ -802,7 +802,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 type="button"
               >
                 <svg
-                  class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+                  class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
                   data-name="loading-spinner"
                   height="22"
                   preserveAspectRatio="xMidYMid meet"
@@ -811,7 +811,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   width="22"
                 >
                   <circle
-                    class="ui-loadingspinner-dot-4660"
+                    class="ui-loadingspinner-dot-fc79"
                     cx="10"
                     cy="10"
                     fill="none"
@@ -819,7 +819,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     stroke-width="2"
                   />
                   <circle
-                    class="ui-loadingspinner-circle-4660"
+                    class="ui-loadingspinner-circle-fc79"
                     cx="10"
                     cy="10"
                     fill="none"

@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useTimeout } from '@repo/hooks'
 import cn from 'classnames'
 
-import { Badge, LoadingSpinner, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyLoadingSpinner as LoadingSpinner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

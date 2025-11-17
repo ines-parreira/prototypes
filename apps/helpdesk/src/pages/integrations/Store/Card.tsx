@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 import { Link } from 'react-router-dom'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

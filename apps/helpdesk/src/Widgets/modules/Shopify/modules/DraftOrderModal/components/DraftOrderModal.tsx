@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { DateAndTimeFormatting } from 'constants/datetime'
 import type { Product, Variant } from 'constants/integrations/types/shopify'

@@ -1,7 +1,10 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Badge, LegacyIconButton as IconButton } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyIconButton as IconButton,
+} from '@gorgias/axiom'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'

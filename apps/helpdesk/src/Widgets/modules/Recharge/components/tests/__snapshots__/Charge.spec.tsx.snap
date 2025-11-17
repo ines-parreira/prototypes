@@ -244,7 +244,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
       class="fieldValue"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >
@@ -270,7 +270,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
       class="fieldValue"
     >
       <div
-        class="ui-badge-badge-7025 ui-badge-uppercase-7025"
+        class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
         data-name="badge"
         style="border-radius: 100px;"
       >

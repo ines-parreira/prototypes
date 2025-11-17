@@ -9,7 +9,7 @@ import _isString from 'lodash/isString'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { isImmutable } from 'common/utils'
 import { SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND } from 'config'

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'

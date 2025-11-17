@@ -4,7 +4,7 @@ import React, { useMemo } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import type { Map } from 'immutable'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { useFlag } from 'core/flags'

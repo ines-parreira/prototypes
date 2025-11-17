@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     Box,
     LegacyButton as Button,
     LegacyTooltip as Tooltip,

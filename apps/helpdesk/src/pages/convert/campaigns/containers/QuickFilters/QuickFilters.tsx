@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
 
-import { Chip } from '@gorgias/axiom'
+import { LegacyChip as Chip } from '@gorgias/axiom'
 
 import type { QuickFilterType } from '../../types/QuickFilter'
 

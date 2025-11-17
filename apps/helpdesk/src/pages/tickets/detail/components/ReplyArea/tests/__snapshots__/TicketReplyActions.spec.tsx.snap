@@ -11,7 +11,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
       bolt
     </i>
     <div
-      class="ui-badge-badge-7025 mr-2 ui-badge-uppercase-7025"
+      class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
       data-name="badge"
       style="border-radius: 100px;"
     >
@@ -293,7 +293,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
       bolt
     </i>
     <div
-      class="ui-badge-badge-7025 mr-2 ui-badge-uppercase-7025"
+      class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
       data-name="badge"
       style="border-radius: 100px;"
     >
@@ -1218,7 +1218,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
       bolt
     </i>
     <div
-      class="ui-badge-badge-7025 mr-2 ui-badge-uppercase-7025"
+      class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
       data-name="badge"
       style="border-radius: 100px;"
     >

@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import type { ColorType } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 
 import { RecommendationRuleCard } from '../RecommendationRuleCard'
 

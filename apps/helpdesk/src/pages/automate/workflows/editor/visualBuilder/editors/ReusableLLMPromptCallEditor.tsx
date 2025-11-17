@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@gorgias/axiom'
+import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import ActionFormMerchantInputValue from 'pages/aiAgent/actions/components/ActionFormMerchantInputValue'

@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { EmailIntegration } from 'models/integration/types'

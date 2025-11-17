@@ -5,7 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 import {
     BannerText,

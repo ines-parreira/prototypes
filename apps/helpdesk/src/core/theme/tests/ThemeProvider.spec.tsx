@@ -2,8 +2,8 @@ import { useContext } from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
 
-import type { LegacyTheme } from '@gorgias/axiom'
-import { ThemeContext as UIKitThemeContext } from '@gorgias/axiom'
+import type { LegacyLegacyTheme } from '@gorgias/axiom'
+import { LegacyThemeContext as UIKitThemeContext } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import AppThemeContext from '../ThemeContext'
@@ -41,7 +41,7 @@ describe('ThemeProvider', () => {
     })
 
     it('should pass iconSpriteUrl to UIKitThemeProvider if the sprite is available', async () => {
-        let UIKitTheme: LegacyTheme | null = null
+        let UIKitTheme: LegacyLegacyTheme | null = null
 
         const TestComponent = () => {
             UIKitTheme = useContext(UIKitThemeContext)

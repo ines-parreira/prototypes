@@ -22,7 +22,7 @@ import {
 import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
-    LoadingSpinner,
+    LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 import type { Team } from '@gorgias/helpdesk-queries'
 

@@ -5,7 +5,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { Link, useParams } from 'react-router-dom'
 
-import { Badge, LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import {
     ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,

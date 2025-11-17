@@ -6,7 +6,10 @@ import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import {
     TicketChannel,

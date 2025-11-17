@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import { useListAccountSettings } from '@gorgias/helpdesk-queries'
 import type {
     BusinessHoursConfig,

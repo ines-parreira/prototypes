@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import { Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'

@@ -1,4 +1,4 @@
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

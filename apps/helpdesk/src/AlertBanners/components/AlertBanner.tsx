@@ -1,7 +1,10 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-import type { BannerFillStyle, BannerVariant } from '@gorgias/axiom'
-import { Banner } from '@gorgias/axiom'
+import type {
+    LegacyBannerFillStyle as BannerFillStyle,
+    LegacyBannerVariant as BannerVariant,
+} from '@gorgias/axiom'
+import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { sanitizeHtmlDefault } from 'utils/html'

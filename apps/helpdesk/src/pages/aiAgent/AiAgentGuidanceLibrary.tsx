@@ -1,7 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 
-import { LegacyButton as Button, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import BackLink from 'pages/common/components/BackLink'

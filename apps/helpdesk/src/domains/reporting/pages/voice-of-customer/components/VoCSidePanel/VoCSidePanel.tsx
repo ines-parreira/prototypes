@@ -2,7 +2,7 @@ import type { FC } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { TabNavigation } from '@gorgias/axiom'
+import { LegacyTabNavigation as TabNavigation } from '@gorgias/axiom'
 
 import { ProductHeader } from 'domains/reporting/pages/voice-of-customer/components/ProductHeader'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanel/VoCSidePanel.less'

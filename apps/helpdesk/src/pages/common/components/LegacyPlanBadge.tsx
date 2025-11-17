@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from './LegacyPlanBadge.less'
 

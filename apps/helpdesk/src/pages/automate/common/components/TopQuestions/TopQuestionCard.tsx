@@ -3,7 +3,10 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { LoadingSpinner, Skeleton } from '@gorgias/axiom'
+import {
+    LegacyLoadingSpinner as LoadingSpinner,
+    Skeleton,
+} from '@gorgias/axiom'
 
 import css from './TopQuestionCard.less'
 

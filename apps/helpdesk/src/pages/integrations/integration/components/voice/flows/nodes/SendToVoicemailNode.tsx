@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Banner, LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyCheckBoxField as CheckBoxField,
+} from '@gorgias/axiom'
 import { VoiceMessageType } from '@gorgias/helpdesk-queries'
 import type { SendToVoicemailStep } from '@gorgias/helpdesk-types'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'

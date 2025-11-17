@@ -1,7 +1,7 @@
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
-import type { ColorType } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 
 import type {
     AutomatePlan,

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 
 import { useId } from '@repo/hooks'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import {
     TicketSLADimension,

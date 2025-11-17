@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import { Link, useHistory } from 'react-router-dom'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

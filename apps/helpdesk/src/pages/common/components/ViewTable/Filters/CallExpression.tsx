@@ -14,7 +14,7 @@ import _pickBy from 'lodash/pickBy'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { StoreMapping } from '@gorgias/helpdesk-queries'
 import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 

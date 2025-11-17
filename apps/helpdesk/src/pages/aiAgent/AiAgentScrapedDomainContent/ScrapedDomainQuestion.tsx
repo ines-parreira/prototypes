@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useParams } from 'react-router'
 
 import {
-    Banner,
+    LegacyBanner as Banner,
     LegacyButton as Button,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'

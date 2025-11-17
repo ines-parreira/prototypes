@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { Badge } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import {
     TicketChannel,
@@ -43,7 +43,7 @@ jest.mock('@gorgias/axiom', () => {
     return {
         ...jest.requireActual('@gorgias/axiom'),
         LegacyTooltip: () => 'TooltipMock',
-        Badge: jest.fn(({ children }) => <div>{children}</div>),
+        LegacyBadge: jest.fn(({ children }) => <div>{children}</div>),
     } as Record<string, unknown>
 })
 jest.mock('state/integrations/selectors', () => ({

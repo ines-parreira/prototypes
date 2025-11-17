@@ -4,7 +4,7 @@ import type { NodeProps } from '@xyflow/react'
 import { Handle, Position, useNodeId } from '@xyflow/react'
 import classNames from 'classnames'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import {

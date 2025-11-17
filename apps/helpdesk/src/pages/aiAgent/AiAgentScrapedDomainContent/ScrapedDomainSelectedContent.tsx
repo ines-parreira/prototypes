@@ -3,7 +3,7 @@ import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
-import { Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'

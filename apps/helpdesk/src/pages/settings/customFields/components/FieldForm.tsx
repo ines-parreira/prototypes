@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { cloneDeep, pick, set } from 'lodash'
 
 import {
-    Badge,
+    LegacyBadge as Badge,
     LegacyButton as Button,
     Label,
     LegacyTooltip as Tooltip,

@@ -9,7 +9,10 @@ import React, { useCallback } from 'react'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { LegacyLabel as Label, LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyLabel as Label,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import Caption from './Caption/Caption'
 

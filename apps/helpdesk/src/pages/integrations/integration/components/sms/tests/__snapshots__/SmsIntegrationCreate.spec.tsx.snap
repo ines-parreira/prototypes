@@ -197,7 +197,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
           type="button"
         >
           <svg
-            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+            class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
             data-name="loading-spinner"
             height="22"
             preserveAspectRatio="xMidYMid meet"
@@ -206,7 +206,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
             width="22"
           >
             <circle
-              class="ui-loadingspinner-dot-4660"
+              class="ui-loadingspinner-dot-fc79"
               cx="10"
               cy="10"
               fill="none"
@@ -214,7 +214,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
               stroke-width="2"
             />
             <circle
-              class="ui-loadingspinner-circle-4660"
+              class="ui-loadingspinner-circle-fc79"
               cx="10"
               cy="10"
               fill="none"
@@ -644,7 +644,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
           type="button"
         >
           <svg
-            class="ui-loadingspinner-spinner-4660 ui-loadingspinner-gloom-4660 ui-buttonspinner-spinner-a731"
+            class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
             data-name="loading-spinner"
             height="22"
             preserveAspectRatio="xMidYMid meet"
@@ -653,7 +653,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
             width="22"
           >
             <circle
-              class="ui-loadingspinner-dot-4660"
+              class="ui-loadingspinner-dot-fc79"
               cx="10"
               cy="10"
               fill="none"
@@ -661,7 +661,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
               stroke-width="2"
             />
             <circle
-              class="ui-loadingspinner-circle-4660"
+              class="ui-loadingspinner-circle-fc79"
               cx="10"
               cy="10"
               fill="none"

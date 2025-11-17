@@ -3,7 +3,12 @@ import { useMemo } from 'react'
 import { TrendCard } from '@repo/reporting'
 import { motion } from 'framer-motion'
 
-import { Box, Card, Heading, LoadingSpinner } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    Heading,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import {
     useAIJourneyTotalConversations,

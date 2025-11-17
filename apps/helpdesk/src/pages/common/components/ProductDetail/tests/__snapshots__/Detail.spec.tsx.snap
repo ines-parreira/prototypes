@@ -25,14 +25,14 @@ exports[`Detail should render 1`] = `
         class="heroMeta"
       >
         <div
-          class="ui-badge-badge-7025 badge ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
           data-name="badge"
           style="border-radius: 100px;"
         >
           MY CATEGORY
         </div>
         <div
-          class="ui-badge-badge-7025 badge ui-badge-uppercase-7025"
+          class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
           data-name="badge"
           style="border-radius: 100px;"
         >
@@ -56,14 +56,14 @@ exports[`Detail should render 1`] = `
   </header>
   <div
     aria-label=""
-    class="ui-banner-banner-e3eb ui-banner-info-e3eb ui-banner-full-e3eb ui-banner-fill-e3eb"
+    class="ui-banner-banner-345f ui-banner-info-345f ui-banner-full-345f ui-banner-fill-345f"
     data-name="banner"
   >
     <div
-      class="ui-banner-content-e3eb"
+      class="ui-banner-content-345f"
     >
       <div
-        class="ui-banner-icon-e3eb"
+        class="ui-banner-icon-345f"
       >
         <img
           alt="icon"
@@ -71,7 +71,7 @@ exports[`Detail should render 1`] = `
         />
       </div>
       <span
-        class="ui-banner-text-e3eb"
+        class="ui-banner-text-345f"
       >
         <span>
           Beware!
@@ -79,7 +79,7 @@ exports[`Detail should render 1`] = `
       </span>
     </div>
     <div
-      class="ui-banner-rightitems-e3eb"
+      class="ui-banner-rightitems-345f"
     />
   </div>
   <main

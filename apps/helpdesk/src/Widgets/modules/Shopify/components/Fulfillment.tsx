@@ -1,7 +1,7 @@
 import type { Map } from 'immutable'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { humanizeString } from 'utils'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'

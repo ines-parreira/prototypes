@@ -1,7 +1,7 @@
 import HTTPStatus from 'httpstatus'
 
-import type { ColorType } from '@gorgias/axiom'
-import { Badge } from '@gorgias/axiom'
+import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 type Props = {
     hasNoRequest?: boolean
