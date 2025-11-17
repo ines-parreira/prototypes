@@ -2284,7 +2284,7 @@ describe('useTrialModalProps', () => {
                 const modal = result.current.newTrialUpgradePlanModal
 
                 expect(modal.title).toBe(
-                    'Unlock new AI Agent skills at no extra cost',
+                    'Try out shopping assistant skills on your current plan',
                 )
                 expect(modal.subtitle).toBe(
                     "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
@@ -3185,7 +3185,7 @@ describe('useTrialModalProps', () => {
                 const modal = result.current.newTrialUpgradePlanModal
 
                 expect(modal.title).toBe(
-                    'Unlock new AI Agent skills at no extra cost',
+                    'Try out shopping assistant skills on your current plan',
                 )
                 expect(modal.subtitle).toBe(
                     "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
@@ -3318,7 +3318,7 @@ describe('useTrialModalProps', () => {
                         icon: 'star_outline',
                         title: 'Day 14',
                         description:
-                            'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with sales skills, unless you cancel during your trial.',
+                            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trail ends.',
                     },
                 ])
             })
@@ -3445,7 +3445,7 @@ describe('useTrialModalProps', () => {
                     const modal = result.current.newTrialUpgradePlanModal
 
                     expect(modal.title).toBe(
-                        'Unlock new AI Agent skills at no extra cost',
+                        'Try out shopping assistant skills on your current plan',
                     )
                     expect(modal.subtitle).toBe(
                         "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
@@ -3473,7 +3473,7 @@ describe('useTrialModalProps', () => {
                 const modal = result.current.newTrialUpgradePlanModal
 
                 expect(modal.title).toBe(
-                    'Unlock new AI Agent skills at no extra cost',
+                    'Try out shopping assistant skills on your current plan',
                 )
                 expect(modal.subtitle).toBe(
                     "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",

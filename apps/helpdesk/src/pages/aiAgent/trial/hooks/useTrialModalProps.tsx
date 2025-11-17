@@ -81,7 +81,7 @@ const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
         icon: 'check',
         title: 'Today',
         description:
-            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
+            'Your 14-day trial has started. Automated interactions from shopping assistant capabilities count toward your current AI Agent usage, with no additional cost.',
     },
     {
         icon: 'notifications_none',
@@ -132,7 +132,7 @@ const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
         icon: 'star_outline',
         title: 'Day 14',
         description:
-            'Your new AI Agent plan kicks in automatically after the trial so you can keep growing revenue with sales skills, unless you cancel during your trial.',
+            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trail ends.',
     },
 ]
 
@@ -538,7 +538,7 @@ const useNewTrialUpgradePlanModal = (
 
         let props = {
             ...createPlanModalData(
-                'Unlock new AI Agent skills at no extra cost',
+                'Try out shopping assistant skills on your current plan',
                 planDetails,
                 {
                     current: 'Keep current plan',
@@ -546,7 +546,7 @@ const useNewTrialUpgradePlanModal = (
                 },
                 isMultiStore,
             ),
-            title: 'Unlock new AI Agent skills at no extra cost',
+            title: 'Try out shopping assistant skills on your current plan',
             subtitle:
                 "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%.",
             primaryAction: {

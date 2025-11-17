@@ -96,7 +96,7 @@ const TermsCheckbox = ({
             label={
                 <span className={css.checkboxLabel}>
                     I agree to the updated pricing, which will apply after the
-                    14-day free trial ends, as outlined in{' '}
+                    14-day trial ends, as outlined in{' '}
                     <a
                         href="https://www.gorgias.com/legal/terms-of-service"
                         target="_blank"

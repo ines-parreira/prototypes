@@ -67,7 +67,7 @@ const mockFeatures: TrialFeature[] = [
     },
 ]
 
-const TRIAL_TITLE = 'Unlock new AI Agent skills at no extra cost'
+const TRIAL_TITLE = 'Try out shopping assistant skills on your current plan'
 const TRIAL_SUBTITLE =
     "AI Agent's new shopping assistant capabilities guide shoppers from first click to checkout, boosting conversions by up to 62% and revenue per visitor by 10%."
 
