@@ -1,4 +1,4 @@
-import { Banner } from '@gorgias/axiom'
+import { LegacyBanner } from '@gorgias/axiom'
 
 import {
     IngestionLogStatus,
@@ -26,7 +26,7 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
     switch (syncStatus) {
         case IngestionLogStatus.Pending:
             return (
-                <Banner
+                <LegacyBanner
                     variant="inline"
                     icon
                     type="loading"
@@ -36,12 +36,12 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                 >
                     Your store website is syncing. You will be notified once
                     complete.
-                </Banner>
+                </LegacyBanner>
             )
 
         case IngestionLogStatus.Successful:
             return (
-                <Banner
+                <LegacyBanner
                     variant="inline"
                     icon
                     type="success"
@@ -51,12 +51,12 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                 >
                     Your store website has been synced successfully and is in
                     use by AI Agent. Review generated content for accuracy.
-                </Banner>
+                </LegacyBanner>
             )
 
         case IngestionLogStatus.Failed:
             return (
-                <Banner
+                <LegacyBanner
                     variant="inline"
                     icon
                     type="error"
@@ -66,7 +66,7 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                 >
                     We couldn’t sync your store website. Please try again or
                     contact support if the issue persists.
-                </Banner>
+                </LegacyBanner>
             )
 
         default:
