@@ -1,5 +1,6 @@
 import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
 
+import { useTicketPrint } from './actions/useTicketPrint'
 import {
     DeleteTicket,
     EventsOptions,
@@ -11,6 +12,7 @@ import {
 } from './options'
 
 export function TicketActions() {
+    const { handleTicketPrint } = useTicketPrint()
     return (
         <Menu
             placement={MenuPlacement.BottomRight}
@@ -65,6 +67,7 @@ export function TicketActions() {
                 label={PrintTicket.name}
                 leadingSlot={PrintTicket.icon}
                 intent={PrintTicket.intent}
+                onAction={handleTicketPrint}
             />
             <MenuItem
                 id={MarkAsSpam.id}
