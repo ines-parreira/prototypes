@@ -3306,7 +3306,7 @@ describe('useTrialModalProps', () => {
                         icon: 'check',
                         title: 'Today',
                         description:
-                            'Your 14-day trial starts after onboarding. All features are unlocked, so you can start seeing impact today.',
+                            'Your 14-day trial has started. Automated interactions from shopping assistant capabilities count toward your current AI Agent usage, with no additional cost.',
                     },
                     {
                         icon: 'notifications_none',
@@ -3318,7 +3318,7 @@ describe('useTrialModalProps', () => {
                         icon: 'star_outline',
                         title: 'Day 14',
                         description:
-                            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trail ends.',
+                            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trial ends.',
                     },
                 ])
             })

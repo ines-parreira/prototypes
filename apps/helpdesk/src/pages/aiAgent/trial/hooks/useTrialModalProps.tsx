@@ -81,7 +81,7 @@ const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [
         icon: 'check',
         title: 'Today',
         description:
-            'Your 14-day trial has started. Automated interactions from shopping assistant capabilities count toward your current AI Agent usage, with no additional cost.',
+            'Your 14-day trial has started. All features are unlocked, so you can start seeing impact today.',
     },
     {
         icon: 'notifications_none',
@@ -101,7 +101,7 @@ const SHOPPING_ASSISTANT_TRIAL_FEATURES: TrialFeature[] = [
         icon: 'check',
         title: 'Today',
         description:
-            'Your 14-day trial has started. All shopping assistant features are unlocked, so you can start boosting conversions today.',
+            'Your 14-day trial has started. Automated interactions from shopping assistant capabilities count toward your current AI Agent usage, with no additional cost.',
     },
     {
         icon: 'notifications_none',
@@ -112,7 +112,7 @@ const SHOPPING_ASSISTANT_TRIAL_FEATURES: TrialFeature[] = [
         icon: 'star_outline',
         title: 'Day 14',
         description:
-            'Your new AI Agent plan with shopping assistant features kicks in automatically to keep growing revenue.',
+            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trial ends.',
     },
 ]
 
@@ -121,7 +121,7 @@ const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
         icon: 'check',
         title: 'Today',
         description:
-            'Your 14-day trial starts after onboarding. All features are unlocked, so you can start seeing impact today.',
+            'Your 14-day trial has started. Automated interactions from shopping assistant capabilities count toward your current AI Agent usage, with no additional cost.',
     },
     {
         icon: 'notifications_none',
@@ -132,7 +132,7 @@ const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
         icon: 'star_outline',
         title: 'Day 14',
         description:
-            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trail ends.',
+            'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trial ends.',
     },
 ]
 
