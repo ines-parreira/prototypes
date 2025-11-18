@@ -128,6 +128,21 @@ describe('responseUtils', () => {
             expect(newContext.forceFocus).toBe(true)
         })
 
+        it('should display HTML for SMS', () => {
+            const context: MessageContext = {
+                ...applyMacroContext,
+                state: newMessageInitialState.setIn(
+                    ['newMessage', 'source', 'type'],
+                    TicketMessageSourceType.Sms,
+                ),
+            }
+            const newContext = applyMacro(context)
+
+            expect(convertToHTML(newContext.contentState)).toMatchSnapshot()
+            expect(newContext.forceUpdate).toBe(true)
+            expect(newContext.forceFocus).toBe(true)
+        })
+
         it('should apply macro and extend existing state', () => {
             const existingState = ContentState.createFromText(
                 'this is existing text',

@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
@@ -12,11 +13,7 @@ import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import {
-    applyMacro,
-    applyMacroAction,
-    updateTicketMessage,
-} from 'state/ticket/actions'
+import { applyMacro, applyMacroAction } from 'state/ticket/actions'
 
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
 
@@ -32,7 +29,6 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
     const accountId = useAppSelector(getCurrentAccountId)
     const { data, isLoading } = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
-    const [hideMessage, setHideMessage] = useState(false)
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const feedback = data?.data
@@ -45,12 +41,14 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
     const draftMessage = feedbackMessage?.draftMessage
 
     const handleCopyToEditor = () => {
-        void dispatch(
-            updateTicketMessage(ticketId, message.id!, {
-                meta: { hidden: true },
-            }),
-        )
-        setHideMessage(true)
+        const editorElement = document.getElementById('ticket-reply-editor')
+        if (editorElement) {
+            scrollIntoView(editorElement, {
+                scrollMode: 'if-needed',
+                behavior: 'smooth',
+                block: 'nearest',
+            })
+        }
 
         logEvent(SegmentEvent.AiAgentCopiedToEditor, {
             accountId,
@@ -115,7 +113,7 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
         )
     }
 
-    if (!feedback || !draftMessage || hideMessage) {
+    if (!feedback || !draftMessage) {
         return null
     }
 

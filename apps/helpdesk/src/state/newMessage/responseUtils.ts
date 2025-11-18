@@ -290,7 +290,10 @@ export const applyMacro = (context: MessageContext): MessageContext => {
     if (html && sourceType === TicketMessageSourceType.FacebookMessenger) {
         html = sanitizeHtmlForFacebookMessenger(html)
         blocks = convertFromHTML(html).getBlocksAsArray()
-    } else if (html && isRichType(sourceType)) {
+    } else if (
+        html &&
+        (isRichType(sourceType) || sourceType === TicketMessageSourceType.Sms)
+    ) {
         blocks = convertFromHTML(html).getBlocksAsArray()
     } else {
         blocks = ContentState.createFromText(text).getBlocksAsArray()

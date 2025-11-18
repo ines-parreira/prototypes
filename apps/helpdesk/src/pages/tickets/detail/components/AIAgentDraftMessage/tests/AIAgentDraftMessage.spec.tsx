@@ -7,6 +7,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
@@ -22,6 +23,7 @@ import AIAgentDraftMessage from '../AIAgentDraftMessage'
 
 jest.mock('state/currentAccount/selectors')
 jest.mock('models/aiAgentFeedback/queries')
+jest.mock('scroll-into-view-if-needed')
 jest.mock('state/ticket/actions', () => ({
     applyMacro: jest.fn(),
     applyMacroAction: jest.fn(),
@@ -56,6 +58,7 @@ const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const logEventMock = assumeMock(logEvent)
 const useMeasureMock = assumeMock(useMeasure)
+const scrollIntoViewMock = assumeMock(scrollIntoView)
 
 const mockMessage = {
     ...message,
@@ -262,5 +265,86 @@ describe('AIAgentDraftMessage', () => {
                 'Execution ID: 923665aa-5081-49b3-9cca-2ad6e1823175',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should return null when feedback is missing', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
+
+        const { container } = render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should return null when draftMessage is missing', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        { ...messageFeedback, draftMessage: undefined },
+                        mockMessage,
+                    ],
+                },
+            },
+            isLoading: false,
+        } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
+
+        const { container } = render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('should scroll to editor element when clicking Copy to Editor and element exists', () => {
+        const mockEditorElement = document.createElement('div')
+        mockEditorElement.id = 'ticket-reply-editor'
+        document.body.appendChild(mockEditorElement)
+
+        render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText('Copy to Editor'))
+
+        expect(scrollIntoViewMock).toHaveBeenCalledWith(mockEditorElement, {
+            scrollMode: 'if-needed',
+            behavior: 'smooth',
+            block: 'nearest',
+        })
+
+        document.body.removeChild(mockEditorElement)
+    })
+
+    it('should not call scrollIntoView when editor element does not exist', () => {
+        scrollIntoViewMock.mockClear()
+
+        render(
+            <Provider store={store}>
+                <NavigationProvider>
+                    <AIAgentDraftMessage {...defaultProps} />
+                </NavigationProvider>
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText('Copy to Editor'))
+
+        expect(scrollIntoViewMock).not.toHaveBeenCalled()
     })
 })
