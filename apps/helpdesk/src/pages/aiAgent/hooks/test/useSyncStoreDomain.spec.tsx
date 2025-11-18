@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -107,7 +107,7 @@ describe('useSyncStoreDomain', () => {
         expect(result.current.handleOnCancel).toBeInstanceOf(Function)
     })
 
-    it('should call startIngestion when handleOnSync is called', () => {
+    it('should call startIngestion when handleOnSync is called', async () => {
         const { result } = renderHook(
             () =>
                 useSyncStoreDomain({
@@ -122,7 +122,9 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleOnSync()
+        await act(async () => {
+            await result.current.handleOnSync()
+        })
 
         expect(mockedStartIngestion).toHaveBeenCalledWith({
             url: `https://${mockedShopName}.myshopify.com`,
@@ -145,7 +147,9 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleOnCancel()
+        act(() => {
+            result.current.handleOnCancel()
+        })
 
         expect(result.current.syncTriggered).toBe(false)
     })
@@ -165,14 +169,16 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleTriggerSync()
+        act(() => {
+            result.current.handleTriggerSync()
+        })
 
         await waitFor(() => {
             expect(result.current.syncTriggered).toBe(true)
         })
     })
 
-    it('should call handleOnSync when handleTriggerSync is called and storeDomainIngestionLog is not exist', () => {
+    it('should call handleOnSync when handleTriggerSync is called and storeDomainIngestionLog is not exist', async () => {
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             storeDomainIngestionLog: undefined,
             status: undefined,
@@ -193,7 +199,9 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleTriggerSync()
+        await act(async () => {
+            await result.current.handleTriggerSync()
+        })
 
         expect(mockedStartIngestion).toHaveBeenCalledWith({
             url: `https://${mockedShopName}.myshopify.com`,
@@ -201,7 +209,7 @@ describe('useSyncStoreDomain', () => {
         })
     })
 
-    it('should set syncTriggered to false when handleOnSync is called', () => {
+    it('should set syncTriggered to false when handleOnSync is called', async () => {
         const { result } = renderHook(
             () =>
                 useSyncStoreDomain({
@@ -216,12 +224,14 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleOnSync()
+        await act(async () => {
+            await result.current.handleOnSync()
+        })
 
         expect(result.current.syncTriggered).toBe(false)
     })
 
-    it('should notify error when startIngestion fails', () => {
+    it('should notify error when startIngestion fails', async () => {
         mockedStartIngestion.mockImplementation(() => {
             throw new Error('Error during Store Domain sync')
         })
@@ -240,7 +250,13 @@ describe('useSyncStoreDomain', () => {
             },
         )
 
-        result.current.handleOnSync()
+        await act(async () => {
+            try {
+                await result.current.handleOnSync()
+            } catch {
+                // Expected error
+            }
+        })
 
         expect(mockUseAppDispatch).toHaveBeenCalled()
         expect(notify).toHaveBeenCalledWith({

@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import type { Store } from 'redux'
@@ -12,6 +13,11 @@ import {
     useGetHelpCenterListMulti,
     useGetKnowledgeHubArticles,
 } from 'models/helpCenter/queries'
+import { OPEN_SYNC_WEBSITE_MODAL } from 'pages/aiAgent/KnowledgeHub/constants'
+import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
+import { KnowledgeVisibility } from 'pages/aiAgent/KnowledgeHub/types'
+import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import {
@@ -20,16 +26,36 @@ import {
 } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { KnowledgeHubContainer } from './KnowledgeHubContainer'
-import { KnowledgeVisibility } from './types'
-import { transformKnowledgeHubArticlesToKnowledgeItems } from './utils/transformKnowledgeHubArticles'
-
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
-jest.mock('models/helpCenter/queries')
-jest.mock('./utils/transformKnowledgeHubArticles')
-jest.mock('./DocumentFilters/DocumentFilters', () => ({
+jest.mock('models/helpCenter/queries', () => ({
+    useGetKnowledgeHubArticles: jest.fn(),
+    useGetHelpCenterList: jest.fn(),
+    useGetHelpCenterListMulti: jest.fn(),
+    useStartIngestion: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+        isPending: false,
+    })),
+    helpCenterKeys: {
+        ingestionLogs: jest.fn(),
+    },
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles')
+jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
+    useGetStoreDomainIngestionLog: jest.fn(() => ({
+        status: null,
+        storeDomainIngestionLog: undefined,
+        isGetIngestionLogsLoading: false,
+    })),
+}))
+jest.mock('@gorgias/knowledge-service-queries', () => ({
+    useStartIngestion: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+        isPending: false,
+    })),
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters', () => ({
     DocumentFilters: ({ selectedFilter, onFilterChange }: any) => (
         <div>
             <button onClick={() => onFilterChange('document')}>
@@ -42,9 +68,24 @@ jest.mock('./DocumentFilters/DocumentFilters', () => ({
         </div>
     ),
 }))
-jest.mock('./EmptyState/HelpCenterSelectModal', () => ({
-    HelpCenterSelectModal: () => <div data-testid="help-center-select-modal" />,
-}))
+jest.mock(
+    'pages/aiAgent/KnowledgeHub/EmptyState/HelpCenterSelectModal',
+    () => ({
+        HelpCenterSelectModal: () => (
+            <div data-testid="help-center-select-modal" />
+        ),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader',
+    () => ({
+        KnowledgeHubHeader: ({ onAddKnowledge }: any) => (
+            <div>
+                <button onClick={onAddKnowledge}>Add Knowledge</button>
+            </div>
+        ),
+    }),
+)
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
@@ -100,7 +141,15 @@ describe('KnowledgeHubContainer', () => {
                         return undefined
                     },
                 }
-            return undefined
+            return fromJS({
+                id: 1,
+                name: 'Store Alpha',
+                type: 'shopify',
+                meta: {
+                    shop_name: 'store-alpha',
+                    shop_domain: 'store-alpha.myshopify.com',
+                },
+            })
         })
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -117,6 +166,7 @@ describe('KnowledgeHubContainer', () => {
         mockUseGetKnowledgeHubArticles.mockReturnValue({
             data: { articles: [] },
             isInitialLoading: false,
+            refetch: jest.fn(),
         })
 
         mockUseGetHelpCenterList.mockReturnValue({
@@ -196,6 +246,7 @@ describe('KnowledgeHubContainer', () => {
                     ],
                 },
                 isInitialLoading: false,
+                refetch: jest.fn(),
             })
 
             renderComponent()
@@ -277,6 +328,7 @@ describe('KnowledgeHubContainer', () => {
             mockUseGetKnowledgeHubArticles.mockReturnValue({
                 data: undefined,
                 isInitialLoading: true,
+                refetch: jest.fn(),
             })
 
             renderComponent()
@@ -323,6 +375,60 @@ describe('KnowledgeHubContainer', () => {
                     enabled: false,
                 }),
             )
+        })
+    })
+
+    describe('modal behavior', () => {
+        it('opens Add Knowledge modal when Add Knowledge button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            expect(
+                screen.queryByRole('heading', { name: 'Add knowledge' }),
+            ).not.toBeInTheDocument()
+
+            await user.click(screen.getByText('Add Knowledge'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('closes Add Knowledge modal when OPEN_SYNC_WEBSITE_MODAL event is dispatched', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByText('Add Knowledge'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                ).toBeInTheDocument()
+            })
+
+            dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('keeps modal closed when OPEN_SYNC_WEBSITE_MODAL is dispatched and modal was not open', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('heading', { name: 'Add knowledge' }),
+            ).not.toBeInTheDocument()
+
+            dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+
+            expect(
+                screen.queryByRole('heading', { name: 'Add knowledge' }),
+            ).not.toBeInTheDocument()
         })
     })
 })

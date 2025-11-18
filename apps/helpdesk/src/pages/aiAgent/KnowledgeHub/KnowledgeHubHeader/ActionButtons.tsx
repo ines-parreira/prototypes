@@ -1,6 +1,7 @@
+import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from '../types'
 import { KnowledgeType } from '../types'
@@ -17,6 +18,7 @@ type HeaderActionsProps = {
     isAddKnowledgeButtonDisabled?: boolean
     isSyncButtonDisabled?: boolean
     isDeleteButtonDisabled?: boolean
+    syncTooltipMessage?: string
 }
 
 export const HeaderActions = ({
@@ -29,7 +31,10 @@ export const HeaderActions = ({
     isAddKnowledgeButtonDisabled = false,
     isSyncButtonDisabled = false,
     isDeleteButtonDisabled = false,
+    syncTooltipMessage,
 }: HeaderActionsProps) => {
+    const id = useId()
+    const syncButtonId = `sync-button-${id}`
     if (!data) {
         return (
             <>
@@ -56,20 +61,29 @@ export const HeaderActions = ({
     switch (data.type) {
         case KnowledgeType.Domain:
             return (
-                <button
-                    className={classNames(css.button, css.secondaryButton)}
-                    onClick={onSync}
-                    disabled={isSyncButtonDisabled}
-                    aria-label="Sync store website"
-                >
-                    <Icon name="arrows-reload-alt-1" />{' '}
-                    <span>Sync store website</span>
-                </button>
+                <>
+                    <button
+                        id={syncButtonId}
+                        className={classNames(css.button, css.secondaryButton)}
+                        onClick={onSync}
+                        disabled={isSyncButtonDisabled}
+                        aria-label="Sync store website"
+                    >
+                        <Icon name="arrows-reload-alt-1" />{' '}
+                        <span>Sync store website</span>
+                    </button>
+                    {syncTooltipMessage && (
+                        <Tooltip target={syncButtonId}>
+                            {syncTooltipMessage}
+                        </Tooltip>
+                    )}
+                </>
             )
         case KnowledgeType.URL:
             return (
                 <>
                     <button
+                        id={syncButtonId}
                         className={classNames(css.button, css.secondaryButton)}
                         onClick={onSync}
                         disabled={isSyncButtonDisabled}
@@ -78,6 +92,11 @@ export const HeaderActions = ({
                         <Icon name="arrows-reload-alt-1" />{' '}
                         <span>Sync URL</span>
                     </button>
+                    {syncTooltipMessage && (
+                        <Tooltip target={syncButtonId}>
+                            {syncTooltipMessage}
+                        </Tooltip>
+                    )}
                     <button
                         className={classNames(
                             css.button,

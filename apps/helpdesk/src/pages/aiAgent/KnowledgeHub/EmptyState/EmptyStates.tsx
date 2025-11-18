@@ -3,6 +3,7 @@ import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+    OPEN_SYNC_WEBSITE_MODAL,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { AddGuidanceTemplateModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
@@ -98,7 +99,12 @@ export const EmptyStates = ({
                 <Heading size={'sm'}>Sync or upload external content</Heading>
                 <Box flexDirection={'row'} gap="md">
                     {!hasWebsiteSync && (
-                        <Card>
+                        <div
+                            className={css.smallCard}
+                            onClick={() => {
+                                dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+                            }}
+                        >
                             <Box flexDirection={'column'} gap="xs">
                                 <Text size={'md'} variant={'bold'}>
                                     <Box flexDirection={'row'} gap="xxxs">
@@ -113,7 +119,7 @@ export const EmptyStates = ({
                                 </Text>
                                 <Text size={'sm'}>Sync your site content</Text>
                             </Box>
-                        </Card>
+                        </div>
                     )}
 
                     <Card>
@@ -267,7 +273,13 @@ export const EmptyStateDomain = () => {
                     Use your website’s content and product pages as knowledge
                     for AI Agent.
                 </Text>
-                <Button variant="primary" leadingSlot="arrows-reload-alt-1">
+                <Button
+                    variant="primary"
+                    leadingSlot="arrows-reload-alt-1"
+                    onClick={() => {
+                        dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+                    }}
+                >
                     Sync
                 </Button>
             </Box>

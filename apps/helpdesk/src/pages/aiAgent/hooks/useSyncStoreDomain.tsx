@@ -53,13 +53,13 @@ export const useSyncStoreDomain = ({
 
     const { onKnowledgeContentCreated } = useKnowledgeTracking({ shopName })
 
-    const handleOnSync = useCallback(() => {
+    const handleOnSync = useCallback(async () => {
         setSyncTriggered(false)
 
         if (!storeUrl) return
 
         try {
-            startIngestion({ url: storeUrl, type: IngestionType.Domain })
+            await startIngestion({ url: storeUrl, type: IngestionType.Domain })
             onStatusChange(IngestionLogStatus.Pending)
 
             onKnowledgeContentCreated({
@@ -67,7 +67,7 @@ export const useSyncStoreDomain = ({
                 createdFrom: isSourcePage ? 'source-page' : 'content-page',
                 createdHow: 'from-sync',
             })
-        } catch {
+        } catch (error) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -75,6 +75,7 @@ export const useSyncStoreDomain = ({
                         'Error during Store Domain sync. Please try again later or contact support',
                 }),
             )
+            throw error
         }
     }, [
         dispatch,

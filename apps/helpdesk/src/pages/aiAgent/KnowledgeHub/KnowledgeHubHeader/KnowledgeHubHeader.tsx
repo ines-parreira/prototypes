@@ -20,6 +20,7 @@ export type KnowledgeHubHeaderProps = {
     isAddKnowledgeButtonDisabled?: boolean
     isSyncButtonDisabled?: boolean
     isDeleteButtonDisabled?: boolean
+    syncTooltipMessage?: string
 }
 
 export const KnowledgeHubHeader = ({
@@ -34,6 +35,7 @@ export const KnowledgeHubHeader = ({
     isAddKnowledgeButtonDisabled,
     isSyncButtonDisabled,
     isDeleteButtonDisabled,
+    syncTooltipMessage,
 }: KnowledgeHubHeaderProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -57,6 +59,7 @@ export const KnowledgeHubHeader = ({
                     isAddKnowledgeButtonDisabled={isAddKnowledgeButtonDisabled}
                     isSyncButtonDisabled={isSyncButtonDisabled}
                     isDeleteButtonDisabled={isDeleteButtonDisabled}
+                    syncTooltipMessage={syncTooltipMessage}
                 />
             </div>
         </div>

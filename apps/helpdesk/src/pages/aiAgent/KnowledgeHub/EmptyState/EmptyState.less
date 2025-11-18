@@ -4,7 +4,6 @@
         background: var(--elevation-neutral-bg);
         border-radius: var(--sm, 12px);
         border: 1px solid var(--border-neutral-default, #ebecef);
-        background: var(--elevation-neutral-bg, #fafafa);
         padding: var(--spacing-md);
         box-sizing: border-box;
         width: 264px;
@@ -15,6 +14,18 @@
 
         .cardDescription {
             color: var(--content-neutral-secondary);
+        }
+    }
+
+    .smallCard {
+        display: flex;
+        border-radius: var(--sm, 12px);
+        border: 1px solid var(--border-neutral-default, #ebecef);
+        padding: var(--spacing-md);
+        box-sizing: border-box;
+
+        &:hover {
+            cursor: pointer;
         }
     }
 
