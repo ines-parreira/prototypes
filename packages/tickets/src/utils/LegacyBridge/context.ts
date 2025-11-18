@@ -31,6 +31,9 @@ export type LegacyBridgeContextType = {
         legacyGoToNextTicket: () => Promise<void>
         isNextEnabled: boolean
     }
+    dispatchAuditLogEvents: () => void
+    dispatchHideAuditLogEvents: () => void
+    toggleQuickReplies: (toggle: boolean) => void
 }
 
 export const LegacyBridgeContext =

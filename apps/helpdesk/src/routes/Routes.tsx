@@ -132,7 +132,7 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
-import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/useTicketLegacyBridgeFunctions'
+import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 
 // Create wrapped components outside of render to prevent re-creation on every render
 const AiAgentSalesWithPaywall = SalesPaywallMiddleware(AiAgentSales)

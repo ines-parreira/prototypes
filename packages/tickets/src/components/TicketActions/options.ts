@@ -2,65 +2,63 @@ import { IconName, Intent } from '@gorgias/axiom'
 
 export const MergeTicket = {
     id: 'merge-ticket',
-    name: 'Merge ticket',
-    icon: IconName.ArrowMerging,
+    label: 'Merge ticket',
+    leadingSlot: IconName.ArrowMerging,
     intent: Intent.Regular,
 } as const
 
 export const MarkAsUnread = {
     id: 'mark-as-unread',
-    name: 'Mark as unread',
-    icon: IconName.CommMail,
+    label: 'Mark as unread',
+    leadingSlot: IconName.CommMail,
     intent: Intent.Regular,
 } as const
 
 export const PrintTicket = {
     id: 'print-ticket',
-    name: 'Print ticket',
-    icon: IconName.SystemPrinter,
+    label: 'Print ticket',
+    leadingSlot: IconName.SystemPrinter,
     intent: Intent.Regular,
 } as const
 
 export const MarkAsSpam = {
     id: 'mark-as-spam',
-    name: 'Mark as spam',
-    icon: IconName.StopSign,
+    label: 'Mark as spam',
+    leadingSlot: IconName.StopSign,
     intent: Intent.Regular,
 } as const
 
 export const DeleteTicket = {
     id: 'delete-ticket',
-    name: 'Delete',
-    icon: IconName.TrashEmpty,
+    label: 'Delete',
+    leadingSlot: IconName.TrashEmpty,
     intent: Intent.Destructive,
 } as const
 
 export const EventsOptions = {
+    id: 'events-options',
     ShowAll: {
-        id: 'show-all-events',
-        name: 'Show all events',
-        icon: IconName.ListUnordered,
+        label: 'Show all events',
+        leadingSlot: IconName.ListUnordered,
         intent: Intent.Regular,
     },
     HideAll: {
-        id: 'hide-all-events',
-        name: 'Hide all events',
-        icon: IconName.ListUnordered,
+        label: 'Hide all events',
+        leadingSlot: IconName.ListUnordered,
         intent: Intent.Regular,
     },
 } as const
 
 export const QuickRepliesOptions = {
+    id: 'quick-replies-options',
     ShowAll: {
-        id: 'show-all-quick-replies',
-        name: 'Show all quick-replies',
-        icon: IconName.Ai,
+        label: 'Show all quick replies',
+        leadingSlot: IconName.Ai,
         intent: Intent.Regular,
     },
     HideAll: {
-        id: 'hide-all-quick-replies',
-        name: 'Hide all quick-replies',
-        icon: IconName.Ai,
+        label: 'Hide all quick replies',
+        leadingSlot: IconName.Ai,
         intent: Intent.Regular,
     },
 } as const

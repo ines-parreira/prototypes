@@ -132,3 +132,5 @@ catalogs:
     'push.js': '1.0.12'
   logging:
     '@types/segment-analytics': '^0.0.38'
+  zod:
+    'zod': '^3.24.2'

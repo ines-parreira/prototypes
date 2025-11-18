@@ -27,6 +27,9 @@ export const testAppQueryClient = new QueryClient({
 type RenderOptions = RenderOptionsPrimitive & {
     dispatchNotification?: ReturnType<typeof vi.fn>
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
+    dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
+    dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
+    toggleQuickReplies?: ReturnType<typeof vi.fn>
     initialEntries?: string[]
     path?: string
 }
@@ -34,6 +37,9 @@ type RenderOptions = RenderOptionsPrimitive & {
 type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> & {
     dispatchNotification?: ReturnType<typeof vi.fn>
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
+    dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
+    dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
+    toggleQuickReplies?: ReturnType<typeof vi.fn>
     initialEntries?: string[]
     path?: string
 }
@@ -42,6 +48,9 @@ const defaultOptions = {
     initialEntries: ['/'],
     path: '/',
     dispatchNotification: vi.fn(),
+    dispatchAuditLogEvents: vi.fn(),
+    dispatchHideAuditLogEvents: vi.fn(),
+    toggleQuickReplies: vi.fn(),
     ticketViewNavigation: {
         shouldDisplay: false,
         shouldUseLegacyFunctions: false,
@@ -59,6 +68,9 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         initialEntries = defaultOptions.initialEntries,
         path = defaultOptions.path,
         dispatchNotification = defaultOptions.dispatchNotification,
+        dispatchAuditLogEvents = defaultOptions.dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents = defaultOptions.dispatchHideAuditLogEvents,
+        toggleQuickReplies = defaultOptions.toggleQuickReplies,
         ticketViewNavigation = defaultOptions.ticketViewNavigation,
     } = options ?? {}
 
@@ -70,6 +82,16 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
             <TicketsLegacyBridgeProvider
                 dispatchNotification={
                     options?.dispatchNotification ?? dispatchNotification
+                }
+                dispatchAuditLogEvents={
+                    options?.dispatchAuditLogEvents ?? dispatchAuditLogEvents
+                }
+                dispatchHideAuditLogEvents={
+                    options?.dispatchHideAuditLogEvents ??
+                    dispatchHideAuditLogEvents
+                }
+                toggleQuickReplies={
+                    options?.toggleQuickReplies ?? toggleQuickReplies
                 }
                 ticketViewNavigation={
                     options?.ticketViewNavigation ?? ticketViewNavigation
@@ -88,6 +110,9 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         user,
         mocks: {
             dispatchNotification,
+            dispatchAuditLogEvents,
+            dispatchHideAuditLogEvents,
+            toggleQuickReplies,
         },
         ...result,
     }
@@ -101,6 +126,9 @@ export const renderHook = <TProps, TResult>(
         initialEntries = defaultOptions.initialEntries,
         path = defaultOptions.path,
         dispatchNotification = defaultOptions.dispatchNotification,
+        dispatchAuditLogEvents = defaultOptions.dispatchAuditLogEvents,
+        dispatchHideAuditLogEvents = defaultOptions.dispatchHideAuditLogEvents,
+        toggleQuickReplies = defaultOptions.toggleQuickReplies,
         ticketViewNavigation = defaultOptions.ticketViewNavigation,
     } = options ?? {}
 
@@ -110,6 +138,16 @@ export const renderHook = <TProps, TResult>(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={
                     options?.dispatchNotification ?? dispatchNotification
+                }
+                dispatchAuditLogEvents={
+                    options?.dispatchAuditLogEvents ?? dispatchAuditLogEvents
+                }
+                dispatchHideAuditLogEvents={
+                    options?.dispatchHideAuditLogEvents ??
+                    dispatchHideAuditLogEvents
+                }
+                toggleQuickReplies={
+                    options?.toggleQuickReplies ?? toggleQuickReplies
                 }
                 ticketViewNavigation={
                     options?.ticketViewNavigation ?? ticketViewNavigation

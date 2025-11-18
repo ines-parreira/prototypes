@@ -2,6 +2,11 @@ import { LegacyBridgeContext, LegacyBridgeContextType } from './context'
 
 type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     children: React.ReactNode
+    ticketViewNavigation: LegacyBridgeContextType['ticketViewNavigation']
+    dispatchNotification: LegacyBridgeContextType['dispatchNotification']
+    dispatchAuditLogEvents: LegacyBridgeContextType['dispatchAuditLogEvents']
+    dispatchHideAuditLogEvents: LegacyBridgeContextType['dispatchHideAuditLogEvents']
+    toggleQuickReplies: LegacyBridgeContextType['toggleQuickReplies']
 }
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk

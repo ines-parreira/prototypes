@@ -1,6 +1,8 @@
 import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
 
+import { useTicketEventsDisplay } from './actions/useTicketEventsDisplay'
 import { useTicketPrint } from './actions/useTicketPrint'
+import { useTicketQuickRepliesDisplay } from './actions/useTicketQuickRepliesDisplay'
 import {
     DeleteTicket,
     EventsOptions,
@@ -13,6 +15,11 @@ import {
 
 export function TicketActions() {
     const { handleTicketPrint } = useTicketPrint()
+    const { handleShowAllEventDisplay, areEventsVisible } =
+        useTicketEventsDisplay()
+    const { handleShowAllQuickRepliesDisplay, areQuickRepliesVisible } =
+        useTicketQuickRepliesDisplay()
+
     return (
         <Menu
             placement={MenuPlacement.BottomRight}
@@ -26,61 +33,27 @@ export function TicketActions() {
                 />
             }
         >
+            <MenuItem {...MergeTicket} />
+            <MenuItem {...MarkAsUnread} />
             <MenuItem
-                id={MergeTicket.id}
-                label={MergeTicket.name}
-                leadingSlot={MergeTicket.icon}
-                intent={MergeTicket.intent}
+                id={EventsOptions.id}
+                {...(areEventsVisible
+                    ? EventsOptions.HideAll
+                    : EventsOptions.ShowAll)}
+                onAction={handleShowAllEventDisplay}
             />
+
             <MenuItem
-                id={MarkAsUnread.id}
-                label={MarkAsUnread.name}
-                leadingSlot={MarkAsUnread.icon}
-                intent={MarkAsUnread.intent}
+                id={QuickRepliesOptions.id}
+                {...(areQuickRepliesVisible
+                    ? QuickRepliesOptions.HideAll
+                    : QuickRepliesOptions.ShowAll)}
+                onAction={handleShowAllQuickRepliesDisplay}
             />
-            <MenuItem
-                id={EventsOptions.ShowAll.id}
-                label={EventsOptions.ShowAll.name}
-                leadingSlot={EventsOptions.ShowAll.icon}
-                intent={EventsOptions.ShowAll.intent}
-            />
-            <MenuItem
-                id={EventsOptions.HideAll.id}
-                label={EventsOptions.HideAll.name}
-                leadingSlot={EventsOptions.HideAll.icon}
-                intent={EventsOptions.HideAll.intent}
-            />
-            <MenuItem
-                id={QuickRepliesOptions.ShowAll.id}
-                label={QuickRepliesOptions.ShowAll.name}
-                leadingSlot={QuickRepliesOptions.ShowAll.icon}
-                intent={QuickRepliesOptions.ShowAll.intent}
-            />
-            <MenuItem
-                id={QuickRepliesOptions.HideAll.id}
-                label={QuickRepliesOptions.HideAll.name}
-                leadingSlot={QuickRepliesOptions.HideAll.icon}
-                intent={QuickRepliesOptions.HideAll.intent}
-            />
-            <MenuItem
-                id={PrintTicket.id}
-                label={PrintTicket.name}
-                leadingSlot={PrintTicket.icon}
-                intent={PrintTicket.intent}
-                onAction={handleTicketPrint}
-            />
-            <MenuItem
-                id={MarkAsSpam.id}
-                label={MarkAsSpam.name}
-                leadingSlot={MarkAsSpam.icon}
-                intent={MarkAsSpam.intent}
-            />
-            <MenuItem
-                id={DeleteTicket.id}
-                label={DeleteTicket.name}
-                leadingSlot={DeleteTicket.icon}
-                intent={DeleteTicket.intent}
-            />
+
+            <MenuItem {...PrintTicket} onAction={handleTicketPrint} />
+            <MenuItem {...MarkAsSpam} />
+            <MenuItem {...DeleteTicket} />
         </Menu>
     )
 }

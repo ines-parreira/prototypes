@@ -239,7 +239,7 @@
         "uuid": "^9.0.1",
         "vaul": "^1.1.2",
         "zen-observable": "^0.10.0",
-        "zod": "^3.24.2"
+        "zod": "catalog:zod"
     },
     "devDependencies": {
         "@codecov/webpack-plugin": "^0.0.1-beta.6",

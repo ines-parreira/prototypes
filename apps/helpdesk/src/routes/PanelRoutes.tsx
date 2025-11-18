@@ -9,7 +9,7 @@ import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
-import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/useTicketLegacyBridgeFunctions'
+import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketsPage } from 'tickets/pages'
@@ -26,7 +26,7 @@ import css from './PanelRoutes.less'
 export const panelRoutesRegexps = [
     /^\/app\/?$/,
     /^\/app\/tickets\/?/,
-    /^\/app\/ticket\/([^\/]+)\/?$/,
+    /^\/app\/ticket\/([^/]+)\/?$/,
     /^\/app\/views\/?/,
 ]
 

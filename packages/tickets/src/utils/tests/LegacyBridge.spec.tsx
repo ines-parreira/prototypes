@@ -25,7 +25,10 @@ describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
             <TicketsLegacyBridgeProvider
-                dispatchNotification={() => {}}
+                dispatchNotification={vi.fn()}
+                dispatchAuditLogEvents={vi.fn()}
+                dispatchHideAuditLogEvents={vi.fn()}
+                toggleQuickReplies={vi.fn()}
                 ticketViewNavigation={mockTicketViewNavigation}
             >
                 <div>Test Child</div>
@@ -56,6 +59,9 @@ describe('TicketsLegacyBridgeProvider', () => {
         render(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={mockFn}
+                dispatchAuditLogEvents={mockFn}
+                dispatchHideAuditLogEvents={mockFn}
+                toggleQuickReplies={mockFn}
                 ticketViewNavigation={mockTicketViewNavigation}
             >
                 <TestComponent />
@@ -91,6 +97,9 @@ describe('useTicketsLegacyBridge', () => {
         render(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={mockFn}
+                dispatchAuditLogEvents={mockFn}
+                dispatchHideAuditLogEvents={mockFn}
+                toggleQuickReplies={mockFn}
                 ticketViewNavigation={mockTicketViewNavigation}
             >
                 <TestComponent />
