@@ -60,7 +60,9 @@ export const useFileIngestion = ({
             enabled: !!helpCenterId,
             refetchOnWindowFocus: false,
             refetchInterval:
-                ingestingFilesId === null ? false : UPDATE_STATUS_INTERVAL_MS,
+                ingestingFilesId === null || ingestingFilesId.length === 0
+                    ? false
+                    : UPDATE_STATUS_INTERVAL_MS,
         },
     )
 
