@@ -288,6 +288,7 @@ describe('useHandleSendTestSMS', () => {
                 phoneNumber: '+15551234567',
                 journeyId: mockJourney.id,
                 product: {
+                    title: String(mockProduct.title),
                     product_id: String(mockProduct.id),
                     variant_id: String(mockProduct.variants[0].id),
                     price: Number(mockProduct.variants[0].price),

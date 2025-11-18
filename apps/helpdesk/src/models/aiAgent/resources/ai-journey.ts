@@ -34,6 +34,18 @@ export type CreateAIJourneyPlaygroundOptions = {
         productId: string | null
     }
 
+    lastOrder?: {
+        id: number
+        createdAt: string
+        items: Array<{
+            name: string
+            variantId: string
+            productId: string
+            quantity: number
+            linePrice: number
+        }>
+    }
+
     settings: {
         maxFollowUpMessages: number | null
         smsSenderNumber: string | null
@@ -62,6 +74,17 @@ const createAIJourneyPlaygroundPayload = (
     // Default cart items if not provided
     const defaultLineItems = [
         {
+            variantId: '42972732358758',
+            productId: '7698314297446',
+            quantity: 1,
+            linePrice: 34.99,
+        },
+    ]
+
+    // Default last order items if not provided
+    const defaultLastOrderItems = [
+        {
+            name: 'Test Product',
             variantId: '42972732358758',
             productId: '7698314297446',
             quantity: 1,
@@ -98,6 +121,17 @@ const createAIJourneyPlaygroundPayload = (
                       currency: 'USD',
                       abandonedCheckoutUrl: `https://${options.storeName}.myshopify.com/checkout/test`,
                       lineItems: options.cart?.lineItems ?? defaultLineItems,
+                  },
+              }
+            : {}),
+        ...(options.journeyType === JourneyTypeEnum.WinBack
+            ? {
+                  lastOrder: {
+                      id: Math.floor(Math.random() * 1000000),
+                      createdAt: new Date(
+                          now - 15 * 24 * 60 * 60 * 1000,
+                      ).toISOString(), // 15 days ago
+                      items: options.lastOrder?.items ?? defaultLastOrderItems,
                   },
               }
             : {}),

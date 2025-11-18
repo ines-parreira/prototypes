@@ -75,6 +75,7 @@ export const useHandleSendTestSMS = ({
                 phoneNumber,
                 journeyId: journeyData.id,
                 product: {
+                    title: String(selectedProduct.title),
                     product_id: String(selectedProduct.id),
                     variant_id: String(selectedProduct.variants[0].id),
                     price: Number(selectedProduct.variants[0].price),
