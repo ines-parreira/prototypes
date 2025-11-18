@@ -15,7 +15,7 @@ describe('useNewApiMetricFlags', () => {
     })
 
     it('should resolve P1 metric flag and call useFlag with correct parameters', () => {
-        const p1Metric = METRIC_NAMES.AGENTXP_ONLINE_TIME
+        const p1Metric = METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME
         const expectedFlag = FeatureFlagKey.ReportingP1MetricMigration
         const expectedMigrationMode = 'shadow'
 

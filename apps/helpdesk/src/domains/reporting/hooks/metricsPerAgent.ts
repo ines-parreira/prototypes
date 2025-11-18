@@ -175,6 +175,7 @@ export const useOnlineTimePerAgent = createMetricPerDimensionHook(
 
 export const fetchOnlineTimePerAgent = createFetchPerDimension(
     onlineTimePerAgentQueryFactory,
+    onlineTimePerAgentQueryV2Factory,
 )
 
 export const useTicketAverageHandleTimePerAgent = createMetricPerDimensionHook(

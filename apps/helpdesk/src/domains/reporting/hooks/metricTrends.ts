@@ -56,7 +56,14 @@ type QueryFactory<TCube extends Cubes> = (
 ) => ReportingQuery<TCube>
 
 export const getTrendFetch =
-    <TCube extends Cubes>(query: QueryFactory<TCube>) =>
+    <
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+        TMetricName extends MetricName,
+    >(
+        query: QueryFactory<TCube>,
+        queryV2?: MetricQueryFactory<TMeta, TMetricName>,
+    ) =>
     (filters: StatsFiltersWithLogicalOperator, timezone: string) => {
         return fetchMetricTrend(
             query(filters, timezone),
@@ -67,6 +74,17 @@ export const getTrendFetch =
                 },
                 timezone,
             ),
+            queryV2?.({
+                filters,
+                timezone,
+            }),
+            queryV2?.({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            }),
         )
     }
 
@@ -287,4 +305,7 @@ export const useOnlineTimeTrend = getTrendHook(
     onlineTimeQueryV2Factory,
 )
 
-export const fetchOnlineTimeTrend = getTrendFetch(onlineTimeQueryFactory)
+export const fetchOnlineTimeTrend = getTrendFetch(
+    onlineTimeQueryFactory,
+    onlineTimeQueryV2Factory,
+)

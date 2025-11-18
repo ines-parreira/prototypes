@@ -294,60 +294,74 @@ describe('metricsPerAgent', () => {
                 'fetchTicketsRepliedMetricPerAgent',
                 fetchTicketsRepliedMetricPerAgent,
                 ticketsRepliedMetricPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchClosedTicketsMetricPerAgent',
                 fetchClosedTicketsMetricPerAgent,
                 closedTicketsPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchMessagesSentMetricPerAgent',
                 fetchMessagesSentMetricPerAgent,
                 messagesSentMetricPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchMessagesReceivedMetricPerAgent',
                 fetchMessagesReceivedMetricPerAgent,
                 messagesReceivedMetricPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchMedianResolutionTimeMetricPerAgent',
                 fetchMedianResolutionTimeMetricPerAgent,
                 medianResolutionTimeMetricPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchCustomerSatisfactionMetricPerAgent',
                 fetchCustomerSatisfactionMetricPerAgent,
                 customerSatisfactionMetricPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchOnlineTimePerAgent',
                 fetchOnlineTimePerAgent,
                 onlineTimePerAgentQueryFactory,
+                onlineTimePerAgentQueryV2Factory,
             ],
             [
                 'fetchTicketAverageHandleTimePerAgent',
                 fetchTicketAverageHandleTimePerAgent,
                 ticketAverageHandleTimePerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchOneTouchTicketsMetricPerAgent',
                 fetchOneTouchTicketsMetricPerAgent,
                 oneTouchTicketsPerAgentQueryFactory,
+                undefined,
             ],
             [
                 'fetchZeroTouchTicketsMetricPerAgent',
                 fetchZeroTouchTicketsMetricPerAgent,
                 zeroTouchTicketsPerAgentQueryFactory,
+                undefined,
             ],
         ])(
             '%s should pass the query to useMetricPerDimension hook',
-            async (_, fetchFn, queryFactory) => {
+            async (_, fetchFn, queryFactory, newQueryFactory) => {
                 await fetchFn(statsFilters, timezone, sorting, agentId)
 
                 expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    undefined,
+                    newQueryFactory?.({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
                     agentId,
                 )
             },

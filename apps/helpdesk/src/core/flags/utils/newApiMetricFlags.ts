@@ -16,12 +16,12 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.MessagesPerTicket,
     MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
-    MetricScope.OnlineTime,
 ]
 
 export const P2_SCOPES: MetricScope[] = [
     MetricScope.SatisfactionSurveys,
     MetricScope.TicketsCreated,
+    MetricScope.OnlineTime,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

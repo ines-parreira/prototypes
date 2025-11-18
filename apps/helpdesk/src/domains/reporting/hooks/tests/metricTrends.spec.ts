@@ -361,7 +361,12 @@ describe('metric trends', () => {
             fetchTicketHandleTimeTrend,
             ticketAverageHandleTimeQueryFactory,
         ],
-        ['fetchOnlineTimeTrend', fetchOnlineTimeTrend, onlineTimeQueryFactory],
+        [
+            'fetchOnlineTimeTrend',
+            fetchOnlineTimeTrend,
+            onlineTimeQueryFactory,
+            onlineTimeQueryV2Factory,
+        ],
         [
             'fetchMessagesReceivedTrend',
             fetchMessagesReceivedTrend,
@@ -372,13 +377,15 @@ describe('metric trends', () => {
             fetchMedianResponseTimeTrend,
             medianResponseTimeQueryFactory,
         ],
-    ])('%s', (_testName, fetchTrendFn, queryFactory) => {
+    ])('%s', (_testName, fetchTrendFn, queryFactory, queryV2Factory?: any) => {
         it('should create reporting filters', async () => {
             await fetchTrendFn(statsFilters, timezone)
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone),
                 queryFactory(prevStatsFilters, timezone),
+                queryV2Factory?.({ filters: statsFilters, timezone }),
+                queryV2Factory?.({ filters: prevStatsFilters, timezone }),
             )
         })
     })
