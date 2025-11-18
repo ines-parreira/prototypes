@@ -23,6 +23,27 @@ export enum ProductType {
     Convert = 'convert',
 }
 
+export type ProductInfo = {
+    title: string
+    icon: string
+    counter: string
+    perTicket: string
+    tooltip: string
+    tooltipLink: string
+    bannerLink: string
+}
+
+export type PlanForProductType<T extends ProductType> =
+    T extends ProductType.Helpdesk
+        ? HelpdeskPlan
+        : T extends ProductType.Automation
+          ? AutomatePlan
+          : T extends ProductType.Voice | ProductType.SMS
+            ? SMSOrVoicePlan
+            : T extends ProductType.Convert
+              ? ConvertPlan
+              : never
+
 // A PlanId is billing-provider agnostic.
 export type PlanId = string
 
@@ -36,15 +57,7 @@ export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 export type Product<T extends ProductType = ProductType> = {
     id: string
     type: T
-    prices: T extends ProductType.Helpdesk
-        ? HelpdeskPlan[]
-        : T extends ProductType.Automation
-          ? AutomatePlan[]
-          : T extends ProductType.Voice | ProductType.SMS
-            ? SMSOrVoicePlan[]
-            : T extends ProductType.Convert
-              ? ConvertPlan[]
-              : never
+    prices: PlanForProductType<T>[]
 }
 
 type BasePlan = {

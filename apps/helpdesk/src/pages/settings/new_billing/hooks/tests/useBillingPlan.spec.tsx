@@ -29,9 +29,14 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import type { HelpdeskPlan, Plan } from 'models/billing/types'
+import type {
+    AutomatePlan,
+    ConvertPlan,
+    HelpdeskPlan,
+    Plan,
+} from 'models/billing/types'
 import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import { getCadenceName, getProductInfo } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
@@ -45,7 +50,7 @@ import {
 import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { DATE_FORMAT, PRODUCT_INFO } from '../../constants'
+import { DATE_FORMAT } from '../../constants'
 import { useBillingPlans } from '../useBillingPlan'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
@@ -537,8 +542,8 @@ describe('useBillingPlans', () => {
 
                     const message = {
                         [ProductType.Helpdesk]: `Your subscription will change to <strong>${newPlan.name}</strong> on <strong>${periodEnd}</strong>.`,
-                        [ProductType.Automation]: `Your AI Agent subscription will change to <strong>${newPlan.num_quota_tickets} ${PRODUCT_INFO.automation.counter}/${newPlan.cadence}</strong> on <strong>${periodEnd}</strong>.`,
-                        [ProductType.Convert]: `Your Convert subscription will change to <strong>${newPlan.num_quota_tickets} ${PRODUCT_INFO.convert.counter}/${newPlan.cadence}</strong> on <strong>${periodEnd}</strong>.`,
+                        [ProductType.Automation]: `Your AI Agent subscription will change to <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Automation, newPlan as AutomatePlan).counter}/${newPlan.cadence}</strong> on <strong>${periodEnd}</strong>.`,
+                        [ProductType.Convert]: `Your Convert subscription will change to <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Convert, newPlan as ConvertPlan).counter}/${newPlan.cadence}</strong> on <strong>${periodEnd}</strong>.`,
                     }[productType]
 
                     expect(notifyMock).toHaveBeenCalledWith({
@@ -553,8 +558,8 @@ describe('useBillingPlans', () => {
                 } else {
                     const message = {
                         [ProductType.Helpdesk]: `Success! Helpdesk was upgraded to <strong>${newPlan.name}</strong>`,
-                        [ProductType.Automation]: `Success! You now have <strong>${newPlan.num_quota_tickets} ${PRODUCT_INFO.automation.counter} per ${newPlan.cadence}</strong>`,
-                        [ProductType.Convert]: `Success! You now have <strong>${newPlan.num_quota_tickets} ${PRODUCT_INFO.convert.counter} per ${newPlan.cadence}</strong>`,
+                        [ProductType.Automation]: `Success! You now have <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Automation, newPlan as AutomatePlan).counter} per ${newPlan.cadence}</strong>`,
+                        [ProductType.Convert]: `Success! You now have <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Convert, newPlan as ConvertPlan).counter} per ${newPlan.cadence}</strong>`,
                     }[productType]
 
                     const buttonLabel = {

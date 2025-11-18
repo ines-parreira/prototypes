@@ -15,7 +15,7 @@ import {
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
-import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
+import { getProductInfo } from 'models/billing/utils'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'
@@ -578,7 +578,7 @@ describe('ProductPlanSelection', () => {
                 </Provider>,
             )
 
-            const productInfo = PRODUCT_INFO[productType]
+            const productInfo = getProductInfo(productType, props.currentPlan)
             const infoIcon = container.querySelector(
                 `#priceSelectInfo_${productType}`,
             )
@@ -594,11 +594,6 @@ describe('ProductPlanSelection', () => {
             const link = within(tooltipContainer!).getByText('Learn more')
             expect(link).toBeInTheDocument()
             expect(link).toHaveAttribute('href', productInfo.tooltipLink)
-
-            expect(tooltip).toHaveAttribute(
-                'data-candu-id',
-                `product-info-${productType}-tooltip`,
-            )
         },
     )
 })

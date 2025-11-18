@@ -2,10 +2,10 @@ import type { Cadence, Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
+    getProductInfo,
     isLegacyAutomate,
     isTrial,
 } from 'models/billing/utils'
-import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 
 export type CounterTextProps = {
     plan: Plan | undefined
@@ -14,12 +14,13 @@ export type CounterTextProps = {
 }
 
 const CounterText = ({ plan, type, cadence }: CounterTextProps) => {
+    const productInfo = getProductInfo(type, plan)
     return (
         <>
             {isTrial(plan) && !isLegacyAutomate(plan) && (
                 <>
                     <strong>{getOverageUnitPriceFormatted(plan)}</strong>{' '}
-                    {PRODUCT_INFO[type].perTicket}
+                    {productInfo.perTicket}
                 </>
             )}
 
@@ -31,7 +32,7 @@ const CounterText = ({ plan, type, cadence }: CounterTextProps) => {
 
             {!isTrial(plan) && !isLegacyAutomate(plan) && (
                 <>
-                    {PRODUCT_INFO[type].counter}/{cadence}
+                    {productInfo.counter}/{cadence}
                 </>
             )}
         </>

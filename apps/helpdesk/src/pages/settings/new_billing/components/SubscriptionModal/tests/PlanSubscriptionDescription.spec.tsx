@@ -3,13 +3,10 @@ import userEvent from '@testing-library/user-event'
 
 import { convertProduct } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
-import { getProductLabel } from 'models/billing/utils'
+import { getProductInfo, getProductLabel } from 'models/billing/utils'
 import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import {
-    PRODUCT_INFO,
-    PRODUCT_SUBSCRIPTION_DESCRIPTION,
-} from 'pages/settings/new_billing/constants'
+import { PRODUCT_SUBSCRIPTION_DESCRIPTION } from 'pages/settings/new_billing/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('PlanSubscriptionDescription', () => {
@@ -99,7 +96,7 @@ describe('PlanSubscriptionDescription', () => {
                 <PlanSubscriptionDescription {...testProps} />,
             )
 
-            const productInfo = PRODUCT_INFO[productType]
+            const productInfo = getProductInfo(productType, props.selectedPlan)
             expect(
                 screen.getByText(`Ready to upgrade with ${productInfo.title}`, {
                     exact: false,
@@ -113,11 +110,6 @@ describe('PlanSubscriptionDescription', () => {
 
             const tooltip = screen.getByText(productInfo.tooltip)
             expect(tooltip).toBeInTheDocument()
-
-            expect(tooltip).toHaveAttribute(
-                'data-candu-id',
-                `product-info-${productType}-tooltip`,
-            )
         },
     )
 })

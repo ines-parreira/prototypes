@@ -14,6 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
+    getProductInfo,
     getProductLabel,
     isHelpdesk,
     isStarterTier,
@@ -28,7 +29,6 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     ENTERPRISE_PLAN_ID,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
-    PRODUCT_INFO,
 } from '../../constants'
 import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
 import { formatNumTickets } from '../../utils/formatAmount'
@@ -70,6 +70,7 @@ const ProductPlanSelection = ({
     editingAvailable,
     customer,
 }: ProductPlanSelectionProps) => {
+    const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const isActive = useMemo(() => {
         if (!currentPlan) return false
@@ -345,10 +346,10 @@ const ProductPlanSelection = ({
                             [css.activeIcon]: isActive,
                         })}
                     >
-                        {PRODUCT_INFO[type].icon}
+                        {productInfo.icon}
                     </i>
                     <div className="heading-subsection-semibold">
-                        {PRODUCT_INFO[type].title}
+                        {productInfo.title}
                     </div>
                     {isActive && (
                         <Badge text="Active" type={BadgeType.Success} />
@@ -391,13 +392,9 @@ const ProductPlanSelection = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                <div
-                                    data-candu-id={`product-info-${type}-tooltip`}
-                                >
-                                    {PRODUCT_INFO[type].tooltip}
-                                </div>
+                                {productInfo.tooltip}
                                 <a
-                                    href={PRODUCT_INFO[type].tooltipLink}
+                                    href={productInfo.tooltipLink}
                                     target="_blank"
                                     rel="noreferrer"
                                 >
@@ -416,7 +413,7 @@ const ProductPlanSelection = ({
                         currentPlan?.plan_id !== selectedPlan?.plan_id && (
                             <div className={css.oldPrice}>
                                 {`${currentPlan?.num_quota_tickets || 0} ${
-                                    PRODUCT_INFO[type].counter
+                                    productInfo.counter
                                 }/${cadence ?? ''}`}
                             </div>
                         )}

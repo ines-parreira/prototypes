@@ -1,10 +1,13 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import type { Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { getPlanPrice, getPlanPriceFormatted } from 'models/billing/utils'
+import {
+    getPlanPrice,
+    getPlanPriceFormatted,
+    getProductInfo,
+} from 'models/billing/utils'
 
-import { PRODUCT_INFO } from '../../../constants'
 import SummaryBody from '../UI/SummaryBody'
 import SummaryHeader from '../UI/SummaryHeader'
 import type { SummaryItemData } from '../UI/types'
@@ -34,20 +37,21 @@ const CancellationSummary = ({
                 const productType = key as ProductType
                 const toBeRemoved = cancellingProducts.includes(productType)
                 const plan = subscriptionProducts[productType] as Plan
+                const productInfo = getProductInfo(productType, plan)
 
                 if (!toBeRemoved) {
                     total += getPlanPrice(plan)
                 }
 
                 return {
-                    title: PRODUCT_INFO[productType].title,
+                    title: productInfo.title,
                     label:
                         productType === ProductType.Helpdesk
                             ? `${plan.name} - `
                             : null,
                     cadence: plan.cadence,
                     quotaAmount: plan.num_quota_tickets || 0,
-                    counter: PRODUCT_INFO[productType].counter,
+                    counter: productInfo.counter,
                     amount: getPlanPriceFormatted(plan),
                     strickenOut: toBeRemoved,
                 }

@@ -17,7 +17,7 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { isEnterprise } from 'models/billing/utils'
+import { getProductInfo, isEnterprise } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
@@ -39,7 +39,7 @@ import SummaryFooter from '../../components/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
-import { PRICING_DETAILS_URL, PRODUCT_INFO } from '../../constants'
+import { PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
 import { formatNumTickets } from '../../utils/formatAmount'
 
@@ -169,6 +169,7 @@ const BillingProcessView = ({
             const productType = key as ProductType
             const productName = _capitalize(key)
             const selectedPlan = selectedPlans[productType].plan
+            const productInfo = getProductInfo(productType, selectedPlan)
 
             if (selectedPlans[productType]?.isSelected) {
                 const isEnterprisePlan = isEnterprise(selectedPlan)
@@ -177,7 +178,7 @@ const BillingProcessView = ({
                 )}${isEnterprisePlan ? '+' : ''}`
 
                 message += `\n • ${productName} - ${tickets} ${
-                    PRODUCT_INFO[productType].counter
+                    productInfo.counter
                 }/${cadence} ${isEnterprisePlan ? '(Enterprise)' : ''}`
             }
         })
@@ -222,11 +223,20 @@ const BillingProcessView = ({
             return (
                 <Card title={'Summary'}>
                     <ScheduledCancellationSummary
-                        cancelledProducts={Object.keys(
-                            currentSubscriptionProducts,
-                        ).map(
-                            (type) => PRODUCT_INFO[type as ProductType].title,
-                        )}
+                        cancelledProducts={Object.values(ProductType)
+                            .filter((type) =>
+                                Object.hasOwn(
+                                    currentSubscriptionProducts,
+                                    type,
+                                ),
+                            )
+                            .map(
+                                (type) =>
+                                    getProductInfo(
+                                        type,
+                                        currentSubscriptionProducts[type],
+                                    ).title,
+                            )}
                         scheduledToCancelAt={
                             currentSubscriptionScheduledToCancelAt
                         }

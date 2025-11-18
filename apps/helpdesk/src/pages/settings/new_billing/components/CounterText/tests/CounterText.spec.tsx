@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, waitFor } from '@testing-library/react'
 
 import {
@@ -7,8 +5,8 @@ import {
     convertPlan0,
 } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
+import { getProductInfo } from 'models/billing/utils'
 import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
-import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 
 describe('CounterText', () => {
     it('should render the trial price text', () => {
@@ -33,12 +31,13 @@ describe('CounterText', () => {
             type: type,
             cadence: cadence,
         }
+        const productInfo = getProductInfo(type, basicMonthlyAutomationPlan)
 
         const { getByText } = render(<CounterText {...props} />)
 
         await waitFor(() => {
             expect(
-                getByText(PRODUCT_INFO[type].counter, { exact: false }),
+                getByText(productInfo.counter, { exact: false }),
             ).toBeInTheDocument()
             expect(getByText(cadence, { exact: false })).toBeInTheDocument()
         })

@@ -8,7 +8,8 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 
-import { Cadence } from '../types'
+import type { AutomatePlan, HelpdeskPlan } from '../types'
+import { Cadence, ProductType } from '../types'
 import {
     getCadenceMonths,
     getCadenceName,
@@ -17,6 +18,7 @@ import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
+    getProductInfo,
     getProductLabel,
     isAutomate,
     isHelpdesk,
@@ -208,6 +210,76 @@ describe('isOtherCadenceDowngrade', () => {
         (cadence: Cadence, other: Cadence) => {
             expect(() => isOtherCadenceDowngrade(cadence, other)).toThrow(
                 'Invalid cadence value',
+            )
+        },
+    )
+})
+
+describe('getProductInfo', () => {
+    const basicMonthlyHelpdeskPlanGen5: HelpdeskPlan = {
+        ...basicMonthlyHelpdeskPlan,
+        generation: 5,
+    }
+
+    const basicMonthlyHelpdeskPlanGen4: HelpdeskPlan = {
+        ...basicMonthlyHelpdeskPlan,
+        generation: 4,
+    }
+
+    const basicMonthlyAutomationPlanGen6: AutomatePlan = {
+        ...basicMonthlyAutomationPlan,
+        generation: 6,
+    }
+    const basicMonthlyAutomationPlanGen5: AutomatePlan = {
+        ...basicMonthlyAutomationPlan,
+        generation: 5,
+    }
+
+    it.each([4, undefined])(
+        'returns helpdesk information without mentioning AI Agent for generation 4',
+        (generation: number | undefined) => {
+            const plan =
+                generation === undefined
+                    ? basicMonthlyHelpdeskPlan
+                    : basicMonthlyHelpdeskPlanGen4
+
+            const helpdeskProductInfo = getProductInfo(
+                ProductType.Helpdesk,
+                plan,
+            )
+            expect(helpdeskProductInfo.tooltip).toBe(
+                'Tickets with a response sent from Gorgias by human agents or rules.',
+            )
+        },
+    )
+
+    it('returns helpdesk information including mentioning AI Agent for generation 5', () => {
+        const helpdeskProductInfo = getProductInfo(
+            ProductType.Helpdesk,
+            basicMonthlyHelpdeskPlanGen5,
+        )
+        expect(helpdeskProductInfo.tooltip).toBe(
+            'Tickets with a response sent from Gorgias by any sender (human agents, rules, or AI Agent).',
+        )
+    })
+
+    it.each([5, 6, undefined])(
+        'returns automate information without mention of helpdesk tickets',
+        (generation: number | undefined) => {
+            const plan =
+                generation === undefined
+                    ? basicMonthlyAutomationPlan
+                    : {
+                          5: basicMonthlyAutomationPlanGen5,
+                          6: basicMonthlyAutomationPlanGen6,
+                      }[generation]
+
+            const automationProductInfo = getProductInfo(
+                ProductType.Automation,
+                plan,
+            )
+            expect(automationProductInfo.tooltip).toBe(
+                'Tickets fully resolved by AI Agent and automations, without human intervention.',
             )
         },
     )

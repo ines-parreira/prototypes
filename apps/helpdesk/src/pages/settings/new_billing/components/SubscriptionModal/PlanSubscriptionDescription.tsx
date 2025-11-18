@@ -7,7 +7,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { Plan, ProductType } from 'models/billing/types'
 import { Cadence } from 'models/billing/types'
-import { getPlanPriceFormatted, getProductLabel } from 'models/billing/utils'
+import {
+    getPlanPriceFormatted,
+    getProductInfo,
+    getProductLabel,
+} from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
@@ -16,7 +20,6 @@ import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/S
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {
     ENTERPRISE_PLAN_ID,
-    PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -54,7 +57,10 @@ const PlanSubscriptionDescription = ({
         [availablePlans, cadence],
     )
 
-    const productInfo = useMemo(() => PRODUCT_INFO[productType], [productType])
+    const productInfo = useMemo(
+        () => getProductInfo(productType, selectedPlan),
+        [productType, selectedPlan],
+    )
     const descriptionInfo: ProductSubscriptionDescription = useMemo(
         () => PRODUCT_SUBSCRIPTION_DESCRIPTION[productType],
         [productType],
@@ -176,11 +182,7 @@ const PlanSubscriptionDescription = ({
                                 className={css.tooltip}
                                 container={ref}
                             >
-                                <div
-                                    data-candu-id={`product-info-${productType}-tooltip`}
-                                >
-                                    {productInfo.tooltip}
-                                </div>
+                                {productInfo.tooltip}
                             </Tooltip>
                         </div>
                     </div>

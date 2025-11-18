@@ -10,7 +10,7 @@ import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
-import { getCadenceName } from 'models/billing/utils'
+import { getCadenceName, getProductInfo } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
@@ -41,7 +41,6 @@ import {
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
-    PRODUCT_INFO,
 } from '../../constants'
 
 import css from './UsageAndPlansView.less'
@@ -130,9 +129,15 @@ const UsageAndPlansView = ({
 
                 const otherPlans = [
                     !!currentAutomatePlan &&
-                        PRODUCT_INFO[ProductType.Automation].title,
-                    !!currentVoicePlan && PRODUCT_INFO[ProductType.Voice].title,
-                    !!currentSmsPlan && PRODUCT_INFO[ProductType.SMS].title,
+                        getProductInfo(
+                            ProductType.Automation,
+                            currentAutomatePlan,
+                        ).title,
+                    !!currentVoicePlan &&
+                        getProductInfo(ProductType.Voice, currentVoicePlan)
+                            .title,
+                    !!currentSmsPlan &&
+                        getProductInfo(ProductType.SMS, currentSmsPlan).title,
                 ]
                     .filter(Boolean)
                     .join(', ')

@@ -29,7 +29,7 @@ export const PRODUCT_INFO = {
         counter: 'tickets',
         perTicket: 'per ticket',
         tooltip:
-            'Tickets with a response in Gorgias including rules, human agents or AI Agent.',
+            'Tickets with a response sent from Gorgias by any sender (human agents, rules, or AI Agent).',
         tooltipLink: 'https://link.gorgias.com/vw1',
         bannerLink: '/app/settings',
     },
@@ -39,7 +39,7 @@ export const PRODUCT_INFO = {
         counter: 'automated interactions',
         perTicket: 'per automated interaction',
         tooltip:
-            'Tickets that are resolved by AI Agent and automated without human intervention. These tickets also count towards your Helpdesk plan ticket.',
+            'Tickets fully resolved by AI Agent and automations, without human intervention.',
         tooltipLink: 'https://link.gorgias.com/5jnkqn7',
         bannerLink: '/app/automation',
     },

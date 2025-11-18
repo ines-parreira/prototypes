@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 
 import classNames from 'classnames'
 
@@ -9,13 +9,13 @@ import { Cadence, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPrice,
+    getProductInfo,
     getProductLabel,
     isEnterprise,
     isTrial,
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import { PRODUCT_INFO } from '../../constants'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
 import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
@@ -40,6 +40,7 @@ const SummaryItem = ({
     isFrequencyChanged = false,
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[productType]
+    const productInfo = getProductInfo(productType, selectedPlan.plan)
 
     const { price, currency, name, tickets } = useMemo(() => {
         const _selectedPlan = availablePlans.find(
@@ -87,10 +88,10 @@ const SummaryItem = ({
 
         return (
             <>
-                {tickets} {PRODUCT_INFO[productType].counter}/{cadence}
+                {tickets} {productInfo.counter}/{cadence}
             </>
         )
-    }, [cadence, selectedPlan.plan, tickets, productType])
+    }, [cadence, selectedPlan.plan, tickets, productInfo])
 
     if (!selectedPlan.isSelected && !currentPlan) {
         return null
@@ -103,9 +104,7 @@ const SummaryItem = ({
                     [css.strikeThrough]: !selectedPlan.isSelected,
                 })}
             >
-                <div className={css.title}>
-                    {PRODUCT_INFO[productType].title}
-                </div>
+                <div className={css.title}>{productInfo.title}</div>
                 <div className={css.description}>
                     {productType === ProductType.Helpdesk && name
                         ? `${name} - `
@@ -128,7 +127,7 @@ const SummaryItem = ({
                 {selectedPlan.plan && isTrial(selectedPlan.plan) ? (
                     <>
                         <b>{getOverageUnitPriceFormatted(selectedPlan.plan)}</b>{' '}
-                        {PRODUCT_INFO[productType].perTicket}
+                        {productInfo.perTicket}
                     </>
                 ) : (
                     <>

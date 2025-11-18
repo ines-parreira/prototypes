@@ -8,10 +8,15 @@ import type {
     ConvertPlan,
     HelpdeskPlan,
     Plan,
+    PlanForProductType,
+    ProductInfo,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
-import { ENTERPRISE_PLAN_ID } from 'pages/settings/new_billing/constants'
+import {
+    ENTERPRISE_PLAN_ID,
+    PRODUCT_INFO,
+} from 'pages/settings/new_billing/constants'
 
 import {
     formatAmount,
@@ -280,4 +285,31 @@ export function isOtherCadenceDowngrade(
     other: Cadence,
 ): boolean {
     return getCadenceMonths(cadence) > getCadenceMonths(other)
+}
+
+/**
+ * @description
+ *    Returns a ProductInfo object with the product information
+ *    correct for the given plan's pricing generation.
+ *    If no generation is specified we assume earliest generation
+ *    currently available.
+ *
+ * @param product ProductType
+ * @param plan Plan | null
+ * @returns ReadOnly<ProductInfo>
+ */
+export function getProductInfo<T extends ProductType>(
+    product: T,
+    plan?: PlanForProductType<T> | null,
+): Readonly<ProductInfo> {
+    // For helpdesk: if no generation is specified we assume gen 4
+    if (product === ProductType.Helpdesk && (plan?.generation ?? 4) === 4) {
+        return {
+            ...PRODUCT_INFO[product], // Existing text is for gen 5
+            tooltip:
+                'Tickets with a response sent from Gorgias by human agents or rules.',
+        }
+    }
+
+    return PRODUCT_INFO[product]
 }

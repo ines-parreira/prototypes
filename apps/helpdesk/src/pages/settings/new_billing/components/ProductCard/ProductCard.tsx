@@ -14,6 +14,7 @@ import { ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
+    getProductInfo,
     isConvert,
     isEnterprise,
     isLegacyAutomate,
@@ -26,7 +27,7 @@ import {
 } from 'state/billing/selectors'
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 
-import { BILLING_PROCESS_PATH, PRODUCT_INFO } from '../../constants'
+import { BILLING_PROCESS_PATH } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
 import Badge, { BadgeType } from '../Badge/Badge'
 
@@ -54,6 +55,7 @@ const ProductCard = ({
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
+    const productInfo = getProductInfo(type, plan)
 
     const { className, canduOverageStatus } = useMemo(() => {
         if (
@@ -89,7 +91,7 @@ const ProductCard = ({
             return (
                 <>
                     <strong>{getOverageUnitPriceFormatted(plan)}</strong>{' '}
-                    {PRODUCT_INFO[type].perTicket}
+                    {productInfo.perTicket}
                 </>
             )
         }
@@ -100,7 +102,7 @@ const ProductCard = ({
                 <b>{getPlanPriceFormatted(plan)}</b>/{plan.cadence}
             </>
         )
-    }, [plan, type])
+    }, [plan, type, productInfo])
 
     const subscribeContainer = useMemo(() => {
         return (
@@ -176,13 +178,13 @@ const ProductCard = ({
                 {plan && isTrial(plan) ? (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
-                        {PRODUCT_INFO[type].counter} used
+                        {productInfo.counter} used
                     </div>
                 ) : (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
                         of {formatNumTickets(plan?.num_quota_tickets || 0)}{' '}
-                        {PRODUCT_INFO[type].counter} used
+                        {productInfo.counter} used
                     </div>
                 )}
                 <i className="material-icons" id={`info_${type}`}>
@@ -194,11 +196,9 @@ const ProductCard = ({
                     className={css.tooltip}
                     autohide={false}
                 >
-                    <div data-candu-id={`product-info-${type}-tooltip`}>
-                        {PRODUCT_INFO[type].tooltip}
-                    </div>
+                    {productInfo.tooltip}
                     <a
-                        href={PRODUCT_INFO[type].tooltipLink}
+                        href={productInfo.tooltipLink}
                         target="_blank"
                         rel="noreferrer"
                     >
@@ -207,7 +207,7 @@ const ProductCard = ({
                 </Tooltip>
             </div>
         )
-    }, [plan, type, usage, className])
+    }, [plan, type, usage, className, productInfo])
 
     const extraCost = useMemo(() => {
         if (plan && (isLegacyAutomate(plan) || isConvert(plan))) {
@@ -233,9 +233,9 @@ const ProductCard = ({
                             [css.activeIcon]: !!plan,
                         })}
                     >
-                        {PRODUCT_INFO[type].icon}
+                        {productInfo.icon}
                     </i>
-                    <div>{PRODUCT_INFO[type].title}</div>
+                    <div>{productInfo.title}</div>
                     {!!plan ? (
                         <Badge text="Active" type={BadgeType.Success} />
                     ) : (
@@ -255,11 +255,11 @@ const ProductCard = ({
                             customActions={
                                 banner.type === AlertType.Info && (
                                     <a
-                                        href={PRODUCT_INFO[type].bannerLink}
+                                        href={productInfo.bannerLink}
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Set up {PRODUCT_INFO[type].title}
+                                        Set up {productInfo.title}
                                     </a>
                                 )
                             }

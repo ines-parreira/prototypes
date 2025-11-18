@@ -14,9 +14,9 @@ import {
     voicePlan0,
 } from 'fixtures/productPrices'
 import { ProductType } from 'models/billing/types'
+import { getProductInfo } from 'models/billing/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import { PRODUCT_INFO } from '../../../constants'
 import type { ProductCardProps } from '../ProductCard'
 import ProductCard from '../ProductCard'
 
@@ -113,7 +113,7 @@ describe('ProductCard', () => {
             expect(screen.getByText('Active')).toBeInTheDocument()
             expect(screen.getByText('Manage')).toBeInTheDocument()
 
-            const productInfo = PRODUCT_INFO[productType]
+            const productInfo = getProductInfo(productType, plans[productType])
             const infoIcon = container.querySelector(`#info_${productType}`)
             await act(async () => {
                 await user.hover(infoIcon!)
@@ -128,11 +128,6 @@ describe('ProductCard', () => {
             const link = within(tooltipContainer!).getByText('Learn more')
             expect(link).toBeInTheDocument()
             expect(link).toHaveAttribute('href', productInfo.tooltipLink)
-
-            expect(tooltip).toHaveAttribute(
-                'data-candu-id',
-                `product-info-${productType}-tooltip`,
-            )
         },
     )
 })

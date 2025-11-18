@@ -1,16 +1,15 @@
-import type { Plan } from 'models/billing/types'
-import { Cadence } from 'models/billing/types'
+import type { PlanForProductType } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
+import { getProductInfo } from 'models/billing/utils'
 import type { AlertNotification } from 'state/notifications/types'
 import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
 
-import { PRODUCT_INFO } from '../../constants'
-
-export type setNotificationProps = {
-    oldPlan?: Plan
-    newPlan?: Plan
+export type setNotificationProps<T extends ProductType> = {
+    oldPlan?: PlanForProductType<T>
+    newPlan?: PlanForProductType<T>
     periodEnd: string
     cadence?: Cadence
     onClick: () => void
@@ -23,7 +22,7 @@ export const setHelpdeskNotification = ({
     periodEnd,
     onClick,
     isFreeTrial,
-}: setNotificationProps): AlertNotification | null => {
+}: setNotificationProps<ProductType.Helpdesk>): AlertNotification | null => {
     if (isFreeTrial) return null
 
     // Set the notification message
@@ -69,8 +68,10 @@ export const setAutomationNotification = ({
     cadence = Cadence.Month,
     onClick,
     isFreeTrial,
-}: setNotificationProps): AlertNotification | null => {
+}: setNotificationProps<ProductType.Automation>): AlertNotification | null => {
     if (isFreeTrial) return null
+
+    const productInfo = getProductInfo(ProductType.Automation, newPlan)
 
     // Set the notification message
     let message = ''
@@ -87,13 +88,13 @@ export const setAutomationNotification = ({
         message = `Your AI Agent subscription will change to <strong>${
             newPlan?.num_quota_tickets ?? 0
         } ${
-            PRODUCT_INFO.automation.counter
+            productInfo.counter
         }/${cadence}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade AI Agent subscription
         message = `Success! You now have <strong>${
             newPlan?.num_quota_tickets ?? ''
-        } ${PRODUCT_INFO.automation.counter} per ${cadence}</strong>`
+        } ${productInfo.counter} per ${cadence}</strong>`
         buttonLabel = 'AI Agent Settings'
     }
 
@@ -124,8 +125,10 @@ export const setConvertNotification = ({
     cadence = Cadence.Month,
     onClick,
     isFreeTrial,
-}: setNotificationProps): AlertNotification | null => {
+}: setNotificationProps<ProductType.Convert>): AlertNotification | null => {
     if (isFreeTrial) return null
+
+    const productInfo = getProductInfo(ProductType.Convert, newPlan)
 
     // Set the notification message
     let message = ''
@@ -142,13 +145,13 @@ export const setConvertNotification = ({
         message = `Your Convert subscription will change to <strong>${
             newPlan?.num_quota_tickets ?? 0
         } ${
-            PRODUCT_INFO.convert.counter
+            productInfo.counter
         }/${cadence}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Convert subscription
         message = `Success! You now have <strong>${
             newPlan?.num_quota_tickets ?? ''
-        } ${PRODUCT_INFO.convert.counter} per ${cadence}</strong>`
+        } ${productInfo.counter} per ${cadence}</strong>`
         buttonLabel = 'Convert Settings'
     }
 
