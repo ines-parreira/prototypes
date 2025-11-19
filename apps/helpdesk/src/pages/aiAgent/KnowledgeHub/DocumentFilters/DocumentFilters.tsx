@@ -1,8 +1,8 @@
 import { Button, ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
 
-import { HELP_CENTER_SELECT_MODAL_OPEN } from '../constants'
-import { dispatchDocumentEvent } from '../EmptyState/utils'
-import { KnowledgeType, typeConfig } from '../types'
+import { HELP_CENTER_SELECT_MODAL_OPEN } from 'pages/aiAgent/KnowledgeHub/constants'
+import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './DocumentFilters.less'
 

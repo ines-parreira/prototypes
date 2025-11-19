@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,10 +13,17 @@ import {
     useGetHelpCenterListMulti,
     useGetKnowledgeHubArticles,
 } from 'models/helpCenter/queries'
-import { OPEN_SYNC_WEBSITE_MODAL } from 'pages/aiAgent/KnowledgeHub/constants'
+import {
+    OPEN_SYNC_URL_MODAL,
+    OPEN_SYNC_WEBSITE_MODAL,
+    REFETCH_KNOWLEDGE_HUB_TABLE,
+} from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
-import { KnowledgeVisibility } from 'pages/aiAgent/KnowledgeHub/types'
+import {
+    KnowledgeType,
+    KnowledgeVisibility,
+} from 'pages/aiAgent/KnowledgeHub/types'
 import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
@@ -37,8 +44,33 @@ jest.mock('models/helpCenter/queries', () => ({
         mutateAsync: jest.fn(),
         isPending: false,
     })),
+    useStartArticleIngestion: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+        isPending: false,
+    })),
+    useDeleteArticleIngestionLog: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+        isPending: false,
+    })),
+    useDeleteFileIngestion: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+        isPending: false,
+    })),
+    useGetIngestionLogs: jest.fn(() => ({
+        data: [],
+        error: null,
+        isLoading: false,
+    })),
+    useGetFileIngestion: jest.fn(() => ({
+        data: { data: [] },
+        error: null,
+        isLoading: false,
+    })),
     helpCenterKeys: {
         ingestionLogs: jest.fn(),
+        articleIngestionLogs: jest.fn(),
+        articleIngestionLogsListRoot: jest.fn(),
+        fileIngestions: jest.fn(),
     },
 }))
 jest.mock('pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles')
@@ -79,13 +111,47 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader',
     () => ({
-        KnowledgeHubHeader: ({ onAddKnowledge }: any) => (
+        KnowledgeHubHeader: ({
+            onAddKnowledge,
+            onBack,
+            onSync,
+            onDelete,
+            data,
+        }: any) => (
             <div>
                 <button onClick={onAddKnowledge}>Add Knowledge</button>
+                {data && <button onClick={onBack}>Back</button>}
+                {data && <button onClick={onSync}>Sync</button>}
+                {data && <button onClick={onDelete}>Delete</button>}
             </div>
         ),
     }),
 )
+jest.mock('pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable', () => ({
+    KnowledgeHubTable: ({ data, onRowClick, selectedFolder }: any) => (
+        <div>
+            {!selectedFolder &&
+                data.length > 0 &&
+                data.map((item: any) => (
+                    <div
+                        key={item.id}
+                        onClick={() => onRowClick(item)}
+                        data-testid={`row-${item.id}`}
+                    >
+                        {item.title}
+                    </div>
+                ))}
+            {!selectedFolder && data.length === 0 && (
+                <div data-testid="empty-state">Empty State</div>
+            )}
+            {selectedFolder && (
+                <div data-testid="folder-view">
+                    Viewing folder: {selectedFolder.title}
+                </div>
+            )}
+        </div>
+    ),
+}))
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
@@ -227,9 +293,7 @@ describe('KnowledgeHubContainer', () => {
 
             renderComponent()
 
-            expect(
-                screen.getByRole('heading', { name: 'Create new content' }),
-            ).toBeInTheDocument()
+            expect(screen.getByTestId('empty-state')).toBeInTheDocument()
         })
 
         it('renders table with data when articles are present', () => {
@@ -294,7 +358,7 @@ describe('KnowledgeHubContainer', () => {
 
             expect(screen.getByText('Selected: none')).toBeInTheDocument()
 
-            await user.click(screen.getByText('Document Filter'))
+            await act(() => user.click(screen.getByText('Document Filter')))
 
             await waitFor(() => {
                 expect(
@@ -307,14 +371,14 @@ describe('KnowledgeHubContainer', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(screen.getByText('Document Filter'))
+            await act(() => user.click(screen.getByText('Document Filter')))
             await waitFor(() => {
                 expect(
                     screen.getByText('Selected: document'),
                 ).toBeInTheDocument()
             })
 
-            await user.click(screen.getByText('Guidance Filter'))
+            await act(() => user.click(screen.getByText('Guidance Filter')))
             await waitFor(() => {
                 expect(
                     screen.getByText('Selected: guidance'),
@@ -387,7 +451,7 @@ describe('KnowledgeHubContainer', () => {
                 screen.queryByRole('heading', { name: 'Add knowledge' }),
             ).not.toBeInTheDocument()
 
-            await user.click(screen.getByText('Add Knowledge'))
+            await act(() => user.click(screen.getByText('Add Knowledge')))
 
             await waitFor(() => {
                 expect(
@@ -400,7 +464,7 @@ describe('KnowledgeHubContainer', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(screen.getByText('Add Knowledge'))
+            await act(() => user.click(screen.getByText('Add Knowledge')))
 
             await waitFor(() => {
                 expect(
@@ -429,6 +493,288 @@ describe('KnowledgeHubContainer', () => {
             expect(
                 screen.queryByRole('heading', { name: 'Add knowledge' }),
             ).not.toBeInTheDocument()
+        })
+
+        it('closes Add Knowledge modal when modal open state changes to false', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Add Knowledge')))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() => user.keyboard('{Escape}'))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('closes Add Knowledge modal when OPEN_SYNC_URL_MODAL event is dispatched', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Add Knowledge')))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                ).toBeInTheDocument()
+            })
+
+            dispatchDocumentEvent(OPEN_SYNC_URL_MODAL)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('event handling', () => {
+        it('refetches data when REFETCH_KNOWLEDGE_HUB_TABLE event is dispatched', () => {
+            const mockRefetch = jest.fn()
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: { articles: [] },
+                isInitialLoading: false,
+                refetch: mockRefetch,
+            })
+
+            renderComponent()
+
+            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+
+            expect(mockRefetch).toHaveBeenCalled()
+        })
+    })
+
+    describe('folder navigation', () => {
+        it('selects folder when clicking on a table row', async () => {
+            const user = userEvent.setup()
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test Folder',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            expect(screen.queryByTestId('folder-view')).not.toBeInTheDocument()
+
+            await act(() => user.click(screen.getByText('Test Folder')))
+
+            await waitFor(() => {
+                expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+            })
+        })
+
+        it('clears selected folder when back button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test Folder',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test Folder')))
+
+            await waitFor(() => {
+                expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+            })
+
+            await act(() => user.click(screen.getByText('Back')))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByTestId('folder-view'),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('sync functionality', () => {
+        it('opens sync store website modal when sync is clicked for Domain folder', async () => {
+            const user = userEvent.setup()
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent')
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Store Website',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Store Website')))
+
+            await waitFor(() => {
+                expect(screen.getByText('Sync')).toBeInTheDocument()
+            })
+
+            await act(() => user.click(screen.getByText('Sync')))
+
+            expect(mockDispatchEvent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_SYNC_WEBSITE_MODAL,
+                }),
+            )
+
+            mockDispatchEvent.mockRestore()
+        })
+
+        it('opens URL modal when sync is clicked for URL folder', async () => {
+            const user = userEvent.setup()
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent')
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                expect(screen.getByText('Sync')).toBeInTheDocument()
+            })
+
+            await act(() => user.click(screen.getByText('Sync')))
+
+            expect(mockDispatchEvent).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_SYNC_URL_MODAL,
+                }),
+            )
+
+            mockDispatchEvent.mockRestore()
+        })
+    })
+
+    describe('delete functionality', () => {
+        it('opens delete URL modal when delete is clicked for URL folder', async () => {
+            const user = userEvent.setup()
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent')
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete')).toBeInTheDocument()
+            })
+
+            await act(() => user.click(screen.getByText('Delete')))
+
+            expect(mockDispatchEvent).toHaveBeenCalled()
+
+            mockDispatchEvent.mockRestore()
+        })
+
+        it('does not open delete modal when folder is not URL type', async () => {
+            const user = userEvent.setup()
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent')
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Store Website',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Store Website')))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete')).toBeInTheDocument()
+            })
+
+            const deleteCallsBefore = mockDispatchEvent.mock.calls.length
+
+            await act(() => user.click(screen.getByText('Delete')))
+
+            const deleteCallsAfter = mockDispatchEvent.mock.calls.length
+            expect(deleteCallsAfter).toBe(deleteCallsBefore)
+
+            mockDispatchEvent.mockRestore()
         })
     })
 })

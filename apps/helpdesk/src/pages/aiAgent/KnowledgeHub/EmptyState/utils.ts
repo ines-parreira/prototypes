@@ -1,5 +1,12 @@
 import { useEffect } from 'react'
 
+import {
+    OPEN_DELETE_URL_MODAL,
+    OPEN_SYNC_URL_MODAL,
+    OPEN_SYNC_WEBSITE_MODAL,
+} from 'pages/aiAgent/KnowledgeHub/constants'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+
 /**
  * Custom hook to listen to custom document events
  *
@@ -33,4 +40,16 @@ export const useListenToDocumentEvent = (
 export const dispatchDocumentEvent = (eventName: string, detail?: any) => {
     const event = new CustomEvent(eventName, { detail })
     window.dispatchEvent(event)
+}
+
+export const openUrlModal = (selectedFolder: GroupedKnowledgeItem) => {
+    dispatchDocumentEvent(OPEN_SYNC_URL_MODAL, selectedFolder)
+}
+
+export const openSyncStoreWebsiteModal = () => {
+    dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+}
+
+export const openDeleteUrlModal = (data: GroupedKnowledgeItem) => {
+    dispatchDocumentEvent(OPEN_DELETE_URL_MODAL, data)
 }

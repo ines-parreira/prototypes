@@ -1,19 +1,24 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { Modal, OverlayHeader } from '@gorgias/axiom'
 
 import {
+    OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
     REFETCH_KNOWLEDGE_HUB_TABLE,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { DocumentFilters } from 'pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters'
+import { DeleteUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/DeleteUrlModal'
 import { EmptyStates } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
 import { HelpCenterSelectModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/HelpCenterSelectModal'
+import { SyncStoreWebsiteModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal'
+import { SyncUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal'
 import {
+    openDeleteUrlModal,
     openSyncStoreWebsiteModal,
-    SyncStoreWebsiteModal,
-} from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal'
-import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+    openUrlModal,
+    useListenToDocumentEvent,
+} from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
 import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
 import { SyncStoreDomainBanner } from 'pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner'
@@ -43,6 +48,11 @@ export const KnowledgeHubContainer = () => {
         snippetHelpCenterId,
         refetchKnowledgeHubArticles,
         storeDomainIngestionLog,
+        urlSyncStatus,
+        syncingUrls,
+        urlIngestionLogs,
+        storeUrl,
+        existingUrls,
     } = useKnowledgeHub()
 
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
@@ -62,6 +72,7 @@ export const KnowledgeHubContainer = () => {
 
     useListenToDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE, handleRefetchTable)
     useListenToDocumentEvent(OPEN_SYNC_WEBSITE_MODAL, handleCloseSyncModals)
+    useListenToDocumentEvent(OPEN_SYNC_URL_MODAL, handleCloseSyncModals)
 
     const onClick = (data: GroupedKnowledgeItem) => {
         setSelectedFolder(data)
@@ -79,11 +90,30 @@ export const KnowledgeHubContainer = () => {
         setIsAddKnowledgeModalOpen(value)
     }
 
-    const onSyncStoreWebsite = () => {
+    const onSync = () => {
         if (selectedFolder?.type === KnowledgeType.Domain) {
             openSyncStoreWebsiteModal()
+        } else if (selectedFolder?.type === KnowledgeType.URL) {
+            openUrlModal(selectedFolder)
         }
     }
+
+    const onUrlDelete = () => {
+        if (selectedFolder?.type === KnowledgeType.URL) {
+            openDeleteUrlModal(selectedFolder)
+        }
+    }
+
+    // Show loading state for URL folder that is currently syncing
+    const isUrlFolderSyncing = useMemo(() => {
+        if (!selectedFolder || selectedFolder.type !== KnowledgeType.URL) {
+            return false
+        }
+        if (!selectedFolder.source) {
+            return false
+        }
+        return syncingUrls.includes(selectedFolder.source)
+    }, [selectedFolder, syncingUrls])
 
     return (
         <div className={css.container}>
@@ -92,13 +122,20 @@ export const KnowledgeHubContainer = () => {
                 data={selectedFolder}
                 onBack={handleBack}
                 onAddKnowledge={onAddKnowledgeClick}
-                onSync={onSyncStoreWebsite}
+                onSync={onSync}
+                onDelete={onUrlDelete}
                 isSyncButtonDisabled={isSyncLessThan24h}
                 syncTooltipMessage={syncTooltipMessage}
             />
             <SyncStoreDomainBanner
                 syncStatus={syncStatus}
                 shopName={shopName}
+                type="domain"
+            />
+            <SyncStoreDomainBanner
+                syncStatus={urlSyncStatus}
+                shopName={shopName}
+                type="url"
             />
             <DocumentFilters
                 selectedFilter={selectedFilter}
@@ -106,7 +143,7 @@ export const KnowledgeHubContainer = () => {
             />
             <KnowledgeHubTable
                 data={tableData}
-                isLoading={isInitialLoading}
+                isLoading={isInitialLoading || isUrlFolderSyncing}
                 onRowClick={onClick}
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
@@ -126,6 +163,17 @@ export const KnowledgeHubContainer = () => {
             <SyncStoreWebsiteModal
                 hasWebsiteSync={hasWebsiteSync}
                 helpCenterId={snippetHelpCenterId || 0}
+            />
+            <SyncUrlModal
+                helpCenterId={snippetHelpCenterId || 0}
+                existingUrls={existingUrls}
+                storeUrl={storeUrl}
+            />
+            <DeleteUrlModal
+                helpCenterId={snippetHelpCenterId || 0}
+                urlIngestionLogs={urlIngestionLogs}
+                onRefetch={refetchKnowledgeHubArticles}
+                onFolderChange={setSelectedFolder}
             />
         </div>
     )

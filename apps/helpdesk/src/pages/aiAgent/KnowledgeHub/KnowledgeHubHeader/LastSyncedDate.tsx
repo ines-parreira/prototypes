@@ -1,6 +1,5 @@
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { getFormattedDate } from 'utils/date'
-
-import type { GroupedKnowledgeItem } from '../types'
 
 import css from './KnowledgeHubHeader.less'
 

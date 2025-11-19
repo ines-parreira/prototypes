@@ -138,7 +138,3 @@ export const SyncStoreWebsiteModal = ({
         </Modal>
     )
 }
-
-export const openSyncStoreWebsiteModal = () => {
-    dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
-}

@@ -1,4 +1,7 @@
-import type { GroupedKnowledgeItem, KnowledgeItem } from '../types'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeItem,
+} from 'pages/aiAgent/KnowledgeHub/types'
 
 export const groupKnowledgeItemsBySource = (
     items: KnowledgeItem[],

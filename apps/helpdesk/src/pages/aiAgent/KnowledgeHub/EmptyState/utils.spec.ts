@@ -1,6 +1,19 @@
 import { renderHook } from '@testing-library/react'
 
-import { dispatchDocumentEvent, useListenToDocumentEvent } from './utils'
+import {
+    OPEN_DELETE_URL_MODAL,
+    OPEN_SYNC_URL_MODAL,
+    OPEN_SYNC_WEBSITE_MODAL,
+} from 'pages/aiAgent/KnowledgeHub/constants'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
+
+import {
+    dispatchDocumentEvent,
+    openDeleteUrlModal,
+    openSyncStoreWebsiteModal,
+    openUrlModal,
+    useListenToDocumentEvent,
+} from './utils'
 
 describe('utils', () => {
     describe('dispatchDocumentEvent', () => {
@@ -162,6 +175,159 @@ describe('utils', () => {
                     detail,
                 }),
             )
+        })
+    })
+
+    describe('openUrlModal', () => {
+        it('dispatches OPEN_SYNC_URL_MODAL event with selected folder data', () => {
+            const selectedFolder = {
+                id: 'url-123',
+                title: 'Example URL',
+                type: KnowledgeType.URL,
+                source: 'https://example.com',
+                itemCount: 5,
+                lastUpdatedAt: '2024-01-15T10:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_SYNC_URL_MODAL, listener)
+            openUrlModal(selectedFolder)
+
+            expect(listener).toHaveBeenCalledTimes(1)
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_SYNC_URL_MODAL,
+                    detail: selectedFolder,
+                }),
+            )
+
+            window.removeEventListener(OPEN_SYNC_URL_MODAL, listener)
+        })
+
+        it('includes all folder properties in the dispatched event', () => {
+            const selectedFolder = {
+                id: 'url-456',
+                title: 'Another URL',
+                type: KnowledgeType.URL,
+                source: 'https://test.com',
+                itemCount: 10,
+                lastUpdatedAt: '2024-01-16T12:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_SYNC_URL_MODAL, listener)
+            openUrlModal(selectedFolder)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail).toEqual(selectedFolder)
+            expect(event.detail.id).toBe('url-456')
+            expect(event.detail.title).toBe('Another URL')
+            expect(event.detail.source).toBe('https://test.com')
+
+            window.removeEventListener(OPEN_SYNC_URL_MODAL, listener)
+        })
+    })
+
+    describe('openSyncStoreWebsiteModal', () => {
+        it('dispatches OPEN_SYNC_WEBSITE_MODAL event without detail', () => {
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_SYNC_WEBSITE_MODAL, listener)
+            openSyncStoreWebsiteModal()
+
+            expect(listener).toHaveBeenCalledTimes(1)
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_SYNC_WEBSITE_MODAL,
+                }),
+            )
+
+            window.removeEventListener(OPEN_SYNC_WEBSITE_MODAL, listener)
+        })
+
+        it('can be called multiple times independently', () => {
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_SYNC_WEBSITE_MODAL, listener)
+
+            openSyncStoreWebsiteModal()
+            expect(listener).toHaveBeenCalledTimes(1)
+
+            openSyncStoreWebsiteModal()
+            expect(listener).toHaveBeenCalledTimes(2)
+
+            openSyncStoreWebsiteModal()
+            expect(listener).toHaveBeenCalledTimes(3)
+
+            window.removeEventListener(OPEN_SYNC_WEBSITE_MODAL, listener)
+        })
+    })
+
+    describe('openDeleteUrlModal', () => {
+        it('dispatches OPEN_DELETE_URL_MODAL event with folder data', () => {
+            const folderData = {
+                id: 'url-789',
+                title: 'URL to Delete',
+                type: KnowledgeType.URL,
+                source: 'https://delete-me.com',
+                itemCount: 3,
+                lastUpdatedAt: '2024-01-17T14:30:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_URL_MODAL, listener)
+            openDeleteUrlModal(folderData)
+
+            expect(listener).toHaveBeenCalledTimes(1)
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_DELETE_URL_MODAL,
+                    detail: folderData,
+                }),
+            )
+
+            window.removeEventListener(OPEN_DELETE_URL_MODAL, listener)
+        })
+
+        it('passes correct data structure to event listener', () => {
+            const folderData = {
+                id: 'document-123',
+                title: 'Document to Delete',
+                type: KnowledgeType.Document,
+                source: 'report.pdf',
+                itemCount: 1,
+                lastUpdatedAt: '2024-01-18T09:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_URL_MODAL, listener)
+            openDeleteUrlModal(folderData)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail).toEqual(folderData)
+            expect(event.detail.type).toBe(KnowledgeType.Document)
+
+            window.removeEventListener(OPEN_DELETE_URL_MODAL, listener)
+        })
+
+        it('handles different knowledge types correctly', () => {
+            const urlFolder = {
+                id: 'url-1',
+                title: 'URL Folder',
+                type: KnowledgeType.URL,
+                source: 'https://example.com',
+                itemCount: 2,
+                lastUpdatedAt: '2024-01-19T10:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_URL_MODAL, listener)
+            openDeleteUrlModal(urlFolder)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail.type).toBe(KnowledgeType.URL)
+
+            window.removeEventListener(OPEN_DELETE_URL_MODAL, listener)
         })
     })
 })

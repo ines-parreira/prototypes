@@ -11,12 +11,19 @@ import css from './SyncStoreDomainBanner.less'
 type Props = {
     syncStatus: string | null | undefined
     shopName: string
+    type?: 'domain' | 'url'
 }
 
-export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
+export const SyncStoreDomainBanner = ({
+    syncStatus,
+    shopName,
+    type,
+}: Props) => {
+    const pageName = type === 'url' ? PAGE_NAME.URL : PAGE_NAME.SOURCE
+    const contentType = type === 'url' ? 'URL' : 'store website'
     const { isDismissed, dismissBanner } = useIngestionDomainBannerDismissed({
         shopName,
-        pageName: PAGE_NAME.SOURCE,
+        pageName,
     })
 
     if (isDismissed || !syncStatus) {
@@ -34,7 +41,7 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                     onClose={dismissBanner}
                     className={css.banner}
                 >
-                    Your store website is syncing. You will be notified once
+                    Your {contentType} is syncing. You will be notified once
                     complete.
                 </LegacyBanner>
             )
@@ -49,8 +56,10 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                     onClose={dismissBanner}
                     className={css.banner}
                 >
-                    Your store website has been synced successfully and is in
-                    use by AI Agent. Review generated content for accuracy.
+                    Your {contentType} has been synced successfully and is in
+                    use by AI Agent.
+                    {type === 'domain' &&
+                        ' Review generated content for accuracy.'}
                 </LegacyBanner>
             )
 
@@ -64,7 +73,7 @@ export const SyncStoreDomainBanner = ({ syncStatus, shopName }: Props) => {
                     onClose={dismissBanner}
                     className={css.banner}
                 >
-                    We couldn’t sync your store website. Please try again or
+                    We couldn’t sync your {contentType}. Please try again or
                     contact support if the issue persists.
                 </LegacyBanner>
             )

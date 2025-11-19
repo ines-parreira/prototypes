@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { useGetHelpCenterList } from '../../../../models/helpCenter/queries'
-import { EMPTY_HELP_CENTER_ID } from '../../../automate/common/components/HelpCenterSelect'
-import { HELP_CENTER_MAX_CREATION } from '../../../settings/helpCenter/constants'
-import { INITIAL_FORM_VALUES } from '../../constants'
-import { useConfigurationForm } from '../../hooks/useConfigurationForm'
-import { getFormValuesFromStoreConfiguration } from '../../hooks/utils/configurationForm.utils'
-import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStoreConfigurationContext'
-import type { FormValues } from '../../types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import type { FormValues } from 'pages/aiAgent/types'
+import { EMPTY_HELP_CENTER_ID } from 'pages/automate/common/components/HelpCenterSelect'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
 const EMPTY_FAQ_HELP_CENTER = {
     id: EMPTY_HELP_CENTER_ID,

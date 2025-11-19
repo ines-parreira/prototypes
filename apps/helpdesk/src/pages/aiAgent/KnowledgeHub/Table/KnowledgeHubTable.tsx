@@ -9,22 +9,22 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import { EmptyStateWrapper } from '../EmptyState/EmptyStates'
-import type {
-    GroupedKnowledgeItem,
-    KnowledgeItem,
-    KnowledgeType,
-} from '../types'
-import type { FilterOption } from './AddFilterButton'
-import { AddFilterButton } from './AddFilterButton'
-import { getColumns } from './columns'
-import { ItemCount } from './ItemCount'
-import { SearchInput } from './SearchInput'
+import { EmptyStateWrapper } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
+import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
+import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
+import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
+import { ItemCount } from 'pages/aiAgent/KnowledgeHub/Table/ItemCount'
+import { SearchInput } from 'pages/aiAgent/KnowledgeHub/Table/SearchInput'
 import {
     filterKnowledgeItemsBySearchTerm,
     filterKnowledgeItemsBySource,
     groupKnowledgeItemsBySource,
-} from './utils'
+} from 'pages/aiAgent/KnowledgeHub/Table/utils'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeItem,
+    KnowledgeType,
+} from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './KnowledgeHubTable.less'
 

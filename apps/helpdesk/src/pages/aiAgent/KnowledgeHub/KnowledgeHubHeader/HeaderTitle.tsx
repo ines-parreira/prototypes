@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import type { GroupedKnowledgeItem } from '../types'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './KnowledgeHubHeader.less'
 

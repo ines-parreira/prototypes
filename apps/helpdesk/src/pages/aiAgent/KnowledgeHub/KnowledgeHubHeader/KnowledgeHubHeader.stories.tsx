@@ -4,8 +4,8 @@ import React from 'react'
 import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { KnowledgeType } from '../types'
-import { KnowledgeHubHeader } from './KnowledgeHubHeader'
+import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 const meta: Meta<typeof KnowledgeHubHeader> = {
     title: 'AI Agent/Knowledge Hub/KnowledgeHubHeader',

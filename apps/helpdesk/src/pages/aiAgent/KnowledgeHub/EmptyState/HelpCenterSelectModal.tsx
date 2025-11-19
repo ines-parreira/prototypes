@@ -14,12 +14,11 @@ import {
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { HELP_CENTER_SELECT_MODAL_OPEN } from 'pages/aiAgent/KnowledgeHub/constants'
+import { useFaqHelpCenter } from 'pages/aiAgent/KnowledgeHub/EmptyState/useFaqHelpCenter'
+import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-
-import { HELP_CENTER_SELECT_MODAL_OPEN } from '../constants'
-import { useFaqHelpCenter } from './useFaqHelpCenter'
-import { useListenToDocumentEvent } from './utils'
 
 import css from './HelpCenterSelectModal.less'
 

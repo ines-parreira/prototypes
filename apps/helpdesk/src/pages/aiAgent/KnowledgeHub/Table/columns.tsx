@@ -8,8 +8,11 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import type { GroupedKnowledgeItem } from '../types'
-import { KnowledgeVisibility, typeConfig } from '../types'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+import {
+    KnowledgeVisibility,
+    typeConfig,
+} from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './KnowledgeHubTable.less'
 

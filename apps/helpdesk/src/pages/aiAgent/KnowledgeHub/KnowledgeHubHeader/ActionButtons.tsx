@@ -3,8 +3,8 @@ import classNames from 'classnames'
 
 import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import type { GroupedKnowledgeItem } from '../types'
-import { KnowledgeType } from '../types'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './KnowledgeHubHeader.less'
 

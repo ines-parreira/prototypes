@@ -1,12 +1,11 @@
 import classNames from 'classnames'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-
-import type { GroupedKnowledgeItem } from '../types'
-import { HeaderActions } from './ActionButtons'
-import { BackButton } from './BackButton'
-import { HeaderTitle } from './HeaderTitle'
-import { LastSyncedDate } from './LastSyncedDate'
+import { HeaderActions } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/ActionButtons'
+import { BackButton } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/BackButton'
+import { HeaderTitle } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/HeaderTitle'
+import { LastSyncedDate } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/LastSyncedDate'
+import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './KnowledgeHubHeader.less'
 

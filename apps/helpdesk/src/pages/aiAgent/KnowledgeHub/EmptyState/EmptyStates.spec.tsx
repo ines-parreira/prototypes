@@ -17,13 +17,18 @@ import {
     EmptyStateURL,
     EmptyStateWrapper,
 } from './EmptyStates'
+import { openSyncUrlModal } from './SyncUrlModal'
 import { useFaqHelpCenter } from './useFaqHelpCenter'
-import { dispatchDocumentEvent } from './utils'
+import { dispatchDocumentEvent, openSyncStoreWebsiteModal } from './utils'
 
 jest.mock('./useFaqHelpCenter')
 jest.mock('./utils', () => ({
     dispatchDocumentEvent: jest.fn(),
     useListenToDocumentEvent: jest.fn(),
+    openSyncStoreWebsiteModal: jest.fn(),
+}))
+jest.mock('./SyncUrlModal', () => ({
+    openSyncUrlModal: jest.fn(),
 }))
 
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
@@ -32,6 +37,13 @@ const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
 const mockDispatchDocumentEvent = dispatchDocumentEvent as jest.MockedFunction<
     typeof dispatchDocumentEvent
 >
+const mockOpenSyncUrlModal = openSyncUrlModal as jest.MockedFunction<
+    typeof openSyncUrlModal
+>
+const mockOpenSyncStoreWebsiteModal =
+    openSyncStoreWebsiteModal as jest.MockedFunction<
+        typeof openSyncStoreWebsiteModal
+    >
 
 const defaultMockValues = {
     faqHelpCenters: [],
@@ -458,10 +470,11 @@ describe('EmptyStates', () => {
     describe('User Interactions', () => {
         describe('EmptyStates main component', () => {
             it('dispatches OPEN_CREATE_GUIDANCE_ARTICLE_MODAL when Guidance card is clicked', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStates helpCenterId={null} />)
 
                 const guidanceCard = screen.getByText('Guidance').closest('div')
-                await act(() => userEvent.click(guidanceCard!))
+                await act(() => user.click(guidanceCard!))
 
                 expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
                     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -469,12 +482,13 @@ describe('EmptyStates', () => {
             })
 
             it('dispatches HELP_CENTER_SELECT_MODAL_OPEN when FAQ card is clicked and no helpCenterId', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStates helpCenterId={null} />)
 
                 const faqCard = screen
                     .getByText('Help Center articles')
                     .closest('div')
-                await act(() => userEvent.click(faqCard!))
+                await act(() => user.click(faqCard!))
 
                 expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
                     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -482,12 +496,51 @@ describe('EmptyStates', () => {
             })
 
             it('does not dispatch event when FAQ card is clicked with helpCenterId', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStates helpCenterId={123} />)
 
                 const faqCard = screen
                     .getByText('Help Center articles')
                     .closest('div')
-                await act(() => userEvent.click(faqCard!))
+                await act(() => user.click(faqCard!))
+
+                expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+            })
+
+            it('opens sync store website modal when Website card is clicked', async () => {
+                const user = userEvent.setup()
+                render(
+                    <EmptyStates hasWebsiteSync={false} helpCenterId={null} />,
+                )
+
+                const websiteCard = screen
+                    .getByText('Store website')
+                    .closest('div')
+                await act(() => user.click(websiteCard!))
+
+                expect(mockOpenSyncStoreWebsiteModal).toHaveBeenCalled()
+            })
+
+            it('opens sync URL modal when URL card is clicked', async () => {
+                const user = userEvent.setup()
+                render(<EmptyStates helpCenterId={null} />)
+
+                const urlCard = screen.getByText('URLs').closest('div')
+                await act(() => user.click(urlCard!))
+
+                expect(mockOpenSyncUrlModal).toHaveBeenCalled()
+            })
+
+            it('does not dispatch event when Documents card is clicked', async () => {
+                const user = userEvent.setup()
+                render(<EmptyStates helpCenterId={null} />)
+
+                const documentsCard = screen
+                    .getByText('Documents')
+                    .closest('div')
+                mockDispatchDocumentEvent.mockClear()
+
+                await act(() => user.click(documentsCard!))
 
                 expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
             })
@@ -495,12 +548,13 @@ describe('EmptyStates', () => {
 
         describe('EmptyStateGuidance', () => {
             it('dispatches OPEN_CREATE_GUIDANCE_ARTICLE_MODAL when Create Guidance button is clicked', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStateGuidance />)
 
                 const createButton = screen.getByRole('button', {
                     name: 'Create Guidance',
                 })
-                await act(() => userEvent.click(createButton))
+                await act(() => user.click(createButton))
 
                 expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
                     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -508,14 +562,54 @@ describe('EmptyStates', () => {
             })
         })
 
+        describe('EmptyStateDomain', () => {
+            it('dispatches OPEN_SYNC_WEBSITE_MODAL when Sync button is clicked', async () => {
+                const user = userEvent.setup()
+                render(<EmptyStateDomain />)
+
+                const syncButton = screen.getByRole('button', { name: /Sync/ })
+                await act(() => user.click(syncButton))
+
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    'open-sync-website-modal',
+                )
+            })
+        })
+
+        describe('EmptyStateURL', () => {
+            it('opens sync URL modal when Add URL button is clicked', async () => {
+                const user = userEvent.setup()
+                render(<EmptyStateURL />)
+
+                const addButton = screen.getByRole('button', {
+                    name: 'Add URL',
+                })
+                await act(() => user.click(addButton))
+
+                expect(mockOpenSyncUrlModal).toHaveBeenCalled()
+            })
+        })
+
+        describe('EmptyStateDocument', () => {
+            it('renders Upload Document button without event handler', () => {
+                render(<EmptyStateDocument />)
+
+                const uploadButton = screen.getByRole('button', {
+                    name: 'Upload Document',
+                })
+                expect(uploadButton).toBeInTheDocument()
+            })
+        })
+
         describe('EmptyStateFAQ', () => {
             it('dispatches HELP_CENTER_SELECT_MODAL_OPEN when Connect Help Center button is clicked', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStateFAQ helpCenterId={null} articles={[]} />)
 
                 const connectButton = screen.getByRole('button', {
                     name: 'Connect Help Center',
                 })
-                await act(() => userEvent.click(connectButton))
+                await act(() => user.click(connectButton))
 
                 expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
                     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -523,17 +617,19 @@ describe('EmptyStates', () => {
             })
 
             it('does not dispatch event when Create Help Center article button is clicked with no articles', async () => {
+                const user = userEvent.setup()
                 render(<EmptyStateFAQ helpCenterId={123} articles={[]} />)
 
                 const createButton = screen.getByRole('button', {
                     name: 'Create Help Center article',
                 })
-                await act(() => userEvent.click(createButton))
+                await act(() => user.click(createButton))
 
                 expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
             })
 
             it('does not dispatch event when Create Help Center article button is clicked with articles', async () => {
+                const user = userEvent.setup()
                 const mockArticles = [
                     {
                         type: KnowledgeType.FAQ,
@@ -554,10 +650,72 @@ describe('EmptyStates', () => {
                 const createButton = screen.getByRole('button', {
                     name: 'Create Help Center article',
                 })
-                await act(() => userEvent.click(createButton))
+                await act(() => user.click(createButton))
 
                 expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
             })
+        })
+    })
+
+    describe('Edge cases', () => {
+        it('EmptyStateFAQ shows connect state when helpCenterId is null', () => {
+            render(<EmptyStateFAQ helpCenterId={null} articles={[]} />)
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Connect your Help Center',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('EmptyStateFAQ shows get started state when helpCenterId is defined', () => {
+            render(<EmptyStateFAQ helpCenterId={123} articles={[]} />)
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Get started with Help Center articles',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('EmptyStateFAQ shows different description with articles', () => {
+            const mockArticles = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Test',
+                    lastUpdatedAt: '2024-01-15T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                },
+            ]
+
+            render(<EmptyStateFAQ helpCenterId={123} articles={mockArticles} />)
+
+            expect(
+                screen.getByText(
+                    'Create and publish articles to make them available to AI Agent.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('EmptyStates renders without crashing when hasWebsiteSync is undefined', () => {
+            render(<EmptyStates helpCenterId={null} />)
+
+            expect(screen.getByText('Store website')).toBeInTheDocument()
+        })
+
+        it('EmptyStateWrapper handles undefined helpCenterId', () => {
+            render(
+                <EmptyStateWrapper
+                    documentFilter={null}
+                    helpCenterId={undefined}
+                    articles={[]}
+                />,
+            )
+
+            expect(
+                screen.getByRole('heading', { name: 'Create new content' }),
+            ).toBeInTheDocument()
         })
     })
 })

@@ -4,12 +4,11 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Heading, Icon, Modal, Text } from '@gorgias/axiom'
 
+import { GuidanceTemplateCard } from 'pages/aiAgent/components/GuidanceTemplateCard/GuidanceTemplateCard'
 import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
-
-import { GuidanceTemplateCard } from '../../components/GuidanceTemplateCard/GuidanceTemplateCard'
-import type { GuidanceTemplate } from '../../types'
-import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from '../constants'
-import { useListenToDocumentEvent } from './utils'
+import { OPEN_CREATE_GUIDANCE_ARTICLE_MODAL } from 'pages/aiAgent/KnowledgeHub/constants'
+import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import css from './EmptyState.less'
 

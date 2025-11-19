@@ -6,7 +6,11 @@ import {
     OPEN_SYNC_WEBSITE_MODAL,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { AddGuidanceTemplateModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal'
-import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { openSyncUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal'
+import {
+    dispatchDocumentEvent,
+    openSyncStoreWebsiteModal,
+} from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 
@@ -102,7 +106,7 @@ export const EmptyStates = ({
                         <div
                             className={css.smallCard}
                             onClick={() => {
-                                dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+                                openSyncStoreWebsiteModal()
                             }}
                         >
                             <Box flexDirection={'column'} gap="xs">
@@ -122,7 +126,12 @@ export const EmptyStates = ({
                         </div>
                     )}
 
-                    <Card>
+                    <div
+                        className={css.smallCard}
+                        onClick={() => {
+                            openSyncUrlModal()
+                        }}
+                    >
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
@@ -136,7 +145,7 @@ export const EmptyStates = ({
                             </Text>
                             <Text size={'sm'}>Sync single-page URLs</Text>
                         </Box>
-                    </Card>
+                    </div>
                     <Card>
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
@@ -303,7 +312,14 @@ export const EmptyStateURL = () => {
                     Add links to public pages AI Agent can learn from like blog
                     posts or external documentation.
                 </Text>
-                <Button variant="primary">Add URL</Button>
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        openSyncUrlModal()
+                    }}
+                >
+                    Add URL
+                </Button>
             </Box>
         </Box>
     )
