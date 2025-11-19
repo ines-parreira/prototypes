@@ -167,6 +167,7 @@ export enum FeatureFlagKey {
     ReportingImprovementFilterSearch = 'linear.task_CRMREP-4361.feature-improvement-filter-search',
     ReportingTicketFieldsPivotTable = 'reporting-ticket-fields-pivot-table',
     ReportingVoiceOfCustomer = 'reporting-voice-of-customer',
+    ReportingAssignedTeamFilter = 'linear.task_CRMREP-4787.create-team-filtering-feature',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
