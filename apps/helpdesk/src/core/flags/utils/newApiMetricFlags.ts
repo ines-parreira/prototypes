@@ -13,7 +13,6 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.FirstResponseTime,
     MetricScope.ResolutionTime,
     MetricScope.OneTouchTickets,
-    MetricScope.MessagesPerTicket,
     MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
 ]
@@ -21,6 +20,7 @@ export const P1_SCOPES: MetricScope[] = [
 export const P2_SCOPES: MetricScope[] = [
     MetricScope.SatisfactionSurveys,
     MetricScope.TicketsCreated,
+    MetricScope.MessagesPerTicket,
     MetricScope.OnlineTime,
 ]
 

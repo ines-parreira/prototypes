@@ -216,6 +216,7 @@ export const useMessagesPerTicketTrend = getTrendHook(
 
 export const fetchMessagesPerTicketTrend = getTrendFetch(
     messagesPerTicketQueryFactory,
+    messagesPerTicketCountQueryV2Factory,
 )
 
 export const useMedianResolutionTimeTrend = getTrendHook(
