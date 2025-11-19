@@ -22,8 +22,8 @@
         "push.js": "catalog:notifications"
     },
     "devDependencies": {
-        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/utils": "workspace:*",
         "@testing-library/dom": "catalog:test",
@@ -32,9 +32,9 @@
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/lodash": "catalog:lodash",
-        "@types/segment-analytics": "catalog:logging",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
+        "@types/segment-analytics": "catalog:logging",
         "@vitest/coverage-v8": "catalog:test",
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",

@@ -8,6 +8,7 @@ import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { Button, Separator } from '@gorgias/axiom'
+import { useListInstagramProfiles } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -24,7 +25,11 @@ import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { getDisplayName } from 'state/customers/helpers'
-import { getIntegrationsByTypes } from 'state/integrations/selectors'
+import {
+    getIntegrations,
+    getIntegrationsByTypes,
+} from 'state/integrations/selectors'
+import { getMessages } from 'state/ticket/selectors'
 import * as actions from 'state/widgets/actions'
 import { itemsWithContext } from 'state/widgets/utils'
 
@@ -101,6 +106,19 @@ const InfobarCustomerInfo = ({
             ]),
         ).length > 0
 
+    const messages = useAppSelector(getMessages)
+    const lastMessage = messages.last()
+    const messageIntegrationId = lastMessage?.get('integration_id')
+
+    const allIntegrations = useAppSelector(getIntegrations)
+
+    const instagramIntegration = allIntegrations.find(
+        (integration: any) => integration.id === messageIntegrationId,
+    )
+
+    // @ts-ignore
+    const instagramId = instagramIntegration?.meta?.instagram?.id
+
     const customerIntegrationsData: Map<any, any> = customer.get('integrations')
 
     const shouldSuggestCustomerProfileShopifySync = useShouldShowProfileSync(
@@ -144,6 +162,20 @@ const InfobarCustomerInfo = ({
             ? currentItems
             : (fromJS([]) as List<any>)
     }, [widgets])
+
+    const { data: userInstaData, error } = useListInstagramProfiles(
+        {
+            customer_id: customer.get('id'),
+            owning_business_id: instagramId,
+            limit: 1,
+            order_by: 'updated_at:desc',
+        },
+        {
+            query: {
+                enabled: !!customer.get('id') && !!instagramId,
+            },
+        },
+    )
 
     useEffect(() => {
         const context = widgets.get('currentContext', '')
@@ -311,8 +343,11 @@ const InfobarCustomerInfo = ({
                     customerId={customer.get('id', '')}
                     customerName={customer.get('name', '')}
                 >
-                    {hasIgChannel && (
-                        <InstagramSection customer={customer as any} />
+                    {hasIgChannel && !error && (
+                        <InstagramSection
+                            customer={customer as any}
+                            userInstaData={userInstaData?.data}
+                        />
                     )}
                     <CustomerNote
                         customerId={Number(customer.get('id'))}

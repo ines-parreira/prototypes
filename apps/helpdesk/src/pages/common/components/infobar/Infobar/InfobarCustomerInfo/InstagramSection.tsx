@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 
-import type { AnyAction } from '@reduxjs/toolkit'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 
 import { Box, Icon, Text } from '@gorgias/axiom'
-import { TicketMessageSourceType } from '@gorgias/helpdesk-types'
+import {
+    type ListInstagramProfiles200,
+    TicketMessageSourceType,
+} from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
 import type { Customer } from 'models/customer/types'
@@ -16,12 +18,50 @@ import { getDisplayName } from 'state/customers/helpers'
 
 import css from './InfobarCustomerInfo.less'
 
-export const InstagramSection = ({ customer }: { customer: Customer }) => {
+const formatFollowerCount = (count: number): string => {
+    if (count < 1000) {
+        return count.toString()
+    }
+
+    if (count < 10000) {
+        // 1k - 9.9k (show one decimal place)
+        const formatted = (count / 1000).toFixed(1)
+        return `${formatted.replace(/\.0$/, '')}k`
+    }
+
+    if (count < 100000) {
+        // 10k - 99.9k (show one decimal place)
+        const formatted = (count / 1000).toFixed(1)
+        return `${formatted.replace(/\.0$/, '')}k`
+    }
+
+    if (count < 1000000) {
+        // 100k - 999k (no decimal places)
+        return `${Math.floor(count / 1000)}k`
+    }
+
+    if (count < 10000000) {
+        // 1M - 9.9M (show one decimal place)
+        const formatted = (count / 1000000).toFixed(1)
+        return `${formatted.replace(/\.0$/, '')}M`
+    }
+
+    // 10M+ (no decimal places)
+    return `${Math.floor(count / 1000000)}M`
+}
+
+export const InstagramSection = ({
+    customer,
+    userInstaData,
+}: {
+    customer: Customer
+    userInstaData: ListInstagramProfiles200 | undefined
+}) => {
     const [showDetails, setShowDetails] = useState(true)
 
     const isIgSectionEnabled = useFlag(FeatureFlagKey.InstagramUserSection)
 
-    const handleIgHandleClick = (e: AnyAction) => {
+    const handleIgHandleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
 
         logEvent(SegmentEvent.InstagramHandleClicked)
@@ -33,7 +73,9 @@ export const InstagramSection = ({ customer }: { customer: Customer }) => {
         window.open(igProfileUrl, '_blank', 'noopener noreferrer')
     }
 
-    if (!isIgSectionEnabled) {
+    const localData = userInstaData?.data?.[0]
+
+    if (!isIgSectionEnabled || !localData) {
         return (
             <>
                 <Box flex={1} mb="xs">
@@ -60,7 +102,10 @@ export const InstagramSection = ({ customer }: { customer: Customer }) => {
                         <a href="/#" onClick={handleIgHandleClick}>
                             @{getDisplayName(customer as any) as ReactNode}
                         </a>
-                        <Icon name="wavy-check" color="blue" />
+                        {localData?.is_verified && (
+                            <Icon name="wavy-check" color="blue" />
+                        )}
+
                         <div
                             onClick={() =>
                                 setShowDetails((prevState) => !prevState)
@@ -79,20 +124,36 @@ export const InstagramSection = ({ customer }: { customer: Customer }) => {
                     })}
                 >
                     <Box flexDirection="column" className={css.detailsContent}>
-                        <Box flexDirection="row">
-                            <Text
-                                as="span"
-                                className={css.igFollowSection}
-                                size="sm"
-                            >
-                                Following: <Icon name="check" />
-                                Follower: <Icon name="close" />
+                        <Box flexDirection="column">
+                            <Text className={css.igName} size="sm">
+                                {localData?.name}
+                            </Text>
+                            <Text className={css.igFollowSection} size="sm">
+                                Following:{' '}
+                                {localData?.business_follows_customer ? (
+                                    <Icon name="check" />
+                                ) : (
+                                    <Icon name="close" />
+                                )}
+                                Follower:{' '}
+                                {localData?.customer_follows_business ? (
+                                    <Icon name="check" />
+                                ) : (
+                                    <Icon name="close" />
+                                )}
                             </Text>
                         </Box>
                         <Box flexDirection="row" marginBottom="xs">
                             <Icon name="user-add" />
-                            <Text as="span" size="sm">
-                                14.7K followers
+                            <Text
+                                as="span"
+                                size="sm"
+                                className={css.igFollowers}
+                            >
+                                {formatFollowerCount(
+                                    localData?.total_followers ?? 0,
+                                )}{' '}
+                                followers
                             </Text>
                         </Box>
                     </Box>

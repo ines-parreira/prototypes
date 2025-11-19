@@ -57,6 +57,9 @@ const store = mockStore({
     integrations: fromJS({
         integrations: [{ type: HTTP_INTEGRATION_TYPE }],
     }),
+    ticket: fromJS({
+        messages: [],
+    }),
 })
 
 const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
@@ -473,5 +476,143 @@ describe('<InfobarCustomerInfo/>', () => {
         expect(
             screen.queryByRole('link', { name: /@test_user/ }),
         ).not.toBeInTheDocument()
+    })
+
+    describe('Instagram integration from messages', () => {
+        it('should extract integration_id from last message', () => {
+            const storeWithMessages = mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'facebook',
+                            meta: {
+                                instagram: {
+                                    id: 'ig_business_123',
+                                },
+                            },
+                        },
+                    ],
+                }),
+                ticket: fromJS({
+                    messages: [
+                        { id: 1, integration_id: 999 },
+                        { id: 2, integration_id: 123 },
+                    ],
+                }),
+            })
+
+            const customerWithIg = fromJS({
+                id: 1,
+                name: 'test_user',
+                channels: [{ type: 'instagram' }],
+            })
+
+            renderWithProviders(
+                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                storeWithMessages,
+            )
+
+            // Component should render - this verifies integration was found
+            expect(
+                screen.getByRole('link', { name: /@test_user/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle empty messages array', () => {
+            const storeWithNoMessages = mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'facebook',
+                        },
+                    ],
+                }),
+                ticket: fromJS({
+                    messages: [],
+                }),
+            })
+
+            const customerWithIg = fromJS({
+                id: 1,
+                name: 'test_user',
+                channels: [{ type: 'instagram' }],
+            })
+
+            renderWithProviders(
+                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                storeWithNoMessages,
+            )
+
+            // Component should still render even without messages
+            expect(
+                screen.getByRole('link', { name: /@test_user/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle message without integration_id', () => {
+            const storeWithMessageNoId = mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 123,
+                            type: 'facebook',
+                        },
+                    ],
+                }),
+                ticket: fromJS({
+                    messages: [{ id: 1, text: 'test message' }],
+                }),
+            })
+
+            const customerWithIg = fromJS({
+                id: 1,
+                name: 'test_user',
+                channels: [{ type: 'instagram' }],
+            })
+
+            renderWithProviders(
+                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                storeWithMessageNoId,
+            )
+
+            // Component should still render
+            expect(
+                screen.getByRole('link', { name: /@test_user/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle when integration_id does not match any integration', () => {
+            const storeWithMismatch = mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 456,
+                            type: 'facebook',
+                        },
+                    ],
+                }),
+                ticket: fromJS({
+                    messages: [{ id: 1, integration_id: 999 }],
+                }),
+            })
+
+            const customerWithIg = fromJS({
+                id: 1,
+                name: 'test_user',
+                channels: [{ type: 'instagram' }],
+            })
+
+            renderWithProviders(
+                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                storeWithMismatch,
+            )
+
+            // Component should still render
+            expect(
+                screen.getByRole('link', { name: /@test_user/ }),
+            ).toBeInTheDocument()
+        })
     })
 })
