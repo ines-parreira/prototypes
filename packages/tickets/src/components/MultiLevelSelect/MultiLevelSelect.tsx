@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { RefObject, useCallback, useRef, useState } from 'react'
 
 import { Icon, IconName, ListItem, Select, Tag } from '@gorgias/axiom'
 
@@ -86,11 +86,18 @@ export function MultiLevelSelect(props: Props) {
     }, [])
 
     const trigger = useCallback(
-        ({ isOpen }: { isOpen: boolean }) => {
+        ({
+            isOpen,
+            ref,
+        }: {
+            isOpen: boolean
+            ref: RefObject<HTMLButtonElement>
+        }) => {
             const label = getDisplayLabel(selectedValue)
 
             return (
                 <Tag
+                    ref={ref}
                     leadingSlot={
                         label === null ? (
                             <Icon name={IconName.AddPlus} size="sm" />

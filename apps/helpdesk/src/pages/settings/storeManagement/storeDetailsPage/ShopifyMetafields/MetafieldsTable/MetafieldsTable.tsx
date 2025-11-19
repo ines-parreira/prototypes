@@ -26,7 +26,6 @@ type MetafieldsTableProps<TData, TValue> = {
     data: TData[]
     isLoading?: boolean
 }
-
 export default function MetafieldsTable<TData, TValue>({
     columns,
     data,
@@ -99,18 +98,22 @@ export default function MetafieldsTable<TData, TValue>({
             <div className={styles.tableWrapper}>
                 <TableToolbar<TData>
                     table={table}
-                    left={['search']}
-                    right={[
-                        'totalCount',
-                        {
-                            key: 'import',
-                            content: (
-                                <ImportAction
-                                    onImportClick={handleOpenCategoriesModal}
-                                />
-                            ),
-                        },
-                    ]}
+                    bottomRow={{
+                        left: ['search'],
+                        right: [
+                            'totalCount',
+                            {
+                                key: 'import',
+                                content: (
+                                    <ImportAction
+                                        onImportClick={
+                                            handleOpenCategoriesModal
+                                        }
+                                    />
+                                ),
+                            },
+                        ],
+                    }}
                 />
                 <TableRoot withBorder>
                     <TableHeader>
@@ -131,7 +134,10 @@ export default function MetafieldsTable<TData, TValue>({
                         )}
                     />
                 </TableRoot>
-                <TableToolbar table={table} right={['pagination']} />
+                <TableToolbar
+                    table={table}
+                    bottomRow={{ right: ['pagination'] }}
+                />
             </div>
             <RemoveMetafieldConfirmation
                 isOpen={isRemoveModalOpen}

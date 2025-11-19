@@ -109,8 +109,7 @@ export default function MetafieldsImportList({
             >
                 <TableToolbar
                     table={table}
-                    left={['search']}
-                    right={['selectCount']}
+                    bottomRow={{ left: ['search'], right: ['selectCount'] }}
                 />
                 <TableRoot withBorder>
                     <TableHeader>

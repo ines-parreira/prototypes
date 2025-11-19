@@ -136,8 +136,9 @@ export function InfobarTicketDetailsTags({
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
                 <OverflowListItem>
                     <MultiSelect
-                        trigger={() => (
+                        trigger={({ ref }) => (
                             <Button
+                                ref={ref}
                                 slot="button"
                                 icon="add-plus"
                                 variant="secondary"

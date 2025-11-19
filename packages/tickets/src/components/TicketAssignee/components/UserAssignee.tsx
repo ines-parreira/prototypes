@@ -85,7 +85,8 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
             onLoadMore={() => shouldLoadMore && onLoad()}
             onOpenChange={clearSearch}
             aria-label="User selection"
-            trigger={({ selectedText, isPlaceholder, isOpen }) => {
+            size="sm"
+            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const user = isNumber(selectedOption?.id)
                     ? usersMap.get(selectedOption?.id)
                     : null
@@ -98,6 +99,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
 
                 return (
                     <Tag
+                        ref={ref}
                         leadingSlot={
                             isUpdatingUser || isLoading ? (
                                 <LoadingSpinner size={16} />

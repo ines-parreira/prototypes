@@ -11,11 +11,11 @@ catalogs:
       version: 0.1.14
   axiom:
     '@gorgias/axiom':
-      specifier: 0.114.3
-      version: 0.114.3
+      specifier: 0.116.1
+      version: 0.116.1
     '@gorgias/design-tokens':
-      specifier: 0.11.1
-      version: 0.11.1
+      specifier: 0.11.2
+      version: 0.11.2
   bundler:
     process:
       specifier: ^0.11.10
@@ -401,10 +401,10 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.114.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.116.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -419,7 +419,7 @@ importers:
         version: 0.2.36(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.1
+        version: 0.11.2
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.5
@@ -1455,10 +1455,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.114.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.116.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.1
+        version: 0.11.2
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1763,7 +1763,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.114.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.116.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       react-is:
         specifier: catalog:react
         version: 18.2.0
@@ -1773,10 +1773,10 @@ importers:
     devDependencies:
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.1
+        version: 0.11.2
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1988,7 +1988,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.114.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.116.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.72
@@ -3509,8 +3509,8 @@ packages:
       core-js: ^3.36
       react: ^17
 
-  '@gorgias/axiom@0.114.3':
-    resolution: {integrity: sha512-lL++cnWW2FwTINzIzU17llGoam9HQ7pdh0L0fR9YvDyzgNHAewmp4VaZt9B4mDUJ69QlpgkgI3eEOWYLG0H85g==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.114.3/00ded9d627716949a75ccf6ab0679028e501125a}
+  '@gorgias/axiom@0.116.1':
+    resolution: {integrity: sha512-GP8nE5nxoL9o2e8kEo/wvDcR26p623pWEV42Umk5/ZRq3HZc00VJNz1dzNmA9GRGrZbyzVy1CxdQrT2Kz4Nwgw==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.116.1/526dbff3661b2bb30fd4720a71d6e4a3a4beb254}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^17
@@ -3557,9 +3557,6 @@ packages:
 
   '@gorgias/convert-types@0.4.13':
     resolution: {integrity: sha512-b1SByCz/nUiOcqrIDrmk7FLtyEPLEMsTjLnxnayiM5HvYOaxddesIZ50qLmUZUreEWeLy0UzYsfdk60KVivb4Q==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.13/6bbb5ec551cbcab96c977579a52356d96f44237b}
-
-  '@gorgias/design-tokens@0.11.1':
-    resolution: {integrity: sha512-IlmWbgfQ1p+zua+ENIFAMR3nriA98ZzjOJ/vbsizRgoDrIn/R4u6tq5ldf9tYvx3MlhGZiIUnNGiLCESNz0rSA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.1/7e2844221cf37e5f7ba2d41c98dd611dce8ee973}
 
   '@gorgias/design-tokens@0.11.2':
     resolution: {integrity: sha512-ca/CgV65UotTAiIMTrEGUcbu8jnyhxcxa+qsdMjB/ek9mwBe2R20XKXGV++RlBrKn+ZovQqnY/vV8oY4QzpXRg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.2/f4f5f94e8a336efb75c7259f24ee9cd8c54db525}
@@ -15234,14 +15231,14 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.1)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
+  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
     dependencies:
-      '@gorgias/design-tokens': 0.11.1
+      '@gorgias/design-tokens': 0.11.2
       classnames: 2.2.6
       core-js: 3.42.0
       react: 18.2.0
 
-  '@gorgias/axiom@0.114.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.116.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.11.2
@@ -15316,8 +15313,6 @@ snapshots:
   '@gorgias/convert-spec@0.2.28': {}
 
   '@gorgias/convert-types@0.4.13': {}
-
-  '@gorgias/design-tokens@0.11.1': {}
 
   '@gorgias/design-tokens@0.11.2': {}
 

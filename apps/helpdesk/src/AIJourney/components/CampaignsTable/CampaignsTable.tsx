@@ -216,24 +216,26 @@ export default function CampaignsTable<TData, TValue>({
             <div className={styles.tableWrapper}>
                 <TableToolbar<TData>
                     table={table}
-                    left={['search']}
-                    right={[
-                        'totalCount',
-                        {
-                            key: 'create',
-                            content: (
-                                <Button
-                                    onClick={() =>
-                                        history.push(
-                                            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
-                                        )
-                                    }
-                                >
-                                    Create campaign
-                                </Button>
-                            ),
-                        },
-                    ]}
+                    bottomRow={{
+                        left: ['search'],
+                        right: [
+                            'totalCount',
+                            {
+                                key: 'create',
+                                content: (
+                                    <Button
+                                        onClick={() =>
+                                            history.push(
+                                                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+                                            )
+                                        }
+                                    >
+                                        Create campaign
+                                    </Button>
+                                ),
+                            },
+                        ],
+                    }}
                 />
                 <TableRoot withBorder>
                     <TableHeader>
@@ -254,7 +256,10 @@ export default function CampaignsTable<TData, TValue>({
                         )}
                     />
                 </TableRoot>
-                <TableToolbar table={table} right={['pagination']} />
+                <TableToolbar
+                    table={table}
+                    bottomRow={{ right: ['pagination'] }}
+                />
             </div>
             <RemoveCampaignConfirmation
                 isOpen={isRemoveModalOpen}

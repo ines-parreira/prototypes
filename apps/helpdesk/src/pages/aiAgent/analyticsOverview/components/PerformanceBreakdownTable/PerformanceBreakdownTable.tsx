@@ -182,8 +182,10 @@ export const PerformanceBreakdownTable = () => {
             <Box flexDirection="column">
                 <TableToolbar
                     table={table}
-                    left={['totalCount']}
-                    right={['settings']}
+                    bottomRow={{
+                        left: ['totalCount'],
+                        right: ['settings'],
+                    }}
                 />
                 <TableRoot withBorder>
                     <TableHeader>

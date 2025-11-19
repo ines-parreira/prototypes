@@ -137,38 +137,42 @@ export const KnowledgeHubTable = ({
             <div className={css.tableToolbars}>
                 <TableToolbar<GroupedKnowledgeItem>
                     table={table}
-                    left={[
-                        {
-                            key: 'mySearch',
-                            content: (
-                                <SearchInput
-                                    value={searchTerm}
-                                    onChange={setSearchTerm}
-                                    placeholder="Search..."
-                                />
-                            ),
-                        },
-                        {
-                            key: 'addFilter',
-                            content: (
-                                <AddFilterButton options={FILTER_OPTIONS} />
-                            ),
-                        },
-                    ]}
+                    bottomRow={{
+                        left: [
+                            {
+                                key: 'mySearch',
+                                content: (
+                                    <SearchInput
+                                        value={searchTerm}
+                                        onChange={setSearchTerm}
+                                        placeholder="Search..."
+                                    />
+                                ),
+                            },
+                            {
+                                key: 'addFilter',
+                                content: (
+                                    <AddFilterButton options={FILTER_OPTIONS} />
+                                ),
+                            },
+                        ],
+                    }}
                 />
                 <TableToolbar<GroupedKnowledgeItem>
                     table={table}
-                    left={[
-                        {
-                            key: 'itemSelected',
-                            content: (
-                                <ItemCount
-                                    table={table}
-                                    isSearchActive={isSearchActive}
-                                />
-                            ),
-                        },
-                    ]}
+                    bottomRow={{
+                        left: [
+                            {
+                                key: 'itemSelected',
+                                content: (
+                                    <ItemCount
+                                        table={table}
+                                        isSearchActive={isSearchActive}
+                                    />
+                                ),
+                            },
+                        ],
+                    }}
                 />
             </div>
             <TableRoot withBorder={false}>
@@ -185,7 +189,7 @@ export const KnowledgeHubTable = ({
             <div className={css.pagination}>
                 <TableToolbar<GroupedKnowledgeItem>
                     table={table}
-                    right={['pagination']}
+                    bottomRow={{ right: ['pagination'] }}
                 />
             </div>
         </div>

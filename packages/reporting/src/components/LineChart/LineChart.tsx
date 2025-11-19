@@ -1,5 +1,3 @@
-import { useRef } from 'react'
-
 import {
     CartesianGrid,
     Line,
@@ -13,6 +11,7 @@ import {
     Box,
     Button,
     Card,
+    Heading,
     Icon,
     ListItem,
     Select,
@@ -24,8 +23,6 @@ import { MetricTrendFormat, TwoDimensionalDataItem } from '../../types'
 import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
 import { toChartData } from './utils'
-
-import '@gorgias/axiom/tokens/typography.css'
 
 type LineChartProps = {
     containerHeight?: SizeValue
@@ -54,7 +51,6 @@ export const LineChart = ({
     title,
 }: LineChartProps) => {
     const formatter = formatMetricValueOrString({ metricFormat, currency })
-    const titleRef = useRef<HTMLDivElement>(null)
     if (isLoading) {
         return <Skeleton height={skeletonHeight} />
     }
@@ -74,9 +70,7 @@ export const LineChart = ({
                 gap="lg"
             >
                 <Box alignItems="center">
-                    <div className="typography-heading-md" ref={titleRef}>
-                        {title}
-                    </div>
+                    <Heading>{title}</Heading>
                     {!!metrics && metrics.length > 1 && (
                         <div>
                             <Select
@@ -87,10 +81,9 @@ export const LineChart = ({
                                     onMetricChange?.(item.label)
                                 }}
                                 items={metrics}
-                                triggerRef={titleRef}
-                                trigger={({ isOpen }) => (
+                                trigger={({ ref, isOpen }) => (
                                     <Button
-                                        slot="button"
+                                        ref={ref}
                                         size="sm"
                                         variant="tertiary"
                                         icon={

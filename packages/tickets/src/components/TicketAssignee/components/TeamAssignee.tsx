@@ -87,12 +87,14 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
             onLoadMore={() => shouldLoadMore && onLoad()}
             onOpenChange={clearSearch}
             aria-label="Team selection"
-            trigger={({ selectedText, isPlaceholder, isOpen }) => {
+            size="sm"
+            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const emoji = isNumber(selectedOption?.id)
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
                     : null
                 return (
                     <Tag
+                        ref={ref}
                         leadingSlot={
                             isUpdatingTeam || isLoading ? (
                                 <LoadingSpinner size={16} />

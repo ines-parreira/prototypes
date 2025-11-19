@@ -52,12 +52,14 @@ export function TicketPriority({ ticketId, currentPriority }: Props) {
             onSelect={handleChange}
             isDisabled={isUpdatingPriority}
             aria-label="Priority selection"
-            trigger={({ selectedText, isPlaceholder, isOpen }) => {
+            size="sm"
+            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const priority = selectedOption?.id || 'normal'
                 const { icon, color } = PRIORITY_ICON_MAP[priority]
 
                 return (
                     <Tag
+                        ref={ref}
                         leadingSlot={
                             isUpdatingPriority ? (
                                 <LoadingSpinner size={16} />

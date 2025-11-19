@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { type RefObject, useCallback, useMemo } from 'react'
 
 import classNames from 'classnames'
 
@@ -47,7 +47,6 @@ export const AIJourneySettings: React.FC = () => {
         setAIJourneySettings,
         productList,
     } = useAIJourneyContext()
-    const inputRef = useRef<HTMLInputElement>(null)
 
     const {
         selectedProduct,
@@ -140,10 +139,10 @@ export const AIJourneySettings: React.FC = () => {
             <Select
                 data-name="select-field"
                 aria-label="Product"
-                trigger={({ selectedText, isOpen }) => (
+                trigger={({ selectedText, isOpen, ref }) => (
                     <SelectTrigger>
                         <TextField
-                            inputRef={inputRef}
+                            inputRef={ref as RefObject<HTMLInputElement>}
                             value={selectedText}
                             label="Product"
                             isFocused={isOpen}
@@ -162,7 +161,6 @@ export const AIJourneySettings: React.FC = () => {
                         />
                     </SelectTrigger>
                 )}
-                triggerRef={inputRef}
                 items={productOptions}
                 selectedItem={selectedProductOption}
                 onSelect={(value) => {
