@@ -1,14 +1,13 @@
-import type { MouseEvent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import Clipboard from 'clipboard'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { Box, Button, Separator } from '@gorgias/axiom'
+import { Button, Separator } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
@@ -29,8 +28,6 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import * as actions from 'state/widgets/actions'
 import { itemsWithContext } from 'state/widgets/utils'
 
-import { TicketMessageSourceType } from '../../../../../../business/types/ticket'
-import SourceIcon from '../../../SourceIcon'
 import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
 import CustomerFields from './CustomerFields'
@@ -39,6 +36,7 @@ import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
 import { CustomerTimelineWidget } from './CustomerTimelineWidget'
 import { useShouldShowProfileSync } from './helpers'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
+import { InstagramSection } from './InstagramSection'
 
 import css from './InfobarCustomerInfo.less'
 
@@ -262,18 +260,6 @@ const InfobarCustomerInfo = ({
         )
     }
 
-    const handleIgHandleClick = (e: MouseEvent) => {
-        e.preventDefault()
-
-        logEvent(SegmentEvent.InstagramHandleClicked)
-
-        const igProfileUrl = encodeURI(
-            `https://www.instagram.com/${getDisplayName(customer)}`,
-        )
-
-        window.open(igProfileUrl, '_blank', 'noopener noreferrer')
-    }
-
     return (
         <div
             className={'d-flex flex-column'}
@@ -326,19 +312,7 @@ const InfobarCustomerInfo = ({
                     customerName={customer.get('name', '')}
                 >
                     {hasIgChannel && (
-                        <Box flex={1} flexDirection="row" mb="xs">
-                            <SourceIcon
-                                type={TicketMessageSourceType.Instagram}
-                                className={css.igIcon}
-                            />
-                            <a
-                                href="/#"
-                                className={css.igHandle}
-                                onClick={handleIgHandleClick}
-                            >
-                                @{getDisplayName(customer) as ReactNode}
-                            </a>
-                        </Box>
+                        <InstagramSection customer={customer as any} />
                     )}
                     <CustomerNote
                         customerId={Number(customer.get('id'))}
