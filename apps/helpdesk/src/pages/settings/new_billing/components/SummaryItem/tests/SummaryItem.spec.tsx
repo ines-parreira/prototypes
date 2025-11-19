@@ -33,7 +33,7 @@ describe('SummaryItem', () => {
             basicMonthlyHelpdeskPlan,
             {
                 ...basicMonthlyHelpdeskPlan,
-                price_id: 'different_price_id',
+                plan_id: 'different_plan_id',
                 amount: 90000,
             },
         ],
@@ -74,13 +74,13 @@ describe('SummaryItem', () => {
         expect(screen.queryByLabelText('Old price')).not.toBeInTheDocument()
     })
 
-    it('displays old plan when currentPlan.price_id does not match selected plan', () => {
+    it('displays old plan when currentPlan.plan_id does not match selected plan', () => {
         render(
             <SummaryItem
                 {...props}
                 currentPlan={{
                     ...basicMonthlyHelpdeskPlan,
-                    price_id: 'different_price_id',
+                    plan_id: 'different_plan_id',
                 }}
             />,
         )

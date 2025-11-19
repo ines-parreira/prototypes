@@ -112,18 +112,18 @@ export function initApp() {
         store.dispatch(notify(notification) as any)
     })
     const hasBillingInitialized = !state.billing.isEmpty()
-    const currentHelpdeskProduct = hasBillingInitialized
+    const currentHelpdeskPlan = hasBillingInitialized
         ? getCurrentHelpdeskPlan(state)
         : undefined
-    const currentAutomationProduct = hasBillingInitialized
+    const currentAutomatePlan = hasBillingInitialized
         ? getCurrentAutomatePlan(state)
         : undefined
 
     initLaunchDarkly(
         state.currentUser.toJS(),
         state.currentAccount.toJS(),
-        currentHelpdeskProduct?.price_id,
-        currentAutomationProduct?.price_id,
+        currentHelpdeskPlan?.plan_id,
+        currentAutomatePlan?.plan_id,
     )
 
     Chart.register(

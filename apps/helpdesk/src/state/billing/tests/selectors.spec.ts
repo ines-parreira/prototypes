@@ -528,7 +528,7 @@ describe('billing selectors', () => {
             const expected = billingFixtures.billingState.products
                 .flatMap((product) => product.prices)
                 .reduce<{ [key: string]: Plan }>((acc, plan) => {
-                    acc[plan.price_id] = plan
+                    acc[plan.plan_id] = plan
                     return acc
                 }, {})
 
@@ -557,7 +557,7 @@ describe('billing selectors', () => {
                 .filter((product) => product.type === ProductType.Automation)
                 .flatMap((product) => product.prices)
                 .reduce<{ [key: string]: Plan }>((acc, plan) => {
-                    acc[plan.price_id] = plan
+                    acc[plan.plan_id] = plan
                     return acc
                 }, {})
 

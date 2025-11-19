@@ -1,3 +1,4 @@
+import * as logging from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import * as envUtils from '@repo/utils'
 import type { fromJS } from 'immutable'
@@ -32,6 +33,7 @@ jest.mock('utils/datadog')
 jest.mock('utils/errors')
 jest.mock('utils/launchDarkly')
 jest.mock('utils/hotjar')
+jest.mock('@repo/logging')
 
 jest.mock('@repo/utils')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -39,6 +41,8 @@ const getEnvironmentMock = assumeMock(envUtils.getEnvironment)
 const isDevelopmentMock = assumeMock(envUtils.isDevelopment)
 const isStagingMock = assumeMock(envUtils.isStaging)
 const isProductionMock = assumeMock(envUtils.isProduction)
+
+const logEventMock = assumeMock(logging.logEvent)
 
 describe('init', () => {
     beforeEach(() => {
@@ -66,6 +70,8 @@ describe('init', () => {
             getEnvironmentMock.mockReturnValue(
                 envUtils.GorgiasUIEnv.Development,
             )
+            delete window.SEGMENT_EVENTS_TO_TRACK
+            logEventMock.mockClear()
         })
 
         describe.each([
@@ -169,6 +175,78 @@ describe('init', () => {
             initApp()
 
             expect(initSDKs).toHaveBeenCalled()
+        })
+
+        describe('SEGMENT_EVENTS_TO_TRACK', () => {
+            it('should log events when eventsToTrack is not empty', () => {
+                const event1 = {
+                    type: 'test-event-1',
+                    data: { prop1: 'value1' },
+                }
+                const event2 = {
+                    type: 'test-event-2',
+                    data: { prop2: 'value2' },
+                }
+                window.SEGMENT_EVENTS_TO_TRACK = [event1, event2]
+
+                initApp()
+
+                expect(logEventMock).toHaveBeenCalledTimes(2)
+                expect(logEventMock).toHaveBeenNthCalledWith(
+                    1,
+                    event1.type,
+                    event1.data,
+                )
+                expect(logEventMock).toHaveBeenNthCalledWith(
+                    2,
+                    event2.type,
+                    event2.data,
+                )
+            })
+
+            it('should delete SEGMENT_EVENTS_TO_TRACK after processing', () => {
+                const event = {
+                    type: 'test-event',
+                    data: { prop: 'value' },
+                }
+                window.SEGMENT_EVENTS_TO_TRACK = [event]
+
+                initApp()
+
+                expect(window.SEGMENT_EVENTS_TO_TRACK).toBeUndefined()
+            })
+
+            it('should handle single event', () => {
+                const event = {
+                    type: 'single-event',
+                    data: { key: 'value' },
+                }
+                window.SEGMENT_EVENTS_TO_TRACK = [event]
+
+                initApp()
+
+                expect(logEventMock).toHaveBeenCalledTimes(1)
+                expect(logEventMock).toHaveBeenCalledWith(
+                    event.type,
+                    event.data,
+                )
+            })
+
+            it('should not log events when eventsToTrack is undefined', () => {
+                window.SEGMENT_EVENTS_TO_TRACK = undefined
+
+                initApp()
+
+                expect(logEventMock).not.toHaveBeenCalled()
+            })
+
+            it('should not log events when eventsToTrack is empty array', () => {
+                window.SEGMENT_EVENTS_TO_TRACK = []
+
+                initApp()
+
+                expect(logEventMock).not.toHaveBeenCalled()
+            })
         })
     })
 })
