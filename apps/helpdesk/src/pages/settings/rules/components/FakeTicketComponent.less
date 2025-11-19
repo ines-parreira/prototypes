@@ -7,7 +7,7 @@
         gap: 16px;
         flex-direction: column;
 
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 16px;
 
@@ -34,7 +34,7 @@
             font-size: 16px;
         }
         .fakeTicketDescription {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
         .fakeTicketClosed {
             height: 18px;
@@ -45,9 +45,13 @@
 .axiom :local {
     .container {
         background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
     }
 
     .fakeTicket {
         background-color: var(--elevation-neutral-default);
+        .fakeTicketDescription {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

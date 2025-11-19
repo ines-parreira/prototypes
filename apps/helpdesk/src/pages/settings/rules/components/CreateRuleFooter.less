@@ -5,7 +5,7 @@
 
     .wrapper {
         border-radius: 4px;
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
     }
 
     .content {
@@ -62,5 +62,11 @@
     .image {
         width: 100%;
         max-width: 456px;
+    }
+}
+
+.axiom :local .container {
+    .wrapper {
+        background: var(--elevation-neutral-mid);
     }
 }

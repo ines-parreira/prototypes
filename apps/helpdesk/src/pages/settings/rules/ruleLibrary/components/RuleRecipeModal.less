@@ -3,7 +3,7 @@
         text-transform: uppercase;
         font-size: 11px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         letter-spacing: 0.05em;
     }
     .targetValue {
@@ -17,7 +17,7 @@
     }
     .ruleEditorContainer {
         height: 250px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         background-color: var(--neutral-grey-1); // legacy
         overflow-y: scroll;
@@ -38,7 +38,7 @@
         margin-bottom: 16px;
     }
     .icon {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
     .disabledButton {
         pointer-events: none;
@@ -67,7 +67,7 @@
     .viewsSecondaryLabel {
         font-size: 12px;
         font-weight: 400;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
     .count {
         margin-bottom: 24px;
@@ -76,17 +76,37 @@
         margin-bottom: 24px;
         p {
             letter-spacing: -0.01em;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
         line-height: 20px;
     }
 }
 
 .axiom :local {
+    .targetTitle {
+        color: var(--content-neutral-default);
+    }
+
     .ruleEditorContainer {
         background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
     }
+
     .modalFooter {
         background-color: var(--elevation-neutral-mid);
+    }
+
+    .icon {
+        color: var(--content-accent-default);
+    }
+
+    .viewsSecondaryLabel {
+        color: var(--content-neutral-secondary);
+    }
+
+    .descriptionBlock {
+        p {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

@@ -3,9 +3,9 @@
         background-color: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: 16px 16px 8px 16px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         input::placeholder {
-            color: var(--neutral-grey-5) !important;
+            color: var(--neutral-grey-5) !important; // legacy
         }
     }
 }
@@ -13,5 +13,9 @@
 .axiom :local {
     .ruleContainer {
         background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        input::placeholder {
+            color: var(--content-neutral-secondary) !important;
+        }
     }
 }

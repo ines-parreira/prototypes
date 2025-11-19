@@ -6,8 +6,8 @@
     .whenBtn {
         margin-right: 0.25rem;
         border-radius: 15px;
-        background-color: var(--accessory-blue-1);
-        color: var(--main-primary-3);
+        background-color: var(--accessory-blue-1); // legacy
+        color: var(--main-primary-3); // legacy
         border: none;
         font-weight: 600;
         padding: 3px 8px;
@@ -29,7 +29,7 @@
     .whenEvents :global(.badge.badge-secondary) {
         margin: 0 0.25rem !important;
         text-transform: uppercase;
-        background-color: var(--accessory-blue-1) !important;
+        background-color: var(--accessory-blue-1) !important; // legacy
     }
 
     .whenEvents :global(.badge.badge-secondary),
@@ -41,11 +41,27 @@
         font-size: 12px !important;
         padding: 5px 8px;
 
-        color: var(--main-primary-3) !important;
+        color: var(--main-primary-3) !important; // legacy
 
         &::after {
             margin-left: 3px !important;
             opacity: 0.3 !important;
         }
+    }
+}
+
+.axiom :local .container {
+    .whenBtn {
+        background-color: var(--surface-additional-blue);
+        color: var(--content-accent-default);
+    }
+
+    .whenEvents :global(.badge.badge-secondary) {
+        background-color: var(--surface-additional-blue) !important;
+    }
+
+    .whenEvents :global(.badge.badge-secondary),
+    input {
+        color: var(--content-accent-default) !important;
     }
 }

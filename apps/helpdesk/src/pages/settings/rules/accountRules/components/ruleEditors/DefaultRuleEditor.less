@@ -6,24 +6,24 @@
     }
 
     .label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
         font-size: 14px;
     }
 
     .labelName::after {
         content: '*';
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: 4px;
     }
 
     .ruleContainer {
-        background-color: #f8f9fc;
+        background-color: #f8f9fc; // legacy
         border-radius: 4px;
         padding: 16px 16px 8px 16px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         input::placeholder {
-            color: var(--neutral-grey-5) !important;
+            color: var(--neutral-grey-5) !important; // legacy
         }
     }
     .container.customRule {
@@ -31,5 +31,23 @@
     }
     .container.managedRule {
         max-width: 1200px;
+    }
+}
+
+.axiom :local {
+    .label {
+        color: var(--content-neutral-default);
+    }
+
+    .labelName::after {
+        color: var(--content-error-primary);
+    }
+
+    .ruleContainer {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+        input::placeholder {
+            color: var(--content-neutral-secondary) !important;
+        }
     }
 }

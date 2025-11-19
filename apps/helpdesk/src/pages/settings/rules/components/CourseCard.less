@@ -4,9 +4,9 @@
     position: relative;
     width: 228px;
     height: 148px;
-    border: solid 1px var(--neutral-grey-3);
+    border: solid 1px var(--neutral-grey-3); // legacy
     border-radius: 4px;
-    background: var(--main-latte);
+    background: var(--main-latte); // legacy
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -26,4 +26,9 @@
         font-weight: 500;
         font-size: 12px;
     }
+}
+
+.axiom :local .card {
+    border: solid 1px var(--border-neutral-default);
+    background: var(--elevation-neutral-mid);
 }

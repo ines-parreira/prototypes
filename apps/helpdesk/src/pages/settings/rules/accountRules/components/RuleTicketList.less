@@ -3,8 +3,8 @@
         thead {
             th {
                 text-transform: uppercase;
-                border-bottom: 1px solid var(--neutral-grey-2);
-                color: var(--neutral-grey-4);
+                border-bottom: 1px solid var(--neutral-grey-2); // legacy
+                color: var(--neutral-grey-4); // legacy
                 font-size: 0.8rem;
             }
             .avatar {
@@ -13,7 +13,7 @@
         }
         td {
             vertical-align: middle;
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
             padding: 16px 12px;
             a {
                 color: inherit;
@@ -37,7 +37,7 @@
         }
         .ticketDescription {
             font-weight: 400;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
     .navigation {
@@ -46,5 +46,22 @@
     }
     .noTrigger {
         margin: 24px;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        thead {
+            th {
+                border-bottom: 1px solid var(--border-neutral-default);
+                color: var(--content-neutral-secondary);
+            }
+        }
+        td {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+        .ticketDescription {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

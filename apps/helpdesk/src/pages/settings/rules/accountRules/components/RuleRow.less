@@ -1,6 +1,6 @@
 :local {
     .row {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         .middleColumn {
             cursor: pointer;
@@ -18,7 +18,7 @@
         }
 
         &:hover {
-            background: var(--neutral-grey-1) !important;
+            background: var(--neutral-grey-1) !important; // legacy
         }
 
         cursor: pointer;
@@ -37,13 +37,13 @@
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         line-height: 14px;
     }
 
     .infoIcon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .actions {
@@ -54,7 +54,7 @@
             .material-icons-outlined {
                 transition: 0.2s all;
                 opacity: 0.3;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
 
             &:hover .material-icons {
@@ -79,6 +79,37 @@
         overflow: hidden;
     }
     .popoverBody {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .row {
+        border-bottom: 1px solid var(--border-neutral-default);
+
+        &:hover {
+            background: var(--hover-default) !important;
+        }
+    }
+
+    .error {
+        color: var(--content-error-primary);
+    }
+
+    .infoIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .actions {
+        :global .btn {
+            .material-icons,
+            .material-icons-outlined {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .popoverBody {
+        color: var(--content-neutral-default);
     }
 }

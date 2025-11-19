@@ -20,7 +20,7 @@
     }
 
     .toggleLabel {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 14px;
     }
@@ -28,5 +28,11 @@
     .toggleButtonContainer {
         display: flex;
         margin-bottom: 24px;
+    }
+}
+
+.axiom :local {
+    .toggleLabel {
+        color: var(--content-neutral-default);
     }
 }

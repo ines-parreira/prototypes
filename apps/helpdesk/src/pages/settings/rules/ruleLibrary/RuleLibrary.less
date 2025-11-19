@@ -14,13 +14,13 @@
             font-size: 20px;
             font-weight: 600;
             i {
-                color: var(--accessory-magenta-3);
+                color: var(--accessory-magenta-3); // legacy
             }
         }
 
         p {
             font-size: 14px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             margin-bottom: 6px;
         }
 
@@ -31,6 +31,20 @@
 
         &.ruleTemplates {
             margin-top: var(--layout-spacing-s);
+        }
+    }
+}
+
+.axiom :local {
+    .libraryHeader {
+        h1 {
+            i {
+                color: var(--content-accent-default);
+            }
+        }
+
+        p {
+            color: var(--content-neutral-default);
         }
     }
 }

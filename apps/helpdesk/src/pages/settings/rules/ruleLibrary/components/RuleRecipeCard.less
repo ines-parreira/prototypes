@@ -4,7 +4,7 @@
     .card {
         display: grid;
         grid-template-rows: max-content 1fr auto;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 0px;
         cursor: pointer;
@@ -24,7 +24,7 @@
         overflow: hidden;
     }
     .description {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         max-height: 50px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -41,7 +41,7 @@
         padding: 16px;
     }
     .ticketCount {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding: 2px 0px 16px 16px;
         .caption-semibold();
 
@@ -58,5 +58,19 @@
         font-size: 12px;
         font-weight: 600;
         padding: 4px 8px;
+    }
+}
+
+.axiom :local {
+    .card {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-default);
+    }
+
+    .ticketCount {
+        color: var(--content-neutral-secondary);
     }
 }
