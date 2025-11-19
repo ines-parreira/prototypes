@@ -17,10 +17,20 @@ export type LegacyBridgeContextType = {
     dispatchNotification: ({
         status,
         message,
+        buttons,
+        dismissAfter,
     }: {
+        id?: string
         status: NotificationStatus
         message: string
+        dismissAfter?: number
+        buttons?: Array<{
+            name: string
+            primary?: boolean
+            onClick?: (...args: unknown[]) => void
+        }>
     }) => void
+    dispatchDismissNotification: (id: string) => void
     ticketViewNavigation: {
         shouldDisplay: boolean
         shouldUseLegacyFunctions: boolean

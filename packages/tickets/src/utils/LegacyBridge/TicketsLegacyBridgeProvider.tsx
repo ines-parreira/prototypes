@@ -1,8 +1,10 @@
-import { LegacyBridgeContext, LegacyBridgeContextType } from './context'
+import { LegacyBridgeContext } from './context'
+import type { LegacyBridgeContextType } from './context'
 
 type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     children: React.ReactNode
     ticketViewNavigation: LegacyBridgeContextType['ticketViewNavigation']
+    dispatchDismissNotification: LegacyBridgeContextType['dispatchDismissNotification']
     dispatchNotification: LegacyBridgeContextType['dispatchNotification']
     dispatchAuditLogEvents: LegacyBridgeContextType['dispatchAuditLogEvents']
     dispatchHideAuditLogEvents: LegacyBridgeContextType['dispatchHideAuditLogEvents']

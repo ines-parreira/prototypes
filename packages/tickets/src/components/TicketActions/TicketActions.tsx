@@ -1,20 +1,30 @@
 import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
 
+import { useMarkAsSpam } from './actions/useMarkAsSpam'
 import { useTicketEventsDisplay } from './actions/useTicketEventsDisplay'
 import { useTicketPrint } from './actions/useTicketPrint'
 import { useTicketQuickRepliesDisplay } from './actions/useTicketQuickRepliesDisplay'
 import {
     DeleteTicket,
     EventsOptions,
-    MarkAsSpam,
     MarkAsUnread,
     MergeTicket,
     PrintTicket,
     QuickRepliesOptions,
+    SpamOptions,
 } from './options'
 
-export function TicketActions() {
-    const { handleTicketPrint } = useTicketPrint()
+export type TicketActionsProps = {
+    id: number
+    spam: boolean
+}
+
+export function TicketActions({
+    id: ticketId,
+    spam: isSpam,
+}: TicketActionsProps) {
+    const { handleTicketPrint } = useTicketPrint(ticketId)
+    const { markAsSpam } = useMarkAsSpam(ticketId)
     const { handleShowAllEventDisplay, areEventsVisible } =
         useTicketEventsDisplay()
     const { handleShowAllQuickRepliesDisplay, areQuickRepliesVisible } =
@@ -52,7 +62,13 @@ export function TicketActions() {
             />
 
             <MenuItem {...PrintTicket} onAction={handleTicketPrint} />
-            <MenuItem {...MarkAsSpam} />
+            <MenuItem
+                id={SpamOptions.id}
+                {...(isSpam
+                    ? SpamOptions.UnmarkAsSpam
+                    : SpamOptions.MarkAsSpam)}
+                onAction={() => markAsSpam(ticketId, { spam: !isSpam })}
+            />
             <MenuItem {...DeleteTicket} />
         </Menu>
     )

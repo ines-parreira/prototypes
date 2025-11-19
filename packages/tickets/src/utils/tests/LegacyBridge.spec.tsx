@@ -26,6 +26,7 @@ describe('TicketsLegacyBridgeProvider', () => {
         render(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={vi.fn()}
+                dispatchDismissNotification={vi.fn()}
                 dispatchAuditLogEvents={vi.fn()}
                 dispatchHideAuditLogEvents={vi.fn()}
                 toggleQuickReplies={vi.fn()}
@@ -59,6 +60,7 @@ describe('TicketsLegacyBridgeProvider', () => {
         render(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={mockFn}
+                dispatchDismissNotification={mockFn}
                 dispatchAuditLogEvents={mockFn}
                 dispatchHideAuditLogEvents={mockFn}
                 toggleQuickReplies={mockFn}
@@ -97,6 +99,7 @@ describe('useTicketsLegacyBridge', () => {
         render(
             <TicketsLegacyBridgeProvider
                 dispatchNotification={mockFn}
+                dispatchDismissNotification={mockFn}
                 dispatchAuditLogEvents={mockFn}
                 dispatchHideAuditLogEvents={mockFn}
                 toggleQuickReplies={mockFn}

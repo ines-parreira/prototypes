@@ -46,7 +46,7 @@ export function TicketHeader({ ticketId }: Props) {
                     currentAssignee={currentAssignee}
                 />
                 <TeamAssignee ticketId={ticketId} currentTeam={currentTeam} />
-                <TicketActions />
+                <TicketActions id={ticketId} spam={ticket.spam} />
                 <TicketViewNavigator />
             </div>
         </div>

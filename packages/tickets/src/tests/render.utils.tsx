@@ -26,6 +26,7 @@ export const testAppQueryClient = new QueryClient({
 
 type RenderOptions = RenderOptionsPrimitive & {
     dispatchNotification?: ReturnType<typeof vi.fn>
+    dispatchDismissNotification?: ReturnType<typeof vi.fn>
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
     dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
     dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
@@ -36,6 +37,7 @@ type RenderOptions = RenderOptionsPrimitive & {
 
 type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> & {
     dispatchNotification?: ReturnType<typeof vi.fn>
+    dispatchDismissNotification?: ReturnType<typeof vi.fn>
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
     dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
     dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
@@ -48,6 +50,7 @@ const defaultOptions = {
     initialEntries: ['/'],
     path: '/',
     dispatchNotification: vi.fn(),
+    dispatchDismissNotification: vi.fn(),
     dispatchAuditLogEvents: vi.fn(),
     dispatchHideAuditLogEvents: vi.fn(),
     toggleQuickReplies: vi.fn(),
@@ -64,42 +67,20 @@ const defaultOptions = {
 }
 
 export const render = (element: ReactElement, options?: RenderOptions) => {
-    const {
-        initialEntries = defaultOptions.initialEntries,
-        path = defaultOptions.path,
-        dispatchNotification = defaultOptions.dispatchNotification,
-        dispatchAuditLogEvents = defaultOptions.dispatchAuditLogEvents,
-        dispatchHideAuditLogEvents = defaultOptions.dispatchHideAuditLogEvents,
-        toggleQuickReplies = defaultOptions.toggleQuickReplies,
-        ticketViewNavigation = defaultOptions.ticketViewNavigation,
-    } = options ?? {}
+    const mergedOptions = {
+        ...defaultOptions,
+        ...options,
+    }
 
     const user = userEvent.setup()
 
     const result = renderPrimitive(element, {
         ...options,
         wrapper: ({ children }) => (
-            <TicketsLegacyBridgeProvider
-                dispatchNotification={
-                    options?.dispatchNotification ?? dispatchNotification
-                }
-                dispatchAuditLogEvents={
-                    options?.dispatchAuditLogEvents ?? dispatchAuditLogEvents
-                }
-                dispatchHideAuditLogEvents={
-                    options?.dispatchHideAuditLogEvents ??
-                    dispatchHideAuditLogEvents
-                }
-                toggleQuickReplies={
-                    options?.toggleQuickReplies ?? toggleQuickReplies
-                }
-                ticketViewNavigation={
-                    options?.ticketViewNavigation ?? ticketViewNavigation
-                }
-            >
+            <TicketsLegacyBridgeProvider {...mergedOptions}>
                 <QueryClientProvider client={testAppQueryClient}>
-                    <MemoryRouter initialEntries={initialEntries}>
-                        <Route path={path}>{children}</Route>
+                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
+                        <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>
                 </QueryClientProvider>
             </TicketsLegacyBridgeProvider>
@@ -109,10 +90,13 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
     return {
         user,
         mocks: {
-            dispatchNotification,
-            dispatchAuditLogEvents,
-            dispatchHideAuditLogEvents,
-            toggleQuickReplies,
+            dispatchNotification: mergedOptions.dispatchNotification,
+            dispatchDismissNotification:
+                mergedOptions.dispatchDismissNotification,
+            dispatchAuditLogEvents: mergedOptions.dispatchAuditLogEvents,
+            dispatchHideAuditLogEvents:
+                mergedOptions.dispatchHideAuditLogEvents,
+            toggleQuickReplies: mergedOptions.toggleQuickReplies,
         },
         ...result,
     }
@@ -122,40 +106,18 @@ export const renderHook = <TProps, TResult>(
     hook: (props: TProps) => TResult,
     options?: RenderHookOptions<TProps>,
 ) => {
-    const {
-        initialEntries = defaultOptions.initialEntries,
-        path = defaultOptions.path,
-        dispatchNotification = defaultOptions.dispatchNotification,
-        dispatchAuditLogEvents = defaultOptions.dispatchAuditLogEvents,
-        dispatchHideAuditLogEvents = defaultOptions.dispatchHideAuditLogEvents,
-        toggleQuickReplies = defaultOptions.toggleQuickReplies,
-        ticketViewNavigation = defaultOptions.ticketViewNavigation,
-    } = options ?? {}
+    const mergedOptions = {
+        ...defaultOptions,
+        ...options,
+    }
 
     return renderHookPrimitive(hook, {
         ...options,
         wrapper: ({ children }) => (
-            <TicketsLegacyBridgeProvider
-                dispatchNotification={
-                    options?.dispatchNotification ?? dispatchNotification
-                }
-                dispatchAuditLogEvents={
-                    options?.dispatchAuditLogEvents ?? dispatchAuditLogEvents
-                }
-                dispatchHideAuditLogEvents={
-                    options?.dispatchHideAuditLogEvents ??
-                    dispatchHideAuditLogEvents
-                }
-                toggleQuickReplies={
-                    options?.toggleQuickReplies ?? toggleQuickReplies
-                }
-                ticketViewNavigation={
-                    options?.ticketViewNavigation ?? ticketViewNavigation
-                }
-            >
+            <TicketsLegacyBridgeProvider {...mergedOptions}>
                 <QueryClientProvider client={testAppQueryClient}>
-                    <MemoryRouter initialEntries={initialEntries}>
-                        <Route path={path}>{children}</Route>
+                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
+                        <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>
                 </QueryClientProvider>
             </TicketsLegacyBridgeProvider>

@@ -21,11 +21,18 @@ export const PrintTicket = {
     intent: Intent.Regular,
 } as const
 
-export const MarkAsSpam = {
-    id: 'mark-as-spam',
-    label: 'Mark as spam',
-    leadingSlot: IconName.StopSign,
-    intent: Intent.Regular,
+export const SpamOptions = {
+    id: 'spam-options',
+    MarkAsSpam: {
+        label: 'Mark as spam',
+        leadingSlot: IconName.StopSign,
+        intent: Intent.Regular,
+    },
+    UnmarkAsSpam: {
+        label: 'Unmark as spam',
+        leadingSlot: IconName.ArrowUndoUpLeft,
+        intent: Intent.Regular,
+    },
 } as const
 
 export const DeleteTicket = {

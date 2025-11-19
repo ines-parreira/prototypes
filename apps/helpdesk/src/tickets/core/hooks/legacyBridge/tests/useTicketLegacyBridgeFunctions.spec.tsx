@@ -12,6 +12,7 @@ import useIsTicketNavigationAvailable from 'pages/tickets/detail/components/Tick
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { useLegacyDispatchDismissNotification } from '../useLegacyDispatchDismissNotification'
 import { useTicketLegacyBridgeFunctions } from '../useTicketLegacyBridgeFunctions'
 
 type RouteMatchResult<T extends Record<string, string>> = Match<T> | null
@@ -417,6 +418,29 @@ describe('useTicketLegacyBridgeFunctions', () => {
 
             result.current.ticketViewNavigation.legacyGoToPrevTicket()
             expect(mockGoToPreviousTicket).toHaveBeenCalled()
+        })
+    })
+})
+
+describe('useLegacyDispatchDismissNotification', () => {
+    const mockDispatch = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        useAppDispatchMock.mockReturnValue(mockDispatch)
+    })
+
+    it('should dispatch dismiss notification action with id', () => {
+        const { result } = renderHook(
+            () => useLegacyDispatchDismissNotification(),
+            { wrapper },
+        )
+
+        result.current('notification-123')
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'reapop/dismissNotification',
+            payload: 'notification-123',
         })
     })
 })

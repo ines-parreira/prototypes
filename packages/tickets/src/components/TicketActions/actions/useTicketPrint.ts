@@ -1,11 +1,8 @@
 import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useParams } from 'react-router-dom'
 
-export const useTicketPrint = () => {
-    const { ticketId } = useParams<{ ticketId: string }>()
-
+export const useTicketPrint = (ticketId: number) => {
     const handleTicketPrint = useCallback(() => {
         logEvent(SegmentEvent.PrintTicketClicked)
         setTimeout(() => {
