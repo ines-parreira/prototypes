@@ -45,8 +45,16 @@ apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
 
 # Conv AI: Flywheel scope @gorgias/conv-ai-flywheel
 
-apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/hooks/automate/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/models/cubes/automate/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/models/cubes/automate_v2/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/pages/automate/ @gorgias/conv-ai-flywheel
 apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/conv-ai-flywheel
 
 # Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
@@ -126,15 +134,6 @@ apps/helpdesk/src/models/billing @gorgias/crm-growth
 apps/helpdesk/src/pages/settings/billing @gorgias/crm-growth
 apps/helpdesk/src/pages/settings/new_billing @gorgias/crm-growth
 apps/helpdesk/src/state/billing @gorgias/crm-growth
-
-# Conv AI: Knowledge & Insights scope @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/domains/reporting/hooks/automate/ @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/domains/reporting/models/cubes/automate/ @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/domains/reporting/models/cubes/automate_v2/ @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/domains/reporting/pages/Automate* @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard @gorgias/conv-ai-knowledge-insights
-apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-knowledge-insights
 
 # Conv AI: Expansion
 apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/conv-ai-expansion
