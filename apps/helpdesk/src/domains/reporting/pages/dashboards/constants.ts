@@ -4,6 +4,7 @@ export const LIMIT_REACHED_MESSAGE =
 export const DASHBOARDS_DOCUMENTATION_URL = 'https://link.gorgias.com/lml'
 
 export enum ReportsIDs {
+    AiAgentAnalyticsOverview = 'AiAgentAnalyticsOverview',
     AiSalesAgentReportConfig = 'AiSalesAgentReportConfig',
     AutomateAiAgentsReportConfig = 'AutomateAiAgentsReportConfig',
     AutomateOverviewReportConfig = 'AutomateOverviewReportConfig',

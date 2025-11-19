@@ -33,6 +33,10 @@ export function AutomateStatsNavbar() {
     )
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
+    const isAnalyticsDashboardsNewScreensEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    )
+
     return (
         <Navigation.Section value={StatsNavbarViewSections.Automate}>
             <Navigation.SectionTrigger data-candu-id="navbar-block-ai-agent">
@@ -80,33 +84,36 @@ export function AutomateStatsNavbar() {
                             </ProtectedRoute>
                         )}
 
-                        {isAiSalesAgentAnalyticsEnabled && (
-                            <ProtectedRoute path={AI_SALES_AGENT_PATH}>
+                        {isAiSalesAgentAnalyticsEnabled &&
+                            !isAnalyticsDashboardsNewScreensEnabled && (
+                                <ProtectedRoute path={AI_SALES_AGENT_PATH}>
+                                    <Navigation.SectionItem
+                                        as={NavLink}
+                                        to={AI_SALES_AGENT_PATH}
+                                        exact
+                                        displayType="indent"
+                                        data-candu-id="statistics-ai-sales-agent"
+                                        className={css.item}
+                                    >
+                                        {LINK_AI_SALES_AGENT_TEXT}
+                                        {!canUseAiSalesAgent && <UpgradeIcon />}
+                                    </Navigation.SectionItem>
+                                </ProtectedRoute>
+                            )}
+
+                        {!isAnalyticsDashboardsNewScreensEnabled && (
+                            <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
                                 <Navigation.SectionItem
                                     as={NavLink}
-                                    to={AI_SALES_AGENT_PATH}
+                                    to={PERFORMANCE_BY_FEATURE_PATH}
                                     exact
                                     displayType="indent"
-                                    data-candu-id="statistics-ai-sales-agent"
-                                    className={css.item}
+                                    data-candu-id="statistics-automate-performance-by-feature"
                                 >
-                                    {LINK_AI_SALES_AGENT_TEXT}
-                                    {!canUseAiSalesAgent && <UpgradeIcon />}
+                                    {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
                                 </Navigation.SectionItem>
                             </ProtectedRoute>
                         )}
-
-                        <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
-                            <Navigation.SectionItem
-                                as={NavLink}
-                                to={PERFORMANCE_BY_FEATURE_PATH}
-                                exact
-                                displayType="indent"
-                                data-candu-id="statistics-automate-performance-by-feature"
-                            >
-                                {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
-                            </Navigation.SectionItem>
-                        </ProtectedRoute>
                     </>
                 )}
             </Navigation.SectionContent>

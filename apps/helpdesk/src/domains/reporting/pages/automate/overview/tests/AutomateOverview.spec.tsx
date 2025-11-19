@@ -408,6 +408,9 @@ describe('<AutomateOverview />', () => {
             stats: {
                 filters: defaultStatsFilters,
             },
+            integrations: fromJS({
+                integrations: [getIntegration(1, IntegrationType.Shopify)],
+            }),
             ui: {
                 stats: { filters: initialState },
             },
@@ -964,6 +967,49 @@ describe('<AutomateOverview />', () => {
         })
     })
 
+    describe('Feature flags loading state', () => {
+        it('should return null when flags are loading', () => {
+            jest.spyOn(
+                require('core/flags'),
+                'useAreFlagsLoading',
+            ).mockReturnValue(true)
+
+            const { container } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should render AnalyticsOverviewLayout when AiAgentAnalyticsDashboardsNewScreens flag is enabled', () => {
+            jest.spyOn(
+                require('core/flags'),
+                'useAreFlagsLoading',
+            ).mockReturnValue(false)
+            useFlagMock.mockImplementation((flag) => {
+                if (
+                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                )
+                    return true
+                return false
+            })
+
+            const { container } = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <AutomateOverview />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(container.querySelector('.analyticsOverviewLayout'))
+        })
+    })
+
     describe('AI Agent KPI Charts', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation((flag) => {
@@ -976,7 +1022,17 @@ describe('<AutomateOverview />', () => {
         })
 
         it('should render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
+                    return true
+                if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
+                    return true
+                if (
+                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                )
+                    return false
+                return false
+            })
 
             const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>

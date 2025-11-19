@@ -1,0 +1,57 @@
+:local {
+    .card {
+        padding: var(--spacing-md);
+        height: 100%;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .title {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--content-neutral-secondary);
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .valueRow {
+        display: flex;
+        align-items: baseline;
+        gap: var(--spacing-xs);
+    }
+
+    .value {
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1.2;
+        color: var(--content-neutral-default);
+    }
+
+    .trend {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+
+        &.positive {
+            color: var(--content-success-primary);
+        }
+
+        &.negative {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .chartContainer {
+        width: 100%;
+        height: 30px;
+    }
+}

@@ -1,0 +1,44 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens.less';
+
+:local {
+    .tableCard {
+        padding: var(--spacing-lg);
+    }
+
+    .header {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    [data-name='table-total-count'] {
+        color: var(--content-neutral-tertiary);
+    }
+
+    [data-name='icon'] {
+        color: var(--content-neutral-default);
+    }
+
+    .tableActions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .itemCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .headerWithIcon {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+    }
+
+    .featureName {
+        color: var(--content-neutral-default);
+    }
+}
