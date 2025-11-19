@@ -25,7 +25,6 @@ type Props = {
 }
 
 export default function LiveVoiceAgentsList({ agents }: Props) {
-    const isLiveUpdatesEnabled = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
     const { onlineAgents: ablyOnlineAgents } = useAblyAgentsOnlineStatus()
     const { onlineAgents: pubNubOnlineAgents } = useAgentsOnlineStatus()
@@ -36,9 +35,10 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
     )
 
     const data: WithChildren<Data>[] = useMemo(() => {
-        const agentsWithOnlineStatus = isLiveUpdatesEnabled
-            ? recomputeAgentsWithOnlineStatusChange(agents, onlineAgents)
-            : agents
+        const agentsWithOnlineStatus = recomputeAgentsWithOnlineStatusChange(
+            agents,
+            onlineAgents,
+        )
         const categories = groupAgentsByStatus(agentsWithOnlineStatus)
 
         return [
@@ -63,7 +63,7 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
 
             return categoryRowData
         })
-    }, [agents, onlineAgents, isLiveUpdatesEnabled])
+    }, [agents, onlineAgents])
 
     return (
         <TableWrapper>

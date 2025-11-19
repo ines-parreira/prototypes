@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import moment from 'moment'
 
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
-import { useFlag } from 'core/flags'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
@@ -29,8 +27,6 @@ export default function LiveVoiceMetrics({
     isLoadingVoiceCalls,
     cleanStatsFilters,
 }: Props) {
-    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
-
     const {
         data: { timezone },
     } = useAppSelector(getBusinessHoursSettings) ?? {
@@ -63,7 +59,7 @@ export default function LiveVoiceMetrics({
                     <LiveVoiceMetricCard {...card} />
                 </DashboardGridCell>
             ))}
-            {useLiveUpdates && lastUpdated ? (
+            {lastUpdated ? (
                 <DashboardGridCell className={css.metricCardInfoCell}>
                     <div className={css.metricCardInfo}>
                         <i className={'material-icons'}>sync</i>

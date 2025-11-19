@@ -14,11 +14,9 @@ import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useAccountId } from '@gorgias/realtime'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 
 jest.mock('core/flags')
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@gorgias/helpdesk-queries', () => {
     return {
@@ -63,7 +61,6 @@ describe('useLiveVoiceUpdates', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useFlagMock.mockReturnValue(true)
 
         jest.useFakeTimers()
         jest.setSystemTime(mockedDate)
@@ -267,28 +264,6 @@ describe('useLiveVoiceUpdates', () => {
                 customer_id: 123456,
             },
         } as DomainEvent
-
-        it('should not do anything if live updates are disabled', () => {
-            useFlagMock.mockReturnValue(false)
-
-            const mockOldData = {
-                data: {
-                    data: [],
-                },
-            }
-
-            appQueryClient.setQueryData(queryKey, mockOldData)
-
-            const { result } = renderHook(() => useLiveVoiceUpdates(params))
-
-            result.current.handleEvent(mockEvent)
-
-            expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: {
-                    data: [],
-                },
-            })
-        })
 
         it('should handle inbound voice call event and add it to the list', () => {
             const mockOldData = {

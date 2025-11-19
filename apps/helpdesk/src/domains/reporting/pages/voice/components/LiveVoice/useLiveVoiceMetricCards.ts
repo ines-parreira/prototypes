@@ -1,10 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
@@ -25,7 +22,6 @@ export default function useLiveVoiceMetricCards(
     isLoadingVoiceCalls: boolean,
     filters: StatsFilters,
 ): MetricCardProps[] {
-    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     const isFilteringByAgent = !isFilterEmpty(filters.agents)
 
     const liveInQueueVoiceCallListMetric = {
@@ -40,7 +36,7 @@ export default function useLiveVoiceMetricCards(
     const summaryMetric = useSummaryMetric(
         liveVoiceCallSummaryQueryFactory(filters),
         true,
-        useLiveUpdates ? 30 * 1000 : undefined, // Disable refetching if live updates are not enabled
+        30 * 1000,
     )
 
     return [

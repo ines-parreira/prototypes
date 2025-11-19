@@ -1,7 +1,6 @@
 import type { MutableRefObject } from 'react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { omit } from 'lodash'
 
 import type { DomainEvent } from '@gorgias/events'
@@ -16,7 +15,6 @@ import { AgentStatus } from '@gorgias/helpdesk-types'
 import type { ChannelNameOptions } from '@gorgias/realtime'
 import { useAccountId } from '@gorgias/realtime'
 
-import { useFlag } from 'core/flags'
 import {
     addVoiceCallToLiveCallsQueryCache,
     getWrapUpStatusesThatShouldExpire,
@@ -35,7 +33,6 @@ const CHANNEL_NAME = 'stats.liveVoice'
 export const useLiveVoiceUpdates = (
     params?: ListLiveCallQueueVoiceCallsParams,
 ) => {
-    const useLiveUpdates = useFlag(FeatureFlagKey.UseLiveVoiceUpdates)
     // Use ref instead of state to avoid race conditions
     const voiceCallIdToSidRef = useRef<Record<number, string>>({})
     const processedEvents = useRef<Set<string>>(new Set())
@@ -120,10 +117,6 @@ export const useLiveVoiceUpdates = (
 
     const handleEvent = useCallback(
         (event: DomainEvent) => {
-            if (!useLiveUpdates) {
-                return
-            }
-
             // avoid processing the same event multiple times
             if (processedEvents.current.has(event.id)) {
                 return
@@ -452,7 +445,7 @@ export const useLiveVoiceUpdates = (
                 }
             }
         },
-        [useLiveUpdates, params],
+        [params],
     )
 
     return {

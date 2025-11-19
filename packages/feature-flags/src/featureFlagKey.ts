@@ -199,7 +199,6 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',
-    UseLiveVoiceUpdates = 'use-live-voice-updates',
     UseVoiceTTSRecording = 'use-voice-tts-recording',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
