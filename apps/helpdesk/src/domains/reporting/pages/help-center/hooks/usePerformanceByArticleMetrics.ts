@@ -32,7 +32,7 @@ export const usePerformanceByArticleMetrics = ({
     helpCenterDomain: string
     helpCenterId: number
 }) => {
-    const articleViewData = useMetricPerDimension({
+    const articleViewData = useMetricPerDimension<string>({
         ...performanceByArticleQueryFactory(statsFilters, timezone),
         limit: itemPerPage,
         offset: itemPerPage * (currentPage - 1),

@@ -17,8 +17,8 @@ const TICKET_COUNT_VALUE =
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
 
 export const formatTicketCountData = (
-    data: MetricWithDecileData,
-    previousPeriodData: MetricWithDecileData,
+    data: MetricWithDecileData<string>,
+    previousPeriodData: MetricWithDecileData<string>,
 ) => {
     return (
         data?.allData.map((item) => {
@@ -45,7 +45,7 @@ export const useIntentTicketCountsAndDelta = (
 ) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const { data, isError, isFetching } = useMetricPerDimension(
+    const { data, isError, isFetching } = useMetricPerDimension<string>(
         customFieldsTicketCountWithSortQueryFactory(
             cleanStatsFilters,
             userTimezone,
@@ -59,7 +59,7 @@ export const useIntentTicketCountsAndDelta = (
         data: previousPeriodData,
         isFetching: isPreviousPeriodFetching,
         isError: isPreviousPeriodError,
-    } = useMetricPerDimension(
+    } = useMetricPerDimension<string>(
         customFieldsTicketCountWithSortQueryFactory(
             {
                 ...cleanStatsFilters,

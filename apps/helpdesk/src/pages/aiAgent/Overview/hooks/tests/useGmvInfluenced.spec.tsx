@@ -12,7 +12,10 @@ import configureMockStore from 'redux-mock-store'
 import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
-import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
@@ -113,6 +116,8 @@ describe('useGmvInfluenced', () => {
                     'AiSalesAgentOrders.currency': 'USD',
                 },
             ],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
         }
         const mockPreviousPeriodData = {
             value: 10000,
@@ -123,6 +128,8 @@ describe('useGmvInfluenced', () => {
                     'AiSalesAgentOrders.currency': 'USD',
                 },
             ],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
         }
 
         useMetricPerDimensionMock

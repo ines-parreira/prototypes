@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 
 import type { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import {
     getChannelsSorting,
     sortingLoaded,
@@ -43,17 +42,20 @@ export const useChannelsSortingQuery = (
 
     useEffect(() => {
         if (sorting.field === column) {
-            if (!sorting.isLoading) {
-                isFetching && dispatch(sortingLoading())
-            } else {
-                !isFetching &&
-                    dispatch(
-                        sortingLoaded(
-                            (data?.allData ?? [])
-                                .map((result) => result[CHANNEL_DIMENSION])
-                                .filter(notEmpty),
-                        ),
-                    )
+            if (!sorting.isLoading && isFetching) {
+                dispatch(sortingLoading())
+            } else if (sorting.isLoading && !isFetching) {
+                const dimension = data?.dimensions?.[0] ?? ''
+                dispatch(
+                    sortingLoaded(
+                        (data?.allData ?? [])
+                            .map((result) => {
+                                const value = result[dimension]
+                                return value != null ? String(value) : null
+                            })
+                            .filter(notEmpty),
+                    ),
+                )
             }
         }
     }, [

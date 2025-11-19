@@ -29,6 +29,8 @@ const emptyReportData = {
     value: 1,
     decile: 0,
     allData: [],
+    dimensions: [],
+    measures: [],
 }
 
 const reportDataWithoutCubeMetrics = {
@@ -48,6 +50,8 @@ const reportDataWithoutCubeMetrics = {
             value: '2022-01-31',
         },
     ],
+    dimensions: [],
+    measures: [],
 }
 
 const reportDataWithCubeMetrics = {
@@ -67,6 +71,8 @@ const reportDataWithCubeMetrics = {
             [HelpdeskMessageMeasure.TicketCount]: '100500',
         },
     ],
+    dimensions: [TicketDimension.AssigneeUserId],
+    measures: [HelpdeskMessageMeasure.TicketCount],
 }
 
 const buildQuery = <T>(isFetching: boolean, data: T) => ({
@@ -426,6 +432,8 @@ describe('agentsPerformanceReportingService', () => {
                         [HelpdeskMessageMeasure.TicketCount]: '100500',
                     },
                 ],
+                dimensions: [TicketDimension.AssigneeUserId],
+                measures: [HelpdeskMessageMeasure.TicketCount],
             }
 
             const mockMedianFirstResponseTimeData = {
@@ -438,6 +446,12 @@ describe('agentsPerformanceReportingService', () => {
                         [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
                             '300',
                     },
+                ],
+                dimensions: [
+                    TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
+                ],
+                measures: [
+                    TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
                 ],
             }
 

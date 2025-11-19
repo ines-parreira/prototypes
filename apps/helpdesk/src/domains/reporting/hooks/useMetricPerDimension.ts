@@ -37,35 +37,59 @@ import type { OrderDirection } from 'models/api/types'
 import type { DrillDownReportingQuery } from 'models/job/types'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
-export type ReportingMetricItem<TCube extends Cubes = Cubes> = Record<
-    TCube['measures'][0] | TCube['dimensions'][0] | 'decile',
-    string | null
->
+import type { DimensionName, MeasureName } from '../models/scopes/types'
 
-export type MetricWithDecileData<TCube extends Cubes = Cubes> = {
+export type ReportingMetricItemValue = string | number | null
+
+/**  TODO(Anissa)
+ * Temporary type until V2 migration is complete
+ * We can remove this type and use number instead
+ * We should check every usage of this type and replace it with number
+ **/
+export type StringWhichShouldBeNumber = string
+
+export type ReportingMetricItem<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = Record<TCube['measures'][0] | TCube['dimensions'][0] | 'decile', TValue>
+
+export type MetricWithDecileData<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = {
     value: number | null
     decile: number | null
-    allData: ReportingMetricItem<TCube>[]
+    allData: ReportingMetricItem<TValue, TCube>[]
+    dimensions?: readonly DimensionName[] | TCube['dimensions'][]
+    measures?: readonly MeasureName[] | TCube['measures'][]
 } | null
 
-export type MetricWithDecile<TCube extends Cubes = Cubes> = RequestedData & {
-    data: MetricWithDecileData<TCube>
+export type MetricWithDecile<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = RequestedData & {
+    data: MetricWithDecileData<TValue, TCube>
 }
 
-export type MetricWithDecileFetch = (
+export type MetricWithDecileFetch<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     agentAssigneeId?: string,
-) => Promise<MetricWithDecile>
+) => Promise<MetricWithDecile<TValue, TCube>>
 
-export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> =
-    RequestedData & {
-        data: {
-            value: QueryReturnType<TCube>
-            prevValue: QueryReturnType<TCube>
-        }
+export type MetricPerDimensionTrend<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = RequestedData & {
+    data: {
+        value: QueryReturnType<TValue, TCube>
+        prevValue: QueryReturnType<TValue, TCube>
     }
+}
 
 export type MetricWithBreakdown = RequestedData & {
     data: {
@@ -108,42 +132,60 @@ export type MetricPerDimensionWithEnrichment<
     data: MetricPerDimensionWithEnrichmentData<T, ID>
 }
 
-export type QueryReturnType<TCube extends Cubes> = ReportingMetricItem<TCube>[]
+export type QueryReturnType<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+> = ReportingMetricItem<TValue, TCube>[]
 
 export const selectMeasurePerDimension = <
-    TData extends Record<string, string | null>,
+    TValue extends ReportingMetricItemValue,
     TCube extends Cubes,
     TMeta extends ScopeMeta,
 >(
-    data: TData[] | null | undefined,
+    data: ReportingMetricItem<TValue, TCube>[] | null | undefined,
     query: ReportingQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
     isV2?: boolean,
-    dimensionId?: string, // TODO(Nicolas): dimension should not be optional
-) => {
-    if (data === null || data === undefined) return null
-
-    const measure =
+    dimensionId?: string | number, // TODO(Nicolas): dimension should not be optional
+): MetricWithDecileData<TValue, TCube> => {
+    const measures =
         isV2 && queryV2?.measures
-            ? (queryV2.measures[0] as TCube['measures'])
-            : query.measures[0]
-    const dimension =
+            ? (queryV2.measures as readonly MeasureName[])
+            : (query.measures as TCube['measures'][])
+    const dimensions =
         isV2 && queryV2?.dimensions
-            ? (queryV2.dimensions[0] as TCube['dimensions'])
-            : query.dimensions[0]
-    if (!dimensionId || !measure || !dimension) {
-        return { value: null, decile: null, allData: data }
+            ? (queryV2.dimensions as readonly DimensionName[])
+            : (query.dimensions as TCube['dimensions'][])
+
+    if (
+        !dimensionId ||
+        !measures.length ||
+        !dimensions.length ||
+        data === null ||
+        data === undefined
+    ) {
+        return {
+            value: null,
+            decile: null,
+            allData: data ?? [],
+            dimensions,
+            measures,
+        }
     }
 
     const dataMeasure =
-        data.find((row) => row[dimension] === dimensionId) ?? null
+        data.find(
+            (row) => row[dimensions[0]]?.toString() === dimensionId?.toString(),
+        ) ?? null
 
-    const metric = dataMeasure?.[measure] ?? null
+    const metric = dataMeasure?.[measures[0]] ?? null
     const decile = dataMeasure?.['decile'] ?? null
 
-    const parseNumber = (value: string | null): number | null => {
-        if (value === null) return null
-        const parsed = parseFloat(value)
+    const parseNumber = (value: TValue | null): number | null => {
+        if (value === null) {
+            return null
+        }
+        const parsed = typeof value === 'number' ? value : parseFloat(value)
         return isNaN(parsed) ? null : parsed
     }
 
@@ -151,6 +193,8 @@ export const selectMeasurePerDimension = <
         value: parseNumber(metric),
         decile: parseNumber(decile),
         allData: data,
+        dimensions,
+        measures,
     }
 }
 
@@ -169,35 +213,42 @@ const handleDataOnError = <
 }
 
 const queryWithDeciles =
-    <TCube extends Cubes, TMeta extends ScopeMeta>(
+    <
+        TValue extends ReportingMetricItemValue,
+        TCube extends Cubes,
+        TMeta extends ScopeMeta,
+    >(
         query: ReportingQuery<TCube>,
         newQuery?: BuiltQuery<TMeta>,
     ) =>
     () =>
-        metricExecutionHandler<QueryReturnType<TCube>, TCube, TMeta>({
+        metricExecutionHandler<QueryReturnType<TValue, TCube>, TCube, TMeta>({
             metricName: query.metricName,
             oldPayload: [query],
             newPayload: newQuery,
         }).then(withDeciles)
 
-export function useMetricPerDimension<TCube extends Cubes>(
+export function useMetricPerDimension<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
     enabled?: boolean,
-): MetricWithDecile<TCube> {
+): MetricWithDecile<TValue, TCube> {
     const metricData = usePostReporting<
-        QueryReturnType<TCube>,
-        MetricWithDecileData<TCube>
+        QueryReturnType<TValue, TCube>,
+        MetricWithDecileData<TValue, TCube>
     >([query], {
         select: (data) =>
-            selectMeasurePerDimension(
+            selectMeasurePerDimension<TValue, TCube, ScopeMeta>(
                 data.data.data,
                 query,
                 undefined,
                 undefined,
                 dimensionId,
             ),
-        queryFn: queryWithDeciles(query, undefined),
+        queryFn: queryWithDeciles<TValue, TCube, ScopeMeta>(query, undefined),
         enabled,
     })
 
@@ -205,47 +256,50 @@ export function useMetricPerDimension<TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionV2<
-    TCube extends Cubes,
-    TMeta extends ScopeMeta,
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
 >(
     query: ReportingQuery<TCube>,
     newQuery?: BuiltQuery<TMeta>,
     dimensionId?: string,
     enabled?: boolean,
-): MetricWithDecile<TCube> {
+): MetricWithDecile<string, TCube> {
     const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const metricData = usePostReportingV2<
-        QueryReturnType<TCube>,
-        MetricWithDecileData<TCube>,
+        QueryReturnType<string, TCube>,
+        MetricWithDecileData<string, TCube>,
         TCube,
         TMeta
     >([query], newQuery, {
         select: (data) =>
-            selectMeasurePerDimension(
+            selectMeasurePerDimension<string, TCube, TMeta>(
                 data.data.data,
                 query,
                 newQuery,
                 isV2,
                 dimensionId,
             ),
-        queryFn: queryWithDeciles(query, newQuery),
+        queryFn: queryWithDeciles<string, TCube, TMeta>(query, newQuery),
         enabled,
     })
 
     return handleDataOnError(metricData)
 }
 
-export const fetchMetricPerDimension = async <TCube extends Cubes>(
+export const fetchMetricPerDimension = async <
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
-): Promise<MetricWithDecile<TCube>> => {
-    return fetchPostReporting<QueryReturnType<TCube>>([query], {
-        queryFn: queryWithDeciles(query),
+): Promise<MetricWithDecile<TValue, TCube>> => {
+    return fetchPostReporting<QueryReturnType<TValue, TCube>>([query], {
+        queryFn: queryWithDeciles<TValue, TCube, ScopeMeta>(query),
     })
         .then((res) => ({
-            data: selectMeasurePerDimension(
+            data: selectMeasurePerDimension<TValue, TCube, ScopeMeta>(
                 res.data.data,
                 query,
                 undefined,
@@ -263,27 +317,29 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
 }
 
 export const fetchMetricPerDimensionV2 = async <
-    TCube extends Cubes,
-    TMeta extends ScopeMeta,
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
 >(
     query: ReportingQuery<TCube>,
     newQuery?: BuiltQuery<TMeta>,
     dimensionId?: string,
-): Promise<MetricWithDecile<TCube>> => {
+): Promise<MetricWithDecile<TValue, TCube>> => {
     const migrationStage = await getNewStatsFeatureFlagMigration(
         query.metricName,
     )
+
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
     return fetchPostReportingV2<
-        QueryReturnType<TCube>,
-        MetricWithDecileData<TCube>,
+        QueryReturnType<TValue, TCube>,
+        MetricWithDecileData<TValue, TCube>,
         TCube,
         TMeta
     >([query], newQuery, {
-        queryFn: queryWithDeciles(query, newQuery),
+        queryFn: queryWithDeciles<TValue, TCube, TMeta>(query, newQuery),
     })
         .then((res) => ({
-            data: selectMeasurePerDimension(
+            data: selectMeasurePerDimension<TValue, TCube, TMeta>(
                 res.data.data,
                 query,
                 newQuery,
@@ -356,14 +412,21 @@ export function useMetricPerDimensionWithEnrichment(
     >(
         { query, enrichment_fields: enrichmentFields },
         {
-            select: (data) =>
-                selectMeasurePerDimension(
+            select: (data) => {
+                const result = selectMeasurePerDimension(
                     data.data.data,
                     query,
                     undefined,
                     undefined,
                     dimensionId,
-                ),
+                )
+                return result
+                    ? {
+                          value: result.value,
+                          allData: data.data.data,
+                      }
+                    : null
+            },
             queryFn: () => {
                 return postEnrichedReporting<{
                     data: MergedRecordWithEnrichment[]

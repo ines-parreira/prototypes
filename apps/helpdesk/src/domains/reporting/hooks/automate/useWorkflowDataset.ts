@@ -26,10 +26,10 @@ export const useWorkflowDataset = (
     steps: WorkflowStep[],
 ): WorkflowStats => {
     const previousPeriod = getPreviousPeriod(filters.period)
-    const workflowCountByEventType = useMetricPerDimension(
+    const workflowCountByEventType = useMetricPerDimension<string>(
         workflowDatasetCountQueryFactory(filters, timezone),
     )
-    const previousWorkflowCountByEventType = useMetricPerDimension(
+    const previousWorkflowCountByEventType = useMetricPerDimension<string>(
         workflowDatasetCountQueryFactory(
             { ...filters, period: previousPeriod },
             timezone,
@@ -131,10 +131,10 @@ export const useWorkflowStepDatasetTrend = (
     isFetching: boolean
     isError: boolean
 } => {
-    const workflowStepCountEvents = useMetricPerDimension(
+    const workflowStepCountEvents = useMetricPerDimension<string>(
         workflowDatasetStepCountQueryFactory(filters, timezone),
     )
-    const workflowStepDropoff = useMetricPerDimension(
+    const workflowStepDropoff = useMetricPerDimension<string>(
         workflowDatasetStepQueryFactory(filters, timezone),
     )
 

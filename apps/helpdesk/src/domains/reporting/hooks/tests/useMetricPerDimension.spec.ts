@@ -5,7 +5,10 @@ import { waitFor } from '@testing-library/react'
 import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    QueryReturnType,
+    ReportingMetricItemValue,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
     fetchMetricPerDimensionV2,
@@ -50,6 +53,7 @@ import type {
 } from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
@@ -73,6 +77,10 @@ jest.mock('domains/reporting/utils/metricExecutionHandler')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
     useGetNewStatsFeatureFlagMigration,
+)
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
 )
 
 describe('MetricPerDimension', () => {
@@ -113,12 +121,15 @@ describe('MetricPerDimension', () => {
         ),
     }))
 
-    const mockedResponse: UseQueryResult<QueryReturnType<TicketMessagesCube>> =
-        {
-            isFetching: false,
-            isError: false,
-            data: data,
-        } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
+    const mockedResponse: UseQueryResult<
+        QueryReturnType<ReportingMetricItemValue, TicketMessagesCube>
+    > = {
+        isFetching: false,
+        isError: false,
+        data: data,
+    } as unknown as UseQueryResult<
+        QueryReturnType<ReportingMetricItemValue, TicketMessagesCube>
+    >
 
     describe('useMetricPerDimension', () => {
         function mockUsePostReporting(response: any) {
@@ -148,6 +159,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     allData: mockedResponse.data,
                     decile: null,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 },
             })
         })
@@ -182,7 +195,13 @@ describe('MetricPerDimension', () => {
                 useMetricPerDimension(query, agentIdNotInResponse),
             )
 
-            expect(result.current?.data).toBeNull()
+            expect(result.current?.data).toEqual({
+                value: null,
+                decile: null,
+                allData: [],
+                dimensions: query.dimensions,
+                measures: query.measures,
+            })
         })
 
         it('should use the select function', () => {
@@ -208,12 +227,14 @@ describe('MetricPerDimension', () => {
     }))
 
     const mockedResponseWithDeciles: UseQueryResult<
-        QueryReturnType<TicketMessagesCube>
+        QueryReturnType<ReportingMetricItemValue, TicketMessagesCube>
     > = {
         isFetching: false,
         isError: false,
         data: dataWithDeciles,
-    } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
+    } as unknown as UseQueryResult<
+        QueryReturnType<ReportingMetricItemValue, TicketMessagesCube>
+    >
 
     describe('useMetricPerDimensionV2', () => {
         beforeEach(() => {
@@ -230,6 +251,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             }
 
@@ -246,6 +269,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             })
         })
@@ -258,6 +283,8 @@ describe('MetricPerDimension', () => {
                     value: null,
                     decile: null,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             }
 
@@ -278,6 +305,8 @@ describe('MetricPerDimension', () => {
                     value: null,
                     decile: null,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             }
 
@@ -294,6 +323,8 @@ describe('MetricPerDimension', () => {
                     value: null,
                     decile: null,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             })
         })
@@ -353,6 +384,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             }
 
@@ -371,11 +404,26 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             })
         })
 
         it('should not use queryV2 when migration stage is complete or live if its is not provided', () => {
+            const mockResponseWithoutV2 = {
+                ...mockedResponseWithDeciles,
+                data: {
+                    value: metricValue,
+                    decile: decileValue,
+                    allData: mockedResponseWithDeciles.data,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
+                },
+            }
+
+            usePostReportingMockV2.mockReturnValue(mockResponseWithoutV2 as any)
+
             const { result } = renderHook(() =>
                 useMetricPerDimensionV2(query, undefined, String(agentId)),
             )
@@ -387,6 +435,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 },
             })
         })
@@ -439,6 +489,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 })
             }
         })
@@ -482,6 +534,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 })
             }
         })
@@ -525,6 +579,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 })
             }
         })
@@ -571,6 +627,8 @@ describe('MetricPerDimension', () => {
                     value: 200,
                     decile: 2,
                     allData: testData,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 })
             }
         })
@@ -591,6 +649,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     allData: mockedResponse.data,
                     decile: null,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 },
             })
         })
@@ -647,15 +707,17 @@ describe('MetricPerDimension', () => {
     })
 
     describe('fetchMetricPerDimensionV2', () => {
+        beforeEach(() => {
+            getNewStatsFeatureFlagMigrationMock.mockReturnValue(
+                Promise.resolve('complete' as MigrationStage),
+            )
+        })
+
         const decileValue = 5
 
         const dataWithDeciles = Array.from(Array(150).keys()).map((index) => ({
-            [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
-                agentId + index,
-            ),
-            [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-                metricValue + index,
-            ),
+            ['agentId']: String(agentId + index),
+            ['medianFirstResponseTime']: String(metricValue + index),
             decile: String(decileValue + index),
         }))
 
@@ -683,6 +745,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    dimensions: queryV2.dimensions,
+                    measures: queryV2.measures,
                 },
             })
         })
@@ -705,6 +769,8 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: null,
                     allData: mockedResponse.data,
+                    dimensions: query.dimensions,
+                    measures: query.measures,
                 },
             })
         })
@@ -943,7 +1009,6 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 isFetching: mockedResponse.isFetching,
                 isError: mockedResponse.isError,
                 data: {
-                    decile: null,
                     value: null,
                     allData: mockedResponse.data,
                 },
@@ -1061,7 +1126,7 @@ describe('selectMeasurePerDimension', () => {
     const dimensionKey = TicketMessagesDimension.FirstHelpdeskMessageUserId
     const measureKey = TicketMessagesMeasure.MedianFirstResponseTime
 
-    it('should return null when data is null', () => {
+    it('should return empty object when data is null', () => {
         const result = selectMeasurePerDimension(
             null,
             query,
@@ -1070,7 +1135,13 @@ describe('selectMeasurePerDimension', () => {
             '123',
         )
 
-        expect(result).toBeNull()
+        expect(result).toEqual({
+            value: null,
+            decile: null,
+            allData: [],
+            dimensions: query.dimensions,
+            measures: query.measures,
+        })
     })
 
     it('should return null values when dimensionId is not provided', () => {
@@ -1094,6 +1165,8 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1123,6 +1196,8 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            dimensions: queryWithoutMeasure.dimensions,
+            measures: queryWithoutMeasure.measures,
         })
     })
 
@@ -1152,6 +1227,8 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            dimensions: queryWithoutDimension.dimensions,
+            measures: queryWithoutDimension.measures,
         })
     })
 
@@ -1181,6 +1258,8 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1205,6 +1284,8 @@ describe('selectMeasurePerDimension', () => {
             value: 123.45,
             decile: 8.5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1229,6 +1310,8 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: 5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1253,6 +1336,8 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            dimensions: queryV2.dimensions || query.dimensions,
+            measures: queryV2.measures || query.measures,
         })
     })
 
@@ -1277,6 +1362,8 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1301,6 +1388,8 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 
@@ -1325,6 +1414,8 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            dimensions: query.dimensions,
+            measures: query.measures,
         })
     })
 

@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
 
-import type { MetricWithDecileData } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricWithDecileData,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
@@ -24,8 +27,8 @@ const CURRENCY_DIMENSION = AiSalesAgentOrdersDimension.Currency
 const GMV_MEASURE = AiSalesAgentOrdersMeasure.Gmv
 
 export const formatGmvInfluencedData = (
-    data: MetricWithDecileData,
-    previousPeriodData: MetricWithDecileData,
+    data: MetricWithDecileData<StringWhichShouldBeNumber>,
+    previousPeriodData: MetricWithDecileData<StringWhichShouldBeNumber>,
 ): MetricTrendWithCurrency['data'] => {
     const currentValue = data?.allData?.[0]?.[GMV_MEASURE]
     const prevValue = previousPeriodData?.allData?.[0]?.[GMV_MEASURE]
@@ -52,13 +55,13 @@ const useGmvInfluencedTrend = (
     )
 
     const { data, isError, isFetching } =
-        useMetricPerDimension(currentPeriodQuery)
+        useMetricPerDimension<StringWhichShouldBeNumber>(currentPeriodQuery)
 
     const {
         data: previousPeriodData,
         isError: isPreviousPeriodError,
         isFetching: isPreviousPeriodFetching,
-    } = useMetricPerDimension(previousPeriodQuery)
+    } = useMetricPerDimension<StringWhichShouldBeNumber>(previousPeriodQuery)
 
     const formattedData = useMemo(
         () => formatGmvInfluencedData(data, previousPeriodData),
@@ -99,8 +102,12 @@ const fetchGmvInfluencedTrend = async (
 
     try {
         const [currentPeriodResult, previousPeriodResult] = await Promise.all([
-            fetchMetricPerDimension(currentPeriodQuery),
-            fetchMetricPerDimension(previousPeriodQuery),
+            fetchMetricPerDimension<StringWhichShouldBeNumber>(
+                currentPeriodQuery,
+            ),
+            fetchMetricPerDimension<StringWhichShouldBeNumber>(
+                previousPeriodQuery,
+            ),
         ])
 
         const formattedData = formatGmvInfluencedData(

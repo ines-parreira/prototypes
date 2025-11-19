@@ -48,10 +48,10 @@ export const useGmvInfluenced = ({
     )
 
     const { data: currentPeriodData, isFetching: isCurrentPeriodFetching } =
-        useMetricPerDimension(currentPeriodQuery)
+        useMetricPerDimension<string>(currentPeriodQuery)
 
     const { data: previousPeriodData, isFetching: isPreviousPeriodFetching } =
-        useMetricPerDimension(previousPeriodQuery)
+        useMetricPerDimension<string>(previousPeriodQuery)
 
     const formattedData = useMemo(
         () => formatGmvInfluencedData(currentPeriodData, previousPeriodData),

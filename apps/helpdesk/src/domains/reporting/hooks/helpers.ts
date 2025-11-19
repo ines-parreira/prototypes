@@ -6,18 +6,17 @@ import type {
     MetricWithDecileFetch,
     QueryReturnType,
     ReportingMetricItem,
+    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
-import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
@@ -33,12 +32,8 @@ import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'domains/reporting/pages/util
 import type { OrderDirection } from 'models/api/types'
 
 export const calculateTotalCapacity = (
-    allAgentsMetricData:
-        | ReportingMetricItem<HelpdeskMessageCubeWithJoins>[]
-        | undefined,
-    onlineTimeDataPerAllAgents:
-        | ReportingMetricItem<AgentTimeTrackingCube>[]
-        | undefined,
+    allAgentsMetricData: ReportingMetricItem[] | undefined,
+    onlineTimeDataPerAllAgents: ReportingMetricItem[] | undefined,
     agentIdDimension: string,
     measure: string,
 ) => {
@@ -78,10 +73,12 @@ export const calculateTotalCapacity = (
 }
 
 export const filterTicketsByTagId = (
-    data: QueryReturnType<TicketTagsEnrichedCube>,
+    data: QueryReturnType<StringWhichShouldBeNumber, TicketTagsEnrichedCube>,
     tags: number[],
 ) =>
-    data?.reduce<QueryReturnType<TicketTagsEnrichedCube>>((acc, item) => {
+    data?.reduce<
+        QueryReturnType<StringWhichShouldBeNumber, TicketTagsEnrichedCube>
+    >((acc, item) => {
         const isMatchingTag = tags.find(
             (tagId) =>
                 tagId.toString() === item[TicketTagsEnrichedDimension.TagId],

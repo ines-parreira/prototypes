@@ -16,7 +16,7 @@ import {
     AgentTimeTrackingMeasure,
 } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
@@ -61,9 +61,11 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 {
                     [HelpdeskMessageMeasure.TicketCount]:
                         String(ticketsRepliedValue),
-                    [TicketMember.MessageSenderId]: String(agent.id),
+                    [TicketDimension.MessageSenderId]: String(agent.id),
                 },
             ],
+            dimensions: [TicketDimension.MessageSenderId],
+            measures: [HelpdeskMessageMeasure.TicketCount],
         },
         isFetching: false,
         isError: false,
@@ -79,6 +81,8 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                     [AgentTimeTrackingDimension.UserId]: String(agent.id),
                 },
             ],
+            dimensions: [AgentTimeTrackingDimension.UserId],
+            measures: [AgentTimeTrackingMeasure.OnlineTime],
         },
         isFetching: false,
         isError: false,
@@ -112,11 +116,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                                 ticketsRepliedValue /
                                     (onlineTimeValue / 60 / 60),
                             ),
-                            [TicketMember.MessageSenderId]: String(agent.id),
+                            [TicketDimension.MessageSenderId]: String(agent.id),
                         },
                     ],
                     decile: 9,
                     value: 12.5,
+                    dimensions: [TicketDimension.MessageSenderId],
+                    measures: [HelpdeskMessageMeasure.TicketCount],
                 },
                 isError: false,
                 isFetching: false,
@@ -141,11 +147,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                                 ticketsRepliedValue /
                                     (onlineTimeValue / 60 / 60),
                             ),
-                            [TicketMember.MessageSenderId]: String(agent.id),
+                            [TicketDimension.MessageSenderId]: String(agent.id),
                         },
                     ],
                     decile: 9,
                     value: 12.5,
+                    dimensions: [TicketDimension.MessageSenderId],
+                    measures: [HelpdeskMessageMeasure.TicketCount],
                 },
                 isError: false,
                 isFetching: false,
@@ -236,6 +244,8 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                     allData: [],
                     decile: -0,
                     value: null,
+                    dimensions: [],
+                    measures: [],
                 },
                 isError: false,
                 isFetching: false,
@@ -269,11 +279,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                                 ticketsRepliedValue /
                                     (onlineTimeValue / 60 / 60),
                             ),
-                            [TicketMember.MessageSenderId]: String(agent.id),
+                            [TicketDimension.MessageSenderId]: String(agent.id),
                         },
                     ],
                     decile: 9,
                     value: 12.5,
+                    dimensions: [TicketDimension.MessageSenderId],
+                    measures: [HelpdeskMessageMeasure.TicketCount],
                 },
                 isError: false,
                 isFetching: false,
@@ -296,11 +308,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                                 ticketsRepliedValue /
                                     (onlineTimeValue / 60 / 60),
                             ),
-                            [TicketMember.MessageSenderId]: String(agent.id),
+                            [TicketDimension.MessageSenderId]: String(agent.id),
                         },
                     ],
                     decile: 9,
                     value: 12.5,
+                    dimensions: [TicketDimension.MessageSenderId],
+                    measures: [HelpdeskMessageMeasure.TicketCount],
                 },
                 isError: false,
                 isFetching: false,
@@ -385,6 +399,8 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                     allData: [],
                     decile: -0,
                     value: null,
+                    dimensions: [],
+                    measures: [],
                 },
                 isError: false,
                 isFetching: false,

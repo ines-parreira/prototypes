@@ -124,17 +124,17 @@ export const useTrialMetrics = (
     })
 
     const { currency: fallBackCurrency } = useCurrency()
-    const currency =
-        gmvInfluencedData?.data?.allData[0]?.[
-            AiSalesAgentOrdersDimension.Currency
-        ] ?? fallBackCurrency
+    const currency = (gmvInfluencedData?.data?.allData[0]?.[
+        AiSalesAgentOrdersDimension.Currency
+    ] ?? fallBackCurrency) as string
 
     const reduceGmvTotal = (data?: ReportingMetricItem[]): number => {
         if (!data || !Array.isArray(data)) return 0
 
         return data.reduce((sum, row) => {
             const raw = row[AiSalesAgentOrdersMeasure.Gmv]
-            return sum + (raw ? parseFloat(raw) : 0)
+            const floatRow = typeof raw === 'string' ? parseFloat(raw) : raw
+            return sum + (floatRow ?? 0)
         }, 0)
     }
 

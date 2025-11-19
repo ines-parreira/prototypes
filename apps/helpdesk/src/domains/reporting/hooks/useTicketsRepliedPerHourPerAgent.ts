@@ -11,14 +11,11 @@ import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCust
 import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import type {
     MetricWithDecile,
+    MetricWithDecileData,
     MetricWithDecileFetch,
+    ReportingMetricItemValue,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    AgentTimeTrackingDimension,
-    AgentTimeTrackingMeasure,
-} from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     matchAndCalculateAllEntries,
@@ -26,16 +23,11 @@ import {
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
-const senderId = TicketMember.MessageSenderId
-const userIdField = AgentTimeTrackingDimension.UserId
-const ticketCountField = HelpdeskMessageMeasure.TicketCount
-const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
-
 const formatResult = (
     repliedTickets: MetricWithDecile,
     onlineTime: MetricWithDecile,
     sorting?: OrderDirection,
-): MetricWithDecile['data'] => {
+): MetricWithDecileData<ReportingMetricItemValue, Cubes> => {
     let metricValue: number | null = null
 
     if (repliedTickets.data?.value && onlineTime.data?.value) {
@@ -51,14 +43,15 @@ const formatResult = (
                   repliedTickets,
                   onlineTime,
                   calculateMetricPerHour,
-                  senderId,
-                  userIdField,
-                  ticketCountField,
-                  onlineTimeField,
               )
             : []
 
-    const sortedData = sortAllData(data, ticketCountField, sorting)
+    const ticketCountField = repliedTickets.data?.measures?.[0] || ''
+    const sortedData = sortAllData<ReportingMetricItemValue, Cubes>(
+        data,
+        ticketCountField,
+        sorting,
+    )
 
     const maxValue = Math.max(
         ...sortedData.map((item) => Number(item[ticketCountField])),
@@ -68,6 +61,8 @@ const formatResult = (
         allData: sortedData,
         value: metricValue,
         decile: calculateDecile(metricValue || 0, maxValue),
+        dimensions: repliedTickets.data?.dimensions || [],
+        measures: repliedTickets.data?.measures || [],
     }
 }
 

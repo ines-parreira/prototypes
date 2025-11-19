@@ -8,6 +8,7 @@ import type {
     CustomFieldsFilter,
     DateFilter,
     DimensionName,
+    MeasureName,
     StandardFilter,
     TagsFilter,
     TimeDimensionName,
@@ -41,7 +42,7 @@ type OptionalFilters<TFilterMembers extends readonly string[]> = {
 
 export type ScopeMeta = {
     scope: MetricScope
-    measures?: readonly string[]
+    measures?: readonly MeasureName[]
     dimensions?: readonly DimensionName[]
     timeDimensions?: readonly TimeDimensionName[]
     filters: readonly string[]

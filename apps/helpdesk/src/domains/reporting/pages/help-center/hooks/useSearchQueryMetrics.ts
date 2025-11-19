@@ -22,7 +22,7 @@ export const useSearchQueryMetrics = ({
     searchQuery: string
     helpCenterDomain: string
 }) => {
-    const searchQueryData = useMetricPerDimension(
+    const searchQueryData = useMetricPerDimension<string>(
         searchQueryClicksQueryFactory(statsFilters, timezone, [searchQuery]),
     )
 

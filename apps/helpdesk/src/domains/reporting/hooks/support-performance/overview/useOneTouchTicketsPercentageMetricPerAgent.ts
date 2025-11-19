@@ -7,11 +7,11 @@ import {
     useOneTouchTicketsMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    TicketDimension,
-    TicketMeasure,
-} from 'domains/reporting/models/cubes/TicketCube'
+import type {
+    MetricWithDecile,
+    ReportingMetricItemValue,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     calculatePercentage,
@@ -20,12 +20,9 @@ import {
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
-const assigneeIdField = TicketDimension.AssigneeUserId
-const ticketCountField = TicketMeasure.TicketCount
-
 const formatData = (
-    oneTouchTickets: MetricWithDecile,
-    closedTicketsPerAgent: MetricWithDecile,
+    oneTouchTickets: MetricWithDecile<ReportingMetricItemValue, Cubes>,
+    closedTicketsPerAgent: MetricWithDecile<ReportingMetricItemValue, Cubes>,
     sorting?: OrderDirection,
 ) => {
     let metricValue: number | null = null
@@ -40,11 +37,9 @@ const formatData = (
         oneTouchTickets,
         closedTicketsPerAgent,
         calculatePercentage,
-        assigneeIdField,
-        assigneeIdField,
-        ticketCountField,
-        ticketCountField,
     )
+
+    const ticketCountField = oneTouchTickets.data?.measures?.[0] || ''
     const sortedData = sortAllData(allData, ticketCountField, sorting)
 
     const maxValue = Math.max(
@@ -55,6 +50,8 @@ const formatData = (
         allData: sortedData,
         value: metricValue,
         decile: calculateDecile(metricValue || 0, maxValue),
+        dimensions: oneTouchTickets.data?.dimensions || [],
+        measures: oneTouchTickets.data?.measures || [],
     }
 }
 

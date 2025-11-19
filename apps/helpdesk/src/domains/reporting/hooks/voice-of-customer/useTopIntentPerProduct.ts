@@ -26,7 +26,7 @@ export const INTENT_DIMENSION =
 export const TICKET_COUNT_MEASURE = TicketProductsEnrichedMeasure.TicketCount
 
 const getTopIntentPerProduct = (
-    data: QueryReturnType<TicketCubeWithJoins> | undefined,
+    data: QueryReturnType<string, TicketCubeWithJoins> | undefined,
     productId?: string,
 ): { value: string | null; allData: TopIntentPerProduct[] } => {
     const topIntentPerProductMap: TopIntentPerProductMap =
@@ -89,8 +89,8 @@ export const useTopIntentPerProduct = (
     }
 } & RequestedData => {
     const { data, isFetching, isError } = usePostReporting<
-        QueryReturnType<TicketCubeWithJoins>,
-        QueryReturnType<TicketCubeWithJoins>
+        QueryReturnType<string, TicketCubeWithJoins>,
+        QueryReturnType<string, TicketCubeWithJoins>
     >(
         [
             ticketCountPerProductAndIntentQueryFactory(

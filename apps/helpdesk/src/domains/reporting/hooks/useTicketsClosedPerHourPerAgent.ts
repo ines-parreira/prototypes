@@ -13,25 +13,12 @@ import type {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    AgentTimeTrackingDimension,
-    AgentTimeTrackingMeasure,
-} from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    TicketDimension,
-    TicketMeasure,
-} from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
-
-const assigneeUserId = TicketDimension.AssigneeUserId
-const userIdField = AgentTimeTrackingDimension.UserId
-const ticketCountField = TicketMeasure.TicketCount
-const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 
 const formatResult = (
     closedTickets: MetricWithDecile,
@@ -52,13 +39,10 @@ const formatResult = (
                   closedTickets,
                   onlineTime,
                   calculateMetricPerHour,
-                  assigneeUserId,
-                  userIdField,
-                  ticketCountField,
-                  onlineTimeField,
               )
             : []
 
+    const ticketCountField = closedTickets.data?.measures?.[0] || ''
     const sortedData = sortAllData(data, ticketCountField, sorting)
 
     const maxValue = Math.max(
@@ -69,6 +53,8 @@ const formatResult = (
         allData: sortedData,
         value: metricValue,
         decile: calculateDecile(metricValue || 0, maxValue),
+        dimensions: closedTickets.data?.dimensions || [],
+        measures: closedTickets.data?.measures || [],
     }
 }
 

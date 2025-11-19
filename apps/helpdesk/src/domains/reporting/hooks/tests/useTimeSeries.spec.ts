@@ -38,6 +38,7 @@ import type {
     ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
+import type { MeasureName } from 'domains/reporting/models/scopes/types'
 import type {
     ReportingFilter,
     ReportingResponse,
@@ -1014,7 +1015,7 @@ describe('TimeSeriesPerDimension', () => {
     }
     const defaultQueryV2: BuiltQuery<ScopeMeta> = {
         metricName: METRIC_NAMES.TEST_METRIC,
-        measures: [VALUE_FIELD],
+        measures: [VALUE_FIELD] as unknown as readonly MeasureName[],
         time_dimensions: [defaultTimeDimension] as any,
         dimensions: ['agentId'],
         filters: [

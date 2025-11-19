@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import _get from 'lodash/get'
 
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    QueryReturnType,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import { usePostReporting } from 'domains/reporting/models/queries'
@@ -47,8 +50,8 @@ export const useSentimentPerProduct = (
     )
 
     const { data, isFetching, isError } = usePostReporting<
-        QueryReturnType<TicketCubeWithJoins>,
-        QueryReturnType<TicketCubeWithJoins>
+        QueryReturnType<StringWhichShouldBeNumber, TicketCubeWithJoins>,
+        QueryReturnType<StringWhichShouldBeNumber, TicketCubeWithJoins>
     >([query], { select: (data) => data.data.data })
 
     const normalizedData = useMemo(() => {

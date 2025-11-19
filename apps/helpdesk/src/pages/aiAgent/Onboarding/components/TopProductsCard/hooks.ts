@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
@@ -29,11 +30,12 @@ let useTopProductsImplementation = ({
         : 0
 
     let productIds = []
-    const recommendationsTotalData = useMetricPerDimension(
-        topProductRecommendationsQueryFactory(filters, timezone),
-        undefined,
-        productIds.length === 0, // if there are productIds, we don't need to refresh data
-    )
+    const recommendationsTotalData =
+        useMetricPerDimension<StringWhichShouldBeNumber>(
+            topProductRecommendationsQueryFactory(filters, timezone),
+            undefined,
+            productIds.length === 0, // if there are productIds, we don't need to refresh data
+        )
 
     const productTotals = mapMetrics(
         recommendationsTotalData,

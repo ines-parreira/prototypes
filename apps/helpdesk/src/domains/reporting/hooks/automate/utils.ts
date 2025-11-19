@@ -39,6 +39,7 @@ import {
 import type {
     MetricWithDecile,
     QueryReturnType,
+    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
@@ -399,7 +400,7 @@ export const getGreyAreaAndChartParam = (period: Period) => {
 }
 
 export function getCountEventsByEventType(
-    data: QueryReturnType<Cubes> | undefined,
+    data: QueryReturnType<StringWhichShouldBeNumber, Cubes> | undefined,
     eventType: string,
 ): number {
     if (!data) return 0
@@ -410,7 +411,7 @@ export function getCountEventsByEventType(
 }
 
 export function computeWorkflowMetrics(
-    data: QueryReturnType<Cubes> | undefined,
+    data: QueryReturnType<StringWhichShouldBeNumber, Cubes> | undefined,
     dropoff: number,
     automatedInteractions: number,
 ): WorkflowMetrics {
@@ -433,8 +434,8 @@ export function computeWorkflowMetrics(
 }
 
 export function computeWorkflowStepsMetrics(
-    eventsData: QueryReturnType<Cubes> | undefined,
-    dropoffData: QueryReturnType<Cubes> | undefined,
+    eventsData: QueryReturnType<StringWhichShouldBeNumber, Cubes> | undefined,
+    dropoffData: QueryReturnType<StringWhichShouldBeNumber, Cubes> | undefined,
     steps: WorkflowStep[],
 ): WorkflowStepMetricsMap {
     const eventsGrouped = groupBy(
@@ -558,7 +559,7 @@ export const sortAllData = <
 }
 
 export const enrichWithSuccessRateUpliftOpportunity = (
-    metric: MetricWithDecile<TicketCustomFieldsCube>,
+    metric: MetricWithDecile<string, TicketCustomFieldsCube>,
     totalTicketCount: string,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     sorting: OrderDirection = OrderDirection.Desc,
@@ -584,8 +585,8 @@ export const enrichWithSuccessRateUpliftOpportunity = (
 }
 
 export const enrichWithSuccessRate = (
-    filteredMetric: MetricWithDecile<TicketCustomFieldsCube>,
-    totalMetrics: MetricWithDecile<TicketCustomFieldsCube>,
+    filteredMetric: MetricWithDecile<string, TicketCustomFieldsCube>,
+    totalMetrics: MetricWithDecile<string, TicketCustomFieldsCube>,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     sorting: OrderDirection = OrderDirection.Asc,
 ): EnrichedTicketCustomFieldsWithSuccessRate[] => {
@@ -635,13 +636,13 @@ export const transformIntentName = (name: string, intentLevel?: number) =>
 /**
  * Calculates the number of AI agent knowledge resource per intent.
  *
- * @param {QueryReturnType<Cubes>} aiAgentTicketsWithIntentData - Array of ticket data with intents.
- * @param {QueryReturnType<Cubes>} resourcePerTicketIdData - Array of resource data per ticket ID.
+ * @param {QueryReturnType<string, Cubes>} aiAgentTicketsWithIntentData - Array of ticket data with intents.
+ * @param {QueryReturnType<string, Cubes>} resourcePerTicketIdData - Array of resource data per ticket ID.
  * @returns {Array} - An array of objects mapping intents to number of resource used in tickets.
  */
 export const calculateAiAgentKnowledgeResourcePerIntent = (
-    aiAgentTicketsWithIntentData: QueryReturnType<Cubes>,
-    resourcePerTicketIdData: QueryReturnType<Cubes>,
+    aiAgentTicketsWithIntentData: QueryReturnType<string, Cubes>,
+    resourcePerTicketIdData: QueryReturnType<string, Cubes>,
 ): {
     'TicketEnriched.customField': string
     resources: number

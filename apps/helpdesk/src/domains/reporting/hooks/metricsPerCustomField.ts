@@ -1,6 +1,7 @@
 import type {
     MetricWithBreakdown,
     MetricWithDecile,
+    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     useMetricPerDimension,
@@ -27,7 +28,7 @@ export const useCustomFieldsTicketCount = (
             ? customFieldsTicketCountQueryFactory
             : customFieldsTicketCountOnCreatedDatetimeQueryFactory
 
-    return useMetricPerDimension(
+    return useMetricPerDimension<StringWhichShouldBeNumber>(
         queryFactory(statsFilters, timezone, customFieldId, sorting),
     )
 }

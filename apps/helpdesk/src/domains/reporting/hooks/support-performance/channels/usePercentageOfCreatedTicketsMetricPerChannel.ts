@@ -47,6 +47,8 @@ const formatResult = (
                       )
                     : item[ticketCountField],
         })),
+        dimensions: createdTicketsPerChannel.data?.dimensions || [],
+        measures: createdTicketsPerChannel.data?.measures || [],
     }
 }
 

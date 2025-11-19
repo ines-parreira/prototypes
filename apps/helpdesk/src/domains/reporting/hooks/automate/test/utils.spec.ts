@@ -937,8 +937,8 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     })
 
     it('returns empty array when no intents are present', () => {
-        const aiAgentTicketsWithIntentData: QueryReturnType<Cubes> = []
-        const resourcePerTicketIdData: QueryReturnType<Cubes> = []
+        const aiAgentTicketsWithIntentData: QueryReturnType<string, Cubes> = []
+        const resourcePerTicketIdData: QueryReturnType<string, Cubes> = []
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
@@ -955,7 +955,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
                 [TicketDimension.TicketId]: 'ticket1',
             },
         ]
-        const resourcePerTicketIdData: QueryReturnType<Cubes> = []
+        const resourcePerTicketIdData: QueryReturnType<string, Cubes> = []
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
@@ -1012,7 +1012,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
     it('handles tickets with null intents', () => {
         const aiAgentTicketsWithIntentData = [
             {
-                [TicketDimension.CustomField]: null,
+                [TicketDimension.CustomField]: '',
                 [TicketDimension.TicketId]: 'ticket1',
             },
         ]

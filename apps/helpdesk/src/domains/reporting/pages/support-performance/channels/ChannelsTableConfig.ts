@@ -115,6 +115,8 @@ export const ChannelColumnConfig: Record<
                 value: null,
                 decile: null,
                 allData: [],
+                dimensions: [],
+                measures: [],
             },
         }),
         drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory, //TODO: clean up

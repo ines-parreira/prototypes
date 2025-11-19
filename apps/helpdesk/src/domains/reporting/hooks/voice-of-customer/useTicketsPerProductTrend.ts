@@ -1,4 +1,7 @@
-import type { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricPerDimensionTrend,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import { useTicketCountPerProductWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import type { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -9,7 +12,10 @@ export const useTicketsPerProductTrend = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting: OrderDirection,
-): MetricPerDimensionTrend<TicketProductsEnrichedCube> => {
+): MetricPerDimensionTrend<
+    StringWhichShouldBeNumber,
+    TicketProductsEnrichedCube
+> => {
     const currentPeriod = useTicketCountPerProductWithEnrichment(
         statsFilters,
         timezone,

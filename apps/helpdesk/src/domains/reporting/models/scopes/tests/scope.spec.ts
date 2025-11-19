@@ -14,6 +14,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 
 import type { QueryFor } from '../scope'
 import { defineScope } from '../scope'
+import type { MeasureName } from '../types'
 
 jest.mock('domains/reporting/models/scopes/utils', () => ({
     createScopeFilters: jest.fn(),
@@ -59,7 +60,7 @@ describe('scope', () => {
         it('should return a scope class with proper config', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
-                measures: ['testMeasure'],
+                measures: ['testMeasure'] as unknown as readonly MeasureName[],
                 dimensions: ['ticketId'] as const,
                 filters: ['periodStart', 'periodEnd'],
             }
@@ -72,7 +73,7 @@ describe('scope', () => {
         it('should work with minimal configuration', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
-                measures: ['onlineTime'],
+                measures: ['onlineTime'] as unknown as readonly MeasureName[],
                 filters: ['periodStart', 'periodEnd'],
             }
 
@@ -84,7 +85,7 @@ describe('scope', () => {
         it('should work with full configuration', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
-                measures: ['ticketCount'],
+                measures: ['ticketCount'] as unknown as readonly MeasureName[],
                 dimensions: ['agentId', 'channel'] as const,
                 timeDimensions: ['createdDatetime' as const],
                 filters: ['periodStart', 'periodEnd', 'agents' as const],
@@ -100,7 +101,7 @@ describe('scope', () => {
     describe('ScopeBuilder', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
-            measures: ['testMeasure'],
+            measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
@@ -118,7 +119,7 @@ describe('scope', () => {
     describe('MetricBuilder', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
-            measures: ['testMeasure'],
+            measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
@@ -128,7 +129,9 @@ describe('scope', () => {
         describe('query', () => {
             it('should create MetricQuery without input validation', () => {
                 const metricQuery = metricBuilder.defineQuery(({ ctx }) => ({
-                    measures: ['testMeasure'],
+                    measures: [
+                        'testMeasure',
+                    ] as unknown as readonly MeasureName[],
                     timezone: ctx.timezone,
                     filters: mockScopeFilters as any,
                 }))
@@ -141,7 +144,7 @@ describe('scope', () => {
     describe('MetricBuilderWithInput', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
-            measures: ['testMeasure'],
+            measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
@@ -169,7 +172,7 @@ describe('scope', () => {
     describe('MetricQuery', () => {
         const scope = defineScope({
             scope: MetricScope.TicketsOpen,
-            measures: ['testMeasure'],
+            measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
             filters: ['periodStart', 'periodEnd'],
         })
@@ -177,7 +180,9 @@ describe('scope', () => {
         describe('build without input schema', () => {
             it('should build query and return frozen result', () => {
                 const queryFactory = jest.fn(() => ({
-                    measures: ['testMeasure'] as const,
+                    measures: [
+                        'testMeasure',
+                    ] as unknown as readonly MeasureName[],
                 }))
 
                 const metricQuery = scope

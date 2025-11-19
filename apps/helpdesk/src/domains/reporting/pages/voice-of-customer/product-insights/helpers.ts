@@ -1,3 +1,4 @@
+import type { ReportingMetricItemValue } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -11,8 +12,8 @@ import { DEFAULT_SORTING_VALUE } from 'domains/reporting/pages/voice-of-customer
 export const formatProductsPerIntentsTableData = (
     data: {
         category: string | null
-        value: string | null
-        prevValue?: string | null
+        value: ReportingMetricItemValue
+        prevValue?: ReportingMetricItemValue
     }[],
     intentCustomFieldId: number,
 ) => {

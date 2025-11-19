@@ -148,7 +148,7 @@ export const TopUsedTagsChart = ({
                                                     title: `Total | ${item.name}`,
                                                     metricName:
                                                         TagsMetric.TicketCount,
-                                                    tagId: item.category,
+                                                    tagId: item.category.toString(),
                                                     ticketTimeReference:
                                                         tagTicketTimeReference,
                                                 }}

@@ -2,6 +2,14 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import {
+    VoiceCallDimension,
+    VoiceCallMeasure,
+} from 'domains/reporting/models/cubes/VoiceCallCube'
+import {
+    VoiceEventsByAgentDimension,
+    VoiceEventsByAgentMeasure,
+} from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -41,7 +49,9 @@ describe('voiceAgentsReportingService', () => {
         },
     }
 
-    const mockReportData: VoiceAgentsPerformanceReportData = {
+    const mockReportData: ReturnType<
+        typeof useVoiceAgentsMetrics
+    >['reportData'] = {
         totalCallsMetric: {
             isFetching: false,
             isError: false,
@@ -58,6 +68,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceCall.count': '3',
                     },
                 ],
+                dimensions: [VoiceCallDimension.FilteringAgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
             },
         },
         answeredCallsMetric: {
@@ -76,6 +88,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceCall.count': '2',
                     },
                 ],
+                dimensions: [VoiceCallDimension.FilteringAgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
             },
         },
         transferredInboundCallsMetric: {
@@ -94,6 +108,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceEventsByAgent.count': '1',
                     },
                 ],
+                dimensions: [VoiceEventsByAgentDimension.AgentId],
+                measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             },
         },
         missedCallsMetric: {
@@ -112,6 +128,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceCall.count': '1',
                     },
                 ],
+                dimensions: [VoiceCallDimension.FilteringAgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
             },
         },
         declinedCallsMetric: {
@@ -130,6 +148,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceEventsByAgent.count': '0',
                     },
                 ],
+                dimensions: [VoiceEventsByAgentDimension.AgentId],
+                measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
             },
         },
         outboundCallsMetric: {
@@ -148,6 +168,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceCall.count': '2',
                     },
                 ],
+                dimensions: [VoiceCallDimension.FilteringAgentId],
+                measures: [VoiceCallMeasure.VoiceCallCount],
             },
         },
         averageTalkTimeMetric: {
@@ -166,6 +188,8 @@ describe('voiceAgentsReportingService', () => {
                         'VoiceCall.averageTalkTimeSeconds': '90',
                     },
                 ],
+                dimensions: [VoiceCallDimension.AgentId],
+                measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
             },
         },
     }

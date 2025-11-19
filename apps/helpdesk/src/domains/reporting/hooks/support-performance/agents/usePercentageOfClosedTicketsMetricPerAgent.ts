@@ -37,6 +37,8 @@ const formatResult = (
     return {
         value: metricValue,
         decile: closedTicketsPerAgent.data?.decile || null,
+        dimensions: closedTicketsPerAgent.data?.dimensions || [],
+        measures: closedTicketsPerAgent.data?.measures || [],
         allData: allData.map((item) => ({
             ...item,
             [ticketCountField]:

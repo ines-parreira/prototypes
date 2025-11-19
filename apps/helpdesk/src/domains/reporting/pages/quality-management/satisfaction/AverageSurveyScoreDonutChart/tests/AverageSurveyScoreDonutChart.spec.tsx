@@ -97,6 +97,8 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
                         [TicketSatisfactionSurveyDimension.SurveyScore]: '1',
                     },
                 ],
+                dimensions: [TicketSatisfactionSurveyDimension.SurveyScore],
+                measures: [TicketSatisfactionSurveyMeasure.ScoredSurveysCount],
             },
         })
     })

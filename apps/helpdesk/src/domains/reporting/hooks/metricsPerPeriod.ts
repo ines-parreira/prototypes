@@ -13,6 +13,7 @@ import {
 import type {
     MetricPerDimensionTrend,
     QueryReturnType,
+    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
@@ -32,13 +33,13 @@ export const filterDataWithSelectedTags = ({
 }: {
     statsFilters: StatsFilters
     data: {
-        value: QueryReturnType<TicketTagsEnrichedCube>
-        prevValue: QueryReturnType<TicketTagsEnrichedCube>
+        value: QueryReturnType<string, TicketTagsEnrichedCube>
+        prevValue: QueryReturnType<string, TicketTagsEnrichedCube>
     }
     tagResultsSelection: TagSelection
 }): {
-    value: QueryReturnType<TicketTagsEnrichedCube>
-    prevValue: QueryReturnType<TicketTagsEnrichedCube>
+    value: QueryReturnType<string, TicketTagsEnrichedCube>
+    prevValue: QueryReturnType<string, TicketTagsEnrichedCube>
 } => {
     const tags = getTagValuesByOperator(statsFilters)
 
@@ -65,11 +66,11 @@ export const useTagsTicketCount = (
             ? tagsTicketCountOnCreatedDatetimeQueryFactory
             : tagsTicketCountQueryFactory
 
-    const currentPeriod = useMetricPerDimension(
+    const currentPeriod = useMetricPerDimension<StringWhichShouldBeNumber>(
         queryFactory(statsFilters, timezone, sorting),
     )
 
-    const previousPeriod = useMetricPerDimension(
+    const previousPeriod = useMetricPerDimension<StringWhichShouldBeNumber>(
         queryFactory(
             {
                 ...statsFilters,

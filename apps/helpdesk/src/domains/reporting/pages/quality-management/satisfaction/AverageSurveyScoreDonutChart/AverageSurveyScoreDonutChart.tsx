@@ -90,9 +90,12 @@ export const formatSurveyScores = (
     )
 
     return CHART_DATA_MAP_ARRAY.map((item) => {
+        const itemScore = dataMap[item.score]
+        const scoreItem =
+            typeof itemScore === 'string' ? parseInt(itemScore) : itemScore
         return {
             ...item,
-            value: parseInt(dataMap[item.score] ?? '0'),
+            value: scoreItem ?? 0,
             label: `${item.score} ${labelSuffix}`,
         }
     })

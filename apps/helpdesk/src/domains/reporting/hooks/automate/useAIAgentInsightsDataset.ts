@@ -22,12 +22,14 @@ import {
     filterMetricDataByIntentLevel,
     transformIntentName,
 } from 'domains/reporting/hooks/automate/utils'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
+import type { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -236,7 +238,10 @@ export const useSuccessRateUpliftOpportunityPerIntent = ({
         const totalTicketCount = String(aiAgentTickets.data?.value)
 
         return enrichWithSuccessRateUpliftOpportunity(
-            aiAgentTicketsNotAutomatedGroupedByIntent,
+            aiAgentTicketsNotAutomatedGroupedByIntent as MetricWithDecile<
+                string,
+                TicketCustomFieldsCube
+            >,
             totalTicketCount,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
             sorting,
@@ -316,8 +321,14 @@ export const useSuccessRatePerIntent = (
         }
 
         return enrichWithSuccessRate(
-            aiAgentAutomatedTicketsGroupedByIntent,
-            ticketsPerIntent,
+            aiAgentAutomatedTicketsGroupedByIntent as MetricWithDecile<
+                string,
+                TicketCustomFieldsCube
+            >,
+            ticketsPerIntent as MetricWithDecile<
+                string,
+                TicketCustomFieldsCube
+            >,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
             sorting,
         )

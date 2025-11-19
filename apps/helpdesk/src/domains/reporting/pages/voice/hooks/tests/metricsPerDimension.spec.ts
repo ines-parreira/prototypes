@@ -204,7 +204,7 @@ describe('metricsPerDimension', () => {
             },
             {
                 fetch: fetchAnsweredCallsMetricPerAgent,
-                query: (statsFilters, timezone) =>
+                query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
@@ -213,7 +213,7 @@ describe('metricsPerDimension', () => {
             },
             {
                 fetch: fetchMissedCallsMetricPerAgent,
-                query: (statsFilters, timezone) =>
+                query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
@@ -222,7 +222,7 @@ describe('metricsPerDimension', () => {
             },
             {
                 fetch: fetchOutboundCallsMetricPerAgent,
-                query: (statsFilters, timezone) =>
+                query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,

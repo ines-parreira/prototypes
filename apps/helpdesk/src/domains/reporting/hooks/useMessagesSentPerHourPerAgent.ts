@@ -13,25 +13,12 @@ import type {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    AgentTimeTrackingDimension,
-    AgentTimeTrackingMeasure,
-} from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     matchAndCalculateAllEntries,
     sortAllData,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
-
-const senderIdField = HelpdeskMessageDimension.SenderId
-const userIdField = AgentTimeTrackingDimension.UserId
-const messageCountField = HelpdeskMessageMeasure.MessageCount
-const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 
 const formatResult = (
     messagesSent: MetricWithDecile,
@@ -53,13 +40,10 @@ const formatResult = (
                   messagesSent,
                   onlineTime,
                   calculateMetricPerHour,
-                  senderIdField,
-                  userIdField,
-                  messageCountField,
-                  onlineTimeField,
               )
             : []
 
+    const messageCountField = messagesSent.data?.measures?.[0] || ''
     const sortedData = sortAllData(data, messageCountField, sorting)
 
     const maxValue = Math.max(
@@ -69,6 +53,8 @@ const formatResult = (
         allData: sortedData,
         value: metricValue,
         decile: calculateDecile(metricValue || 0, maxValue),
+        dimensions: messagesSent.data?.dimensions || [],
+        measures: messagesSent.data?.measures || [],
     }
 }
 

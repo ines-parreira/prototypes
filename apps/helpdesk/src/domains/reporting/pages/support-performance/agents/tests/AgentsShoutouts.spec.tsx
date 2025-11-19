@@ -9,7 +9,6 @@ import {
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketDimension,
     TicketMeasure,
@@ -66,7 +65,9 @@ describe('<AgentsShoutouts />', () => {
         },
     } as RootState
 
-    const allDataMockedMetric: MetricWithDecile = {
+    const allDataMockedMetric: ReturnType<
+        typeof useCustomerSatisfactionMetricPerAgent
+    > = {
         isError: false,
         isFetching: false,
         data: {
@@ -82,30 +83,51 @@ describe('<AgentsShoutouts />', () => {
                 [TicketMessagesMeasure.MedianResolutionTime]: String(10 + idx),
                 [TicketMeasure.TicketCount]: String(10 + idx),
             })),
+            dimensions: [TicketDimension.AssigneeUserId],
+            measures: [
+                TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
+                TicketMessagesMeasure.MedianResolutionTime,
+                TicketMeasure.TicketCount,
+            ],
         },
     }
 
-    const noDataMockedMetric: MetricWithDecile = {
+    const noDataMockedMetric: ReturnType<
+        typeof useCustomerSatisfactionMetricPerAgent
+    > = {
         isError: false,
         isFetching: false,
         data: {
             value: null,
             decile: null,
             allData: [],
+            dimensions: [TicketDimension.AssigneeUserId],
+            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
         },
     }
 
     it('should render all shoutouts for users if they have data', () => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
-            allDataMockedMetric,
+            allDataMockedMetric as ReturnType<
+                typeof useCustomerSatisfactionMetricPerAgent
+            >,
         )
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
-            allDataMockedMetric,
+            allDataMockedMetric as ReturnType<
+                typeof useMedianFirstResponseTimeMetricPerAgent
+            >,
         )
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
-            allDataMockedMetric,
+            allDataMockedMetric as ReturnType<
+                typeof useMedianResolutionTimeMetricPerAgent
+            >,
         )
-        useClosedTicketsMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
+        useClosedTicketsMetricPerAgentMock.mockReturnValue(
+            allDataMockedMetric as ReturnType<
+                typeof useClosedTicketsMetricPerAgent
+            >,
+        )
 
         render(
             <Provider store={mockStore(defaultState as any)}>
@@ -124,7 +146,9 @@ describe('<AgentsShoutouts />', () => {
     })
 
     it('should show the name of the user if there is only one to shoutout and {count} agents if there are more with the same value', () => {
-        const mockedMetric: MetricWithDecile = {
+        const mockedMetric: ReturnType<
+            typeof useCustomerSatisfactionMetricPerAgent
+        > = {
             isError: false,
             isFetching: false,
             data: {
@@ -142,21 +166,40 @@ describe('<AgentsShoutouts />', () => {
                     [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
                         String(10 + idx),
                 })),
+                dimensions: [TicketDimension.AssigneeUserId],
+                measures: [
+                    TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
+                ],
             },
         }
-        const loadingMetric: MetricWithDecile = {
+        const loadingMetric: ReturnType<
+            typeof useCustomerSatisfactionMetricPerAgent
+        > = {
             isError: false,
             isFetching: true,
             data: null,
         }
 
-        useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(mockedMetric)
+        useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
+            mockedMetric as ReturnType<
+                typeof useCustomerSatisfactionMetricPerAgent
+            >,
+        )
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
-            mockedMetric,
+            mockedMetric as ReturnType<
+                typeof useMedianFirstResponseTimeMetricPerAgent
+            >,
         )
 
-        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(loadingMetric)
-        useClosedTicketsMetricPerAgentMock.mockReturnValue(loadingMetric)
+        useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
+            loadingMetric as ReturnType<
+                typeof useMedianResolutionTimeMetricPerAgent
+            >,
+        )
+        useClosedTicketsMetricPerAgentMock.mockReturnValue(
+            loadingMetric as ReturnType<typeof useClosedTicketsMetricPerAgent>,
+        )
 
         render(
             <Provider store={mockStore(defaultState as any)}>
@@ -194,16 +237,26 @@ describe('<AgentsShoutouts />', () => {
 
     it('should show no data placeholders when there is no available data for some metric', () => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
-            noDataMockedMetric,
+            noDataMockedMetric as ReturnType<
+                typeof useCustomerSatisfactionMetricPerAgent
+            >,
         )
 
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
-            allDataMockedMetric,
+            allDataMockedMetric as ReturnType<
+                typeof useMedianFirstResponseTimeMetricPerAgent
+            >,
         )
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
-            allDataMockedMetric,
+            allDataMockedMetric as ReturnType<
+                typeof useMedianResolutionTimeMetricPerAgent
+            >,
         )
-        useClosedTicketsMetricPerAgentMock.mockReturnValue(allDataMockedMetric)
+        useClosedTicketsMetricPerAgentMock.mockReturnValue(
+            allDataMockedMetric as ReturnType<
+                typeof useClosedTicketsMetricPerAgent
+            >,
+        )
 
         render(
             <Provider store={mockStore(defaultState as any)}>

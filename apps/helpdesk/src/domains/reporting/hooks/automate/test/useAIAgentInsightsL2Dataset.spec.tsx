@@ -152,8 +152,10 @@ describe('useAiAgentInsightsL2Dataset', () => {
         useAIAgentTicketsPerIntentMock
             .mockReturnValueOnce({
                 data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    allData: data as unknown as QueryReturnType<
+                        string,
+                        TicketCustomFieldsCube
+                    >,
                     value: null,
                     decile: null,
                 },
@@ -162,8 +164,10 @@ describe('useAiAgentInsightsL2Dataset', () => {
             })
             .mockReturnValueOnce({
                 data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    allData: data as unknown as QueryReturnType<
+                        string,
+                        TicketCustomFieldsCube
+                    >,
                     value: null,
                     decile: null,
                 },
@@ -196,7 +200,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 data: data as unknown as {
                     'TicketCustomFieldsEnriched.valueString':
                         | string
-                        | null
+                        | string
                         | undefined
                 }[],
                 isFetching: false,
@@ -206,7 +210,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 data: data as unknown as {
                     'TicketCustomFieldsEnriched.valueString':
                         | string
-                        | null
+                        | string
                         | undefined
                 }[],
                 isFetching: false,
@@ -282,8 +286,10 @@ describe('useAiAgentInsightsL2Dataset', () => {
         useAIAgentTicketsPerIntentMock
             .mockReturnValueOnce({
                 data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    allData: data as unknown as QueryReturnType<
+                        string,
+                        TicketCustomFieldsCube
+                    >,
                     value: null,
                     decile: null,
                 },
@@ -292,8 +298,10 @@ describe('useAiAgentInsightsL2Dataset', () => {
             })
             .mockReturnValueOnce({
                 data: {
-                    allData:
-                        data as unknown as QueryReturnType<TicketCustomFieldsCube>,
+                    allData: data as unknown as QueryReturnType<
+                        string,
+                        TicketCustomFieldsCube
+                    >,
                     value: null,
                     decile: null,
                 },
@@ -329,7 +337,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 data: data as unknown as {
                     'TicketCustomFieldsEnriched.valueString':
                         | string
-                        | null
+                        | string
                         | undefined
                 }[],
                 isFetching: false,
@@ -339,7 +347,7 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 data: data as unknown as {
                     'TicketCustomFieldsEnriched.valueString':
                         | string
-                        | null
+                        | string
                         | undefined
                 }[],
                 isFetching: false,

@@ -2,7 +2,10 @@ import {
     createFetchPerDimension,
     createMetricPerDimensionHook,
 } from 'domains/reporting/hooks/helpers'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricWithDecile,
+    ReportingMetricItemValue,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
@@ -38,13 +41,15 @@ import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/m
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { OrderDirection } from 'models/api/types'
 
-export type MetricPerChannelQueryHook = (
+export type MetricPerChannelQueryHook<
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+> = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
     channel?: string,
     shouldIncludeBots?: boolean,
-) => MetricWithDecile
+) => MetricWithDecile<TValue>
 
 export const useMedianFirstResponseTimeMetricPerChannel = (
     statsFilters: StatsFilters,

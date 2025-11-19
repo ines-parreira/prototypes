@@ -25,7 +25,7 @@ export const useTicketCountPerIntentForProduct = (
     intentsCustomFieldValueString?: string,
     sortingField?: TicketsPerIntentOrderField,
 ) => {
-    return useMetricPerDimension(
+    return useMetricPerDimension<string>(
         ticketCountPerIntentForProductQueryFactory(
             statsFilters,
             timezone,

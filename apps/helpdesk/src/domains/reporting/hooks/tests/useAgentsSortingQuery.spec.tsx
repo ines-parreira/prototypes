@@ -6,7 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricWithDecile,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { getQuery } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
@@ -120,7 +123,10 @@ describe('useAgentsSortingQuery', () => {
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
         const column = AgentsTableColumn.ClosedTickets
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            TicketMessagesCube
+        >['data'] = {
             value: 123,
             decile: 5,
             allData: [
@@ -172,7 +178,10 @@ describe('useAgentsSortingQuery', () => {
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
         const column = AgentsTableColumn.ClosedTickets
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            TicketMessagesCube
+        >['data'] = {
             value: 123,
             decile: 5,
             allData: [

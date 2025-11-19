@@ -471,6 +471,8 @@ describe('reporting utils', () => {
                             [dataAMeasureField]: '90',
                         },
                     ],
+                    dimensions: [dataAIdField],
+                    measures: [dataAMeasureField],
                 },
             }
             const metricBData = {
@@ -491,6 +493,8 @@ describe('reporting utils', () => {
                             [dataBMeasureField]: '300',
                         },
                     ],
+                    dimensions: [dataBIdField],
+                    measures: [dataBMeasureField],
                 },
             }
 
@@ -501,10 +505,6 @@ describe('reporting utils', () => {
                     metricAData,
                     metricBData,
                     calculation,
-                    dataAIdField,
-                    dataBIdField,
-                    dataAMeasureField,
-                    dataBMeasureField,
                 ),
             ).toEqual([
                 {

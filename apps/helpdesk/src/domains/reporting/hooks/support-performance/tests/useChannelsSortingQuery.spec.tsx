@@ -6,10 +6,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useChannelsSortingQuery } from 'domains/reporting/hooks/support-performance/useChannelsSortingQuery'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricWithDecile,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
-import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -112,17 +114,21 @@ describe('useChannelsSortingQuery', () => {
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
         const column = ChannelsTableColumns.CustomerSatisfaction
-        const metricData: MetricWithDecile<HelpdeskMessageCubeWithJoins>['data'] =
-            {
-                value: 123,
-                decile: 5,
-                allData: [
-                    {
-                        [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '123',
-                        [CHANNEL_DIMENSION]: 'whatsapp',
-                    },
-                ],
-            }
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            HelpdeskMessageCubeWithJoins
+        >['data'] = {
+            value: 123,
+            decile: 5,
+            dimensions: [CHANNEL_DIMENSION],
+            measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            allData: [
+                {
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '123',
+                    [CHANNEL_DIMENSION]: 'whatsapp',
+                },
+            ],
+        }
         const store = mockStore({
             ...defaultState,
             ui: {
@@ -195,9 +201,14 @@ describe('useChannelsSortingQuery', () => {
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
         const column = ChannelsTableColumns.ClosedTickets
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            HelpdeskMessageCubeWithJoins
+        >['data'] = {
             value: 123,
             decile: 5,
+            dimensions: [CHANNEL_DIMENSION],
+            measures: [TicketMeasure.TicketCount],
             allData: [
                 {
                     [TicketMeasure.TicketCount]: '123',
@@ -235,9 +246,9 @@ describe('useChannelsSortingQuery', () => {
 
         expect(store.getActions()).not.toContainEqual(
             sortingLoaded(
-                metricData.allData
-                    .map((result) => result[CHANNEL_DIMENSION])
-                    .filter(notEmpty),
+                metricData?.allData
+                    ?.map((result) => result[CHANNEL_DIMENSION])
+                    .filter(notEmpty) ?? [],
             ),
         )
     })

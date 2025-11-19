@@ -168,7 +168,7 @@ export const useAiAgentTicketCountFromTicketCustomFieldsPerIntent = ({
     outcomeValuesToExclude?: string[]
     outcomeValueToInclude?: string
 }) => {
-    return useMetricPerDimension(
+    return useMetricPerDimension<string>(
         aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory({
             filters,
             timezone,
@@ -213,7 +213,7 @@ export const useAIAgentTicketsWithIntent = (
     sorting?: OrderDirection,
     intentId?: string,
 ) => {
-    return useMetricPerDimension(
+    return useMetricPerDimension<string>(
         aiAgentTicketsWithIntentQueryFactory(
             filters,
             timezone,
@@ -231,7 +231,7 @@ export const useGetTicketIntentsForTicketIds = (
     sorting?: OrderDirection,
     ticketIds?: string[] | null,
 ) => {
-    return useMetricPerDimension({
+    return useMetricPerDimension<string>({
         metricName: METRIC_NAMES.AI_AGENT_TICKET_INTENTS_FOR_TICKETS,
         measures: [],
         dimensions: [
@@ -280,7 +280,7 @@ export const useAIAgentResourcePerTicket = (
     sorting?: OrderDirection,
     enabled?: boolean,
 ) => {
-    return useMetricPerDimension(
+    return useMetricPerDimension<string>(
         recommendedResourceQueryFactory(filters, timezone, ticketIds, sorting),
         undefined,
         enabled,

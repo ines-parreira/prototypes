@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useTagsTicketCount } from 'domains/reporting/hooks/metricsPerPeriod'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type { ReportingMetricItemValue } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -16,7 +17,7 @@ const ticketCountField = TicketTagsEnrichedMeasure.TicketCount
 const tagsDimension = TicketTagsEnrichedDimension.TagId
 
 type ItemType = {
-    [key: string]: string | null
+    [key: string]: ReportingMetricItemValue
 }
 
 function getValuesUptoTopAmount(

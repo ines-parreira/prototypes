@@ -8,7 +8,7 @@ export const getTagName = ({
     id,
 }: {
     name?: string
-    id: string
+    id: string | number
 }): string => {
     return name || `${id} (deleted)`
 }

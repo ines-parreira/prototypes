@@ -57,6 +57,19 @@ export type DimensionName =
     | 'resolutionTime'
     | 'handleTime'
 
+export type MeasureName =
+    | 'ticketCount'
+    | 'averageHandleTime'
+    | 'handleTime'
+    | 'averageSurveyScore'
+    | 'scoredSurveysCount'
+    | 'medianResolutionTime'
+    | 'onlineTime'
+    | 'messagesCount'
+    | 'messagesAverage'
+    | 'medianFirstResponseTime'
+    | 'medianFirstResponseTimeInSeconds'
+
 export type TimeDimensionName =
     | 'createdDatetime'
     | 'sentDatetime'

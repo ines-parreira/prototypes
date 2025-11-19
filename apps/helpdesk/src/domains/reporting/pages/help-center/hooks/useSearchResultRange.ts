@@ -21,7 +21,7 @@ export const useSearchResultRange = (
     statsFilters: StatsFilters,
     timezone: string,
 ) => {
-    const searchData = useMetricPerDimension(
+    const searchData = useMetricPerDimension<string>(
         searchResultRangeQueryFactory(statsFilters, timezone),
     )
 

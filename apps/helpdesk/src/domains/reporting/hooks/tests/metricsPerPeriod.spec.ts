@@ -253,7 +253,7 @@ describe('filterDataWithSelectedTags', () => {
             'TicketTagsEnriched.ticketCount': '5',
             decile: '6',
         },
-    ] as QueryReturnType<TicketTagsEnrichedCube>
+    ] as QueryReturnType<string, TicketTagsEnrichedCube>
 
     const statsFilters = {
         ...defaultStatsFilters,

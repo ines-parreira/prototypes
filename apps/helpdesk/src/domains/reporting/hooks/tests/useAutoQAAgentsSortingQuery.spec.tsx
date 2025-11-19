@@ -6,7 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useAutoQAAgentsSortingQuery } from 'domains/reporting/hooks/useAutoQAAgentsSortingQuery'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    MetricWithDecile,
+    StringWhichShouldBeNumber,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
@@ -118,7 +121,10 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            TicketMessagesCube
+        >['data'] = {
             value: 123,
             decile: 5,
             allData: [{ [TicketQAScoreMeasure.AverageScore]: '123' }],
@@ -166,7 +172,10 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
+        const metricData: MetricWithDecile<
+            StringWhichShouldBeNumber,
+            TicketMessagesCube
+        >['data'] = {
             value: 123,
             decile: 5,
             allData: [{ [TicketQAScoreMeasure.AverageScore]: '123' }],

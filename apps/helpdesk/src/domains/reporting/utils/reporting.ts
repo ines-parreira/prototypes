@@ -7,6 +7,9 @@ import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import type {
     MetricWithDecile,
     QueryReturnType,
+    ReportingMetricItem,
+    ReportingMetricItemValue,
+    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { AgentTimeTrackingMember } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
@@ -14,7 +17,6 @@ import { AutomationBillingEventMember } from 'domains/reporting/models/cubes/aut
 import { AutomationDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { HelpCenterTrackingEventMember } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketSLAMember } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import {
@@ -442,36 +444,45 @@ export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
 export const calculatePercentage = (x: number, y: number) =>
     x === 0 || y === 0 ? 0 : (x / y) * 100
 
-export const matchAndCalculateAllEntries = (
-    dataA: Pick<MetricWithDecile, 'data'>,
-    dataB: Pick<MetricWithDecile, 'data'>,
+export const matchAndCalculateAllEntries = <
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+>(
+    dataA: Pick<MetricWithDecile<TValue, TCube>, 'data'>,
+    dataB: Pick<MetricWithDecile<TValue, TCube>, 'data'>,
     calculate: (a: number, b: number) => number,
-    dataAIdField: string,
-    dataBIdField: string,
-    dataAMeasureField: string,
-    dataBMeasureField: string,
-): QueryReturnType<HelpdeskMessageCubeWithJoins> =>
-    dataA.data?.allData.map((item) => {
+): QueryReturnType<StringWhichShouldBeNumber, TCube> =>
+    (dataA.data?.allData.map((DataAItem) => {
+        const dataADimension = dataA.data?.dimensions?.[0]
+        const dataBDimension = dataB.data?.dimensions?.[0]
+        const dataAMeasure = dataA.data?.measures?.[0] || ''
+        const dataBMeasure = dataB.data?.measures?.[0] || ''
+
         const matchingValue = dataB.data?.allData.find(
-            (value) => value[dataBIdField] === item[dataAIdField],
-        )?.[dataBMeasureField]
+            (value) =>
+                value[dataBDimension]?.toString() ===
+                DataAItem[dataADimension]?.toString(),
+        )?.[dataBMeasure]
 
         return {
-            ...item,
-            [dataAMeasureField]: matchingValue
+            ...DataAItem,
+            [dataAMeasure]: matchingValue
                 ? String(
                       calculate(
-                          Number(item[dataAMeasureField]),
+                          Number(DataAItem[dataAMeasure]),
                           Number(matchingValue),
                       ),
                   )
                 : null,
-        }
-    }) ?? []
+        } as ReportingMetricItem<StringWhichShouldBeNumber, TCube>
+    }) ?? []) as QueryReturnType<StringWhichShouldBeNumber, TCube>
 
-export const sortAllData = (
-    allData: QueryReturnType<HelpdeskMessageCubeWithJoins>,
-    sortingField: string,
+export const sortAllData = <
+    TValue extends ReportingMetricItemValue = ReportingMetricItemValue,
+    TCube extends Cubes = Cubes,
+>(
+    allData: QueryReturnType<TValue, TCube>,
+    sortingField: keyof ReportingMetricItem<TValue, TCube>,
     sorting?: OrderDirection,
 ) => {
     const nonNullValues = allData.filter((item) => item[sortingField] !== null)
@@ -486,7 +497,7 @@ export const sortAllData = (
 }
 
 export const mapMetrics = <TCube extends Cubes = Cubes>(
-    metrics: MetricWithDecile<TCube>,
+    metrics: MetricWithDecile<StringWhichShouldBeNumber, TCube>,
     dimension: TCube['dimensions'],
     measure: TCube['measures'],
 ) => {

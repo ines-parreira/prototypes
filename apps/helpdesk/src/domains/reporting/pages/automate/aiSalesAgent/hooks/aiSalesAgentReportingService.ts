@@ -14,8 +14,10 @@ import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
     AiSalesAgentMetricConfig,
-    type TimeSeriesMetric,
-    type TrendMetric,
+} from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import type {
+    TimeSeriesMetric,
+    TrendMetric,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import type { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import {

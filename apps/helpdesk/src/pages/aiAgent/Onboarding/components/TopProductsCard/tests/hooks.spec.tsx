@@ -67,6 +67,8 @@ describe('useTopProducts', () => {
                 decile: null,
                 value: null,
                 allData: [],
+                dimensions: [AiSalesAgentOrdersDimension.ProductId],
+                measures: [AiSalesAgentOrdersMeasure.Count],
             },
             isFetching: true,
             isError: false,

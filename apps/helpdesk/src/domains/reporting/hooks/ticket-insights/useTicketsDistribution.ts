@@ -38,12 +38,14 @@ export const useTicketsDistribution = (
         ticketFieldsTicketTimeReference,
     )
 
-    const topData: QueryReturnType<Cubes> = useMemo(
+    const topData: QueryReturnType<string | null, Cubes> = useMemo(
         () =>
             data?.allData.slice(0, topAmount).map((item) => ({
                 ...item,
                 [customFieldDimension]: stripEscapedQuotes(
-                    item[customFieldDimension],
+                    item[customFieldDimension] == null
+                        ? null
+                        : String(item[customFieldDimension]),
                 ),
             })) || [],
         [customFieldDimension, data?.allData, topAmount],

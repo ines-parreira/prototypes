@@ -16,6 +16,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
+import type { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
 import { getTimezone } from 'state/currentUser/selectors'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
@@ -42,7 +43,11 @@ const fakeTopLocations = [
     },
 ]
 
-export const useTopLocations = ({ shopName }: { shopName: string }) => {
+export const useTopLocations = ({
+    shopName,
+}: {
+    shopName: string
+}): { data: TopElement[]; isLoading: boolean } => {
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || ''),
     ).toJS()
@@ -63,7 +68,7 @@ export const useTopLocations = ({ shopName }: { shopName: string }) => {
         },
     }
 
-    const topLocationsMetric = useMetricPerDimension(
+    const topLocationsMetric = useMetricPerDimension<string>(
         topLocationsRecommendationsQueryFactory(filters),
     )
 
@@ -76,8 +81,7 @@ export const useTopLocations = ({ shopName }: { shopName: string }) => {
     const data = useMemo(() => {
         let topLocations = (topLocationsMetric.data?.allData || []).map(
             (record) => {
-                const city =
-                    record[AiSalesAgentOrdersDimension.ShippingCity] ?? ''
+                const city = record[AiSalesAgentOrdersDimension.ShippingCity]
                 const count = Number(
                     record[AiSalesAgentOrdersMeasure.Count] ?? 0,
                 )

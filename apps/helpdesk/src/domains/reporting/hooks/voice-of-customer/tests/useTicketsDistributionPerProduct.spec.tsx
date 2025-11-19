@@ -287,22 +287,22 @@ describe('useTicketsDistributionPerProduct', () => {
                 {
                     [PRODUCT_ID_FIELD]: '1',
                     [PRODUCT_NAME_FIELD]: 'Some name',
-                    [TICKET_COUNT_FIELD]: null,
+                    [TICKET_COUNT_FIELD]: '',
                 },
                 {
                     [PRODUCT_ID_FIELD]: '2',
-                    [PRODUCT_NAME_FIELD]: null,
-                    [TICKET_COUNT_FIELD]: null,
+                    [PRODUCT_NAME_FIELD]: '',
+                    [TICKET_COUNT_FIELD]: '',
                 },
             ],
             prevValue: [
                 {
                     [PRODUCT_ID_FIELD]: '1',
-                    [TICKET_COUNT_FIELD]: null,
+                    [TICKET_COUNT_FIELD]: '',
                 },
                 {
                     [PRODUCT_ID_FIELD]: '2',
-                    [TICKET_COUNT_FIELD]: null,
+                    [TICKET_COUNT_FIELD]: '',
                 },
             ],
         }

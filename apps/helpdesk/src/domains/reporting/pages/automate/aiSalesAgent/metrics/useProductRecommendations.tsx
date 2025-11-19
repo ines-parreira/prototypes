@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
@@ -35,10 +36,11 @@ import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     // Get recommendations totals
-    const recommendationsTotalData = useMetricPerDimension(
-        productRecommendationsQueryFactory(filters, timezone),
-        AiSalesAgentConversationsDimension.ProductId,
-    )
+    const recommendationsTotalData =
+        useMetricPerDimension<StringWhichShouldBeNumber>(
+            productRecommendationsQueryFactory(filters, timezone),
+            AiSalesAgentConversationsDimension.ProductId,
+        )
     const productTotals = mapMetrics(
         recommendationsTotalData,
         AiSalesAgentConversationsDimension.ProductId,
@@ -46,12 +48,12 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     )
 
     // Get product clicks
-    const clickTotalData = useMetricPerDimension(
+    const clickTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
         productClicksQueryFactory(filters, timezone),
     )
 
     // Get product bought
-    const boughtTotalData = useMetricPerDimension(
+    const boughtTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
         productBoughtQueryFactory(filters, timezone),
     )
 
@@ -161,13 +163,13 @@ const fetchProductRecommendations = async (
         // Fetch metrics data
         const [recommendationsTotalData, clickTotalData, boughtTotalData] =
             await Promise.all([
-                fetchMetricPerDimension(
+                fetchMetricPerDimension<StringWhichShouldBeNumber>(
                     productRecommendationsQueryFactory(filters, timezone),
                 ),
-                fetchMetricPerDimension(
+                fetchMetricPerDimension<StringWhichShouldBeNumber>(
                     productClicksQueryFactory(filters, timezone),
                 ),
-                fetchMetricPerDimension(
+                fetchMetricPerDimension<StringWhichShouldBeNumber>(
                     productBoughtQueryFactory(filters, timezone),
                 ),
             ])
