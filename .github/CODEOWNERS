@@ -4,6 +4,8 @@ apps/helpdesk/src/domains/reporting @gorgias/crm-reporting
 apps/helpdesk/src/assets/img/paywalls/screens/chat_stats.png @gorgias/crm-reporting
 apps/helpdesk/src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/crm-reporting
 
+packages/reporting @gorgias/crm-reporting
+
 # Conv AI Orchestration scope
 apps/helpdesk/src/pages/aiAgent/ @gorgias/conv-ai-orchestration
 apps/helpdesk/src/pages/standalone/ @gorgias/conv-ai-orchestration
@@ -93,7 +95,10 @@ apps/helpdesk/src/state/entities/ruleRecipes @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/state/entities/rules @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/state/rules @gorgias/support-agent-xp-frontend
 apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion @gorgias/support-agent-xp-frontend
+
 packages/utils/src/shortcuts @gorgias/support-agent-xp-frontend
+packages/tickets @gorgias/support-agent-xp-frontend
+packages/navigation @gorgias/support-agent-xp-frontend
 
 # Phone scope @gorgias/support-phone
 
