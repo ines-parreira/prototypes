@@ -1,4 +1,4 @@
-import { Button, Icon, MultiButton } from '@gorgias/axiom'
+import { Button, ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
 
 import { HELP_CENTER_SELECT_MODAL_OPEN } from '../constants'
 import { dispatchDocumentEvent } from '../EmptyState/utils'
@@ -30,26 +30,26 @@ export const DocumentFilters = ({
 
     return (
         <div className={css.container}>
-            <MultiButton>
+            <ButtonGroup
+                onSelectionChange={(type) => {
+                    const selected = filters.find((f) => f.label === type)
+                    onFilterChange(selected?.type || null)
+                }}
+            >
                 {filters.map((filter) => {
-                    const isSelected = filter.type === selectedFilter
                     return (
-                        <Button
-                            as="button"
-                            intent="regular"
+                        <ButtonGroupItem
+                            id={filter.label}
                             key={filter.type || 'all'}
-                            variant={isSelected ? 'primary' : 'secondary'}
-                            size="md"
-                            onClick={() => onFilterChange(filter.type)}
                             leadingSlot={
                                 filter.icon && <Icon name={filter.icon} />
                             }
                         >
                             {filter.label}
-                        </Button>
+                        </ButtonGroupItem>
                     )
                 })}
-            </MultiButton>
+            </ButtonGroup>
             {selectedFilter === KnowledgeType.FAQ && (
                 <Button
                     variant="secondary"

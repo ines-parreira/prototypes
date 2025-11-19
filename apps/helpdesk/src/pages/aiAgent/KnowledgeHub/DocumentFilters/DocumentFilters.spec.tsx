@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { KnowledgeType } from '../types'
@@ -11,6 +11,11 @@ describe('DocumentFilters', () => {
         selectedFilter: null,
         onFilterChange: mockOnFilterChange,
     }
+
+    beforeAll(() => {
+        // Mock getAnimations for jsdom
+        Element.prototype.getAnimations = jest.fn(() => [])
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -25,22 +30,22 @@ describe('DocumentFilters', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: 'All content' }),
+                screen.getByRole('radio', { name: 'All content' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Documents/ }),
+                screen.getByRole('radio', { name: /Documents/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Help Center articles/ }),
+                screen.getByRole('radio', { name: /Help Center articles/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Guidance/ }),
+                screen.getByRole('radio', { name: /Guidance/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /URLs/ }),
+                screen.getByRole('radio', { name: /URLs/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Store website/ }),
+                screen.getByRole('radio', { name: /Store website/ }),
             ).toBeInTheDocument()
         })
     })
@@ -49,7 +54,7 @@ describe('DocumentFilters', () => {
         it('highlights "All content" button when selectedFilter is null', () => {
             renderComponent({ selectedFilter: null })
 
-            const allContentButton = screen.getByRole('button', {
+            const allContentButton = screen.getByRole('radio', {
                 name: 'All content',
             })
             expect(allContentButton).toBeInTheDocument()
@@ -58,7 +63,7 @@ describe('DocumentFilters', () => {
         it('highlights Document button when selectedFilter is Document', () => {
             renderComponent({ selectedFilter: KnowledgeType.Document })
 
-            const documentButton = screen.getByRole('button', {
+            const documentButton = screen.getByRole('radio', {
                 name: /Documents/,
             })
             expect(documentButton).toBeInTheDocument()
@@ -67,7 +72,7 @@ describe('DocumentFilters', () => {
         it('highlights FAQ button when selectedFilter is FAQ', () => {
             renderComponent({ selectedFilter: KnowledgeType.FAQ })
 
-            const faqButton = screen.getByRole('button', {
+            const faqButton = screen.getByRole('radio', {
                 name: /Help Center articles/,
             })
             expect(faqButton).toBeInTheDocument()
@@ -76,21 +81,21 @@ describe('DocumentFilters', () => {
         it('highlights Guide button when selectedFilter is Guidance', () => {
             renderComponent({ selectedFilter: KnowledgeType.Guidance })
 
-            const guideButton = screen.getByRole('button', { name: /Guidance/ })
+            const guideButton = screen.getByRole('radio', { name: /Guidance/ })
             expect(guideButton).toBeInTheDocument()
         })
 
         it('highlights URL button when selectedFilter is URL', () => {
             renderComponent({ selectedFilter: KnowledgeType.URL })
 
-            const urlButton = screen.getByRole('button', { name: /URLs/ })
+            const urlButton = screen.getByRole('radio', { name: /URLs/ })
             expect(urlButton).toBeInTheDocument()
         })
 
         it('highlights Domain button when selectedFilter is Domain', () => {
             renderComponent({ selectedFilter: KnowledgeType.Domain })
 
-            const domainButton = screen.getByRole('button', {
+            const domainButton = screen.getByRole('radio', {
                 name: /Store website/,
             })
             expect(domainButton).toBeInTheDocument()
@@ -101,7 +106,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with null when All content button is clicked', async () => {
             renderComponent()
 
-            const allContentButton = screen.getByRole('button', {
+            const allContentButton = screen.getByRole('radio', {
                 name: 'All content',
             })
             await userEvent.click(allContentButton)
@@ -113,7 +118,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with Document type when Document button is clicked', async () => {
             renderComponent()
 
-            const documentButton = screen.getByRole('button', {
+            const documentButton = screen.getByRole('radio', {
                 name: /Documents/,
             })
             await userEvent.click(documentButton)
@@ -127,7 +132,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with FAQ type when FAQ button is clicked', async () => {
             renderComponent()
 
-            const faqButton = screen.getByRole('button', {
+            const faqButton = screen.getByRole('radio', {
                 name: /Help Center articles/,
             })
             await userEvent.click(faqButton)
@@ -139,7 +144,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with Guidance type when Guide button is clicked', async () => {
             renderComponent()
 
-            const guideButton = screen.getByRole('button', { name: /Guidance/ })
+            const guideButton = screen.getByRole('radio', { name: /Guidance/ })
             await userEvent.click(guideButton)
 
             expect(mockOnFilterChange).toHaveBeenCalledWith(
@@ -151,7 +156,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with URL type when URL button is clicked', async () => {
             renderComponent()
 
-            const urlButton = screen.getByRole('button', { name: /URL/ })
+            const urlButton = screen.getByRole('radio', { name: /URL/ })
             await userEvent.click(urlButton)
 
             expect(mockOnFilterChange).toHaveBeenCalledWith(KnowledgeType.URL)
@@ -161,7 +166,7 @@ describe('DocumentFilters', () => {
         it('calls onFilterChange with Domain type when Domain button is clicked', async () => {
             renderComponent()
 
-            const domainButton = screen.getByRole('button', {
+            const domainButton = screen.getByRole('radio', {
                 name: /Store website/,
             })
             await userEvent.click(domainButton)
@@ -175,19 +180,19 @@ describe('DocumentFilters', () => {
         it('allows switching between filters', async () => {
             renderComponent()
 
-            const documentButton = screen.getByRole('button', {
+            const documentButton = screen.getByRole('radio', {
                 name: /Documents/,
             })
-            await userEvent.click(documentButton)
+            await act(() => userEvent.click(documentButton))
 
             expect(mockOnFilterChange).toHaveBeenCalledWith(
                 KnowledgeType.Document,
             )
 
-            const faqButton = screen.getByRole('button', {
+            const faqButton = screen.getByRole('radio', {
                 name: /Help Center articles/,
             })
-            await userEvent.click(faqButton)
+            await act(() => userEvent.click(faqButton))
 
             expect(mockOnFilterChange).toHaveBeenCalledWith(KnowledgeType.FAQ)
             expect(mockOnFilterChange).toHaveBeenCalledTimes(2)

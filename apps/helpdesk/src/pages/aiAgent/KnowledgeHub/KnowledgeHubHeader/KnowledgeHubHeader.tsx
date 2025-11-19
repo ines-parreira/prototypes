@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import type { GroupedKnowledgeItem } from '../types'
@@ -39,12 +41,24 @@ export const KnowledgeHubHeader = ({
 }: KnowledgeHubHeaderProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
 
+    const hasLeftSection = !!data
+    const hasRightSection = true // Right section always has content
+
     return (
         <div className={css.header}>
-            <div className={css.leftSection}>
+            <div
+                className={classNames(css.leftSection, {
+                    [css.leftSectionVisible]: hasLeftSection,
+                })}
+            >
                 <BackButton data={data} onBack={onBack} />
             </div>
-            <div className={css.middleSection}>
+            <div
+                className={classNames(css.middleSection, {
+                    [css.middleSectionWithLeftMargin]: hasLeftSection,
+                    [css.middleSectionWithRightMargin]: hasRightSection,
+                })}
+            >
                 <HeaderTitle data={data} knowledgeRoute={routes.knowledge} />
                 <LastSyncedDate data={data} />
             </div>
