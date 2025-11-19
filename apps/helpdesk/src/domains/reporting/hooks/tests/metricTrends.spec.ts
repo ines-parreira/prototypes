@@ -315,6 +315,7 @@ describe('metric trends', () => {
             'fetchMedianResolutionTimeTrend',
             fetchMedianResolutionTimeTrend,
             medianResolutionTimeQueryFactory,
+            medianResolutionTimeQueryV2Factory,
         ],
         [
             'fetchClosedTicketsTrend',

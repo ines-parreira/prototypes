@@ -318,7 +318,7 @@ describe('metricsPerAgent', () => {
                 'fetchMedianResolutionTimeMetricPerAgent',
                 fetchMedianResolutionTimeMetricPerAgent,
                 medianResolutionTimeMetricPerAgentQueryFactory,
-                undefined,
+                medianResolutionTimePerAgentQueryV2Factory,
             ],
             [
                 'fetchCustomerSatisfactionMetricPerAgent',

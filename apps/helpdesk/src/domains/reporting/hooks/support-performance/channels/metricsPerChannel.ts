@@ -152,7 +152,10 @@ export const useMedianResolutionTimeMetricPerChannel =
         medianResolutionTimePerChannelQueryV2Factory,
     )
 export const fetchMedianResolutionTimeMetricPerChannel =
-    createFetchPerDimension(medianResolutionTimeMetricPerChannelQueryFactory)
+    createFetchPerDimension(
+        medianResolutionTimeMetricPerChannelQueryFactory,
+        medianResolutionTimePerChannelQueryV2Factory,
+    )
 
 export const useCustomerSatisfactionMetricPerChannel =
     createMetricPerDimensionHook(

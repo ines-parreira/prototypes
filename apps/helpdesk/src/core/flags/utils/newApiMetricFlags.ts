@@ -11,7 +11,6 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.TicketsClosed,
     MetricScope.MessagesSent,
     MetricScope.FirstResponseTime,
-    MetricScope.ResolutionTime,
     MetricScope.OneTouchTickets,
     MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
@@ -22,6 +21,7 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.TicketsCreated,
     MetricScope.MessagesPerTicket,
     MetricScope.OnlineTime,
+    MetricScope.ResolutionTime,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

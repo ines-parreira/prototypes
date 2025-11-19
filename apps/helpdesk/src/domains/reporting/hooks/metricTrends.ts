@@ -226,6 +226,7 @@ export const useMedianResolutionTimeTrend = getTrendHook(
 
 export const fetchMedianResolutionTimeTrend = getTrendFetch(
     medianResolutionTimeQueryFactory,
+    medianResolutionTimeQueryV2Factory,
 )
 
 export const useOpenTicketsTrend = getTrendHook(

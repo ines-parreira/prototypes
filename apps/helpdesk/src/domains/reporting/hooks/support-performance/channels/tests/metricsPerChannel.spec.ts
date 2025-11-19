@@ -299,6 +299,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchMedianResolutionTimeMetricPerChannel',
                 fetch: fetchMedianResolutionTimeMetricPerChannel,
                 queryFactory: medianResolutionTimeMetricPerChannelQueryFactory,
+                newQueryFactory: medianResolutionTimePerChannelQueryV2Factory,
             },
             {
                 name: 'fetchCustomerSatisfactionMetricPerChannel',
@@ -323,12 +324,16 @@ describe('metricsPerChannel', () => {
             },
         ])(
             'should pass the query to $name hook',
-            async ({ fetch, queryFactory }) => {
+            async ({ fetch, queryFactory, newQueryFactory }) => {
                 await fetch(statsFilters, timezone, sorting, channel)
 
                 expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    undefined,
+                    newQueryFactory?.({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
                     channel,
                 )
             },

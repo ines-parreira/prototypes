@@ -142,6 +142,7 @@ export const useMedianResolutionTimeMetricPerAgent =
 
 export const fetchMedianResolutionTimeMetricPerAgent = createFetchPerDimension(
     medianResolutionTimeMetricPerAgentQueryFactory,
+    medianResolutionTimePerAgentQueryV2Factory,
 )
 
 export const useCustomerSatisfactionMetricPerAgent =
