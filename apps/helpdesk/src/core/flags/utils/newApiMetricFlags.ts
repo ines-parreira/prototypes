@@ -9,7 +9,6 @@ import {
 export const P1_SCOPES: MetricScope[] = [
     MetricScope.TicketsClosed,
     MetricScope.FirstResponseTime,
-    MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
 ]
 
@@ -22,6 +21,7 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.OnlineTime,
     MetricScope.ResolutionTime,
     MetricScope.TicketsReplied,
+    MetricScope.TicketsOpen,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

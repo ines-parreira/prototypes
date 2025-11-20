@@ -215,7 +215,10 @@ export const useOpenTicketsTrend = getTrendHook(
     openTicketsCountQueryV2Factory,
 )
 
-export const fetchOpenTicketsTrend = getTrendFetch(openTicketsQueryFactory)
+export const fetchOpenTicketsTrend = getTrendFetch(
+    openTicketsQueryFactory,
+    openTicketsCountQueryV2Factory,
+)
 
 export const useClosedTicketsTrend = getTrendHook(
     closedTicketsQueryFactory,

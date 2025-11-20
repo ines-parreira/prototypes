@@ -280,6 +280,7 @@ describe('metric trends', () => {
             'fetchOpenTicketsTrend',
             fetchOpenTicketsTrend,
             openTicketsQueryFactory,
+            openTicketsCountQueryV2Factory,
         ],
         [
             'fetchCustomerSatisfactionTrend',
@@ -317,11 +318,6 @@ describe('metric trends', () => {
             'fetchZeroTouchTicketsTrend',
             fetchZeroTouchTicketsTrend,
             zeroTouchTicketsQueryFactory,
-        ],
-        [
-            'fetchOpenTicketsTrend',
-            fetchOpenTicketsTrend,
-            openTicketsQueryFactory,
         ],
         [
             'fetchTicketsRepliedTrend',
