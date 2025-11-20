@@ -113,13 +113,7 @@ export function InfobarTicketDetailsTags({
                 })
             }
         },
-        [
-            tagsOptions,
-            updateTicketTags,
-            ticketId,
-            ticket?.data.tags,
-            tagList?.pages,
-        ],
+        [tagsOptions, updateTicketTags, ticketId, ticket?.data, tagList?.pages],
     )
 
     const handleCloseTag = useCallback(

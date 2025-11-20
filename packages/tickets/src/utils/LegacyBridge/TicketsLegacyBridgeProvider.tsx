@@ -1,5 +1,5 @@
-import { LegacyBridgeContext } from './context'
 import type { LegacyBridgeContextType } from './context'
+import { LegacyBridgeContext } from './context'
 
 type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     children: React.ReactNode

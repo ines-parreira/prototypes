@@ -1,6 +1,6 @@
 import * as repoNavigation from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import type { Mock, MockInstance } from 'vitest'
 
 import { TicketInfobarNavigation } from '../TicketInfobarNavigation'

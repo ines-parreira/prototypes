@@ -1,2 +1,2 @@
-export * from './placeholder'
-export * from './utils/LegacyBridge'
+export { Placeholder } from './placeholder'
+export { AIAgentLegacyBridgeProvider } from './utils/LegacyBridge'

@@ -9,7 +9,7 @@ import {
     renderHook as renderHookPrimitive,
     render as renderPrimitive,
 } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'

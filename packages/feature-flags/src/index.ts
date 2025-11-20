@@ -1,3 +1,3 @@
-export * from './featureFlagKey'
-export * from './types'
-export * from './withFeatureFlags'
+export { FeatureFlagKey } from './featureFlagKey'
+export type { FeatureFlagsMap } from './types'
+export { withFeatureFlags } from './withFeatureFlags'

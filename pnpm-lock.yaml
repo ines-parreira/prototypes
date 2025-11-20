@@ -308,8 +308,8 @@ importers:
   .:
     devDependencies:
       '@gorgias/config':
-        specifier: ^0.4.0
-        version: 0.4.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@0.17.0)
+        specifier: ^0.6.0
+        version: 0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@0.17.0)
       '@gorgias/static-analysis':
         specifier: 0.3.7
         version: 0.3.7(@types/node@22.13.13)
@@ -3545,8 +3545,8 @@ packages:
       eslint-plugin-react: ^7.34.3
       eslint-plugin-react-hooks: ^4.6.2
 
-  '@gorgias/config@0.4.0':
-    resolution: {integrity: sha512-MtvbghD4aALwPPYUJkh0YEVOuArfbzIaqLNwOhNFpXtCx+n4KePwdeXutckEmJX9wBucVKP9b0yeQ4T+kx1Yyg==, tarball: https://npm.pkg.github.com/download/@gorgias/config/0.4.0/3df6fa53fe38ebaf88142fed26ec07de157a1650}
+  '@gorgias/config@0.6.0':
+    resolution: {integrity: sha512-1wk02CcXPjKInQjZM/SzIn6CTmpg94Tjdr/37jFRIdn/TceATCCVAV9f8Xpojdxpi0py18uRuXJZb/5lqEYYug==, tarball: https://npm.pkg.github.com/download/@gorgias/config/0.6.0/888ac93c36d24db2731027623d5ae7b13b006e4a}
     peerDependencies:
       '@trivago/prettier-plugin-sort-imports': ^5.2
       '@typescript-eslint/parser': ^6.21.0
@@ -15285,7 +15285,7 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
 
-  '@gorgias/config@0.4.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@0.17.0)':
+  '@gorgias/config@0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.3.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@4.3.0(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@0.17.0)':
     dependencies:
       '@trivago/prettier-plugin-sort-imports': 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
       '@typescript-eslint/parser': 6.21.0(eslint@8.1.0)(typescript@5.3.3)

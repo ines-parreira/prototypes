@@ -1,4 +1,12 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "extends": ["../node_modules/@gorgias/config/oxlint-react.json"]
+    "extends": ["../node_modules/@gorgias/config/oxlint-react.json"],
+    "overrides": [
+        {
+            "files": ["vitest.config.ts", "jest.config.ts"],
+            "rules": {
+                "import/no-default-export": "off"
+            }
+        }
+    ]
 }

@@ -1,2 +1,2 @@
-export * from './TicketsLegacyBridgeProvider'
-export * from './useTicketsLegacyBridge'
+export { TicketsLegacyBridgeProvider } from './TicketsLegacyBridgeProvider'
+export { useTicketsLegacyBridge } from './useTicketsLegacyBridge'

@@ -1,2 +1,2 @@
-export * from './AIAgentLegacyBridgeProvider'
-export * from './useAIAgentLegacyBridge'
+export { AIAgentLegacyBridgeProvider } from './AIAgentLegacyBridgeProvider'
+export { useAIAgentLegacyBridge } from './useAIAgentLegacyBridge'

@@ -3,7 +3,7 @@ import { createConfig } from '@repo/config/vitest'
 export default createConfig({
     test: {
         coverage: {
-            exclude: ['src/index.ts'],
+            exclude: ['src/index.ts', 'src/shortcuts/index.ts'],
         },
     },
 })

@@ -1,9 +1,13 @@
-export * from './assumeMock'
-export * from './createContextConsumer'
-export * from './getLastMockCall'
-export * from './mockRequestAnimationFrame'
-export * from './renderHook'
+export { assumeMock } from './assumeMock'
+export { createContextConsumer } from './createContextConsumer'
+export { getLastMockCall } from './getLastMockCall'
+export { mockRequestAnimationFrame } from './mockRequestAnimationFrame'
+export { renderHook } from './renderHook'
 export { default as userEvent } from '@testing-library/user-event'
-export * from '../flushPromises'
-export * from '../mockEnvironments'
-export * from '../triggerWidthResize'
+export { flushPromises } from '../flushPromises'
+export {
+    mockDevelopmentEnvironment,
+    mockStagingEnvironment,
+    mockProductionEnvironment,
+} from '../mockEnvironments'
+export { triggerWidthResize } from '../triggerWidthResize'
