@@ -133,6 +133,7 @@ export const useMessagesSentMetricPerChannel = createMetricPerDimensionHook(
 )
 export const fetchMessagesSentMetricPerChannel = createFetchPerDimension(
     messagesSentMetricPerChannelQueryFactory,
+    sentMessagesPerChannelQueryV2Factory,
 )
 export const useMessagesReceivedMetricPerChannel = createMetricPerDimensionHook(
     messagesReceivedMetricPerChannelQueryFactory,

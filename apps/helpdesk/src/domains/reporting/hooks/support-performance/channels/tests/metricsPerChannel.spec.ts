@@ -273,6 +273,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchMessagesSentMetricPerChannel',
                 fetch: fetchMessagesSentMetricPerChannel,
                 queryFactory: messagesSentMetricPerChannelQueryFactory,
+                newQueryFactory: sentMessagesPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchMedianResolutionTimeMetricPerChannel',

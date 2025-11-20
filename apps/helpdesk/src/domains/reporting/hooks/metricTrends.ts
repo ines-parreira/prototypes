@@ -265,7 +265,10 @@ export const useMessagesSentTrend = getTrendHook(
     sentMessagesCountQueryV2Factory,
 )
 
-export const fetchMessagesSentTrend = getTrendFetch(messagesSentQueryFactory)
+export const fetchMessagesSentTrend = getTrendFetch(
+    messagesSentQueryFactory,
+    sentMessagesCountQueryV2Factory,
+)
 
 export const useMessagesReceivedTrend = getTrendHook(
     messagesReceivedQueryFactory,

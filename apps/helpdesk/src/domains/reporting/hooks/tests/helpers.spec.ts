@@ -83,6 +83,8 @@ describe('calculateTotalCapacity', () => {
             onlineTime,
             messagesSentAgentId,
             messagesSentMeasure,
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         const agentACapacity = calculateMetricPerHour(
@@ -111,6 +113,8 @@ describe('calculateTotalCapacity', () => {
             onlineTime,
             messagesSentAgentId,
             messagesSentMeasure,
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         expect(result).toEqual({ value: 0 })
@@ -122,6 +126,8 @@ describe('calculateTotalCapacity', () => {
             undefined,
             messagesSentAgentId,
             messagesSentMeasure,
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         expect(result).toEqual({ value: null })
@@ -133,6 +139,8 @@ describe('calculateTotalCapacity', () => {
             onlineTime,
             messagesSentAgentId,
             messagesSentMeasure,
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         expect(result).toEqual({ value: null })
@@ -144,6 +152,8 @@ describe('calculateTotalCapacity', () => {
             onlineTime,
             'wrong_id',
             messagesSentMeasure,
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         expect(result).toEqual({ value: 0 })
@@ -155,6 +165,8 @@ describe('calculateTotalCapacity', () => {
             onlineTime,
             messagesSentAgentId,
             'wrong-measure',
+            onlineTimeAgentID,
+            onlineTimeMeasure,
         )
 
         expect(result).toEqual({ value: 0 })

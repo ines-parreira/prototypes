@@ -8,13 +8,13 @@ import {
 
 export const P1_SCOPES: MetricScope[] = [
     MetricScope.TicketsClosed,
-    MetricScope.MessagesSent,
     MetricScope.FirstResponseTime,
     MetricScope.TicketsOpen,
     MetricScope.TicketHandleTime,
 ]
 
 export const P2_SCOPES: MetricScope[] = [
+    MetricScope.MessagesSent,
     MetricScope.SatisfactionSurveys,
     MetricScope.TicketsCreated,
     MetricScope.MessagesPerTicket,

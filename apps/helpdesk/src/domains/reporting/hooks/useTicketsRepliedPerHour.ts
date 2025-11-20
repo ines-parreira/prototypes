@@ -16,8 +16,6 @@ import {
     useTicketsRepliedMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
-import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
@@ -70,6 +68,8 @@ export const useTicketsRepliedPerHourPerAgentTotalCapacity = (
     )
 
     const allRepliedTickets = repliedTickets.data?.allData
+    const repliedTicketsDimension = repliedTickets.data?.dimensions?.[0] || ''
+    const repliedTicketsMeasure = repliedTickets.data?.measures?.[0] || ''
 
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
@@ -77,16 +77,27 @@ export const useTicketsRepliedPerHourPerAgentTotalCapacity = (
     )
 
     const onlineTimeDataPerAllAgents = onlineTime.data?.allData
+    const onlineTimeDimension = onlineTime.data?.dimensions?.[0] || ''
+    const onlineTimeMeasure = onlineTime.data?.measures?.[0] || ''
 
     const data = useMemo(
         () =>
             calculateTotalCapacity(
                 allRepliedTickets,
                 onlineTimeDataPerAllAgents,
-                TicketDimension.MessageSenderId,
-                HelpdeskMessageMeasure.TicketCount,
+                repliedTicketsDimension,
+                repliedTicketsMeasure,
+                onlineTimeDimension,
+                onlineTimeMeasure,
             ),
-        [onlineTimeDataPerAllAgents, allRepliedTickets],
+        [
+            onlineTimeDataPerAllAgents,
+            allRepliedTickets,
+            repliedTicketsDimension,
+            repliedTicketsMeasure,
+            onlineTimeDimension,
+            onlineTimeMeasure,
+        ],
     )
 
     return {
@@ -140,8 +151,10 @@ export const fetchTicketsRepliedPerHourPerAgentTotalCapacity = async (
             data: calculateTotalCapacity(
                 repliedTickets.data?.allData,
                 onlineTime.data?.allData,
-                TicketDimension.MessageSenderId,
-                HelpdeskMessageMeasure.TicketCount,
+                repliedTickets.data?.dimensions?.[0] || '',
+                repliedTickets.data?.measures?.[0] || '',
+                onlineTime.data?.dimensions?.[0] || '',
+                onlineTime.data?.measures?.[0] || '',
             ),
             isFetching: false,
             isError: false,

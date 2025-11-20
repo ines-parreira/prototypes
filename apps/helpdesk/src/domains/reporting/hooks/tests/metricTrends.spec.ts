@@ -332,6 +332,7 @@ describe('metric trends', () => {
             'fetchMessagesSentTrend',
             fetchMessagesSentTrend,
             messagesSentQueryFactory,
+            sentMessagesCountQueryV2Factory,
         ],
         [
             'fetchMessagesPerTicketTrend',

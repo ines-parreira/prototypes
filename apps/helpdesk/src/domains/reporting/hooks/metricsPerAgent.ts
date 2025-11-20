@@ -114,6 +114,7 @@ export const useMessagesSentMetricPerAgent = createMetricPerDimensionHook(
 
 export const fetchMessagesSentMetricPerAgent = createFetchPerDimension(
     messagesSentMetricPerAgentQueryFactory,
+    sentMessagesPerAgentQueryV2Factory,
 )
 
 export const useMessagesReceivedMetricPerAgent = createMetricPerDimensionHook(

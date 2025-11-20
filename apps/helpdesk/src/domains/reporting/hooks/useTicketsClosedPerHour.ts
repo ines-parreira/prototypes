@@ -16,10 +16,6 @@ import {
     useOnlineTimePerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
-import {
-    TicketDimension,
-    TicketMeasure,
-} from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
@@ -72,6 +68,8 @@ export const useTicketsClosedPerHourPerAgentTotalCapacity = (
     )
 
     const allClosedTickets = closedTickets.data?.allData
+    const closedTicketsDimension = closedTickets.data?.dimensions?.[0] || ''
+    const closedTicketsMeasure = closedTickets.data?.measures?.[0] || ''
 
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
@@ -79,16 +77,27 @@ export const useTicketsClosedPerHourPerAgentTotalCapacity = (
     )
 
     const onlineTimeDataPerAllAgents = onlineTime.data?.allData
+    const onlineTimeDimension = onlineTime.data?.dimensions?.[0] || ''
+    const onlineTimeMeasure = onlineTime.data?.measures?.[0] || ''
 
     const data = useMemo(
         () =>
             calculateTotalCapacity(
                 allClosedTickets,
                 onlineTimeDataPerAllAgents,
-                TicketDimension.AssigneeUserId,
-                TicketMeasure.TicketCount,
+                closedTicketsDimension,
+                closedTicketsMeasure,
+                onlineTimeDimension,
+                onlineTimeMeasure,
             ),
-        [allClosedTickets, onlineTimeDataPerAllAgents],
+        [
+            allClosedTickets,
+            onlineTimeDataPerAllAgents,
+            closedTicketsDimension,
+            closedTicketsMeasure,
+            onlineTimeDimension,
+            onlineTimeMeasure,
+        ],
     )
 
     return {
@@ -142,8 +151,10 @@ export const fetchTicketsClosedPerHourPerAgentTotalCapacity = async (
             data: calculateTotalCapacity(
                 closedTickets.data?.allData,
                 onlineTime.data?.allData,
-                TicketDimension.AssigneeUserId,
-                TicketMeasure.TicketCount,
+                closedTickets.data?.dimensions?.[0] || '',
+                closedTickets.data?.measures?.[0] || '',
+                onlineTime.data?.dimensions?.[0] || '',
+                onlineTime.data?.measures?.[0] || '',
             ),
             isFetching: false,
             isError: false,

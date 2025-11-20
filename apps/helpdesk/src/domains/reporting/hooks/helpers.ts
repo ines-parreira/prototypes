@@ -13,10 +13,6 @@ import {
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
-import {
-    AgentTimeTrackingDimension,
-    AgentTimeTrackingMeasure,
-} from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
@@ -36,10 +32,9 @@ export const calculateTotalCapacity = (
     onlineTimeDataPerAllAgents: ReportingMetricItem[] | undefined,
     agentIdDimension: string,
     measure: string,
+    onlineTimeAgentID: string,
+    onlineTimeMeasure: string,
 ) => {
-    const onlineTimeMeasure = AgentTimeTrackingMeasure.OnlineTime
-    const onlineTimeAgentID = AgentTimeTrackingDimension.UserId
-
     if (
         allAgentsMetricData === undefined ||
         onlineTimeDataPerAllAgents === undefined

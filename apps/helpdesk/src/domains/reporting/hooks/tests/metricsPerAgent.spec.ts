@@ -234,7 +234,7 @@ describe('metricsPerAgent', () => {
                 'fetchMessagesSentMetricPerAgent',
                 fetchMessagesSentMetricPerAgent,
                 messagesSentMetricPerAgentQueryFactory,
-                undefined,
+                sentMessagesPerAgentQueryV2Factory,
             ],
             [
                 'fetchMessagesReceivedMetricPerAgent',

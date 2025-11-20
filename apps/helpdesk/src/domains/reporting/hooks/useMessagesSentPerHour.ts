@@ -15,10 +15,6 @@ import {
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
-import {
-    HelpdeskMessageDimension,
-    HelpdeskMessageMeasure,
-} from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type {
     AgentOnlyFilters,
     Period,
@@ -87,22 +83,35 @@ export const useMessagesSentPerHourPerAgentTotalCapacity = (
         timezone,
     )
     const allMessagesSent = messagesSent.data?.allData
+    const messagesSentDimension = messagesSent.data?.dimensions?.[0] || ''
+    const messagesSentMeasure = messagesSent.data?.measures?.[0] || ''
 
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
     )
     const onlineTimeDataPerAllAgents = onlineTime.data?.allData
+    const onlineTimeDimension = onlineTime.data?.dimensions?.[0] || ''
+    const onlineTimeMeasure = onlineTime.data?.measures?.[0] || ''
 
     const data = useMemo(
         () =>
             calculateTotalCapacity(
                 allMessagesSent,
                 onlineTimeDataPerAllAgents,
-                HelpdeskMessageDimension.SenderId,
-                HelpdeskMessageMeasure.MessageCount,
+                messagesSentDimension,
+                messagesSentMeasure,
+                onlineTimeDimension,
+                onlineTimeMeasure,
             ),
-        [allMessagesSent, onlineTimeDataPerAllAgents],
+        [
+            allMessagesSent,
+            onlineTimeDataPerAllAgents,
+            messagesSentDimension,
+            messagesSentMeasure,
+            onlineTimeDimension,
+            onlineTimeMeasure,
+        ],
     )
 
     return {
@@ -156,8 +165,10 @@ export const fetchMessagesSentPerHourPerAgentTotalCapacity = async (
             data: calculateTotalCapacity(
                 messagesSent.data?.allData,
                 onlineTime.data?.allData,
-                HelpdeskMessageDimension.SenderId,
-                HelpdeskMessageMeasure.MessageCount,
+                messagesSent.data?.dimensions?.[0] || '',
+                messagesSent.data?.measures?.[0] || '',
+                onlineTime.data?.dimensions?.[0] || '',
+                onlineTime.data?.measures?.[0] || '',
             ),
             isFetching: false,
             isError: false,
