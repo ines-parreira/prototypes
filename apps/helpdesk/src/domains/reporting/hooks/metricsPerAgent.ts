@@ -105,6 +105,7 @@ export const useClosedTicketsMetricPerAgent = createMetricPerDimensionHook(
 
 export const fetchClosedTicketsMetricPerAgent = createFetchPerDimension(
     closedTicketsPerAgentQueryFactory,
+    closedTicketsPerAgentQueryV2Factory,
 )
 
 export const useMessagesSentMetricPerAgent = createMetricPerDimensionHook(

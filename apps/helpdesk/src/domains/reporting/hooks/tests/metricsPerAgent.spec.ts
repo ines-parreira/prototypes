@@ -228,7 +228,7 @@ describe('metricsPerAgent', () => {
                 'fetchClosedTicketsMetricPerAgent',
                 fetchClosedTicketsMetricPerAgent,
                 closedTicketsPerAgentQueryFactory,
-                undefined,
+                closedTicketsPerAgentQueryV2Factory,
             ],
             [
                 'fetchMessagesSentMetricPerAgent',

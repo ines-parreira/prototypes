@@ -302,6 +302,7 @@ describe('metric trends', () => {
             'fetchClosedTicketsTrend',
             fetchClosedTicketsTrend,
             closedTicketsQueryFactory,
+            closedTicketsCountQueryV2Factory,
         ],
         [
             'fetchTicketsCreatedTrend',

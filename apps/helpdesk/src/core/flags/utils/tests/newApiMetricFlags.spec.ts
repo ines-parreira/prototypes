@@ -17,7 +17,7 @@ describe('resolveMetricFlag', () => {
 
         expect(
             resolveMetricFlag(
-                METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT,
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
             ),
         ).toBe(FeatureFlagKey.ReportingP1MetricMigration)
     })

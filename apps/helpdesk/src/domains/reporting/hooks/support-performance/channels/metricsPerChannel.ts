@@ -117,6 +117,7 @@ export const useClosedTicketsMetricPerChannel = createMetricPerDimensionHook(
 )
 export const fetchClosedTicketsMetricPerChannel = createFetchPerDimension(
     closedTicketsPerChannelQueryFactory,
+    closedTicketsPerChannelQueryV2Factory,
 )
 
 export const useCreatedTicketsMetricPerChannel = createMetricPerDimensionHook(
