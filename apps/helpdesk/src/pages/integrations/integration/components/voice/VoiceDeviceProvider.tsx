@@ -18,6 +18,7 @@ import slice from 'pages/integrations/integration/components/voice/voiceDeviceSl
 import { isActive } from 'state/currentUser/selectors'
 import { initialState } from 'state/twilio/voiceDevice'
 import { isDesktopDevice } from 'utils/device'
+import { registerCallStateCallback } from 'utils/reloadCallGuard'
 
 import { Context } from './VoiceDeviceContext'
 
@@ -41,6 +42,14 @@ export default function VoiceDeviceProvider({
     )
 
     useErrorHandling(state, actions)
+
+    useEffect(() => {
+        const unregister = registerCallStateCallback(() => {
+            return state.call !== null
+        })
+
+        return unregister
+    }, [state.call])
 
     useEffect(() => {
         if (state.error && !isRecoverableError(state.error)) {

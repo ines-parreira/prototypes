@@ -6,6 +6,7 @@ import type { Store } from 'redux'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
+import { isCallActive } from 'utils/reloadCallGuard'
 
 const client = createClient()
 
@@ -32,7 +33,7 @@ export function createClient() {
 }
 
 export const timeoutTime = 10800000
-let reloadTimeout: NodeJS.Timeout
+let reloadTimeout: NodeJS.Timeout | null
 
 export function handleNewRelease(store: Store) {
     const dispatch = store.dispatch as StoreDispatch
@@ -47,9 +48,14 @@ export function handleNewRelease(store: Store) {
             newRelease !== window.GORGIAS_RELEASE &&
             !reloadTimeout
         ) {
+            if (isCallActive()) {
+                return response
+            }
+
             reloadTimeout = setTimeout(() => {
                 void dispatch(
                     notify({
+                        id: 'new-release-notification',
                         dismissAfter: 0,
                         status: NotificationStatus.Warning,
                         dismissible: false,
@@ -69,7 +75,11 @@ export function handleNewRelease(store: Store) {
                 )
 
                 setTimeout(() => {
-                    window.location.reload()
+                    if (!isCallActive()) {
+                        window.location.reload()
+                    } else {
+                        reloadTimeout = null
+                    }
                 }, 60000)
             }, timeoutTime)
         }

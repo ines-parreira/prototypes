@@ -59,6 +59,7 @@ exports[`client resources handleNewRelease interceptor should notify and reload 
       ],
       "dismissAfter": 0,
       "dismissible": false,
+      "id": "new-release-notification",
       "message": "An update is available for Gorgias. The app will reload automatically.",
       "status": "warning",
     },
