@@ -9,12 +9,12 @@ const parseBoolean = (value: string | null) => {
 }
 
 export const TicketSearchParamsKeys = {
-    showAllEvents: {
-        key: 'show_all_events',
+    showTicketEvents: {
+        key: 'show_ticket_events',
         parse: (value: string | null) => parseBoolean(value),
     },
-    showAllQuickReplies: {
-        key: 'show_all_quick_replies',
+    showTicketQuickReplies: {
+        key: 'show_ticket_quick_replies',
         parse: (value: string | null) => parseBoolean(value),
     },
 } as const

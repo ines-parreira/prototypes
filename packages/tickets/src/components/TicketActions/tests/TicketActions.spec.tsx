@@ -125,7 +125,7 @@ describe('TicketActions', () => {
             const { user: user2 } = render(
                 <TicketActions id={123} spam={false} />,
                 {
-                    initialEntries: ['/app/ticket/123?show_all_events=true'],
+                    initialEntries: ['/app/ticket/123?show_ticket_events=true'],
                     path: '/app/ticket/:ticketId',
                     dispatchHideAuditLogEvents,
                 },
@@ -188,7 +188,7 @@ describe('TicketActions', () => {
                 <TicketActions id={123} spam={false} />,
                 {
                     initialEntries: [
-                        '/app/ticket/123?show_all_quick_replies=true',
+                        '/app/ticket/123?show_ticket_quick_replies=true',
                     ],
                     path: '/app/ticket/:ticketId',
                     toggleQuickReplies,
@@ -221,7 +221,7 @@ describe('TicketActions', () => {
     it('should handle both events and quick replies being visible simultaneously', async () => {
         const { user } = render(<TicketActions id={123} spam={false} />, {
             initialEntries: [
-                '/app/ticket/123?show_all_events=true&show_all_quick_replies=true',
+                '/app/ticket/123?show_ticket_events=true&show_ticket_quick_replies=true',
             ],
             path: '/app/ticket/:ticketId',
         })

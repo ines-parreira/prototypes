@@ -5,7 +5,7 @@ import { useSearchParams } from '@repo/routing'
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketSearchParamsKeys } from '../../../utils/routing/TicketSearchParamsKeys'
 
-const { key, parse } = TicketSearchParamsKeys.showAllQuickReplies
+const { key, parse } = TicketSearchParamsKeys.showTicketQuickReplies
 
 export function useTicketQuickRepliesDisplay() {
     const [searchParams, setSearchParams] = useSearchParams()
