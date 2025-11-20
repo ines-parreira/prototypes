@@ -257,6 +257,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchTicketsRepliedMetricPerChannel',
                 fetch: fetchTicketsRepliedMetricPerChannel,
                 queryFactory: ticketsRepliedMetricPerChannelQueryFactory,
+                newQueryFactory: ticketsRepliedCountPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchClosedTicketsMetricPerChannel',

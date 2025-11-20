@@ -3,19 +3,9 @@ import { nonEmptyChannels } from 'domains/reporting/hooks/support-performance/no
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import type { HandleTimeCube } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
-import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
 import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
-import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import type { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
-import { TicketFirstHumanAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
-import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
-import { TicketMessagesEnrichedResponseTimesMeasure } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
-import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
-import { TicketsFirstAgentResponseTimeMeasure } from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
-import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -42,21 +32,8 @@ type ReportDataMap = Record<
     {
         column: ChannelsTableColumns
         metricData: Pick<MetricWithDecile, 'data'>
-        idField: string
-        metricField: ChannelsReportMetrics
     }
 >
-
-const TicketCount = TicketMeasure.TicketCount
-const MedianResponseTime =
-    TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime
-const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
-const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
-const MessageCount = HelpdeskMessageMeasure.MessageCount
-const MessageReceivedCount =
-    HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount
-const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
-const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
 
 const formatMetric = (column: ChannelsTableColumns, value?: number | null) =>
     formatMetricValue(
@@ -64,15 +41,19 @@ const formatMetric = (column: ChannelsTableColumns, value?: number | null) =>
         ChannelColumnConfig[column].format,
         NOT_AVAILABLE_PLACEHOLDER,
     )
-const getChannelMetric = (
+export const getChannelMetric = (
     channelSlug: string,
     data: Pick<MetricWithDecile, 'data'>,
-    channelIdField: string,
-    metricField: ChannelsReportMetrics,
 ) => {
+    if (!data.data) return null
+    const metricData = data.data
+
+    const firstDimension = metricData.dimensions?.[0] || ''
+    const firstMeasure = metricData.measures?.[0] || ''
+
     const metricValue = data.data?.allData.find(
-        (item) => item[channelIdField] === channelSlug,
-    )?.[metricField]
+        (item) => item[firstDimension] === channelSlug,
+    )?.[firstMeasure]
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
 
@@ -85,12 +66,7 @@ const getMetric = (
         ? channel.slug
         : formatMetric(
               column,
-              getChannelMetric(
-                  channel.slug,
-                  summaryDataMap[column].metricData,
-                  summaryDataMap[column].idField,
-                  summaryDataMap[column].metricField,
-              ),
+              getChannelMetric(channel.slug, summaryDataMap[column].metricData),
           )
 
 export const saveReport = (
@@ -105,90 +81,60 @@ export const saveReport = (
         }
     }
 
-    const frtMetricField =
-        TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
-
     const visibleChannels = nonEmptyChannels(channels, data)
 
     const columnsToMetricDataMap: ReportDataMap = {
         [ChannelsTableColumns.Channel]: {
             column: ChannelsTableColumns.Channel,
             metricData: { data: null },
-            idField: CHANNEL_DIMENSION,
-            metricField: AvgSurveyScore,
         },
         [ChannelsTableColumns.CustomerSatisfaction]: {
             column: ChannelsTableColumns.CustomerSatisfaction,
             metricData: data.customerSatisfactionMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: AvgSurveyScore,
         },
         [ChannelsTableColumns.FirstResponseTime]: {
             column: ChannelsTableColumns.FirstResponseTime,
             metricData: data.medianFirstResponseTimeMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: frtMetricField,
         },
         [ChannelsTableColumns.HumanResponseTimeAfterAiHandoff]: {
             column: ChannelsTableColumns.HumanResponseTimeAfterAiHandoff,
             metricData: data.humanTimeAfterAiHandoffMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField:
-                TicketFirstHumanAgentResponseTimeMeasure.MedianFirstHumanAgentResponseTime,
         },
         [ChannelsTableColumns.MedianResponseTime]: {
             column: ChannelsTableColumns.MedianResponseTime,
             metricData: data.medianResponseTimeMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: MedianResponseTime,
         },
         [ChannelsTableColumns.MedianResolutionTime]: {
             column: ChannelsTableColumns.MedianResolutionTime,
             metricData: data.medianResolutionTimeMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: MedianResolutionTime,
         },
         [ChannelsTableColumns.TicketsCreated]: {
             column: ChannelsTableColumns.TicketsCreated,
             metricData: data.createdTicketsMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: TicketCount,
         },
         [ChannelsTableColumns.CreatedTicketsPercentage]: {
             column: ChannelsTableColumns.CreatedTicketsPercentage,
             metricData: data.percentageOfCreatedTicketsMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: TicketCount,
         },
         [ChannelsTableColumns.ClosedTickets]: {
             column: ChannelsTableColumns.ClosedTickets,
             metricData: data.closedTicketsMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: TicketCount,
         },
         [ChannelsTableColumns.MessagesSent]: {
             column: ChannelsTableColumns.MessagesSent,
             metricData: data.messagesSentMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: MessageCount,
         },
         [ChannelsTableColumns.MessagesReceived]: {
             column: ChannelsTableColumns.MessagesReceived,
             metricData: data.messagesReceivedMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: MessageReceivedCount,
         },
         [ChannelsTableColumns.TicketsReplied]: {
             column: ChannelsTableColumns.TicketsReplied,
             metricData: data.ticketsRepliedMetricPerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: HelpdeskTicketCount,
         },
         [ChannelsTableColumns.TicketHandleTime]: {
             column: ChannelsTableColumns.TicketHandleTime,
             metricData: data?.ticketAverageHandleTimePerChannel,
-            idField: CHANNEL_DIMENSION,
-            metricField: AverageHandleTime,
         },
     }
 

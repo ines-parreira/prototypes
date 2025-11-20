@@ -14,7 +14,10 @@ import {
     columnsOrder,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import type { ChannelsReportMetrics } from 'domains/reporting/services/channelsReportingService'
-import { saveReport } from 'domains/reporting/services/channelsReportingService'
+import {
+    getChannelMetric,
+    saveReport,
+} from 'domains/reporting/services/channelsReportingService'
 import { channels } from 'fixtures/channels'
 import type { Channel } from 'models/channel/types'
 import * as files from 'utils/file'
@@ -47,6 +50,8 @@ describe('channelsReportingService', () => {
                         [metricField]: value,
                     },
                 ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
             },
         })
 
@@ -162,6 +167,8 @@ describe('channelsReportingService', () => {
                         [metricField]: value,
                     },
                 ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
             },
         })
 
@@ -249,5 +256,301 @@ describe('channelsReportingService', () => {
                 '10',
             ],
         ])
+    })
+})
+
+describe('getChannelMetric', () => {
+    const channelSlug = 'test-channel'
+    const metricField = TicketMeasure.TicketCount
+
+    it('should return null when data.data is null', () => {
+        const result = getChannelMetric(channelSlug, { data: null })
+
+        expect(result).toBeNull()
+    })
+
+    it('should return undefined when allData is empty', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when no matching channel in allData', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: 'other-channel',
+                        [metricField]: 100,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return the correct number value when channel matches', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 42,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(42)
+    })
+
+    it('should convert string values to numbers', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: '123',
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(123)
+    })
+
+    it('should return undefined when metricField does not exist on found item', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should find the correct item when multiple items exist in allData', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: 'other-channel-1',
+                        [metricField]: 10,
+                    },
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 99,
+                    },
+                    {
+                        [CHANNEL_DIMENSION]: 'other-channel-2',
+                        [metricField]: 20,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(99)
+    })
+
+    it('should handle zero as a valid value', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 0,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(0)
+    })
+
+    it('should handle string zero and convert to number', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: '0',
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(0)
+    })
+
+    it('should handle negative numbers', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: -5,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(-5)
+    })
+
+    it('should handle decimal numbers', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 3.14,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(3.14)
+    })
+
+    it('should convert decimal string to number', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: '3.14',
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBe(3.14)
+    })
+
+    it('should return undefined when dimensions array is empty', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 42,
+                    },
+                ],
+                dimensions: [],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when measures array is empty', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 42,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+                measures: [],
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when dimensions is undefined', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 42,
+                    },
+                ],
+                measures: [metricField] as any,
+            },
+        })
+
+        expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when measures is undefined', () => {
+        const result = getChannelMetric(channelSlug, {
+            data: {
+                value: null,
+                decile: null,
+                allData: [
+                    {
+                        [CHANNEL_DIMENSION]: channelSlug,
+                        [metricField]: 42,
+                    },
+                ],
+                dimensions: [CHANNEL_DIMENSION],
+            },
+        })
+
+        expect(result).toBeUndefined()
     })
 })

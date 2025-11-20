@@ -108,6 +108,7 @@ export const useTicketsRepliedMetricPerChannel = createMetricPerDimensionHook(
 )
 export const fetchTicketsRepliedMetricPerChannel = createFetchPerDimension(
     ticketsRepliedMetricPerChannelQueryFactory,
+    ticketsRepliedCountPerChannelQueryV2Factory,
 )
 
 export const useClosedTicketsMetricPerChannel = createMetricPerDimensionHook(

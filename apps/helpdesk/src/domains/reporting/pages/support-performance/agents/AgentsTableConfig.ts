@@ -587,6 +587,7 @@ export const agentIdFields = [
     AgentTimeTrackingMember.UserId,
     TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
     TicketFirstHumanAgentResponseTimeMember.FirstHumanAgentMessageUserId,
+    'agentId',
 ]
 
 const isAgentsMetric = (

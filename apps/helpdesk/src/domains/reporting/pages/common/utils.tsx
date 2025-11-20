@@ -499,7 +499,9 @@ export const isMetricForAgent = (
 ) => {
     return agentIdFields.reduce(
         (acc, agentIdField) =>
-            metric[agentIdField] === String(agentId) ? true : acc,
+            metric[agentIdField]?.toString() === agentId?.toString()
+                ? true
+                : acc,
         false,
     )
 }

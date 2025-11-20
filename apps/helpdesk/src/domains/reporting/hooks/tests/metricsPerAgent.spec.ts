@@ -222,7 +222,7 @@ describe('metricsPerAgent', () => {
                 'fetchTicketsRepliedMetricPerAgent',
                 fetchTicketsRepliedMetricPerAgent,
                 ticketsRepliedMetricPerAgentQueryFactory,
-                undefined,
+                ticketsRepliedCountPerAgentQueryV2Factory,
             ],
             [
                 'fetchClosedTicketsMetricPerAgent',
