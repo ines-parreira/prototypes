@@ -44,6 +44,7 @@ export type LegacyBridgeContextType = {
     dispatchAuditLogEvents: () => void
     dispatchHideAuditLogEvents: () => void
     toggleQuickReplies: (toggle: boolean) => void
+    onToggleUnread?: (ticketId: number, isUnread: boolean) => void
 }
 
 export const LegacyBridgeContext =

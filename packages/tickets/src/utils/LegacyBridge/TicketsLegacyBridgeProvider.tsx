@@ -9,6 +9,7 @@ type TicketsLegacyBridgeProviderProps = LegacyBridgeContextType & {
     dispatchAuditLogEvents: LegacyBridgeContextType['dispatchAuditLogEvents']
     dispatchHideAuditLogEvents: LegacyBridgeContextType['dispatchHideAuditLogEvents']
     toggleQuickReplies: LegacyBridgeContextType['toggleQuickReplies']
+    onToggleUnread?: LegacyBridgeContextType['onToggleUnread']
 }
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk

@@ -44,8 +44,22 @@ describe('TicketActions', () => {
         vi.clearAllMocks()
     })
 
+    const defaultProps = {
+        id: 123,
+        spam: false,
+        isUnread: false,
+    }
+
+    async function openMenu(user: ReturnType<typeof render>['user']) {
+        const button = screen.getByRole('button', {
+            name: /dots-kebab-vertical/i,
+        })
+        await act(() => user.click(button))
+        return button
+    }
+
     it('should render menu trigger button', () => {
-        render(<TicketActions id={123} spam={false} />)
+        render(<TicketActions {...defaultProps} />)
 
         const button = screen.getByRole('button', {
             name: /dots-kebab-vertical/i,
@@ -54,12 +68,9 @@ describe('TicketActions', () => {
     })
 
     it('should render all menu items when menu is opened', async () => {
-        const { user } = render(<TicketActions id={123} spam={false} />)
+        const { user } = render(<TicketActions {...defaultProps} />)
 
-        const button = screen.getByRole('button', {
-            name: /dots-kebab-vertical/i,
-        })
-        await act(() => user.click(button))
+        await openMenu(user)
 
         expect(screen.getByText('Merge ticket')).toBeInTheDocument()
         expect(screen.getByText('Mark as unread')).toBeInTheDocument()
@@ -71,15 +82,12 @@ describe('TicketActions', () => {
     })
 
     it('should open print window and log analytics when print ticket is clicked', async () => {
-        const { user } = render(<TicketActions id={123} spam={false} />, {
+        const { user } = render(<TicketActions {...defaultProps} />, {
             initialEntries: ['/app/ticket/123'],
             path: '/app/ticket/:ticketId',
         })
 
-        const button = screen.getByRole('button', {
-            name: /dots-kebab-vertical/i,
-        })
-        await act(() => user.click(button))
+        await openMenu(user)
 
         const printMenuItem = screen.getByText('Print ticket')
         await act(() => user.click(printMenuItem))
@@ -93,20 +101,14 @@ describe('TicketActions', () => {
     })
 
     describe('Events visibility toggle', () => {
-        it('should toggle between show and hide events based on search params and dispatch legacy bridge functions', async () => {
-            const { user, unmount } = render(
-                <TicketActions id={123} spam={false} />,
-                {
-                    initialEntries: ['/app/ticket/123'],
-                    path: '/app/ticket/:ticketId',
-                    dispatchAuditLogEvents,
-                },
-            )
-
-            let button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+        it('should show "Show all events" and dispatch function when clicked', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchAuditLogEvents,
             })
-            await act(() => user.click(button))
+
+            await openMenu(user)
 
             expect(screen.getByText('Show all events')).toBeInTheDocument()
             expect(
@@ -119,22 +121,16 @@ describe('TicketActions', () => {
             await waitFor(() => {
                 expect(dispatchAuditLogEvents).toHaveBeenCalledTimes(1)
             })
+        })
 
-            unmount()
-
-            const { user: user2 } = render(
-                <TicketActions id={123} spam={false} />,
-                {
-                    initialEntries: ['/app/ticket/123?show_ticket_events=true'],
-                    path: '/app/ticket/:ticketId',
-                    dispatchHideAuditLogEvents,
-                },
-            )
-
-            button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+        it('should show "Hide all events" and dispatch function when clicked', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123?show_ticket_events=true'],
+                path: '/app/ticket/:ticketId',
+                dispatchHideAuditLogEvents,
             })
-            await act(() => user2.click(button))
+
+            await openMenu(user)
 
             expect(screen.getByText('Hide all events')).toBeInTheDocument()
             expect(
@@ -142,7 +138,7 @@ describe('TicketActions', () => {
             ).not.toBeInTheDocument()
 
             const hideEventsMenuItem = screen.getByText('Hide all events')
-            await act(() => user2.click(hideEventsMenuItem))
+            await act(() => user.click(hideEventsMenuItem))
 
             await waitFor(() => {
                 expect(dispatchHideAuditLogEvents).toHaveBeenCalledTimes(1)
@@ -151,20 +147,14 @@ describe('TicketActions', () => {
     })
 
     describe('Quick replies visibility toggle', () => {
-        it('should toggle between show and hide quick-replies based on search params and call toggleQuickReplies', async () => {
-            const { user, unmount } = render(
-                <TicketActions id={123} spam={false} />,
-                {
-                    initialEntries: ['/app/ticket/123'],
-                    path: '/app/ticket/:ticketId',
-                    toggleQuickReplies,
-                },
-            )
-
-            let button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+        it('should show "Show all quick-replies" and call toggle function with true', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                toggleQuickReplies,
             })
-            await act(() => user.click(button))
+
+            await openMenu(user)
 
             expect(
                 screen.getByText('Show all quick replies'),
@@ -181,24 +171,18 @@ describe('TicketActions', () => {
             await waitFor(() => {
                 expect(toggleQuickReplies).toHaveBeenCalledWith(true)
             })
+        })
 
-            unmount()
-
-            const { user: user2 } = render(
-                <TicketActions id={123} spam={false} />,
-                {
-                    initialEntries: [
-                        '/app/ticket/123?show_ticket_quick_replies=true',
-                    ],
-                    path: '/app/ticket/:ticketId',
-                    toggleQuickReplies,
-                },
-            )
-
-            button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+        it('should show "Hide all quick-replies" and call toggle function with false', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: [
+                    '/app/ticket/123?show_ticket_quick_replies=true',
+                ],
+                path: '/app/ticket/:ticketId',
+                toggleQuickReplies,
             })
-            await act(() => user2.click(button))
+
+            await openMenu(user)
 
             expect(
                 screen.getByText('Hide all quick replies'),
@@ -210,7 +194,7 @@ describe('TicketActions', () => {
             const hideQuickRepliesMenuItem = screen.getByText(
                 'Hide all quick replies',
             )
-            await act(() => user2.click(hideQuickRepliesMenuItem))
+            await act(() => user.click(hideQuickRepliesMenuItem))
 
             await waitFor(() => {
                 expect(toggleQuickReplies).toHaveBeenCalledWith(false)
@@ -219,17 +203,14 @@ describe('TicketActions', () => {
     })
 
     it('should handle both events and quick replies being visible simultaneously', async () => {
-        const { user } = render(<TicketActions id={123} spam={false} />, {
+        const { user } = render(<TicketActions {...defaultProps} />, {
             initialEntries: [
                 '/app/ticket/123?show_ticket_events=true&show_ticket_quick_replies=true',
             ],
             path: '/app/ticket/:ticketId',
         })
 
-        const button = screen.getByRole('button', {
-            name: /dots-kebab-vertical/i,
-        })
-        await act(() => user.click(button))
+        await openMenu(user)
 
         expect(screen.getByText('Hide all events')).toBeInTheDocument()
         expect(screen.getByText('Hide all quick replies')).toBeInTheDocument()
@@ -237,24 +218,20 @@ describe('TicketActions', () => {
 
     describe('Mark as spam', () => {
         it('should display "Mark as spam" when ticket is not spam', async () => {
-            const { user } = render(<TicketActions id={123} spam={false} />)
+            const { user } = render(<TicketActions {...defaultProps} />)
 
-            const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
-            })
-            await act(() => user.click(button))
+            await openMenu(user)
 
             expect(screen.getByText('Mark as spam')).toBeInTheDocument()
             expect(screen.queryByText('Unmark as spam')).not.toBeInTheDocument()
         })
 
         it('should display "Unmark as spam" when ticket is spam', async () => {
-            const { user } = render(<TicketActions id={123} spam={true} />)
+            const { user } = render(
+                <TicketActions {...defaultProps} spam={true} />,
+            )
 
-            const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
-            })
-            await act(() => user.click(button))
+            await openMenu(user)
 
             expect(screen.getByText('Unmark as spam')).toBeInTheDocument()
             expect(screen.queryByText('Mark as spam')).not.toBeInTheDocument()
@@ -266,7 +243,7 @@ describe('TicketActions', () => {
 
             server.use(mockUpdateTicket.handler)
 
-            const { user } = render(<TicketActions id={123} spam={false} />, {
+            const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
                 dispatchNotification,
@@ -282,10 +259,7 @@ describe('TicketActions', () => {
                 },
             })
 
-            const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
-            })
-            await act(() => user.click(button))
+            await openMenu(user)
 
             const markAsSpamItem = screen.getByText('Mark as spam')
             await act(() => user.click(markAsSpamItem))
@@ -312,16 +286,16 @@ describe('TicketActions', () => {
 
             server.use(mockUpdateTicket.handler)
 
-            const { user } = render(<TicketActions id={123} spam={true} />, {
-                initialEntries: ['/app/ticket/123'],
-                path: '/app/ticket/:ticketId',
-                dispatchNotification,
-            })
+            const { user } = render(
+                <TicketActions {...defaultProps} spam={true} />,
+                {
+                    initialEntries: ['/app/ticket/123'],
+                    path: '/app/ticket/:ticketId',
+                    dispatchNotification,
+                },
+            )
 
-            const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
-            })
-            await act(() => user.click(button))
+            await openMenu(user)
 
             const unmarkAsSpamItem = screen.getByText('Unmark as spam')
             await act(() => user.click(unmarkAsSpamItem))
@@ -339,16 +313,13 @@ describe('TicketActions', () => {
 
             server.use(mockUpdateTicket.handler)
 
-            const { user } = render(<TicketActions id={123} spam={false} />, {
+            const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/ticket/123'],
                 path: '/app/ticket/:ticketId',
                 dispatchNotification,
             })
 
-            const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
-            })
-            await act(() => user.click(button))
+            await openMenu(user)
 
             const markAsSpamItem = screen.getByText('Mark as spam')
             await act(() => user.click(markAsSpamItem))
@@ -357,6 +328,85 @@ describe('TicketActions', () => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
                     expect.objectContaining({
                         message: 'Failed to mark as spam',
+                    }),
+                )
+            })
+        })
+    })
+
+    describe('Mark as unread', () => {
+        it('should display "Mark as unread" when ticket is read', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />)
+
+            await openMenu(user)
+
+            expect(screen.getByText('Mark as unread')).toBeInTheDocument()
+        })
+
+        it('should not display "Mark as unread" when ticket is already unread', async () => {
+            const { user } = render(
+                <TicketActions {...defaultProps} isUnread={true} />,
+            )
+
+            await openMenu(user)
+
+            expect(screen.queryByText('Mark as unread')).not.toBeInTheDocument()
+        })
+
+        it('should mark ticket as unread and show success notification', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+            const dispatchNotification = vi.fn()
+            const onToggleUnread = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+                onToggleUnread,
+            })
+
+            await openMenu(user)
+
+            const markAsUnreadItem = screen.getByText('Mark as unread')
+            await act(() => user.click(markAsUnreadItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: 'success',
+                        message: 'Ticket has been marked as unread',
+                    }),
+                )
+                expect(onToggleUnread).toHaveBeenCalledWith(123, true)
+            })
+        })
+
+        it('should show error notification when marking as unread fails', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler(async () => {
+                return HttpResponse.json(null, { status: 500 })
+            })
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+            })
+
+            await openMenu(user)
+
+            const markAsUnreadItem = screen.getByText('Mark as unread')
+            await act(() => user.click(markAsUnreadItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: 'error',
+                        message: 'Failed to mark as unread',
                     }),
                 )
             })

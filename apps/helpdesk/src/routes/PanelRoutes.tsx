@@ -45,7 +45,10 @@ export default function PanelRoutes() {
 
     if (isMobileResolution) {
         return (
-            <TicketsLegacyBridgeProvider {...ticketLegacyBridgeFunctions}>
+            <TicketsLegacyBridgeProvider
+                {...ticketLegacyBridgeFunctions}
+                onToggleUnread={onToggleUnread}
+            >
                 <MobileRoutes />
                 <TranslationsOnboardingModal />
             </TicketsLegacyBridgeProvider>
@@ -54,7 +57,10 @@ export default function PanelRoutes() {
 
     if (hasRedirectDeprecatedTicketRoutes) {
         return (
-            <TicketsLegacyBridgeProvider {...ticketLegacyBridgeFunctions}>
+            <TicketsLegacyBridgeProvider
+                {...ticketLegacyBridgeFunctions}
+                onToggleUnread={onToggleUnread}
+            >
                 <Panels size={width}>
                     <GlobalNavigationPanel />
                     <Switch>
@@ -79,7 +85,10 @@ export default function PanelRoutes() {
     // `TicketListPanel` can simply (dis)appear without the detail/infobar
     // panels re-rendering, but this can only be achieved by using react keys.
     return (
-        <TicketsLegacyBridgeProvider {...ticketLegacyBridgeFunctions}>
+        <TicketsLegacyBridgeProvider
+            {...ticketLegacyBridgeFunctions}
+            onToggleUnread={onToggleUnread}
+        >
             <Panels size={width}>
                 <GlobalNavigationPanel key="global-navigation" />
                 <TicketsNavbarPanel key="navbar" />

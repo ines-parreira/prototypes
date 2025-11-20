@@ -26,27 +26,27 @@ export const testAppQueryClient = new QueryClient({
     },
 })
 
-type RenderOptions = RenderOptionsPrimitive & {
+type LegacyBridgeOptions = {
     dispatchNotification?: ReturnType<typeof vi.fn>
     dispatchDismissNotification?: ReturnType<typeof vi.fn>
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
     dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
     dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
     toggleQuickReplies?: ReturnType<typeof vi.fn>
-    initialEntries?: string[]
-    path?: string
+    onToggleUnread?: ReturnType<typeof vi.fn>
 }
 
-type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> & {
-    dispatchNotification?: ReturnType<typeof vi.fn>
-    dispatchDismissNotification?: ReturnType<typeof vi.fn>
-    ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
-    dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
-    dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
-    toggleQuickReplies?: ReturnType<typeof vi.fn>
-    initialEntries?: string[]
-    path?: string
-}
+type RenderOptions = RenderOptionsPrimitive &
+    LegacyBridgeOptions & {
+        initialEntries?: string[]
+        path?: string
+    }
+
+type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> &
+    LegacyBridgeOptions & {
+        initialEntries?: string[]
+        path?: string
+    }
 
 const defaultOptions = {
     initialEntries: ['/'],
@@ -56,6 +56,7 @@ const defaultOptions = {
     dispatchAuditLogEvents: vi.fn(),
     dispatchHideAuditLogEvents: vi.fn(),
     toggleQuickReplies: vi.fn(),
+    onToggleUnread: vi.fn(),
     ticketViewNavigation: {
         shouldDisplay: false,
         shouldUseLegacyFunctions: false,
@@ -99,6 +100,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
             dispatchHideAuditLogEvents:
                 mergedOptions.dispatchHideAuditLogEvents,
             toggleQuickReplies: mergedOptions.toggleQuickReplies,
+            onToggleUnread: mergedOptions.onToggleUnread,
         },
         ...result,
     }

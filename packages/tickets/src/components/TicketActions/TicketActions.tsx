@@ -1,6 +1,7 @@
 import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
 
 import { useMarkAsSpam } from './actions/useMarkAsSpam'
+import { useMarkAsUnRead } from './actions/useMarkAsUnRead'
 import { useTicketEventsDisplay } from './actions/useTicketEventsDisplay'
 import { useTicketPrint } from './actions/useTicketPrint'
 import { useTicketQuickRepliesDisplay } from './actions/useTicketQuickRepliesDisplay'
@@ -17,14 +18,17 @@ import {
 export type TicketActionsProps = {
     id: number
     spam: boolean
+    isUnread: boolean
 }
 
 export function TicketActions({
     id: ticketId,
     spam: isSpam,
+    isUnread,
 }: TicketActionsProps) {
     const { handleTicketPrint } = useTicketPrint(ticketId)
     const { markAsSpam } = useMarkAsSpam(ticketId)
+    const { markAsUnRead } = useMarkAsUnRead(ticketId)
     const { handleShowAllEventDisplay, areEventsVisible } =
         useTicketEventsDisplay()
     const { handleShowAllQuickRepliesDisplay, areQuickRepliesVisible } =
@@ -44,7 +48,12 @@ export function TicketActions({
             }
         >
             <MenuItem {...MergeTicket} />
-            <MenuItem {...MarkAsUnread} />
+            {!isUnread && (
+                <MenuItem
+                    {...MarkAsUnread}
+                    onAction={() => markAsUnRead(ticketId, { is_unread: true })}
+                />
+            )}
             <MenuItem
                 id={EventsOptions.id}
                 {...(areEventsVisible
