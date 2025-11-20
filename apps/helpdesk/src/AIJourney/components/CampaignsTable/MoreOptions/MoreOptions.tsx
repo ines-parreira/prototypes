@@ -172,8 +172,9 @@ export const MoreOptions = ({
         <div className={css.statusRight} style={{ position: 'relative' }}>
             <Select
                 data-name="select-field"
-                trigger={() => (
-                    <SelectTrigger>
+                placement="bottom right"
+                trigger={({ ref }) => (
+                    <SelectTrigger ref={ref}>
                         <div
                             className={css.menuButton}
                             aria-label="Open options"

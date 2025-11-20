@@ -84,6 +84,7 @@ export const LineChart = ({
                                 trigger={({ ref, isOpen }) => (
                                     <Button
                                         ref={ref}
+                                        slot="button"
                                         size="sm"
                                         variant="tertiary"
                                         icon={
