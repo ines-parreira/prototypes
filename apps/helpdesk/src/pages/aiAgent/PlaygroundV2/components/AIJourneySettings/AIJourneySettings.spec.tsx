@@ -117,7 +117,7 @@ describe('AIJourneySettings', () => {
             fireEvent.click(selectField)
 
             const sessionAbandonedOption = await screen.findByRole('option', {
-                name: /session abandoned/i,
+                name: /browse abandoned/i,
             })
             fireEvent.click(sessionAbandonedOption)
 
@@ -288,7 +288,7 @@ describe('AIJourneySettings', () => {
                 name: /total number of messages to send/i,
             })
             expect(followUpSelect).toBeInTheDocument()
-            expect(followUpSelect).toHaveValue('1')
+            expect(followUpSelect).toHaveValue('2')
         })
 
         it('should allow changing total follow-up messages', async () => {
@@ -306,7 +306,7 @@ describe('AIJourneySettings', () => {
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    totalFollowUp: 3,
+                    totalFollowUp: 2,
                     discountCodeMessageIdx: 1,
                 })
             })
@@ -357,7 +357,7 @@ describe('AIJourneySettings', () => {
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    totalFollowUp: 2,
+                    totalFollowUp: 1,
                     discountCodeMessageIdx: 2,
                 })
             })
@@ -390,7 +390,7 @@ describe('AIJourneySettings', () => {
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    totalFollowUp: 3,
+                    totalFollowUp: 2,
                     discountCodeMessageIdx: 1,
                 })
             })

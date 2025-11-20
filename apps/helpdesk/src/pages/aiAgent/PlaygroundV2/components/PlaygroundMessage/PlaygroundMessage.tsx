@@ -13,7 +13,7 @@ import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/Settings
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
-import { sanitizeHtmlDefault } from 'utils/html'
+import { linkifyString, sanitizeHtmlDefault } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import type { PlaygroundChannels } from '../../types'
@@ -121,7 +121,9 @@ const PlaygroundMessage = ({
                         <div
                             className={css.messageContent}
                             dangerouslySetInnerHTML={{
-                                __html: sanitizeHtmlDefault(message.content),
+                                __html: sanitizeHtmlDefault(
+                                    linkifyString(message.content),
+                                ),
                             }}
                         />
                     ) : (

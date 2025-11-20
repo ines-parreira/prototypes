@@ -26,7 +26,7 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
         case JourneyTypeEnum.CartAbandoned:
             return 'Cart Abandoned'
         case JourneyTypeEnum.SessionAbandoned:
-            return 'Session Abandoned'
+            return 'Browse Abandoned'
         default:
             return journeyType
     }
@@ -116,7 +116,7 @@ export const AIJourneySettings: React.FC = () => {
         value: (typeof FOLLOW_UP_OPTIONS)[number],
     ) => {
         setAIJourneySettings({
-            totalFollowUp: value.id,
+            totalFollowUp: value.id - 1,
             discountCodeMessageIdx:
                 value.id < discountCodeMessageIdx
                     ? value.id
@@ -145,8 +145,8 @@ export const AIJourneySettings: React.FC = () => {
                 }
             >
                 <strong>No journeys configured.</strong> You need to configure
-                at least one journey (Cart Abandoned or Session Abandoned)
-                before you can test outbound messages.
+                at least one journey (Cart Abandoned or Browse Abandoned) before
+                you can test outbound messages.
             </Banner>
         )
     }
@@ -232,7 +232,7 @@ export const AIJourneySettings: React.FC = () => {
             >
                 <SelectField
                     value={FOLLOW_UP_OPTIONS.find(
-                        (option) => option.id === totalFollowUp,
+                        (option) => option.id === totalFollowUp + 1,
                     )}
                     onChange={handleFollowUpChange}
                     items={FOLLOW_UP_OPTIONS}
@@ -291,7 +291,7 @@ export const AIJourneySettings: React.FC = () => {
                             discountCodeMessageIdx: value.id,
                         })
                     }}
-                    items={FOLLOW_UP_OPTIONS.slice(0, totalFollowUp).map(
+                    items={FOLLOW_UP_OPTIONS.slice(0, totalFollowUp + 1).map(
                         (option) => ({
                             id: option.id,
                             label: `Message ${option.label}`,
