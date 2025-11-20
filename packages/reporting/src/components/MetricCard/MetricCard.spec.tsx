@@ -16,13 +16,11 @@ vi.mock('@gorgias/analytics-ui-kit', () => ({
 
 const defaultProps = {
     children: <div>Children</div>,
-    actionMenu: <div>ActionMenu</div>,
     tip: <div>Tip</div>,
-    isLoading: false,
 }
 
 describe('MetricCard', () => {
-    it('should render with header, children and tip', () => {
+    it('should render with children and tip', () => {
         const { container } = render(<MetricCard {...defaultProps} />)
 
         expect(screen.getByText('Children')).toBeInTheDocument()
@@ -30,20 +28,25 @@ describe('MetricCard', () => {
         expect(
             container.querySelector('[data-candu-id]'),
         ).not.toBeInTheDocument()
-        expect(screen.queryByText('Loading')).not.toBeInTheDocument()
     })
 
-    it('should render with loading state', () => {
+    it('should render with data-candu-id attribute', () => {
         const { container } = render(
-            <MetricCard {...defaultProps} isLoading data-candu-id="123" />,
+            <MetricCard {...defaultProps} data-candu-id="123" />,
         )
 
-        expect(screen.getByText('Card')).toBeTruthy()
+        expect(screen.getByText('Children')).toBeInTheDocument()
+        expect(screen.getByText('Tip')).toBeInTheDocument()
         expect(container.querySelector('[data-candu-id]')).toHaveAttribute(
             'data-candu-id',
             '123',
         )
+    })
+
+    it('should not render tip when not provided', () => {
+        render(<MetricCard>{defaultProps.children}</MetricCard>)
+
+        expect(screen.getByText('Children')).toBeInTheDocument()
         expect(screen.queryByText('Tip')).not.toBeInTheDocument()
-        expect(screen.getAllByText('Loading')).toHaveLength(2)
     })
 })

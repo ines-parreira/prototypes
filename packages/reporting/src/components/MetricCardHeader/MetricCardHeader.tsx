@@ -1,11 +1,9 @@
 import type { ReactNode } from 'react'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
-import { HINT_TOOLTIP_DELAY } from '../../constants'
 import type { TooltipData } from '../../types'
-import { HintTooltip } from '../HintTooltip/HintTooltip'
 
 import css from './MetricCardHeader.less'
 
@@ -20,28 +18,46 @@ export function MetricCardHeader({
     titleExtra?: ReactNode
     actionMenu?: ReactNode
 }) {
-    const targetRef = useRef<HTMLDivElement>(null)
+    const titleRef = useRef<HTMLDivElement>(null)
+    const [isTitleTruncated, setIsTitleTruncated] = useState(false)
+
+    useEffect(() => {
+        const element = titleRef.current
+        if (element && typeof title === 'string') {
+            setIsTitleTruncated(element.scrollWidth > element.clientWidth)
+        }
+    }, [title])
+
+    const titleElement = (
+        <div ref={titleRef} className={css.titleText}>
+            {title}
+        </div>
+    )
+
+    const hintTooltipTitle = hint
+        ? hint.linkText
+            ? `${hint.title}\n${hint.linkText}`
+            : hint.title
+        : ''
 
     return (
         <div className={css.wrapper}>
             <div className={css.title}>
-                {title}
+                {isTitleTruncated && typeof title === 'string' ? (
+                    <Tooltip>
+                        <TooltipTrigger>{titleElement}</TooltipTrigger>
+                        <TooltipContent title={title} />
+                    </Tooltip>
+                ) : (
+                    titleElement
+                )}
                 {hint && (
-                    <>
-                        <Icon name="info" ref={targetRef} />
-                        <Tooltip
-                            target={targetRef}
-                            innerProps={{
-                                innerClassName: css.innerTooltip,
-                                boundariesElement: 'window',
-                            }}
-                            delay={HINT_TOOLTIP_DELAY}
-                            placement="top-start"
-                            autohide={false}
-                        >
-                            <HintTooltip hint={hint} />
-                        </Tooltip>
-                    </>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Icon name="info" />
+                        </TooltipTrigger>
+                        <TooltipContent title={hintTooltipTitle} />
+                    </Tooltip>
                 )}
             </div>
             <div className={css.actionMenu}>

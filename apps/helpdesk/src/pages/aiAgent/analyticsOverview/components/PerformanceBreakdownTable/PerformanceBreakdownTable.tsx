@@ -158,7 +158,13 @@ export const PerformanceBreakdownTable = () => {
     })
 
     return (
-        <Box flexDirection="column" gap="xxxs">
+        <Box
+            display="flex"
+            flexDirection="column"
+            flex={1}
+            gap="xxxs"
+            minWidth="0px"
+        >
             <Box className={css.header}>
                 <Heading size="sm" className={css.title}>
                     Performance breakdown
@@ -179,7 +185,7 @@ export const PerformanceBreakdownTable = () => {
                     Order Management
                 </ButtonGroupItem>
             </ButtonGroup>
-            <Box flexDirection="column">
+            <Box display="flex" flexDirection="column" minWidth="0px">
                 <TableToolbar
                     table={table}
                     bottomRow={{
@@ -187,18 +193,20 @@ export const PerformanceBreakdownTable = () => {
                         right: ['settings'],
                     }}
                 />
-                <TableRoot withBorder>
-                    <TableHeader>
-                        <HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
+                <Box className={css.tableWrapper}>
+                    <TableRoot withBorder className={css.table}>
+                        <TableHeader>
+                            <HeaderRowGroup
+                                headerGroups={table.getHeaderGroups()}
+                            />
+                        </TableHeader>
+                        <TableBodyContent
+                            rows={table.getRowModel().rows}
+                            columnCount={table.getAllColumns().length}
+                            table={table}
                         />
-                    </TableHeader>
-                    <TableBodyContent
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                    />
-                </TableRoot>
+                    </TableRoot>
+                </Box>
             </Box>
         </Box>
     )

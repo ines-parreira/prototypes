@@ -14,21 +14,4 @@ describe('AnalyticsOverviewAutomatedInteractionsCard', () => {
 
         expect(screen.getByText('4,800')).toBeInTheDocument()
     })
-
-    it('should display trend percentage', () => {
-        render(<AnalyticsOverviewAutomatedInteractionsCard />)
-
-        expect(screen.getByText('2%')).toBeInTheDocument()
-    })
-
-    it('should render with negative trend indicator', () => {
-        const { container } = render(
-            <AnalyticsOverviewAutomatedInteractionsCard />,
-        )
-
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
-        )
-        expect(trendingDownIcon).toBeInTheDocument()
-    })
 })

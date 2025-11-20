@@ -1,14 +1,22 @@
-import { AnalyticsMetricCard } from '../components/AnalyticsMetricCard/AnalyticsMetricCard'
+import { TrendCard } from '@repo/reporting'
+
+import { useAutomationRateMetric } from '../hooks/useAutomationRateMetric'
 
 export const AnalyticsOverviewAutomationRateCard = () => {
-    const value = 0.32
-    const trend = 2
+    const trend = useAutomationRateMetric()
 
     return (
-        <AnalyticsMetricCard
-            title="Overall automation rate"
-            value={`${(value * 100).toFixed(0)}%`}
+        <TrendCard
             trend={trend}
+            metricFormat="percent"
+            interpretAs="more-is-better"
+            withBorder
+            withFixedWidth={false}
+            hint={{
+                title: 'Percentage of customer interactions resolved by AI Agent',
+                link: 'https://help.gorgias.com',
+                linkText: 'Learn more',
+            }}
         />
     )
 }

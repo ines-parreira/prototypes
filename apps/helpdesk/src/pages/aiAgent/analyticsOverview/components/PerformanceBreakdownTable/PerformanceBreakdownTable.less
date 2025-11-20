@@ -17,7 +17,7 @@
         color: var(--content-neutral-tertiary);
     }
 
-    [data-name='icon'] {
+    [data-name='table-toolbar'] [data-name='icon'] {
         color: var(--content-neutral-default);
     }
 
@@ -40,5 +40,17 @@
 
     .featureName {
         color: var(--content-neutral-default);
+    }
+
+    .tableWrapper {
+        overflow-x: auto;
+        display: flex;
+        flex: 1;
+        [data-name='table-root'] {
+            flex: 1;
+            table {
+                width: 100%;
+            }
+        }
     }
 }

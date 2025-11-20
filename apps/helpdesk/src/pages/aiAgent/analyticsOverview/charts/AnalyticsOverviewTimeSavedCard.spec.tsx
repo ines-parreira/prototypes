@@ -15,18 +15,13 @@ describe('AnalyticsOverviewTimeSavedCard', () => {
         expect(screen.getByText('5h 30m')).toBeInTheDocument()
     })
 
-    it('should display trend percentage', () => {
+    it('should render hint tooltip icon', () => {
         render(<AnalyticsOverviewTimeSavedCard />)
 
-        expect(screen.getByText('2%')).toBeInTheDocument()
-    })
-
-    it('should render with positive trend indicator', () => {
-        const { container } = render(<AnalyticsOverviewTimeSavedCard />)
-
-        const trendingUpIcon = container.querySelector(
-            '[aria-label="trending-up"]',
-        )
-        expect(trendingUpIcon).toBeInTheDocument()
+        const infoIcon = screen.getByRole('img', {
+            hidden: true,
+            name: 'info',
+        })
+        expect(infoIcon).toBeInTheDocument()
     })
 })

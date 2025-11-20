@@ -1,8 +1,50 @@
 :local {
-    .section {
-        padding-bottom: 0px !important;
-        & > div:first-child {
-            gap: var(--spacing-md) !important;
+    .container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .kpisSection {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        width: 100%;
+        max-width: 100%;
+        transition: all 0.3s ease-in-out;
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        &::-webkit-scrollbar {
+            display: none;
         }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .kpisSection.clickable {
+        cursor: pointer;
+    }
+
+    .kpisSection.clickable:hover {
+        opacity: 0.95;
+    }
+
+    .kpisSection.wrapped {
+        flex-direction: column;
+        overflow-x: visible;
+        overflow-y: visible;
+    }
+
+    .kpiItem {
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    .kpisSection:not(.wrapped) .kpiItem {
+        flex: 1;
+        min-width: 240px;
     }
 }

@@ -15,18 +15,13 @@ describe('AnalyticsOverviewAutomationRateCard', () => {
         expect(screen.getByText('32%')).toBeInTheDocument()
     })
 
-    it('should display trend percentage', () => {
+    it('should render hint tooltip icon', () => {
         render(<AnalyticsOverviewAutomationRateCard />)
 
-        expect(screen.getByText('2%')).toBeInTheDocument()
-    })
-
-    it('should render with positive trend indicator', () => {
-        const { container } = render(<AnalyticsOverviewAutomationRateCard />)
-
-        const trendingUpIcon = container.querySelector(
-            '[aria-label="trending-up"]',
-        )
-        expect(trendingUpIcon).toBeInTheDocument()
+        const infoIcon = screen.getByRole('img', {
+            hidden: true,
+            name: 'info',
+        })
+        expect(infoIcon).toBeInTheDocument()
     })
 })

@@ -1,8 +1,23 @@
 import { render, screen } from '@testing-library/react'
 
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+
 import { AnalyticsOverviewCostSavedCard } from './AnalyticsOverviewCostSavedCard'
 
+jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+
 describe('AnalyticsOverviewCostSavedCard', () => {
+    beforeEach(() => {
+        ;(useCurrency as jest.Mock).mockReturnValue({
+            currency: 'USD',
+            isCurrencyUSD: true,
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should render the card title', () => {
         render(<AnalyticsOverviewCostSavedCard />)
 
@@ -13,20 +28,5 @@ describe('AnalyticsOverviewCostSavedCard', () => {
         render(<AnalyticsOverviewCostSavedCard />)
 
         expect(screen.getByText('$2,400')).toBeInTheDocument()
-    })
-
-    it('should display trend percentage', () => {
-        render(<AnalyticsOverviewCostSavedCard />)
-
-        expect(screen.getByText('2%')).toBeInTheDocument()
-    })
-
-    it('should render with positive trend indicator', () => {
-        const { container } = render(<AnalyticsOverviewCostSavedCard />)
-
-        const trendingUpIcon = container.querySelector(
-            '[aria-label="trending-up"]',
-        )
-        expect(trendingUpIcon).toBeInTheDocument()
     })
 })

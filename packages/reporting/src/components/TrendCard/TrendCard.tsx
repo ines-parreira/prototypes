@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+import { Box, Skeleton, Text } from '@gorgias/axiom'
+
 import { TREND_BADGE_FORMAT } from '../../constants'
 import type {
     MetricTrend,
@@ -55,30 +57,51 @@ export const TrendCard = memo<TrendCardProps>(
         )
 
         return (
-            <MetricCard
-                isLoading={isLoading}
-                withBorder={withBorder}
-                withFixedWidth={withFixedWidth}
-            >
+            <MetricCard withBorder={withBorder} withFixedWidth={withFixedWidth}>
                 <MetricCardHeader title={data?.label} hint={hint} />
+
                 <div className={css.dataContent}>
                     <div className={css.trendData}>
                         <span className={css.metricData}>
-                            {formatMetricValue(
-                                data?.value,
-                                metricFormat,
-                                currency,
+                            {isLoading ? (
+                                <Skeleton
+                                    height={36}
+                                    width={
+                                        metricFormat === 'duration' ? 64 : 52
+                                    }
+                                />
+                            ) : (
+                                formatMetricValue(
+                                    data?.value,
+                                    metricFormat,
+                                    currency,
+                                )
                             )}
                         </span>
-                        <TrendBadge
-                            value={data?.value}
-                            prevValue={data?.prevValue}
-                            metricFormat={metricFormat}
-                            interpretAs={interpretAs}
-                            currency={currency}
-                        />
+                        {isLoading ? (
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                height="14px"
+                            >
+                                <Skeleton
+                                    height={14}
+                                    width={14}
+                                    style={{ marginTop: '5px' }}
+                                />
+                                <Text size="xs">%</Text>
+                            </Box>
+                        ) : (
+                            <TrendBadge
+                                value={data?.value}
+                                prevValue={data?.prevValue}
+                                metricFormat={metricFormat}
+                                interpretAs={interpretAs}
+                                currency={currency}
+                            />
+                        )}
                     </div>
-                    {!!timeSeriesData?.length && (
+                    {!isLoading && !!timeSeriesData?.length && (
                         <TrendChart
                             trendColor={
                                 trendColor ??

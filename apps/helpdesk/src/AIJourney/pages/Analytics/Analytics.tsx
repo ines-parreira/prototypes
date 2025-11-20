@@ -1,13 +1,8 @@
 import { useMemo, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
-import {
-    ConfigureMetricsModal,
-    LineChart,
-    type MetricConfigItem,
-    type MetricTrendFormat,
-    TrendCard,
-} from '@repo/reporting'
+import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
+import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
 import { motion } from 'framer-motion'
 import moment from 'moment/moment'
 
@@ -147,6 +142,7 @@ export const Analytics = () => {
             currency: gmvInfluenced.currency,
             hint: 'Total value of orders linked to customers who received messages during the campaign. Reflects the overall sales impact attributed to this flow.',
             inHeader: true,
+            withFixedWidth: true,
             interpretAs: gmvInfluenced.interpretAs,
             isLoading: gmvInfluenced.isLoading,
             metricFormat: 'currency' as MetricTrendFormat,
@@ -164,6 +160,7 @@ export const Analytics = () => {
             label: 'Conversion Rate',
             hint: 'Percentage of recipients who completed a purchase after receiving a message. Connects message performance directly to revenue outcomes.',
             inHeader: true,
+            withFixedWidth: true,
             interpretAs: conversionRate.interpretAs,
             isLoading: conversionRate.isLoading,
             metricFormat: 'percent' as MetricTrendFormat,
@@ -329,11 +326,12 @@ export const Analytics = () => {
                             isLoading,
                             trend,
                             series,
+                            withFixedWidth = false,
                         }) => (
                             <TrendCard
                                 key={`header-metric-${id}`}
                                 withBorder={false}
-                                withFixedWidth={false}
+                                withFixedWidth={withFixedWidth}
                                 hint={{
                                     title: hint,
                                 }}

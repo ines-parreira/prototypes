@@ -1,14 +1,17 @@
-import { AnalyticsMetricCard } from '../components/AnalyticsMetricCard/AnalyticsMetricCard'
+import { TrendCard } from '@repo/reporting'
+
+import { useCostSavedMetric } from '../hooks/useCostSavedMetric'
 
 export const AnalyticsOverviewCostSavedCard = () => {
-    const value = 2400
-    const trend = 2
+    const trend = useCostSavedMetric()
 
     return (
-        <AnalyticsMetricCard
-            title="Cost saved"
-            value={`$${value.toLocaleString()}`}
+        <TrendCard
             trend={trend}
+            metricFormat="currency-precision-1"
+            interpretAs="more-is-better"
+            withBorder
+            withFixedWidth={false}
         />
     )
 }

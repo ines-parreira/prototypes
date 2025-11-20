@@ -1,8 +1,18 @@
 :local {
     .card {
-        padding: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0); // legacy
+        padding: var(--spacing-lg);
         border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+        min-width: 240px;
+        flex: 1;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
     }
 
     .cardNoBorder {
@@ -11,6 +21,7 @@
 
     .cardFixedWidth {
         width: 240px;
+        flex: 0;
     }
 
     .tip {
@@ -23,6 +34,6 @@
 .axiom :local {
     .card {
         border-color: var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
     }
 }

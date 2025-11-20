@@ -10,6 +10,9 @@ export {
     type MetricValueFormat,
     type MetricTrendFormat,
     type TwoDimensionalDataItem,
+    type MetricTrend,
+    type TooltipData,
+    type TrendDirection,
 } from './types'
 export { LineChart } from './components/LineChart/LineChart'
 export { TrendChart } from './components/TrendChart/TrendChart'

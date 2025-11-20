@@ -1,14 +1,17 @@
-import { AnalyticsMetricCard } from '../components/AnalyticsMetricCard/AnalyticsMetricCard'
+import { TrendCard } from '@repo/reporting'
+
+import { useAutomatedInteractionsMetric } from '../hooks/useAutomatedInteractionsMetric'
 
 export const AnalyticsOverviewAutomatedInteractionsCard = () => {
-    const value = 4800
-    const trend = -2
+    const trend = useAutomatedInteractionsMetric()
 
     return (
-        <AnalyticsMetricCard
-            title="Automated interactions"
-            value={value.toLocaleString()}
+        <TrendCard
             trend={trend}
+            metricFormat="decimal"
+            interpretAs="more-is-better"
+            withBorder
+            withFixedWidth={false}
         />
     )
 }

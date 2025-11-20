@@ -14,7 +14,7 @@ export const AnalyticsOverviewLayout = () => {
     const dashboardRef = useRef<HTMLDivElement>(null)
 
     return (
-        <Box flexDirection="column" flex={1}>
+        <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
             <Box
                 flexDirection="column"
                 justifyContent="space-between"
@@ -47,7 +47,13 @@ export const AnalyticsOverviewLayout = () => {
                     }}
                 />
             </Box>
-            <Box ref={dashboardRef} flexDirection="column" flex={1}>
+            <Box
+                ref={dashboardRef}
+                display="flex"
+                flexDirection="column"
+                flex={1}
+                minWidth="0px"
+            >
                 <DashboardLayoutRenderer
                     layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 />

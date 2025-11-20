@@ -1,5 +1,6 @@
 import moment from 'moment-timezone'
 
+import type { ColorValue } from '@gorgias/axiom'
 import { IconName } from '@gorgias/axiom'
 
 import {
@@ -163,6 +164,17 @@ function getTrendIconFromSign(sign: number): IconName | null {
     }
 }
 
+function getTrendIconColorFromSign(sign: number): ColorValue {
+    switch (sign) {
+        case 1:
+            return 'var(--content-success-primary)'
+        case -1:
+            return 'var(--content-error-primary)'
+        default:
+            return 'var(--content-neutral-secondary)'
+    }
+}
+
 /**
  * Format a value to a decimal
  * @param value - The value to format
@@ -307,4 +319,5 @@ export {
     formatMetricTrend,
     formatDuration,
     formatMetricValueOrString,
+    getTrendIconColorFromSign,
 }

@@ -3,19 +3,31 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: var(--layout-spacing-xxs);
+        gap: var(--spacing-xxxs);
+        height: 24px;
     }
 
     .title {
         align-items: center;
         display: flex;
-        gap: var(--layout-spacing-xxs);
+        gap: var(--spacing-xxxs);
         color: var(--content-neutral-secondary);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 16px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .titleText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .actionMenu {
         display: flex;
-        gap: var(--layout-spacing-xxs);
+        gap: var(--spacing-xxxs);
     }
 
     .innerTooltip {
