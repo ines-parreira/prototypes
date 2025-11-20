@@ -48,6 +48,10 @@ export function initApp() {
     const environment = getEnvironment()
     const { WEB_APP_RELEASE } = envVars
 
+    // Supply an initial state to redux for faster page loads. See #752
+    const state = store.getState() as RootState
+    const hasBillingInitialized = !state.billing.isEmpty()
+
     if (WEB_APP_RELEASE) {
         const { currentUser, currentAccount } = window.GORGIAS_STATE
         if (isStaging() || isProduction()) {
@@ -83,13 +87,13 @@ export function initApp() {
             currentUser,
             clientVersion: WEB_APP_RELEASE,
             serverVersion: window.GORGIAS_RELEASE,
+            automatePlan: hasBillingInitialized
+                ? getCurrentAutomatePlan(state)
+                : undefined,
         })
     }
 
     initSDKs()
-
-    // Supply an initial state to redux for faster page loads. See #752
-    const state = store.getState() as RootState
 
     if (state.currentUser) {
         initMoment(state.currentUser.toJS())
@@ -111,7 +115,6 @@ export function initApp() {
     ).forEach((notification) => {
         store.dispatch(notify(notification) as any)
     })
-    const hasBillingInitialized = !state.billing.isEmpty()
     const currentHelpdeskPlan = hasBillingInitialized
         ? getCurrentHelpdeskPlan(state)
         : undefined

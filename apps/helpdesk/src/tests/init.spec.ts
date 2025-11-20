@@ -4,8 +4,11 @@ import * as envUtils from '@repo/utils'
 import type { fromJS } from 'immutable'
 import { initApp } from 'init'
 
+import { store } from 'common/store'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'
@@ -20,7 +23,21 @@ jest.mock('common/store', () => {
         store: {
             dispatch: jest.fn(),
             getState: () => ({
-                billing: (fromJS as fromJSType)([]),
+                billing: fromJS({
+                    products: [
+                        {
+                            type: 'automate',
+                            prices: [
+                                {
+                                    plan_id: 'automate-USD5',
+                                    price_id: 'price_automate_USD5',
+                                    amount: 100,
+                                    num_quota_tickets: 1000,
+                                },
+                            ],
+                        },
+                    ],
+                }),
                 currentAccount: (fromJS as fromJSType)({ id: 1 }),
                 currentUser: (fromJS as fromJSType)({ id: 1 }),
             }),
@@ -28,12 +45,23 @@ jest.mock('common/store', () => {
     }
 })
 
+jest.mock('state/billing/selectors', () => ({
+    ...jest.requireActual('state/billing/selectors'),
+    getHasAutomate: jest.fn(() => true),
+    getCurrentAutomatePlan: jest.fn(() => ({
+        id: 1,
+        name: 'USD5',
+        generation: 5,
+    })),
+}))
+
 jest.mock('utils/sdk')
 jest.mock('utils/datadog')
 jest.mock('utils/errors')
 jest.mock('utils/launchDarkly')
 jest.mock('utils/hotjar')
 jest.mock('@repo/logging')
+jest.mock('state/notifications/actions')
 
 jest.mock('@repo/utils')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -168,6 +196,11 @@ describe('init', () => {
                 clientVersion: defaultWebAppRelease,
                 currentUser: defaultGorgiasState.currentUser,
                 currentAccount: defaultGorgiasState.currentAccount,
+                automatePlan: {
+                    generation: 5,
+                    id: 1,
+                    name: 'USD5',
+                },
             })
         })
 
@@ -246,6 +279,22 @@ describe('init', () => {
                 initApp()
 
                 expect(logEventMock).not.toHaveBeenCalled()
+            })
+        })
+
+        describe('dispatches window.SYSTEM_MESSAGES', () => {
+            it('should dispatch system messages', () => {
+                window.SYSTEM_MESSAGES = [
+                    [NotificationStatus.Info, 'test-message'],
+                ]
+
+                initApp()
+
+                expect(notify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Info,
+                    message: 'test-message',
+                })
+                expect(store.dispatch).toHaveBeenCalledTimes(1)
             })
         })
     })
