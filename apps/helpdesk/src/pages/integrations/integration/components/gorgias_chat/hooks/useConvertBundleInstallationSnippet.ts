@@ -2,10 +2,10 @@ import { isProduction, isStaging } from '@repo/utils'
 
 const CONVERT_BUNDLE_PRODUCTION_URL =
     process.env.CONVERT_BUNDLE_PRODUCTION_URL ??
-    'https://assets.9gtb.com/loader.js'
+    'https://cdn.9gtb.com/loader.js'
 const CONVERT_BUNDLE_STAGING_URL =
     process.env.CONVERT_BUNDLE_STAGING_URL ??
-    'https://assets-staging.9gtb.com/loader.js'
+    'https://cdn-staging.9gtb.com/loader.js'
 const CONVERT_BUNDLE_DEVELOPMENT_URL =
     process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ??
     'https://bundle-{your-name}.eu.ngrok.io/loader.js'
