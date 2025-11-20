@@ -270,7 +270,7 @@ describe('metricsPerAgent', () => {
                 'fetchOneTouchTicketsMetricPerAgent',
                 fetchOneTouchTicketsMetricPerAgent,
                 oneTouchTicketsPerAgentQueryFactory,
-                undefined,
+                oneTouchTicketsPerAgentQueryV2Factory,
             ],
             [
                 'fetchZeroTouchTicketsMetricPerAgent',

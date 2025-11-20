@@ -288,6 +288,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchOneTouchTicketsMetricPerChannel',
                 fetch: fetchOneTouchTicketsMetricPerChannel,
                 queryFactory: oneTouchTicketsPerChannelQueryFactory,
+                newQueryFactory: oneTouchTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchZeroTouchTicketsMetricPerChannel',

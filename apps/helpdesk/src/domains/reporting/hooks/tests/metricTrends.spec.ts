@@ -311,6 +311,7 @@ describe('metric trends', () => {
             'fetchOneTouchTicketsTrend',
             fetchOneTouchTicketsTrend,
             oneTouchTicketsQueryFactory,
+            oneTouchTicketsQueryV2Factory,
         ],
         [
             'fetchZeroTouchTicketsTrend',

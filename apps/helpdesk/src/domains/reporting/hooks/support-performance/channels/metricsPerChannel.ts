@@ -163,6 +163,7 @@ export const useOneTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
 )
 export const fetchOneTouchTicketsMetricPerChannel = createFetchPerDimension(
     oneTouchTicketsPerChannelQueryFactory,
+    oneTouchTicketsPerChannelQueryV2Factory,
 )
 
 export const useZeroTouchTicketsMetricPerChannel = createMetricPerDimensionHook(

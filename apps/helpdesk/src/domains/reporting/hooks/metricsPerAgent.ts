@@ -148,6 +148,7 @@ export const useOneTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
 
 export const fetchOneTouchTicketsMetricPerAgent = createFetchPerDimension(
     oneTouchTicketsPerAgentQueryFactory,
+    oneTouchTicketsPerAgentQueryV2Factory,
 )
 
 export const useZeroTouchTicketsMetricPerAgent = createMetricPerDimensionHook(

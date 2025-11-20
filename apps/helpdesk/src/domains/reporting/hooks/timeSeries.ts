@@ -160,6 +160,7 @@ export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(
 
 export const fetchOneTouchTicketsTimeSeries = getTimeSeriesFetch(
     oneTouchTicketsTimeSeriesQueryFactory,
+    oneTouchTicketsTimeseriesQueryV2Factory,
 )
 
 export const useZeroTouchTicketsTimeSeries = getTimeSeriesHook(

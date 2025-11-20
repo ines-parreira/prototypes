@@ -231,6 +231,7 @@ export const useOneTouchTicketsTrend = getTrendHook(
 
 export const fetchOneTouchTicketsTrend = getTrendFetch(
     oneTouchTicketsQueryFactory,
+    oneTouchTicketsQueryV2Factory,
 )
 
 export const useZeroTouchTicketsTrend = getTrendHook(
