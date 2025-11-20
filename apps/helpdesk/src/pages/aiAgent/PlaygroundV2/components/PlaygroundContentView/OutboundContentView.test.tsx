@@ -64,14 +64,6 @@ jest.mock('../PlaygroundMessageList/PlaygroundMessageList', () => ({
     ),
 }))
 
-jest.mock('../SmsChannelMessagesContainer/SmsChannelMessagesContainer', () => ({
-    SmsChannelMessagesContainer: ({
-        children,
-    }: {
-        children: React.ReactNode
-    }) => <div data-testid="sms-container">{children}</div>,
-}))
-
 describe('OutboundContentView', () => {
     const defaultProps = {
         accountId: 1,
@@ -151,13 +143,7 @@ describe('OutboundContentView', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render SMS container for messages', () => {
-            renderComponent({ messages: mockMessages })
-
-            expect(screen.getByTestId('sms-container')).toBeInTheDocument()
-        })
-
-        it('should not render initial content when messages exist (messages.length === 0 is false)', () => {
+        it('should not render initial content when messages exist', () => {
             renderComponent({ messages: mockMessages })
 
             expect(

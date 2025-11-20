@@ -14,16 +14,100 @@ import { usePlaygroundResources } from '../hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from '../hooks/usePlaygroundTracking'
 import { useShopNameResolution } from '../hooks/useShopNameResolution'
 
+const mockUseMessagesContext = jest.fn(() => ({
+    messages: [],
+}))
+
 jest.mock('../contexts/MessagesContext', () => ({
-    useMessagesContext: jest.fn(() => ({})),
+    useMessagesContext: () => mockUseMessagesContext(),
+}))
+
+const mockUseSettingsContext = jest.fn(() => ({
+    mode: 'inbound',
 }))
 
 jest.mock('../contexts/SettingsContext', () => ({
-    useSettingsContext: jest.fn(() => ({})),
+    useSettingsContext: () => mockUseSettingsContext(),
 }))
 
 jest.mock('../contexts/PlaygroundContext', () => ({
     PlaygroundProvider: ({ children }: any) => <div>{children}</div>,
+}))
+
+jest.mock('../contexts/CoreContext', () => ({
+    useCoreContext: jest.fn(() => ({
+        testSessionId: null,
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+        channel: 'email',
+        channelAvailability: { available: true },
+        onChannelChange: jest.fn(),
+        onChannelAvailabilityChange: jest.fn(),
+        setAreActionsEnabled: jest.fn(),
+        areActionsEnabled: false,
+        resetToDefaultChannel: jest.fn(),
+        resetToDefaultActionsEnabled: jest.fn(),
+    })),
+    CoreProvider: ({ children }: any) => <div>{children}</div>,
+}))
+
+jest.mock('../contexts/AIJourneyContext', () => ({
+    useAIJourneyContext: jest.fn(() => ({
+        shopifyIntegration: undefined,
+        journeys: [],
+        shopName: 'test-store',
+        isLoadingJourneys: false,
+        aiJourneySettings: {
+            journeyType: 'cart_abandoned',
+            selectedProduct: null,
+            totalFollowUp: 1,
+            includeProductImage: true,
+            includeDiscountCode: true,
+            discountCodeValue: 10,
+            discountCodeMessageIdx: 1,
+            outboundMessageInstructions: '',
+        },
+        setAIJourneySettings: jest.fn(),
+        resetAIJourneySettings: jest.fn(),
+        saveAIJourneySettings: jest.fn(),
+        isLoadingJourneyData: false,
+        isSavingJourneyData: false,
+        followUpMessagesSent: 0,
+        setFollowUpMessagesSent: jest.fn(),
+        currentJourney: undefined,
+        journeyConfiguration: undefined,
+        productList: [],
+        isLoadingProducts: false,
+    })),
+    AIJourneyProvider: ({ children }: any) => <div>{children}</div>,
+}))
+
+jest.mock('../contexts/ConfigurationContext', () => ({
+    useConfigurationContext: jest.fn(() => ({
+        storeConfiguration: {
+            storeName: 'test-store',
+            guidanceHelpCenterId: 123,
+            helpCenterId: 456,
+            monitoredChatIntegrations: [789],
+        },
+        accountConfiguration: {
+            gorgiasDomain: 'test-domain',
+            accountId: 123,
+            httpIntegration: { id: 456 },
+        },
+        snippetHelpCenterId: 789,
+        httpIntegrationId: 456,
+        baseUrl: 'https://test-base-url.com',
+        gorgiasDomain: 'test-domain',
+        accountId: 123,
+        chatIntegrationId: 789,
+        shopName: 'test-store',
+    })),
+    ConfigurationProvider: ({ children }: any) => <div>{children}</div>,
 }))
 
 jest.mock('../contexts/EventsContext', () => ({
@@ -38,6 +122,13 @@ jest.mock('../hooks/usePlaygroundPrerequisites')
 jest.mock('../hooks/usePlaygroundResources')
 jest.mock('../hooks/usePlaygroundTracking')
 jest.mock('../hooks/useShopNameResolution')
+
+jest.mock('../hooks/useAiJourneyMessages', () => ({
+    useAiJourneyMessages: jest.fn(() => ({
+        triggerMessage: jest.fn(),
+        isTriggeringMessage: false,
+    })),
+}))
 
 jest.mock(
     '../components/PlaygroundInputSection/PlaygroundInputSection',
@@ -154,6 +245,9 @@ describe('AiAgentPlayground', () => {
         mockUsePlaygroundTracking.mockReturnValue({
             onTestPageViewed: jest.fn(),
         } as any)
+        mockUseSettingsContext.mockReturnValue({
+            mode: 'inbound',
+        })
     })
 
     const renderComponent = (props = {}) => {
@@ -398,6 +492,60 @@ describe('AiAgentPlayground', () => {
             await waitFor(() => {
                 expect(mockOnClose).toHaveBeenCalledWith(false)
             })
+        })
+    })
+
+    describe('Conditional input section rendering', () => {
+        beforeEach(() => {
+            mockUseMessagesContext.mockReturnValue({
+                messages: [],
+            })
+        })
+
+        it('should render input section in inbound mode with no messages', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'inbound',
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render input section in outbound mode with no messages', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'outbound',
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('PlaygroundInputSection'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render input section in outbound mode with messages', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'outbound',
+            })
+            mockUseMessagesContext.mockReturnValue({
+                messages: [
+                    {
+                        id: '1',
+                        type: 'MESSAGE',
+                        content: 'Test message',
+                        sender: 'user',
+                    },
+                ] as any,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
         })
     })
 })

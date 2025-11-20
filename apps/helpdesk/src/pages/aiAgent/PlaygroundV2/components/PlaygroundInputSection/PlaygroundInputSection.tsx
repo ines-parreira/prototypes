@@ -17,6 +17,7 @@ import {
     useEvents,
     useSubscribeToEvent,
 } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
@@ -116,6 +117,8 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
 
     const { snippetHelpCenterId, storeConfiguration } =
         useConfigurationContext()
+
+    const { mode } = useSettingsContext()
 
     const events = useEvents()
 
@@ -347,12 +350,14 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
                         onModelChange={handleMessageChange}
                     />
 
-                    <PlaygroundPredefinedMessages
-                        onMessageSelect={handlePredefinedMessageSelect}
-                        isVisible={
-                            isInitialMessage && !formValues.message?.trim()
-                        }
-                    />
+                    {mode !== 'outbound' && (
+                        <PlaygroundPredefinedMessages
+                            onMessageSelect={handlePredefinedMessageSelect}
+                            isVisible={
+                                isInitialMessage && !formValues.message?.trim()
+                            }
+                        />
+                    )}
                     <div id={TOOLBAR_CONTAINER_ID}>
                         {isFormDisabled && disabledMessage && (
                             <Tooltip target="send-button">

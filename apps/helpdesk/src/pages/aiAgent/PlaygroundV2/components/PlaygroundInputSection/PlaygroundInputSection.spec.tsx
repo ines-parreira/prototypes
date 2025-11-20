@@ -65,6 +65,14 @@ jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: jest.fn(),
 }))
 
+const mockUseSettingsContext = jest.fn(() => ({
+    mode: 'inbound',
+}))
+
+jest.mock('../../contexts/SettingsContext', () => ({
+    useSettingsContext: () => mockUseSettingsContext(),
+}))
+
 jest.mock('./PlaygroundInputSection.less', () => ({
     container: 'container',
     section: 'section',
@@ -150,6 +158,14 @@ jest.mock('../PlaygroundCustomerSelection/PlaygroundCustomerSelection', () => ({
         EXISTING_CUSTOMER: 'existing_customer',
     },
 }))
+
+jest.mock(
+    '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages',
+    () => ({
+        PlaygroundPredefinedMessages: ({ isVisible }: any) =>
+            isVisible ? <div>Predefined Messages</div> : null,
+    }),
+)
 
 jest.mock('pages/common/forms/input/TextInput', () => ({
     __esModule: true,
@@ -686,6 +702,57 @@ describe('PlaygroundInputSection', () => {
                 expect(tabs).toHaveLength(1)
                 expect(tabs[0]).toBeDisabled()
             })
+        })
+    })
+
+    describe('Predefined messages', () => {
+        it('should show predefined messages in inbound mode when no message is typed', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'inbound',
+            })
+            renderComponent({
+                isInitialMessage: true,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: '',
+                },
+            })
+
+            expect(screen.getByText('Predefined Messages')).toBeInTheDocument()
+        })
+
+        it('should not show predefined messages in outbound mode', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'outbound',
+            })
+            renderComponent({
+                isInitialMessage: true,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: '',
+                },
+            })
+
+            expect(
+                screen.queryByText('Predefined Messages'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show predefined messages when message is typed', () => {
+            mockUseSettingsContext.mockReturnValue({
+                mode: 'inbound',
+            })
+            renderComponent({
+                isInitialMessage: true,
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Hello',
+                },
+            })
+
+            expect(
+                screen.queryByText('Predefined Messages'),
+            ).not.toBeInTheDocument()
         })
     })
 })

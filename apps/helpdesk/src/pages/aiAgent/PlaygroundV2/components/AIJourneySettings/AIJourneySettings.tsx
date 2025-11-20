@@ -1,4 +1,5 @@
-import { type RefObject, useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import type { RefObject } from 'react'
 
 import classNames from 'classnames'
 
@@ -31,7 +32,9 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
     }
 }
 
-const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4, 5].map(
+const MAX_DISCOUNT_VALUE = 100
+
+const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4].map(
     (num) => ({
         id: num,
         label: num.toString(),
@@ -91,6 +94,35 @@ export const AIJourneySettings: React.FC = () => {
         (id: number) => productList.find((product) => product.id === id),
         [productList],
     )
+
+    const handleDiscountField = (value: string) => {
+        if (value === '') {
+            setAIJourneySettings({
+                discountCodeValue: 0,
+            })
+            return
+        }
+        const numericValue = parseFloat(value)
+        if (isNaN(numericValue)) return
+        setAIJourneySettings({
+            discountCodeValue:
+                numericValue > MAX_DISCOUNT_VALUE
+                    ? MAX_DISCOUNT_VALUE
+                    : numericValue,
+        })
+    }
+
+    const handleFollowUpChange = (
+        value: (typeof FOLLOW_UP_OPTIONS)[number],
+    ) => {
+        setAIJourneySettings({
+            totalFollowUp: value.id,
+            discountCodeMessageIdx:
+                value.id < discountCodeMessageIdx
+                    ? value.id
+                    : discountCodeMessageIdx,
+        })
+    }
 
     if (isLoadingJourneys) {
         return <LoadingSpinner />
@@ -202,11 +234,7 @@ export const AIJourneySettings: React.FC = () => {
                     value={FOLLOW_UP_OPTIONS.find(
                         (option) => option.id === totalFollowUp,
                     )}
-                    onChange={(value) => {
-                        setAIJourneySettings({
-                            totalFollowUp: value.id,
-                        })
-                    }}
+                    onChange={handleFollowUpChange}
                     items={FOLLOW_UP_OPTIONS}
                     label="Total number of messages to send"
                 >
@@ -244,18 +272,7 @@ export const AIJourneySettings: React.FC = () => {
                 <TextField
                     label="Discount code value"
                     value={discountCodeValue.toString()}
-                    onChange={(value) => {
-                        if (value === '') {
-                            setAIJourneySettings({
-                                discountCodeValue: 0,
-                            })
-                        }
-                        const numericValue = parseFloat(value)
-                        if (isNaN(numericValue)) return
-                        setAIJourneySettings({
-                            discountCodeValue: numericValue,
-                        })
-                    }}
+                    onChange={handleDiscountField}
                     trailingSlot={<Button icon="percent" variant="tertiary" />}
                 />
             </div>
@@ -274,10 +291,12 @@ export const AIJourneySettings: React.FC = () => {
                             discountCodeMessageIdx: value.id,
                         })
                     }}
-                    items={FOLLOW_UP_OPTIONS.map((option) => ({
-                        id: option.id,
-                        label: `Message ${option.label}`,
-                    }))}
+                    items={FOLLOW_UP_OPTIONS.slice(0, totalFollowUp).map(
+                        (option) => ({
+                            id: option.id,
+                            label: `Message ${option.label}`,
+                        }),
+                    )}
                     label="In which message should the discount code be sent"
                 >
                     {(option: { id: number; label: string }) => (

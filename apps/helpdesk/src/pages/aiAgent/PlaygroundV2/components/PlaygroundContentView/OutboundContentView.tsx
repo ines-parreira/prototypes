@@ -5,13 +5,11 @@ import { Tooltip } from 'reactstrap'
 import { Button } from '@gorgias/axiom'
 
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
-import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useAiJourneyMessages } from 'pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages'
 
 import { PlaygroundInitialContent } from '../PlaygroundInitialContent/PlaygroundInitialContent'
 import { PlaygroundMessageList } from '../PlaygroundMessageList/PlaygroundMessageList'
-import { SmsChannelMessagesContainer } from '../SmsChannelMessagesContainer/SmsChannelMessagesContainer'
 import type { BaseContentViewProps } from './ContentView'
 
 // TODO: extract the style into a dedicated file
@@ -27,7 +25,6 @@ export const OutboundContentView = ({
     messages,
 }: OutboundContentViewProps) => {
     const [tooltipOpen, setTooltipOpen] = useState(false)
-    const { shopName } = useConfigurationContext()
     const { isPolling } = useCoreContext()
     const { triggerMessage, isTriggeringMessage } = useAiJourneyMessages()
 
@@ -44,15 +41,13 @@ export const OutboundContentView = ({
         <>
             {messages.length > 0 && (
                 <div className={css.messageListContainer}>
-                    <SmsChannelMessagesContainer storeName={shopName}>
-                        <PlaygroundMessageList
-                            accountId={accountId}
-                            userId={userId}
-                            messages={messages}
-                            onGuidanceClick={onGuidanceClick}
-                            shouldDisplayReasoning={shouldDisplayReasoning}
-                        />
-                    </SmsChannelMessagesContainer>
+                    <PlaygroundMessageList
+                        accountId={accountId}
+                        userId={userId}
+                        messages={messages}
+                        onGuidanceClick={onGuidanceClick}
+                        shouldDisplayReasoning={shouldDisplayReasoning}
+                    />
                     <div>
                         <Button
                             id="follow-up-button"

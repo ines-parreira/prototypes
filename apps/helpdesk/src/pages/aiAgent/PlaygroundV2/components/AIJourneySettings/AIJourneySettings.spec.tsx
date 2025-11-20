@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
@@ -306,6 +307,91 @@ describe('AIJourneySettings', () => {
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
                     totalFollowUp: 3,
+                    discountCodeMessageIdx: 1,
+                })
+            })
+        })
+
+        it('should cap discount value at 100', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const discountInput = screen.getByRole('textbox', {
+                name: /discount code value/i,
+            })
+
+            await user.clear(discountInput)
+            await user.type(discountInput, '150')
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    discountCodeValue: 100,
+                })
+            })
+        })
+
+        it('should adjust discountCodeMessageIdx when reducing totalFollowUp below current value', async () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        totalFollowUp: 4,
+                        discountCodeMessageIdx: 3,
+                    },
+                }),
+            )
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            const selectField = screen.getByRole('textbox', {
+                name: /total number of messages to send/i,
+            })
+            await user.click(selectField)
+
+            const option2 = await screen.findByRole('option', {
+                name: '2',
+            })
+            await user.click(option2)
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    totalFollowUp: 2,
+                    discountCodeMessageIdx: 2,
+                })
+            })
+        })
+
+        it('should not adjust discountCodeMessageIdx when reducing totalFollowUp above current value', async () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        totalFollowUp: 4,
+                        discountCodeMessageIdx: 1,
+                    },
+                }),
+            )
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            const selectField = screen.getByRole('textbox', {
+                name: /total number of messages to send/i,
+            })
+            await user.click(selectField)
+
+            const option3 = await screen.findByRole('option', {
+                name: '3',
+            })
+            await user.click(option3)
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    totalFollowUp: 3,
+                    discountCodeMessageIdx: 1,
                 })
             })
         })

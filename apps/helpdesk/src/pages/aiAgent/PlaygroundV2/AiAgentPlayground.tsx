@@ -149,11 +149,13 @@ export const AiAgentPlaygroundContent = ({
                             messages={messages}
                         />
                     )}
-                    <div className={css.inputContainer}>
-                        <PlaygroundInputSection
-                            withResetButton={withResetButton}
-                        />
-                    </div>
+                    {(mode !== 'outbound' || messages.length > 0) && (
+                        <div className={css.inputContainer}>
+                            <PlaygroundInputSection
+                                withResetButton={withResetButton}
+                            />
+                        </div>
+                    )}
                 </>
             )}
         </div>
