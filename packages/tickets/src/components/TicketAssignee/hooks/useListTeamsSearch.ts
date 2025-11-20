@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import { ListTeamsOrderBy, Team } from '@gorgias/helpdesk-queries'
+import type { Team } from '@gorgias/helpdesk-queries'
+import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListTeams } from './useInfiniteListTeams'
 

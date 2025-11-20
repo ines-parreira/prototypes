@@ -7,6 +7,7 @@ import {
     YAxis,
 } from 'recharts'
 
+import type { SizeValue } from '@gorgias/axiom'
 import {
     Box,
     Button,
@@ -15,11 +16,10 @@ import {
     Icon,
     ListItem,
     Select,
-    SizeValue,
     Skeleton,
 } from '@gorgias/axiom'
 
-import { MetricTrendFormat, TwoDimensionalDataItem } from '../../types'
+import type { MetricTrendFormat, TwoDimensionalDataItem } from '../../types'
 import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
 import { toChartData } from './utils'

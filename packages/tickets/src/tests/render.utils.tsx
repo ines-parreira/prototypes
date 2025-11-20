@@ -1,17 +1,19 @@
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import {
+import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
-    renderHook as renderHookPrimitive,
     RenderOptions as RenderOptionsPrimitive,
+} from '@testing-library/react'
+import {
+    renderHook as renderHookPrimitive,
     render as renderPrimitive,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'
-import { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
+import type { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
 
 export const testAppQueryClient = new QueryClient({
     defaultOptions: {

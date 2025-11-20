@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { TicketTeam } from '@gorgias/helpdesk-queries'
+import type { TicketTeam } from '@gorgias/helpdesk-queries'
 
 import { useListTeamsSearch } from './useListTeamsSearch'
 

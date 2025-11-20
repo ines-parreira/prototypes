@@ -1,4 +1,5 @@
-import { ComponentType, Context, useContext } from 'react'
+import type { ComponentType, Context } from 'react'
+import { useContext } from 'react'
 
 export type ContextConsumerMock<ContextValue> = ComponentType & {
     getLastContextValue: () => ContextValue | undefined

@@ -1,4 +1,4 @@
-import { TooltipData } from '../../types'
+import type { TooltipData } from '../../types'
 
 export const HintTooltip = ({ hint }: { hint: TooltipData }) => {
     return (

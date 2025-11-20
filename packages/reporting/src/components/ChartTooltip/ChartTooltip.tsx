@@ -1,4 +1,4 @@
-import { TooltipContentProps } from 'recharts'
+import type { TooltipContentProps } from 'recharts'
 
 import { Box, Card } from '@gorgias/axiom'
 

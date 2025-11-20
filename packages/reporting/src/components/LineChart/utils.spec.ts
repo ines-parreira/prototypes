@@ -1,4 +1,4 @@
-import { TwoDimensionalDataItem } from '../../types'
+import type { TwoDimensionalDataItem } from '../../types'
 import { toChartData } from './utils'
 
 describe('utils', () => {

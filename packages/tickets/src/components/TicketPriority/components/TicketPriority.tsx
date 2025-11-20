@@ -9,9 +9,10 @@ import {
     Select,
     Tag,
 } from '@gorgias/axiom'
-import { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
+import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
-import { PriorityOption, usePriorityOptions } from '../hooks/usePriorityOptions'
+import type { PriorityOption } from '../hooks/usePriorityOptions'
+import { usePriorityOptions } from '../hooks/usePriorityOptions'
 import { useUpdateTicketPriority } from '../hooks/useUpdateTicketPriority'
 
 type Props = {

@@ -4,10 +4,8 @@ import {
     TicketsLegacyBridgeProvider,
     useTicketsLegacyBridge,
 } from '../LegacyBridge'
-import {
-    LegacyBridgeContextType,
-    NotificationStatus,
-} from '../LegacyBridge/context'
+import type { LegacyBridgeContextType } from '../LegacyBridge/context'
+import { NotificationStatus } from '../LegacyBridge/context'
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
     {

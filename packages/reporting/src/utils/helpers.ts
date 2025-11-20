@@ -7,7 +7,7 @@ import {
     DEFAULT_LOCALE,
     NOT_AVAILABLE_TEXT,
 } from '../constants'
-import {
+import type {
     MetricTrendFormat,
     MetricValueFormat,
     TrendColor,

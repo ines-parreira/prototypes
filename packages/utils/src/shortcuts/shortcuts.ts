@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 
-import { Shortcuts } from './types'
+import type { Shortcuts } from './types'
 
 export const shortcuts: Shortcuts = {
     App: {

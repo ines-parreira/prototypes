@@ -1,4 +1,4 @@
-import { TwoDimensionalDataItem } from '../../types'
+import type { TwoDimensionalDataItem } from '../../types'
 
 export const toChartData = (data: TwoDimensionalDataItem[]) => {
     const pointsMap = new Map<string, Record<string, string | number>>()

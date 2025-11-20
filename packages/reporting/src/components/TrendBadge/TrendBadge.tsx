@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { Icon, Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
-import { MetricValueFormat, TrendDirection } from '../../types'
+import type { MetricValueFormat, TrendDirection } from '../../types'
 import {
     formatMetricTrend,
     formatMetricValue,

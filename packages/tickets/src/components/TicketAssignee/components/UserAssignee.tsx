@@ -11,15 +11,11 @@ import {
     Select,
     Tag,
 } from '@gorgias/axiom'
-import { TicketUser } from '@gorgias/helpdesk-queries'
+import type { TicketUser } from '@gorgias/helpdesk-queries'
 
 import { useUpdateTicketUser } from '../hooks/useUpdateTicketUser'
-import {
-    NO_USER_OPTION,
-    UserOption,
-    UserSection,
-    useUserOptions,
-} from '../hooks/useUserOptions'
+import type { UserOption, UserSection } from '../hooks/useUserOptions'
+import { NO_USER_OPTION, useUserOptions } from '../hooks/useUserOptions'
 
 import css from './SelectStyles.less'
 

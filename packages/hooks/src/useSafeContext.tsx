@@ -1,4 +1,5 @@
-import { Context, useContext } from 'react'
+import type { Context } from 'react'
+import { useContext } from 'react'
 
 type NonUndefined<T> = T extends undefined ? never : T
 

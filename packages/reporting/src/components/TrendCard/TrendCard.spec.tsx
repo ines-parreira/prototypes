@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
-import { MetricTrend, TwoDimensionalDataItem } from '../../types'
-import { TrendCard, TrendCardProps } from './TrendCard'
+import type { MetricTrend, TwoDimensionalDataItem } from '../../types'
+import type { TrendCardProps } from './TrendCard'
+import { TrendCard } from './TrendCard'
 
 const mockTimeSeriesData: TwoDimensionalDataItem[] = [
     {

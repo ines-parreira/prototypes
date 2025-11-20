@@ -33,7 +33,7 @@
         "platform:update:sdk": "scripts/update-sdk.sh"
     },
     "devDependencies": {
-        "@gorgias/config": "^0.3.0",
+        "@gorgias/config": "^0.4.0",
         "@gorgias/static-analysis": "0.3.7",
         "@sentry/cli": "^2.47.0",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",

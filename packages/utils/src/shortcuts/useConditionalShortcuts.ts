@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { shortcutManager } from './shortcutManager'
-import { KeyboardAction } from './types'
+import type { KeyboardAction } from './types'
 
 export function useConditionalShortcuts(
     mount: boolean,

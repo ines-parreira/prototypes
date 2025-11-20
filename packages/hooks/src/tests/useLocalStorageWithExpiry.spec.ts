@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing/vitest'
-import { type Mock } from 'vitest'
+import type { Mock } from 'vitest'
 
 import { useLocalStorage } from '../useLocalStorage'
 import { useLocalStorageWithExpiry } from '../useLocalStorageWithExpiry'

@@ -11,14 +11,10 @@ import {
     Select,
     Tag,
 } from '@gorgias/axiom'
-import { TicketTeam } from '@gorgias/helpdesk-queries'
+import type { TicketTeam } from '@gorgias/helpdesk-queries'
 
-import {
-    NO_TEAM_OPTION,
-    TeamOption,
-    TeamSection,
-    useTeamOptions,
-} from '../hooks/useTeamOptions'
+import type { TeamOption, TeamSection } from '../hooks/useTeamOptions'
+import { NO_TEAM_OPTION, useTeamOptions } from '../hooks/useTeamOptions'
 import { useUpdateTicketTeam } from '../hooks/useUpdateTicketTeam'
 
 import css from './SelectStyles.less'

@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
-import { type Mock } from 'vitest'
+import type { Mock } from 'vitest'
 
 import { useElementSize } from '../useElementSize'
 

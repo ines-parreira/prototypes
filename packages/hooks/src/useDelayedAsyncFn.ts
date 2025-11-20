@@ -1,8 +1,10 @@
-import { DependencyList, useEffect, useRef, useState } from 'react'
+import type { DependencyList } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { Maybe } from '@repo/types'
 
-import { AsyncFnState, useAsyncFn } from './useAsyncFn'
+import type { AsyncFnState } from './useAsyncFn'
+import { useAsyncFn } from './useAsyncFn'
 
 type FunctionReturningPromise = (...args: any[]) => Promise<any>
 

@@ -1,11 +1,5 @@
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export function useRafState<S>(
     initialState: S | (() => S),

@@ -1,6 +1,6 @@
-import {
-    type RenderHookResult as BaseRenderHookResult,
-    type RenderHookOptions,
+import type {
+    RenderHookResult as BaseRenderHookResult,
+    RenderHookOptions,
 } from '@testing-library/react'
 
 /**

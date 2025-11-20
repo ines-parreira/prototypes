@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
-import {
+import type {
     MetricTrend,
     MetricTrendFormat,
     TooltipData,

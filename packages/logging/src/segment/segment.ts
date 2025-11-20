@@ -4,7 +4,7 @@ import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
 
 import { devLog } from '../utils/devLog'
-import { SegmentEvent } from './types'
+import type { SegmentEvent } from './types'
 
 export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
 const shouldSendEvent = () =>

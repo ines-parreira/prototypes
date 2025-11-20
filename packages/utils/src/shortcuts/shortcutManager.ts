@@ -4,10 +4,11 @@ import _get from 'lodash/get'
 import _isFunction from 'lodash/isFunction'
 import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
-import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap'
+import type { ExtendedKeyboardEvent } from 'mousetrap'
+import Mousetrap from 'mousetrap'
 
 import { shortcuts } from './shortcuts'
-import { KeyboardAction, KeyMap } from './types'
+import type { KeyboardAction, KeyMap } from './types'
 import {
     closest,
     getModifier,

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { User } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListUsers } from './useInfiniteListUsers'
 

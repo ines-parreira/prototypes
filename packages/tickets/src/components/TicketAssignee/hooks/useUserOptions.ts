@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 
-import { TicketUser, useGetCurrentUser } from '@gorgias/helpdesk-queries'
+import type { TicketUser } from '@gorgias/helpdesk-queries'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
-import { NonNullableUser, useListUsersSearch } from './useListUsersSearch'
+import type { NonNullableUser } from './useListUsersSearch'
+import { useListUsersSearch } from './useListUsersSearch'
 
 const SECTION_DETAILS = {
     SELF: {

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TooltipData } from '../../types'
+import type { TooltipData } from '../../types'
 import { HintTooltip } from './HintTooltip'
 
 const hint: TooltipData = {

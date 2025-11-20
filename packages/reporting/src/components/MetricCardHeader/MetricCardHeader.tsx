@@ -1,9 +1,10 @@
-import { ReactNode, useRef } from 'react'
+import type { ReactNode } from 'react'
+import { useRef } from 'react'
 
 import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { HINT_TOOLTIP_DELAY } from '../../constants'
-import { TooltipData } from '../../types'
+import type { TooltipData } from '../../types'
 import { HintTooltip } from '../HintTooltip/HintTooltip'
 
 import css from './MetricCardHeader.less'

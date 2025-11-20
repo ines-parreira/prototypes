@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { TwoDimensionalDataItem } from '../../types'
+import type { TwoDimensionalDataItem } from '../../types'
 import { LineChart } from './LineChart'
 
 describe('LineChart', () => {

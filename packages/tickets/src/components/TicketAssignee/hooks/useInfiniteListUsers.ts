@@ -1,15 +1,13 @@
-import {
-    useInfiniteQuery,
-    UseInfiniteQueryOptions,
-} from '@tanstack/react-query'
+import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 
-import {
+import type {
     HttpError,
     HttpResponse,
-    listUsers,
     ListUsers200,
     ListUsersParams,
 } from '@gorgias/helpdesk-client'
+import { listUsers } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 export function useInfiniteListUsers<

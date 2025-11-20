@@ -1,4 +1,5 @@
-import { RefObject, useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import type { RefObject } from 'react'
 
 import { Icon, IconName, ListItem, Select, Tag } from '@gorgias/axiom'
 

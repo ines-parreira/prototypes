@@ -7,14 +7,14 @@ import {
     getOptionsAtPath,
     getPathFromValue,
 } from '../helpers/tree'
-import {
-    type BackButtonOption,
-    type ClearButtonOption,
-    type Option,
-    OptionType,
-    type TreeOption,
-    type TreeValue,
+import type {
+    BackButtonOption,
+    ClearButtonOption,
+    Option,
+    TreeOption,
+    TreeValue,
 } from '../types'
+import { OptionEnum } from '../types'
 
 type UseOptionsTreeParams = {
     choices: TreeValue[]
@@ -71,7 +71,7 @@ export function useOptionsTree({
         if (!isSearching) {
             if (currentPath.length > 0) {
                 const backButton: BackButtonOption = {
-                    type: OptionType.Back,
+                    type: OptionEnum.Back,
                     id: BACK_BUTTON_ID,
                     label: currentPath[currentPath.length - 1] || 'Back',
                 }
@@ -80,7 +80,7 @@ export function useOptionsTree({
 
             if (!!selectedValue) {
                 const clearButton: ClearButtonOption = {
-                    type: OptionType.Clear,
+                    type: OptionEnum.Clear,
                     id: CLEAR_BUTTON_ID,
                     label: 'Clear selection',
                 }

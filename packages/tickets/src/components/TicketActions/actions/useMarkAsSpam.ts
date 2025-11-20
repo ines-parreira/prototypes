@@ -2,12 +2,8 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
-    HttpResponse,
-    queryKeys,
-    Ticket,
-    useUpdateTicket,
-} from '@gorgias/helpdesk-queries'
+import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
+import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketViewNavigation } from '../../../hooks/useTicketViewNavigation'
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'

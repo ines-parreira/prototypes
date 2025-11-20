@@ -1,4 +1,5 @@
-import { DependencyList, useCallback, useRef, useState } from 'react'
+import type { DependencyList } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { useIsMounted } from './useIsMounted'
 

@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
+import type { ColorValue } from '@gorgias/axiom'
 import {
     Button,
     CheckBoxField,
-    ColorValue,
     Dot,
     Icon,
     ListItem,
@@ -14,7 +14,7 @@ import {
     OverflowListShowMore,
     Tag,
 } from '@gorgias/axiom'
-import { TicketTag } from '@gorgias/helpdesk-queries'
+import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { useGetTicketData } from './hooks/useGetTicketData'
 import { useListTagsSearch } from './hooks/useListTagsSearch'

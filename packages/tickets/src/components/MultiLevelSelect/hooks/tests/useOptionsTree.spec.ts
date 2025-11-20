@@ -1,7 +1,8 @@
 import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { OptionType, TreeOption } from '../../types'
+import type { TreeOption } from '../../types'
+import { OptionEnum } from '../../types'
 import { useOptionsTree } from '../useOptionsTree'
 
 describe('useOptionsTree', () => {
@@ -20,12 +21,12 @@ describe('useOptionsTree', () => {
 
             expect(result.current.selectOptions).toHaveLength(2)
             expect(result.current.selectOptions[0]).toMatchObject({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 label: 'Status',
                 hasChildren: true,
             })
             expect(result.current.selectOptions[1]).toMatchObject({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 label: 'Priority',
                 hasChildren: true,
             })
@@ -43,15 +44,15 @@ describe('useOptionsTree', () => {
 
             expect(result.current.selectOptions).toHaveLength(3)
             expect(result.current.selectOptions[0]).toMatchObject({
-                type: OptionType.Back,
+                type: OptionEnum.Back,
                 label: 'Status',
             })
             expect(result.current.selectOptions[1]).toMatchObject({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 label: 'Open',
             })
             expect(result.current.selectOptions[2]).toMatchObject({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 label: 'Closed',
             })
         })
@@ -73,7 +74,7 @@ describe('useOptionsTree', () => {
             })
 
             expect(result.current.selectOptions).toHaveLength(2)
-            expect(result.current.selectOptions[0].type).toBe(OptionType.Option)
+            expect(result.current.selectOptions[0].type).toBe(OptionEnum.Option)
         })
     })
 
@@ -100,7 +101,7 @@ describe('useOptionsTree', () => {
             )
 
             const clearButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionType.Clear,
+                (opt) => opt.type === OptionEnum.Clear,
             )
 
             expect(clearButton).toBeDefined()
@@ -112,7 +113,7 @@ describe('useOptionsTree', () => {
             )
 
             expect(result.current.selectOptions).toHaveLength(4)
-            expect(result.current.selectOptions[0].type).toBe(OptionType.Back)
+            expect(result.current.selectOptions[0].type).toBe(OptionEnum.Back)
         })
 
         it('should reset to selected value path on resetPath', () => {
@@ -146,7 +147,7 @@ describe('useOptionsTree', () => {
 
             expect(result.current.selectOptions).toHaveLength(1)
             expect(result.current.selectOptions[0]).toMatchObject({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 label: 'Open',
                 caption: 'Status',
                 hasChildren: false,
@@ -163,13 +164,13 @@ describe('useOptionsTree', () => {
             )
 
             const backButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionType.Back,
+                (opt) => opt.type === OptionEnum.Back,
             )
 
             expect(backButton).toBeUndefined()
 
             const clearButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionType.Clear,
+                (opt) => opt.type === OptionEnum.Clear,
             )
 
             expect(clearButton).toBeUndefined()

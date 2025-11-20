@@ -1,12 +1,12 @@
 import { NESTING_DELIMITER } from '../constants'
-import {
-    type BackButtonOption,
-    type ClearButtonOption,
-    type Option,
-    OptionType,
-    type TreeOption,
-    type TreeValue,
+import type {
+    BackButtonOption,
+    ClearButtonOption,
+    Option,
+    TreeOption,
+    TreeValue,
 } from '../types'
+import { OptionEnum } from '../types'
 
 type TreeNode = {
     value: TreeValue | null
@@ -57,7 +57,7 @@ function treeToOptions(
     return Array.from(tree, ([key, node]) => {
         const fullPath = [...currentPath, key]
         return {
-            type: OptionType.Option,
+            type: OptionEnum.Option,
             id: key,
             label: key,
             value: node.value ?? fullPath.join(NESTING_DELIMITER),
@@ -111,7 +111,7 @@ function flattenTreeWithCaptionsRecursively(
             const caption =
                 parentPath.length > 0 ? parentPath.join(' > ') : undefined
             acc.push({
-                type: OptionType.Option,
+                type: OptionEnum.Option,
                 id: node.value,
                 label: key,
                 value: node.value,
@@ -163,9 +163,9 @@ export function getDisplayLabel(value: TreeValue | undefined): string | null {
 }
 
 export function isBackButton(option: Option): option is BackButtonOption {
-    return option.type === OptionType.Back
+    return option.type === OptionEnum.Back
 }
 
 export function isClearButton(option: Option): option is ClearButtonOption {
-    return option.type === OptionType.Clear
+    return option.type === OptionEnum.Clear
 }

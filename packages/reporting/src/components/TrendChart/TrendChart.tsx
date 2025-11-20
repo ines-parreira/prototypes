@@ -1,7 +1,7 @@
 import { Area, AreaChart as AreaChartRecharts } from 'recharts'
-import { CartesianChartProps } from 'recharts/types/util/types'
+import type { CartesianChartProps } from 'recharts/types/util/types'
 
-import { TrendColor, TwoDimensionalDataItem } from '../../types'
+import type { TrendColor, TwoDimensionalDataItem } from '../../types'
 import { toChartData } from '../LineChart/utils'
 
 export type AreaChartProps = {

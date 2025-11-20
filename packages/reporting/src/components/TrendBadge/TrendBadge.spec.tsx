@@ -8,19 +8,13 @@ import { DEFAULT_BADGE_TEXT, TREND_BADGE_FORMAT } from '../../constants'
 import { formatMetricTrend, formatMetricValue } from '../../utils/helpers'
 import { TrendBadge } from './TrendBadge'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const originalModule =
-        (await importOriginal()) as typeof import('@gorgias/axiom')
-
-    return {
-        IconName: originalModule.IconName,
-        Icon: originalModule.Icon,
-        Skeleton: () => <div role="progressbar" />,
-        LegacyTooltip: ({ children }: { children: React.ReactNode }) => (
-            <div role="tooltip">{children}</div>
-        ),
-    }
-})
+vi.mock('@gorgias/axiom', async (importOriginal) => ({
+    ...(await importOriginal()),
+    Skeleton: () => <div role="progressbar" />,
+    LegacyTooltip: ({ children }: { children: React.ReactNode }) => (
+        <div role="tooltip">{children}</div>
+    ),
+}))
 
 describe('<TrendBadge />', () => {
     it('should render the badge with default value when no values provided', () => {

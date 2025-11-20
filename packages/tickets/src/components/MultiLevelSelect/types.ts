@@ -1,6 +1,6 @@
-import { BACK_BUTTON_ID, CLEAR_BUTTON_ID } from './constants'
+import type { BACK_BUTTON_ID, CLEAR_BUTTON_ID } from './constants'
 
-export enum OptionType {
+export enum OptionEnum {
     Option = 'option',
     Back = 'back',
     Clear = 'clear',
@@ -9,7 +9,7 @@ export enum OptionType {
 export type TreeValue = string
 
 export type TreeOption = {
-    type: OptionType.Option
+    type: OptionEnum.Option
     id: string
     label: string
     value: TreeValue
@@ -19,13 +19,13 @@ export type TreeOption = {
 }
 
 export type BackButtonOption = {
-    type: OptionType.Back
+    type: OptionEnum.Back
     id: typeof BACK_BUTTON_ID
     label: string
 }
 
 export type ClearButtonOption = {
-    type: OptionType.Clear
+    type: OptionEnum.Clear
     id: typeof CLEAR_BUTTON_ID
     label: string
 }

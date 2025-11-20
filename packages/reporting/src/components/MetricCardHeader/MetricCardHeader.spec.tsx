@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { TooltipData } from '../../types'
+import type { TooltipData } from '../../types'
 import { MetricCardHeader } from './MetricCardHeader'
 
 const hint: TooltipData = {

@@ -1,4 +1,4 @@
-import { OptionType } from '../../types'
+import { OptionEnum } from '../../types'
 import {
     buildTreeFromChoices,
     flattenTreeWithCaptions,
@@ -80,7 +80,7 @@ describe('flattenTreeWithCaptions', () => {
 
         expect(options).toHaveLength(3)
         expect(options[0]).toMatchObject({
-            type: OptionType.Option,
+            type: OptionEnum.Option,
             label: 'Open',
             value: 'Status::Open',
             caption: 'Status',
@@ -142,7 +142,7 @@ describe('getDisplayLabel', () => {
 describe('isBackButton', () => {
     it('should identify back button options', () => {
         const option = {
-            type: OptionType.Back as const,
+            type: OptionEnum.Back as const,
             id: '__back_button__' as const,
             label: 'Back',
         }
@@ -152,7 +152,7 @@ describe('isBackButton', () => {
 
     it('should return false for other options', () => {
         const option = {
-            type: OptionType.Option as const,
+            type: OptionEnum.Option as const,
             id: 'test',
             label: 'Test',
             value: 'test',
@@ -167,7 +167,7 @@ describe('isBackButton', () => {
 describe('isClearButton', () => {
     it('should identify clear button options', () => {
         const option = {
-            type: OptionType.Clear as const,
+            type: OptionEnum.Clear as const,
             id: '__clear_button__' as const,
             label: 'Clear',
         }
@@ -177,7 +177,7 @@ describe('isClearButton', () => {
 
     it('should return false for other options', () => {
         const option = {
-            type: OptionType.Option as const,
+            type: OptionEnum.Option as const,
             id: 'test',
             label: 'Test',
             value: 'test',
