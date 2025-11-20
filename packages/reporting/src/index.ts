@@ -15,3 +15,7 @@ export { LineChart } from './components/LineChart/LineChart'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export { formatMetricTrend, formatMetricValue } from './utils/helpers'
+export {
+    type MetricConfigItem,
+    ConfigureMetricsModal,
+} from './components/ConfigureMetricsModal'

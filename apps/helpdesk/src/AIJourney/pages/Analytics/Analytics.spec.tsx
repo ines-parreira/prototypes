@@ -336,7 +336,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getAllByLabelText('Loading')).toHaveLength(4)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(2)
     })
 
     it('should render both metrics with values', () => {
@@ -381,9 +381,9 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getAllByText('GMV Influenced')).toHaveLength(3)
-        expect(screen.getAllByText('Conversion Rate')).toHaveLength(3)
-        expect(screen.getAllByText('$15,000.5')).toHaveLength(2)
-        expect(screen.getAllByText(/25\.5%/)).toHaveLength(2)
+        expect(screen.getAllByText('GMV Influenced')).toHaveLength(2)
+        expect(screen.getAllByText('Conversion Rate')).toHaveLength(2)
+        expect(screen.getAllByText('$15,000.5')).toHaveLength(1)
+        expect(screen.getAllByText(/25\.5%/)).toHaveLength(1)
     })
 })

@@ -1,0 +1,222 @@
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+import { vi } from 'vitest'
+
+import { ConfigureMetricsModal } from './ConfigureMetricsModal'
+import type { MetricConfigItem } from './types'
+
+vi.mock('react-dnd', () => ({
+    DndProvider: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
+    useDrag: () => [{ isDragging: false }, vi.fn(), vi.fn()],
+    useDrop: () => [{ isOver: false }, vi.fn()],
+}))
+
+vi.mock('react-dnd-html5-backend', () => ({
+    HTML5Backend: {},
+}))
+
+const mockMetrics: MetricConfigItem[] = [
+    { id: 'metric-1', label: 'Overall automation rate', visibility: true },
+    { id: 'metric-2', label: 'Automated interactions', visibility: true },
+    { id: 'metric-3', label: 'Handover', visibility: false },
+    { id: 'metric-4', label: 'Drop-off', visibility: true },
+    { id: 'metric-5', label: 'Response time', visibility: false },
+    { id: 'metric-6', label: 'Customer satisfaction', visibility: false },
+]
+
+describe('ConfigureMetricsModal', () => {
+    const defaultProps = {
+        isOpen: true,
+        onClose: vi.fn(),
+        metrics: mockMetrics,
+        onSave: vi.fn(),
+    }
+
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
+    const renderComponent = (props = {}) => {
+        return render(<ConfigureMetricsModal {...defaultProps} {...props} />)
+    }
+
+    it('should render modal with title and description', () => {
+        renderComponent()
+
+        expect(screen.getByText('Edit metrics')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Choose the 4 metrics you want to display and rearrange them as needed.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should render all metrics', () => {
+        renderComponent()
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
+        expect(screen.getByText('Handover')).toBeInTheDocument()
+        expect(screen.getByText('Drop-off')).toBeInTheDocument()
+    })
+
+    it('should have save button disabled initially', () => {
+        renderComponent()
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        expect(saveButton).toBeDisabled()
+    })
+
+    it('should enable save button when visibility is toggled', async () => {
+        renderComponent()
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        expect(saveButton).toBeDisabled()
+
+        const toggles = screen.getAllByRole('switch')
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        expect(saveButton).not.toBeDisabled()
+    })
+
+    it('should toggle visibility when clicking toggle', async () => {
+        const onSave = vi.fn()
+        renderComponent({ onSave })
+
+        const toggles = screen.getAllByRole('switch')
+
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        await act(async () => {
+            await userEvent.click(saveButton)
+        })
+
+        expect(onSave).toHaveBeenCalledWith([
+            {
+                id: 'metric-1',
+                label: 'Overall automation rate',
+                visibility: false,
+            },
+            {
+                id: 'metric-2',
+                label: 'Automated interactions',
+                visibility: true,
+            },
+            { id: 'metric-3', label: 'Handover', visibility: false },
+            { id: 'metric-4', label: 'Drop-off', visibility: true },
+            { id: 'metric-5', label: 'Response time', visibility: false },
+            {
+                id: 'metric-6',
+                label: 'Customer satisfaction',
+                visibility: false,
+            },
+        ])
+    })
+
+    it('should call onClose when cancel button is clicked', async () => {
+        const onClose = vi.fn()
+        renderComponent({ onClose })
+
+        const cancelButton = screen.getByRole('button', { name: /cancel/i })
+        await act(async () => {
+            await userEvent.click(cancelButton)
+        })
+
+        expect(onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call onSave and onClose when save button is clicked', async () => {
+        const onSave = vi.fn()
+        const onClose = vi.fn()
+        renderComponent({ onSave, onClose })
+
+        const toggles = screen.getAllByRole('switch')
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        await act(async () => {
+            await userEvent.click(saveButton)
+        })
+
+        expect(onSave).toHaveBeenCalled()
+        expect(onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should reset changes when cancel is clicked', async () => {
+        const onSave = vi.fn()
+        renderComponent({ onSave })
+
+        const toggles = screen.getAllByRole('switch')
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        const cancelButton = screen.getByRole('button', { name: /cancel/i })
+        await act(async () => {
+            await userEvent.click(cancelButton)
+        })
+
+        expect(onSave).not.toHaveBeenCalled()
+    })
+
+    describe('maxVisibleMetric', () => {
+        it('should disable toggles when max visible metrics is reached', async () => {
+            renderComponent()
+
+            const toggles = screen.getAllByRole('switch')
+
+            expect(toggles[2]).not.toBeDisabled()
+            expect(toggles[4]).not.toBeDisabled()
+
+            await act(async () => {
+                await userEvent.click(toggles[2])
+            })
+
+            expect(toggles[2]).toBeChecked()
+            expect(toggles[4]).toBeDisabled()
+            expect(toggles[5]).toBeDisabled()
+        })
+
+        it('should enable toggles when a metric is toggled off', async () => {
+            const customMetrics: MetricConfigItem[] = [
+                {
+                    id: 'metric-1',
+                    label: 'Overall automation rate',
+                    visibility: true,
+                },
+                {
+                    id: 'metric-2',
+                    label: 'Automated interactions',
+                    visibility: true,
+                },
+                { id: 'metric-3', label: 'Handover', visibility: false },
+                { id: 'metric-4', label: 'Drop-off', visibility: false },
+            ]
+
+            renderComponent({
+                metrics: customMetrics,
+                maxVisibleMetric: 2,
+            })
+
+            const toggles = screen.getAllByRole('switch')
+
+            expect(toggles[2]).toBeDisabled()
+
+            await act(async () => {
+                await userEvent.click(toggles[0])
+            })
+
+            expect(toggles[0]).not.toBeChecked()
+            expect(toggles[2]).not.toBeDisabled()
+        })
+    })
+})

@@ -1,16 +1,19 @@
 import { useMemo, useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import {
+    ConfigureMetricsModal,
     LineChart,
+    type MetricConfigItem,
     type MetricTrendFormat,
     TrendCard,
-    type TwoDimensionalDataItem,
 } from '@repo/reporting'
 import { motion } from 'framer-motion'
 import moment from 'moment/moment'
 
 import {
     Box,
+    Button,
     Card,
     Heading,
     LegacyLoadingSpinner as LoadingSpinner,
@@ -122,27 +125,14 @@ export const Analytics = () => {
         },
     }
 
-    const metrics: Record<
-        string,
+    const metrics = [
         {
-            currency?: string
-            hint: string
-            inHeader?: boolean
-            interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-            isLoading: boolean
-            metricFormat: MetricTrendFormat
-            series: TwoDimensionalDataItem[]
-            trend: {
-                prevValue: number | null
-                value: number | null
-            }
-        }
-    > = {
-        'Total Recipients': {
+            id: 'Total Recipients',
+            label: 'Total Recipients',
             hint: 'Unique customers who received at least one message in this campaign. Shows audience size and helps normalise engagement metrics like CTR or reply rate.',
             interpretAs: totalRecipients.interpretAs,
             isLoading: totalRecipients.isLoading,
-            metricFormat: 'decimal',
+            metricFormat: 'decimal' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(totalRecipients.series, {
                 label: 'Total Recipients',
                 ...seriesBaseOptions,
@@ -152,13 +142,15 @@ export const Analytics = () => {
                 value: totalRecipients.value,
             },
         },
-        'GMV Influenced': {
+        {
+            id: 'GMV Influenced',
+            label: 'GMV Influenced',
             currency: gmvInfluenced.currency,
             hint: 'Total value of orders linked to customers who received messages during the campaign. Reflects the overall sales impact attributed to this flow.',
             inHeader: true,
             interpretAs: gmvInfluenced.interpretAs,
             isLoading: gmvInfluenced.isLoading,
-            metricFormat: 'currency',
+            metricFormat: 'currency' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(gmvInfluenced.series, {
                 label: 'GMV Influenced',
                 ...seriesBaseOptions,
@@ -168,12 +160,14 @@ export const Analytics = () => {
                 value: gmvInfluenced.value,
             },
         },
-        'Conversion Rate': {
+        {
+            id: 'Conversion Rate',
+            label: 'Conversion Rate',
             hint: 'Percentage of recipients who completed a purchase after receiving a message. Connects message performance directly to revenue outcomes.',
             inHeader: true,
             interpretAs: conversionRate.interpretAs,
             isLoading: conversionRate.isLoading,
-            metricFormat: 'percent',
+            metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(conversionRate.series, {
                 label: 'Conversion Rate',
                 ...seriesBaseOptions,
@@ -183,12 +177,14 @@ export const Analytics = () => {
                 value: conversionRate.value,
             },
         },
-        'Average Order Value': {
+        {
+            id: 'Average Order Value',
+            label: 'Average Order Value',
             currency: averageOrderValue.currency,
             hint: 'Average spend per order from customers influenced by this campaign. Used to understand purchasing behaviour and upsell effectiveness.',
             interpretAs: averageOrderValue.interpretAs,
             isLoading: averageOrderValue.isLoading,
-            metricFormat: 'currency',
+            metricFormat: 'currency' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(averageOrderValue.series, {
                 label: 'Average Order Value',
                 ...seriesBaseOptions,
@@ -198,12 +194,14 @@ export const Analytics = () => {
                 value: averageOrderValue.value,
             },
         },
-        'Revenue Per Recipient': {
+        {
+            id: 'Revenue Per Recipient',
+            label: 'Revenue Per Recipient',
             currency: revenuePerRecipient.currency,
             hint: 'Total revenue attributed to this campaign divided by the number of recipients. Normalises impact—useful for comparing campaign performance.',
             interpretAs: revenuePerRecipient.interpretAs,
             isLoading: revenuePerRecipient.isLoading,
-            metricFormat: 'currency',
+            metricFormat: 'currency' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(revenuePerRecipient.series, {
                 label: 'Revenue Per Recipient',
                 ...seriesBaseOptions,
@@ -213,11 +211,13 @@ export const Analytics = () => {
                 value: revenuePerRecipient.value,
             },
         },
-        'Response Rate': {
+        {
+            id: 'Response Rate',
+            label: 'Response Rate',
             hint: 'Percentage of recipients who replied to at least one message. Indicates engagement and how conversational the campaign felt.',
             interpretAs: responseRate.interpretAs,
             isLoading: responseRate.isLoading,
-            metricFormat: 'percent',
+            metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(responseRate.series, {
                 label: 'Response Rate',
                 ...seriesBaseOptions,
@@ -227,11 +227,13 @@ export const Analytics = () => {
                 value: responseRate.value,
             },
         },
-        'Click Through Rate': {
+        {
+            id: 'Click Through Rate',
+            label: 'Click Through Rate',
             hint: 'Percentage of recipients who clicked a link in the message. Shows how compelling your message and offer are.',
             interpretAs: clickThroughRate.interpretAs,
             isLoading: clickThroughRate.isLoading,
-            metricFormat: 'percent',
+            metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(clickThroughRate.series, {
                 label: 'Click Through Rate',
                 ...seriesBaseOptions,
@@ -241,11 +243,13 @@ export const Analytics = () => {
                 value: clickThroughRate.value,
             },
         },
-        'Opt-out Rate': {
+        {
+            id: 'Opt-out Rate',
+            label: 'Opt-out Rate',
             hint: 'Percentage of recipients who unsubscribed after receiving a message. A leading indicator of audience fatigue or poor message relevance.',
             interpretAs: optOutRate.interpretAs,
             isLoading: optOutRate.isLoading,
-            metricFormat: 'percent',
+            metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(optOutRate.series, {
                 label: 'Opt-out Rate',
                 ...seriesBaseOptions,
@@ -255,14 +259,33 @@ export const Analytics = () => {
                 value: optOutRate.value,
             },
         },
-    }
+    ]
 
-    const [title, setTitle] = useState(Object.keys(metrics)[0])
-    const metricsLabels = Object.keys(metrics).map((metric) => ({
-        id: metric,
-        label: metric,
+    const [title, setTitle] = useState(metrics[0].id)
+    const metricsLabels = metrics.map(({ id, label }) => ({
+        id,
+        label,
     }))
-    const selectedData = metrics[title]
+    const selectedData = metrics.find((m) => m.id === title)
+
+    const defaultVisibleMetrics = new Set([
+        'Click Through Rate',
+        'Response Rate',
+        'Total Recipients',
+        'Revenue Per Recipient',
+    ])
+    const defaultMetricsConfig: MetricConfigItem[] = metrics.map(
+        ({ id, label }) => ({
+            id,
+            label,
+            visibility: defaultVisibleMetrics.has(id),
+        }),
+    )
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
+        MetricConfigItem[]
+    >('ai-journey-analytics-metrics-preferences', defaultMetricsConfig)
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -294,23 +317,22 @@ export const Analytics = () => {
             </div>
 
             <Card flexDirection="row" width="100%" gap="xxxl" padding="xl">
-                {Object.entries(metrics)
-                    .filter(([, { inHeader }]) => inHeader)
+                {metrics
+                    .filter(({ inHeader }) => inHeader)
                     .map(
-                        ([
+                        ({
+                            id,
                             label,
-                            {
-                                currency,
-                                metricFormat,
-                                hint,
-                                interpretAs,
-                                isLoading,
-                                trend,
-                                series,
-                            },
-                        ]) => (
+                            currency,
+                            metricFormat,
+                            hint,
+                            interpretAs,
+                            isLoading,
+                            trend,
+                            series,
+                        }) => (
                             <TrendCard
-                                key={`header-metric-${label}`}
+                                key={`header-metric-${id}`}
                                 withBorder={false}
                                 withFixedWidth={false}
                                 hint={{
@@ -325,7 +347,7 @@ export const Analytics = () => {
                                     isError: false,
                                     isFetching: isLoading,
                                     data: {
-                                        label: label,
+                                        label,
                                         value: trend.value,
                                         prevValue: trend.prevValue,
                                     },
@@ -335,56 +357,80 @@ export const Analytics = () => {
                     )}
             </Card>
 
-            <Heading size="md">Key metrics</Heading>
+            <Box flexDirection="column" gap="md">
+                <Box flexDirection="row" justifyContent="space-between">
+                    <Heading size="md">Key metrics</Heading>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setIsEditModalOpen(true)}
+                    >
+                        Edit
+                    </Button>
+                    <ConfigureMetricsModal
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)}
+                        metrics={keyKpisConfig}
+                        onSave={setKeyKpisConfig}
+                    />
+                </Box>
 
-            <Box flexDirection="row" gap="md" className={css.keyMetricsBox}>
-                {Object.entries(metrics).map(
-                    ([
-                        label,
-                        {
-                            currency,
-                            metricFormat,
-                            hint,
-                            interpretAs,
-                            isLoading,
-                            trend,
-                            series,
-                        },
-                    ]) => (
-                        <TrendCard
-                            key={`key-metric-${label}`}
-                            currency={currency}
-                            withFixedWidth={false}
-                            hint={{
-                                title: hint,
-                            }}
-                            isLoading={isLoading}
-                            metricFormat={metricFormat}
-                            interpretAs={interpretAs}
-                            timeSeriesData={series}
-                            trend={{
-                                isError: false,
-                                isFetching: isLoading,
-                                data: {
-                                    label: label,
-                                    value: trend.value,
-                                    prevValue: trend.prevValue ?? null,
-                                },
-                            }}
-                        />
-                    ),
+                <Box flexDirection="row" gap="md" className={css.keyMetricsBox}>
+                    {keyKpisConfig
+                        .filter((config) => config.visibility)
+                        .map((config) => {
+                            const metricData = metrics.find(
+                                (m) => m.id === config.id,
+                            )
+                            if (!metricData) return null
+
+                            const {
+                                currency,
+                                metricFormat,
+                                hint,
+                                interpretAs,
+                                isLoading,
+                                trend,
+                                series,
+                            } = metricData
+
+                            return (
+                                <TrendCard
+                                    key={`key-metric-${config.id}`}
+                                    currency={currency}
+                                    withFixedWidth={false}
+                                    hint={{
+                                        title: hint,
+                                    }}
+                                    isLoading={isLoading}
+                                    metricFormat={metricFormat}
+                                    interpretAs={interpretAs}
+                                    timeSeriesData={series}
+                                    trend={{
+                                        isError: false,
+                                        isFetching: isLoading,
+                                        data: {
+                                            label: config.label,
+                                            value: trend.value,
+                                            prevValue: trend.prevValue ?? null,
+                                        },
+                                    }}
+                                />
+                            )
+                        })}
+                </Box>
+
+                {selectedData && (
+                    <LineChart
+                        onMetricChange={setTitle}
+                        metrics={metricsLabels}
+                        title={title}
+                        containerHeight={320}
+                        isLoading={selectedData.isLoading}
+                        metricFormat={selectedData.metricFormat}
+                        data={selectedData.series}
+                    />
                 )}
             </Box>
-
-            <LineChart
-                onMetricChange={setTitle}
-                metrics={metricsLabels}
-                title={title}
-                containerHeight={320}
-                isLoading={selectedData.isLoading}
-                metricFormat={selectedData.metricFormat}
-                data={selectedData.series}
-            />
         </motion.div>
     )
 }

@@ -134,3 +134,6 @@ catalogs:
     '@types/segment-analytics': '^0.0.38'
   zod:
     'zod': '^3.24.2'
+  react-dnd:
+    'react-dnd': '16.0.1'
+    'react-dnd-html5-backend': '16.0.1'

@@ -23,6 +23,8 @@
         "moment": "catalog:moment",
         "moment-timezone": "catalog:moment",
         "react": "catalog:react",
+        "react-dnd": "catalog:react-dnd",
+        "react-dnd-html5-backend": "catalog:react-dnd",
         "react-dom": "catalog:react",
         "react-is": "catalog:react"
     },
