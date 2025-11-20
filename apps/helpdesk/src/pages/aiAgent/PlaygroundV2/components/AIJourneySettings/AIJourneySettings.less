@@ -1,74 +1,78 @@
 @import (reference) '~css/typography';
 
 :local {
-    .toggleFieldsContainer {
-        // The gap is not using our default spacings on figma
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .messageInstructions {
-        :first-child {
-            margin-bottom: var(--spacing-xxs);
-            .component-button-medium();
+    // The styles are scoped to avoid leaking to other components
+    // It refers to the parent class as it's defined as <></>
+    [class*='PlaygroundSettings--settingsContent--'] {
+        .toggleFieldsContainer {
+            // The gap is not using our default spacings on figma
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        :last-child {
-            // Give axiom aspect to it.
+        .messageInstructions {
+            :first-child {
+                margin-bottom: var(--spacing-xxs);
+                .component-button-medium();
+            }
+
+            :last-child {
+                // Give axiom aspect to it.
+                box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+                border: unset;
+            }
+        }
+
+        .messageSettingsSeparator {
+            .body-semibold();
+        }
+
+        .inputFieldWrapper {
+            text-overflow: clip;
+        }
+
+        .followUpField {
+            [class*='ui-input-wrapper-'] {
+                width: 144px;
+            }
+        }
+
+        .discountCodeField {
+            [class*='ui-input-wrapper-'] {
+                width: 100px;
+            }
+        }
+
+        .discountCodeMessageIdxField {
+            [class*='ui-input-wrapper-'] {
+                width: 160px;
+            }
+        }
+
+        [class*='ui-input-wrapper-'] {
             box-shadow: inset 0 0 0 1px var(--border-neutral-default);
-            border: unset;
-        }
-    }
 
-    .messageSettingsSeparator {
-        .body-semibold();
-    }
+            .selectedProductImage {
+                width: 24px;
+                height: 24px;
+                object-fit: contain;
+            }
 
-    .inputFieldWrapper {
-        text-overflow: clip;
-    }
+            span {
+                cursor: pointer;
+            }
 
-    .followUpField {
-        [class*='ui-input-wrapper-'] {
-            width: 144px;
-        }
-    }
-
-    .discountCodeField {
-        [class*='ui-input-wrapper-'] {
-            width: 100px;
-        }
-    }
-
-    .discountCodeMessageIdxField {
-        [class*='ui-input-wrapper-'] {
-            width: 160px;
-        }
-    }
-
-    [class*='ui-input-wrapper-'] {
-        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
-
-        .selectedProductImage {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
+            input {
+                box-shadow: unset;
+            }
         }
 
-        span {
-            cursor: pointer;
+        [class*='ui-input-wrapper-'][class*='ui-input-isfocused-'] {
+            [class*='ui-input-input-'] {
+                box-shadow: unset !important;
+            }
+            box-shadow: inset 0 0 0 1px var(--border-neutral-secondary);
         }
-
-        input {
-            box-shadow: unset;
-        }
-    }
-
-    [class*='ui-input-wrapper-'][class*='ui-input-isfocused-'] {
-        [class*='ui-input-input-'] {
-            box-shadow: unset !important;
-        }
-        box-shadow: inset 0 0 0 1px var(--border-neutral-secondary);
     }
 }
