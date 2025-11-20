@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import type { ReactNode } from 'react'
 
 import classnames from 'classnames'
@@ -45,6 +46,11 @@ const PlaygroundMessage = ({
         message.createdDatetime === messages[0]?.createdDatetime &&
         includeProductImage &&
         selectedProduct !== null
+
+    const productImage = useRef({
+        src: selectedProduct?.image?.src,
+        alt: selectedProduct?.title,
+    })
 
     switch (messageType) {
         case MessageType.ERROR:
@@ -125,8 +131,8 @@ const PlaygroundMessage = ({
                     {renderFirstJourneyImage && (
                         <img
                             className={css.journeyImage}
-                            src={selectedProduct.image?.src}
-                            alt={selectedProduct.title}
+                            src={productImage.current.src}
+                            alt={productImage.current.alt}
                         />
                     )}
 
