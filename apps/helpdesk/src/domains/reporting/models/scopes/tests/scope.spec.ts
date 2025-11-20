@@ -62,7 +62,7 @@ describe('scope', () => {
                 scope: MetricScope.TicketsOpen,
                 measures: ['testMeasure'] as unknown as readonly MeasureName[],
                 dimensions: ['ticketId'] as const,
-                filters: ['periodStart', 'periodEnd'],
+                filters: ['periodStart', 'periodEnd'] as const,
             }
 
             const result = defineScope(config)
@@ -74,7 +74,7 @@ describe('scope', () => {
             const config = {
                 scope: MetricScope.TicketsOpen,
                 measures: ['onlineTime'] as unknown as readonly MeasureName[],
-                filters: ['periodStart', 'periodEnd'],
+                filters: ['periodStart', 'periodEnd'] as const,
             }
 
             const result = defineScope(config)
@@ -88,7 +88,7 @@ describe('scope', () => {
                 measures: ['ticketCount'] as unknown as readonly MeasureName[],
                 dimensions: ['agentId', 'channel'] as const,
                 timeDimensions: ['createdDatetime' as const],
-                filters: ['periodStart', 'periodEnd', 'agents' as const],
+                filters: ['periodStart', 'periodEnd', 'agents'] as const,
                 order: ['ticketId' as const],
             }
 
@@ -103,7 +103,7 @@ describe('scope', () => {
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
-            filters: ['periodStart', 'periodEnd'],
+            filters: ['periodStart', 'periodEnd'] as const,
         })
 
         describe('create', () => {
@@ -121,7 +121,7 @@ describe('scope', () => {
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
-            filters: ['periodStart', 'periodEnd'],
+            filters: ['periodStart', 'periodEnd'] as const,
         })
 
         const metricBuilder = scope.defineMetricName('test-metric')
@@ -146,7 +146,7 @@ describe('scope', () => {
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
-            filters: ['periodStart', 'periodEnd'],
+            filters: ['periodStart', 'periodEnd'] as const,
         })
 
         const builderWithInput = scope.defineMetricName('test-metric')
@@ -174,7 +174,7 @@ describe('scope', () => {
             scope: MetricScope.TicketsOpen,
             measures: ['testMeasure'] as unknown as readonly MeasureName[],
             dimensions: ['ticketId'],
-            filters: ['periodStart', 'periodEnd'],
+            filters: ['periodStart', 'periodEnd'] as const,
         })
 
         describe('build without input schema', () => {
@@ -247,7 +247,7 @@ describe('scope', () => {
                 scope: MetricScope.OnlineTime,
                 measures: ['onlineTime'],
                 dimensions: ['agentId'],
-                filters: ['periodStart', 'periodEnd', 'agents'],
+                filters: ['periodStart', 'periodEnd', 'agents'] as const,
                 order: ['onlineTime'],
             })
 
@@ -281,7 +281,7 @@ describe('scope', () => {
                 scope: MetricScope.TicketsReplied,
                 measures: ['ticketCount'],
                 dimensions: ['agentId'],
-                filters: ['periodStart', 'periodEnd', 'agents'],
+                filters: ['periodStart', 'periodEnd', 'agents'] as const,
                 order: ['ticketId'],
             })
 
@@ -327,7 +327,7 @@ describe('scope', () => {
         it('should handle empty scope configuration', () => {
             const scope = defineScope({
                 scope: MetricScope.TicketsOpen,
-                filters: ['periodStart', 'periodEnd'],
+                filters: ['periodStart', 'periodEnd'] as const,
             })
             const scopeBuilder = scope
 
@@ -384,7 +384,12 @@ describe('scope', () => {
             const scope = defineScope({
                 scope: MetricScope.TicketsOpen,
                 measures: ['ticketCount'],
-                filters: ['periodStart', 'periodEnd', 'agents', 'channels'],
+                filters: [
+                    'periodStart',
+                    'periodEnd',
+                    'agents',
+                    'channels',
+                ] as const,
             })
 
             const metric = scope

@@ -16,7 +16,6 @@ import {
     fetchTicketsCreatedMetric,
     fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
-    ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useHumanResponseTimeAfterAiHandoffMetric,
@@ -58,10 +57,7 @@ import { createdTicketsCount } from 'domains/reporting/models/scopes/ticketsCrea
 import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-import {
-    formatReportingQueryDate,
-    withFilter,
-} from 'domains/reporting/utils/reporting'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')
@@ -155,10 +151,7 @@ describe('metrics', () => {
 
                 if (newQueryBuilder) {
                     expect(useMetricMock).toHaveBeenCalledWith(
-                        withFilter(
-                            queryFactory(statsFilters, timezone),
-                            ignoreNotAssignedTicketsFilter,
-                        ),
+                        queryFactory(statsFilters, timezone),
                         newQueryBuilder.build({
                             filters: statsFilters,
                             timezone,
@@ -166,10 +159,7 @@ describe('metrics', () => {
                     )
                 } else {
                     expect(useMetricMock).toHaveBeenCalledWith(
-                        withFilter(
-                            queryFactory(statsFilters, timezone),
-                            ignoreNotAssignedTicketsFilter,
-                        ),
+                        queryFactory(statsFilters, timezone),
                     )
                 }
                 expect(result.current).toBe(defaultMetricValue)
@@ -258,10 +248,7 @@ describe('metrics', () => {
                 const result = await fetchTrendFn(statsFilters, timezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
-                    withFilter(
-                        queryFactory(statsFilters, timezone),
-                        ignoreNotAssignedTicketsFilter,
-                    ),
+                    queryFactory(statsFilters, timezone),
                     queryBuilder.build({
                         filters: statsFilters,
                         timezone,
@@ -307,10 +294,7 @@ describe('metrics', () => {
                 const result = await fetchTrendFn(statsFilters, timezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
-                    withFilter(
-                        queryFactory(statsFilters, timezone),
-                        ignoreNotAssignedTicketsFilter,
-                    ),
+                    queryFactory(statsFilters, timezone),
                 )
                 expect(result).toBe(defaultMetricValue)
             })

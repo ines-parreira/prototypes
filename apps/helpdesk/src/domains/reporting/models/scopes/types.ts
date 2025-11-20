@@ -90,6 +90,15 @@ export type StringFilterName =
     | 'brandVoice'
     | 'customFields'
     | 'tags'
+    | 'agents'
+    | 'channels'
+    | 'integrations'
+    | 'stores'
+    | 'csatScores'
+    | 'accuracyScore'
+    | 'efficiencyScore'
+    | 'internalComplianceScore'
+    | 'brandVoiceScore'
 
 export type NumberFilterName = 'agentId' | 'integrationId' | 'storeId'
 

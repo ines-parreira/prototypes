@@ -1,6 +1,4 @@
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
-import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
-import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
@@ -25,9 +23,6 @@ import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scope
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportingFilter } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { withFilter } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
 export type Metric = {
@@ -37,19 +32,6 @@ export type Metric = {
         value: number | null
     }
 }
-
-export const ignoreNotAssignedTicketsFilter: ReportingFilter = {
-    member: TicketMember.AssigneeUserId,
-    operator: ReportingFilterOperator.Set,
-    values: [],
-}
-
-export const ignoreNotAssignedFirstResponseMessageAssigneeFilter: ReportingFilter =
-    {
-        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-        operator: ReportingFilterOperator.Set,
-        values: [],
-    }
 
 export const useTicketsCreatedMetric = (
     statsFilters: StatsFilters,
@@ -80,10 +62,7 @@ export const useClosedTicketsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
-            closedTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        closedTicketsQueryFactory(statsFilters, timezone),
         closedTicketsCountQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -95,10 +74,7 @@ export const fetchClosedTicketsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
-            closedTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        closedTicketsQueryFactory(statsFilters, timezone),
         closedTicketsCountQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -108,24 +84,13 @@ export const fetchClosedTicketsMetric = (
 export const useCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric =>
-    useMetric(
-        withFilter(
-            customerSatisfactionQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+): Metric => useMetric(customerSatisfactionQueryFactory(statsFilters, timezone))
 // P2/P3
 export const fetchCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(
-        withFilter(
-            customerSatisfactionQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+    fetchMetric(customerSatisfactionQueryFactory(statsFilters, timezone))
 
 export const useMedianFirstResponseTimeMetric = (
     statsFilters: StatsFilters,
@@ -156,34 +121,20 @@ export const fetchMedianFirstResponseTimeMetric = async (
 export const useMedianResponseTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric =>
-    useMetric(
-        withFilter(
-            medianResponseTimeQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+): Metric => useMetric(medianResponseTimeQueryFactory(statsFilters, timezone))
 
 export const fetchMedianResponseTimeMetric = async (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(
-        withFilter(
-            medianResponseTimeQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+    fetchMetric(medianResponseTimeQueryFactory(statsFilters, timezone))
 // P2/P3
 export const useHumanResponseTimeAfterAiHandoffMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
-            humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
     )
 
 export const fetchHumanResponseTimeAfterAiHandoffMetric = async (
@@ -191,10 +142,7 @@ export const fetchHumanResponseTimeAfterAiHandoffMetric = async (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
-            humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        humanResponseTimeAfterAiHandoffQueryFactory(statsFilters, timezone),
     )
 
 export const useMedianResolutionTimeMetric = (
@@ -202,10 +150,7 @@ export const useMedianResolutionTimeMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
-            medianResolutionTimeQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        medianResolutionTimeQueryFactory(statsFilters, timezone),
         medianResolutionTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -217,10 +162,7 @@ export const fetchMedianResolutionTimeMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
-            medianResolutionTimeQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        medianResolutionTimeQueryFactory(statsFilters, timezone),
         medianResolutionTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -292,10 +234,7 @@ export const useOneTouchTicketsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
-            oneTouchTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        oneTouchTicketsQueryFactory(statsFilters, timezone),
         oneTouchTicketsQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -307,10 +246,7 @@ export const fetchOneTouchTicketsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
-            oneTouchTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        oneTouchTicketsQueryFactory(statsFilters, timezone),
         oneTouchTicketsQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -320,24 +256,13 @@ export const fetchOneTouchTicketsMetric = (
 export const useZeroTouchTicketsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric =>
-    useMetric(
-        withFilter(
-            zeroTouchTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+): Metric => useMetric(zeroTouchTicketsQueryFactory(statsFilters, timezone))
 
 export const fetchZeroTouchTicketsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(
-        withFilter(
-            zeroTouchTicketsQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
-    )
+    fetchMetric(zeroTouchTicketsQueryFactory(statsFilters, timezone))
 
 export const useTicketAverageHandleTimeMetric = (
     statsFilters: StatsFilters,
@@ -345,14 +270,7 @@ export const useTicketAverageHandleTimeMetric = (
     sorting?: OrderDirection,
 ): Metric =>
     useMetric(
-        withFilter(
-            ticketAverageHandleTimeQueryFactory(
-                statsFilters,
-                timezone,
-                sorting,
-            ),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        ticketAverageHandleTimeQueryFactory(statsFilters, timezone, sorting),
         ticketAverageHandleTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -366,14 +284,7 @@ export const fetchTicketAverageHandleTimeMetric = async (
     sorting?: OrderDirection,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
-            ticketAverageHandleTimeQueryFactory(
-                statsFilters,
-                timezone,
-                sorting,
-            ),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        ticketAverageHandleTimeQueryFactory(statsFilters, timezone, sorting),
         ticketAverageHandleTimeQueryV2Factory({
             filters: statsFilters,
             timezone,

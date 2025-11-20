@@ -8,6 +8,7 @@ import type {
     CustomFieldsFilter,
     DateFilter,
     DimensionName,
+    FilterName,
     MeasureName,
     StandardFilter,
     TagsFilter,
@@ -45,7 +46,7 @@ export type ScopeMeta = {
     measures?: readonly MeasureName[]
     dimensions?: readonly DimensionName[]
     timeDimensions?: readonly TimeDimensionName[]
-    filters: readonly string[]
+    filters: readonly FilterName[]
     order?: readonly string[]
     limit?: number
 }
