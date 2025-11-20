@@ -25,7 +25,7 @@ export const useClickThroughRate = (
     filters: FilterType,
     granularity: ReportingGranularity,
     shopName: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { currency } = useCurrency()
 
@@ -35,7 +35,7 @@ export const useClickThroughRate = (
                 filters,
                 userTimezone,
                 integrationId,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyUniqClicksQueryFactory(
                 {
@@ -44,7 +44,7 @@ export const useClickThroughRate = (
                 },
                 userTimezone,
                 integrationId,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -56,7 +56,7 @@ export const useClickThroughRate = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -65,7 +65,7 @@ export const useClickThroughRate = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -90,7 +90,7 @@ export const useClickThroughRate = (
                 userTimezone,
                 granularity,
                 integrationId,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -103,7 +103,7 @@ export const useClickThroughRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -145,7 +145,7 @@ export const useClickThroughRate = (
                 .title,
             metricName: AIJourneyMetric.ClickThroughRate,
             integrationId,
-            journeyId,
+            journeyIds,
             shopName,
         },
     }

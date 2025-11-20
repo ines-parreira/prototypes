@@ -120,6 +120,7 @@ describe('useAIJourneyKpis', () => {
             'America/New_York',
             filters,
             ReportingGranularity.Week,
+            undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
             '123',
@@ -127,12 +128,14 @@ describe('useAIJourneyKpis', () => {
             filters,
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             filters,
             ReportingGranularity.Week,
+            undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
             '123',
@@ -140,13 +143,14 @@ describe('useAIJourneyKpis', () => {
             filters,
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
             'America/New_York',
             filters,
             ReportingGranularity.Week,
-            'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyOptOutRate).toHaveBeenCalledWith(
             '123',
@@ -154,6 +158,7 @@ describe('useAIJourneyKpis', () => {
             filters,
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
     })
 
@@ -178,6 +183,7 @@ describe('useAIJourneyKpis', () => {
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            undefined,
         )
         expect(mockUseAIJourneyTotalOrders).toHaveBeenCalledWith(
             '123',
@@ -185,12 +191,14 @@ describe('useAIJourneyKpis', () => {
             expect.any(Object),
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyConversionRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
+            undefined,
         )
         expect(mockUseClickThroughRate).toHaveBeenCalledWith(
             '123',
@@ -198,13 +206,14 @@ describe('useAIJourneyKpis', () => {
             expect.any(Object),
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyResponseRate).toHaveBeenCalledWith(
             '123',
             'Europe/London',
             expect.any(Object),
             ReportingGranularity.Week,
-            'shopName',
+            undefined,
         )
         expect(mockUseAIJourneyOptOutRate).toHaveBeenCalledWith(
             '123',
@@ -212,6 +221,7 @@ describe('useAIJourneyKpis', () => {
             expect.any(Object),
             ReportingGranularity.Week,
             'shopName',
+            undefined,
         )
     })
 })

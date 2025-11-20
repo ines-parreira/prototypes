@@ -12,10 +12,8 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import { useAIJourneyConversionRate } from '../useAIJourneyConversionRate/useAIJourneyConversionRate'
 import { useAIJourneyGmvInfluenced } from '../useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
-import { useAIJourneyOptOutRate } from '../useAIJourneyOptOutRate/useAIJourneyOptOutRate'
 import { useAIJourneyResponseRate } from '../useAIJourneyResponseRate/useAIJourneyResponseRate'
-import { useAIJourneyTotalOrders } from '../useAIJourneyTotalOrders/useAIJourneyTotalOrders'
-import { useClickThroughRate } from '../useClickThroughRate/useClickThroughRate'
+import { useAIJourneyRevenuePerRecipient } from '../useAIJourneyRevenuePerRecipient/useAIJourneyRevenuePerRecipient'
 
 export type MetricProps = {
     label: string
@@ -31,14 +29,12 @@ export type MetricProps = {
 
 export type UseAIJourneyKpisParams = {
     integrationId: string
-    shopName: string
     filters: FilterType
     journeyIds?: string[]
 }
 
-export const useAIJourneyKpis = ({
+export const useCampaignsKpis = ({
     integrationId,
-    shopName,
     filters,
     journeyIds,
 }: UseAIJourneyKpisParams) => {
@@ -65,14 +61,6 @@ export const useAIJourneyKpis = ({
         granularity,
         journeyIds,
     )
-    const totalOrders = useAIJourneyTotalOrders(
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-        shopName,
-        journeyIds,
-    )
     const conversionRate = useAIJourneyConversionRate(
         integrationId,
         userTimezone,
@@ -80,15 +68,6 @@ export const useAIJourneyKpis = ({
         granularity,
         journeyIds,
     )
-    const clickThroughRate = useClickThroughRate(
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-        shopName,
-        journeyIds,
-    )
-
     const responseRate = useAIJourneyResponseRate(
         integrationId,
         userTimezone,
@@ -96,24 +75,19 @@ export const useAIJourneyKpis = ({
         granularity,
         journeyIds,
     )
-
-    const optOutRate = useAIJourneyOptOutRate(
+    const revenuePerRecipient = useAIJourneyRevenuePerRecipient(
         integrationId,
         userTimezone,
         filters,
-        granularity,
-        shopName,
         journeyIds,
     )
 
     return {
         metrics: [
             gmvInfluenced,
-            totalOrders,
+            revenuePerRecipient,
             conversionRate,
-            clickThroughRate,
             responseRate,
-            optOutRate,
         ],
     }
 }

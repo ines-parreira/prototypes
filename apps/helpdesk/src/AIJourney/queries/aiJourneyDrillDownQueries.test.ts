@@ -126,7 +126,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 undefined,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -183,7 +183,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 sorting,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -341,7 +341,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 undefined,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -398,7 +398,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 sorting,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -546,7 +546,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 undefined,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -598,7 +598,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 sorting,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -741,7 +741,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 undefined,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({
@@ -793,7 +793,7 @@ describe('aiJourneyDrillDownQueries', () => {
                 timezone,
                 integrationId,
                 sorting,
-                journeyId,
+                journeyId ? [journeyId] : undefined,
             )
 
             expect(query).toEqual({

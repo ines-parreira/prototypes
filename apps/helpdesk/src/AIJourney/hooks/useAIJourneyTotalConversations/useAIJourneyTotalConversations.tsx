@@ -15,14 +15,14 @@ export const useAIJourneyTotalConversations = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         aiJourneyTotalConversationsQueryFactory(
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalConversationsQueryFactory(
             integrationId,
@@ -31,7 +31,7 @@ export const useAIJourneyTotalConversations = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -42,7 +42,7 @@ export const useAIJourneyTotalConversations = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 

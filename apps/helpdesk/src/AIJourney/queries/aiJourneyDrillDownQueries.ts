@@ -21,13 +21,13 @@ export const aiJourneyOrdersDrillDownQueryFactory = (
     timezone: string,
     integrationId: string,
     sorting?: OrderDirection,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentOrdersCube> => ({
     ...aiJourneyTotalNumberOfOrderQueryFactory(
         integrationId,
         filters,
         timezone,
-        journeyId,
+        journeyIds,
     ),
     measures: [AiSalesAgentOrdersMeasure.GmvUsd],
     dimensions: [
@@ -51,13 +51,13 @@ export const aiJourneyResponseRateDrillDownQueryFactory = (
     timezone: string,
     integrationId: string,
     sorting?: OrderDirection,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...aiJourneyRepliedMessagesQueryFactory(
         integrationId,
         filters,
         timezone,
-        journeyId,
+        journeyIds,
     ),
     measures: [],
     dimensions: [AiSalesAgentConversationsDimension.TicketId],
@@ -76,13 +76,13 @@ export const aiJourneyOptOutRateDrillDownQueryFactory = (
     timezone: string,
     integrationId: string,
     sorting?: OrderDirection,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...aiJourneyOptedOutQueryFactory(
         integrationId,
         filters,
         timezone,
-        journeyId,
+        journeyIds,
     ),
     measures: [],
     dimensions: [AiSalesAgentConversationsDimension.TicketId],
@@ -101,13 +101,13 @@ export const aiJourneyClickThroughRateDrillDownQueryFactory = (
     timezone: string,
     integrationId: string,
     sorting?: OrderDirection,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     ...aiJourneyUniqClicksQueryFactory(
         filters,
         timezone,
         integrationId,
-        journeyId,
+        journeyIds,
     ),
     measures: [],
     dimensions: [AiSalesAgentConversationsDimension.TicketId],

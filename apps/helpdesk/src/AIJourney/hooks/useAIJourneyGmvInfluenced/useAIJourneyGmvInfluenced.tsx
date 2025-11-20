@@ -1,6 +1,10 @@
 import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import {
+    AIJourneyMetric,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
+import {
     aiJourneyGmvInfluencedQueryFactory,
     aiJourneyGmvInfluencedTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
@@ -15,7 +19,7 @@ export const useAIJourneyGmvInfluenced = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { currency } = useCurrency()
 
@@ -24,7 +28,7 @@ export const useAIJourneyGmvInfluenced = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyGmvInfluencedQueryFactory(
             integrationId,
@@ -33,7 +37,7 @@ export const useAIJourneyGmvInfluenced = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -44,7 +48,7 @@ export const useAIJourneyGmvInfluenced = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -57,5 +61,11 @@ export const useAIJourneyGmvInfluenced = (
         metricFormat: 'currency',
         currency,
         isLoading: isFetchingTred || isFetchingSeries,
+        drilldown: {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
+            metricName: AIJourneyMetric.TotalOrders,
+            integrationId,
+            journeyIds,
+        },
     }
 }

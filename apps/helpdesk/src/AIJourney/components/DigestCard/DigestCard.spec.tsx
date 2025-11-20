@@ -34,6 +34,7 @@ describe('<DigestCard />', () => {
         ]
         render(
             <DigestCard
+                badgeContent="Performance Metrics"
                 content="Metrics test"
                 metrics={metrics}
                 isLoading={false}

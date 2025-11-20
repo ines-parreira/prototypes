@@ -61,7 +61,6 @@ export const AnalyticsCard = ({
     const { metrics: analyticsData } = useKpisPerJourney({
         integrationId: integrationId.toString(),
         journeyId: journey.id,
-        shopName,
         filters,
     })
 
@@ -70,7 +69,7 @@ export const AnalyticsCard = ({
         userTimezone,
         filters,
         granularity,
-        journey.id,
+        [journey.id],
     )
 
     const formattedTotalConversationsSent =

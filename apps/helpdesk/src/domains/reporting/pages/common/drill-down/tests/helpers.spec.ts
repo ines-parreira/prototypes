@@ -1379,7 +1379,7 @@ describe('getDrillDownQuery', () => {
             title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
             metricName: AIJourneyMetric.TotalOrders,
             integrationId: '123',
-            journeyId: 'test-journey-id',
+            journeyIds: ['test-journey-id'],
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
@@ -1389,7 +1389,7 @@ describe('getDrillDownQuery', () => {
             timezone,
             '123',
             undefined,
-            'test-journey-id',
+            ['test-journey-id'],
         )
     })
 
@@ -1407,20 +1407,16 @@ describe('getDrillDownQuery', () => {
             title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
             metricName: AIJourneyMetric.ResponseRate,
             integrationId: '456',
-            journeyId: 'test-journey-id',
+            journeyIds: ['test-journey-id'],
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(
             aiJourneyResponseRateDrillDownQueryFactoryMock,
-        ).toHaveBeenCalledWith(
-            statsFilters,
-            timezone,
-            '456',
-            undefined,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '456', undefined, [
             'test-journey-id',
-        )
+        ])
     })
 
     it('should be populated with AIJourneyMetric.OptOutRate', () => {
@@ -1437,20 +1433,16 @@ describe('getDrillDownQuery', () => {
             title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
             metricName: AIJourneyMetric.OptOutRate,
             integrationId: '456',
-            journeyId: 'test-journey-id',
+            journeyIds: ['test-journey-id'],
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(
             aiJourneyOptOutRateDrillDownQueryFactoryMock,
-        ).toHaveBeenCalledWith(
-            statsFilters,
-            timezone,
-            '456',
-            undefined,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '456', undefined, [
             'test-journey-id',
-        )
+        ])
     })
 
     it('should be populated with AIJourneyMetric.ClickThroughRate', () => {
@@ -1468,20 +1460,16 @@ describe('getDrillDownQuery', () => {
                 .title,
             metricName: AIJourneyMetric.ClickThroughRate,
             integrationId: '789',
-            journeyId: 'click-through-journey-id',
+            journeyIds: ['click-through-journey-id'],
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(
             aiJourneyClickThroughRateDrillDownQueryFactoryMock,
-        ).toHaveBeenCalledWith(
-            statsFilters,
-            timezone,
-            '789',
-            undefined,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '789', undefined, [
             'click-through-journey-id',
-        )
+        ])
     })
 })
 

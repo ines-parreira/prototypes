@@ -19,7 +19,7 @@ export const useAIJourneyConversionRate = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { data: totalOrdersData, isFetching: isFetchingTotalOrders } =
         useMetricTrend(
@@ -27,7 +27,7 @@ export const useAIJourneyConversionRate = (
                 integrationId,
                 filters,
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyTotalNumberOfOrderQueryFactory(
                 integrationId,
@@ -36,7 +36,7 @@ export const useAIJourneyConversionRate = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -48,7 +48,7 @@ export const useAIJourneyConversionRate = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -57,7 +57,7 @@ export const useAIJourneyConversionRate = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -82,7 +82,7 @@ export const useAIJourneyConversionRate = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -95,7 +95,7 @@ export const useAIJourneyConversionRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 

@@ -20,14 +20,14 @@ export const useAIJourneyTotalOrders = (
     filters: FilterType,
     granularity: ReportingGranularity,
     shopName: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { data: trendData, isFetching: isFetchingTred } = useMetricTrend(
         aiJourneyTotalNumberOfOrderQueryFactory(
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfOrderQueryFactory(
             integrationId,
@@ -36,7 +36,7 @@ export const useAIJourneyTotalOrders = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -49,7 +49,7 @@ export const useAIJourneyTotalOrders = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -65,7 +65,7 @@ export const useAIJourneyTotalOrders = (
             title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
             metricName: AIJourneyMetric.TotalOrders,
             integrationId,
-            journeyId,
+            journeyIds,
             shopName,
         },
     }

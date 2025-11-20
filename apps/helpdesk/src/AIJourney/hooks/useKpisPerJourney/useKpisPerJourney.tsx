@@ -23,12 +23,10 @@ export type MetricProps = {
 export const useKpisPerJourney = ({
     integrationId,
     journeyId,
-    shopName,
     filters,
 }: {
     integrationId: string
     journeyId?: string
-    shopName: string
     filters: FilterType
 }) => {
     const granularity = ReportingGranularity.Week
@@ -39,7 +37,7 @@ export const useKpisPerJourney = ({
         userTimezone,
         filters,
         granularity,
-        journeyId,
+        journeyId ? [journeyId] : undefined,
     )
 
     const conversionRate = useAIJourneyConversionRate(
@@ -47,7 +45,7 @@ export const useKpisPerJourney = ({
         userTimezone,
         filters,
         granularity,
-        journeyId,
+        journeyId ? [journeyId] : undefined,
     )
 
     const responseRate = useAIJourneyResponseRate(
@@ -55,8 +53,7 @@ export const useKpisPerJourney = ({
         userTimezone,
         filters,
         granularity,
-        shopName,
-        journeyId,
+        journeyId ? [journeyId] : undefined,
     )
 
     return {

@@ -92,7 +92,7 @@ export const LandingPage = () => {
             {!isLoading && (
                 <>
                     <div className={css.header}>
-                        <PerformanceBadge />
+                        <PerformanceBadge content="AI Journey Performance" />
                         <AnimatedText />
                     </div>
                     <div className={css.additionalInfo}>

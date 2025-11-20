@@ -25,7 +25,7 @@ export const useAIJourneyOptOutRate = (
     filters: FilterType,
     granularity: ReportingGranularity,
     shopName: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { data: optedOutData, isFetching: isFetchingOptedOutData } =
         useMetricTrend(
@@ -33,7 +33,7 @@ export const useAIJourneyOptOutRate = (
                 integrationId,
                 filters,
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyOptedOutQueryFactory(
                 integrationId,
@@ -42,7 +42,7 @@ export const useAIJourneyOptOutRate = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -54,7 +54,7 @@ export const useAIJourneyOptOutRate = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -63,7 +63,7 @@ export const useAIJourneyOptOutRate = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -76,7 +76,7 @@ export const useAIJourneyOptOutRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -89,7 +89,7 @@ export const useAIJourneyOptOutRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -143,7 +143,7 @@ export const useAIJourneyOptOutRate = (
             title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
             metricName: AIJourneyMetric.OptOutRate,
             integrationId,
-            journeyId,
+            journeyIds,
             shopName,
         },
     }

@@ -181,7 +181,7 @@ describe('useClickThroughRate', () => {
                 mockFilters,
                 ReportingGranularity.Day,
                 'testShopName',
-                'journey456',
+                ['journey456'],
             ),
         )
 
@@ -189,7 +189,7 @@ describe('useClickThroughRate', () => {
             title: 'Click Through Rate',
             metricName: AIJourneyMetric.ClickThroughRate,
             integrationId: 'integration123',
-            journeyId: 'journey456',
+            journeyIds: ['journey456'],
             shopName: 'testShopName',
         })
     })

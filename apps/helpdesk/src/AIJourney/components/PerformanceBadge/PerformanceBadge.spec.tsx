@@ -6,7 +6,7 @@ import { PerformanceBadge } from './PerformanceBadge'
 
 describe('<PerformanceBadge />', () => {
     it('should render content properly', () => {
-        render(<PerformanceBadge />)
+        render(<PerformanceBadge content="AI Journey Performance" />)
 
         expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
     })

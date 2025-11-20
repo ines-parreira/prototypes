@@ -32,7 +32,7 @@ export const useAverageOrderValue = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { currency } = useCurrency()
 
@@ -41,7 +41,7 @@ export const useAverageOrderValue = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyGmvInfluencedQueryFactory(
             integrationId,
@@ -50,7 +50,7 @@ export const useAverageOrderValue = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -59,7 +59,7 @@ export const useAverageOrderValue = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfOrderQueryFactory(
             integrationId,
@@ -68,7 +68,7 @@ export const useAverageOrderValue = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -93,7 +93,7 @@ export const useAverageOrderValue = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -104,7 +104,7 @@ export const useAverageOrderValue = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 

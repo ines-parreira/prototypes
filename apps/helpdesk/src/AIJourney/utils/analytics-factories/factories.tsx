@@ -30,17 +30,18 @@ export const aiJourneyGmvInfluencedQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentOrdersCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentOrdersDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_GMV_INFLUENCED,
@@ -77,14 +78,14 @@ export const aiJourneyGmvInfluencedTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     return {
         ...aiJourneyGmvInfluencedQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_GMV_INFLUENCED_TIME_SERIES,
         timeDimensions: [
@@ -101,22 +102,23 @@ export const aiJourneyTotalNumberOfOrderQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentOrdersCube> => {
     const baseFilters = statsFiltersToReportingFilters(
         aiSalesAgentOrdersDefaultFiltersMembers,
         filters,
     )
 
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentOrdersDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_ORDER,
@@ -150,14 +152,14 @@ export const aiJourneyTotalNumberOfOrderTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     return {
         ...aiJourneyTotalNumberOfOrderQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_ORDER_TIME_SERIES,
         timeDimensions: [
@@ -174,17 +176,18 @@ export const aiJourneyTotalNumberOfSalesConversationsQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS,
@@ -216,14 +219,14 @@ export const aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName:
             METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_TIME_SERIES,
@@ -241,17 +244,18 @@ export const aiJourneyRepliedMessagesQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES,
@@ -292,17 +296,18 @@ export const aiJourneyOptedOutQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_OPTED_OUT_CONVERSATIONS,
@@ -339,14 +344,14 @@ export const aiJourneyOptedOutTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyOptedOutQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_OPTED_OUT_CONVERSATIONS_TIME_SERIES,
         timeDimensions: [
@@ -364,14 +369,14 @@ export const aiJourneyRepliedMessagesTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyRepliedMessagesQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES_TIME_SERIES,
         timeDimensions: [
@@ -388,17 +393,18 @@ export const aiJourneyFailedMessagesQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_FAILED_MESSAGES,
@@ -432,14 +438,14 @@ export const aiJourneyFailedMessagesTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyFailedMessagesQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_FAILED_MESSAGES_TIME_SERIES,
         timeDimensions: [
@@ -456,17 +462,18 @@ export const aiJourneyUniqClicksQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     integrationId: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_UNIQ_CLICKS,
@@ -503,14 +510,14 @@ export const aiJourneyUniqClicksTimeSeriesQuery = (
     timezone: string,
     granularity: ReportingGranularity,
     integrationId: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyUniqClicksQueryFactory(
             filters,
             timezone,
             integrationId,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_UNIQ_CLICKS_TIME_SERIES,
         timeDimensions: [
@@ -527,17 +534,18 @@ export const aiJourneyTotalConversationsQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS,
@@ -569,14 +577,14 @@ export const aiJourneyTotalConversationsTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyTotalConversationsQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS_TIME_SERIES,
         timeDimensions: [
@@ -593,17 +601,18 @@ export const aiJourneyTotalContactsCompleteJourneyQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_COMPLETE_JOURNEY,
@@ -640,14 +649,14 @@ export const aiJourneyTotalContactsCompleteJourneyTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyTotalContactsCompleteJourneyQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName:
             METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_COMPLETE_JOURNEY_TIME_SERIES,
@@ -665,17 +674,18 @@ export const aiJourneyTotalContactsActiveQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_ACTIVE,
@@ -712,14 +722,14 @@ export const aiJourneyTotalContactsActiveTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyTotalContactsActiveQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONTACTS_ACTIVE_TIME_SERIES,
         timeDimensions: [
@@ -736,17 +746,18 @@ export const aiJourneyTotalUniqueContactsQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): ReportingQuery<AiSalesAgentConversationsCube> => {
-    const journeyFilter = journeyId
-        ? [
-              {
-                  member: AiSalesAgentConversationsDimension.JourneyId,
-                  operator: ReportingFilterOperator.Equals,
-                  values: [journeyId],
-              },
-          ]
-        : []
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
 
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_UNIQUE_CONTACTS,
@@ -778,14 +789,14 @@ export const aiJourneyTotalUniqueContactsTimeSeriesQuery = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
     return {
         ...aiJourneyTotalUniqueContactsQueryFactory(
             integrationId,
             filters,
             timezone,
-            journeyId,
+            journeyIds,
         ),
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_UNIQUE_CONTACTS_TIME_SERIES,
         timeDimensions: [

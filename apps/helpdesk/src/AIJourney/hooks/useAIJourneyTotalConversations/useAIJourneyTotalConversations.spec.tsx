@@ -51,7 +51,7 @@ describe('useAIJourneyTotalConversations', () => {
                 userTimezone,
                 filters,
                 granularity,
-                journeyId,
+                [journeyId],
             ),
         )
 
@@ -74,7 +74,7 @@ describe('useAIJourneyTotalConversations', () => {
                 }),
             }),
             userTimezone,
-            journeyId,
+            [journeyId],
         )
 
         expect(aiJourneyTotalConversationsTimeSeriesQuery).toHaveBeenCalledWith(
@@ -82,7 +82,7 @@ describe('useAIJourneyTotalConversations', () => {
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            [journeyId],
         )
     })
 
@@ -103,7 +103,7 @@ describe('useAIJourneyTotalConversations', () => {
                 userTimezone,
                 filters,
                 granularity,
-                'test-journey-id',
+                ['test-journey-id'],
             ),
         )
 

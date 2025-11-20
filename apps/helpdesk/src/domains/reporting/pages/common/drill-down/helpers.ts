@@ -467,7 +467,7 @@ export const getDrillDownQuery = (
                     timezone,
                     metricData.integrationId,
                     sorting,
-                    metricData.journeyId,
+                    metricData.journeyIds,
                 )
         }
         case AIJourneyMetric.ResponseRate: {
@@ -481,7 +481,7 @@ export const getDrillDownQuery = (
                     timezone,
                     metricData.integrationId,
                     sorting,
-                    metricData.journeyId,
+                    metricData.journeyIds,
                 )
         }
         case AIJourneyMetric.OptOutRate: {
@@ -495,7 +495,7 @@ export const getDrillDownQuery = (
                     timezone,
                     metricData.integrationId,
                     sorting,
-                    metricData.journeyId,
+                    metricData.journeyIds,
                 )
         }
         case AIJourneyMetric.ClickThroughRate: {
@@ -509,7 +509,7 @@ export const getDrillDownQuery = (
                     timezone,
                     metricData.integrationId,
                     sorting,
-                    metricData.journeyId,
+                    metricData.journeyIds,
                 )
         }
     }

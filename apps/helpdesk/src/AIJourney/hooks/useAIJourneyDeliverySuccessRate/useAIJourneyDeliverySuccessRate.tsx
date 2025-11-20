@@ -21,7 +21,7 @@ export const useAIJourneyDeliverySuccessRate = (
     filters: FilterType,
     granularity: ReportingGranularity,
     shopName: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { data: failedMessagesData, isFetching: isFetchingFailedMessages } =
         useMetricTrend(
@@ -29,7 +29,7 @@ export const useAIJourneyDeliverySuccessRate = (
                 integrationId,
                 filters,
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyFailedMessagesQueryFactory(
                 integrationId,
@@ -38,7 +38,7 @@ export const useAIJourneyDeliverySuccessRate = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -50,7 +50,7 @@ export const useAIJourneyDeliverySuccessRate = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -59,7 +59,7 @@ export const useAIJourneyDeliverySuccessRate = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -96,7 +96,7 @@ export const useAIJourneyDeliverySuccessRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -109,7 +109,7 @@ export const useAIJourneyDeliverySuccessRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 

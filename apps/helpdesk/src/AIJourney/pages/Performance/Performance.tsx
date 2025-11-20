@@ -178,6 +178,7 @@ export const Performance = () => {
         integrationId: integrationId.toString(),
         shopName: namespacedShopName,
         filters,
+        journeyIds: journeys?.map((journey) => journey.id),
     })
     const isLoadingMetrics = metrics?.some((metric) => metric.isLoading)
 
@@ -237,6 +238,7 @@ export const Performance = () => {
     return (
         <div className={css.container}>
             <DigestCard
+                badgeContent="AI Journey Performance"
                 content={digestContent(
                     metricsContent.revenueVariationContent,
                     metricsContent.conversionVariationContent,

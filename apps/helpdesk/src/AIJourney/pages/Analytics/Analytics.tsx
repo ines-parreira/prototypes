@@ -94,7 +94,6 @@ export const Analytics = () => {
         userTimezone,
         filters,
         granularity,
-        shopName,
     )
 
     const totalRecipients = useAIJourneyTotalConversations(

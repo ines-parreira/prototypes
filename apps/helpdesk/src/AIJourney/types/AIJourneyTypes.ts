@@ -11,7 +11,7 @@ export enum AIJourneyMetric {
 export type AIJourneyMetrics = {
     title: string
     metricName: AIJourneyMetric
-    journeyId?: string
+    journeyIds?: string[]
     integrationId: string
     shopName?: string
 }

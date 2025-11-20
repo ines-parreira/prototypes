@@ -36,3 +36,16 @@ export const calculateRatiusToPercentage = ({
     }
     return 0
 }
+
+export const calculateRate = ({
+    numerator,
+    denominator,
+}: {
+    numerator: number | undefined | null
+    denominator: number | undefined | null
+}): number => {
+    if (numerator && denominator) {
+        return numerator / denominator
+    }
+    return 0
+}

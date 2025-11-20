@@ -25,8 +25,7 @@ export const useAIJourneyResponseRate = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    shopName: string,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { currency } = useCurrency()
 
@@ -36,7 +35,7 @@ export const useAIJourneyResponseRate = (
                 integrationId,
                 filters,
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyRepliedMessagesQueryFactory(
                 integrationId,
@@ -45,7 +44,7 @@ export const useAIJourneyResponseRate = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -57,7 +56,7 @@ export const useAIJourneyResponseRate = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyTotalNumberOfSalesConversationsQueryFactory(
             integrationId,
@@ -66,7 +65,7 @@ export const useAIJourneyResponseRate = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -93,7 +92,7 @@ export const useAIJourneyResponseRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -106,7 +105,7 @@ export const useAIJourneyResponseRate = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -147,8 +146,7 @@ export const useAIJourneyResponseRate = (
             title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
             metricName: AIJourneyMetric.ResponseRate,
             integrationId,
-            journeyId,
-            shopName,
+            journeyIds,
         },
     }
 }

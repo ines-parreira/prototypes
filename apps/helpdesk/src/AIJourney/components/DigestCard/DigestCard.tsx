@@ -11,12 +11,14 @@ import { Metrics } from './components/Metrics/Metrics'
 import css from './DigestCard.less'
 
 type DigestCardProps = {
-    content: React.ReactNode
+    badgeContent: string
+    content?: React.ReactNode
     metrics?: MetricProps[]
     isLoading: boolean
 }
 
 export const DigestCard = ({
+    badgeContent,
     content,
     metrics,
     isLoading,
@@ -29,7 +31,7 @@ export const DigestCard = ({
         return (
             <div className={css.digestCard}>
                 <div className={css.digestHeader}>
-                    <PerformanceBadge />
+                    <PerformanceBadge content={badgeContent} />
 
                     <div className={css.digestContent}>
                         <Skeleton />
@@ -45,11 +47,11 @@ export const DigestCard = ({
     return (
         <div className={css.digestCard}>
             <div className={css.digestHeader}>
-                <PerformanceBadge />
+                <PerformanceBadge content={badgeContent} />
                 {isLoading && (
                     <LoadingSpinner style={{ height: '25px', width: '25px' }} />
                 )}
-                {!isEmpty && !isLoading && (
+                {!isEmpty && !isLoading && content && (
                     <div className={css.digestContent}>{content}</div>
                 )}
             </div>

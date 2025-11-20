@@ -32,7 +32,7 @@ export const useRevenuePerRecipient = (
     userTimezone: string,
     filters: FilterType,
     granularity: ReportingGranularity,
-    journeyId?: string,
+    journeyIds?: string[],
 ): MetricProps => {
     const { currency } = useCurrency()
 
@@ -41,7 +41,7 @@ export const useRevenuePerRecipient = (
             integrationId,
             filters,
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
         aiJourneyGmvInfluencedQueryFactory(
             integrationId,
@@ -50,7 +50,7 @@ export const useRevenuePerRecipient = (
                 period: getPreviousPeriod(filters.period),
             },
             userTimezone,
-            journeyId,
+            journeyIds,
         ),
     )
 
@@ -60,7 +60,7 @@ export const useRevenuePerRecipient = (
                 integrationId,
                 filters,
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
             aiJourneyTotalUniqueContactsQueryFactory(
                 integrationId,
@@ -69,7 +69,7 @@ export const useRevenuePerRecipient = (
                     period: getPreviousPeriod(filters.period),
                 },
                 userTimezone,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -94,7 +94,7 @@ export const useRevenuePerRecipient = (
                 filters,
                 userTimezone,
                 granularity,
-                journeyId,
+                journeyIds,
             ),
         )
 
@@ -107,7 +107,7 @@ export const useRevenuePerRecipient = (
             filters,
             userTimezone,
             granularity,
-            journeyId,
+            journeyIds,
         ),
     )
 

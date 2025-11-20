@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,8 +6,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { journeyKpisMock } from 'AIJourney/utils/test-fixtures/journeyKpisMock'
 import { appQueryClient } from 'api/queryClient'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 
@@ -28,12 +33,33 @@ jest.mock('AIJourney/queries', () => ({
     useJourneys: jest.fn(),
 }))
 
+jest.mock('domains/reporting/state/ui/stats/selectors')
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone,
+)
+
+jest.mock('AIJourney/hooks/useCampaignsKpis/useCampaignsKpis')
+const useCampaignsKpisMock = assumeMock(useCampaignsKpis)
+
+jest.mock(
+    'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
+    () => ({
+        DrillDownModal: () => null,
+    }),
+)
+
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
 
 describe('<Campaigns />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
     })
+    const cleanStatsFilters = {
+        period: {
+            start_datetime: '1970-01-01T00:00:00+00:00',
+            end_datetime: '1970-01-01T00:00:00+00:00',
+        },
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -41,6 +67,16 @@ describe('<Campaigns />', () => {
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 1, name: 'Test Integration' },
         })
+
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            userTimezone: 'someTimezone',
+            cleanStatsFilters,
+            granularity: ReportingGranularity.Day,
+        })
+
+        useCampaignsKpisMock.mockImplementation(() => ({
+            metrics: journeyKpisMock,
+        }))
 
         mockUseJourneys.mockImplementation(() => ({
             data: [
