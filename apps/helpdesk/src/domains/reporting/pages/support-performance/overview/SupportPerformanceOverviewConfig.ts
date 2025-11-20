@@ -60,7 +60,7 @@ import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'domains/reportin
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
@@ -168,7 +168,8 @@ export const OverviewMetricConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
         // dummy factory, we pick query factory at runtime based on feature flag in `drill-down/helpers.ts`
-        drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+        drillDownQuery:
+            medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
     },
     [OverviewMetric.HumanResponseTimeAfterAiHandoff]: {
         showMetric: true,

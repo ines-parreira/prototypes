@@ -97,7 +97,6 @@ export const saveReport = (
     channels: Channel[],
     data: ChannelsReportData | null,
     columnsOrder: ChannelsTableColumns[],
-    shouldIncludeBots: boolean,
     fileName: string,
 ) => {
     if (data === null) {
@@ -106,9 +105,8 @@ export const saveReport = (
         }
     }
 
-    const frtMetricField = shouldIncludeBots
-        ? TicketMessagesMeasure.MedianFirstResponseTime
-        : TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
+    const frtMetricField =
+        TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
 
     const visibleChannels = nonEmptyChannels(channels, data)
 

@@ -4,7 +4,6 @@ import { Skeleton } from '@gorgias/axiom'
 
 import type { MetricPerChannelQueryHook } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import heatmapCss from 'domains/reporting/pages/common/components/Table/heatmap.less'
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
@@ -39,8 +38,6 @@ export const ChannelsCellContent = ({
     width: number
     useMetric: MetricPerChannelQueryHook
 }) => {
-    const shouldIncludeBots = useShouldIncludeBots()
-
     const isHeatmapMode = useAppSelector(getHeatmapMode)
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
@@ -91,7 +88,6 @@ export const ChannelsCellContent = ({
                     metricData={{
                         metricName: column,
                         perChannel: channel.slug,
-                        shouldIncludeBots,
                     }}
                 >
                     {cellContent}

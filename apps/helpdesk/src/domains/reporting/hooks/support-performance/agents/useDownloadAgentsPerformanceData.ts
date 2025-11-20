@@ -49,10 +49,6 @@ import {
 import { fetchMessagesSentPerHourPerAgent } from 'domains/reporting/hooks/useMessagesSentPerHourPerAgent'
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
-import {
     fetchTicketsClosedPerHour,
     fetchTicketsClosedPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useTicketsClosedPerHour'
@@ -288,8 +284,6 @@ export const useDownloadAgentsPerformanceData = () => {
         Metric
     >(cleanStatsFilters, userTimezone, agentsTotalDataSources)
 
-    const shouldIncludeBots = useShouldIncludeBots()
-
     const { files } = createAgentsReport(
         agents,
         reportData,
@@ -301,7 +295,6 @@ export const useDownloadAgentsPerformanceData = () => {
             cleanStatsFilters.period,
             AGENTS_REPORT_FILE_NAME,
         ),
-        shouldIncludeBots,
     )
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
@@ -338,8 +331,6 @@ export const fetchAgentsTableReportData = async (
         AGENTS_REPORT_FILE_NAME,
     )
 
-    const shouldIncludeBots = await fetchShouldIncludeBots()
-
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
         fetchTableReportData(cleanStatsFilters, userTimezone, averageConfig),
@@ -356,7 +347,6 @@ export const fetchAgentsTableReportData = async (
                     context.columnsOrder,
                     context.rowsOrder,
                     fileName,
-                    shouldIncludeBots,
                 ),
                 fileName,
             }

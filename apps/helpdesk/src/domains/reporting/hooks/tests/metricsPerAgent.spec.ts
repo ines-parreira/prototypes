@@ -29,18 +29,11 @@ import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import {
-    medianFirstAgentResponseTimePerAgentQueryFactory,
-    medianFirstResponseTimeMetricPerAgentQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesReceivedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -59,10 +52,6 @@ import { ticketsRepliedCountPerAgentQueryV2Factory } from 'domains/reporting/mod
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
-
-jest.mock('domains/reporting/hooks/useShouldIncludeBots')
-const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
-const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMockV2 = assumeMock(useMetricPerDimensionV2)
@@ -93,116 +82,55 @@ describe('metricsPerAgent', () => {
     const agentId = '2'
 
     describe('metricsPerAgent', () => {
-        describe('shouldIncludeBots', () => {
-            beforeEach(() => {
-                fetchShouldIncludeBotsMock.mockResolvedValue(true)
-                useShouldIncludeBotsMock.mockReturnValue(true)
-            })
-
-            describe('useMedianFirstResponseTimeMetricPerAgent', () => {
-                it('calls medianFirstResponseTimeMetricPerAgentQueryFactory when true', () => {
-                    renderHook(() =>
-                        useMedianFirstResponseTimeMetricPerAgent(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                            agentId,
-                        ),
-                    )
-
-                    expect(useMetricPerDimensionMockV2).toHaveBeenCalledWith(
-                        medianFirstResponseTimeMetricPerAgentQueryFactory(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                        ),
-                        medianFirstResponseTimePerAgentQueryV2Factory({
-                            filters: statsFilters,
-                            timezone,
-                            sortDirection: sorting,
-                        }),
-                        agentId,
-                    )
-                })
-
-                it('calls medianFirstAgentResponseTimePerAgentQueryFactory when false', () => {
-                    fetchShouldIncludeBotsMock.mockResolvedValue(false)
-                    useShouldIncludeBotsMock.mockReturnValue(false)
-
-                    renderHook(() =>
-                        useMedianFirstResponseTimeMetricPerAgent(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                            agentId,
-                        ),
-                    )
-
-                    expect(useMetricPerDimensionMockV2).toHaveBeenCalledWith(
-                        medianFirstAgentResponseTimePerAgentQueryFactory(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                        ),
-                        medianFirstResponseTimePerAgentQueryV2Factory({
-                            filters: statsFilters,
-                            timezone,
-                            sortDirection: sorting,
-                        }),
-                        agentId,
-                    )
-                })
-            })
-
-            describe('fetchMedianFirstResponseTimeMetricPerAgent', () => {
-                it('calls medianFirstResponseTimeMetricPerAgentQueryFactory when true', async () => {
-                    await fetchMedianFirstResponseTimeMetricPerAgent(
+        describe('useMedianFirstResponseTimeMetricPerAgent', () => {
+            it('calls medianFirstAgentResponseTimePerAgentQueryFactory', () => {
+                renderHook(() =>
+                    useMedianFirstResponseTimeMetricPerAgent(
                         statsFilters,
                         timezone,
                         sorting,
                         agentId,
-                    )
+                    ),
+                )
 
-                    expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
-                        medianFirstResponseTimeMetricPerAgentQueryFactory(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                        ),
-                        medianFirstResponseTimePerAgentQueryV2Factory({
-                            filters: statsFilters,
-                            timezone,
-                            sortDirection: sorting,
-                        }),
-                        agentId,
-                    )
-                })
-
-                it('calls medianFirstAgentResponseTimePerAgentQueryFactory when false', async () => {
-                    fetchShouldIncludeBotsMock.mockResolvedValue(false)
-                    useShouldIncludeBotsMock.mockReturnValue(false)
-
-                    await fetchMedianFirstResponseTimeMetricPerAgent(
+                expect(useMetricPerDimensionMockV2).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimePerAgentQueryFactory(
                         statsFilters,
                         timezone,
                         sorting,
-                        agentId,
-                    )
+                    ),
+                    medianFirstResponseTimePerAgentQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
+                    agentId,
+                )
+            })
+        })
 
-                    expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
-                        medianFirstAgentResponseTimePerAgentQueryFactory(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                        ),
-                        medianFirstResponseTimePerAgentQueryV2Factory({
-                            filters: statsFilters,
-                            timezone,
-                            sortDirection: sorting,
-                        }),
-                        agentId,
-                    )
-                })
+        describe('fetchMedianFirstResponseTimeMetricPerAgent', () => {
+            it('calls medianFirstAgentResponseTimePerAgentQueryFactory', async () => {
+                await fetchMedianFirstResponseTimeMetricPerAgent(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    agentId,
+                )
+
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+                    medianFirstAgentResponseTimePerAgentQueryFactory(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                    ),
+                    medianFirstResponseTimePerAgentQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                        sortDirection: sorting,
+                    }),
+                    agentId,
+                )
             })
         })
 

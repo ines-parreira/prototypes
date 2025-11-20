@@ -1,8 +1,4 @@
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
@@ -10,10 +6,7 @@ import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/qu
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import {
-    medianFirstAgentResponseTimeQueryFactory,
-    medianFirstResponseTimeQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -138,23 +131,8 @@ export const useMedianFirstResponseTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Metric => {
-    const shouldIncludeBots = useShouldIncludeBots()
-
-    const queryFactory = shouldIncludeBots
-        ? medianFirstResponseTimeQueryFactory
-        : medianFirstAgentResponseTimeQueryFactory
-
-    let query = queryFactory(statsFilters, timezone)
-
-    if (shouldIncludeBots) {
-        query = withFilter(
-            query,
-            ignoreNotAssignedFirstResponseMessageAssigneeFilter,
-        )
-    }
-
     return useMetric(
-        query,
+        medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
         medianFirstResponseTimeQueryV2Factory({
             filters: statsFilters,
             timezone,
@@ -166,17 +144,8 @@ export const fetchMedianFirstResponseTimeMetric = async (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> => {
-    const shouldIncludeBots = await fetchShouldIncludeBots()
-
-    const queryFactory = shouldIncludeBots
-        ? medianFirstResponseTimeQueryFactory
-        : medianFirstAgentResponseTimeQueryFactory
-
     return fetchMetric(
-        withFilter(
-            queryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter,
-        ),
+        medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
         medianFirstResponseTimeQueryV2Factory({
             filters: statsFilters,
             timezone,

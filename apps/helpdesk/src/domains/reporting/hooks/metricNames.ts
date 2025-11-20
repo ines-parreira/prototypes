@@ -278,8 +278,6 @@ export const METRIC_NAMES = {
         'support-performance-median-first-response-time-per-agent',
     SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL:
         'support-performance-median-first-response-time-per-channel',
-    SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_TICKET_DRILL_DOWN:
-        'support-performance-median-first-response-time-per-ticket-drill-down',
     SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME:
         'support-performance-median-resolution-time',
     SUPPORT_PERFORMANCE_MEDIAN_RESOLUTION_TIME_PER_AGENT:

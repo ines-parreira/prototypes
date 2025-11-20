@@ -68,7 +68,6 @@ type PerformanceOverviewMetrics = (
       }
     | {
           metricName: OverviewMetric.MedianFirstResponseTime
-          shouldIncludeBots: boolean
       }
 ) &
     CommonMetrics
@@ -101,7 +100,6 @@ export type AgentsMetrics = (
     | {
           metricName: AgentsTableColumn.MedianFirstResponseTime
           perAgentId: number
-          shouldIncludeBots: boolean
       }
 ) &
     CommonMetrics
@@ -208,7 +206,6 @@ export type ChannelsMetrics = (
     | {
           metricName: ChannelsTableColumns.FirstResponseTime
           perChannel: string
-          shouldIncludeBots: boolean
       }
 ) &
     CommonMetrics

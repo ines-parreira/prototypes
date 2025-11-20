@@ -109,18 +109,8 @@ const getMetric = (
     column: AgentsTableColumn,
     agent: User,
     summaryDataMap: ReportDataMap,
-    shouldIncludeBots?: boolean,
 ) => {
     if (column === AgentsTableColumn.AgentName) return agent.name
-    // Temporary fix for MedianFirstResponseTime should be removed when shouldIncludeBots is deprecated
-    if (
-        column === AgentsTableColumn.MedianFirstResponseTime &&
-        shouldIncludeBots
-    )
-        return formatMetric(
-            column,
-            getAgentMetric(agent.id, summaryDataMap[column].metricData),
-        )
     return formatMetric(
         column,
         getAgentMetric(agent.id, summaryDataMap[column].metricData),
@@ -134,7 +124,6 @@ export const getData = (
     total: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: AgentsTableColumn[],
     rowsOrder: AgentsTableRow[],
-    shouldIncludeBots?: boolean,
 ) => {
     const columnsToMetricDataMap: ReportDataMap = {
         [AgentsTableColumn.AgentName]: {
@@ -267,7 +256,7 @@ export const getData = (
 
     const agentRows = agents.map((agent) => {
         return columnsOrder.map((column) =>
-            getMetric(column, agent, columnsToMetricDataMap, shouldIncludeBots),
+            getMetric(column, agent, columnsToMetricDataMap),
         )
     })
 
@@ -286,7 +275,6 @@ export const createAgentsReport = (
     columnsOrder: AgentsTableColumn[],
     rowsOrder: AgentsTableRow[],
     fileName: string,
-    shouldIncludeBots: boolean,
 ) => {
     if (data === null || summary === null || total === null) {
         return {
@@ -301,7 +289,6 @@ export const createAgentsReport = (
         total,
         columnsOrder,
         rowsOrder,
-        shouldIncludeBots,
     )
     return {
         files: {

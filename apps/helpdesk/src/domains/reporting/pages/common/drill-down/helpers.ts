@@ -10,10 +10,7 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
-import {
-    firstResponseTimeMetricPerTicketDrillDownQueryFactory,
-    medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
     coverageRateTicketDrillDownQueryFactory,
@@ -172,9 +169,7 @@ export const getDrillDownQuery = (
         }
 
         case OverviewMetric.MedianFirstResponseTime: {
-            return metricData.shouldIncludeBots
-                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
-                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
+            return medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
         }
         case OverviewMetric.CustomerSatisfaction:
         case OverviewMetric.MedianResponseTime:
@@ -193,13 +188,9 @@ export const getDrillDownQuery = (
             return OverviewMetricConfig[metricData.metricName].drillDownQuery
 
         case AgentsTableColumn.MedianFirstResponseTime: {
-            const drillDownQuery = metricData.shouldIncludeBots
-                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
-                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
-
             return queryBuilderWithAgentFilter(
                 metricData.perAgentId,
-                drillDownQuery,
+                medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
             )
         }
         case AgentsTableColumn.CustomerSatisfaction:
@@ -263,13 +254,9 @@ export const getDrillDownQuery = (
             return SlaMetricConfig[metricData.metricName].drillDownQuery
 
         case ChannelsTableColumns.FirstResponseTime: {
-            const drillDownQuery = metricData.shouldIncludeBots
-                ? firstResponseTimeMetricPerTicketDrillDownQueryFactory
-                : medianFirstAgentResponseTimePerTicketDrillDownQueryFactory
-
             return queryBuilderWithChannelFilter(
                 metricData.perChannel,
-                drillDownQuery,
+                medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
             )
         }
 

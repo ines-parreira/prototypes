@@ -28,17 +28,10 @@ import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
-import {
-    medianFirstAgentResponseTimePerChannelQueryFactory,
-    medianFirstResponseTimeMetricPerChannelQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesSentMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
 import { oneTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
@@ -57,10 +50,6 @@ import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/m
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
-
-jest.mock('domains/reporting/hooks/useShouldIncludeBots')
-const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
-const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimensionV2)
@@ -90,47 +79,36 @@ describe('metricsPerChannel', () => {
     const sorting = OrderDirection.Asc
     const channel = 'someChannel'
 
-    beforeEach(() => {
-        fetchShouldIncludeBotsMock.mockResolvedValue(true)
-        useShouldIncludeBotsMock.mockReturnValue(true)
-    })
-
-    describe('shouldIncludeBots', () => {
-        describe('useMedianFirstResponseTimeMetricPerChannel', () => {
-            it('calls medianFirstAgentResponseTimePerChannelQueryFactory when false', () => {
-                useShouldIncludeBotsMock.mockReturnValue(false)
-
-                renderHook(
-                    () =>
-                        useMedianFirstResponseTimeMetricPerChannel(
-                            statsFilters,
-                            timezone,
-                            sorting,
-                            channel,
-                        ),
-                    {},
-                )
-
-                expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                    medianFirstAgentResponseTimePerChannelQueryFactory(
+    describe('useMedianFirstResponseTimeMetricPerChannel', () => {
+        it('calls medianFirstAgentResponseTimePerChannelQueryFactory', () => {
+            renderHook(
+                () =>
+                    useMedianFirstResponseTimeMetricPerChannel(
                         statsFilters,
                         timezone,
                         sorting,
+                        channel,
                     ),
-                    medianFirstResponseTimePerChannelQueryV2Factory({
-                        filters: statsFilters,
-                        timezone,
-                        sortDirection: sorting,
-                    }),
-                    channel,
-                )
-            })
+                {},
+            )
+
+            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+                medianFirstAgentResponseTimePerChannelQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                ),
+                medianFirstResponseTimePerChannelQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: sorting,
+                }),
+                channel,
+            )
         })
 
         describe('fetchMedianFirstResponseTimeMetricPerChannel', () => {
             it('calls medianFirstAgentResponseTimePerChannelQueryFactory when false', async () => {
-                fetchShouldIncludeBotsMock.mockResolvedValue(false)
-
                 await fetchMedianFirstResponseTimeMetricPerChannel(
                     statsFilters,
                     timezone,
@@ -161,7 +139,7 @@ describe('metricsPerChannel', () => {
                 name: 'useMedianFirstResponseTimeMetricPerChannel',
                 hook: useMedianFirstResponseTimeMetricPerChannel,
                 queryFactory:
-                    medianFirstResponseTimeMetricPerChannelQueryFactory,
+                    medianFirstAgentResponseTimePerChannelQueryFactory,
                 newQueryFactory:
                     medianFirstResponseTimePerChannelQueryV2Factory,
             },
@@ -260,7 +238,7 @@ describe('metricsPerChannel', () => {
             )
 
             expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
-                medianFirstResponseTimeMetricPerChannelQueryFactory(
+                medianFirstAgentResponseTimePerChannelQueryFactory(
                     statsFilters,
                     timezone,
                     sorting,

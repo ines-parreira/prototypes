@@ -197,7 +197,6 @@ describe('agentsPerformanceReportingService', () => {
                 columnsOrder,
                 rowsOrder,
                 testName,
-                true,
             )
 
             expect(result).toEqual({
@@ -224,7 +223,6 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
-            true,
         )
 
         const firstAgentName = createCsvMock.mock.calls[0][0][1][0]
@@ -244,7 +242,6 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
-            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -262,7 +259,6 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
-            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -280,7 +276,6 @@ describe('agentsPerformanceReportingService', () => {
             columnsOrder,
             rowsOrder,
             fileName,
-            true,
         )
 
         expect(result).toEqual({ files: {} })
@@ -302,7 +297,6 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
-                true,
             )
 
             expect(result[0]).toEqual(
@@ -329,7 +323,6 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
-                true,
             )
 
             expect(result[0]).toEqual(
@@ -356,7 +349,6 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
-                true,
             )
 
             expect(result[0]).toEqual(
@@ -407,7 +399,6 @@ describe('agentsPerformanceReportingService', () => {
                 mockSummaryData,
                 columnsOrder,
                 [AgentsTableRow.Average],
-                true,
             )
 
             expect(result[0]).toEqual(
@@ -421,8 +412,7 @@ describe('agentsPerformanceReportingService', () => {
                     multipleAgents.length,
             ).toEqual(250)
         })
-        // Temporary test for MedianFirstResponseTime should be removed when shouldIncludeBots is deprecated
-        it('should calculate per-agent MedianFirstResponseTime correctly when shouldIncludeBots is false', () => {
+        it('should calculate per-agent MedianFirstResponseTime correctly', () => {
             const mockReportData = {
                 value: 1,
                 decile: 0,
@@ -470,7 +460,7 @@ describe('agentsPerformanceReportingService', () => {
                         isError: false,
                     },
                 },
-                'MedianFirstResponseTime with shouldIncludeBots false',
+                'MedianFirstResponseTime',
             )
 
             // Override the medianFirstResponseTimeMetric data to use the mock data
@@ -492,7 +482,6 @@ describe('agentsPerformanceReportingService', () => {
                 totalData,
                 columnsOrder,
                 rowsOrder,
-                false,
             )
 
             expect(result[0]).toEqual(
@@ -501,6 +490,115 @@ describe('agentsPerformanceReportingService', () => {
 
             expect(result[1][0]).toEqual(testAgents[0].name)
             expect(result[1][1]).toBeDefined()
+        })
+    })
+
+    describe('agent rows', () => {
+        it('should generate rows for each agent with formatted metrics', () => {
+            const mockReportData = {
+                value: 1,
+                decile: 0,
+                allData: [
+                    {
+                        [TicketDimension.AssigneeUserId]: '123',
+                        [HelpdeskMessageMeasure.TicketCount]: '50',
+                    },
+                ],
+                dimensions: [TicketDimension.AssigneeUserId],
+                measures: [HelpdeskMessageMeasure.TicketCount],
+            }
+
+            const {
+                agents: testAgents,
+                data,
+                summaryData,
+                totalData,
+            } = reportDataFactory(agents, mockReportData)
+
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+            ]
+            const rowsOrder: AgentsTableRow[] = []
+
+            const result = getData(
+                testAgents,
+                data,
+                summaryData,
+                totalData,
+                columnsOrder,
+                rowsOrder,
+            )
+
+            // First row is headers
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            // Second row is the agent data
+            expect(result[1][0]).toEqual(testAgents[0].name)
+            expect(result[1][1]).toBe('50')
+        })
+
+        it('should handle multiple agents correctly', () => {
+            const multipleAgents = [
+                ...agents,
+                {
+                    ...agents[0],
+                    id: 456,
+                    name: 'Jane Smith',
+                },
+            ]
+
+            const mockReportData = {
+                value: 1,
+                decile: 0,
+                allData: [
+                    {
+                        [TicketDimension.AssigneeUserId]: '123',
+                        [HelpdeskMessageMeasure.TicketCount]: '50',
+                    },
+                    {
+                        [TicketDimension.AssigneeUserId]: '456',
+                        [HelpdeskMessageMeasure.TicketCount]: '75',
+                    },
+                ],
+                dimensions: [TicketDimension.AssigneeUserId],
+                measures: [HelpdeskMessageMeasure.TicketCount],
+            }
+
+            const { data, summaryData, totalData } = reportDataFactory(
+                multipleAgents,
+                mockReportData,
+            )
+
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+            ]
+            const rowsOrder: AgentsTableRow[] = []
+
+            const result = getData(
+                multipleAgents,
+                data,
+                summaryData,
+                totalData,
+                columnsOrder,
+                rowsOrder,
+            )
+
+            // Headers
+            expect(result[0]).toEqual(
+                columnsOrder.map((col) => TableLabels[col]),
+            )
+
+            // First agent row
+            expect(result[1][0]).toEqual('John Doe')
+            expect(result[1][1]).toBe('50')
+
+            // Second agent row
+            expect(result[2][0]).toEqual('Jane Smith')
+            expect(result[2][1]).toBe('75')
         })
     })
 })

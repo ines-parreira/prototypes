@@ -22,7 +22,6 @@ import { useSortedChannels } from 'domains/reporting/hooks/support-performance/u
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import { useShouldIncludeBots } from 'domains/reporting/hooks/useShouldIncludeBots'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { saveReport } from 'domains/reporting/services/channelsReportingService'
@@ -116,15 +115,7 @@ export const useChannelsReportMetrics = () => {
         CHANNELS_REPORT_FILE_NAME,
     )
 
-    const shouldIncludeBots = useShouldIncludeBots()
-
-    const { files } = saveReport(
-        channels,
-        reportData,
-        columnsOrder,
-        shouldIncludeBots,
-        fileName,
-    )
+    const { files } = saveReport(channels, reportData, columnsOrder, fileName)
 
     return {
         files,
@@ -142,7 +133,6 @@ export const fetchChannelsTableReportData = async (
     context: {
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
-        shouldIncludeBots: boolean
     },
 ) => {
     const fileName = getCsvFileNameWithDates(
@@ -164,7 +154,6 @@ export const fetchChannelsTableReportData = async (
                     context.channels,
                     metrics.data,
                     context.channelColumnsOrder,
-                    context.shouldIncludeBots,
                     fileName,
                 ),
                 fileName,

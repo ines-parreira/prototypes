@@ -139,7 +139,6 @@ export type ReportFetch = (
         aiAgentUserId: number | undefined
         campaignsReportContext: CampaignReportContext
         tagResultsSelection: TagSelection
-        shouldIncludeBots: boolean
     },
 ) => Promise<{
     isLoading: boolean

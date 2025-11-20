@@ -6,19 +6,12 @@ import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import {
-    medianFirstAgentResponseTimePerAgentQueryFactory,
-    medianFirstResponseTimeMetricPerAgentQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -43,14 +36,12 @@ export const useMedianFirstResponseTimeMetricPerAgent = (
     sorting?: OrderDirection,
     dimensionId?: string,
 ) => {
-    const shouldIncludeBots = useShouldIncludeBots()
-
-    const queryFactory = shouldIncludeBots
-        ? medianFirstResponseTimeMetricPerAgentQueryFactory
-        : medianFirstAgentResponseTimePerAgentQueryFactory
-
     return useMetricPerDimensionV2(
-        queryFactory(filters, timezone, sorting),
+        medianFirstAgentResponseTimePerAgentQueryFactory(
+            filters,
+            timezone,
+            sorting,
+        ),
         medianFirstResponseTimePerAgentQueryV2Factory({
             filters,
             timezone,
@@ -66,14 +57,12 @@ export const fetchMedianFirstResponseTimeMetricPerAgent = async (
     sorting?: OrderDirection,
     dimensionId?: string,
 ) => {
-    const shouldIncludeBots = await fetchShouldIncludeBots()
-
-    const queryFactory = shouldIncludeBots
-        ? medianFirstResponseTimeMetricPerAgentQueryFactory
-        : medianFirstAgentResponseTimePerAgentQueryFactory
-
     return fetchMetricPerDimensionV2(
-        queryFactory(filters, timezone, sorting),
+        medianFirstAgentResponseTimePerAgentQueryFactory(
+            filters,
+            timezone,
+            sorting,
+        ),
         medianFirstResponseTimePerAgentQueryV2Factory({
             filters,
             timezone,

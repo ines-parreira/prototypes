@@ -27,7 +27,9 @@ import {
 } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
+    buildAgentMetric,
     getAverageQuery,
+    getDrillDownMetricData,
     getTotalsQuery,
 } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
@@ -198,5 +200,41 @@ describe('getSummaryQuery', () => {
                 )
             },
         )
+    })
+})
+
+describe('buildAgentMetric and getDrillDownMetricData', () => {
+    const agent = { id: 'agent_1', name: 'Jane Doe' } as any
+
+    it('buildAgentMetric should return expected shape', () => {
+        const metric = buildAgentMetric(AgentsTableColumn.ClosedTickets, agent)
+
+        expect(metric).toEqual(
+            expect.objectContaining({
+                title: expect.stringContaining(agent.name),
+                metricName: AgentsTableColumn.ClosedTickets,
+                perAgentId: agent.id,
+            }),
+        )
+    })
+
+    it('getDrillDownMetricData should return buildAgentMetric for agent metrics', () => {
+        const result = getDrillDownMetricData(
+            AgentsTableColumn.ClosedTickets,
+            agent,
+        )
+
+        expect(result).toEqual(
+            buildAgentMetric(AgentsTableColumn.ClosedTickets, agent),
+        )
+    })
+
+    it('getDrillDownMetricData should return null for non-agent metrics', () => {
+        const result = getDrillDownMetricData(
+            AgentsTableColumn.AgentName,
+            agent,
+        )
+
+        expect(result).toBeNull()
     })
 })

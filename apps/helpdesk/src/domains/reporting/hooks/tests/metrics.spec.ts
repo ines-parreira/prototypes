@@ -16,7 +16,6 @@ import {
     fetchTicketsCreatedMetric,
     fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
-    ignoreNotAssignedFirstResponseMessageAssigneeFilter,
     ignoreNotAssignedTicketsFilter,
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
@@ -34,19 +33,12 @@ import {
     useZeroTouchTicketsMetric,
 } from 'domains/reporting/hooks/metrics'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import {
-    medianFirstAgentResponseTimeQueryFactory,
-    medianFirstResponseTimeQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -72,10 +64,6 @@ import {
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
-jest.mock('domains/reporting/hooks/useShouldIncludeBots')
-const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
-const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
-
 jest.mock('domains/reporting/hooks/useMetric')
 const useMetricMock = assumeMock(useMetric)
 const fetchMetricMock = assumeMock(fetchMetric)
@@ -100,8 +88,6 @@ describe('metrics', () => {
     beforeEach(() => {
         useMetricMock.mockReturnValue(defaultMetricValue)
         fetchMetricMock.mockResolvedValue(defaultMetricValue)
-        fetchShouldIncludeBotsMock.mockResolvedValue(true)
-        useShouldIncludeBotsMock.mockReturnValue(true)
     })
 
     describe.each([
@@ -197,10 +183,7 @@ describe('metrics', () => {
         )
 
         expect(useMetricMock).toHaveBeenCalledWith(
-            withFilter(
-                medianFirstResponseTimeQueryFactory(statsFilters, timezone),
-                ignoreNotAssignedFirstResponseMessageAssigneeFilter,
-            ),
+            medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
             medianFirstResponseTime.build({
                 filters: statsFilters,
                 timezone,
@@ -209,9 +192,7 @@ describe('metrics', () => {
         expect(result.current).toBe(defaultMetricValue)
     })
 
-    it('calls medianFirstResponseTimeQueryFactory when shouldIncludeBots is false', () => {
-        useShouldIncludeBotsMock.mockReturnValue(false)
-
+    it('calls medianFirstResponseTimeQueryFactory', () => {
         renderHook(() =>
             useMedianFirstResponseTimeMetric(statsFilters, timezone),
         )
@@ -225,19 +206,11 @@ describe('metrics', () => {
         )
     })
 
-    it('calls medianFirstResponseTimeQueryFactory when shouldIncludeBots is false', async () => {
-        fetchShouldIncludeBotsMock.mockResolvedValue(false)
-
+    it('calls medianFirstResponseTimeQueryFactory', async () => {
         await fetchMedianFirstResponseTimeMetric(statsFilters, timezone)
 
         expect(fetchMetricMock).toHaveBeenCalledWith(
-            withFilter(
-                medianFirstAgentResponseTimeQueryFactory(
-                    statsFilters,
-                    timezone,
-                ),
-                ignoreNotAssignedTicketsFilter,
-            ),
+            medianFirstAgentResponseTimeQueryFactory(statsFilters, timezone),
             medianFirstResponseTime.build({
                 filters: statsFilters,
                 timezone,
@@ -251,12 +224,6 @@ describe('metrics', () => {
             fetchClosedTicketsMetric,
             closedTicketsQueryFactory,
             closedTicketsCount,
-        ],
-        [
-            'fetchMedianFirstResponseTimeMetric',
-            fetchMedianFirstResponseTimeMetric,
-            medianFirstResponseTimeQueryFactory,
-            medianFirstResponseTime,
         ],
         [
             'fetchMedianResolutionTimeMetric',

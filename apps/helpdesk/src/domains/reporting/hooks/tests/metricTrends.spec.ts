@@ -38,19 +38,12 @@ import {
 import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
-import {
-    fetchShouldIncludeBots,
-    useShouldIncludeBots,
-} from 'domains/reporting/hooks/useShouldIncludeBots'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import {
-    medianFirstAgentResponseTimeQueryFactory,
-    medianFirstResponseTimeQueryFactory,
-} from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesPerTicketQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesPerTicket'
@@ -81,10 +74,6 @@ import {
     getPreviousPeriod,
 } from 'domains/reporting/utils/reporting'
 
-jest.mock('domains/reporting/hooks/useShouldIncludeBots')
-const fetchShouldIncludeBotsMock = assumeMock(fetchShouldIncludeBots)
-const useShouldIncludeBotsMock = assumeMock(useShouldIncludeBots)
-
 jest.mock('domains/reporting/hooks/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
@@ -112,66 +101,57 @@ describe('metric trends', () => {
             isError: false,
             data: { value: 0, prevValue: 0 },
         })
-
-        fetchShouldIncludeBotsMock.mockResolvedValue(true)
-        useShouldIncludeBotsMock.mockReturnValue(true)
     })
 
-    describe('shouldIncludeBots', () => {
-        describe('useMedianFirstResponseTimeTrend', () => {
-            it('calls medianFirstAgentResponseTimeQueryFactory when false', () => {
-                useShouldIncludeBotsMock.mockReturnValue(false)
+    describe('useMedianFirstResponseTimeTrend', () => {
+        it('calls medianFirstAgentResponseTimeQueryFactory', () => {
+            renderHook(() =>
+                useMedianFirstResponseTimeTrend(statsFilters, timezone),
+            )
 
-                renderHook(() =>
-                    useMedianFirstResponseTimeTrend(statsFilters, timezone),
-                )
-
-                expect(useMetricTrendMock).toHaveBeenCalledWith(
-                    medianFirstAgentResponseTimeQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ),
-                    medianFirstAgentResponseTimeQueryFactory(
-                        prevStatsFilters,
-                        timezone,
-                    ),
-                    medianFirstResponseTime.build({
-                        filters: statsFilters,
-                        timezone,
-                    }),
-                    medianFirstResponseTime.build({
-                        filters: prevStatsFilters,
-                        timezone,
-                    }),
-                )
-            })
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                medianFirstAgentResponseTimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
+                medianFirstAgentResponseTimeQueryFactory(
+                    prevStatsFilters,
+                    timezone,
+                ),
+                medianFirstResponseTime.build({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                medianFirstResponseTime.build({
+                    filters: prevStatsFilters,
+                    timezone,
+                }),
+            )
         })
+    })
 
-        describe('fetchMedianFirstResponseTimeTrend', () => {
-            it('calls medianFirstAgentResponseTimeQueryFactory when false', async () => {
-                fetchShouldIncludeBotsMock.mockResolvedValue(false)
+    describe('fetchMedianFirstResponseTimeTrend', () => {
+        it('calls medianFirstAgentResponseTimeQueryFactory', async () => {
+            await fetchMedianFirstResponseTimeTrend(statsFilters, timezone)
 
-                await fetchMedianFirstResponseTimeTrend(statsFilters, timezone)
-
-                expect(fetchMetricTrendMock).toHaveBeenCalledWith(
-                    medianFirstAgentResponseTimeQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ),
-                    medianFirstAgentResponseTimeQueryFactory(
-                        prevStatsFilters,
-                        timezone,
-                    ),
-                    medianFirstResponseTime.build({
-                        filters: statsFilters,
-                        timezone,
-                    }),
-                    medianFirstResponseTime.build({
-                        filters: prevStatsFilters,
-                        timezone,
-                    }),
-                )
-            })
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                medianFirstAgentResponseTimeQueryFactory(
+                    statsFilters,
+                    timezone,
+                ),
+                medianFirstAgentResponseTimeQueryFactory(
+                    prevStatsFilters,
+                    timezone,
+                ),
+                medianFirstResponseTime.build({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                medianFirstResponseTime.build({
+                    filters: prevStatsFilters,
+                    timezone,
+                }),
+            )
         })
     })
 
@@ -191,7 +171,7 @@ describe('metric trends', () => {
         [
             'useMedianFirstResponseTimeTrend',
             useMedianFirstResponseTimeTrend,
-            medianFirstResponseTimeQueryFactory,
+            medianFirstAgentResponseTimeQueryFactory,
             medianFirstResponseTimeQueryV2Factory,
         ],
 

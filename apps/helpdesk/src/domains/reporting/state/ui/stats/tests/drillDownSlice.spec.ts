@@ -265,18 +265,13 @@ describe('drillDownSlice', () => {
         } as User
 
         expect(
-            buildAgentMetric(
-                AgentsTableColumn.CustomerSatisfaction,
-                agent,
-                true,
-            ),
+            buildAgentMetric(AgentsTableColumn.CustomerSatisfaction, agent),
         ).toEqual({
             title: `${TableLabels[AgentsTableColumn.CustomerSatisfaction]} | ${
                 agent.name
             }`,
             metricName: AgentsTableColumn.CustomerSatisfaction,
             perAgentId: agent.id,
-            shouldIncludeBots: true,
         })
     })
 })

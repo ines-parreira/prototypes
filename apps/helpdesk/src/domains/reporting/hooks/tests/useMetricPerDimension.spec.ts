@@ -39,7 +39,7 @@ import {
     usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
 import type { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { customFieldsTicketCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -55,6 +55,11 @@ import type { ReportingQuery } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+
+import {
+    TicketsFirstAgentResponseTimeDimension,
+    TicketsFirstAgentResponseTimeMeasure,
+} from '../../models/cubes/TicketsFirstAgentResponseTimeCube'
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -85,7 +90,7 @@ const getNewStatsFeatureFlagMigrationMock = assumeMock(
 
 describe('MetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
-        medianFirstResponseTimeMetricPerAgentQueryFactory(
+        medianFirstAgentResponseTimePerAgentQueryFactory(
             {
                 period: {
                     start_datetime: '2020-01-16T03:04:56.789-10:00',
@@ -113,12 +118,10 @@ describe('MetricPerDimension', () => {
     const metricValue = 4567
 
     const data = Array.from(Array(150).keys()).map((index) => ({
-        [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
-            agentId + index,
-        ),
-        [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-            metricValue + index,
-        ),
+        [TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId]:
+            String(agentId + index),
+        [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
+            String(metricValue + index),
     }))
 
     const mockedResponse: UseQueryResult<
@@ -443,8 +446,10 @@ describe('MetricPerDimension', () => {
     })
 
     describe('useMetricPerDimensionV2 select function (line 231)', () => {
-        const dimensionKey = TicketMessagesDimension.FirstHelpdeskMessageUserId
-        const measureKey = TicketMessagesMeasure.MedianFirstResponseTime
+        const dimensionKey =
+            TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId
+        const measureKey =
+            TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
 
         beforeEach(() => {
             jest.clearAllMocks()
@@ -1098,7 +1103,7 @@ describe('fetchMetricPerDimensionWithEnrichment', () => {
 })
 describe('selectMeasurePerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
-        medianFirstResponseTimeMetricPerAgentQueryFactory(
+        medianFirstAgentResponseTimePerAgentQueryFactory(
             {
                 period: {
                     start_datetime: '2020-01-16T03:04:56.789-10:00',
@@ -1123,8 +1128,10 @@ describe('selectMeasurePerDimension', () => {
         dimensions: ['agentId'],
     }
 
-    const dimensionKey = TicketMessagesDimension.FirstHelpdeskMessageUserId
-    const measureKey = TicketMessagesMeasure.MedianFirstResponseTime
+    const dimensionKey =
+        TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId
+    const measureKey =
+        TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime
 
     it('should return empty object when data is null', () => {
         const result = selectMeasurePerDimension(

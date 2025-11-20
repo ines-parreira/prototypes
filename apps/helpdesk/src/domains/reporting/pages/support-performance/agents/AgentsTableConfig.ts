@@ -58,7 +58,7 @@ import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'domains/reportin
 import { closedTicketsPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import { humanResponseTimeAfterAiHandoffDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
-import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
+import { medianFirstAgentResponseTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { medianResponseTimeMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResponseTime'
 import { messagesReceivedMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -250,7 +250,8 @@ export const AgentsColumnConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
         // dummy factory, we pick query factory at runtime based on feature flag in `drill-down/helpers.ts`
-        drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
+        drillDownQuery:
+            medianFirstAgentResponseTimePerTicketDrillDownQueryFactory,
     },
     [AgentsTableColumn.HumanResponseTimeAfterAiHandoff]: {
         format: 'duration',
@@ -595,24 +596,15 @@ const isAgentsMetric = (
     column !== AgentsTableColumn.OnlineTime &&
     column !== AgentsTableColumn.MessagesSentPerHour
 
-export const buildAgentMetric = (
-    column: AgentMetricColumn,
-    agent: User,
-    shouldIncludeBots: boolean,
-) => ({
+export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
     title: `${TableLabels[column]} | ${agent.name}`,
     metricName: column,
     perAgentId: agent.id,
-    shouldIncludeBots,
 })
 
-export function getDrillDownMetricData(
-    column: AgentsTableColumn,
-    agent: User,
-    shouldIncludeBots: boolean,
-) {
+export function getDrillDownMetricData(column: AgentsTableColumn, agent: User) {
     if (isAgentsMetric(column)) {
-        return buildAgentMetric(column, agent, shouldIncludeBots)
+        return buildAgentMetric(column, agent)
     }
     return null
 }
