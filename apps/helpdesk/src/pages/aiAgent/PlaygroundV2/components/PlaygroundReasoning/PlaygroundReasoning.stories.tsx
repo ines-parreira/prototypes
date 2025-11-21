@@ -92,6 +92,7 @@ const baseProps: Omit<
     storeConfiguration: {
         shopName: 'Test Shop',
         shopType: 'shopify',
+        executionId: '018d92b9-690f-4d0e-8e96-22f31cf8dcc8',
     },
     onRetry: noop,
     onOpenPreview: noop,
@@ -260,6 +261,17 @@ Based on these resources, I confirmed that the customer is eligible for a full r
         ],
         isLoading: false,
     },
+}
+
+// Story 9: Expanded with Execution ID
+export const ExpandedWithExecutionId = Template.bind({})
+ExpandedWithExecutionId.args = {
+    ...baseProps,
+    initialStatus: 'expanded',
+    reasoningContent:
+        'I helped the customer by providing information about our return policy. The customer wanted to know how to return an item they purchased last week. I explained that they have 30 days from the date of purchase to return any item, and provided them with the return form link.',
+    reasoningResources: [],
+    shouldDisplayExecutionId: true,
 }
 
 export default storyConfig

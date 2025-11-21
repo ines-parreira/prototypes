@@ -10,6 +10,7 @@ import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/comp
 import type { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
 import { useReasoningTracking } from 'pages/tickets/detail/components/TicketMessages/hooks/useReasoningTracking'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 
 import css from './PlaygroundReasoning.less'
 
@@ -129,7 +130,9 @@ export interface PlaygroundReasoningStatelessProps {
     storeConfiguration?: {
         shopName?: string
         shopType?: string
+        executionId?: string
     } | null
+    shouldDisplayExecutionId?: boolean
     onToggle: () => void
     onRetry: () => void
     onOpenPreview: (params: PreviewParams) => void
@@ -142,6 +145,7 @@ export const PlaygroundReasoningStateless = ({
     reasoningMetadata,
     staticMessage,
     storeConfiguration,
+    shouldDisplayExecutionId,
     onToggle,
     onRetry,
     onOpenPreview,
@@ -184,6 +188,12 @@ export const PlaygroundReasoningStateless = ({
                             onOpenPreview={onOpenPreview}
                         />
                     )}
+                    {shouldDisplayExecutionId &&
+                        storeConfiguration?.executionId && (
+                            <div className={css.executionId}>
+                                Execution ID: {storeConfiguration?.executionId}
+                            </div>
+                        )}
                 </div>
             </div>
         </div>
@@ -198,6 +208,7 @@ export interface PlaygroundReasoning {
     storeConfiguration?: {
         shopName?: string
         shopType?: string
+        executionId?: string
     } | null
 }
 
@@ -287,6 +298,8 @@ export const PlaygroundReasoning = ({
         })
     }, [onReasoningOpened])
 
+    const shouldDisplayExecutionId = isSessionImpersonated()
+
     return (
         <PlaygroundReasoningStateless
             status={status}
@@ -295,6 +308,7 @@ export const PlaygroundReasoning = ({
             reasoningMetadata={reasoningMetadata}
             staticMessage={staticMessage}
             storeConfiguration={storeConfiguration || reasoningStoreConfig}
+            shouldDisplayExecutionId={shouldDisplayExecutionId}
             onToggle={handleToggle}
             onRetry={handleRetry}
             onOpenPreview={(params) =>

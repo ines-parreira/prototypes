@@ -16,12 +16,21 @@ import {
 
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { isSessionImpersonated } from 'services/activityTracker/utils'
 
 import type { PlaygroundReasoningStatelessProps } from './PlaygroundReasoning'
 import {
     PlaygroundReasoning,
     PlaygroundReasoningStateless,
 } from './PlaygroundReasoning'
+
+jest.mock('services/activityTracker/utils', () => ({
+    isSessionImpersonated: jest.fn(() => false),
+}))
+
+const mockIsSessionImpersonated = isSessionImpersonated as jest.MockedFunction<
+    typeof isSessionImpersonated
+>
 
 const mockStore = configureMockStore()
 const defaultState = {
@@ -320,6 +329,83 @@ describe('PlaygroundReasoning', () => {
             expect(mockOnToggle).toHaveBeenCalledTimes(1)
         })
     })
+
+    describe('Execution ID Display (Stateless)', () => {
+        it('should display execution ID when shouldDisplayExecutionId is true and executionId exists', () => {
+            const executionId = 'exec_123abc456def'
+            renderComponent({
+                status: 'expanded',
+                shouldDisplayExecutionId: true,
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId,
+                },
+            })
+
+            expect(
+                screen.getByText(`Execution ID: ${executionId}`),
+            ).toBeInTheDocument()
+        })
+
+        it('should not display execution ID when shouldDisplayExecutionId is false even if executionId exists', () => {
+            const executionId = 'exec_123abc456def'
+            renderComponent({
+                status: 'expanded',
+                shouldDisplayExecutionId: false,
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId,
+                },
+            })
+
+            expect(
+                screen.queryByText(`Execution ID: ${executionId}`),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display execution ID when shouldDisplayExecutionId is true but executionId is undefined', () => {
+            renderComponent({
+                status: 'expanded',
+                shouldDisplayExecutionId: true,
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                },
+            })
+
+            expect(screen.queryByText(/Execution ID:/)).not.toBeInTheDocument()
+        })
+
+        it('should not display execution ID when shouldDisplayExecutionId is true but executionId is null', () => {
+            renderComponent({
+                status: 'expanded',
+                shouldDisplayExecutionId: true,
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId: null as unknown as string,
+                },
+            })
+
+            expect(screen.queryByText(/Execution ID:/)).not.toBeInTheDocument()
+        })
+
+        it('should not display execution ID when shouldDisplayExecutionId is true but executionId is empty string', () => {
+            renderComponent({
+                status: 'expanded',
+                shouldDisplayExecutionId: true,
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId: '',
+                },
+            })
+
+            expect(screen.queryByText(/Execution ID:/)).not.toBeInTheDocument()
+        })
+    })
 })
 
 describe('PlaygroundReasoning (Connected Component)', () => {
@@ -583,6 +669,131 @@ describe('PlaygroundReasoning (Connected Component)', () => {
 
             // Content remains in DOM for animation but is hidden
             expect(screen.getByText('Test content')).toBeInTheDocument()
+        })
+    })
+
+    describe('Execution ID Display', () => {
+        it('should display execution ID when session is impersonated and executionId exists', async () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+
+            const baseReasoning = mockAiReasoning()
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Test content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            const executionId = 'exec_123abc456def'
+            renderConnectedComponent({
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId,
+                },
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(`Execution ID: ${executionId}`),
+            ).toBeInTheDocument()
+
+            mockIsSessionImpersonated.mockReturnValue(false)
+        })
+
+        it('should not display execution ID when session is not impersonated', async () => {
+            mockIsSessionImpersonated.mockReturnValue(false)
+
+            const baseReasoning = mockAiReasoning()
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Test content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            const executionId = 'exec_123abc456def'
+            renderConnectedComponent({
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                    executionId,
+                },
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByText(`Execution ID: ${executionId}`),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display execution ID when executionId is not provided', async () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+
+            const baseReasoning = mockAiReasoning()
+            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                async () => {
+                    return HttpResponse.json({
+                        ...baseReasoning,
+                        reasoning: [
+                            {
+                                ...baseReasoning.reasoning[0],
+                                responseType: 'RESPONSE',
+                                targetId: 'test',
+                                value: 'Test content',
+                            },
+                        ],
+                        resources: [],
+                    })
+                },
+            )
+
+            server.use(mockReasoning.handler)
+
+            renderConnectedComponent({
+                storeConfiguration: {
+                    shopName: 'Test Shop',
+                    shopType: 'shopify',
+                },
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+            })
+
+            expect(screen.queryByText(/Execution ID:/)).not.toBeInTheDocument()
+
+            mockIsSessionImpersonated.mockReturnValue(false)
         })
     })
 })
