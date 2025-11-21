@@ -219,7 +219,7 @@ export const SatisfactionAverageSurveyScoreMetricConfig: Record<
         showMetric: true,
         domain: Domain.Ticket,
         drillDownQuery: averageScoreDrillDownWithScoreQueryBuilder(
-            SatisfactionSurveyScore.Four,
+            SatisfactionSurveyScore.Five,
         ),
         title: CSAT_SCORE,
         metricFormat: 'decimal',
