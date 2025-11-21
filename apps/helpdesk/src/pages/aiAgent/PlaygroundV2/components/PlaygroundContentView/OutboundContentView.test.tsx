@@ -193,13 +193,14 @@ describe('OutboundContentView', () => {
         ]
 
         it('should disable follow-up button when limit reached', () => {
+            const totalFollowUp = 3
             const mockUseAIJourneyContext = jest.requireMock(
                 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
             )
             mockUseAIJourneyContext.useAIJourneyContext = () => ({
-                followUpMessagesSent: 3,
+                followUpMessagesSent: totalFollowUp + 1,
                 aiJourneySettings: {
-                    totalFollowUp: 3,
+                    totalFollowUp: totalFollowUp,
                 },
             })
 

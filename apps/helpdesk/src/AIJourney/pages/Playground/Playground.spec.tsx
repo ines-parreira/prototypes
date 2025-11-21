@@ -19,14 +19,45 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     useJourneyContext: jest.fn(),
 }))
 
+jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
+    useCollapsibleColumn: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlayground', () => ({
+    AiAgentPlayground: jest.fn(() => (
+        <div data-testid="ai-agent-playground">AiAgentPlayground</div>
+    )),
+}))
+
 const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
+const mockUseCollapsibleColumn =
+    require('pages/common/hooks/useCollapsibleColumn')
+        .useCollapsibleColumn as jest.Mock
+const {
+    AiAgentPlayground,
+} = require('pages/aiAgent/PlaygroundV2/AiAgentPlayground')
 
 describe('<Playground />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
     })
+    const mockSetIsCollapsibleColumnOpen = jest.fn()
+
+    const renderWithProviders = () => {
+        return renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Playground />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -54,50 +85,29 @@ describe('<Playground />', () => {
                 monitoredSmsIntegrations: [1, 2],
             },
         })
-    })
 
-    it('should render page', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Playground />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        expect(
-            screen.queryByText('AI Journey Playground placeholder'),
-        ).toBeInTheDocument()
-        expect(screen.getByText('JourneyID: journey-123')).toBeInTheDocument()
-    })
-
-    it('should not render journey id when not available', () => {
-        mockUseJourneyContext.mockReturnValue({
-            journeyData: undefined,
-            isLoading: false,
+        mockUseCollapsibleColumn.mockReturnValue({
+            collapsibleColumnChildren: null,
+            setCollapsibleColumnChildren: jest.fn(),
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
+            collapsibleColumnRef: { current: null },
+            warpToCollapsibleColumn: jest.fn(),
         })
+    })
 
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Playground />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
+    it('should render AiAgentPlayground', () => {
+        renderWithProviders()
 
-        screen.debug()
-        expect(screen.getByText('JourneyID: undefined')).toBeInTheDocument()
-        expect(
-            screen.queryByText('AI Journey Playground placeholder'),
-        ).toBeInTheDocument()
+        expect(screen.getByTestId('ai-agent-playground')).toBeInTheDocument()
+        expect(screen.getByText('AiAgentPlayground')).toBeInTheDocument()
+    })
+
+    it('should set collapsible column to open on mount', () => {
+        renderWithProviders()
+
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledTimes(1)
     })
 
     it('should render loading state', () => {
@@ -112,18 +122,21 @@ describe('<Playground />', () => {
             },
         })
 
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Playground />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
+        renderWithProviders()
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
+    })
+
+    it('should pass correct props to AiAgentPlayground', () => {
+        renderWithProviders()
+
+        expect(AiAgentPlayground).toHaveBeenCalledWith(
+            expect.objectContaining({
+                supportedModes: ['outbound', 'inbound'],
+                shopName: 'gorgias-product-demo',
+                withSettingsOnSidePanel: true,
+            }),
+            expect.anything(),
+        )
     })
 })

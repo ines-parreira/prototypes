@@ -33,7 +33,7 @@ export const OutboundContentView = ({
         aiJourneySettings: { totalFollowUp },
     } = useAIJourneyContext()
 
-    const followUpLimitReached = followUpMessagesSent >= totalFollowUp
+    const followUpLimitReached = followUpMessagesSent >= totalFollowUp + 1
 
     const toggleTooltip = () => setTooltipOpen(!tooltipOpen)
 

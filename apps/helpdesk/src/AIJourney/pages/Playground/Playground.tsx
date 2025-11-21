@@ -1,30 +1,28 @@
-import { motion } from 'framer-motion'
+import { useEffectOnce } from '@repo/hooks'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useJourneyContext } from 'AIJourney/providers'
-
-import css from './Playground.less'
+import { AiAgentPlayground } from 'pages/aiAgent/PlaygroundV2/AiAgentPlayground'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 export const Playground = () => {
     const { journeyData, isLoading } = useJourneyContext()
+    const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
+
+    useEffectOnce(() => {
+        setIsCollapsibleColumnOpen(true)
+    })
 
     if (isLoading) {
         return <LoadingSpinner />
     }
 
     return (
-        <motion.div
-            className={css.container}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-        >
-            {!isLoading && (
-                <>
-                    <span>AI Journey Playground placeholder</span>
-                    {`JourneyID: ${journeyData?.id}`}
-                </>
-            )}
-        </motion.div>
+        <AiAgentPlayground
+            supportedModes={['outbound', 'inbound']}
+            shopName={journeyData?.store_name}
+            withSettingsOnSidePanel
+        />
     )
 }
