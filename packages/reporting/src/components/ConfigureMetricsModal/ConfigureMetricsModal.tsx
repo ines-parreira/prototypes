@@ -5,12 +5,13 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import {
-    Box,
     Button,
     HeaderCell,
-    Heading,
     Icon,
-    Modal,
+    OverlayContent,
+    OverlayFooter,
+    OverlayHeader,
+    SidePanel,
     TableBody,
     TableCell,
     TableHeader,
@@ -154,16 +155,13 @@ export const ConfigureMetricsModal = ({
     }, [metrics, onClose])
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">
-            <Box flexDirection="column" gap="md" className={css.container}>
-                <Box flexDirection="column" gap="sm">
-                    <Heading slot="title">Edit metrics</Heading>
-                    <Text>
-                        Choose the {maxVisibleMetric} metrics you want to
-                        display and rearrange them as needed.
-                    </Text>
-                </Box>
+        <SidePanel isOpen={isOpen} onOpenChange={handleCancel} size="sm">
+            <OverlayHeader
+                title="Edit metrics"
+                description={`Choose the ${maxVisibleMetric} metrics you want to display and rearrange them as needed.`}
+            />
 
+            <OverlayContent>
                 <DndProvider backend={HTML5Backend}>
                     <div className={css.tableContainer}>
                         <TableRoot withBorder>
@@ -205,20 +203,17 @@ export const ConfigureMetricsModal = ({
                         </TableRoot>
                     </div>
                 </DndProvider>
+            </OverlayContent>
 
-                <Box justifyContent="flex-end" gap="sm" className={css.footer}>
-                    <Button variant="secondary" onClick={handleCancel}>
-                        Cancel
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={handleSave}
-                        isDisabled={!hasChanges}
-                    >
-                        Save
-                    </Button>
-                </Box>
-            </Box>
-        </Modal>
+            <OverlayFooter>
+                <Button
+                    variant="primary"
+                    onClick={handleSave}
+                    isDisabled={!hasChanges}
+                >
+                    Save
+                </Button>
+            </OverlayFooter>
+        </SidePanel>
     )
 }
