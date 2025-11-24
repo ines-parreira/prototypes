@@ -15,7 +15,7 @@ import {
     BILLING_SUPPORT_EMAIL,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
-import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -64,7 +64,7 @@ const SubscriptionModal = ({
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
 
     const history = useHistory()
-    const currentPlanIds = useCurrentPlanIds()
+    const currentPriceIds = useCurrentPriceIds()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
@@ -82,10 +82,10 @@ const SubscriptionModal = ({
     )
 
     const onConfirm = useCallback(async () => {
-        if (selectedPlan?.plan_id) {
+        if (selectedPlan?.price_id) {
             await handleSubscriptionUpdate([
-                ...currentPlanIds,
-                selectedPlan.plan_id,
+                ...currentPriceIds,
+                selectedPlan.price_id,
             ])
                 .then(() => onSubscribe && onSubscribe())
                 .finally(() => currentPage && history.push(currentPage))
@@ -93,7 +93,7 @@ const SubscriptionModal = ({
     }, [
         selectedPlan,
         handleSubscriptionUpdate,
-        currentPlanIds,
+        currentPriceIds,
         onSubscribe,
         currentPage,
         history,

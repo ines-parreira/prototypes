@@ -383,7 +383,7 @@ const receivedEvents: ReceivedEvent[] = [
             const newAccountProducts =
                 account.current_subscription?.products || {}
             const areProductsLoaded = Object.values(newAccountProducts).every(
-                (planId) => !!plansMap[planId],
+                (priceId) => !!plansMap[priceId],
             )
 
             if (!areProductsLoaded) {

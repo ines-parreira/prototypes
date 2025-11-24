@@ -750,9 +750,9 @@ describe('useBillingPlans', () => {
                 '/api/billing/subscription/',
                 {
                     prices: [
-                        basicMonthlyHelpdeskPlan.plan_id,
-                        voicePlan0.plan_id, // current voice plan stays in place
-                        smsPlan1.plan_id,
+                        basicMonthlyHelpdeskPlan.price_id,
+                        voicePlan0.price_id, // current voice plan stays in place
+                        smsPlan1.price_id,
                     ],
                 },
             )

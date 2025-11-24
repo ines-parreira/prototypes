@@ -112,16 +112,16 @@ export const useBillingPlans = ({
             plan.num_quota_tickets &&
             (filterByCadence ? plan.cadence === cadence : true),
     )
-    const helpdeskAvailablePlansPlanIds = useMemo(
-        () => helpdeskAvailablePlans.map((plan) => plan.plan_id),
+    const helpdeskAvailablePlansPriceIds = useMemo(
+        () => helpdeskAvailablePlans.map((plan) => plan.price_id),
         [helpdeskAvailablePlans],
     )
     const helpdeskCurrentPlanIndex = useMemo(
         () =>
-            helpdeskAvailablePlansPlanIds.indexOf(
-                currentHelpdeskPlan?.plan_id ?? '',
+            helpdeskAvailablePlansPriceIds.indexOf(
+                currentHelpdeskPlan?.price_id ?? '',
             ),
-        [helpdeskAvailablePlansPlanIds, currentHelpdeskPlan],
+        [helpdeskAvailablePlansPriceIds, currentHelpdeskPlan],
     )
 
     // AI Agent
@@ -242,34 +242,34 @@ export const useBillingPlans = ({
 
     const anyProductChanged = useMemo(
         () =>
-            (currentHelpdeskPlan?.plan_id !==
-                selectedPlans[ProductType.Helpdesk].plan?.plan_id &&
+            (currentHelpdeskPlan?.price_id !==
+                selectedPlans[ProductType.Helpdesk].plan?.price_id &&
                 selectedPlans[ProductType.Helpdesk].isSelected) ||
-            (currentAutomatePlan?.plan_id !==
-                selectedPlans[ProductType.Automation].plan?.plan_id &&
+            (currentAutomatePlan?.price_id !==
+                selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
-            (!!currentAutomatePlan?.plan_id &&
+            (!!currentAutomatePlan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected) ||
-            (currentVoicePlan?.plan_id !==
-                selectedPlans[ProductType.Voice].plan?.plan_id &&
+            (currentVoicePlan?.price_id !==
+                selectedPlans[ProductType.Voice].plan?.price_id &&
                 selectedPlans[ProductType.Voice].isSelected) ||
-            (!!currentVoicePlan?.plan_id &&
-                currentVoicePlan.plan_id ===
-                    selectedPlans[ProductType.Voice].plan?.plan_id &&
+            (!!currentVoicePlan?.price_id &&
+                currentVoicePlan.price_id ===
+                    selectedPlans[ProductType.Voice].plan?.price_id &&
                 !selectedPlans[ProductType.Voice].isSelected) ||
-            (currentSmsPlan?.plan_id !==
-                selectedPlans[ProductType.SMS].plan?.plan_id &&
+            (currentSmsPlan?.price_id !==
+                selectedPlans[ProductType.SMS].plan?.price_id &&
                 selectedPlans[ProductType.SMS].isSelected) ||
-            (!!currentSmsPlan?.plan_id &&
-                currentSmsPlan.plan_id ===
-                    selectedPlans[ProductType.SMS].plan?.plan_id &&
+            (!!currentSmsPlan?.price_id &&
+                currentSmsPlan.price_id ===
+                    selectedPlans[ProductType.SMS].plan?.price_id &&
                 !selectedPlans[ProductType.SMS].isSelected) ||
-            (currentConvertPlan?.plan_id !==
-                selectedPlans[ProductType.Convert].plan?.plan_id &&
+            (currentConvertPlan?.price_id !==
+                selectedPlans[ProductType.Convert].plan?.price_id &&
                 selectedPlans[ProductType.Convert].isSelected) ||
-            (!!currentConvertPlan?.plan_id &&
-                currentConvertPlan.plan_id ===
-                    selectedPlans[ProductType.Convert].plan?.plan_id &&
+            (!!currentConvertPlan?.price_id &&
+                currentConvertPlan.price_id ===
+                    selectedPlans[ProductType.Convert].plan?.price_id &&
                 !selectedPlans[ProductType.Convert].isSelected),
         [
             currentHelpdeskPlan,
@@ -468,19 +468,19 @@ export const useBillingPlans = ({
             cadence !== selectedPlans[ProductType.Helpdesk].plan?.cadence
 
         const isNewHelpdeskPlan =
-            selectedPlans[ProductType.Helpdesk].plan?.plan_id !==
-            currentHelpdeskPlan?.plan_id
+            selectedPlans[ProductType.Helpdesk].plan?.price_id !==
+            currentHelpdeskPlan?.price_id
 
         const isNewAutomationPlan =
-            selectedPlans[ProductType.Automation].plan?.plan_id !==
-                currentAutomatePlan?.plan_id ||
-            (currentAutomatePlan?.plan_id &&
+            selectedPlans[ProductType.Automation].plan?.price_id !==
+                currentAutomatePlan?.price_id ||
+            (currentAutomatePlan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
 
         const hasConvertPlanChanged =
-            selectedPlans[ProductType.Convert].plan?.plan_id !==
-                currentConvertPlan?.plan_id ||
-            (currentConvertPlan?.plan_id &&
+            selectedPlans[ProductType.Convert].plan?.price_id !==
+                currentConvertPlan?.price_id ||
+            (currentConvertPlan?.price_id &&
                 !selectedPlans[ProductType.Convert].isSelected)
 
         // Set notification when cadence has changed
@@ -517,7 +517,7 @@ export const useBillingPlans = ({
         if (selectedPlans[ProductType.Helpdesk]?.plan?.product) {
             const plan = selectedPlans[ProductType.Helpdesk]?.plan
             if (plan) {
-                plansToBeUpdated[plan.product] = plan.plan_id
+                plansToBeUpdated[plan.product] = plan.price_id
             }
         }
 
@@ -526,7 +526,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Voice]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan.plan_id
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
 
@@ -534,7 +534,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.SMS]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan.plan_id
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }
@@ -561,7 +561,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Automation]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan.plan_id
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }
@@ -596,7 +596,7 @@ export const useBillingPlans = ({
                 const plan = selectedPlans[ProductType.Convert]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product] = plan.plan_id
+                    plansToBeUpdated[plan.product] = plan.price_id
                 }
             }
         }

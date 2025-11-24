@@ -44,7 +44,7 @@ const SummaryItem = ({
 
     const { price, currency, name, tickets } = useMemo(() => {
         const _selectedPlan = availablePlans.find(
-            (plan) => plan.plan_id === selectedPlan.plan?.plan_id,
+            (plan) => plan.price_id === selectedPlan.plan?.price_id,
         )
         if (!selectedPlan.isSelected || !_selectedPlan) {
             return {
@@ -65,12 +65,12 @@ const SummaryItem = ({
     const oldPlanPrice = useMemo(() => {
         if (
             !currentPlan ||
-            currentPlan.plan_id === selectedPlan.plan?.plan_id
+            currentPlan.price_id === selectedPlan.plan?.price_id
         ) {
             return null
         }
         const oldPlan = availablePlans.find(
-            (plan) => plan.plan_id === currentPlan.plan_id,
+            (plan) => plan.price_id === currentPlan.price_id,
         )
         if (!oldPlan) {
             return null

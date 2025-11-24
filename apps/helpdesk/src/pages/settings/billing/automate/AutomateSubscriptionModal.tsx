@@ -25,13 +25,12 @@ import {
     BILLING_SUPPORT_EMAIL,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
-import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
     getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
-    getCurrentPlansByProduct,
 } from 'state/billing/selectors'
 import { updateSubscription } from 'state/currentAccount/actions'
 import {
@@ -118,12 +117,10 @@ const AutomateSubscriptionModal = ({
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const currentPlansByProduct = useAppSelector(getCurrentPlansByProduct)
-    const currentPlanIds = useCurrentPlanIds()
     const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
-    const helpdeskAvailablePlansIds = helpdeskAvailablePlans
+    const helpdeskAvailablePlansPriceIds = helpdeskAvailablePlans
         .filter((plan) => plan.cadence === cadence)
-        .map((plan) => plan.plan_id)
+        .map((plan) => plan.price_id)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
@@ -132,10 +129,7 @@ const AutomateSubscriptionModal = ({
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
 
-    const planIdsWithoutAutomate = currentPlanIds.filter(
-        (planId) => planId !== currentPlansByProduct?.automation?.plan_id,
-    )
-
+    const currentPriceIds: string[] = useCurrentPriceIds()
     const [{ loading: isSubscriptionUpdating }, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
             try {
@@ -160,25 +154,26 @@ const AutomateSubscriptionModal = ({
         logEvent(SegmentEvent.AutomatePaywallModalUpsellSubscribe, {
             location: history?.location.pathname,
         })
-        selectedPlan?.plan_id &&
+        selectedPlan?.price_id &&
             void handleSubscriptionUpdate([
-                ...currentPlanIds,
-                selectedPlan.plan_id,
+                ...currentPriceIds,
+                selectedPlan.price_id,
             ]).then(() => onSubscribe && onSubscribe())
         history.push(BILLING_BASE_PATH)
     }
 
     const handleUnsubscribeClick = () => {
         currentHelpdeskPlan &&
-            void handleSubscriptionUpdate(planIdsWithoutAutomate)
+            void handleSubscriptionUpdate([currentHelpdeskPlan.price_id])
     }
 
     const automateAvailablePlans = useAppSelector(
         getAvailableAutomatePlans,
     ).filter((plan) => plan.num_quota_tickets && plan.cadence === cadence)
-
     const helpdeskOptionIndex = Math.max(
-        helpdeskAvailablePlansIds.indexOf(currentHelpdeskPlan?.plan_id || ''),
+        helpdeskAvailablePlansPriceIds.indexOf(
+            currentHelpdeskPlan?.price_id || '',
+        ),
         0,
     )
 

@@ -6,7 +6,7 @@ import { useFlag } from 'core/flags'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
-import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import {
@@ -45,7 +45,7 @@ export const useEarlyAccessModalState = ({
     hasActivationEnabled: boolean
     autoDisplayDisabled?: boolean
 }) => {
-    const { data: aiAgent6Plan, isLoading: upgradePlanLoading } =
+    const { data: upgradePlanData, isLoading: upgradePlanLoading } =
         useAiAgentUpgradePlan(hasActivationEnabled)
     const billingState = useBillingState({ enabled: hasActivationEnabled })
 
@@ -71,15 +71,16 @@ export const useEarlyAccessModalState = ({
     const isLoading = billingState.isLoading || upgradePlanLoading
 
     const currentProducts = useAppSelector(getCurrentPlansByProduct)
-    const currentPlanIds = useCurrentPlanIds()
+    const currentPriceIds = useCurrentPriceIds()
 
-    const planIdsWithoutAiAgentOne = currentPlanIds.filter(
-        (planId) => planId !== currentProducts?.automation?.plan_id,
+    const priceIdsWithoutAutomationOne = currentPriceIds.filter(
+        (priceId) => priceId !== currentProducts?.automation?.price_id,
     )
 
-    const planIdsWithAiAgent6Plan = [
-        ...planIdsWithoutAiAgentOne!,
-        aiAgent6Plan?.plan_id,
+    // The Early Access plan is not able to return the price_id, we uses the plan_id instead
+    const priceIdsAndPlanIdsWithEarlyAccessPlanAdded = [
+        ...priceIdsWithoutAutomationOne!,
+        upgradePlanData?.plan_id,
     ].filter(Boolean) as string[]
 
     const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
@@ -93,7 +94,7 @@ export const useEarlyAccessModalState = ({
 
     return useMemo(
         () => ({
-            earlyAccessPlan: aiAgent6Plan,
+            earlyAccessPlan: upgradePlanData,
             currentPlan,
             helpdeskPlan,
             isPreviewModalVisible,
@@ -103,10 +104,12 @@ export const useEarlyAccessModalState = ({
             isCurrentUserAdmin,
             isSubscriptionUpdating,
             handleSubscriptionUpdate: () =>
-                handleSubscriptionUpdate(planIdsWithAiAgent6Plan),
+                handleSubscriptionUpdate(
+                    priceIdsAndPlanIdsWithEarlyAccessPlanAdded,
+                ),
         }),
         [
-            aiAgent6Plan,
+            upgradePlanData,
             currentPlan,
             helpdeskPlan,
             isPreviewModalVisible,
@@ -115,7 +118,7 @@ export const useEarlyAccessModalState = ({
             isCurrentUserAdmin,
             isSubscriptionUpdating,
             handleSubscriptionUpdate,
-            planIdsWithAiAgent6Plan,
+            priceIdsAndPlanIdsWithEarlyAccessPlanAdded,
         ],
     )
 }

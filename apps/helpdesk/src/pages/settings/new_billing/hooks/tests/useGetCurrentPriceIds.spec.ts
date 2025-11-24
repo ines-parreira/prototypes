@@ -3,54 +3,54 @@ import { renderHook } from '@repo/testing'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 
-import { useCurrentPlanIds } from '../useGetCurrentPriceIds'
+import { useCurrentPriceIds } from '../useGetCurrentPriceIds'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = useAppSelector as jest.Mock
 
-describe('useCurrentPlanIds', () => {
+describe('useGetCurrentPriceIds', () => {
     const currentProducts = {
-        [ProductType.Helpdesk]: { plan_id: 'helpdeskPlanId' },
-        [ProductType.Automation]: { plan_id: 'automatePlanId' },
-        [ProductType.Convert]: { plan_id: 'convertPlanId' },
-        [ProductType.Voice]: { plan_id: 'voicePlanId' },
-        [ProductType.SMS]: { plan_id: 'smsPlanId' },
+        [ProductType.Helpdesk]: { price_id: 'helpdeskPriceId' },
+        [ProductType.Automation]: { price_id: 'automatePriceId' },
+        [ProductType.Convert]: { price_id: 'convertPriceId' },
+        [ProductType.Voice]: { price_id: 'voicePriceId' },
+        [ProductType.SMS]: { price_id: 'smsPriceId' },
     }
 
-    it('should return the current plan ids', () => {
+    it('should return the current price ids', () => {
         mockUseAppSelector.mockReturnValueOnce(currentProducts)
 
-        const { result } = renderHook(() => useCurrentPlanIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([
-            'helpdeskPlanId',
-            'automatePlanId',
-            'convertPlanId',
-            'voicePlanId',
-            'smsPlanId',
+            'helpdeskPriceId',
+            'automatePriceId',
+            'convertPriceId',
+            'voicePriceId',
+            'smsPriceId',
         ])
     })
 
-    it('should return the current plan ids without automation', () => {
+    it('should return the current price ids without automation', () => {
         mockUseAppSelector.mockReturnValueOnce({
             ...currentProducts,
             automation: undefined,
         })
 
-        const { result } = renderHook(() => useCurrentPlanIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([
-            'helpdeskPlanId',
-            'convertPlanId',
-            'voicePlanId',
-            'smsPlanId',
+            'helpdeskPriceId',
+            'convertPriceId',
+            'voicePriceId',
+            'smsPriceId',
         ])
     })
 
-    it('should return the empty plan ids list', () => {
+    it('should return the empty price id list', () => {
         mockUseAppSelector.mockReturnValueOnce(null)
 
-        const { result } = renderHook(() => useCurrentPlanIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([])
     })

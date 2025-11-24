@@ -352,9 +352,9 @@ export const getAvailablePlans = createSelector(
 export const getAvailablePlansMap = createSelector(
     getAvailablePlansByProduct,
     (products) =>
-        products.reduce<Record<PlanId, Plan>>((acc, product) => {
+        products.reduce<Record<PriceId, Plan>>((acc, product) => {
             product.prices.map((plan) => {
-                acc[plan.plan_id] = plan
+                acc[plan.price_id] = plan
             })
             return acc
         }, {}),
@@ -374,8 +374,8 @@ export const getAvailablePlansMapByPlanId = createSelector(
 export const getAvailableAutomatePlansMap = createSelector(
     getAvailableAutomatePlans,
     (plans) =>
-        plans.reduce<Record<PlanId, AutomatePlan>>((acc, plan) => {
-            acc[plan.plan_id] = plan
+        plans.reduce<Record<string, AutomatePlan>>((acc, plan) => {
+            acc[plan.price_id] = plan
             return acc
         }, {}),
 )
