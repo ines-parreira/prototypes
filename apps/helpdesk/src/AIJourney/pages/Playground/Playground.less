@@ -1,13 +1,22 @@
 :local {
-    .container {
+    .playground {
+        width: 100%;
         display: flex;
-        padding-top: var(--layout-spacing-xl);
-        gap: var(--layout-spacing-l);
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
 
-        width: 100vw;
-        height: fit-content;
+        .actions {
+            display: flex;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-neutral-default);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            justify-content: flex-end;
+            gap: var(--spacing-xs);
+        }
+
+        .container {
+            height: 100%;
+            overflow-y: auto;
+            padding: var(--spacing-lg);
+        }
     }
 }

@@ -1,11 +1,11 @@
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
@@ -17,7 +17,16 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
         'AIJourney/providers/JourneyProvider/JourneyProvider',
     ),
     useJourneyContext: jest.fn(),
+    JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
 }))
+
+jest.mock(
+    'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
+    () => ({
+        IntegrationsProvider: ({ children }: { children: React.ReactNode }) =>
+            children,
+    }),
+)
 
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: jest.fn(),
@@ -49,11 +58,7 @@ describe('<Playground />', () => {
         return renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Playground />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <Playground />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -135,8 +140,120 @@ describe('<Playground />', () => {
                 supportedModes: ['outbound', 'inbound'],
                 shopName: 'gorgias-product-demo',
                 withSettingsOnSidePanel: true,
+                resetPlayground: false,
+                resetPlaygroundCallback: expect.any(Function),
             }),
             expect.anything(),
         )
+    })
+
+    it('should render Reset button', () => {
+        renderWithProviders()
+
+        expect(
+            screen.getByRole('button', { name: /reset/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should set resetPlayground to true when Reset button is clicked', async () => {
+        const user = userEvent.setup()
+        renderWithProviders()
+
+        const resetButton = screen.getByRole('button', { name: /reset/i })
+
+        await act(() => user.click(resetButton))
+
+        expect(AiAgentPlayground).toHaveBeenCalledWith(
+            expect.objectContaining({
+                resetPlayground: true,
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('should reset shouldPlaygroundReset when resetPlaygroundCallback is called', async () => {
+        const user = userEvent.setup()
+        renderWithProviders()
+
+        const resetButton = screen.getByRole('button', { name: /reset/i })
+
+        await act(() => user.click(resetButton))
+
+        const lastCallBeforeCallback = AiAgentPlayground.mock.calls.at(-1)[0]
+        expect(lastCallBeforeCallback.resetPlayground).toBe(true)
+
+        act(() => {
+            lastCallBeforeCallback.resetPlaygroundCallback()
+        })
+
+        const lastCallAfterCallback = AiAgentPlayground.mock.calls.at(-1)[0]
+        expect(lastCallAfterCallback.resetPlayground).toBe(false)
+    })
+
+    it('should render Configure button when collapsible column is closed', () => {
+        mockUseCollapsibleColumn.mockReturnValue({
+            collapsibleColumnChildren: null,
+            setCollapsibleColumnChildren: jest.fn(),
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
+            collapsibleColumnRef: { current: null },
+            warpToCollapsibleColumn: jest.fn(),
+        })
+
+        renderWithProviders()
+
+        expect(
+            screen.getByRole('button', { name: /open settings/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render Configure button when collapsible column is open', () => {
+        mockUseCollapsibleColumn.mockReturnValue({
+            collapsibleColumnChildren: null,
+            setCollapsibleColumnChildren: jest.fn(),
+            isCollapsibleColumnOpen: true,
+            setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
+            collapsibleColumnRef: { current: null },
+            warpToCollapsibleColumn: jest.fn(),
+        })
+
+        renderWithProviders()
+
+        expect(
+            screen.queryByRole('button', { name: /open settings/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should toggle collapsible column when Configure button is clicked', async () => {
+        const user = userEvent.setup()
+        mockUseCollapsibleColumn.mockReturnValue({
+            collapsibleColumnChildren: null,
+            setCollapsibleColumnChildren: jest.fn(),
+            isCollapsibleColumnOpen: false,
+            setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
+            collapsibleColumnRef: { current: null },
+            warpToCollapsibleColumn: jest.fn(),
+        })
+
+        renderWithProviders()
+
+        const configureButton = screen.getByRole('button', {
+            name: /open settings/i,
+        })
+
+        await act(() => user.click(configureButton))
+
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
+    })
+
+    it('should close collapsible column on unmount', () => {
+        const { unmount } = renderWithProviders()
+
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
+
+        unmount()
+
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledTimes(2)
     })
 })

@@ -303,11 +303,9 @@ const WrappedAIJourneyProvider = ({
     )
 
     return (
-        <TokenProvider>
-            <AIJourneyContext.Provider value={contextValue}>
-                {children}
-            </AIJourneyContext.Provider>
-        </TokenProvider>
+        <AIJourneyContext.Provider value={contextValue}>
+            {children}
+        </AIJourneyContext.Provider>
     )
 }
 
