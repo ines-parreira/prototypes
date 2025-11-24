@@ -1,20 +1,22 @@
 import { useState } from 'react'
-import type { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
+import type { Map } from 'immutable'
 
-import { Box, Icon, Text } from '@gorgias/axiom'
-import {
-    type ListInstagramProfiles200,
-    TicketMessageSourceType,
-} from '@gorgias/helpdesk-types'
+import { Box, Icon, Text, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
+import { TicketMessageSourceType } from '@gorgias/helpdesk-types'
 
 import { useFlag } from 'core/flags'
-import type { Customer } from 'models/customer/types'
+import useAppSelector from 'hooks/useAppSelector'
+import type { Integration } from 'models/integration/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import { getDisplayName } from 'state/customers/helpers'
+import { getIntegrations } from 'state/integrations/selectors'
+import { getMessages } from 'state/ticket/selectors'
+import { getFormattedDate } from 'utils/date'
 
 import css from './InfobarCustomerInfo.less'
 
@@ -24,42 +26,72 @@ const formatFollowerCount = (count: number): string => {
     }
 
     if (count < 10000) {
-        // 1k - 9.9k (show one decimal place)
+        // 1k - 9.9k
         const formatted = (count / 1000).toFixed(1)
         return `${formatted.replace(/\.0$/, '')}k`
     }
 
     if (count < 100000) {
-        // 10k - 99.9k (show one decimal place)
+        // 10k - 99.9k
         const formatted = (count / 1000).toFixed(1)
         return `${formatted.replace(/\.0$/, '')}k`
     }
 
     if (count < 1000000) {
-        // 100k - 999k (no decimal places)
+        // 100k - 999k
         return `${Math.floor(count / 1000)}k`
     }
 
     if (count < 10000000) {
-        // 1M - 9.9M (show one decimal place)
+        // 1M - 9.9M
         const formatted = (count / 1000000).toFixed(1)
         return `${formatted.replace(/\.0$/, '')}M`
     }
 
-    // 10M+ (no decimal places)
+    // 10M+
     return `${Math.floor(count / 1000000)}M`
 }
 
-export const InstagramSection = ({
-    customer,
-    userInstaData,
-}: {
-    customer: Customer
-    userInstaData: ListInstagramProfiles200 | undefined
-}) => {
-    const [showDetails, setShowDetails] = useState(true)
-
+export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
+    const [showDetails, setShowDetails] = useState(false)
     const isIgSectionEnabled = useFlag(FeatureFlagKey.InstagramUserSection)
+    const messages = useAppSelector(getMessages)
+    const lastMessage = messages.last()
+    const firstMessage = messages.first()
+    const messageIntegrationId = lastMessage?.get('integration_id')
+    const allIntegrations = useAppSelector(getIntegrations)
+
+    const customerHandle = firstMessage?.getIn(['sender', 'name'])
+
+    const instagramIntegration = allIntegrations.find(
+        (integration: Integration) => integration.id === messageIntegrationId,
+    )
+
+    const instagramId = (instagramIntegration?.meta as Record<string, any>)
+        ?.instagram?.id
+
+    const instagramProfilesParams = {
+        customer_id: customer?.get('id'),
+        owning_business_id: instagramId,
+        limit: 1,
+        order_by: 'updated_at:desc' as const,
+    }
+
+    const { data: userInstaData } = useListInstagramProfiles(
+        instagramProfilesParams,
+        {
+            query: {
+                enabled:
+                    !!customer.get('id') && !!instagramId && isIgSectionEnabled,
+                queryKey: queryKeys.integrations.listInstagramProfiles(
+                    instagramProfilesParams,
+                ),
+                staleTime: 60 * 60 * 1000,
+                cacheTime: 60 * 60 * 1000,
+                select: (resp) => resp?.data?.data?.at(0),
+            },
+        },
+    )
 
     const handleIgHandleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault()
@@ -73,9 +105,11 @@ export const InstagramSection = ({
         window.open(igProfileUrl, '_blank', 'noopener noreferrer')
     }
 
-    const localData = userInstaData?.data?.[0]
+    if (!customerHandle) {
+        return null
+    }
 
-    if (!isIgSectionEnabled || !localData) {
+    if (!isIgSectionEnabled || !userInstaData) {
         return (
             <>
                 <Box flex={1} mb="xs">
@@ -84,7 +118,7 @@ export const InstagramSection = ({
                         className={css.igIcon}
                     />
                     <a href="/#" onClick={handleIgHandleClick}>
-                        @{getDisplayName(customer as any) as ReactNode}
+                        @{customerHandle}
                     </a>
                 </Box>
             </>
@@ -93,16 +127,16 @@ export const InstagramSection = ({
     return (
         <>
             <Box flexDirection="column">
-                <Box flex={1} flexDirection="column" mb="xs">
-                    <Box>
+                <Box flex={1} flexDirection="column">
+                    <Box gap="xs">
                         <SourceIcon
                             type={TicketMessageSourceType.Instagram}
                             className={css.igIcon}
                         />
                         <a href="/#" onClick={handleIgHandleClick}>
-                            @{getDisplayName(customer as any) as ReactNode}
+                            @{userInstaData.username}
                         </a>
-                        {localData?.is_verified && (
+                        {userInstaData?.is_verified && (
                             <Icon name="wavy-check" color="blue" />
                         )}
 
@@ -113,51 +147,96 @@ export const InstagramSection = ({
                             className={css.showDetailsIcon}
                         >
                             <Icon
-                                name={`arrow-chevron-${showDetails ? 'down' : 'up'}`}
+                                name={`arrow-chevron-${showDetails ? 'up' : 'down'}`}
                             />
                         </div>
                     </Box>
                 </Box>
                 <div
                     className={classNames(css.hideDetails, {
-                        [css.showDetails]: !showDetails,
+                        [css.showDetails]: showDetails,
                     })}
                 >
-                    <Box flexDirection="column" className={css.detailsContent}>
-                        <Box flexDirection="column">
+                    <Box
+                        flexDirection="column"
+                        className={css.detailsContent}
+                        mt="xxs"
+                    >
+                        {userInstaData?.name && (
                             <Text className={css.igName} size="sm">
-                                {localData?.name}
+                                {userInstaData.name}
                             </Text>
-                            <Text className={css.igFollowSection} size="sm">
-                                Following:{' '}
-                                {localData?.business_follows_customer ? (
-                                    <Icon name="check" />
+                        )}
+                        <Box flexDirection="row" gap="xs" mb="xs">
+                            <Box>
+                                <Text
+                                    id="tooltip_following"
+                                    className={css.igFollowSection}
+                                    size="sm"
+                                >
+                                    Following:{' '}
+                                    {userInstaData.business_follows_customer ? (
+                                        <Icon name="check" />
+                                    ) : (
+                                        <Icon name="close" />
+                                    )}
+                                </Text>
+                                {userInstaData.business_follows_customer ? (
+                                    <Tooltip target="tooltip_following">
+                                        Customer follows your business on
+                                        Instagram
+                                    </Tooltip>
                                 ) : (
-                                    <Icon name="close" />
+                                    <Tooltip target="tooltip_following">
+                                        Customer doesn&apos;t follow your
+                                        business on Instagram
+                                    </Tooltip>
                                 )}
-                                Follower:{' '}
-                                {localData?.customer_follows_business ? (
-                                    <Icon name="check" />
+                            </Box>
+
+                            <Box>
+                                <Text
+                                    id="tooltip_follower"
+                                    className={css.igFollowSection}
+                                    size="sm"
+                                >
+                                    Follower:{' '}
+                                    {userInstaData.customer_follows_business ? (
+                                        <Icon name="check" />
+                                    ) : (
+                                        <Icon name="close" />
+                                    )}
+                                </Text>
+                                {userInstaData.customer_follows_business ? (
+                                    <Tooltip target="tooltip_follower">
+                                        Your business follows this customer on
+                                        Instagram
+                                    </Tooltip>
                                 ) : (
-                                    <Icon name="close" />
+                                    <Tooltip target="tooltip_follower">
+                                        Your business doesn&apos;t follow this
+                                        customer on Instagram
+                                    </Tooltip>
                                 )}
-                            </Text>
-                        </Box>
-                        <Box flexDirection="row" marginBottom="xs">
-                            <Icon name="user-add" />
-                            <Text
-                                as="span"
-                                size="sm"
-                                className={css.igFollowers}
-                            >
-                                {formatFollowerCount(
-                                    localData?.total_followers ?? 0,
-                                )}{' '}
-                                followers
-                            </Text>
+                            </Box>
                         </Box>
                     </Box>
                 </div>
+            </Box>
+            <Box alignItems="center" flexDirection="row" gap="xs" mb="xxs">
+                <Icon name="user-add" size="md" />
+                <Text
+                    id="tooltip_updated_at"
+                    size="sm"
+                    className={css.igFollowers}
+                >
+                    {formatFollowerCount(userInstaData?.total_followers ?? 0)}{' '}
+                    followers
+                </Text>
+                <Tooltip target="tooltip_updated_at">
+                    Profile has been updated on{' '}
+                    {getFormattedDate(userInstaData.updated_at, 'en-GB')}
+                </Tooltip>
             </Box>
         </>
     )

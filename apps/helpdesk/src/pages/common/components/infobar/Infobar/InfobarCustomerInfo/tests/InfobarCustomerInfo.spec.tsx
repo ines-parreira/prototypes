@@ -58,7 +58,15 @@ const store = mockStore({
         integrations: [{ type: HTTP_INTEGRATION_TYPE }],
     }),
     ticket: fromJS({
-        messages: [],
+        messages: [
+            {
+                id: 1,
+                integration_id: 123,
+                sender: {
+                    name: 'test_user',
+                },
+            },
+        ],
     }),
 })
 
@@ -496,8 +504,16 @@ describe('<InfobarCustomerInfo/>', () => {
                 }),
                 ticket: fromJS({
                     messages: [
-                        { id: 1, integration_id: 999 },
-                        { id: 2, integration_id: 123 },
+                        {
+                            id: 1,
+                            integration_id: 999,
+                            sender: { name: 'test_user' },
+                        },
+                        {
+                            id: 2,
+                            integration_id: 123,
+                            sender: { name: 'test_user' },
+                        },
                     ],
                 }),
             })
@@ -545,10 +561,10 @@ describe('<InfobarCustomerInfo/>', () => {
                 storeWithNoMessages,
             )
 
-            // Component should still render even without messages
+            // Without messages, Instagram section won't render
             expect(
-                screen.getByRole('link', { name: /@test_user/ }),
-            ).toBeInTheDocument()
+                screen.queryByRole('link', { name: /@test_user/ }),
+            ).not.toBeInTheDocument()
         })
 
         it('should handle message without integration_id', () => {
@@ -562,7 +578,13 @@ describe('<InfobarCustomerInfo/>', () => {
                     ],
                 }),
                 ticket: fromJS({
-                    messages: [{ id: 1, text: 'test message' }],
+                    messages: [
+                        {
+                            id: 1,
+                            text: 'test message',
+                            sender: { name: 'test_user' },
+                        },
+                    ],
                 }),
             })
 
@@ -594,7 +616,13 @@ describe('<InfobarCustomerInfo/>', () => {
                     ],
                 }),
                 ticket: fromJS({
-                    messages: [{ id: 1, integration_id: 999 }],
+                    messages: [
+                        {
+                            id: 1,
+                            integration_id: 999,
+                            sender: { name: 'test_user' },
+                        },
+                    ],
                 }),
             })
 

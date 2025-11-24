@@ -36,13 +36,14 @@
     }
 
     .igIcon {
-        margin-right: var(--layout-spacing-xs);
         font-size: 16px !important;
+        margin-right: var(--layout-spacing-xxs);
     }
 
     .igFollowSection {
         display: flex;
         gap: var(--layout-spacing-xxs);
+        cursor: pointer;
     }
 
     .igName {
@@ -53,28 +54,30 @@
         display: grid;
         grid-template-rows: 0fr;
         overflow: hidden;
-        transition: grid-template-rows 0.3s ease-in-out;
+        margin-left: 25px;
     }
 
     .showDetails {
         grid-template-rows: 1fr;
-        margin-left: 25px;
     }
 
     .detailsContent {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-xs);
+        margin-left: 3px;
         min-height: 0;
     }
 
     .showDetailsIcon {
         cursor: pointer;
-        margin-left: var(--layout-spacing-xs);
+        margin-left: var(--layout-spacing-xxxs);
     }
 
     .igFollowers {
-        margin-left: var(--layout-spacing-xs);
+        cursor: pointer;
+        span:first-child {
+            margin-left: 0;
+        }
     }
 }
 
