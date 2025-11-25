@@ -24,14 +24,6 @@ jest.mock('pages/tickets/common/components/PriorityLabel', () => ({
 }))
 
 const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
-jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
-    () => ({
-        useCurrentUserLanguagePreferences: () => ({
-            shouldShowTranslatedContent: mockShouldShowTranslatedContent,
-        }),
-    }),
-)
 
 describe('Ticket', () => {
     const defaultTicket = {
@@ -55,6 +47,7 @@ describe('Ticket', () => {
         viewId: 1,
         onSelect: jest.fn(),
         isSelected: false,
+        shouldShowTranslatedContent: mockShouldShowTranslatedContent,
     }
 
     beforeEach(() => {

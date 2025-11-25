@@ -51,6 +51,17 @@ jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
 const useDesktopOnlyShowGlobalNavFeatureFlagMock =
     useDesktopOnlyShowGlobalNavFeatureFlag as jest.Mock
 
+const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
+jest.mock(
+    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
+    () => ({
+        useCurrentUserLanguagePreferences: () => ({
+            shouldShowTranslatedContent: mockShouldShowTranslatedContent,
+            isFetching: false,
+        }),
+    }),
+)
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const view = {

@@ -32,6 +32,7 @@ import {
 } from 'split-ticket-view-toggle'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewCount, getViewPlainJS } from 'state/views/selectors'
+import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
@@ -111,6 +112,7 @@ export default function TicketListView({
         [partials],
     )
 
+    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const { translationMap } = useTicketsTranslatedProperties({
         ticket_ids: ticketIdsToFetchTranslationsFor,
     })
@@ -155,6 +157,7 @@ export default function TicketListView({
                 isSelected={hasSelectedAll || !!selectedTickets[ticket.id]}
                 onSelect={onSelect}
                 translation={translationMap[ticket.id]}
+                shouldShowTranslatedContent={shouldShowTranslatedContent}
             />
         ),
         [
@@ -165,6 +168,7 @@ export default function TicketListView({
             selectedTickets,
             viewId,
             translationMap,
+            shouldShowTranslatedContent,
         ],
     )
 

@@ -22,7 +22,6 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
 import type { TicketCompact, TicketPartial } from '../types'
@@ -66,6 +65,7 @@ export default function Ticket({
     ['data-item-index']: dataItemIndex,
     ['data-item-group-index']: dataItemGroupIndex,
     ['data-known-size']: dataKnownSize,
+    shouldShowTranslatedContent,
     ...transitionProps
 }: MergedProps) {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
@@ -73,7 +73,6 @@ export default function Ticket({
         false,
     )
 
-    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
