@@ -349,4 +349,67 @@ describe('useTransformToneOfVoiceConversations', () => {
 
         expect(transformToneOfVoiceMock).not.toHaveBeenCalled()
     })
+
+    it('should only send title and description to transformToneOfVoice, excluding id and other fields', async () => {
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'productRecommendations',
+                ),
+            {
+                currentAccount: fromJS(account),
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toStrictEqual(false)
+        })
+
+        expect(transformToneOfVoiceMock).toHaveBeenCalledWith(
+            'acme',
+            'Be smart',
+            expect.anything(),
+            {
+                title: 'Test product',
+                description: 'Test description',
+            },
+        )
+
+        const callArgs = transformToneOfVoiceMock.mock.calls[0][3]
+        expect(callArgs).not.toHaveProperty('id')
+        expect(callArgs).not.toHaveProperty('price')
+        expect(callArgs).not.toHaveProperty('featuredImage')
+    })
+
+    it('should pass undefined product when products array is empty', async () => {
+        useTopProductsMock.mockReturnValue({
+            data: [],
+            isLoading: false,
+        })
+
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            () =>
+                useTransformToneOfVoiceConversations(
+                    1,
+                    'test-store',
+                    'productRecommendations',
+                ),
+            {
+                currentAccount: fromJS(account),
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toStrictEqual(false)
+        })
+
+        expect(transformToneOfVoiceMock).toHaveBeenCalledWith(
+            'acme',
+            'Be smart',
+            expect.anything(),
+            undefined,
+        )
+    })
 })

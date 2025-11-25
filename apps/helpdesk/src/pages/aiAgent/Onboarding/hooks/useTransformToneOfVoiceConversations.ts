@@ -147,13 +147,19 @@ export const useTransformToneOfVoiceConversations = (
 
             if (gorgiasDomain) {
                 try {
+                    const [product] = products
                     const response = await transformConversation({
                         gorgiasDomain,
                         toneOfVoice:
                             data?.customToneOfVoiceGuidance ||
                             ToneOfVoice.Friendly,
                         conversations,
-                        product: products.length > 0 ? products[0] : undefined,
+                        product: product
+                            ? {
+                                  title: product.title,
+                                  description: product.description,
+                              }
+                            : undefined,
                     })
 
                     const responseConversations = response.reduce(
