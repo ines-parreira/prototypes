@@ -5,18 +5,28 @@
         font-size: 13px;
         line-height: 21px;
         margin-right: 0.5rem;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
     .container > * {
         margin-right: 0.5rem;
     }
     .star {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
         line-height: 21px;
         vertical-align: bottom;
     }
     .pill {
         font-weight: 500;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
+    .star {
+        color: var(--content-neutral-default);
     }
 }

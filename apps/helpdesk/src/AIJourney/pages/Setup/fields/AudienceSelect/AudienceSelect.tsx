@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 
@@ -22,6 +22,9 @@ type AudienceSelectFieldProps = {
     onChange: (value: string[]) => void
     exclude?: string[]
     isDisabled?: boolean
+    required?: boolean
+    onValidationChange?: (isValid: boolean) => void
+    showError?: boolean
 }
 
 export const AudienceSelect = ({
@@ -30,7 +33,11 @@ export const AudienceSelect = ({
     isDisabled = false,
     exclude = [],
     onChange = () => {},
+    required = false,
+    onValidationChange = () => {},
+    showError = false,
 }: AudienceSelectFieldProps) => {
+    const [hasInteracted, setHasInteracted] = useState(false)
     const { currentIntegration } = useJourneyContext()
 
     const { data: audienceLists, isLoading: isLoadingAudienceLists } =
@@ -78,14 +85,20 @@ export const AudienceSelect = ({
                 name: string
             }[],
         ) => {
-            onChange(value.map((e) => e.id))
+            setHasInteracted(true)
+            const ids = value.map((e) => e.id)
+            onChange(ids)
+            onValidationChange(ids.length > 0)
         },
-        [onChange],
+        [onChange, onValidationChange],
     )
+
+    const shouldShowError =
+        required && (showError || hasInteracted) && value.length === 0
 
     return (
         <div className={css.audienceSelectField}>
-            <FieldPresentation name={name} />
+            <FieldPresentation name={name} required={required} />
             <MultiSelectField
                 isSearchable
                 items={sections}
@@ -97,6 +110,11 @@ export const AudienceSelect = ({
                     isLoadingAudienceLists ||
                     isLoadingAudienceSegments ||
                     isDisabled
+                }
+                error={
+                    shouldShowError
+                        ? 'At least one audience is required.'
+                        : undefined
                 }
             >
                 {(section) => (

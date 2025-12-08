@@ -1,9 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { CampaignTitle } from './CampaignTitle'
+
+// Test wrapper component that manages state
+const CampaignTitleWrapper = ({
+    initialValue = '',
+    onValidationChange,
+}: {
+    initialValue?: string
+    onValidationChange?: (isValid: boolean) => void
+}) => {
+    const [value, setValue] = useState(initialValue)
+    return (
+        <CampaignTitle
+            value={value}
+            onChange={setValue}
+            onValidationChange={onValidationChange}
+        />
+    )
+}
 
 describe('CampaignTitle', () => {
     it('should render with campaign name field', () => {
@@ -36,14 +54,16 @@ describe('CampaignTitle', () => {
 
     it('should show validation error when field is empty on blur', async () => {
         const handleValidationChange = jest.fn()
+        const user = userEvent.setup()
         render(
-            <CampaignTitle
-                value=""
+            <CampaignTitleWrapper
                 onValidationChange={handleValidationChange}
             />,
         )
 
         const input = screen.getByPlaceholderText('Campaign name')
+        // Type and then clear to trigger validation
+        await user.type(input, 'a{backspace}')
         fireEvent.blur(input)
 
         await waitFor(() => {
@@ -52,19 +72,22 @@ describe('CampaignTitle', () => {
             ).toBeInTheDocument()
         })
 
-        expect(handleValidationChange).toHaveBeenCalledWith(false)
+        // Last call should be false (for empty value)
+        expect(handleValidationChange).toHaveBeenLastCalledWith(false)
     })
 
     it('should not show error when field has valid value', async () => {
         const handleValidationChange = jest.fn()
+        const user = userEvent.setup()
         render(
-            <CampaignTitle
-                value="Valid Campaign"
+            <CampaignTitleWrapper
                 onValidationChange={handleValidationChange}
             />,
         )
 
         const input = screen.getByPlaceholderText('Campaign name')
+        // Type a valid value to trigger validation
+        await user.type(input, 'Valid Campaign')
         fireEvent.blur(input)
 
         await waitFor(() => {
@@ -73,7 +96,7 @@ describe('CampaignTitle', () => {
             ).not.toBeInTheDocument()
         })
 
-        expect(handleValidationChange).toHaveBeenCalledWith(true)
+        expect(handleValidationChange).toHaveBeenLastCalledWith(true)
     })
 
     it('should be disabled when isDisabled is true', () => {
@@ -106,14 +129,17 @@ describe('CampaignTitle', () => {
 
     it('should validate whitespace-only input as invalid', async () => {
         const handleValidationChange = jest.fn()
+        const user = userEvent.setup()
         render(
             <CampaignTitle
-                value="   "
+                value=""
                 onValidationChange={handleValidationChange}
             />,
         )
 
         const input = screen.getByPlaceholderText('Campaign name')
+        // Type whitespace-only value to trigger validation
+        await user.type(input, '   ')
         fireEvent.blur(input)
 
         await waitFor(() => {
@@ -122,6 +148,6 @@ describe('CampaignTitle', () => {
             ).toBeInTheDocument()
         })
 
-        expect(handleValidationChange).toHaveBeenCalledWith(false)
+        expect(handleValidationChange).toHaveBeenLastCalledWith(false)
     })
 })

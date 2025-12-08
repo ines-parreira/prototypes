@@ -7,7 +7,7 @@ import {
     ListItem,
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
-    Tag,
+    StatusButton,
 } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
@@ -59,7 +59,7 @@ export function TicketPriority({ ticketId, currentPriority }: Props) {
                 const { icon, color } = PRIORITY_ICON_MAP[priority]
 
                 return (
-                    <Tag
+                    <StatusButton
                         ref={ref}
                         leadingSlot={
                             isUpdatingPriority ? (
@@ -80,7 +80,7 @@ export function TicketPriority({ ticketId, currentPriority }: Props) {
                         }
                     >
                         {isPlaceholder ? 'Normal' : selectedText}
-                    </Tag>
+                    </StatusButton>
                 )
             }}
         >

@@ -1,11 +1,21 @@
 :local {
     .fieldLabel {
         padding-right: var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .isDisabled {
         cursor: not-allowed;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .fieldLabel {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .isDisabled {
+        color: var(--content-neutral-secondary);
     }
 }

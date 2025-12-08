@@ -58,6 +58,7 @@ import {
     medianFirstResponseTime,
     medianFirstResponseTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/firstResponseTime'
+import { humanResponseTimeAfterAiHandoffQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
 import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
@@ -180,7 +181,7 @@ describe('metric trends', () => {
             'useHumanResponseTimeAfterAiHandoffTrend',
             useHumanResponseTimeAfterAiHandoffTrend,
             humanResponseTimeAfterAiHandoffQueryFactory,
-            undefined,
+            humanResponseTimeAfterAiHandoffQueryV2Factory,
         ],
         [
             'useMedianResolutionTimeTrend',
@@ -292,6 +293,7 @@ describe('metric trends', () => {
             'fetchHumanResponseTimeAfterAiHandoffTrend',
             fetchHumanResponseTimeAfterAiHandoffTrend,
             humanResponseTimeAfterAiHandoffQueryFactory,
+            humanResponseTimeAfterAiHandoffQueryV2Factory,
         ],
         [
             'fetchMedianResolutionTimeTrend',

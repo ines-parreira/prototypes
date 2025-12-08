@@ -94,10 +94,16 @@
     }
 
     .times {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 14px;
         line-height: 133%;
         align-self: center;
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .times {
+        color: var(--content-neutral-secondary);
     }
 }

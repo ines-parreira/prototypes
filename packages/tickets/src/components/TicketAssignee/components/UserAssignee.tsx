@@ -9,7 +9,7 @@ import {
     ListSection,
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
-    Tag,
+    StatusButton,
 } from '@gorgias/axiom'
 import type { TicketUser } from '@gorgias/helpdesk-queries'
 
@@ -94,7 +94,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                 const label = user ? user.name : selectedText
 
                 return (
-                    <Tag
+                    <StatusButton
                         ref={ref}
                         leadingSlot={
                             isUpdatingUser || isLoading ? (
@@ -124,7 +124,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                         className={css.trigger}
                     >
                         {isPlaceholder ? 'Unassigned' : label}
-                    </Tag>
+                    </StatusButton>
                 )
             }}
         >

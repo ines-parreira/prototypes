@@ -30,7 +30,7 @@
         }
         &.field {
             &:hover {
-                border: 1px dashed var(--neutral-grey-4);
+                border: 1px dashed var(--neutral-grey-4); // legacy
                 .fieldTools {
                     display: flex;
                 }
@@ -42,6 +42,16 @@
                 .fieldTools {
                     display: none;
                 }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .fieldEditing {
+        &.field {
+            &:hover {
+                border: 1px dashed var(--border-neutral-secondary);
             }
         }
     }

@@ -20,6 +20,7 @@ import { oneTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/qu
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
@@ -76,10 +77,14 @@ export const fetchMedianFirstResponseTimeMetricPerAgent = async (
 export const useHumanResponseTimeAfterAiHandoffPerAgent =
     createMetricPerDimensionHook(
         humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
+        humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory,
     )
 
 export const fetchHumanResponseTimeAfterAiHandoffPerAgent =
-    createFetchPerDimension(humanResponseTimeAfterAiHandoffPerAgentQueryFactory)
+    createFetchPerDimension(
+        humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
+        humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory,
+    )
 
 export const useMedianResponseTimeMetricPerAgent = createMetricPerDimensionHook(
     medianResponseTimeMetricPerAgentQueryFactory,

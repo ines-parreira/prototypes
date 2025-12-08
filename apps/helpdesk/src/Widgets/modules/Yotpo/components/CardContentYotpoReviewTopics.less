@@ -9,7 +9,7 @@
         font-size: 13px;
         line-height: 21px;
         margin-right: 0.5rem;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .topic {
@@ -28,5 +28,11 @@
         line-height: 21px;
         margin-right: 0.5rem;
         vertical-align: bottom;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 }

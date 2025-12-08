@@ -568,7 +568,9 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4830/implement-the-auto-qa-v2-metric
     ],
     [MetricScope.HumanFirstResponseTime]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4829/implement-the-human-response-time-v2-metric
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_AGENT,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_PER_CHANNEL,
     ],
     [MetricScope.MessagesReceived]: [
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,

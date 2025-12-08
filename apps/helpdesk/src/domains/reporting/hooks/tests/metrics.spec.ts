@@ -47,6 +47,7 @@ import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactor
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
+import { humanResponseTimeAfterAiHandoff } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedCount } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCount } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTickets } from 'domains/reporting/models/scopes/oneTouchTickets'
@@ -108,6 +109,7 @@ describe('metrics', () => {
             'useHumanResponseTimeAfterAiHandoffMetric',
             useHumanResponseTimeAfterAiHandoffMetric,
             humanResponseTimeAfterAiHandoffQueryFactory,
+            humanResponseTimeAfterAiHandoff,
         ],
         [
             'useMedianResolutionTimeMetric',
@@ -223,6 +225,12 @@ describe('metrics', () => {
             medianResolutionTime,
         ],
         [
+            'fetchHumanResponseTimeAfterAiHandoffMetric',
+            fetchHumanResponseTimeAfterAiHandoffMetric,
+            humanResponseTimeAfterAiHandoffQueryFactory,
+            humanResponseTimeAfterAiHandoff,
+        ],
+        [
             'fetchOneTouchTicketsMetric',
             fetchOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
@@ -243,14 +251,14 @@ describe('metrics', () => {
                 statsFilters: StatsFilters,
                 timezone: string,
             ) => ReportingQuery,
-            queryBuilder,
+            newQueryBuilder: any,
         ) => {
             it('should fetch reporting metric with assigned tickets only', async () => {
                 const result = await fetchTrendFn(statsFilters, timezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone),
-                    queryBuilder.build({
+                    newQueryBuilder.build({
                         filters: statsFilters,
                         timezone,
                     }),
@@ -265,11 +273,6 @@ describe('metrics', () => {
             'fetchCustomerSatisfactionMetric',
             fetchCustomerSatisfactionMetric,
             customerSatisfactionQueryFactory,
-        ],
-        [
-            'fetchHumanResponseTimeAfterAiHandoffMetric',
-            fetchHumanResponseTimeAfterAiHandoffMetric,
-            humanResponseTimeAfterAiHandoffQueryFactory,
         ],
         [
             'fetchMedianResponseTimeMetric',

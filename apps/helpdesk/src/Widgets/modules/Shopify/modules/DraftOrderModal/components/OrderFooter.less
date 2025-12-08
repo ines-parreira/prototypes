@@ -10,7 +10,7 @@
             font-weight: 500;
             font-size: 14px;
             line-height: 17px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
     .tagsDropdown {
@@ -20,6 +20,14 @@
                 width: 100%;
                 max-width: 100%;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        h4 {
+            color: var(--content-neutral-default);
         }
     }
 }

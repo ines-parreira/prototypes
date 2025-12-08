@@ -48,9 +48,9 @@ export const reportingKeys = {
         payload,
     ],
     postV2: <TMeta extends ScopeMeta = ScopeMeta>(
-        payload: ReportingParams,
+        payload: ReportingParams | undefined,
         newPayload: BuiltQuery<TMeta>,
-    ) => ['reporting', 'post-reporting-v2', payload, newPayload],
+    ) => ['reporting', 'post-reporting-v2', payload || 'only', newPayload],
     postEnriched: (payload: {
         query: ReportingQuery
         enrichment_fields: EnrichmentFields[]
@@ -88,7 +88,7 @@ export const fetchPostReportingV2 = <
     TCube extends Cube = Cube,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    payload: ReportingParams<TCube>,
+    payload?: ReportingParams<TCube>,
     newPayload?: BuiltQuery<TMeta>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
@@ -99,10 +99,10 @@ export const fetchPostReportingV2 = <
     return appQueryClient.fetchQuery({
         queryKey: newPayload
             ? reportingKeys.postV2(payload, newPayload)
-            : reportingKeys.post(payload),
+            : reportingKeys.post(payload!),
         queryFn: () =>
             metricExecutionHandler<TData, TCube, TMeta>({
-                metricName: payload[0].metricName,
+                metricName: newPayload?.metricName || payload![0].metricName,
                 oldPayload: payload,
                 newPayload: newPayload,
             }),
@@ -142,7 +142,7 @@ export const usePostReportingV2 = <
     TCube extends Cube = Cube,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    payload: ReportingParams<TCube>,
+    payload?: ReportingParams<TCube>,
     newPayload?: BuiltQuery<TMeta>,
     overrides?: UseQueryOptions<
         UsePostReportingQueryData<TData>,
@@ -153,11 +153,11 @@ export const usePostReportingV2 = <
     return useQuery({
         queryKey: newPayload
             ? reportingKeys.postV2(payload, newPayload)
-            : reportingKeys.post(payload),
+            : reportingKeys.post(payload!),
 
         queryFn: () =>
             metricExecutionHandler<TData, TCube, TMeta>({
-                metricName: payload[0].metricName,
+                metricName: newPayload?.metricName || payload![0].metricName,
                 oldPayload: payload,
                 newPayload: newPayload,
             }),

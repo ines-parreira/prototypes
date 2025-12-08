@@ -242,6 +242,40 @@ describe('useMetricTrend', () => {
             prevValue: 21,
         })
     })
+
+    it('should work without V1 queries', () => {
+        const currentV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        const prevV2Query = {
+            metricName: METRIC_NAMES.TEST_METRIC,
+            scope: 'test-scope',
+            measures: ['testMeasure'],
+            filters: [],
+        } as any
+
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 42,
+        } as UseQueryResult)
+        usePostReportingV2Mock.mockReturnValueOnce({
+            ...defaultReporting,
+            data: 21,
+        } as UseQueryResult)
+
+        const { result } = renderHook(() =>
+            useMetricTrend(undefined, undefined, currentV2Query, prevV2Query),
+        )
+
+        expect(result.current.data).toEqual({
+            value: 42,
+            prevValue: 21,
+        })
+    })
 })
 
 describe('fetchMetricTrend', () => {

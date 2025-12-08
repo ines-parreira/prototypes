@@ -13,7 +13,7 @@
 
     .title {
         display: block;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-weight: 500;
     }
 
@@ -23,5 +23,11 @@
 
     .apply {
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-secondary);
     }
 }

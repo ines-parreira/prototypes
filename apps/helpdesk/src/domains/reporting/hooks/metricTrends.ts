@@ -20,6 +20,7 @@ import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactor
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { humanResponseTimeAfterAiHandoffQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
 import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
@@ -185,10 +186,12 @@ export const fetchMedianResponseTimeTrend = getTrendFetch(
 
 export const fetchHumanResponseTimeAfterAiHandoffTrend = getTrendFetch(
     humanResponseTimeAfterAiHandoffQueryFactory,
+    humanResponseTimeAfterAiHandoffQueryV2Factory,
 )
 
 export const useHumanResponseTimeAfterAiHandoffTrend = getTrendHook(
     humanResponseTimeAfterAiHandoffQueryFactory,
+    humanResponseTimeAfterAiHandoffQueryV2Factory,
 )
 
 export const useMessagesPerTicketTrend = getTrendHook(

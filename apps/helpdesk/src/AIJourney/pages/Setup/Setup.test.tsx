@@ -365,7 +365,7 @@ describe('Setup', () => {
     })
 
     describe('form validation', () => {
-        it('should disable continue button when phone number is missing', () => {
+        it('should not proceed when phone number is missing', async () => {
             // Mock context without phone number
             mockUseAiJourneyPhoneList.mockReturnValue({
                 marketingCapabilityPhoneNumbers: [],
@@ -374,24 +374,50 @@ describe('Setup', () => {
             renderSetup()
 
             const continueButton = screen.getByTestId('continue-button')
-            expect(continueButton).toBeDisabled()
+            expect(continueButton).not.toBeDisabled()
+
+            // Click continue button
+            fireEvent.click(continueButton)
+
+            // Should not call handleUpdate since validation failed
+            await waitFor(() => {
+                expect(mockHandleUpdate).not.toHaveBeenCalled()
+            })
         })
 
-        it('should disable continue button when discount is enabled but invalid', () => {
+        it('should not proceed when discount is enabled but invalid', async () => {
             renderSetup()
 
             const discountInput = screen.getByTestId('discount-input')
             fireEvent.change(discountInput, { target: { value: '' } })
 
             const continueButton = screen.getByTestId('continue-button')
-            expect(continueButton).toBeDisabled()
+            expect(continueButton).not.toBeDisabled()
+
+            // Click continue button
+            fireEvent.click(continueButton)
+
+            // Should not call handleUpdate since validation failed
+            await waitFor(() => {
+                expect(mockHandleUpdate).not.toHaveBeenCalled()
+            })
         })
 
-        it('should enable continue button when all fields are valid', () => {
+        it('should proceed when all fields are valid', async () => {
+            mockHandleUpdate.mockResolvedValue({})
+
             renderSetup()
 
             const continueButton = screen.getByTestId('continue-button')
             expect(continueButton).not.toBeDisabled()
+
+            // Click continue button
+            fireEvent.click(continueButton)
+
+            // Should call handleUpdate since validation passed
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+            })
         })
     })
 

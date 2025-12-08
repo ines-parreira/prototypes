@@ -24,14 +24,15 @@ export const selectMeasure = <
     TMeta extends ScopeMeta = ScopeMeta,
 >(
     data: UsePostReportingQueryData<QueryReturnType<Cubes['measures']>>,
-    query: ReportingQuery<TCube>,
+    query?: ReportingQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
     isV2?: boolean,
 ) => {
     const measure =
         isV2 && queryV2?.measures
             ? (queryV2.measures[0] as TCube['measures'])
-            : query.measures[0]
+            : query?.measures[0]
+    if (!measure) return null
     const dataMeasure = data.data.data?.[0]?.[measure] || null
     return dataMeasure !== null ? parseFloat(dataMeasure) : null
 }
@@ -40,11 +41,13 @@ export function useMetric<
     TCube extends Cubes = Cubes,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    query: ReportingQuery<TCube>,
+    query?: ReportingQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
     enabled: boolean = true,
 ): Metric {
-    const migrationStage = useGetNewStatsFeatureFlagMigration(query.metricName)
+    const migrationStage = useGetNewStatsFeatureFlagMigration(
+        queryV2?.metricName || query!.metricName,
+    )
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
 
     const currentPeriodMetric = usePostReportingV2<
@@ -52,7 +55,7 @@ export function useMetric<
         number | null,
         TCube,
         TMeta
-    >([query], queryV2, {
+    >(query ? [query] : [], queryV2, {
         select: (data) =>
             selectMeasure<TCube, TMeta>(data, query, queryV2, isV2),
         enabled,
@@ -74,11 +77,11 @@ export const fetchMetric = async <
     TCube extends Cubes = Cubes,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    query: ReportingQuery<TCube>,
+    query?: ReportingQuery<TCube>,
     queryV2?: BuiltQuery<TMeta>,
 ): Promise<Metric> => {
     const migrationStage = await getNewStatsFeatureFlagMigration(
-        query.metricName,
+        queryV2?.metricName || query!.metricName,
     )
 
     const isV2 = migrationStage === 'complete' || migrationStage === 'live'
@@ -88,7 +91,7 @@ export const fetchMetric = async <
         number | null,
         TCube,
         TMeta
-    >([query], queryV2)
+    >(query ? [query] : [], queryV2)
         .then((res) => ({
             isFetching: false,
             isError: false,

@@ -335,7 +335,7 @@ describe('metricExecutionHandler', () => {
             expect((result.data as any).data[0]).toBe(500)
         })
 
-        it('should fallback to off mode when live mode config is invalid', async () => {
+        it('should fallback to off mode when complete mode config is invalid', async () => {
             getNewStatsFeatureFlagMigrationMock.mockResolvedValue('complete')
             postReportingV1Mock.mockResolvedValue(createMockOldResponse(600))
 
@@ -357,6 +357,21 @@ describe('metricExecutionHandler', () => {
             )
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(600)
+        })
+
+        it('should fallback to complete mode when live mode config is invalid', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('live')
+            postReportingV2Mock.mockResolvedValue(createMockOldResponse(300))
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                newPayload: mockNewPayload,
+            }
+
+            const result = await metricExecutionHandler(config)
+
+            expect(postReportingV2Mock).toHaveBeenCalledTimes(1)
+            expect((result.data as any).data[0]).toBe(300)
         })
     })
 })

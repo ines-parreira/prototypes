@@ -9,6 +9,7 @@ type FieldPresentationProps = {
     description?: string
     tooltip?: string
     optional?: boolean
+    required?: boolean
 }
 
 export const FieldPresentation = ({
@@ -16,12 +17,16 @@ export const FieldPresentation = ({
     description,
     tooltip,
     optional = false,
+    required = false,
 }: FieldPresentationProps) => {
     const id = useId()
     return (
         <div className={css.fieldPresentation}>
             <div className={css.fieldName}>
-                <span>{name}</span>{' '}
+                <span>{name}</span>
+                {required && (
+                    <span className={css.requiredDecorator}>*</span>
+                )}{' '}
                 {optional && (
                     <span className={css.optionalDecorator}>(optional)</span>
                 )}

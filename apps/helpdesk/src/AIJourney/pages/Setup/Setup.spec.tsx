@@ -52,6 +52,14 @@ jest.mock('AIJourney/queries', () => ({
     useSmsIntegrations: jest.fn(),
 }))
 
+jest.mock('AIJourney/queries/useAudienceLists/useAudienceLists', () => ({
+    useAudienceLists: jest.fn(),
+}))
+
+jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
+    useAudienceSegments: jest.fn(),
+}))
+
 const mockUseSmsIntegrations = require('AIJourney/queries')
     .useSmsIntegrations as jest.Mock
 const mockUseCreateNewJourney = require('AIJourney/queries')
@@ -61,6 +69,12 @@ const mockUseUpdateJourney = require('AIJourney/queries')
 const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
+const mockUseAudienceLists =
+    require('AIJourney/queries/useAudienceLists/useAudienceLists')
+        .useAudienceLists as jest.Mock
+const mockUseAudienceSegments =
+    require('AIJourney/queries/useAudienceSegments/useAudienceSegments')
+        .useAudienceSegments as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -141,6 +155,16 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             isError: false,
             isLoading: false,
         }))
+
+        // Default audience mocks - return empty lists with nested data structure
+        mockUseAudienceLists.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
     })
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
@@ -1038,36 +1062,16 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                 await user.click(button)
             })
 
-            // Verify the journey was created with campaign type and title
-            await waitFor(() => {
-                expect(mockMutateAsync).toHaveBeenCalledTimes(1)
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                params: {
-                    store_integration_id: 1,
-                    store_name: 'shopify-store',
-                    type: 'campaign',
-                    campaign: {
-                        title: 'Summer Sale Campaign',
-                    },
+            // Verify the journey was NOT created because no audience was selected (validation failed)
+            await waitFor(
+                () => {
+                    expect(mockMutateAsync).not.toHaveBeenCalled()
                 },
-                journeyConfigs: {
-                    max_follow_up_messages: 0,
-                    offer_discount: false,
-                    max_discount_percent: 0,
-                    sms_sender_integration_id: 1,
-                    sms_sender_number: '+15551234567',
-                    discount_code_message_threshold: undefined,
-                },
-            })
+                { timeout: 1000 },
+            )
 
-            // Verify navigation to test page with campaign journey
-            await waitFor(() => {
-                expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/campaign/test/campaign-journey-123',
-                )
-            })
+            // Verify no navigation happened
+            expect(mockHistoryPush).not.toHaveBeenCalled()
         })
 
         it('should display existing campaign title when editing campaign journey', async () => {
@@ -1079,6 +1083,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     campaign: {
                         title: 'test name',
                     },
+                    included_audience_list_ids: ['audience-1'],
                     configuration: {
                         max_follow_up_messages: 0,
                         offer_discount: false,

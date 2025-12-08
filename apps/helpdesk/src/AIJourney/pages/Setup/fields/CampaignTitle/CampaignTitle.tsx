@@ -13,6 +13,7 @@ type CampaignTitleFieldProps = {
     isDisabled?: boolean
     onChange?: (value: string) => void
     onValidationChange?: (isValid: boolean) => void
+    showError?: boolean
 }
 
 export const CampaignTitle = ({
@@ -20,52 +21,48 @@ export const CampaignTitle = ({
     isDisabled = false,
     onChange = () => {},
     onValidationChange = () => {},
+    showError = false,
 }: CampaignTitleFieldProps = {}) => {
-    const [isValid, setIsValid] = useState(true)
+    const [hasInteracted, setHasInteracted] = useState(false)
 
-    const handleValidationChange = useCallback(
-        (valid: boolean) => {
-            setIsValid(valid)
-            onValidationChange(valid)
-        },
-        [onValidationChange],
-    )
+    const isValid = !!(value && value.trim() !== '')
 
     const handleChange = useCallback(
-        (value: string) => {
-            onChange(value)
+        (newValue: string) => {
+            onChange(newValue)
+            onValidationChange(!!(newValue && newValue.trim() !== ''))
         },
-        [onChange],
+        [onChange, onValidationChange],
     )
 
     const handleBlur = useCallback(() => {
-        if (!value || value.trim() === '') {
-            handleValidationChange(false)
-        } else {
-            handleValidationChange(true)
-        }
-    }, [value, handleValidationChange])
+        setHasInteracted(true)
+    }, [])
 
     useEffect(() => {
         if (isDisabled && value) {
-            handleChange('')
+            onChange('')
         }
-    }, [isDisabled, value, handleChange])
+    }, [isDisabled, value, onChange])
 
     const campaignTitleFieldClass = classNames(css.campaignTitleField, {
         [css.campaignTitleFieldDisabled]: isDisabled,
     })
 
+    const shouldShowError = (showError || hasInteracted) && !isValid
+
     return (
         <div className={campaignTitleFieldClass}>
-            <FieldPresentation name="Campaign name" />
+            <FieldPresentation name="Campaign name" required />
             <TextField
                 placeholder="Campaign name"
                 value={value}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 isDisabled={isDisabled}
-                error={isValid ? undefined : 'Campaign name is required.'}
+                error={
+                    shouldShowError ? 'Campaign name is required.' : undefined
+                }
             />
         </div>
     )

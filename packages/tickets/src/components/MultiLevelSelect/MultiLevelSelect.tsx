@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 
-import { Icon, IconName, ListItem, Select, Tag } from '@gorgias/axiom'
+import { Icon, IconName, ListItem, Select, StatusButton } from '@gorgias/axiom'
 
 import { getDisplayLabel, isBackButton, isClearButton } from './helpers/tree'
 import { useOptionsTree } from './hooks/useOptionsTree'
@@ -97,7 +97,7 @@ export function MultiLevelSelect(props: Props) {
             const label = getDisplayLabel(selectedValue)
 
             return (
-                <Tag
+                <StatusButton
                     ref={ref}
                     leadingSlot={
                         label === null ? (
@@ -116,7 +116,7 @@ export function MultiLevelSelect(props: Props) {
                     }
                 >
                     {label || placeholder}
-                </Tag>
+                </StatusButton>
             )
         },
         [selectedValue, placeholder],

@@ -5,6 +5,7 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     fetchClosedTicketsMetricPerAgent,
     fetchCustomerSatisfactionMetricPerAgent,
+    fetchHumanResponseTimeAfterAiHandoffPerAgent,
     fetchMedianFirstResponseTimeMetricPerAgent,
     fetchMedianResolutionTimeMetricPerAgent,
     fetchMessagesReceivedMetricPerAgent,
@@ -16,6 +17,7 @@ import {
     fetchZeroTouchTicketsMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
+    useHumanResponseTimeAfterAiHandoffPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
     useMessagesSentMetricPerAgent,
@@ -33,6 +35,7 @@ import { onlineTimePerAgentQueryFactory } from 'domains/reporting/models/queryFa
 import { ticketAverageHandleTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'
 import { closedTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { customerSatisfactionMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { humanResponseTimeAfterAiHandoffPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/humanResponseTimeAfterAiHandoff'
 import { medianFirstAgentResponseTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { medianResolutionTimeMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianResolutionTime'
 import { messagesReceivedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
@@ -42,6 +45,7 @@ import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/mode
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { medianFirstResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
@@ -137,6 +141,12 @@ describe('metricsPerAgent', () => {
 
         it.each([
             [
+                'useHumanResponseTimeAfterAiHandoffPerAgent',
+                useHumanResponseTimeAfterAiHandoffPerAgent,
+                humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
+                humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory,
+            ],
+            [
                 'useTicketsRepliedMetricPerAgent',
                 useTicketsRepliedMetricPerAgent,
                 ticketsRepliedMetricPerAgentQueryFactory,
@@ -219,6 +229,12 @@ describe('metricsPerAgent', () => {
         )
 
         it.each([
+            [
+                'fetchHumanResponseTimeAfterAiHandoffPerAgent',
+                fetchHumanResponseTimeAfterAiHandoffPerAgent,
+                humanResponseTimeAfterAiHandoffPerAgentQueryFactory,
+                humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory,
+            ],
             [
                 'fetchTicketsRepliedMetricPerAgent',
                 fetchTicketsRepliedMetricPerAgent,

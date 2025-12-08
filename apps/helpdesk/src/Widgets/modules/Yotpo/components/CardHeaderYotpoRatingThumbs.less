@@ -24,8 +24,8 @@
         font-size: 13px;
         padding: 0.25rem;
         border-radius: 15px;
-        background-color: var(--feedback-success);
-        color: var(--neutral-grey-0);
+        background-color: var(--feedback-success); // legacy
+        color: var(--neutral-grey-0); // legacy
         margin-left: 5px;
     }
 
@@ -33,8 +33,20 @@
         size: 20px;
         padding: 5px;
         border-radius: 15px;
-        background-color: var(--feedback-error);
-        color: var(--neutral-grey-0);
+        background-color: var(--feedback-error); // legacy
+        color: var(--neutral-grey-0); // legacy
         margin-left: 5px;
+    }
+}
+
+.axiom :local {
+    .greenThumb {
+        background-color: var(--surface-success-primary);
+        color: var(--content-inverted-default);
+    }
+
+    .redThumb {
+        background-color: var(--surface-error-primary);
+        color: var(--content-inverted-default);
     }
 }

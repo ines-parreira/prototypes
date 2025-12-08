@@ -26,7 +26,7 @@ export interface ExecuteMetricConfig<
 > {
     /** Unique identifier for the metric, used for feature flag resolution */
     metricName: MetricName
-    oldPayload: ReportingParams<TCube>
+    oldPayload?: ReportingParams<TCube>
     newPayload?: BuiltQuery<TMeta>
 }
 type Result<TData extends unknown[], TCube extends Cube = Cube> = {
@@ -50,7 +50,7 @@ export async function metricExecutionHandler<
     const stage = await getNewStatsFeatureFlagMigration(config.metricName)
 
     const v1 = async (): Promise<Result<TData>> => {
-        const result = await postReportingV1<TData, TCube>(config.oldPayload)
+        const result = await postReportingV1<TData, TCube>(config.oldPayload!)
         return { data: result, query: result.data.query }
     }
 
@@ -66,7 +66,7 @@ export async function metricExecutionHandler<
             },
         )
 
-        // Fallback to the V1implementation
+        // Fallback to the V1 implementation
         return (await v1()).data!
     }
 
@@ -102,6 +102,11 @@ export async function metricExecutionHandler<
             )
             throw e
         }
+    }
+
+    // Unless the flag is in "complete" stage, we need "oldPayload" to be set
+    if (stage !== 'complete' && !config.oldPayload) {
+        return await postReportingV2<TData, TMeta>(config.newPayload!)
     }
 
     const comparison = (v1: Result<TData>, v2: Result<TData>): boolean =>

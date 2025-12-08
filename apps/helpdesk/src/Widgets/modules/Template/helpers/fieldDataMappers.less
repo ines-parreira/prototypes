@@ -12,17 +12,31 @@
     .thumb {
         padding: 0.25rem;
         border-radius: 1rem;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         float: right;
     }
 
     .greenThumb {
         .thumb();
-        background-color: var(--feedback-success);
+        background-color: var(--feedback-success); // legacy
     }
 
     .redThumb {
         .thumb();
-        background-color: var(--feedback-error);
+        background-color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .thumb {
+        color: var(--content-inverted-default);
+    }
+
+    .greenThumb {
+        background-color: var(--surface-success-primary);
+    }
+
+    .redThumb {
+        background-color: var(--surface-error-primary);
     }
 }

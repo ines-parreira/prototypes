@@ -1,10 +1,15 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { UserRole } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { mockUpdateTicketHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCurrentUserHandler,
+    mockUpdateTicketHandler,
+    mockUser,
+} from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../tests/render.utils'
 import { TicketActions } from '../TicketActions'
@@ -16,7 +21,19 @@ vi.mock('@repo/logging', () => ({
     },
 }))
 
-const server = setupServer()
+const agentUser = mockUser({
+    id: 1,
+    email: 'agent@test.com',
+    firstname: 'Test',
+    lastname: 'Agent',
+    role: { name: UserRole.Agent },
+})
+
+const mockGetCurrentUser = mockGetCurrentUserHandler(async () => {
+    return HttpResponse.json(agentUser)
+})
+
+const server = setupServer(mockGetCurrentUser.handler)
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -37,6 +54,7 @@ describe('TicketActions', () => {
 
     beforeEach(() => {
         vi.spyOn(window, 'open').mockImplementation(() => null)
+        server.use(mockGetCurrentUser.handler)
     })
 
     afterEach(() => {
@@ -48,6 +66,7 @@ describe('TicketActions', () => {
         id: 123,
         spam: false,
         isUnread: false,
+        isTrashed: false,
     }
 
     async function openMenu(user: ReturnType<typeof render>['user']) {
@@ -78,7 +97,7 @@ describe('TicketActions', () => {
         expect(screen.getByText('Show all quick replies')).toBeInTheDocument()
         expect(screen.getByText('Print ticket')).toBeInTheDocument()
         expect(screen.getByText('Mark as spam')).toBeInTheDocument()
-        expect(screen.getByText('Delete')).toBeInTheDocument()
+        expect(screen.getByText('Move to trash')).toBeInTheDocument()
     })
 
     it('should open print window and log analytics when print ticket is clicked', async () => {
@@ -214,6 +233,139 @@ describe('TicketActions', () => {
 
         expect(screen.getByText('Hide all events')).toBeInTheDocument()
         expect(screen.getByText('Hide all quick replies')).toBeInTheDocument()
+    })
+
+    describe('Mark as spam', () => {
+        it('should display "Mark as spam" when ticket is not spam', async () => {
+            const { user } = render(<TicketActions {...defaultProps} />)
+
+            const button = screen.getByRole('button', {
+                name: /dots-kebab-vertical/i,
+            })
+            await act(() => user.click(button))
+
+            expect(screen.getByText('Mark as spam')).toBeInTheDocument()
+            expect(screen.queryByText('Unmark as spam')).not.toBeInTheDocument()
+        })
+
+        it('should display "Unmark as spam" when ticket is spam', async () => {
+            const { user } = render(
+                <TicketActions {...defaultProps} spam={true} />,
+            )
+
+            const button = screen.getByRole('button', {
+                name: /dots-kebab-vertical/i,
+            })
+            await act(() => user.click(button))
+
+            expect(screen.getByText('Unmark as spam')).toBeInTheDocument()
+            expect(screen.queryByText('Mark as spam')).not.toBeInTheDocument()
+        })
+
+        it('should mark ticket as spam and show notification with undo button', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/views/1/123'],
+                path: '/app/views/:viewId/:ticketId',
+                dispatchNotification,
+                ticketViewNavigation: {
+                    shouldDisplay: true,
+                    shouldUseLegacyFunctions: false,
+                    previousTicketId: 122,
+                    nextTicketId: 124,
+                    legacyGoToPrevTicket: vi.fn(),
+                    isPreviousEnabled: true,
+                    legacyGoToNextTicket: vi.fn(),
+                    isNextEnabled: true,
+                },
+            })
+
+            const button = screen.getByRole('button', {
+                name: /dots-kebab-vertical/i,
+            })
+            await act(() => user.click(button))
+
+            const markAsSpamItem = screen.getByText('Mark as spam')
+            await act(() => user.click(markAsSpamItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        id: 'spam-123',
+                        message: 'Ticket has been marked as spam',
+                        buttons: expect.arrayContaining([
+                            expect.objectContaining({
+                                name: 'Undo',
+                                primary: true,
+                            }),
+                        ]),
+                    }),
+                )
+            })
+        })
+
+        it('should unmark ticket as spam without showing notification', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(
+                <TicketActions {...defaultProps} spam={true} />,
+                {
+                    initialEntries: ['/app/ticket/123'],
+                    path: '/app/ticket/:ticketId',
+                    dispatchNotification,
+                },
+            )
+
+            const button = screen.getByRole('button', {
+                name: /dots-kebab-vertical/i,
+            })
+            await act(() => user.click(button))
+
+            const unmarkAsSpamItem = screen.getByText('Unmark as spam')
+            await act(() => user.click(unmarkAsSpamItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should show error notification when marking as spam fails', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler(async () => {
+                return HttpResponse.json(null, { status: 500 })
+            })
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+            })
+
+            const button = screen.getByRole('button', {
+                name: /dots-kebab-vertical/i,
+            })
+            await act(() => user.click(button))
+
+            const markAsSpamItem = screen.getByText('Mark as spam')
+            await act(() => user.click(markAsSpamItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        message: 'Failed to mark as spam',
+                    }),
+                )
+            })
+        })
     })
 
     describe('Mark as spam', () => {
@@ -410,6 +562,165 @@ describe('TicketActions', () => {
                     }),
                 )
             })
+        })
+    })
+
+    describe('Trash ticket', () => {
+        it('should move ticket to trash and show notification with undo button when confirmed', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/views/1/123'],
+                path: '/app/views/:viewId/:ticketId',
+                dispatchNotification,
+                ticketViewNavigation: {
+                    shouldDisplay: true,
+                    shouldUseLegacyFunctions: false,
+                    previousTicketId: 122,
+                    nextTicketId: 124,
+                    legacyGoToPrevTicket: vi.fn(),
+                    isPreviousEnabled: true,
+                    legacyGoToNextTicket: vi.fn(),
+                    isNextEnabled: true,
+                },
+            })
+
+            await openMenu(user)
+
+            const moveToTrashMenuItem = screen.getByText('Move to trash')
+            await act(() => user.click(moveToTrashMenuItem))
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete ticket',
+            })
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        id: 'trash-123',
+                        message: 'Ticket has been moved to trash',
+                        buttons: expect.arrayContaining([
+                            expect.objectContaining({
+                                name: 'Undo',
+                                primary: true,
+                            }),
+                        ]),
+                    }),
+                )
+            })
+        })
+
+        it('should close modal when delete is confirmed', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+            })
+
+            await openMenu(user)
+
+            const moveToTrashMenuItem = screen.getByText('Move to trash')
+            await act(() => user.click(moveToTrashMenuItem))
+
+            expect(screen.getByText('Are you sure?')).toBeInTheDocument()
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete ticket',
+            })
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Are you sure?'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should restore ticket without showing notification when restore is clicked', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(
+                <TicketActions {...defaultProps} isTrashed={true} />,
+                {
+                    initialEntries: ['/app/ticket/123'],
+                    path: '/app/ticket/:ticketId',
+                    dispatchNotification,
+                },
+            )
+
+            await openMenu(user)
+
+            const restoreMenuItem = screen.getByText('Restore ticket')
+            await act(() => user.click(restoreMenuItem))
+
+            await waitFor(() => {
+                expect(dispatchNotification).not.toHaveBeenCalled()
+            })
+        })
+
+        it('should show error notification when move to trash fails', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler(async () => {
+                return HttpResponse.json(null, { status: 500 })
+            })
+            const dispatchNotification = vi.fn()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(<TicketActions {...defaultProps} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+            })
+
+            await openMenu(user)
+
+            const moveToTrashMenuItem = screen.getByText('Move to trash')
+            await act(() => user.click(moveToTrashMenuItem))
+
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete ticket',
+            })
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: 'error',
+                        message: 'Failed to move to trash',
+                    }),
+                )
+            })
+        })
+
+        it('should not open modal when restore is clicked on trashed ticket', async () => {
+            const mockUpdateTicket = mockUpdateTicketHandler()
+
+            server.use(mockUpdateTicket.handler)
+
+            const { user } = render(
+                <TicketActions {...defaultProps} isTrashed={true} />,
+                {
+                    initialEntries: ['/app/ticket/123'],
+                    path: '/app/ticket/:ticketId',
+                },
+            )
+
+            await openMenu(user)
+
+            const restoreMenuItem = screen.getByText('Restore ticket')
+            await act(() => user.click(restoreMenuItem))
+
+            expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
         })
     })
 })

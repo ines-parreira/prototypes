@@ -6,6 +6,7 @@ import { TicketActions } from './TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from './TicketAssignee'
 import { TicketPriority } from './TicketPriority'
 import { TicketViewNavigator } from './TicketViewNavigator/TicketViewNavigator'
+import { TrashedTicket } from './TrashedTicket'
 
 import css from './TicketHeader.less'
 
@@ -23,6 +24,7 @@ export function TicketHeader({ ticketId }: Props) {
         priority: currentPriority,
         assignee_team: currentTeam,
         assignee_user: currentAssignee,
+        trashed_datetime,
     } = ticket
 
     return (
@@ -37,6 +39,7 @@ export function TicketHeader({ ticketId }: Props) {
                 <span className={css.subject}>{ticket.subject}</span>
             </div>
             <div className={css.right}>
+                <TrashedTicket trashedDatetime={trashed_datetime} />
                 <TicketPriority
                     ticketId={ticketId}
                     currentPriority={currentPriority}
@@ -50,6 +53,7 @@ export function TicketHeader({ ticketId }: Props) {
                     id={ticketId}
                     spam={ticket.spam}
                     isUnread={ticket.is_unread}
+                    isTrashed={Boolean(trashed_datetime)}
                 />
                 <TicketViewNavigator />
             </div>

@@ -50,7 +50,7 @@
     }
 
     .times {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 14px;
         line-height: 133%;
         align-self: center;
@@ -65,5 +65,11 @@
 
     .numberInput {
         width: 75px;
+    }
+}
+
+.axiom :local {
+    .times {
+        color: var(--content-neutral-secondary);
     }
 }

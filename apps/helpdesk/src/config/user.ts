@@ -1,13 +1,47 @@
 import { UserRole } from './types/user'
 
-//$TsFixMe fallback values, use UserRole enum instead
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const OBSERVER_AGENT_ROLE = UserRole.ObserverAgent
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const LITE_AGENT_ROLE = UserRole.LiteAgent
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const BASIC_AGENT_ROLE = UserRole.BasicAgent
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const AGENT_ROLE = UserRole.Agent
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const ADMIN_ROLE = UserRole.Admin
+/**
+ * @deprecated Use UserRole enum instead from @repo/utils package
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const GORGIAS_AGENT_ROLE = UserRole.GorgiasAgent
 
+/**
+ * @deprecated Use USER_ROLES_ORDERED_BY_PRIVILEGES from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.ObserverAgent,
     UserRole.LiteAgent,
@@ -17,6 +51,11 @@ export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.GorgiasAgent,
 ]) as UserRole[]
 
+/**
+ * @deprecated Use USER_ROLES from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export const USER_ROLES = USER_ROLES_ORDERED_BY_PRIVILEGES
 
 export const OBSERVER_AGENT_ROLE_META = Object.freeze({

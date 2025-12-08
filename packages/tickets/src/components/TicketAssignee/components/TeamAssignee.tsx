@@ -9,7 +9,7 @@ import {
     ListSection,
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
-    Tag,
+    StatusButton,
 } from '@gorgias/axiom'
 import type { TicketTeam } from '@gorgias/helpdesk-queries'
 
@@ -89,7 +89,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
                     : null
                 return (
-                    <Tag
+                    <StatusButton
                         ref={ref}
                         leadingSlot={
                             isUpdatingTeam || isLoading ? (
@@ -119,7 +119,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                         className={css.trigger}
                     >
                         {isPlaceholder ? 'No team' : selectedText}
-                    </Tag>
+                    </StatusButton>
                 )
             }}
         >

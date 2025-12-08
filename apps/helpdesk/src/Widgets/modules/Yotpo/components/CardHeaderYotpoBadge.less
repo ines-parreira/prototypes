@@ -19,7 +19,7 @@
                 var(--neutral-grey-4-l),
                 0.1
             );
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
     .children {
@@ -34,5 +34,13 @@
         font-size: 14px;
         vertical-align: text-top;
         opacity: 1;
+    }
+}
+
+.axiom :local {
+    .container {
+        &:global(.secondary) {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

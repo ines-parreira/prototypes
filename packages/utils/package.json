@@ -16,6 +16,7 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/routing": "workspace:*",
         "lodash": "catalog:lodash",
         "mousetrap": "catalog:mousetrap",
@@ -25,6 +26,7 @@
         "react-router-dom": "catalog:react-router"
     },
     "devDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/routing": "workspace:*",
         "@repo/types": "workspace:*",

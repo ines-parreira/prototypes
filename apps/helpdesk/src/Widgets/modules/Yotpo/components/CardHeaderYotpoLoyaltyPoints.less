@@ -4,13 +4,13 @@
         font-weight: 600;
         line-height: 21px;
         font-size: 13px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
     .container > * {
         margin-right: 0.5rem;
     }
     .star {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
         background-color: var(--neutral-grey-0); // legacy
         vertical-align: bottom;
@@ -22,7 +22,12 @@
 }
 
 .axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
     .star {
+        color: var(--content-neutral-default);
         background-color: var(--elevation-neutral-default);
     }
 }

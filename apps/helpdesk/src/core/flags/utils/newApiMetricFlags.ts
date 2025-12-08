@@ -21,7 +21,10 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.FirstResponseTime,
 ]
 
-export const P2_SCOPES: MetricScope[] = [MetricScope.MessagesReceived]
+export const P2_SCOPES: MetricScope[] = [
+    MetricScope.MessagesReceived,
+    MetricScope.HumanFirstResponseTime,
+]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 

@@ -680,25 +680,35 @@ export const fieldPath = (
 }
 
 /**
- * Test if user is admin
+ * @deprecated Use isAdmin from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
  */
 export const isAdmin = (user: Map<any, any>): boolean => {
     return hasRole(user, UserRole.Admin)
 }
 
 /**
- * Test if user has agent privileges
+ * @deprecated Use hasAgentPrivileges from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
  */
 export const hasAgentPrivileges = (user: Map<any, any>): boolean => {
     return hasRole(user, UserRole.Agent)
 }
 
 /**
- * Including this alias for clarity, since `UserRole.Agent` is actually team lead
+ * @deprecated Use isTeamLead from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
  */
 export const isTeamLead = hasAgentPrivileges
 
-// Check if a user has a role
+/**
+ * @deprecated Use hasRole from @repo/utils package instead
+ * @date 2025-11-18
+ * @type permissions-migration
+ */
 export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
     const userRole = user.getIn(['role', 'name'])
     return (

@@ -1,8 +1,8 @@
 {
   "summary": {
-    "totalEntries": 77,
-    "totalUsages": 1605,
-    "reportGeneratedAt": "2025-11-14T13:15:19.111Z"
+    "totalEntries": 89,
+    "totalUsages": 1676,
+    "reportGeneratedAt": "2025-11-18T09:10:58.741Z"
   },
   "entries": [
     {
@@ -696,6 +696,234 @@
             "named": [
               "apps/helpdesk/src/state/currentAccount/tests/selectors.spec.ts"
             ],
+            "default": []
+          }
+        }
+      ]
+    },
+    {
+      "type": "permissions-migration",
+      "entries": [
+        {
+          "usageCount": 32,
+          "name": "AGENT_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/dashboards/tests/DashboardPage.spec.tsx",
+              "apps/helpdesk/src/domains/reporting/routes/StatsRoutes.tsx",
+              "apps/helpdesk/src/pages/aiAgent/test/AIAgentPaywallView.spec.tsx",
+              "apps/helpdesk/src/pages/aiAgent/test/AiAgentSales.spec.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomateNavbar.spec.tsx",
+              "apps/helpdesk/src/pages/automate/common/components/tests/AutomatePaywallView.spec.tsx",
+              "apps/helpdesk/src/pages/automate/workflows/WorkflowsView.tsx",
+              "apps/helpdesk/src/pages/common/components/ViewSharing/ViewSharingButton.tsx",
+              "apps/helpdesk/src/pages/convert/campaigns/components/ConvertSetupBanner/__tests__/ConvertSetupBanner.spec.tsx",
+              "apps/helpdesk/src/pages/settings/common/SettingsNavbar/Item.tsx",
+              "apps/helpdesk/src/pages/settings/common/SettingsNavbar/SettingsNavbar.tsx",
+              "apps/helpdesk/src/routes/Routes.tsx",
+              "apps/helpdesk/src/routes/settings/Macros.tsx",
+              "apps/helpdesk/src/routes/settings/Rules.tsx",
+              "apps/helpdesk/src/routes/settings/SLA.tsx",
+              "apps/helpdesk/src/routes/settings/Settings.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Macros.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Rules.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/SLA.spec.tsx",
+              "apps/helpdesk/src/settings/pages/flows-routes/AutomateSettingsFlowsAnalysisRoute.tsx",
+              "apps/helpdesk/src/settings/pages/flows-routes/AutomateSettingsFlowsBaseRoute.tsx",
+              "apps/helpdesk/src/settings/pages/flows-routes/AutomateSettingsFlowsChannelsRoute.tsx",
+              "apps/helpdesk/src/settings/pages/flows-routes/AutomateSettingsFlowsEditRoute.tsx",
+              "apps/helpdesk/src/settings/pages/flows-routes/AutomateSettingsFlowsNewRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementCancelRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementReportEditRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementReportNewScenarioRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementReportRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementReturnRoute.tsx",
+              "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementTrackRoute.tsx",
+              "apps/helpdesk/src/settings/pages/tests/FlowsSettings.spec.tsx",
+              "apps/helpdesk/src/tests/utils.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 29,
+          "name": "ADMIN_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/fixtures/users.ts",
+              "apps/helpdesk/src/pages/aiAgent/Onboarding/settings.ts",
+              "apps/helpdesk/src/pages/settings/common/SettingsNavbar/Item.tsx",
+              "apps/helpdesk/src/pages/settings/common/SettingsNavbar/SettingsNavbar.tsx",
+              "apps/helpdesk/src/pages/settings/common/SettingsNavbar/tests/Item.spec.tsx",
+              "apps/helpdesk/src/routes/Routes.tsx",
+              "apps/helpdesk/src/routes/settings/Billing.tsx",
+              "apps/helpdesk/src/routes/settings/Channels.tsx",
+              "apps/helpdesk/src/routes/settings/ConditionalFields.tsx",
+              "apps/helpdesk/src/routes/settings/CustomFields.tsx",
+              "apps/helpdesk/src/routes/settings/ImportEmailsRoute.tsx",
+              "apps/helpdesk/src/routes/settings/ImportZendeskRoute.tsx",
+              "apps/helpdesk/src/routes/settings/Integrations.tsx",
+              "apps/helpdesk/src/routes/settings/PhoneNumbers.tsx",
+              "apps/helpdesk/src/routes/settings/Settings.tsx",
+              "apps/helpdesk/src/routes/settings/StoreManagement.tsx",
+              "apps/helpdesk/src/routes/settings/Teams.tsx",
+              "apps/helpdesk/src/routes/settings/Users.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Billing.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Channels.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/ConditionalFields.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/CustomFields.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Import.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Integrations.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/PhoneNumbers.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/StoreManagement.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Teams.spec.tsx",
+              "apps/helpdesk/src/routes/settings/tests/Users.spec.tsx",
+              "apps/helpdesk/src/tests/utils.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 3,
+          "name": "BASIC_AGENT_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/domains/reporting/pages/dashboards/tests/DashboardPage.spec.tsx",
+              "apps/helpdesk/src/pages/common/components/ViewSharing/tests/ViewSharingButton.spec.tsx",
+              "apps/helpdesk/src/tests/utils.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 2,
+          "name": "USER_ROLES_ORDERED_BY_PRIVILEGES",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/pages/common/components/RestrictedPage.tsx",
+              "apps/helpdesk/src/utils.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 2,
+          "name": "USER_ROLES",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/models/agents/resources.ts",
+              "apps/helpdesk/src/state/agents/actions.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 1,
+          "name": "OBSERVER_AGENT_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/tests/utils.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 1,
+          "name": "LITE_AGENT_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/tests/utils.spec.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 1,
+          "name": "hasRole",
+          "nodeType": "FunctionDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/utils.ts",
+          "usageUrls": {
+            "named": [
+              "apps/helpdesk/src/state/views/utils.ts"
+            ],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "GORGIAS_AGENT_ROLE",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/config/user.ts",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "isAdmin",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/utils.ts",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "hasAgentPrivileges",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/utils.ts",
+          "usageUrls": {
+            "named": [],
+            "default": []
+          }
+        },
+        {
+          "usageCount": 0,
+          "name": "isTeamLead",
+          "nodeType": "VariableDeclaration",
+          "deprecationDate": "2025-11-18",
+          "deprecationType": "permissions-migration",
+          "declarationFile": "apps/helpdesk/src/utils.ts",
+          "usageUrls": {
+            "named": [],
             "default": []
           }
         }

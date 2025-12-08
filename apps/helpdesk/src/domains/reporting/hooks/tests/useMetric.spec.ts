@@ -144,6 +144,22 @@ describe('Metric', () => {
                 } as any),
             ).toEqual(medianFirstResponseTime)
         })
+
+        it('should work without V1', () => {
+            usePostReportingV2Mock.mockReturnValueOnce({
+                ...defaultReporting,
+                data: 1,
+            } as UseQueryResult)
+
+            renderHook(() => useMetric(undefined, defaultQueryV2))
+
+            const select = usePostReportingV2Mock.mock.calls[0][2]?.select
+            expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+                [],
+                defaultQueryV2,
+                { enabled: true, select },
+            )
+        })
     })
 
     describe('fetchMetric', () => {
@@ -242,6 +258,20 @@ describe('Metric', () => {
                 queryV2,
             )
         })
+
+        it('should work without V1', async () => {
+            const queryV2 = {
+                metricName: METRIC_NAMES.TEST_METRIC,
+                scope: MetricScope.SatisfactionSurveys,
+                measures: [],
+                dimensions: [],
+                filters: [],
+            }
+
+            await fetchMetric(undefined, queryV2)
+
+            expect(fetchPostReportingV2Mock).toHaveBeenCalledWith([], queryV2)
+        })
     })
 
     describe('selectMeasure', () => {
@@ -281,6 +311,23 @@ describe('Metric', () => {
                 defaultQueryV2,
                 true,
             )
+
+            expect(result).toBe(67.89)
+        })
+
+        it('should work without V1', () => {
+            const measureValue = '67.89'
+            const data = {
+                data: {
+                    data: [
+                        {
+                            medianFirstResponseTime: measureValue,
+                        },
+                    ],
+                },
+            } as any
+
+            const result = selectMeasure(data, undefined, defaultQueryV2, true)
 
             expect(result).toBe(67.89)
         })

@@ -39,7 +39,7 @@
         margin-bottom: 12px;
         font-size: 14px;
         font-weight: normal;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .colorTile {
@@ -50,5 +50,11 @@
         width: 21px;
         height: 21px;
         border-radius: 3px;
+    }
+}
+
+.axiom :local {
+    .onlyContentIndicator {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -35,11 +35,18 @@ export const SpamOptions = {
     },
 } as const
 
-export const DeleteTicket = {
-    id: 'delete-ticket',
-    label: 'Delete',
-    leadingSlot: IconName.TrashEmpty,
-    intent: Intent.Destructive,
+export const TrashTicketOptions = {
+    id: 'trash-ticket-options',
+    Delete: {
+        label: 'Move to trash',
+        leadingSlot: IconName.TrashEmpty,
+        intent: Intent.Destructive,
+    },
+    Undelete: {
+        label: 'Restore ticket',
+        leadingSlot: IconName.ArrowUndoUpLeft,
+        intent: Intent.Regular,
+    },
 } as const
 
 export const EventsOptions = {

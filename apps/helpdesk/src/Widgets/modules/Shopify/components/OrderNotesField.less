@@ -15,7 +15,7 @@
                 border: 1px solid transparent;
                 border-radius: 3px;
 
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 letter-spacing: 0.14px;
                 font-size: 1em;
                 font-weight: 600;
@@ -31,12 +31,31 @@
 
                 &:hover,
                 &:focus {
-                    border-color: var(--main-primary);
+                    border-color: var(--main-primary); // legacy
                     padding-left: 5px;
                 }
 
                 &::placeholder {
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .orderNote {
+        .noteInputContainer {
+            .noteInput {
+                color: var(--content-neutral-default);
+
+                &:hover,
+                &:focus {
+                    border-color: var(--border-accent-default);
+                }
+
+                &::placeholder {
+                    color: var(--content-neutral-secondary);
                 }
             }
         }

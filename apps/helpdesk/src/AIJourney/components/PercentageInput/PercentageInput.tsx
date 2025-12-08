@@ -62,11 +62,12 @@ export const PercentageInput = ({
                 type="number"
                 maxLength={3}
                 max={100}
-                min={0}
+                min={1}
                 value={value}
                 onChange={handleChange}
                 onBlur={handleOnBlur}
                 disabled={isDisabled}
+                required
             />
             <div className={css.percentageDecorator}>%</div>
         </div>

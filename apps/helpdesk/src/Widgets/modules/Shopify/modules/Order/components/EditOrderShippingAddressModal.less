@@ -2,7 +2,7 @@
     .required {
         &::after {
             content: ' *';
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -40,5 +40,13 @@
         align-items: center;
         display: flex;
         gap: 8px;
+    }
+}
+
+.axiom :local {
+    .required {
+        &::after {
+            color: var(--content-error-primary);
+        }
     }
 }

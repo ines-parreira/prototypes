@@ -7,7 +7,7 @@
     }
 
     .errorMessage {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: 12.5px;
         .body-regular();
     }
@@ -20,5 +20,11 @@
 
     .metafields {
         margin-bottom: 12px;
+    }
+}
+
+.axiom :local {
+    .errorMessage {
+        color: var(--content-error-primary);
     }
 }

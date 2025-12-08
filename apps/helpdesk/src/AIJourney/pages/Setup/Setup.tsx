@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
@@ -119,6 +119,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
         string[] | undefined
     >()
 
+    const [isLoadingHandleCreate, setIsLoadingHandleCreate] = useState(false)
+    const [showValidationErrors, setShowValidationErrors] = useState(false)
+
     useEffect(() => {
         if (journeyParams) {
             const numberOfMessages =
@@ -188,7 +191,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setExcludedAudienceListIds(newValue)
     }
 
-    const handleCreate = async () => {
+    const handleCreate = useCallback(async () => {
+        setIsLoadingHandleCreate(true)
         try {
             if (!integrationId || !currentIntegration?.name) {
                 throw new Error(
@@ -231,8 +235,24 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 }),
             )
             throw error
+        } finally {
+            setIsLoadingHandleCreate(false)
         }
-    }
+    }, [
+        currentIntegration,
+        journeyType,
+        isDiscountEnabled,
+        numberOfMessageValue,
+        createNewJourney,
+        phoneNumberValue,
+        discountValue,
+        campaignTitleValue,
+        includedAudienceListIds,
+        discountCodeThreshold,
+        dispatch,
+        integrationId,
+        excludedAudienceListIds,
+    ])
 
     const {
         handleUpdate,
@@ -251,7 +271,65 @@ export const Setup = ({ journeyType }: SetupProps) => {
         includeImage: isImageEnabled,
     })
 
-    const handleContinue = async () => {
+    const shouldDisableButton = useMemo(() => {
+        // Common validations
+        if (
+            !phoneNumberValue ||
+            isLoadingHandleUpdate ||
+            isSuccessHandleUpdate ||
+            isLoadingHandleCreate
+        ) {
+            return true
+        }
+
+        const isDiscountFieldValid = isDiscountEnabled
+            ? !!discountValue && isDiscountValueValid
+            : true
+
+        if (!isDiscountFieldValid) {
+            return true
+        }
+
+        // Journey-specific validations
+        if (journeyType === JOURNEY_TYPES.CAMPAIGN) {
+            // For campaigns: require title and includeAudience
+            if (
+                !campaignTitleValue ||
+                !includedAudienceListIds ||
+                includedAudienceListIds.length === 0
+            ) {
+                return true
+            }
+        } else {
+            // For other journeys: require total messages to send
+            if (!numberOfMessageValue || numberOfMessageValue < 1) {
+                return true
+            }
+        }
+
+        return false
+    }, [
+        phoneNumberValue,
+        isLoadingHandleUpdate,
+        isSuccessHandleUpdate,
+        isLoadingHandleCreate,
+        isDiscountEnabled,
+        discountValue,
+        isDiscountValueValid,
+        journeyType,
+        campaignTitleValue,
+        includedAudienceListIds,
+        numberOfMessageValue,
+    ])
+    const showMessageWithDiscountCode =
+        isDiscountEnabled && numberOfMessageValue > 1
+
+    const handleContinue = useCallback(async () => {
+        if (shouldDisableButton) {
+            setShowValidationErrors(true)
+            return
+        }
+
         try {
             if (journeyData) {
                 await handleUpdate({
@@ -276,19 +354,20 @@ export const Setup = ({ journeyType }: SetupProps) => {
         } catch {
             return // Error handling is done in the handleUpdate and handleCreate functions
         }
-    }
-
-    const isDiscountFieldValid = isDiscountEnabled
-        ? !!discountValue && isDiscountValueValid
-        : true
-
-    const shouldDisableButton =
-        !isDiscountFieldValid ||
-        !phoneNumberValue ||
-        isLoadingHandleUpdate ||
-        isSuccessHandleUpdate
-    const showMessageWithDiscountCode =
-        isDiscountEnabled && numberOfMessageValue > 1
+    }, [
+        handleCreate,
+        shouldDisableButton,
+        setShowValidationErrors,
+        handleUpdate,
+        history,
+        setIsVisible,
+        journeyData,
+        campaignTitleValue,
+        includedAudienceListIds,
+        excludedAudienceListIds,
+        journeyType,
+        shopName,
+    ])
 
     if (isLoadingJourneyData) {
         return <LoadingSpinner />
@@ -305,12 +384,14 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 <CampaignTitle
                     value={campaignTitleValue}
                     onChange={handleCampaignTitleChange}
+                    showError={showValidationErrors}
                 />
             )}
             <PhoneNumberField
                 options={marketingCapabilityPhoneNumbers}
                 value={phoneNumberValue}
                 onChange={handlePhoneNumberChange}
+                showError={showValidationErrors}
             />
             {fields.includes(Fields.FollowUps) && (
                 <MessagesToSendField
@@ -336,6 +417,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     isDisabled={!isDiscountEnabled}
                     onChange={handleMaximumDiscountChange}
                     onValidationChange={handleValidationChange}
+                    showError={showValidationErrors}
                 />
             )}
 
@@ -354,6 +436,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     value={includedAudienceListIds ?? []}
                     exclude={excludedAudienceListIds ?? []}
                     onChange={handleIncludedAudienceListIds}
+                    required
+                    showError={showValidationErrors}
                 />
             )}
 
@@ -375,7 +459,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 <Button
                     label="Continue"
                     onClick={handleContinue}
-                    isDisabled={shouldDisableButton}
+                    isDisabled={
+                        isLoadingHandleUpdate ||
+                        isSuccessHandleUpdate ||
+                        isLoadingHandleCreate
+                    }
                 />
             </div>
         </motion.div>

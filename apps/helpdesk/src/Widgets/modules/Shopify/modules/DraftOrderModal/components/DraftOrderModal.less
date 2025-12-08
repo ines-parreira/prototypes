@@ -29,14 +29,14 @@
     .emailInvoiceContainer {
         display: flex;
         align-items: center;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         padding: 1.375rem;
 
         h4 {
             font-weight: 500;
             font-size: 14px;
             line-height: 17px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             margin: auto 0;
         }
     }
@@ -57,5 +57,13 @@
 .axiom :local {
     .formHeader {
         background-color: var(--elevation-neutral-default);
+    }
+
+    .emailInvoiceContainer {
+        border-top: 1px solid var(--border-neutral-default);
+
+        h4 {
+            color: var(--content-neutral-default);
+        }
     }
 }

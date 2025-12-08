@@ -55,8 +55,8 @@ export async function fetchMetricTrend<
     TCube extends Cubes,
     TMeta extends ScopeMeta = ScopeMeta,
 >(
-    currentPeriodQuery: ReportingQuery<TCube>,
-    prevPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQuery?: ReportingQuery<TCube>,
+    prevPeriodQuery?: ReportingQuery<TCube>,
     currentPeriodQueryV2?: BuiltQuery<TMeta>,
     prevPeriodQueryV2?: BuiltQuery<TMeta>,
 ): Promise<MetricTrend> {
@@ -96,8 +96,8 @@ export default function useMetricTrend<
     TCube extends Cubes,
     TMeta extends ScopeMeta,
 >(
-    currentPeriodQuery: ReportingQuery<TCube>,
-    prevPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQuery?: ReportingQuery<TCube>,
+    prevPeriodQuery?: ReportingQuery<TCube>,
     currentPeriodQueryV2?: BuiltQuery<TMeta>,
     prevPeriodQueryV2?: BuiltQuery<TMeta>,
 ): MetricTrend {
