@@ -24,6 +24,7 @@ import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'domains/reportin
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { messagesReceivedPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { medianResolutionTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
@@ -138,9 +139,11 @@ export const fetchMessagesSentMetricPerChannel = createFetchPerDimension(
 )
 export const useMessagesReceivedMetricPerChannel = createMetricPerDimensionHook(
     messagesReceivedMetricPerChannelQueryFactory,
+    messagesReceivedPerChannelQueryV2Factory,
 )
 export const fetchMessagesReceivedMetricPerChannel = createFetchPerDimension(
     messagesReceivedMetricPerChannelQueryFactory,
+    messagesReceivedPerChannelQueryV2Factory,
 )
 export const useMedianResolutionTimeMetricPerChannel =
     createMetricPerDimensionHook(

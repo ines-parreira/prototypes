@@ -7,6 +7,10 @@ import { DigestCard } from 'AIJourney/components'
 import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
 import { columns } from 'AIJourney/components/CampaignsTable/Columns'
 import { useFilters } from 'AIJourney/hooks'
+import {
+    DEFAULT_TABLE_METRICS,
+    useAIJourneyTableKpis,
+} from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useJourneys } from 'AIJourney/queries'
@@ -31,12 +35,30 @@ export const Campaigns = () => {
 
     const filters = useFilters()
 
+    const { metrics: tableMetrics, isLoading: isMetricLoading } =
+        useAIJourneyTableKpis({
+            integrationId: integrationId.toString(),
+            filters,
+            journeyIds: campaigns?.map((c) => c.id),
+        })
+
     const { metrics } = useCampaignsKpis({
         integrationId: integrationId.toString(),
         filters,
         journeyIds: campaigns?.map((c) => c.id),
     })
     const isLoadingMetrics = metrics?.some((metric) => metric.isLoading)
+
+    const campaignRows = useMemo(() => {
+        return campaigns?.map((campaign) => {
+            const campaignMetric =
+                tableMetrics[campaign.id] || DEFAULT_TABLE_METRICS
+            return {
+                ...campaign,
+                metrics: campaignMetric,
+            }
+        })
+    }, [campaigns, tableMetrics])
 
     return (
         <Box m="md" flexDirection="column" className={css.container}>
@@ -49,8 +71,12 @@ export const Campaigns = () => {
                 <Heading size="md">Campaigns</Heading>
                 <CampaignsTable
                     columns={columns}
-                    data={campaigns || []}
-                    isLoading={isLoadingIntegrations || isLoadingCampaigns}
+                    data={campaignRows || []}
+                    isLoading={
+                        isLoadingIntegrations ||
+                        isLoadingCampaigns ||
+                        isMetricLoading
+                    }
                 />
             </Card>
             <DrillDownModal />

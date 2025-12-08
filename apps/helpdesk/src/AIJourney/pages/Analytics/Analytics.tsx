@@ -9,7 +9,6 @@ import moment from 'moment/moment'
 import {
     Box,
     Button,
-    Card,
     Heading,
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
@@ -23,12 +22,9 @@ import { useAIJourneyConversionRate } from 'AIJourney/hooks/useAIJourneyConversi
 import { useAIJourneyGmvInfluenced } from 'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useJourneyContext } from 'AIJourney/providers'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
 
-import { useCleanStatsFilters } from '../../../domains/reporting/hooks/useCleanStatsFilters'
+import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
-import { ReportingGranularity } from '../../../domains/reporting/models/types'
 import FiltersPanelWrapper from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { useAIJourneyOptOutRate } from '../../hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate'
@@ -38,23 +34,22 @@ import { useClickThroughRate } from '../../hooks/useClickThroughRate/useClickThr
 import css from './Analytics.less'
 
 export const Analytics = () => {
-    useCleanStatsFilters()
+    const {
+        cleanStatsFilters: statsFilters,
+        userTimezone,
+        granularity,
+    } = useStatsFilters()
     const { isLoading, currentIntegration } = useJourneyContext()
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
     }, [currentIntegration])
-    const { userTimezone, cleanStatsFilters } = useAppSelector(
-        getCleanStatsFiltersWithTimezone,
-    )
     const shopName = useGetNamespacedShopNameForStore(
         currentIntegration?.id ? [currentIntegration.id] : [],
     )
 
     const filters = {
-        period: cleanStatsFilters.period,
+        period: statsFilters.period,
     }
-    const granularity =
-        cleanStatsFilters.aggregationWindow ?? ReportingGranularity.Week
 
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
@@ -141,7 +136,6 @@ export const Analytics = () => {
             label: 'GMV Influenced',
             currency: gmvInfluenced.currency,
             hint: 'Total value of orders linked to customers who received messages during the campaign. Reflects the overall sales impact attributed to this flow.',
-            inHeader: true,
             withFixedWidth: true,
             interpretAs: gmvInfluenced.interpretAs,
             isLoading: gmvInfluenced.isLoading,
@@ -159,7 +153,6 @@ export const Analytics = () => {
             id: 'Conversion Rate',
             label: 'Conversion Rate',
             hint: 'Percentage of recipients who completed a purchase after receiving a message. Connects message performance directly to revenue outcomes.',
-            inHeader: true,
             withFixedWidth: true,
             interpretAs: conversionRate.interpretAs,
             isLoading: conversionRate.isLoading,
@@ -293,7 +286,7 @@ export const Analytics = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <Heading size="md">Analytics</Heading>
+            <Heading size="md">AI Journey Analytics</Heading>
 
             <div>
                 <FiltersPanelWrapper
@@ -312,56 +305,16 @@ export const Analytics = () => {
                 />
             </div>
 
-            <Card flexDirection="row" width="100%" gap="xxxl" padding="xl">
-                {metrics
-                    .filter(({ inHeader }) => inHeader)
-                    .map(
-                        ({
-                            id,
-                            label,
-                            currency,
-                            metricFormat,
-                            hint,
-                            interpretAs,
-                            isLoading,
-                            trend,
-                            series,
-                            withFixedWidth = false,
-                        }) => (
-                            <TrendCard
-                                key={`header-metric-${id}`}
-                                withBorder={false}
-                                withFixedWidth={withFixedWidth}
-                                hint={{
-                                    title: hint,
-                                }}
-                                currency={currency}
-                                isLoading={isLoading}
-                                metricFormat={metricFormat}
-                                interpretAs={interpretAs}
-                                timeSeriesData={series}
-                                trend={{
-                                    isError: false,
-                                    isFetching: isLoading,
-                                    data: {
-                                        label,
-                                        value: trend.value,
-                                        prevValue: trend.prevValue,
-                                    },
-                                }}
-                            />
-                        ),
-                    )}
-            </Card>
-
             <Box flexDirection="column" gap="md">
                 <Box flexDirection="row" justifyContent="space-between">
                     <Heading size="md">Key metrics</Heading>
                     <Button
-                        variant="secondary"
+                        leadingSlot="columns"
+                        variant="tertiary"
+                        as="button"
                         onClick={() => setIsEditModalOpen(true)}
                     >
-                        Edit
+                        Edit metrics
                     </Button>
                     <ConfigureMetricsModal
                         isOpen={isEditModalOpen}
@@ -392,6 +345,7 @@ export const Analytics = () => {
 
                             return (
                                 <TrendCard
+                                    trendColor="neutral"
                                     key={`key-metric-${config.id}`}
                                     currency={currency}
                                     withFixedWidth={false}

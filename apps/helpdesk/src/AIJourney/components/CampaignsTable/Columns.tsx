@@ -1,3 +1,5 @@
+import { formatMetricValue } from '@repo/reporting'
+
 import type { ColumnDef } from '@gorgias/axiom'
 import { Box, createSortableColumn } from '@gorgias/axiom'
 import type {
@@ -36,6 +38,125 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
             </Box>
         )
     }),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.recipients',
+        'Recipients',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(info.getValue() as number, 'integer')}
+            </Box>
+        ),
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.revenue',
+        'Revenue',
+        (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <Box gap="xs">
+                    {formatMetricValue(
+                        info.getValue() as number,
+                        'currency-precision-1',
+                        meta.currency,
+                    )}
+                </Box>
+            )
+        },
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.totalOrders',
+        'Orders',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(info.getValue() as number, 'integer')}
+            </Box>
+        ),
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.revenuePerRecipient',
+        'Revenue per Recipient',
+        (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <Box gap="xs">
+                    {formatMetricValue(
+                        info.getValue() as number,
+                        'currency-precision-1',
+                        meta.currency,
+                    )}
+                </Box>
+            )
+        },
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.averageOrderValue',
+        'AOV',
+        (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <Box gap="xs">
+                    {formatMetricValue(
+                        info.getValue() as number,
+                        'currency-precision-1',
+                        meta.currency,
+                    )}
+                </Box>
+            )
+        },
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.messagesSent',
+        'Messages Sent',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(info.getValue() as number, 'integer')}
+            </Box>
+        ),
+    ),
+    createSortableColumn<JourneyApiDTO>('metrics.ctr', 'CTR', (info) => (
+        <Box gap="xs">
+            {formatMetricValue(
+                info.getValue() as number,
+                'percent-precision-1',
+            )}
+        </Box>
+    )),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.replyRate',
+        'Reply rate',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(
+                    info.getValue() as number,
+                    'percent-precision-1',
+                )}
+            </Box>
+        ),
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.optOutRate',
+        'Out out rate',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(
+                    info.getValue() as number,
+                    'percent-precision-1',
+                )}
+            </Box>
+        ),
+    ),
+    createSortableColumn<JourneyApiDTO>(
+        'metrics.conversionRate',
+        'Conversion rate',
+        (info) => (
+            <Box gap="xs">
+                {formatMetricValue(
+                    info.getValue() as number,
+                    'decimal-to-percent-precision-1',
+                )}
+            </Box>
+        ),
+    ),
     {
         id: 'actions',
         cell: (info) => {

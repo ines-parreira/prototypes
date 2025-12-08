@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
-import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 
@@ -86,10 +85,12 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
+jest.mock(
+    'domains/reporting/hooks/support-performance/useStatsFilters',
+    () => ({
+        useStatsFilters: jest.fn(),
+    }),
+)
 
 const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
@@ -122,11 +123,17 @@ const mockUseRevenuePerRecipient =
 const mockUseGetNamespacedShopNameForStore =
     require('domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore')
         .useGetNamespacedShopNameForStore as jest.Mock
-const useAppSelectorMock = require('hooks/useAppSelector').default as jest.Mock
-jest.mock('domains/reporting/state/ui/stats/selectors')
+const mockUseStatsFilters =
+    require('domains/reporting/hooks/support-performance/useStatsFilters')
+        .useStatsFilters as jest.Mock
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanel')
 const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
+
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    __esModule: true,
+    default: () => <div data-testid="filters-panel-wrapper" />,
+}))
 
 describe('<Analytics />', () => {
     const mockStore = configureMockStore([thunk])({
@@ -137,25 +144,15 @@ describe('<Analytics />', () => {
         jest.clearAllMocks()
         FiltersPanelComponentMock.mockImplementation(() => <div />)
 
-        useAppSelectorMock.mockImplementation((selector) => {
-            if (selector.name === 'getCurrentAccountState') {
-                return fromJS(account)
-            }
-
-            if (selector === getCleanStatsFiltersWithTimezone) {
-                return {
-                    cleanStatsFilters: {
-                        period: {
-                            end_datetime: moment().toISOString(),
-                            start_datetime: moment().toISOString(),
-                        },
-                    },
-                    userTimezone: 'America/New_York',
-                    granularity: ReportingGranularity.Day,
-                }
-            }
-
-            return null
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
         })
 
         mockUseJourneyContext.mockReturnValue({
@@ -302,20 +299,19 @@ describe('<Analytics />', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should render loading state when header metrics are loading', () => {
-        mockUseAIJourneyGmvInfluenced.mockReturnValue({
-            label: 'GMV Influenced',
+    it('should render loading state when key metrics are loading', () => {
+        mockUseClickThroughRate.mockReturnValue({
+            label: 'Click Through Rate',
             value: 0,
             prevValue: null,
             series: [],
             interpretAs: 'more-is-better',
-            metricFormat: 'currency',
-            currency: 'USD',
+            metricFormat: 'percent',
             isLoading: true,
         })
 
-        mockUseAIJourneyConversionRate.mockReturnValue({
-            label: 'Conversion Rate',
+        mockUseAIJourneyResponseRate.mockReturnValue({
+            label: 'Response Rate',
             value: 0,
             prevValue: null,
             series: [],
@@ -339,24 +335,9 @@ describe('<Analytics />', () => {
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
-    it('should render both metrics with values', () => {
-        mockUseAIJourneyGmvInfluenced.mockReturnValue({
-            label: 'GMV Influenced',
-            value: 15000.5,
-            prevValue: 12000,
-            series: [
-                { date: '2025-01-01', value: 5000 },
-                { date: '2025-01-08', value: 6000 },
-                { date: '2025-01-15', value: 4000.5 },
-            ],
-            interpretAs: 'more-is-better',
-            metricFormat: 'currency',
-            currency: 'USD',
-            isLoading: false,
-        })
-
-        mockUseAIJourneyConversionRate.mockReturnValue({
-            label: 'Conversion Rate',
+    it('should render key metrics with values', () => {
+        mockUseClickThroughRate.mockReturnValue({
+            label: 'Click Through Rate',
             value: 25.5,
             prevValue: 20.3,
             series: [
@@ -366,6 +347,20 @@ describe('<Analytics />', () => {
             ],
             interpretAs: 'more-is-better',
             metricFormat: 'percent',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyTotalConversations.mockReturnValue({
+            label: 'Total Recipients',
+            value: 150,
+            prevValue: 100,
+            series: [
+                { date: '2025-01-01', value: 50 },
+                { date: '2025-01-08', value: 60 },
+                { date: '2025-01-15', value: 40 },
+            ],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal',
             isLoading: false,
         })
 
@@ -381,9 +376,13 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(screen.getAllByText('GMV Influenced')).toHaveLength(2)
-        expect(screen.getAllByText('Conversion Rate')).toHaveLength(2)
-        expect(screen.getAllByText('$15,000.5')).toHaveLength(1)
-        expect(screen.getAllByText(/25\.5%/)).toHaveLength(1)
+        expect(
+            screen.getAllByText('Click Through Rate').length,
+        ).toBeGreaterThan(0)
+        expect(screen.getAllByText('Total Recipients').length).toBeGreaterThan(
+            0,
+        )
+        expect(screen.getByText(/25\.5%/)).toBeInTheDocument()
+        expect(screen.getByText('150')).toBeInTheDocument()
     })
 })

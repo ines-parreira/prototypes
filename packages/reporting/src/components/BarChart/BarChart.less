@@ -1,0 +1,54 @@
+:local {
+    .chartContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        :global {
+            .recharts-wrapper {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-surface {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+        }
+    }
+
+    .tooltip {
+        background: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-secondary);
+        border-radius: var(--spacing-xxxs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tooltipContent {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .chartSkeleton {
+        div[data-name='skeleton'] {
+            display: flex;
+            flex: 1;
+            width: 100%;
+
+            span {
+                display: flex !important;
+                flex: 1 !important;
+                width: 100% !important;
+            }
+        }
+    }
+}

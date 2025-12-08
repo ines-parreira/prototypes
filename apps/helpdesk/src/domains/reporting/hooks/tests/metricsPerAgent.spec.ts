@@ -42,6 +42,7 @@ import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/mode
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { medianFirstResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { messagesReceivedPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
@@ -240,7 +241,7 @@ describe('metricsPerAgent', () => {
                 'fetchMessagesReceivedMetricPerAgent',
                 fetchMessagesReceivedMetricPerAgent,
                 messagesReceivedMetricPerAgentQueryFactory,
-                undefined,
+                messagesReceivedPerAgentQueryV2Factory,
             ],
             [
                 'fetchMedianResolutionTimeMetricPerAgent',

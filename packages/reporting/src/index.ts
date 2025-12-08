@@ -15,6 +15,13 @@ export {
     type TrendDirection,
 } from './types'
 export { LineChart } from './components/LineChart/LineChart'
+export {
+    ChartCard,
+    DonutChart,
+    BarChart,
+    type ChartDataItem,
+    type ChartType,
+} from './components/ChartCard'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export { formatMetricTrend, formatMetricValue } from './utils/helpers'

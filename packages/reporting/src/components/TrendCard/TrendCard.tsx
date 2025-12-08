@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import type { ReactNode } from 'react'
+import { memo, useState } from 'react'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
@@ -23,6 +24,7 @@ import { TrendChart } from '../TrendChart/TrendChart'
 import css from './TrendCard.less'
 
 export type TrendCardProps = {
+    actionMenu?: ReactNode
     currency?: string
     hint?: TooltipData
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
@@ -37,6 +39,7 @@ export type TrendCardProps = {
 
 export const TrendCard = memo<TrendCardProps>(
     ({
+        actionMenu,
         currency,
         hint,
         interpretAs,
@@ -49,6 +52,7 @@ export const TrendCard = memo<TrendCardProps>(
         withFixedWidth,
     }) => {
         const { data } = trend
+        const [isHovered, setIsHovered] = useState(false)
 
         const { sign } = formatMetricTrend(
             data?.value,
@@ -57,62 +61,77 @@ export const TrendCard = memo<TrendCardProps>(
         )
 
         return (
-            <MetricCard withBorder={withBorder} withFixedWidth={withFixedWidth}>
-                <MetricCardHeader title={data?.label} hint={hint} />
+            <div
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <MetricCard
+                    withBorder={withBorder}
+                    withFixedWidth={withFixedWidth}
+                >
+                    <MetricCardHeader
+                        title={data?.label}
+                        hint={hint}
+                        actionMenu={isHovered ? actionMenu : undefined}
+                    />
 
-                <div className={css.dataContent}>
-                    <div className={css.trendData}>
-                        <span className={css.metricData}>
+                    <div className={css.dataContent}>
+                        <div className={css.trendData}>
+                            <span className={css.metricData}>
+                                {isLoading ? (
+                                    <Skeleton
+                                        height={36}
+                                        width={
+                                            metricFormat === 'duration'
+                                                ? 64
+                                                : 52
+                                        }
+                                    />
+                                ) : (
+                                    formatMetricValue(
+                                        data?.value,
+                                        metricFormat,
+                                        currency,
+                                    )
+                                )}
+                            </span>
                             {isLoading ? (
-                                <Skeleton
-                                    height={36}
-                                    width={
-                                        metricFormat === 'duration' ? 64 : 52
-                                    }
-                                />
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    height="14px"
+                                >
+                                    <Skeleton
+                                        height={14}
+                                        width={14}
+                                        style={{ marginTop: '5px' }}
+                                    />
+                                    <Text size="xs">%</Text>
+                                </Box>
                             ) : (
-                                formatMetricValue(
-                                    data?.value,
-                                    metricFormat,
-                                    currency,
-                                )
-                            )}
-                        </span>
-                        {isLoading ? (
-                            <Box
-                                display="flex"
-                                alignItems="center"
-                                height="14px"
-                            >
-                                <Skeleton
-                                    height={14}
-                                    width={14}
-                                    style={{ marginTop: '5px' }}
+                                <TrendBadge
+                                    value={data?.value}
+                                    prevValue={data?.prevValue}
+                                    metricFormat={metricFormat}
+                                    interpretAs={interpretAs}
+                                    currency={currency}
                                 />
-                                <Text size="xs">%</Text>
-                            </Box>
-                        ) : (
-                            <TrendBadge
-                                value={data?.value}
-                                prevValue={data?.prevValue}
-                                metricFormat={metricFormat}
-                                interpretAs={interpretAs}
-                                currency={currency}
-                            />
-                        )}
+                            )}
+                        </div>
                     </div>
                     {!isLoading && !!timeSeriesData?.length && (
                         <TrendChart
+                            isStrokeSolid
                             trendColor={
                                 trendColor ??
                                 getTrendColorFromValue(sign, interpretAs)
                             }
                             data={timeSeriesData}
-                            areaChartProps={{ width: 80, height: 30 }}
+                            areaChartProps={{ width: '100%', height: 25 }}
                         />
                     )}
-                </div>
-            </MetricCard>
+                </MetricCard>
+            </div>
         )
     },
 )

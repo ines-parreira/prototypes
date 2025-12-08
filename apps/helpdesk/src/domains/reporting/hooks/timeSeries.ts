@@ -26,6 +26,7 @@ import {
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
+import { messagesReceivedTimeSeriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import type {
@@ -147,10 +148,12 @@ export const fetchMessagesSentTimeSeries = getTimeSeriesFetch(
 
 export const useMessagesReceivedTimeSeries = getTimeSeriesHook(
     messagesReceivedTimeSeriesQueryFactory,
+    messagesReceivedTimeSeriesQueryV2Factory,
 )
 
 export const fetchMessagesReceivedTimeSeries = getTimeSeriesFetch(
     messagesReceivedTimeSeriesQueryFactory,
+    messagesReceivedTimeSeriesQueryV2Factory,
 )
 
 export const useOneTouchTicketsTimeSeries = getTimeSeriesHook(

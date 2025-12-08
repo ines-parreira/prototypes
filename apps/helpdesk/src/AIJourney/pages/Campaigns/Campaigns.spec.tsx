@@ -6,6 +6,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    DEFAULT_TABLE_METRICS,
+    useAIJourneyTableKpis,
+} from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { journeyKpisMock } from 'AIJourney/utils/test-fixtures/journeyKpisMock'
@@ -40,6 +44,9 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 
 jest.mock('AIJourney/hooks/useCampaignsKpis/useCampaignsKpis')
 const useCampaignsKpisMock = assumeMock(useCampaignsKpis)
+
+jest.mock('AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis')
+const useAIJourneyTableKpisMock = assumeMock(useAIJourneyTableKpis)
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
@@ -76,6 +83,16 @@ describe('<Campaigns />', () => {
 
         useCampaignsKpisMock.mockImplementation(() => ({
             metrics: journeyKpisMock,
+        }))
+
+        useAIJourneyTableKpisMock.mockImplementation(() => ({
+            metrics: {
+                '1': {
+                    ...DEFAULT_TABLE_METRICS,
+                    recipients: 15567,
+                },
+            },
+            isLoading: false,
         }))
 
         mockUseJourneys.mockImplementation(() => ({
@@ -126,6 +143,7 @@ describe('<Campaigns />', () => {
         expect(screen.getAllByText('Campaign 1')).toHaveLength(1)
         expect(screen.getAllByText('Campaign 2')).toHaveLength(1)
         expect(screen.getByText('Create campaign')).toBeInTheDocument()
+        expect(screen.getByText('15,567')).toBeInTheDocument()
     })
 
     it('should render empty state when no campaigns', () => {

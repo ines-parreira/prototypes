@@ -71,6 +71,10 @@ import {
     VoiceOverviewChart,
     VoiceOverviewReportConfig,
 } from 'domains/reporting/pages/voice/pages/VoiceOverviewReportConfig'
+import {
+    AnalyticsOverviewChart,
+    AnalyticsOverviewReportConfig,
+} from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 
 export const MAX_CHECKED_CHARTS = 20
 
@@ -133,6 +137,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
     {
         category: 'AI Agent',
         children: [
+            {
+                type: AnalyticsOverviewChart,
+                config: AnalyticsOverviewReportConfig,
+            },
             {
                 type: AutomateOverviewChart,
                 config: AutomateOverviewReportConfig,

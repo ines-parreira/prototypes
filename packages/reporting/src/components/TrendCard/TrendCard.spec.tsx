@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import type { MetricTrend, TwoDimensionalDataItem } from '../../types'
 import type { TrendCardProps } from './TrendCard'
@@ -176,5 +177,31 @@ describe('TrendCard', () => {
 
         const loadingElements = screen.getAllByLabelText('Loading')
         expect(loadingElements.length).toBeGreaterThan(0)
+    })
+
+    it('should render action menu on hover when provided', async () => {
+        const actionMenu = <button>Action Menu</button>
+
+        const { container } = render(
+            <TrendCard {...defaultProps} actionMenu={actionMenu} />,
+        )
+
+        expect(screen.getByText('Test Metric')).toBeInTheDocument()
+        expect(screen.queryByText('Action Menu')).not.toBeInTheDocument()
+
+        const card = container.firstChild as HTMLElement
+
+        await act(async () => {
+            await userEvent.hover(card)
+        })
+
+        expect(screen.getByText('Action Menu')).toBeInTheDocument()
+    })
+
+    it('should not render action menu when not provided', () => {
+        render(<TrendCard {...defaultProps} />)
+
+        expect(screen.getByText('Test Metric')).toBeInTheDocument()
+        expect(screen.queryByText('Action Menu')).not.toBeInTheDocument()
     })
 })

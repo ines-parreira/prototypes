@@ -147,6 +147,54 @@ export const aiJourneyTotalNumberOfOrderQueryFactory = (
     }
 }
 
+export const aiJourneyOrderMeasuresPerJourneyQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentOrdersDefaultFiltersMembers,
+        filters,
+    )
+
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_ORDERS_MEASURES_PER_JOURNEY,
+        measures: [
+            AiSalesAgentOrdersMeasure.Gmv,
+            AiSalesAgentOrdersMeasure.Count,
+            AiSalesAgentOrdersMeasure.AverageOrderValue,
+        ],
+        dimensions: [AiSalesAgentOrdersDimension.JourneyId],
+        filters: [
+            {
+                member: AiSalesAgentOrdersDimension.IntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            ...baseFilters,
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
 export const aiJourneyTotalNumberOfOrderTimeSeriesQuery = (
     integrationId: string,
     filters: StatsFilters,
@@ -193,6 +241,54 @@ export const aiJourneyTotalNumberOfSalesConversationsQueryFactory = (
         metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS,
         measures: [AiSalesAgentConversationsMeasure.Count],
         dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyConversationMesuresPerJourneyQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_CONVERSATION_MEASURES_PER_JOURNEY,
+        measures: [
+            AiSalesAgentConversationsMeasure.Count,
+            AiSalesAgentConversationsMeasure.AiJourneyTotalMessages,
+            AiSalesAgentConversationsMeasure.ClickThroughRate,
+            AiSalesAgentConversationsMeasure.ReplyRate,
+            AiSalesAgentConversationsMeasure.OptOutRate,
+        ],
+        dimensions: [AiSalesAgentConversationsDimension.JourneyId],
         filters: [
             {
                 member: AiSalesAgentConversationsDimension.Source,

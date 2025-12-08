@@ -23,9 +23,10 @@ export const DigestCard = ({
     metrics,
     isLoading,
 }: DigestCardProps) => {
-    const isEmpty = !metrics?.some(
-        (metric) => metric.value !== 0 && metric.prevValue !== 0,
-    )
+    const isEmpty =
+        metrics?.every(
+            (metric) => metric.value === 0 && metric.prevValue === 0,
+        ) ?? true
 
     if (isLoading) {
         return (

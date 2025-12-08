@@ -1,0 +1,6 @@
+export { BarChart } from '../../BarChart/BarChart'
+export { BarChartTooltip } from './BarChartTooltip'
+export { ChartHeader } from './ChartHeader'
+export { DonutChartLegend } from '../../DonutChart/components/DonutChartLegend'
+export { ChartMetricSelect as DonutChartMetricSelect } from './ChartMetricSelect'
+export { DonutChartTooltip } from '../../DonutChart/components/DonutChartTooltip'

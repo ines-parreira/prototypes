@@ -14,6 +14,7 @@ import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactor
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
+import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
@@ -221,13 +222,26 @@ export const fetchMessagesSentMetric = (
 export const useMessagesReceivedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(messagesReceivedQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        messagesReceivedQueryFactory(statsFilters, timezone),
+        messagesReceivedCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const fetchMessagesReceivedMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(messagesReceivedQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        messagesReceivedQueryFactory(statsFilters, timezone),
+        messagesReceivedCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
+    )
 
 export const useOneTouchTicketsMetric = (
     statsFilters: StatsFilters,

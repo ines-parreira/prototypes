@@ -6,6 +6,8 @@ export enum AiSalesAgentOrdersMeasure {
     AverageDiscount = 'AiSalesAgentOrders.averageDiscount',
     AverageDiscountUsd = 'AiSalesAgentOrders.averageDiscountUsd',
     AverageDiscountPercentage = 'AiSalesAgentOrders.averageDiscountPercentage',
+    AverageOrderValue = 'AiSalesAgentOrders.averageOrderValue',
+    AverageOrderValueUsd = 'AiSalesAgentOrders.averageOrderValueUsd',
     Count = 'AiSalesAgentOrders.count',
     UniqCount = 'AiSalesAgentOrders.uniqCount',
 }

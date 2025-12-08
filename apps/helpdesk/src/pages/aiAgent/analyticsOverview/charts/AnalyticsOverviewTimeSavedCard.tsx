@@ -1,8 +1,14 @@
 import { TrendCard } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+
 import { useTimeSavedMetric } from '../hooks/useTimeSavedMetric'
 
-export const AnalyticsOverviewTimeSavedCard = () => {
+export const AnalyticsOverviewTimeSavedCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     const trend = useTimeSavedMetric()
 
     return (
@@ -17,6 +23,15 @@ export const AnalyticsOverviewTimeSavedCard = () => {
                 link: 'https://help.gorgias.com',
                 linkText: 'Learn more',
             }}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        dashboard={dashboard}
+                        chartName={trend.data?.label}
+                    />
+                ) : undefined
+            }
         />
     )
 }

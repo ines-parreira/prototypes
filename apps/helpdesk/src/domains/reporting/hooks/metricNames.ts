@@ -34,10 +34,14 @@ export const METRIC_NAMES = {
     AI_JOURNEY_TOTAL_CONVERSATIONS_TIME_SERIES:
         'ai-journey-total-conversations-time-series',
     AI_JOURNEY_TOTAL_NUMBER_OF_ORDER: 'ai-journey-total-number-of-order',
+    AI_JOURNEY_ORDERS_MEASURES_PER_JOURNEY:
+        'ai-journey-orders-measures-per-journey',
     AI_JOURNEY_TOTAL_NUMBER_OF_ORDER_TIME_SERIES:
         'ai-journey-total-number-of-order-time-series',
     AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS:
         'ai-journey-total-number-of-sales-conversations',
+    AI_JOURNEY_CONVERSATION_MEASURES_PER_JOURNEY:
+        'ai-journey-conversation-measures-per-journey',
     AI_JOURNEY_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_TIME_SERIES:
         'ai-journey-total-number-of-sales-conversations-time-series',
     AI_JOURNEY_UNIQ_CLICKS: 'ai-journey-uniq-clicks',
@@ -481,11 +485,25 @@ export enum MetricScope {
     TicketsOpen = 'tickets-open',
     TicketHandleTime = 'ticket-handle-time',
     OnlineTime = 'online-time',
+
+    // P2
+    AutoQA = 'auto-qa',
+    HumanFirstResponseTime = 'human-first-response-time',
+    MessagesReceived = 'messages-received',
+    AutomationRate = 'automation-rate',
+    TicketFields = 'ticket-fields',
+    AutomatedInteractions = 'automated-interactions',
+    VoiceCalls = 'voice-calls',
+    Tags = 'tags',
+    ResponseTime = 'response-time',
+    ServiceLevelAgreement = 'sla',
+    WorkloadTickets = 'workload-tickets',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
 
 export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
+    // P1
     [MetricScope.TicketsCreated]: [
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED,
         METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_PER_CHANNEL,
@@ -543,5 +561,43 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.OnlineTime]: [
         METRIC_NAMES.AGENTXP_ONLINE_TIME,
         METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
+    ],
+
+    // P2
+    [MetricScope.AutoQA]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4830/implement-the-auto-qa-v2-metric
+    ],
+    [MetricScope.HumanFirstResponseTime]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4829/implement-the-human-response-time-v2-metric
+    ],
+    [MetricScope.MessagesReceived]: [
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_AGENT,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_CHANNEL,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES,
+    ],
+    [MetricScope.AutomationRate]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4832/implement-the-automation-rate-v2-metric
+    ],
+    [MetricScope.TicketFields]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4833/implement-the-ticket-fields-v2-metric
+    ],
+    [MetricScope.AutomatedInteractions]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4834/implement-the-automated-interactions-v2-metric
+    ],
+    [MetricScope.VoiceCalls]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4835/implement-the-voice-calls-v2-metric
+    ],
+    [MetricScope.Tags]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4836/implement-the-tags-v2-metric
+    ],
+    [MetricScope.ResponseTime]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4837/implement-the-reponse-time-v2-metric
+    ],
+    [MetricScope.ServiceLevelAgreement]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4838/implement-the-sla-v2-metric
+    ],
+    [MetricScope.WorkloadTickets]: [
+        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4839/implement-the-workload-tickets-v2-metric
     ],
 }

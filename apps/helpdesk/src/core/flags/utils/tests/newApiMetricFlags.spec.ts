@@ -20,11 +20,12 @@ describe('resolveMetricFlag', () => {
         ).toBe(FeatureFlagKey.ReportingP1MetricMigration)
     })
 
-    // Skip this test as we don't have any P2 scopes yet
-    it.skip('should return the correct flag for P2 metrics', () => {
-        expect(resolveMetricFlag(METRIC_NAMES.SATISFACTION_AVERAGE_SCORE)).toBe(
-            FeatureFlagKey.ReportingP2MetricMigration,
-        )
+    it('should return the correct flag for P2 metrics', () => {
+        expect(
+            resolveMetricFlag(
+                METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED,
+            ),
+        ).toBe(FeatureFlagKey.ReportingP2MetricMigration)
     })
 
     it('should return the correct flag for P2 metrics', () => {

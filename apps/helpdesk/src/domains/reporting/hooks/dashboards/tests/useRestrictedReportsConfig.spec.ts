@@ -45,6 +45,7 @@ describe('useRestrictedReportsConfig', () => {
 
     it('should restrict all charts in section', () => {
         const restrictedReports = [
+            ReportsIDs.AiAgentAnalyticsOverview,
             ReportsIDs.AutomateOverviewReportConfig,
             ReportsIDs.AiSalesAgentReportConfig,
             ReportsIDs.AutomateAiAgentsReportConfig,

@@ -1,0 +1,35 @@
+:local {
+    .cardContainer {
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    /* ChartHeader styles */
+    .header {
+        width: 100%;
+    }
+
+    .value {
+        color: var(--content-neutral-default);
+    }
+
+    /* ChartMetricSelect styles */
+    .selectTrigger {
+        cursor: pointer;
+    }
+
+    .chevronIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease-in-out;
+
+        &[data-state='open'] {
+            transform: rotate(180deg);
+        }
+
+        &[data-state='closed'] {
+            transform: rotate(0deg);
+        }
+    }
+}

@@ -4,6 +4,9 @@ export enum AiSalesAgentConversationsMeasure {
     Count = 'AiSalesAgentConversations.count',
     AiJourneyTotalMessages = 'AiSalesAgentConversations.journeyTotalMessages',
     AiJourneyTotalFailedMessages = 'AiSalesAgentConversations.totalFailedMessages',
+    ClickThroughRate = 'AiSalesAgentConversations.clickThroughRate',
+    ReplyRate = 'AiSalesAgentConversations.replyRate',
+    OptOutRate = 'AiSalesAgentConversations.optOutRate',
 }
 
 export enum AiSalesAgentConversationsDimension {

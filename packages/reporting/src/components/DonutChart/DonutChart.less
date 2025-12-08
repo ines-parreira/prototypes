@@ -1,0 +1,124 @@
+:local {
+    /* Chart wrapper and container */
+    .chartWrapper {
+        flex: 1;
+        width: 100%;
+    }
+
+    .chartContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: var(--spacing-md);
+
+        :global {
+            .recharts-wrapper {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-surface {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-pie-sector {
+                cursor: pointer;
+                transition: all 0.2s ease-out;
+                transform-origin: center;
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+
+            .recharts-tooltip-wrapper {
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+    }
+
+    .legend {
+        width: 100%;
+
+        button {
+            width: fit-content;
+            &[data-hovered='true'] {
+                background: transparent !important;
+                opacity: 0.8;
+            }
+            transition: opacity 0.2s ease;
+        }
+    }
+
+    .legendLabel {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .legendDot {
+        width: 10px;
+        height: 10px;
+        border-radius: var(--spacing-xxxs);
+        flex-shrink: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .legendText {
+        color: var(--content-neutral-default);
+        transition: opacity 0.2s ease;
+    }
+
+    .legendValue {
+        color: var(--content-neutral-secondary);
+        transition: opacity 0.2s ease;
+    }
+
+    .tooltip {
+        background: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-secondary);
+        border-radius: var(--spacing-xxxs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .tooltipContent {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    /* Loading skeleton styles */
+    .donutSkeleton {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .donutSkeletonOuter {
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .donutSkeletonInner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        height: 120px;
+        z-index: 999999;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: var(--surface-neutral-primary);
+    }
+}

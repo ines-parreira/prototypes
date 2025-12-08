@@ -21,6 +21,7 @@ import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactor
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
+import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
@@ -278,10 +279,12 @@ export const fetchMessagesSentTrend = getTrendFetch(
 
 export const useMessagesReceivedTrend = getTrendHook(
     messagesReceivedQueryFactory,
+    messagesReceivedCountQueryV2Factory,
 )
 
 export const fetchMessagesReceivedTrend = getTrendFetch(
     messagesReceivedQueryFactory,
+    messagesReceivedCountQueryV2Factory,
 )
 
 export const useTicketHandleTimeTrend = getTrendHook(

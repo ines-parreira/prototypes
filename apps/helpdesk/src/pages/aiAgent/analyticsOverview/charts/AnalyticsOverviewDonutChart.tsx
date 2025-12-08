@@ -1,5 +1,5 @@
-import { AutomationDonutChart } from '../components/AutomationDonutChart/AutomationDonutChart'
+import { AutomationChart } from '../components/AutomationChart/AutomationChart'
 
 export const AnalyticsOverviewDonutChart = () => {
-    return <AutomationDonutChart />
+    return <AutomationChart />
 }

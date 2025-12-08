@@ -59,6 +59,7 @@ import {
     medianFirstResponseTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/firstResponseTime'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
+import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
@@ -251,7 +252,7 @@ describe('metric trends', () => {
             'useMessagesReceivedTrend',
             useMessagesReceivedTrend,
             messagesReceivedQueryFactory,
-            undefined,
+            messagesReceivedCountQueryV2Factory,
         ],
         [
             'useMedianResponseTimeTrend',
@@ -353,6 +354,7 @@ describe('metric trends', () => {
             'fetchMessagesReceivedTrend',
             fetchMessagesReceivedTrend,
             messagesReceivedQueryFactory,
+            messagesReceivedCountQueryV2Factory,
         ],
         [
             'fetchMedianResponseTimeTrend',

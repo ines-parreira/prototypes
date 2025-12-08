@@ -45,6 +45,7 @@ import type {
 } from 'domains/reporting/state/ui/stats/types'
 import type { Channel } from 'models/channel/types'
 import type { Integration } from 'models/integration/types'
+import type { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -208,6 +209,7 @@ export type AvailableChartIds =
     | typeof CampaignsLegacyChart
     | typeof AiSalesAgentChart
     | typeof AutomateAiAgentsChart
+    | typeof AnalyticsOverviewChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds
