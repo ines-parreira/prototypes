@@ -20,3 +20,5 @@ export const REFETCH_KNOWLEDGE_HUB_TABLE = 'refetch-knowledge-hub-table'
 export const FILE_UPLOAD_STARTED = 'file-upload-started'
 
 export const URL_SYNC_STARTED = 'url-sync-started'
+
+export const OPEN_PLAYGROUND_PANEL = 'open-playground-panel'

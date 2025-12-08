@@ -19,6 +19,7 @@ import css from './PlaygroundPanel.less'
 
 type Props = {
     shopName?: string
+    onClose?: () => void
 }
 
 type ActionsSectionProps = {
@@ -51,7 +52,7 @@ const ActionsSection = ({
     )
 }
 
-export const PlaygroundPanel = ({ shopName }: Props) => {
+export const PlaygroundPanel = ({ shopName, onClose }: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
     const [actionsAllowed, setActionsAllowed] = useState(false)
@@ -74,6 +75,9 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
 
     const handleClose = () => {
         setIsCollapsibleColumnOpen(false)
+        if (onClose) {
+            onClose()
+        }
     }
 
     const handleResetPlayground = () => {
@@ -91,14 +95,14 @@ export const PlaygroundPanel = ({ shopName }: Props) => {
     const usePlaygroundSettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
 
     return (
-        <div className={css['playground-panel']}>
+        <div className={css['playground-panel']} data-name={'playground-panel'}>
             <PlaygroundActionsModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onConfirm={onModalConfirm}
             />
             {!isSettingsOpen && (
-                <div className={css['panel-header']}>
+                <div className={css['panel-header']} data-name={'panel-header'}>
                     <div className={css['panel-header-title-container']}>
                         <span className={css['panel-header-title']}>Test</span>
                     </div>

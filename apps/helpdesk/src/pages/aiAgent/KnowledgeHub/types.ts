@@ -1,3 +1,5 @@
+import type { History } from 'history'
+
 import type { IconName } from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -111,3 +113,17 @@ export type KnowledgeEditorConfig =
     | GuidanceEditorConfig
     | FaqEditorConfig
     | SnippetEditorConfig
+
+export type UseKnowledgeHubSnippetEditorParams = {
+    shopName: string
+    filteredSnippetArticles: Array<{
+        id: number
+        title: string
+        type: KnowledgeType
+    }>
+    history: History
+    routes: {
+        knowledgeArticle: (type: string, id: number) => string
+    }
+    buildUrlWithParams: (basePath: string) => string
+}

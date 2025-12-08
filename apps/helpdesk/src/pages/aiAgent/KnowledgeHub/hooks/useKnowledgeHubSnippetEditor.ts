@@ -1,21 +1,19 @@
 import { useCallback, useState } from 'react'
 
-import type { KnowledgeType, SnippetType } from '../types'
+import type {
+    KnowledgeType,
+    SnippetType,
+    UseKnowledgeHubSnippetEditorParams,
+} from '../types'
 import { mapKnowledgeTypeToSnippetType } from '../types'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
-
-type UseKnowledgeHubSnippetEditorParams = {
-    shopName: string
-    filteredSnippetArticles: Array<{
-        id: number
-        title: string
-        type: KnowledgeType
-    }>
-}
 
 export const useKnowledgeHubSnippetEditor = ({
     shopName,
     filteredSnippetArticles,
+    history,
+    routes,
+    buildUrlWithParams,
 }: UseKnowledgeHubSnippetEditorParams) => {
     const [currentSnippetType, setCurrentSnippetType] = useState<
         SnippetType | undefined
@@ -53,10 +51,17 @@ export const useKnowledgeHubSnippetEditor = ({
                     previousArticle.type,
                 )
                 setCurrentSnippetType(snippetType)
+
+                const basePath = routes.knowledgeArticle(
+                    previousArticle.type,
+                    previousArticle.id,
+                )
+                const targetPath = buildUrlWithParams(basePath)
+                history.replace(targetPath)
             }
         }
         editor.handleClickPrevious()
-    }, [editor, filteredSnippetArticles])
+    }, [editor, filteredSnippetArticles, history, routes, buildUrlWithParams])
 
     const handleClickNext = useCallback(() => {
         if (editor.hasNext && editor.currentArticleId) {
@@ -69,10 +74,17 @@ export const useKnowledgeHubSnippetEditor = ({
                     nextArticle.type,
                 )
                 setCurrentSnippetType(snippetType)
+
+                const basePath = routes.knowledgeArticle(
+                    nextArticle.type,
+                    nextArticle.id,
+                )
+                const targetPath = buildUrlWithParams(basePath)
+                history.replace(targetPath)
             }
         }
         editor.handleClickNext()
-    }, [editor, filteredSnippetArticles])
+    }, [editor, filteredSnippetArticles, history, routes, buildUrlWithParams])
 
     return {
         isEditorOpen: editor.isEditorOpen,

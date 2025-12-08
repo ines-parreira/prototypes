@@ -64,6 +64,7 @@ ForGuidanceRead.args = {
             onCopy={() => {}}
             onEdit={() => {}}
             onDelete={() => {}}
+            onTest={() => {}}
         />
     ),
 }

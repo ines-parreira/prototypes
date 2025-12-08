@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { mockStore } from 'utils/testing'
@@ -38,6 +39,7 @@ describe('KnowledgeEditorGuidanceView', () => {
         isGuidanceArticleUpdating: false,
         isFullscreen: false,
         onToggleFullscreen: jest.fn(),
+        onTest: jest.fn(),
     }
 
     beforeEach(() => {
@@ -230,5 +232,291 @@ describe('KnowledgeEditorGuidanceView', () => {
         )
 
         expect(screen.queryByText(/AI Agent status/i)).not.toBeInTheDocument()
+    })
+
+    describe('unsaved changes modal', () => {
+        it('opens unsaved changes modal when Cancel is clicked with changes in edit mode', async () => {
+            const user = userEvent.setup()
+            const onChangeTitle = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title="Original Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title="Modified Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('opens unsaved changes modal when Cancel is clicked with changes in create mode', async () => {
+            const user = userEvent.setup()
+            const onChangeContent = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title=""
+                        content=""
+                        onChangeContent={onChangeContent}
+                        guidanceMode="create"
+                        createdDatetime={undefined}
+                        lastUpdatedDatetime={undefined}
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title="New Title"
+                        content="New Content"
+                        onChangeContent={onChangeContent}
+                        guidanceMode="create"
+                        createdDatetime={undefined}
+                        lastUpdatedDatetime={undefined}
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('calls onClose when Discard changes button is clicked', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+            const onChangeTitle = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onClose={onClose}
+                        title="Original Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onClose={onClose}
+                        title="Modified Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Discard changes' }),
+                ),
+            )
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onSave when Save Changes button is clicked', async () => {
+            const user = userEvent.setup()
+            const onSave = jest.fn().mockResolvedValue(undefined)
+            const onChangeTitle = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onSave={onSave}
+                        title="Original Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onSave={onSave}
+                        title="Modified Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Save Changes' }),
+                ),
+            )
+
+            expect(onSave).toHaveBeenCalledWith({
+                name: 'Modified Title',
+                content: 'Test Content',
+                isVisible: true,
+            })
+        })
+
+        it('closes modal when Back to editing button is clicked', async () => {
+            const user = userEvent.setup()
+            const onChangeTitle = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title="Original Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        title="Modified Title"
+                        onChangeTitle={onChangeTitle}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Back to editing' }),
+                ),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: 'Save changes?' }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('does not reset title and content when discarding changes', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+            const onChangeTitle = jest.fn()
+            const onChangeContent = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onClose={onClose}
+                        title="Original Title"
+                        content="Original Content"
+                        onChangeTitle={onChangeTitle}
+                        onChangeContent={onChangeContent}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        onClose={onClose}
+                        title="Modified Title"
+                        content="Modified Content"
+                        onChangeTitle={onChangeTitle}
+                        onChangeContent={onChangeContent}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: 'cancel' })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Discard changes' }),
+                ),
+            )
+
+            expect(onChangeTitle).not.toHaveBeenCalled()
+            expect(onChangeContent).not.toHaveBeenCalled()
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
     })
 })

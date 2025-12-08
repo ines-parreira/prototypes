@@ -39,7 +39,10 @@ export const defaultProps: Props = {
 
 export const KnowledgeEditorTopBar = (props: Props) => {
     return (
-        <div className={css.container}>
+        <div
+            className={css.container}
+            data-name={'knowledge-editor-top-bar-container'}
+        >
             <div className={css.navigationControls}>
                 {props.onClickPrevious && (
                     <button

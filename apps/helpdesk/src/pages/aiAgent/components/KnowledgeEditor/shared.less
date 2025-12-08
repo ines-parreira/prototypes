@@ -1,0 +1,37 @@
+:local {
+    .splitView {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: var(--layout-spacing-xs);
+        height: 100%;
+        //background: var(--elevation-neutral-bg);
+        background: rgba(0, 0, 0, 0.145);
+        border-radius: 12px;
+    }
+
+    .editor {
+        flex: 1;
+        background: white;
+        border-radius: var(--main-alternative-m, 12px);
+    }
+    .loader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .playground {
+        width: 480px;
+    }
+    [data-name='playground-panel'] {
+        border-radius: 12px !important;
+    }
+    [data-name='panel-header'] {
+        border-top-right-radius: 12px !important;
+        border-top-left-radius: 12px !important;
+    }
+    [data-name='knowledge-editor-top-bar-container'] {
+        height: 58px;
+    }
+}

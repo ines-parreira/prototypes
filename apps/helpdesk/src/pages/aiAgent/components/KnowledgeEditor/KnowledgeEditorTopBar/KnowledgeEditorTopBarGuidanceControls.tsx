@@ -4,6 +4,7 @@ import {
     CancelButton,
     DeleteIconButton,
     EditIconButton,
+    TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
 
 import css from './KnowledgeEditorTopBarControls.less'
@@ -14,6 +15,7 @@ export type GuidanceMode =
           onCopy: () => void
           onEdit: () => void
           onDelete: () => void
+          onTest: () => void
       }
     | {
           mode: 'edit'
@@ -34,6 +36,7 @@ const ReadControls = (props: Extract<Props, { mode: 'read' }>) => (
         {/* TODO: add copy button back in when implemented */}
         {/* <CopyIconButton onCopy={props.onCopy} disabled={props.disabled} /> */}
         <DeleteIconButton onDelete={props.onDelete} disabled={props.disabled} />
+        <TestButton onTest={props.onTest} disabled={props.disabled ?? false} />
     </>
 )
 

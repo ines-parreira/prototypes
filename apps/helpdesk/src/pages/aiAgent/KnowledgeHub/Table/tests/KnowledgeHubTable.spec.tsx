@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
@@ -189,6 +189,119 @@ describe('KnowledgeHubTable', () => {
 
             const searchInput = screen.getByLabelText('Search knowledge items')
             expect(searchInput).toBeInTheDocument()
+        })
+
+        it('updates search input value when typing', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'test search')
+
+            expect(searchInput).toHaveValue('test search')
+        })
+
+        it('shows no results message when search has no matches', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'nonexistent')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'No results found' }),
+                ).toBeInTheDocument()
+            })
+            expect(
+                screen.getByText(
+                    'Try adjusting your search or filters to find the right knowledge.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('shows clear search button when no results found', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'nonexistent')
+
+            await waitFor(() => {
+                expect(screen.getByText('Clear search')).toBeInTheDocument()
+            })
+        })
+
+        it('clears search term when clear search button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'nonexistent')
+
+            expect(searchInput).toHaveValue('nonexistent')
+
+            const clearButton = await waitFor(() =>
+                screen.getByText('Clear search'),
+            )
+
+            await user.click(clearButton)
+
+            await waitFor(() => {
+                expect(searchInput).toHaveValue('')
+            })
+        })
+
+        it('hides no results message after clearing search', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'nonexistent')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'No results found' }),
+                ).toBeInTheDocument()
+            })
+
+            const clearButton = screen.getByText('Clear search')
+
+            await user.click(clearButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: 'No results found' }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('shows data after clearing search', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const searchInput = screen.getByLabelText('Search knowledge items')
+
+            await user.type(searchInput, 'nonexistent')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'No results found' }),
+                ).toBeInTheDocument()
+            })
+
+            const clearButton = screen.getByText('Clear search')
+
+            await user.click(clearButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('docs.example.com')).toBeInTheDocument()
+            })
         })
     })
 

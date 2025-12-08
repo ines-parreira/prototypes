@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { useQueryClient } from '@tanstack/react-query'
 import {
     act,
     fireEvent,
@@ -41,6 +42,12 @@ const useNotifyMock = assumeMock(useNotify)
 
 jest.mock('core/flags/hooks/useFlag')
 const useFlagMock = assumeMock(useFlag)
+
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
+const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor',
@@ -132,6 +139,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
     const deleteArticleMock = jest.fn()
     const createArticleTranslationMock = jest.fn()
     const deleteArticleTranslationMock = jest.fn()
+    const invalidateQueriesMock = jest.fn()
     const onClose = jest.fn()
     const notifyMock = jest.fn()
 
@@ -140,12 +148,16 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
         useFlagMock.mockReturnValue(false)
+        useQueryClientMock.mockReturnValue({
+            invalidateQueries: invalidateQueriesMock,
+        } as any)
 
         updateArticleTranslationMock.mockImplementation((o) =>
             Promise.resolve({ data: o }),
         )
         deleteArticleMock.mockResolvedValue(undefined)
         deleteArticleTranslationMock.mockResolvedValue(undefined)
+        invalidateQueriesMock.mockResolvedValue(undefined)
 
         mockedUseCreateArticleTranslation.mockReturnValue({
             mutateAsync: createArticleTranslationMock,
@@ -187,6 +199,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -232,6 +245,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -259,6 +273,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -338,6 +353,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -365,6 +381,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -434,6 +451,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -495,6 +513,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -514,6 +533,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -554,6 +574,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -573,6 +594,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -619,6 +641,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -644,6 +667,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -742,6 +766,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -838,6 +863,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -901,6 +927,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -922,6 +949,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -968,6 +996,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -987,6 +1016,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -1040,6 +1070,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -1065,6 +1096,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     articleId={1}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )

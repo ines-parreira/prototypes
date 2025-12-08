@@ -1,6 +1,10 @@
 import { act, renderHook } from '@testing-library/react'
 
-import { KnowledgeType, type SnippetEditorConfig } from '../types'
+import { KnowledgeType } from '../types'
+import type {
+    SnippetEditorConfig,
+    UseKnowledgeHubSnippetEditorParams,
+} from '../types'
 import type { KnowledgeEditorReturn } from './useKnowledgeHubEditor'
 import { useKnowledgeHubSnippetEditor } from './useKnowledgeHubSnippetEditor'
 
@@ -35,6 +39,20 @@ describe('useKnowledgeHubSnippetEditor', () => {
         { id: 3, title: 'Domain Article', type: KnowledgeType.Domain },
     ]
 
+    const mockHistory = {
+        replace: jest.fn(),
+        push: jest.fn(),
+        location: { pathname: '/knowledge', search: '' },
+    } as any
+
+    const mockRoutes = {
+        knowledgeArticle: jest.fn(
+            (type: string, id: number) => `/knowledge/${type}/${id}`,
+        ),
+    } as any
+
+    const mockBuildUrlWithParams = jest.fn((basePath: string) => basePath)
+
     beforeEach(() => {
         jest.clearAllMocks()
         useKnowledgeHubEditor.mockReturnValue(mockEditor)
@@ -45,7 +63,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
             useKnowledgeHubSnippetEditor({
                 shopName: 'test-shop',
                 filteredSnippetArticles,
-            }),
+                history: mockHistory,
+                routes: mockRoutes,
+                buildUrlWithParams: mockBuildUrlWithParams,
+            } as UseKnowledgeHubSnippetEditorParams),
         )
 
         expect(result.current.currentSnippetType).toBeUndefined()
@@ -56,7 +77,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
             useKnowledgeHubSnippetEditor({
                 shopName: 'test-shop',
                 filteredSnippetArticles,
-            }),
+                history: mockHistory,
+                routes: mockRoutes,
+                buildUrlWithParams: mockBuildUrlWithParams,
+            } as UseKnowledgeHubSnippetEditorParams),
         )
 
         expect(useKnowledgeHubEditor).toHaveBeenCalledWith({
@@ -72,7 +96,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -88,7 +115,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -104,7 +134,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -120,7 +153,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             expect(() => {
@@ -137,7 +173,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -164,7 +203,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -183,7 +225,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -206,7 +251,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -226,7 +274,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -245,7 +296,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -268,7 +322,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             act(() => {
@@ -285,7 +342,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             expect(result.current).toHaveProperty('isEditorOpen')
@@ -310,7 +370,10 @@ describe('useKnowledgeHubSnippetEditor', () => {
                 useKnowledgeHubSnippetEditor({
                     shopName: 'test-shop',
                     filteredSnippetArticles,
-                }),
+                    history: mockHistory,
+                    routes: mockRoutes,
+                    buildUrlWithParams: mockBuildUrlWithParams,
+                } as UseKnowledgeHubSnippetEditorParams),
             )
 
             expect(result.current.isEditorOpen).toBe(true)

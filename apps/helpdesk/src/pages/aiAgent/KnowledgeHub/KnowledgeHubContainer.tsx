@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { Modal, OverlayHeader } from '@gorgias/axiom'
 
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+    OPEN_PLAYGROUND_PANEL,
     OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
     OPEN_UPLOAD_DOCUMENT_MODAL,
@@ -41,21 +43,23 @@ import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
+import { usePlaygroundPanel } from '../hooks/usePlaygroundPanel'
 import { SnippetEditorWrapper } from './EditorWrappers/SnippetEditorWrapper'
 import { DeleteDocumentModal } from './EmptyState/DeleteDocumentModal'
 import { UploadDocumentModal } from './EmptyState/UploadDocumentModal'
 import { useKnowledgeHubSnippetEditor } from './hooks/useKnowledgeHubSnippetEditor'
+import { useKnowledgeHubUrlParams } from './hooks/useKnowledgeHubUrlParams'
 
 import css from './KnowledgeHubContainer.less'
 
 export const KnowledgeHubContainer = () => {
-    const { shopType } = useParams<{ shopType: string }>()
+    const { shopType, type, id } = useParams<{
+        shopType: string
+        type?: string
+        id?: string
+    }>()
 
-    const [selectedFolder, setSelectedFolder] =
-        useState<GroupedKnowledgeItem | null>(null)
-    const [selectedFilter, setSelectedFilter] = useState<KnowledgeType | null>(
-        null,
-    )
+    const history = useHistory()
     const [isAddKnowledgeModalOpen, setIsAddKnowledgeModalOpen] =
         useState(false)
 
@@ -81,6 +85,19 @@ export const KnowledgeHubContainer = () => {
         fileIngestionLogs,
         filePendingCount,
     } = useKnowledgeHub()
+
+    const {
+        selectedFilter,
+        selectedFolder,
+        setSelectedFolder,
+        buildUrlWithParams,
+        handleDocumentFilterChange,
+        updateUrlWithFolderParam,
+        removeFolderParamFromUrl,
+        handleCloseEditorPath,
+    } = useKnowledgeHubUrlParams(shopName, tableData)
+
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const guidanceArticles = useMemo(() => {
         return tableData
@@ -133,7 +150,128 @@ export const KnowledgeHubContainer = () => {
     const snippetEditor = useKnowledgeHubSnippetEditor({
         shopName,
         filteredSnippetArticles: snippetArticles,
+        history,
+        routes,
+        buildUrlWithParams,
     })
+
+    useEffect(() => {
+        if (type && id) {
+            const articleId = Number(id)
+            if (isNaN(articleId)) {
+                return
+            }
+
+            switch (type) {
+                case KnowledgeType.Guidance:
+                    openGuidanceEditorForEdit(articleId)
+                    break
+                case KnowledgeType.FAQ:
+                    faqEditor.openEditorForEdit(articleId)
+                    break
+                case KnowledgeType.Document:
+                    snippetEditor?.openEditorForEdit(
+                        articleId,
+                        KnowledgeType.Document,
+                    )
+                    break
+                case KnowledgeType.URL:
+                    snippetEditor?.openEditorForEdit(
+                        articleId,
+                        KnowledgeType.URL,
+                    )
+                    break
+                case KnowledgeType.Domain:
+                    snippetEditor?.openEditorForEdit(
+                        articleId,
+                        KnowledgeType.Domain,
+                    )
+                    break
+                default:
+                    return
+            }
+        }
+    }, [type, id, openGuidanceEditorForEdit, faqEditor, snippetEditor])
+
+    const handleOpenGuidanceEditor = useCallback(
+        (articleId: number) => {
+            // Save the current base path to return to after closing editor
+
+            const basePath = routes.knowledgeArticle(
+                KnowledgeType.Guidance,
+                articleId,
+            )
+            const targetPath = buildUrlWithParams(basePath)
+            if (
+                history.location.pathname + history.location.search !==
+                targetPath
+            ) {
+                history.push(targetPath)
+            }
+            openGuidanceEditorForEdit(articleId)
+        },
+        [history, routes, openGuidanceEditorForEdit, buildUrlWithParams],
+    )
+
+    const handleOpenFaqEditor = useCallback(
+        (articleId: number) => {
+            // Save the current base path to return to after closing editor
+            const basePath = routes.knowledgeArticle(
+                KnowledgeType.FAQ,
+                articleId,
+            )
+            const targetPath = buildUrlWithParams(basePath)
+            if (
+                history.location.pathname + history.location.search !==
+                targetPath
+            ) {
+                history.push(targetPath)
+            }
+            faqEditor.openEditorForEdit(articleId)
+        },
+        [history, routes, faqEditor, buildUrlWithParams],
+    )
+
+    const handleOpenSnippetEditor = useCallback(
+        (articleId: number) => {
+            // Save the current base path to return to after closing editor
+            const articleType = snippetArticles.find(
+                (article) => article.id === articleId,
+            )?.type
+
+            if (!articleType) {
+                return
+            }
+
+            const basePath = routes.knowledgeArticle(articleType, articleId)
+            const targetPath = buildUrlWithParams(basePath)
+            if (
+                history.location.pathname + history.location.search !==
+                targetPath
+            ) {
+                history.push(targetPath)
+            }
+            snippetEditor?.openEditorForEdit(articleId, articleType)
+        },
+        [history, routes, snippetEditor, buildUrlWithParams, snippetArticles],
+    )
+
+    const handleCloseGuidanceEditor = useCallback(() => {
+        handleCloseEditorPath()
+        knowledgeEditorProps.onClose()
+    }, [knowledgeEditorProps, handleCloseEditorPath])
+
+    const handleCloseFaqEditor = useCallback(() => {
+        handleCloseEditorPath()
+        faqEditor.closeEditor()
+    }, [faqEditor, handleCloseEditorPath])
+
+    const snippetEditorClose = useCallback(() => {
+        handleCloseEditorPath()
+        snippetEditor.closeEditor()
+    }, [snippetEditor, handleCloseEditorPath])
+
+    const { openPlayground } = usePlaygroundPanel()
 
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
         storeDomainIngestionLog,
@@ -150,6 +288,10 @@ export const KnowledgeHubContainer = () => {
         setIsAddKnowledgeModalOpen(false)
     }, [])
 
+    const handleOpenPlayground = useCallback(() => {
+        void openPlayground()
+    }, [openPlayground])
+
     useListenToDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE, handleRefetchTable)
     useListenToDocumentEvent(OPEN_SYNC_WEBSITE_MODAL, handleCloseSyncModals)
     useListenToDocumentEvent(OPEN_SYNC_URL_MODAL, handleCloseSyncModals)
@@ -162,13 +304,18 @@ export const KnowledgeHubContainer = () => {
         HELP_CENTER_SELECT_MODAL_OPEN,
         handleCloseSyncModals,
     )
+    useListenToDocumentEvent(OPEN_PLAYGROUND_PANEL, handleOpenPlayground)
 
     const onClick = (data: GroupedKnowledgeItem) => {
         setSelectedFolder(data)
+
+        updateUrlWithFolderParam(data)
     }
 
     const handleBack = () => {
         setSelectedFolder(null)
+
+        removeFolderParamFromUrl()
     }
 
     const onAddKnowledgeClick = () => {
@@ -227,6 +374,7 @@ export const KnowledgeHubContainer = () => {
                 data={selectedFolder}
                 onBack={handleBack}
                 onAddKnowledge={onAddKnowledgeClick}
+                onTest={handleOpenPlayground}
                 onSync={onSync}
                 onDelete={onUrlDelete}
                 isSyncButtonDisabled={isSyncLessThan24h}
@@ -252,16 +400,16 @@ export const KnowledgeHubContainer = () => {
             />
             <DocumentFilters
                 selectedFilter={selectedFilter}
-                onFilterChange={setSelectedFilter}
+                onFilterChange={handleDocumentFilterChange}
             />
             <KnowledgeHubTable
                 data={tableData}
                 isLoading={isInitialLoading || isUrlFolderSyncing}
                 onRowClick={onClick}
-                onGuidanceRowClick={openGuidanceEditorForEdit}
-                onFaqRowClick={faqEditor.openEditorForEdit}
+                onGuidanceRowClick={handleOpenGuidanceEditor}
+                onFaqRowClick={handleOpenFaqEditor}
                 onFaqEditorOpen={handleFaqEditorOpen}
-                onSnippetRowClick={snippetEditor.openEditorForEdit}
+                onSnippetRowClick={handleOpenSnippetEditor}
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
                 faqHelpCenterId={faqHelpCenterId}
@@ -309,14 +457,17 @@ export const KnowledgeHubContainer = () => {
                 shopName={shopName}
                 aria-label="Upload Document Modal"
             />
-            <GuidanceEditorWrapper {...knowledgeEditorProps} />
+            <GuidanceEditorWrapper
+                {...knowledgeEditorProps}
+                onClose={handleCloseGuidanceEditor}
+            />
             <FaqEditorWrapper
                 faqHelpCenterId={faqHelpCenterId || 0}
                 isOpen={faqEditor.isEditorOpen}
                 currentArticleId={faqEditor.currentArticleId}
                 faqArticleMode={faqEditor.faqArticleMode}
                 initialArticleMode={faqEditor.initialArticleMode}
-                onClose={faqEditor.closeEditor}
+                onClose={handleCloseFaqEditor}
                 onCreate={faqEditor.handleCreate}
                 onUpdate={faqEditor.handleUpdate}
                 onDelete={faqEditor.handleDelete}
@@ -326,7 +477,7 @@ export const KnowledgeHubContainer = () => {
             <SnippetEditorWrapper
                 shopName={shopName}
                 isOpen={snippetEditor.isEditorOpen}
-                onClose={snippetEditor.closeEditor}
+                onClose={snippetEditorClose}
                 onUpdate={snippetEditor.handleUpdate}
                 onClickPrevious={snippetEditor.handleClickPrevious}
                 onClickNext={snippetEditor.handleClickNext}

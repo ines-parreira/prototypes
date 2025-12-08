@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { useNotify } from 'hooks/useNotify'
 import {
+    helpCenterArticleKeys,
     useCreateArticleTranslation,
     useDeleteArticle,
     useDeleteArticleTranslation,
@@ -72,12 +74,14 @@ type Props = {
     initialArticleMode: InitialArticleMode
     isFullscreen: boolean
     onToggleFullscreen: () => void
+    onTest: () => void
 }
 
 const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     props: Props & { article: ArticleWithLocalTranslation },
 ) => {
     const { error: notifyError } = useNotify()
+    const queryClient = useQueryClient()
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
@@ -221,9 +225,18 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
             ])
 
             setArticle(mergeResponseSettingsInArticle(response))
+
+            await queryClient.invalidateQueries({
+                queryKey: helpCenterArticleKeys(
+                    props.helpCenter.id,
+                    props.article.id,
+                    locale,
+                ),
+            })
+
             props.onUpdated?.()
         },
-        [props, locale, updateArticleTranslation],
+        [props, locale, updateArticleTranslation, queryClient],
     )
 
     const details = useKnowledgeEditorHelpCenterArticleDetails({
@@ -361,6 +374,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                 },
             })
         },
+        onTest: props.onTest,
     })
 
     const onLocaleActionClick = useCallback(

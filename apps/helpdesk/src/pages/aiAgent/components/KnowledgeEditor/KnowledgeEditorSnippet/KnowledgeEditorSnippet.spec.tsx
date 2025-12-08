@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { SnippetType } from '../../../KnowledgeHub/types'
 import { KnowledgeEditorSnippet } from './KnowledgeEditorSnippet'
@@ -11,14 +12,48 @@ jest.mock('./KnowledgeEditorSnippetLoader', () => ({
     KnowledgeEditorSnippetLoader: ({
         snippetType,
         snippetId,
+        onTest,
     }: {
         snippetType: string
         snippetId: number
+        onTest: () => void
     }) => (
         <div data-testid="snippet-loader">
             {snippetType} - {snippetId}
+            <button onClick={onTest}>Test</button>
         </div>
     ),
+}))
+
+jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
+    PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
+        <div data-testid="playground-panel">
+            <button onClick={onClose}>Close Playground</button>
+        </div>
+    ),
+}))
+
+jest.mock('@gorgias/axiom', () => ({
+    SidePanel: ({
+        isOpen,
+        onOpenChange,
+        children,
+    }: {
+        isOpen: boolean
+        onOpenChange: (open: boolean) => void
+        children: React.ReactNode
+    }) =>
+        isOpen ? (
+            <div data-testid="side-panel" data-is-open={isOpen}>
+                <button
+                    data-testid="close-panel-button"
+                    onClick={() => onOpenChange(false)}
+                >
+                    Close
+                </button>
+                {children}
+            </div>
+        ) : null,
 }))
 
 const { useAiAgentHelpCenter } = jest.requireMock(
@@ -258,6 +293,179 @@ describe('KnowledgeEditorSnippet', () => {
             )
 
             expect(screen.getByTestId('snippet-loader')).toBeInTheDocument()
+        })
+    })
+
+    describe('Playground Panel', () => {
+        it('should not show playground panel initially', () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open playground panel when Test button is clicked', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+        })
+
+        it('should show two columns when playground is open', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('snippet-loader')).toBeInTheDocument()
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+        })
+
+        it('should close playground panel when close button is clicked', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+
+            await act(() =>
+                userEvent.click(
+                    screen.getByRole('button', { name: /close playground/i }),
+                ),
+            )
+
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should toggle playground when Test button is clicked multiple times', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+        })
+
+        it('should render playground only when open', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+        })
+
+        it('should keep playground state independent of other interactions', async () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            expect(screen.getByTestId('snippet-loader')).toBeInTheDocument()
+        })
+    })
+
+    describe('SidePanel onOpenChange', () => {
+        it('calls onClose when SidePanel onOpenChange is triggered with false', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                />,
+            )
+
+            const closeButton = screen.getByTestId('close-panel-button')
+            await act(() => user.click(closeButton))
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not call onClose when SidePanel onOpenChange is triggered with true', () => {
+            const onClose = jest.fn()
+
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                />,
+            )
+
+            expect(onClose).not.toHaveBeenCalled()
         })
     })
 })

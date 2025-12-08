@@ -112,6 +112,7 @@ export const ActionDrivenNavigation = () => {
                     buttonClassName={css.storeSelectorButton}
                     hideSelectedFromDropdown
                     applyClassicThemeOverride
+                    withSearch={storeIntegrations.length > 10}
                 />
             </div>
 

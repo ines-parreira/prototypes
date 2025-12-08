@@ -11,6 +11,8 @@
         justify-content: center;
     }
     .tableContainer {
+        display: flex;
+        flex-direction: column;
         flex-grow: 1;
         margin-top: var(--spacing-md);
         button[slot='button'][aria-label='Items per page'] {
@@ -95,5 +97,11 @@
     .tag {
         box-shadow: none;
         background: var(--surface-neutral-secondary);
+    }
+
+    .searchEmptyTable {
+        [data-name='table-root'] {
+            flex-grow: 1;
+        }
     }
 }

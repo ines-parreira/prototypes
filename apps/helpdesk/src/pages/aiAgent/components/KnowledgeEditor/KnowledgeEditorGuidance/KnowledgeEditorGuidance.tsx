@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import classNames from 'classnames'
 import _noop from 'lodash/noop'
 
 import {
@@ -18,6 +19,7 @@ import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/varia
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 import type {
     GuidanceArticle,
     GuidanceFormFields,
@@ -26,8 +28,11 @@ import type {
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
+import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import type { BaseProps } from './KnowledgeEditorGuidanceView'
 import { KnowledgeEditorGuidanceView } from './KnowledgeEditorGuidanceView'
+
+import css from '../shared.less'
 
 const KnowledgeEditorGuidanceStatefulEdit = ({
     shopName,
@@ -43,8 +48,8 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
     guidanceMode,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: BaseProps & {
-    shopName: string
     guidanceArticle: GuidanceArticle
     availableActions: GuidanceAction[]
     onSave: (
@@ -117,6 +122,7 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
+            onTest={onTest}
         />
     )
 }
@@ -133,8 +139,8 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
     guidanceMode,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: BaseProps & {
-    shopName: string
     guidanceTemplate?: GuidanceTemplate
     availableActions: GuidanceAction[]
     onCreate: (
@@ -183,6 +189,7 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
+            onTest={onTest}
         />
     )
 }
@@ -202,6 +209,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     onCopyFn,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: BaseProps & {
     shopType: string
     guidanceArticleId: number
@@ -299,6 +307,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
+            onTest={onTest}
         />
     )
 }
@@ -317,6 +326,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     guidanceMode,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: BaseProps & {
     shopType: string
     guidanceTemplate?: GuidanceTemplate
@@ -383,6 +393,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
+            onTest={onTest}
         />
     )
 }
@@ -404,6 +415,7 @@ const KnowledgeEditorGuidanceRouter = ({
     guidanceMode,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: BaseProps & {
     shopType: string
     guidanceArticleId?: number
@@ -441,6 +453,7 @@ const KnowledgeEditorGuidanceRouter = ({
                 guidanceMode={currentGuidanceMode}
                 isFullscreen={isFullscreen}
                 onToggleFullscreen={onToggleFullscreen}
+                onTest={onTest}
             />
         )
     }
@@ -460,6 +473,7 @@ const KnowledgeEditorGuidanceRouter = ({
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
+            onTest={onTest}
         />
     )
 }
@@ -478,7 +492,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     onUpdate,
     onCopy,
     isOpen,
-}: Omit<BaseProps, 'isFullscreen' | 'onToggleFullscreen'> & {
+}: Omit<BaseProps, 'isFullscreen' | 'onToggleFullscreen' | 'onTest'> & {
     shopName: string
     shopType: string
     guidanceArticleId?: number
@@ -500,34 +514,57 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
         setIsFullscreen(!isFullscreen)
     }, [isFullscreen])
 
+    const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
+        usePlaygroundPanelInKnowledgeEditor(isFullscreen)
+
     return (
         <SidePanel
             isOpen={isOpen}
+            onOpenChange={(open) => {
+                if (!open) {
+                    onClose()
+                }
+            }}
+            isDismissable
             withoutPadding
-            width={isFullscreen ? '100vw' : '66vw'}
+            width={sidePanelWidth}
         >
-            {guidanceHelpCenter ? (
-                <KnowledgeEditorGuidanceRouter
-                    shopName={shopName}
-                    shopType={shopType}
-                    guidanceArticleId={guidanceArticleId}
-                    guidanceTemplate={guidanceTemplate}
-                    guidanceHelpCenterId={guidanceHelpCenter.id}
-                    locale={guidanceHelpCenter.default_locale}
-                    onClose={onClose}
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    guidanceMode={guidanceMode}
-                    onDeleteFn={onDelete}
-                    onCreateFn={onCreate}
-                    onUpdateFn={onUpdate}
-                    onCopyFn={onCopy}
-                    isFullscreen={isFullscreen}
-                    onToggleFullscreen={onToggleFullscreen}
-                />
-            ) : (
-                <LoadingSpinner size="big" />
-            )}
+            <div className={css.splitView}>
+                <div
+                    className={classNames(css.editor, {
+                        [css.loader]: !guidanceHelpCenter,
+                    })}
+                >
+                    {guidanceHelpCenter ? (
+                        <KnowledgeEditorGuidanceRouter
+                            shopName={shopName}
+                            shopType={shopType}
+                            guidanceArticleId={guidanceArticleId}
+                            guidanceTemplate={guidanceTemplate}
+                            guidanceHelpCenterId={guidanceHelpCenter.id}
+                            locale={guidanceHelpCenter.default_locale}
+                            onClose={onClose}
+                            onClickPrevious={onClickPrevious}
+                            onClickNext={onClickNext}
+                            guidanceMode={guidanceMode}
+                            onDeleteFn={onDelete}
+                            onCreateFn={onCreate}
+                            onUpdateFn={onUpdate}
+                            onCopyFn={onCopy}
+                            isFullscreen={isFullscreen}
+                            onToggleFullscreen={onToggleFullscreen}
+                            onTest={onTest}
+                        />
+                    ) : (
+                        <LoadingSpinner size="big" />
+                    )}
+                </div>
+                {isPlaygroundOpen && (
+                    <div className={css.playground}>
+                        <PlaygroundPanel onClose={onClosePlayground} />
+                    </div>
+                )}
+            </div>
         </SidePanel>
     )
 }

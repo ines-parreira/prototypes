@@ -57,6 +57,8 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
+        knowledgeArticle: (type: string, id: number) =>
+            `${basePath}/knowledge/${type}/${id}`,
         knowledgeSources: `${basePath}/knowledge/sources`,
         sales: `${basePath}/sales`,
         salesStrategy: `${basePath}/sales/strategy`,

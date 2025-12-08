@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import {
     OPEN_DELETE_DOCUMENT_MODAL,
     OPEN_DELETE_URL_MODAL,
+    OPEN_PLAYGROUND_PANEL,
     OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
 } from 'pages/aiAgent/KnowledgeHub/constants'
@@ -57,4 +58,8 @@ export const openDeleteUrlModal = (data: GroupedKnowledgeItem) => {
 
 export const openDeleteDocumentModal = (data: GroupedKnowledgeItem) => {
     dispatchDocumentEvent(OPEN_DELETE_DOCUMENT_MODAL, data)
+}
+
+export const openPlaygroundPanel = () => {
+    dispatchDocumentEvent(OPEN_PLAYGROUND_PANEL)
 }

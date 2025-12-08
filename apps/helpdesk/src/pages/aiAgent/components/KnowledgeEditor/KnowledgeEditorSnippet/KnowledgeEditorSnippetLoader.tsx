@@ -19,6 +19,8 @@ import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
 
+import css from './KnowledgeEditorSnippet.less'
+
 type SnippetSourceData = {
     url: string
     downloadUrl: string
@@ -35,6 +37,7 @@ type Props = {
     onUpdated?: () => void
     isFullscreen: boolean
     onToggleFullscreen: () => void
+    onTest: () => void
 }
 export const KnowledgeEditorSnippetLoader = ({
     snippetId,
@@ -47,6 +50,7 @@ export const KnowledgeEditorSnippetLoader = ({
     onUpdated,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: Props) => {
     const { error: notifyError } = useNotify()
     const queryClient = useQueryClient()
@@ -185,8 +189,6 @@ export const KnowledgeEditorSnippetLoader = ({
         throw new Error(`Unknown snippet type: ${snippetType}`)
     }, [articleData, snippetType, source, ingestedResourceData])
 
-    const handleTest = () => {}
-
     const onToggleAIAgentEnabled = useCallback(async () => {
         if (!articleData) return
 
@@ -237,7 +239,11 @@ export const KnowledgeEditorSnippetLoader = ({
         isFileIngestionLogsLoading
 
     if (isLoading || !snippet) {
-        return <LoadingSpinner size="big" />
+        return (
+            <div className={css.loader}>
+                <LoadingSpinner size="big" />
+            </div>
+        )
     }
 
     return (
@@ -247,7 +253,7 @@ export const KnowledgeEditorSnippetLoader = ({
             onClickNext={onClickNext || (() => {})}
             onToggleFullscreen={onToggleFullscreen}
             onToggleAIAgentEnabled={onToggleAIAgentEnabled}
-            onTest={handleTest}
+            onTest={onTest}
             isFullscreen={isFullscreen}
             snippet={snippet}
         />

@@ -91,6 +91,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
         onUpdated: jest.fn(),
         isFullscreen: false,
         onToggleFullscreen: jest.fn(),
+        onTest: jest.fn(),
     }
 
     beforeEach(() => {

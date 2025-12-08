@@ -6,9 +6,7 @@ import {
     MetricScope,
 } from 'domains/reporting/hooks/metricNames'
 
-export const P1_SCOPES: MetricScope[] = []
-
-export const P2_SCOPES: MetricScope[] = [
+export const P1_SCOPES: MetricScope[] = [
     MetricScope.MessagesSent,
     MetricScope.SatisfactionSurveys,
     MetricScope.TicketsClosed,
@@ -22,6 +20,8 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.TicketsOpen,
     MetricScope.FirstResponseTime,
 ]
+
+export const P2_SCOPES: MetricScope[] = []
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 

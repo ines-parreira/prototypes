@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import classNames from 'classnames'
+
 import {
     HeaderRowGroup,
     TableBodyContent,
@@ -10,7 +12,10 @@ import {
 } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
-import { EmptyStateWrapper } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
+import {
+    EmptyStateNoSearchResults,
+    EmptyStateWrapper,
+} from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
@@ -182,7 +187,7 @@ export const KnowledgeHubTable = ({
         },
     })
 
-    if (displayData.length === 0 && !isLoading) {
+    if (!searchTerm && displayData.length === 0 && !isLoading) {
         return (
             <div className={css.emptyTable}>
                 <EmptyStateWrapper
@@ -195,8 +200,19 @@ export const KnowledgeHubTable = ({
         )
     }
 
+    const isSearchEmptyPage =
+        !isLoading && searchTerm && displayData.length === 0
+
+    const clearSearch = () => {
+        setSearchTerm('')
+    }
+
     return (
-        <div className={css.tableContainer}>
+        <div
+            className={classNames(css.tableContainer, {
+                [css.searchEmptyTable]: isSearchEmptyPage,
+            })}
+        >
             <div className={css.tableToolbars}>
                 <TableToolbar<GroupedKnowledgeItem>
                     table={table}
@@ -239,21 +255,35 @@ export const KnowledgeHubTable = ({
                 />
             </div>
             <TableRoot withBorder={false}>
-                <TableHeader>
-                    <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
-                </TableHeader>
+                {!isSearchEmptyPage && (
+                    <TableHeader>
+                        <HeaderRowGroup
+                            headerGroups={table.getHeaderGroups()}
+                        />
+                    </TableHeader>
+                )}
+
                 <TableBodyContent
                     isLoading={isLoading}
                     rows={table.getRowModel().rows}
                     columnCount={table.getAllColumns().length}
                     table={table}
+                    renderEmptyStateComponent={() => {
+                        return (
+                            <EmptyStateNoSearchResults
+                                clearSearch={clearSearch}
+                            />
+                        )
+                    }}
                 />
             </TableRoot>
             <div className={css.pagination}>
-                <TableToolbar<GroupedKnowledgeItem>
-                    table={table}
-                    bottomRow={{ right: ['pagination'] }}
-                />
+                {!isSearchEmptyPage && (
+                    <TableToolbar<GroupedKnowledgeItem>
+                        table={table}
+                        bottomRow={{ right: ['pagination'] }}
+                    />
+                )}
             </div>
         </div>
     )

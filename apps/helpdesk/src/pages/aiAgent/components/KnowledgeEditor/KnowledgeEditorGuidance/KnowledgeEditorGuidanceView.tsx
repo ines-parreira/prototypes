@@ -8,6 +8,7 @@ import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEdi
 import { KnowledgeEditorGuidanceCreateView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceCreateView'
 import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceReadView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceReadView'
+import { KnowledgeEditorGuidanceUnsavedChangesModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceUnsavedChangesModal'
 import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
@@ -15,6 +16,8 @@ import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/Kn
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import type { GuidanceMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarGuidanceControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import { useKnowledgeEditorGuidanceModal } from './hooks/useKnowledgeEditorGuidanceModal'
+import { ModalState } from './KnowledgeEditorGuidanceModal.types'
 
 import css from './KnowledgeEditorGuidanceView.less'
 
@@ -26,6 +29,7 @@ export type BaseProps = {
     guidanceMode: GuidanceMode['mode']
     isFullscreen: boolean
     onToggleFullscreen: () => void
+    onTest: () => void
 }
 
 type Props = BaseProps & {
@@ -75,12 +79,14 @@ export const KnowledgeEditorGuidanceView = ({
     availableVariables,
     isFullscreen,
     onToggleFullscreen,
+    onTest,
 }: Props) => {
     const [initialTitle] = useState(title)
     const [initialContent] = useState(content)
     const [isDetailsView, setIsDetailsView] = useState(false)
     const [guidanceMode, setGuidanceMode] =
         useState<GuidanceMode['mode']>(initialGuidanceMode)
+    const { modal, openUnsavedChangesModal } = useKnowledgeEditorGuidanceModal()
 
     const hasContentChanged = useMemo(
         () => title !== initialTitle || content !== initialContent,
@@ -103,19 +109,18 @@ export const KnowledgeEditorGuidanceView = ({
 
     const onClickCancel = useCallback(() => {
         if (hasContentChanged) {
-            onChangeTitle(initialTitle)
-            onChangeContent(initialContent)
+            openUnsavedChangesModal({
+                onDiscardChanges: () => {
+                    onClose()
+                },
+                onSaveChanges: async () => {
+                    await onClickSave()
+                },
+            })
         } else {
             onClose()
         }
-    }, [
-        hasContentChanged,
-        initialTitle,
-        initialContent,
-        onChangeTitle,
-        onChangeContent,
-        onClose,
-    ])
+    }, [hasContentChanged, onClose, openUnsavedChangesModal, onClickSave])
 
     const onClickCreate = useCallback(async () => {
         const response = await onCreate({
@@ -140,6 +145,7 @@ export const KnowledgeEditorGuidanceView = ({
                       onCopy: onClickCopy,
                       onEdit: onClickEdit,
                       onDelete: onDelete,
+                      onTest: onTest,
                   }
                 : guidanceMode === 'edit'
                   ? {
@@ -160,6 +166,7 @@ export const KnowledgeEditorGuidanceView = ({
             onClickEdit,
             onDelete,
             onClickCopy,
+            onTest,
             onClickSave,
             onClickCancel,
             onClickCreate,
@@ -192,55 +199,64 @@ export const KnowledgeEditorGuidanceView = ({
                     disabled={isGuidanceArticleUpdating}
                 />
             </KnowledgeEditorTopBar>
+            <div className={css.editorSection}>
+                <div className={css.knowledgeEditor}>
+                    {guidanceMode === 'read' && (
+                        <KnowledgeEditorGuidanceReadView
+                            content={content}
+                            title={title}
+                            availableActions={availableActions}
+                            availableVariables={availableVariables}
+                        />
+                    )}
 
-            <div className={css.knowledgeEditor}>
-                {guidanceMode === 'read' && (
-                    <KnowledgeEditorGuidanceReadView
-                        content={content}
-                        title={title}
-                        availableActions={availableActions}
-                        availableVariables={availableVariables}
-                    />
-                )}
+                    {guidanceMode === 'edit' && (
+                        <KnowledgeEditorGuidanceEditView
+                            content={content}
+                            title={title}
+                            onChangeContent={onChangeContent}
+                            onChangeTitle={onChangeTitle}
+                            shopName={shopName}
+                            availableActions={availableActions}
+                            availableVariables={availableVariables}
+                        />
+                    )}
 
-                {guidanceMode === 'edit' && (
-                    <KnowledgeEditorGuidanceEditView
-                        content={content}
-                        title={title}
-                        onChangeContent={onChangeContent}
-                        onChangeTitle={onChangeTitle}
-                        shopName={shopName}
-                        availableActions={availableActions}
-                        availableVariables={availableVariables}
-                    />
-                )}
+                    {guidanceMode === 'create' && (
+                        <KnowledgeEditorGuidanceCreateView
+                            content={content}
+                            title={title}
+                            onChangeContent={onChangeContent}
+                            onChangeTitle={onChangeTitle}
+                            shopName={shopName}
+                            availableActions={availableActions}
+                            availableVariables={availableVariables}
+                        />
+                    )}
 
-                {guidanceMode === 'create' && (
-                    <KnowledgeEditorGuidanceCreateView
-                        content={content}
-                        title={title}
-                        onChangeContent={onChangeContent}
-                        onChangeTitle={onChangeTitle}
-                        shopName={shopName}
-                        availableActions={availableActions}
-                        availableVariables={availableVariables}
-                    />
-                )}
-
-                {isDetailsView && (
-                    <KnowledgeEditorSidePanelGuidance
-                        details={{
-                            aiAgentStatus: {
-                                value: aiAgentEnabled,
-                                onChange: onToggleAIAgentEnabled,
-                            },
-                            createdDatetime,
-                            lastUpdatedDatetime,
-                            isUpdating: isGuidanceArticleUpdating,
-                        }}
-                    />
-                )}
+                    {isDetailsView && (
+                        <KnowledgeEditorSidePanelGuidance
+                            details={{
+                                aiAgentStatus: {
+                                    value: aiAgentEnabled,
+                                    onChange: onToggleAIAgentEnabled,
+                                },
+                                createdDatetime,
+                                lastUpdatedDatetime,
+                                isUpdating: isGuidanceArticleUpdating,
+                            }}
+                        />
+                    )}
+                </div>
             </div>
+            {modal.type === ModalState.UnsavedChanges && (
+                <KnowledgeEditorGuidanceUnsavedChangesModal
+                    isOpen={true}
+                    onBackToEditing={modal.onBackToEditing}
+                    onDiscard={modal.onDiscard}
+                    onSave={modal.onSave}
+                />
+            )}
         </div>
     )
 }

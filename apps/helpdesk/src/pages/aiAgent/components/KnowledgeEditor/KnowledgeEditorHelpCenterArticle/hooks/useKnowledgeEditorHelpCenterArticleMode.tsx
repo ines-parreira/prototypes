@@ -10,6 +10,7 @@ type Props = {
     onSaveAndPublish: () => Promise<void>
     onSaveDraft: () => Promise<void>
     onDelete: () => Promise<void>
+    onTest: () => void
 }
 
 export const useKnowledgeEditorHelpCenterArticleMode = ({
@@ -19,6 +20,7 @@ export const useKnowledgeEditorHelpCenterArticleMode = ({
     onSaveAndPublish,
     onSaveDraft,
     onDelete,
+    onTest,
 }: Props): ArticleMode => {
     return useMemo(
         (): ArticleMode =>
@@ -27,7 +29,7 @@ export const useKnowledgeEditorHelpCenterArticleMode = ({
                       mode: ArticleModes.READ,
                       onEdit,
                       onDelete,
-                      onTest: () => {},
+                      onTest,
                   }
                 : mode === ArticleModes.EDIT_PUBLISHED
                   ? {
@@ -41,6 +43,14 @@ export const useKnowledgeEditorHelpCenterArticleMode = ({
                         onSaveAndPublish,
                         onCancel,
                     },
-        [onEdit, onSaveDraft, onSaveAndPublish, onCancel, onDelete, mode],
+        [
+            onEdit,
+            onSaveDraft,
+            onSaveAndPublish,
+            onCancel,
+            onDelete,
+            onTest,
+            mode,
+        ],
     )
 }

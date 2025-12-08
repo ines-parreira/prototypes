@@ -3,7 +3,7 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useHistory, useParams } from 'react-router-dom'
 import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
@@ -35,6 +35,12 @@ import {
     getCurrentAccountState,
 } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+    useHistory: jest.fn(),
+}))
 
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
@@ -92,14 +98,59 @@ jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
+
+// Global variables to capture the onClose callbacks
+let capturedGuidanceEditorOnClose: (() => void) | null = null
+let capturedFaqEditorOnClose: (() => void) | null = null
+let capturedSnippetEditorOnClose: (() => void) | null = null
+
 jest.mock('pages/aiAgent/KnowledgeHub/EditorWrappers', () => ({
-    GuidanceEditorWrapper: ({ isOpen }: any) =>
-        isOpen ? <div data-testid="guidance-editor-wrapper" /> : null,
-    FaqEditorWrapper: ({ isOpen }: any) =>
-        isOpen ? <div data-testid="faq-editor-wrapper" /> : null,
-    SnippetEditorWrapper: ({ isOpen }: any) =>
-        isOpen ? <div data-testid="snippet-editor-wrapper" /> : null,
+    GuidanceEditorWrapper: ({ isOpen, onClose }: any) => {
+        if (isOpen && onClose) {
+            capturedGuidanceEditorOnClose = onClose
+        }
+        return isOpen ? (
+            <div data-testid="guidance-editor-wrapper">
+                <button onClick={onClose} data-testid="guidance-editor-close">
+                    Close
+                </button>
+            </div>
+        ) : null
+    },
+    FaqEditorWrapper: ({ isOpen, onClose }: any) => {
+        if (isOpen && onClose) {
+            capturedFaqEditorOnClose = onClose
+        }
+        return isOpen ? (
+            <div data-testid="faq-editor-wrapper">
+                <button onClick={onClose} data-testid="faq-editor-close">
+                    Close
+                </button>
+            </div>
+        ) : null
+    },
 }))
+
+jest.mock(
+    'pages/aiAgent/KnowledgeHub/EditorWrappers/SnippetEditorWrapper',
+    () => ({
+        SnippetEditorWrapper: ({ isOpen, onClose }: any) => {
+            if (isOpen && onClose) {
+                capturedSnippetEditorOnClose = onClose
+            }
+            return isOpen ? (
+                <div data-testid="snippet-editor-wrapper">
+                    <button
+                        onClick={onClose}
+                        data-testid="snippet-editor-close"
+                    >
+                        Close
+                    </button>
+                </div>
+            ) : null
+        },
+    }),
+)
 jest.mock(
     'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal',
     () => ({
@@ -191,6 +242,8 @@ jest.mock('pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable', () => ({
     ),
 }))
 
+const mockUseParams = useParams as jest.Mock
+const mockUseHistory = useHistory as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockExtractShopNameFromUrl = extractShopNameFromUrl as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
@@ -238,6 +291,19 @@ describe('KnowledgeHubContainer', () => {
             href: 'http://localhost/app',
             pathname: '/app',
         } as Location
+
+        mockUseParams.mockReturnValue({
+            shopType: 'shopify',
+            type: undefined,
+            id: undefined,
+        })
+
+        // Don't mock useHistory by default - let it use the real implementation from MemoryRouter
+        mockUseHistory.mockImplementation(() => {
+            const actual = jest.requireActual('react-router-dom')
+            const { useHistory: actualUseHistory } = actual
+            return actualUseHistory()
+        })
 
         mockExtractShopNameFromUrl.mockReturnValue(undefined)
 
@@ -292,17 +358,24 @@ describe('KnowledgeHubContainer', () => {
 
         mockTransformKnowledgeHubArticlesToKnowledgeItems.mockImplementation(
             (articles) => {
-                return articles.map((article: any) => ({
-                    id: article.id,
-                    title: article.title,
-                    type: article.type,
-                    lastUpdatedAt: article.lastUpdatedAt,
-                    inUseByAI:
-                        article.visibilityStatus === 'public'
-                            ? KnowledgeVisibility.PUBLIC
-                            : KnowledgeVisibility.UNLISTED,
-                    source: article.source,
-                }))
+                return articles.map((article: any) => {
+                    const isGroupableType =
+                        article.type === KnowledgeType.Domain ||
+                        article.type === KnowledgeType.URL ||
+                        article.type === KnowledgeType.Document
+                    return {
+                        id: article.id,
+                        title: article.title,
+                        type: article.type,
+                        lastUpdatedAt: article.lastUpdatedAt,
+                        inUseByAI:
+                            article.visibilityStatus === 'public'
+                                ? KnowledgeVisibility.PUBLIC
+                                : KnowledgeVisibility.UNLISTED,
+                        source: article.source,
+                        isGrouped: isGroupableType,
+                    }
+                })
             },
         )
 
@@ -663,6 +736,7 @@ describe('KnowledgeHubContainer', () => {
                             type: KnowledgeType.Domain,
                             lastUpdatedAt: '2024-01-15T10:00:00Z',
                             visibilityStatus: 'public',
+                            source: 'https://example.com',
                         },
                     ],
                 },
@@ -692,6 +766,7 @@ describe('KnowledgeHubContainer', () => {
                             type: KnowledgeType.Domain,
                             lastUpdatedAt: '2024-01-15T10:00:00Z',
                             visibilityStatus: 'public',
+                            source: 'https://example.com',
                         },
                     ],
                 },
@@ -715,6 +790,68 @@ describe('KnowledgeHubContainer', () => {
                 ).not.toBeInTheDocument()
             })
         })
+
+        it('initializes folder from URL parameter with URL as title initially', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [],
+                },
+                isInitialLoading: true,
+                refetch: jest.fn(),
+            })
+
+            const folderUrl = 'https://example.com/folder'
+
+            render(
+                <MemoryRouter
+                    initialEntries={[
+                        '/knowledge?folder=' + encodeURIComponent(folderUrl),
+                    ]}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+            expect(
+                screen.getByText(`Viewing folder: ${folderUrl}`),
+            ).toBeInTheDocument()
+        })
+
+        it('displays folder URL as title when folder not found in tableData', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            const folderUrl = 'https://example.com/unknown-folder'
+
+            render(
+                <MemoryRouter
+                    initialEntries={[
+                        '/knowledge?folder=' + encodeURIComponent(folderUrl),
+                    ]}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+            expect(
+                screen.getByText(`Viewing folder: ${folderUrl}`),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('sync functionality', () => {
@@ -731,6 +868,7 @@ describe('KnowledgeHubContainer', () => {
                             type: KnowledgeType.Domain,
                             lastUpdatedAt: '2024-01-15T10:00:00Z',
                             visibilityStatus: 'public',
+                            source: 'https://store.example.com',
                         },
                     ],
                 },
@@ -848,6 +986,7 @@ describe('KnowledgeHubContainer', () => {
                             type: KnowledgeType.Domain,
                             lastUpdatedAt: '2024-01-15T10:00:00Z',
                             visibilityStatus: 'public',
+                            source: 'https://store.example.com',
                         },
                     ],
                 },
@@ -871,6 +1010,628 @@ describe('KnowledgeHubContainer', () => {
             expect(deleteCallsAfter).toBe(deleteCallsBefore)
 
             mockDispatchEvent.mockRestore()
+        })
+    })
+
+    describe('URL parameter decoding', () => {
+        it('handles decoding errors gracefully', () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            const invalidEncodedUrl = '%E0%A4%A'
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge?folder=' + invalidEncodedUrl]}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // reportError logs the error in development
+            expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error))
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                'Error extra:',
+                expect.objectContaining({
+                    original: expect.any(String),
+                    error: expect.any(String),
+                }),
+            )
+
+            consoleErrorSpy.mockRestore()
+        })
+
+        it('handles malformed encoding that cannot be decoded further', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            const partiallyEncodedUrl = 'https://example.com/test%20space'
+
+            render(
+                <MemoryRouter
+                    initialEntries={[
+                        '/knowledge?folder=' +
+                            encodeURIComponent(partiallyEncodedUrl),
+                    ]}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+        })
+
+        it('handles properly encoded URLs', () => {
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            const normalUrl = 'https://example.com/path'
+
+            render(
+                <MemoryRouter
+                    initialEntries={[
+                        '/knowledge?folder=' + encodeURIComponent(normalUrl),
+                    ]}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(screen.getByTestId('folder-view')).toBeInTheDocument()
+            expect(
+                screen.getByText(`Viewing folder: ${normalUrl}`),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('opening editors based on URL parameters', () => {
+        let mockGuidanceEditor: any
+        let mockFaqEditor: any
+        let mockSnippetEditor: any
+
+        beforeEach(() => {
+            mockGuidanceEditor = {
+                isEditorOpen: false,
+                currentGuidanceArticleId: undefined,
+                guidanceMode: 'create',
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'store-alpha',
+                    shopType: 'shopify',
+                    guidanceArticleId: undefined,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'create',
+                    isOpen: false,
+                    onClose: jest.fn(),
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            mockFaqEditor = {
+                isEditorOpen: false,
+                currentArticleId: undefined,
+                faqArticleMode: 'new',
+                initialArticleMode: 'READ',
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                handleCreate: jest.fn(),
+                handleUpdate: jest.fn(),
+                handleDelete: jest.fn(),
+                handleClickPrevious: jest.fn(),
+                handleClickNext: jest.fn(),
+            }
+
+            mockSnippetEditor = {
+                isEditorOpen: false,
+                currentArticleId: undefined,
+                currentSnippetType: undefined,
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                handleUpdate: jest.fn(),
+                hasPrevious: false,
+                hasNext: false,
+                handleClickPrevious: jest.fn(),
+                handleClickNext: jest.fn(),
+            }
+
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                mockGuidanceEditor,
+            )
+            mockUseKnowledgeHubFaqEditor.mockReturnValue(mockFaqEditor)
+            mockUseKnowledgeHubSnippetEditor.mockReturnValue(mockSnippetEditor)
+        })
+
+        it('opens guidance editor when type is guidance and id is valid', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: '123',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/guidance/123']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockGuidanceEditor.openEditorForEdit).toHaveBeenCalledWith(
+                123,
+            )
+        })
+
+        it('opens FAQ editor when type is faq and id is valid', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.FAQ,
+                id: '456',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/faq/456']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockFaqEditor.openEditorForEdit).toHaveBeenCalledWith(456)
+        })
+
+        it('opens snippet editor for document type', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Document,
+                id: '789',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/document/789']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockSnippetEditor.openEditorForEdit).toHaveBeenCalledWith(
+                789,
+                KnowledgeType.Document,
+            )
+        })
+
+        it('opens snippet editor for URL type', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.URL,
+                id: '111',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/url/111']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockSnippetEditor.openEditorForEdit).toHaveBeenCalledWith(
+                111,
+                KnowledgeType.URL,
+            )
+        })
+
+        it('opens snippet editor for domain type', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Domain,
+                id: '222',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/domain/222']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockSnippetEditor.openEditorForEdit).toHaveBeenCalledWith(
+                222,
+                KnowledgeType.Domain,
+            )
+        })
+
+        it('does not open editor when id is NaN', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: 'invalid',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/guidance/invalid']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockGuidanceEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockFaqEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockSnippetEditor.openEditorForEdit).not.toHaveBeenCalled()
+        })
+
+        it('does not open editor when type is missing', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: '123',
+            })
+
+            render(
+                <MemoryRouter initialEntries={['/knowledge']} initialIndex={0}>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockGuidanceEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockFaqEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockSnippetEditor.openEditorForEdit).not.toHaveBeenCalled()
+        })
+
+        it('does not open editor when id is missing', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: undefined,
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/guidance']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockGuidanceEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockFaqEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockSnippetEditor.openEditorForEdit).not.toHaveBeenCalled()
+        })
+
+        it('does not open editor for unknown type', () => {
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: 'unknown' as any,
+                id: '123',
+            })
+
+            render(
+                <MemoryRouter
+                    initialEntries={['/knowledge/unknown/123']}
+                    initialIndex={0}
+                >
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockGuidanceEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockFaqEditor.openEditorForEdit).not.toHaveBeenCalled()
+            expect(mockSnippetEditor.openEditorForEdit).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('closing editors', () => {
+        it('calls history.push and knowledgeEditorProps.onClose when guidance editor is closed', () => {
+            const mockPush = jest.fn()
+            const mockOnClose = jest.fn()
+
+            const guidanceEditorMock = {
+                isEditorOpen: true,
+                currentGuidanceArticleId: 123,
+                guidanceMode: 'edit' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    guidanceArticleId: 123,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'edit' as const,
+                    isOpen: true,
+                    onClose: mockOnClose,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            // Reset the captured callback
+            capturedGuidanceEditorOnClose = null
+
+            // Override useHistory mock
+            mockUseHistory.mockImplementation(() => ({
+                push: mockPush,
+                replace: jest.fn(),
+                goBack: jest.fn(),
+                goForward: jest.fn(),
+                go: jest.fn(),
+                block: jest.fn(),
+                listen: jest.fn(),
+                createHref: jest.fn(),
+                location: {
+                    pathname: '/app',
+                    search: '',
+                    hash: '',
+                    state: null,
+                },
+                action: 'PUSH' as const,
+                length: 1,
+            }))
+
+            // Override guidance editor mock
+            mockUseKnowledgeHubGuidanceEditor.mockReset()
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                guidanceEditorMock,
+            )
+
+            render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify the onClose callback was captured
+            expect(capturedGuidanceEditorOnClose).not.toBeNull()
+
+            // Call the captured onClose callback directly
+            const onClose = capturedGuidanceEditorOnClose
+            if (onClose) {
+                const onCloseF = onClose as () => void
+                onCloseF()
+            }
+
+            // Verify both functions were called
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
+            )
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls history.push and faqEditor.closeEditor when FAQ editor is closed', () => {
+            const mockPush = jest.fn()
+            const mockCloseEditor = jest.fn()
+
+            const faqEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 456,
+                faqArticleMode: 'edit' as const,
+                initialArticleMode: 'READ' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                handleCreate: jest.fn(),
+                handleUpdate: jest.fn(),
+                handleDelete: jest.fn(),
+                handleClickPrevious: jest.fn(),
+                handleClickNext: jest.fn(),
+            }
+
+            // Reset the captured callback
+            capturedFaqEditorOnClose = null
+
+            // Override useHistory mock
+            mockUseHistory.mockImplementation(() => ({
+                push: mockPush,
+                replace: jest.fn(),
+                goBack: jest.fn(),
+                goForward: jest.fn(),
+                go: jest.fn(),
+                block: jest.fn(),
+                listen: jest.fn(),
+                createHref: jest.fn(),
+                location: {
+                    pathname: '/app',
+                    search: '',
+                    hash: '',
+                    state: null,
+                },
+                action: 'PUSH' as const,
+                length: 1,
+            }))
+
+            // Override FAQ editor mock
+            mockUseKnowledgeHubFaqEditor.mockReset()
+            mockUseKnowledgeHubFaqEditor.mockReturnValue(faqEditorMock)
+
+            render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify the onClose callback was captured
+            expect(capturedFaqEditorOnClose).not.toBeNull()
+
+            // Call the captured onClose callback directly
+            const onClose = capturedFaqEditorOnClose
+            if (onClose) {
+                const onCloseF = onClose as () => void
+                onCloseF()
+            }
+
+            // Verify both functions were called
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
+            )
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls history.push and snippetEditor.closeEditor when snippet editor is closed', () => {
+            const mockPush = jest.fn()
+            const mockCloseEditor = jest.fn()
+
+            const snippetEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 123,
+                currentSnippetType: KnowledgeType.Document,
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                handleUpdate: jest.fn(),
+                hasPrevious: false,
+                hasNext: false,
+                handleClickPrevious: jest.fn(),
+                handleClickNext: jest.fn(),
+            }
+
+            // Reset the captured callback
+            capturedSnippetEditorOnClose = null
+
+            // Override useHistory mock
+            mockUseHistory.mockImplementation(() => ({
+                push: mockPush,
+                replace: jest.fn(),
+                goBack: jest.fn(),
+                goForward: jest.fn(),
+                go: jest.fn(),
+                block: jest.fn(),
+                listen: jest.fn(),
+                createHref: jest.fn(),
+                location: {
+                    pathname: '/app',
+                    search: '',
+                    hash: '',
+                    state: null,
+                },
+                action: 'PUSH' as const,
+                length: 1,
+            }))
+
+            // Override snippet editor mock
+            mockUseKnowledgeHubSnippetEditor.mockReset()
+            mockUseKnowledgeHubSnippetEditor.mockReturnValue(snippetEditorMock)
+
+            render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify the onClose callback was captured
+            expect(capturedSnippetEditorOnClose).not.toBeNull()
+
+            // Call the captured onClose callback directly
+            const onClose = capturedSnippetEditorOnClose
+            if (onClose) {
+                const onCloseF = onClose as () => void
+                onCloseF()
+            }
+
+            // Verify both functions were called
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
+            )
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
         })
     })
 })

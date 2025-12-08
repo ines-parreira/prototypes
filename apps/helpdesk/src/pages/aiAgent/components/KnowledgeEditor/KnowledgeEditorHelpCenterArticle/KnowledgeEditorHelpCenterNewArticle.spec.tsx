@@ -114,6 +114,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     }}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -199,6 +200,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     onCreated={onCreated}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )
@@ -230,6 +232,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     }}
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
+                    onTest={() => {}}
                 />
             </Wrapper>,
         )

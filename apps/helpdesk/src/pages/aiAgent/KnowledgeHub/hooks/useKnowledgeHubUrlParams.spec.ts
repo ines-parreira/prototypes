@@ -1,0 +1,841 @@
+import React from 'react'
+
+import { act, renderHook } from '@testing-library/react'
+import { createMemoryHistory, type History } from 'history'
+import { Router } from 'react-router-dom'
+
+import { type GroupedKnowledgeItem, KnowledgeType } from '../types'
+import { useKnowledgeHubUrlParams } from './useKnowledgeHubUrlParams'
+
+jest.mock('../../hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(() => ({
+        routes: {
+            knowledgeSources: '/app/shop/test-shop/ai-agent/knowledge',
+        },
+    })),
+}))
+
+describe('useKnowledgeHubUrlParams', () => {
+    const TEST_SHOP_NAME = 'test-shop'
+    const mockTableData: GroupedKnowledgeItem[] = [
+        {
+            id: '1',
+            title: 'Test URL Folder',
+            type: KnowledgeType.URL,
+            source: 'https://example.com/url',
+            isGrouped: true,
+        } as GroupedKnowledgeItem,
+        {
+            id: '2',
+            title: 'Test Domain Folder',
+            type: KnowledgeType.Domain,
+            source: 'https://example.com/domain',
+            isGrouped: true,
+        } as GroupedKnowledgeItem,
+        {
+            id: '3',
+            title: 'Test FAQ Item',
+            type: KnowledgeType.FAQ,
+            source: '',
+            isGrouped: false,
+        } as GroupedKnowledgeItem,
+    ]
+
+    const createRouterWrapper = (routerHistory: History) => {
+        const wrapper = ({ children }: { children: React.ReactNode }) =>
+            React.createElement(Router, { history: routerHistory }, children)
+        return wrapper
+    }
+
+    describe('initialization', () => {
+        it('initializes with no filter or folder when URL has no params', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBeNull()
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('initializes filter from URL parameter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('initializes folder from URL parameter', () => {
+            const folderUrl = 'https://example.com/folder'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBeNull()
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+        })
+
+        it('initializes both filter and folder from URL parameters', () => {
+            const folderUrl = 'https://example.com/folder'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+        })
+    })
+
+    describe('URL decoding', () => {
+        it('handles double-encoded URLs', () => {
+            const originalUrl = 'https://example.com/path'
+            const doubleEncoded = encodeURIComponent(
+                encodeURIComponent(originalUrl),
+            )
+            const history = createMemoryHistory({
+                initialEntries: [`/knowledge?folder=${doubleEncoded}`],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFolder?.source).toBe(originalUrl)
+        })
+
+        it('handles decoding errors gracefully', () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+
+            const invalidEncoded = '%E0%A4%A'
+            const history = createMemoryHistory({
+                initialEntries: [`/knowledge?folder=${invalidEncoded}`],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // The URL router decodes once: %E0%A4%A → �%A
+            // Then our code tries to decode �%A which fails
+            const partiallyDecoded = '�%A'
+
+            // reportError logs the error in development
+            expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error))
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                'Error extra:',
+                expect.objectContaining({
+                    original: partiallyDecoded,
+                    error: expect.any(String),
+                }),
+            )
+            // Fallback to the value we received (already decoded once by router)
+            expect(result.current.selectedFolder?.source).toBe(partiallyDecoded)
+
+            consoleErrorSpy.mockRestore()
+        })
+
+        it('stops decoding when no more percent-encoded characters', () => {
+            const partiallyEncoded = 'https://example.com/test%20space'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(partiallyEncoded)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // The hook decodes until no more % characters remain
+            expect(result.current.selectedFolder?.source).toBe(
+                'https://example.com/test space',
+            )
+        })
+
+        it('limits decoding iterations to prevent infinite loops', () => {
+            // Create a URL with many layers of encoding (more than MAX_ITERATIONS)
+            let deeplyEncoded = 'https://example.com'
+            for (let i = 0; i < 15; i++) {
+                deeplyEncoded = encodeURIComponent(deeplyEncoded)
+            }
+
+            const history = createMemoryHistory({
+                initialEntries: [`/knowledge?folder=${deeplyEncoded}`],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Should stop after MAX_ITERATIONS (10) and return partially decoded result
+            expect(result.current.selectedFolder?.source).toBeDefined()
+            expect(result.current.selectedFolder?.source).not.toBe(
+                deeplyEncoded,
+            )
+            // Should still contain % characters since we exceeded iteration limit
+            expect(result.current.selectedFolder?.source).toContain('%')
+        })
+    })
+
+    describe('buildUrlWithParams', () => {
+        it('returns base path when no params are selected', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toBe('/knowledge')
+        })
+
+        it('includes filter parameter when filter is selected', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toBe('/knowledge?filter=url')
+        })
+
+        it('includes folder parameter when folder is selected', () => {
+            const folderUrl = 'https://example.com/folder'
+            // Pass double-encoded to simulate real URL encoding behavior
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            // buildUrlWithParams encodes with encodeURIComponent, then URLSearchParams.toString() encodes again
+            expect(url).toBe(
+                `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+            )
+        })
+
+        it('includes both filter and folder parameters', () => {
+            const folderUrl = 'https://example.com/folder'
+            // Pass double-encoded to simulate real URL encoding behavior
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            // buildUrlWithParams encodes with encodeURIComponent, then URLSearchParams.toString() encodes again
+            expect(url).toBe(
+                `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+            )
+        })
+    })
+
+    describe('filter state management', () => {
+        it('syncs filter state when URL changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBeNull()
+
+            act(() => {
+                history.push('/knowledge?filter=url')
+            })
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+        })
+
+        it('updates filter using setSelectedFilter but gets reverted without URL change', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSelectedFilter(KnowledgeType.FAQ)
+            })
+
+            // setSelectedFilter alone doesn't update URL, so useEffect reverts it
+            expect(result.current.selectedFilter).toBe(null)
+        })
+    })
+
+    describe('folder state management', () => {
+        it('clears folder when URL has no folder param', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent('https://example.com')}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFolder).not.toBeNull()
+
+            act(() => {
+                history.push('/knowledge')
+            })
+
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('does not upgrade folder when it already has a title', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                ],
+            })
+
+            // Start with empty tableData, then add data to see if upgrade happens
+            const { result, rerender } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: [] as GroupedKnowledgeItem[] },
+                },
+            )
+
+            // Initially has minimal folder object with title
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+
+            // Update with tableData
+            act(() => {
+                rerender({ tableData: mockTableData })
+            })
+
+            // Folder is NOT upgraded because it already has a title
+            // The upgrade logic only triggers when !selectedFolder.title
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+            // Should NOT have the full object properties
+            expect(result.current.selectedFolder).not.toHaveProperty('id')
+        })
+
+        it('creates minimal folder object when not found in tableData', () => {
+            const unknownUrl = 'https://example.com/unknown'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(unknownUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFolder).toMatchObject({
+                source: unknownUrl,
+                title: unknownUrl,
+            })
+        })
+
+        it('updates folder using setSelectedFolder but gets reverted without URL change', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const newFolder = mockTableData[0]
+
+            act(() => {
+                result.current.setSelectedFolder(newFolder)
+            })
+
+            // setSelectedFolder alone doesn't update URL, so useEffect reverts it
+            expect(result.current.selectedFolder).toBe(null)
+        })
+    })
+
+    describe('handleDocumentFilterChange', () => {
+        it('updates filter and URL when changing filter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.URL)
+            })
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(history.location.search).toBe('?filter=url')
+        })
+
+        it('clears filter and URL param when setting to null', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleDocumentFilterChange(null)
+            })
+
+            expect(result.current.selectedFilter).toBeNull()
+            expect(history.location.search).toBe('')
+        })
+
+        it('clears folder when changing to incompatible filter', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent('https://example.com')}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSelectedFolder({
+                    ...mockTableData[0],
+                    type: KnowledgeType.URL,
+                })
+            })
+
+            expect(result.current.selectedFolder).not.toBeNull()
+
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.FAQ)
+            })
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.FAQ)
+            expect(result.current.selectedFolder).toBeNull()
+            expect(history.location.search).toBe('?filter=faq')
+        })
+
+        it('preserves folder when changing to compatible filter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSelectedFolder({
+                    ...mockTableData[0],
+                    type: KnowledgeType.URL,
+                })
+            })
+
+            const folderBeforeChange = result.current.selectedFolder
+
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.URL)
+            })
+
+            expect(result.current.selectedFolder).toBe(folderBeforeChange)
+        })
+    })
+
+    describe('updateUrlWithFolderParam', () => {
+        it('adds folder parameter to URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
+            expect(history.location.search).toBe(
+                `?folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+            )
+        })
+
+        it('updates existing folder parameter in URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent('https://old.com'))}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
+            expect(history.location.search).toBe(
+                `?folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+            )
+        })
+
+        it('preserves filter parameter when updating folder', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.location.search).toContain('filter=url')
+            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
+            expect(history.location.search).toContain(
+                `folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+            )
+        })
+    })
+
+    describe('removeFolderParamFromUrl', () => {
+        it('removes folder parameter from URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent('https://example.com')}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.removeFolderParamFromUrl()
+            })
+
+            expect(history.location.search).toBe('')
+        })
+
+        it('preserves filter parameter when removing folder', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent('https://example.com')}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.removeFolderParamFromUrl()
+            })
+
+            expect(history.location.search).toBe('?filter=url')
+        })
+
+        it('handles removing folder param when none exists', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.removeFolderParamFromUrl()
+            })
+
+            expect(history.location.search).toBe('?filter=url')
+        })
+    })
+
+    describe('handleCloseEditorPath', () => {
+        it('navigates to knowledge sources base path with no params', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge/edit'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(history.location.pathname).toBe(
+                '/app/shop/test-shop/ai-agent/knowledge',
+            )
+            expect(history.location.search).toBe('')
+        })
+
+        it('navigates to knowledge sources with filter param', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge/edit?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(history.location.pathname).toBe(
+                '/app/shop/test-shop/ai-agent/knowledge',
+            )
+            expect(history.location.search).toBe('?filter=url')
+        })
+
+        it('navigates to knowledge sources with folder param', () => {
+            const folderUrl = 'https://example.com/folder'
+            const tableData: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    title: 'Test Folder',
+                    type: KnowledgeType.URL,
+                    source: folderUrl,
+                    isGrouped: true,
+                } as GroupedKnowledgeItem,
+            ]
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/edit?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(history.location.pathname).toBe(
+                '/app/shop/test-shop/ai-agent/knowledge',
+            )
+            expect(history.location.search).toBe(
+                `?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+            )
+        })
+
+        it('navigates to knowledge sources with both filter and folder params', () => {
+            const folderUrl = 'https://example.com/folder'
+            const tableData: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    title: 'Test Folder',
+                    type: KnowledgeType.URL,
+                    source: folderUrl,
+                    isGrouped: true,
+                } as GroupedKnowledgeItem,
+            ]
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/edit?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(history.location.pathname).toBe(
+                '/app/shop/test-shop/ai-agent/knowledge',
+            )
+            expect(history.location.search).toBe(
+                `?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+            )
+        })
+
+        it('uses history.push to navigate', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge/edit?filter=url'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(pushSpy).toHaveBeenCalledWith(
+                '/app/shop/test-shop/ai-agent/knowledge?filter=url',
+            )
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+
+            pushSpy.mockRestore()
+        })
+    })
+})

@@ -121,6 +121,44 @@ describe('PlaygroundPanel', () => {
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
         })
+
+        it('should call onClose callback when provided and close button is clicked', async () => {
+            const mockOnClose = jest.fn()
+            render(<PlaygroundPanel onClose={mockOnClose} />)
+
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
+
+            await userEvent.click(closeButton)
+
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call both setIsCollapsibleColumnOpen and onClose when both are available', async () => {
+            const mockOnClose = jest.fn()
+            render(<PlaygroundPanel onClose={mockOnClose} />)
+
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
+
+            await userEvent.click(closeButton)
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not throw error when onClose is not provided', async () => {
+            render(<PlaygroundPanel />)
+
+            const closeButton = screen.getByRole('button', {
+                name: /close playground panel/i,
+            })
+
+            await expect(userEvent.click(closeButton)).resolves.not.toThrow()
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        })
     })
 
     describe('reset playground functionality', () => {

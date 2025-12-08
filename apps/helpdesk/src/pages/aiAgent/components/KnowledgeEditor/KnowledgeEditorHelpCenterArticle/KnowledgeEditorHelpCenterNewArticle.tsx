@@ -46,6 +46,7 @@ type Props = {
     onCreated: (article: ArticleWithLocalTranslation) => void
     isFullscreen: boolean
     onToggleFullscreen: () => void
+    onTest: () => void
 }
 
 const createArticlePayload = (
@@ -177,6 +178,7 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
             }
         },
         onDelete: async () => onCancel(),
+        onTest: props.onTest,
     })
 
     const settings = useKnowledgeEditorHelpCenterArticleSettings({

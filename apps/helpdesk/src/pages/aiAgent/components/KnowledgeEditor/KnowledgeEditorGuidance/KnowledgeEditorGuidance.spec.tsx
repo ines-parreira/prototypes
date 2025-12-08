@@ -1,4 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
@@ -7,6 +8,30 @@ import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guid
 import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance'
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    SidePanel: ({
+        isOpen,
+        onOpenChange,
+        children,
+    }: {
+        isOpen: boolean
+        onOpenChange: (open: boolean) => void
+        children: React.ReactNode
+    }) =>
+        isOpen ? (
+            <div data-testid="side-panel" data-is-open={isOpen}>
+                <button
+                    data-testid="close-panel-button"
+                    onClick={() => onOpenChange(false)}
+                >
+                    Close
+                </button>
+                {children}
+            </div>
+        ) : null,
+}))
 
 const mockNotifyError = jest.fn()
 jest.mock('hooks/useNotify', () => ({
@@ -63,6 +88,14 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
         duplicateGuidanceArticle: jest.fn(),
         isGuidanceArticleUpdating: false,
     })),
+}))
+
+jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
+    PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
+        <div data-testid="playground-panel">
+            <button onClick={onClose}>Close Playground</button>
+        </div>
+    ),
 }))
 
 describe('KnowledgeEditorGuidance', () => {
@@ -648,5 +681,199 @@ describe('KnowledgeEditorGuidance', () => {
             }),
             { articleId: 1, locale: 'en-US' },
         )
+    })
+
+    describe('Split View - Playground Panel', () => {
+        it('should toggle playground panel when test button is clicked', async () => {
+            const { queryByTestId } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(queryByTestId('playground-panel')).not.toBeInTheDocument()
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(queryByTestId('playground-panel')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    queryByTestId('playground-panel'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should render both editor and playground when test button is clicked', async () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('playground-panel'),
+            ).not.toBeInTheDocument()
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
+        })
+
+        it('should maintain editor content when playground is toggled', async () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            const articleTitle = screen.getByText(guidanceArticle.title)
+            expect(articleTitle).toBeInTheDocument()
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            expect(articleTitle).toBeInTheDocument()
+
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            expect(articleTitle).toBeInTheDocument()
+        })
+
+        it('should display playground alongside fullscreen mode', async () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            const fullscreenButton = screen.getByRole('button', {
+                name: /fullscreen/i,
+            })
+            await act(async () => {
+                fireEvent.click(fullscreenButton)
+            })
+
+            expect(
+                screen.getByRole('button', { name: /leave fullscreen/i }),
+            ).toBeInTheDocument()
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /leave fullscreen/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('SidePanel onOpenChange', () => {
+        it('calls onClose when SidePanel onOpenChange is triggered with false', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            const closeButton = screen.getByTestId('close-panel-button')
+            await act(() => user.click(closeButton))
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not call onClose when SidePanel onOpenChange is triggered with true', () => {
+            const onClose = jest.fn()
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            expect(onClose).not.toHaveBeenCalled()
+        })
     })
 })

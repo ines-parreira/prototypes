@@ -563,11 +563,21 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         section="ai-agent-knowledge"
                         team={SentryTeam.CONVAI_KNOWLEDGE}
                     >
-                        <Route
-                            path={`${path}/knowledge`}
-                            exact
-                            component={knowledgeComponent}
-                        />
+                        <Switch>
+                            {isKnowledgeHubEnabled && (
+                                <Route
+                                    path={`${path}/knowledge/:type/:id`}
+                                    exact
+                                    component={knowledgeComponent}
+                                />
+                            )}
+
+                            <Route
+                                path={`${path}/knowledge`}
+                                exact
+                                component={knowledgeComponent}
+                            />
+                        </Switch>
                         {isAiAgentScrapeStoreDomainEnabled && (
                             <>
                                 <Switch>

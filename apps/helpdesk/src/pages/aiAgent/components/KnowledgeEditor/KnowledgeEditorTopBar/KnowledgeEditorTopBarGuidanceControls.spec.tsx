@@ -1,12 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { KnowledgeEditorTopBarGuidanceControls } from './KnowledgeEditorTopBarGuidanceControls'
 
 describe('KnowledgeEditorTopBarGuidanceControls', () => {
-    it('renders read mode', () => {
+    it('renders read mode', async () => {
         const onEdit = jest.fn()
         const onCopy = jest.fn()
         const onDelete = jest.fn()
+        const onTest = jest.fn()
         render(
             <KnowledgeEditorTopBarGuidanceControls
                 disabled={false}
@@ -14,21 +16,32 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
                 onEdit={onEdit}
                 onCopy={onCopy}
                 onDelete={onDelete}
+                onTest={onTest}
             />,
         )
 
-        fireEvent.click(screen.getByRole('button', { name: 'edit' }))
+        await act(() =>
+            userEvent.click(screen.getByRole('button', { name: 'edit' })),
+        )
 
         expect(onEdit).toHaveBeenCalled()
 
         // TODO: add copy button back in when implemented
-        // fireEvent.click(screen.getByRole('button', { name: 'copy' }))
+        // await act(() => userEvent.click(screen.getByRole('button', { name: 'copy' })))
 
         // expect(onCopy).toHaveBeenCalled()
 
-        fireEvent.click(screen.getByRole('button', { name: 'delete' }))
+        await act(() =>
+            userEvent.click(screen.getByRole('button', { name: 'delete' })),
+        )
 
         expect(onDelete).toHaveBeenCalled()
+
+        await act(() =>
+            userEvent.click(screen.getByRole('button', { name: 'test' })),
+        )
+
+        expect(onTest).toHaveBeenCalled()
     })
 
     it('renders edit mode', () => {
@@ -83,6 +96,7 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
                 onEdit={jest.fn()}
                 onCopy={jest.fn()}
                 onDelete={jest.fn()}
+                onTest={jest.fn()}
             />,
         )
 
@@ -90,6 +104,7 @@ describe('KnowledgeEditorTopBarGuidanceControls', () => {
         // TODO: add copy button back in when implemented
         // expect(screen.getByRole('button', { name: 'copy' })).toBeDisabled()
         expect(screen.getByRole('button', { name: 'delete' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'test' })).toBeDisabled()
     })
 
     it('renders edit mode disabled', () => {

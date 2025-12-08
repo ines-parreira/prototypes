@@ -10,6 +10,7 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
         const onSaveAndPublish = jest.fn()
         const onSaveDraft = jest.fn()
         const onDelete = jest.fn()
+        const onTest = jest.fn()
 
         const { result, rerender } = renderHook(
             (
@@ -25,6 +26,7 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
                     onSaveAndPublish,
                     onSaveDraft,
                     onDelete,
+                    onTest,
                 },
             },
         )
@@ -33,7 +35,7 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
             mode: ArticleModes.READ,
             onEdit,
             onDelete,
-            onTest: expect.any(Function),
+            onTest,
         })
 
         rerender({
@@ -43,6 +45,7 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
             onSaveAndPublish,
             onSaveDraft,
             onDelete,
+            onTest,
         })
 
         expect(result.current).toEqual({
@@ -58,6 +61,7 @@ describe('useKnowledgeEditorHelpCenterArticleMode', () => {
             onSaveAndPublish,
             onSaveDraft,
             onDelete,
+            onTest,
         })
 
         expect(result.current).toEqual({

@@ -394,3 +394,34 @@ export const EmptyStateWrapper = ({
             return <EmptyStates helpCenterId={helpCenterId} />
     }
 }
+
+export const EmptyStateNoSearchResults = ({
+    clearSearch,
+}: {
+    clearSearch: () => void
+}) => {
+    return (
+        <Box
+            flexDirection="column"
+            gap="xs"
+            alignItems="center"
+            justifyContent="center"
+            padding="xxxl"
+        >
+            <Heading size={'md'}>No results found</Heading>
+            <Box flexDirection="column" gap="md" alignItems="center">
+                <Text size={'md'} align={'center'}>
+                    Try adjusting your search or filters to find the right
+                    knowledge.
+                </Text>
+                <Button
+                    leadingSlot="close-circle"
+                    variant="secondary"
+                    onClick={clearSearch}
+                >
+                    Clear search
+                </Button>
+            </Box>
+        </Box>
+    )
+}
