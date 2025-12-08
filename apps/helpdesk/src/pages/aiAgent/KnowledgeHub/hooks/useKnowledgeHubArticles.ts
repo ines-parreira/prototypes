@@ -54,6 +54,7 @@ export const useKnowledgeHubArticles = () => {
         hasWebsiteSync,
         faqHelpCenterId,
         snippetHelpCenterId,
+        guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
     }
 }

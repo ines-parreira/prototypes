@@ -29,6 +29,7 @@ export const AGENTS_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.CustomFields,
     FilterKey.Score,
     FilterKey.Stores,

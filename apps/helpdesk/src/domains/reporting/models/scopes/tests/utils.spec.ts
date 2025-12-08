@@ -155,6 +155,92 @@ describe('utils', () => {
             })
         })
 
+        it('should add teams filter when present in scope config and stat filters', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['teams'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                teams: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2, 3],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'teamId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [1, 2, 3],
+            })
+        })
+
+        it('should add teams filter with NOT_ONE_OF operator', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['teams'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                teams: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [5, 10],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'teamId',
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: [5, 10],
+            })
+        })
+
+        it('should not add teams filter when values array is empty', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['teams'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                teams: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).not.toContainEqual(
+                expect.objectContaining({ member: 'teamId' }),
+            )
+            expect(result).toHaveLength(2)
+        })
+
+        it('should not add teams filter when teams is undefined', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['teams'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).not.toContainEqual(
+                expect.objectContaining({ member: 'teamId' }),
+            )
+            expect(result).toHaveLength(2)
+        })
+
         describe('tags filter', () => {
             it('should add tags filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {

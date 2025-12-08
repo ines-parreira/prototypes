@@ -1,5 +1,7 @@
 import type { IconName } from '@gorgias/axiom'
 
+import type { LocaleCode } from 'models/helpCenter/types'
+
 export enum KnowledgeType {
     Document = 'document',
     FAQ = 'faq',
@@ -20,6 +22,9 @@ export type KnowledgeItem = {
     inUseByAI?: KnowledgeVisibility
     source?: string
     id: string
+    localeCode?: LocaleCode
+    actionsCount?: number
+    content?: string
 }
 
 export type GroupedKnowledgeItem = KnowledgeItem & {

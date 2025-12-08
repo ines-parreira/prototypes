@@ -19,6 +19,7 @@ import { STATS_ROUTES } from 'routes/constants'
 
 export const TAGS_OPTIONAL_FILTERS = [
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.Channels,
     FilterKey.Integrations,
     FilterKey.Tags,

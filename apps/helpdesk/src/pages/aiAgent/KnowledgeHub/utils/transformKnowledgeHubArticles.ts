@@ -36,5 +36,6 @@ export function transformKnowledgeHubArticlesToKnowledgeItems(
         inUseByAI:
             article.visibilityStatus.toLowerCase() as KnowledgeVisibility,
         source: article.source,
+        localeCode: article.localeCode,
     }))
 }

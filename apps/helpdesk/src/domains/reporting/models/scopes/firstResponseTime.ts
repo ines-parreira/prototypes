@@ -17,6 +17,7 @@ const firstResponseTimeScope = defineScope({
         'periodStart',
         'periodEnd',
         'agents',
+        'teams',
         'channels',
         'csatScores',
         'integrations',

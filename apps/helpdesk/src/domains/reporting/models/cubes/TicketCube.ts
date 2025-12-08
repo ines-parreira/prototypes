@@ -50,6 +50,7 @@ export enum TicketMember {
     PeriodEnd = 'TicketEnriched.periodEnd',
     CreatedDatetime = 'TicketEnriched.createdDatetime',
     AssigneeUserId = 'TicketEnriched.assigneeUserId',
+    AssigneeTeamId = 'TicketEnriched.assigneeTeamId',
     MessageSenderId = 'TicketEnriched.messageSenderId',
     MessageSenderIdToExclude = 'TicketEnriched.messageSenderIdToExclude',
     IsTrashed = 'TicketEnriched.isTrashed',

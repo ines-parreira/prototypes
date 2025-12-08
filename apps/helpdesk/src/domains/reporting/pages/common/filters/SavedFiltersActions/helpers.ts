@@ -35,6 +35,7 @@ export const isFilterFilled = (
         case FilterKey.BrandVoice:
         case FilterKey.ResolutionCompleteness:
         case FilterKey.VoiceQueues:
+        case FilterKey.AssignedTeam:
             return !_isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:
         case FilterKey.CustomFields:

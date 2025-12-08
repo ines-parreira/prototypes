@@ -18,6 +18,7 @@ export const useKnowledgeHub = () => {
         hasWebsiteSync,
         faqHelpCenterId,
         snippetHelpCenterId,
+        guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
     } = useKnowledgeHubArticles()
 
@@ -73,6 +74,7 @@ export const useKnowledgeHub = () => {
         faqHelpCenterId,
         syncStatus,
         snippetHelpCenterId,
+        guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
         storeDomainIngestionLog,
         storeUrl,

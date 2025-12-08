@@ -30,6 +30,7 @@ export const PRODUCT_INSIGHTS_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.CustomFields,
     FilterKey.Score,
     FilterKey.Stores,

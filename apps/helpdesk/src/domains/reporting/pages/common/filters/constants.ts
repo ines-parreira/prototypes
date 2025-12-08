@@ -15,6 +15,11 @@ export const integrationsFilterLogicalOperators = [
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
 
+export const teamsFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
 export const agentsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
@@ -44,6 +49,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.BrandVoice]: 'Brand voice',
     [FilterKey.StoreIntegrations]: 'Store',
     [FilterKey.Stores]: 'Store',
+    [FilterKey.AssignedTeam]: 'Assigned Team',
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: 'Ticket Metric',
     [FilterComponentKey.CustomField]: 'Ticket Field',
     [FilterComponentKey.PhoneIntegrations]: 'Integration',
@@ -135,6 +141,7 @@ export const SAVEABLE_FILTERS: Exclude<FilterKey, FilterKey.Period>[] = [
     FilterKey.Tags,
     FilterKey.Score,
     FilterKey.IsDuringBusinessHours,
+    FilterKey.AssignedTeam,
     FilterKey.VoiceQueues,
     FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,

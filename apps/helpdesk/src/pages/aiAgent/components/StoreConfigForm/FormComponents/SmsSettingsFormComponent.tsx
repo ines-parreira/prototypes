@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
@@ -90,6 +91,8 @@ export const SmsSettingsFormComponent = ({
         [updateValue, setIsPristine],
     )
 
+    const hasNoSmsIntegrations = smsPhoneNumbers.length === 0
+
     return (
         <div className={css.smsSettingsFormComponent}>
             <section>
@@ -99,10 +102,8 @@ export const SmsSettingsFormComponent = ({
                             id="monitored-sms-channels"
                             isRequired={isRequired}
                         >
-                            Select one or more SMS phone numbers
+                            Select phone numbers
                         </SettingsCardTitle>
-                        Connect phone numbers associated with your existing SMS
-                        integrations.
                     </SettingsCardHeader>
                     <SettingsCardContent>
                         <div>
@@ -116,15 +117,34 @@ export const SmsSettingsFormComponent = ({
                                 onSelectionChange={handleSelectSmsIntegration}
                                 smsItems={smsPhoneNumbers}
                                 hasError={hasError}
-                                isDisabled={isDisabled}
+                                isDisabled={isDisabled || hasNoSmsIntegrations}
                             />
-                            <div
-                                className={classnames(css.formInputFooterInfo, {
-                                    [css.error]: hasError,
-                                })}
-                            >
-                                {smsIntegrationsValidationError}
-                            </div>
+                            {hasNoSmsIntegrations && (
+                                <div className={css.emptyStateMessage}>
+                                    You don&apos;t have any SMS integrations.
+                                    With SMS you can send and receive text
+                                    messages directly in Gorgias and allow AI
+                                    Agent to respond for you.{' '}
+                                    <Link
+                                        to="/app/settings/channels/sms/about"
+                                        className={css.learnMoreLink}
+                                    >
+                                        Learn more
+                                    </Link>
+                                </div>
+                            )}
+                            {!hasNoSmsIntegrations && (
+                                <div
+                                    className={classnames(
+                                        css.formInputFooterInfo,
+                                        {
+                                            [css.error]: hasError,
+                                        },
+                                    )}
+                                >
+                                    {smsIntegrationsValidationError}
+                                </div>
+                            )}
                         </div>
                     </SettingsCardContent>
                 </SettingsCard>

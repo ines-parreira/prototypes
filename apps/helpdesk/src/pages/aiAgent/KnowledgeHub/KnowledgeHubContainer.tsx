@@ -65,6 +65,7 @@ export const KnowledgeHubContainer = () => {
         faqHelpCenterId,
         syncStatus,
         snippetHelpCenterId,
+        guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
         storeDomainIngestionLog,
         urlSyncStatus,
@@ -241,6 +242,9 @@ export const KnowledgeHubContainer = () => {
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
                 faqHelpCenterId={faqHelpCenterId}
+                shopName={shopName}
+                shopType={shopType}
+                guidanceHelpCenterId={guidanceHelpCenterId}
             />
             <Modal
                 isOpen={isAddKnowledgeModalOpen}

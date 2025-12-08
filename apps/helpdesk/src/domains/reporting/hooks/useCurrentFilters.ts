@@ -47,6 +47,7 @@ export const getValidator = (
         case FilterKey.Score:
         case FilterKey.SlaPolicies:
         case FilterKey.VoiceQueues:
+        case FilterKey.AssignedTeam:
             return isFilterWithLogicalOperator
     }
 }

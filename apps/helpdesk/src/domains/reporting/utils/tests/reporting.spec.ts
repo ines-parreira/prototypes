@@ -65,6 +65,7 @@ describe('reporting utils', () => {
                     ]),
                     integrations: withDefaultLogicalOperator([1]),
                     agents: withDefaultLogicalOperator([2]),
+                    teams: withDefaultLogicalOperator([3]),
                     tags: [
                         {
                             ...withDefaultLogicalOperator([1, 2]),
@@ -108,6 +109,11 @@ describe('reporting utils', () => {
                     member: TicketMember.AssigneeUserId,
                     operator: ReportingFilterOperator.Equals,
                     values: ['2'],
+                },
+                {
+                    member: TicketMember.AssigneeTeamId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['3'],
                 },
                 {
                     member: TicketMember.Tags,
@@ -324,6 +330,52 @@ describe('reporting utils', () => {
                     {
                         member: TicketMessagesMember.Store,
                         operator: ReportingFilterOperator.Equals,
+                        values: ['1'],
+                    },
+                ]),
+            )
+        })
+
+        it('should convert StatsFilters to an array of ReportingFilter with teams with logical operator', () => {
+            expect(
+                statsFiltersToReportingFilters(TicketStatsFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    teams: withLogicalOperator(
+                        [1, 2],
+                        LogicalOperatorEnum.ONE_OF,
+                    ),
+                }),
+            ).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: TicketMember.AssigneeTeamId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['1', '2'],
+                    },
+                ]),
+            )
+        })
+
+        it('should convert StatsFilters to an array of ReportingFilter with teams with NOT_ONE_OF logical operator', () => {
+            expect(
+                statsFiltersToReportingFilters(TicketStatsFiltersMembers, {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00.000+02:00',
+                        end_datetime: '2021-06-04T23:59:59.000+02:00',
+                    },
+                    teams: withLogicalOperator(
+                        [1],
+                        LogicalOperatorEnum.NOT_ONE_OF,
+                    ),
+                }),
+            ).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: TicketMember.AssigneeTeamId,
+                        operator: ReportingFilterOperator.NotEquals,
                         values: ['1'],
                     },
                 ]),

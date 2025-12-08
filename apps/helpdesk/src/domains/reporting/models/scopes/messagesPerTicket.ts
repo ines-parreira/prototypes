@@ -18,6 +18,7 @@ const messagesPerTicketScope = defineScope({
         'periodStart',
         'periodEnd',
         'agents',
+        'teams',
         'channels',
         'score',
         'integrations',

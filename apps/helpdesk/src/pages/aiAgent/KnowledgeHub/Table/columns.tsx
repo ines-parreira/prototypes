@@ -5,14 +5,20 @@ import {
     createSelectableColumn,
     createSortableColumn,
     Icon,
+    Tag,
     Text,
 } from '@gorgias/axiom'
 
+import { GuidanceActionsBadge } from 'pages/aiAgent/components/GuidanceList/GuidanceActionsBadge'
+import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import {
+    KnowledgeType,
     KnowledgeVisibility,
     typeConfig,
 } from 'pages/aiAgent/KnowledgeHub/types'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import css from './KnowledgeHubTable.less'
 
@@ -38,6 +44,8 @@ const highlightText = (text: string, searchTerm: string) => {
 export const getColumns = (
     searchTerm: string = '',
     columnOnClick?: (data: GroupedKnowledgeItem) => void,
+    availableActions: GuidanceAction[] = [],
+    guidanceHelpCenterId?: number | null,
 ): ColumnDef<GroupedKnowledgeItem>[] => [
     createSelectableColumn<GroupedKnowledgeItem>(),
     {
@@ -50,6 +58,15 @@ export const getColumns = (
                 const isGrouped = info.row.original.isGrouped
                 const itemCount = info.row.original.itemCount
                 const source = info.row.original.source
+
+                const { guidanceArticle } = useGuidanceArticle({
+                    guidanceHelpCenterId: guidanceHelpCenterId || -1,
+                    guidanceArticleId: Number(info.row.original.id),
+                    locale: info.row.original.localeCode || 'en-US',
+                    enabled:
+                        !!guidanceHelpCenterId &&
+                        type === KnowledgeType.Guidance,
+                })
 
                 const shouldMakeClickable =
                     columnOnClick &&
@@ -81,6 +98,27 @@ export const getColumns = (
                                     />
                                     {itemCount} snippets
                                 </div>
+                            )}
+                            {!isGrouped &&
+                                type === KnowledgeType.Guidance &&
+                                guidanceArticle && (
+                                    <GuidanceActionsBadge
+                                        article={
+                                            guidanceArticle as GuidanceArticle
+                                        }
+                                        availableActions={availableActions}
+                                    />
+                                )}
+                            {!isGrouped && type === KnowledgeType.FAQ && (
+                                <Tag
+                                    id={info.row.original.id}
+                                    className={css.tag}
+                                >
+                                    {info.row.original.inUseByAI ===
+                                    KnowledgeVisibility.PUBLIC
+                                        ? 'Public'
+                                        : 'Draft'}
+                                </Tag>
                             )}
                             {!isGrouped && source && (
                                 <div className={css.source}>

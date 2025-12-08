@@ -118,7 +118,7 @@ describe('SmsIntegrationListSelection', () => {
         renderWithRouter(<SmsIntegrationListSelection {...defaultProps} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
-            'Select one or more SMS integrations',
+            'Select phone numbers',
         )
     })
 
@@ -233,7 +233,7 @@ describe('SmsIntegrationListSelection', () => {
         renderWithRouter(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
-            'Select one or more SMS integrations',
+            'Select phone numbers',
         )
     })
 
@@ -246,7 +246,7 @@ describe('SmsIntegrationListSelection', () => {
         renderWithRouter(<SmsIntegrationListSelection {...props} />)
 
         expect(screen.getByTestId('select-input-display')).toHaveTextContent(
-            'Select one or more SMS integrations',
+            'Select phone numbers',
         )
     })
 

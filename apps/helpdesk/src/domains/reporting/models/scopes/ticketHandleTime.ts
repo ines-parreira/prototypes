@@ -17,6 +17,7 @@ const ticketHandleTimeScope = defineScope({
         'periodStart',
         'periodEnd',
         'agents',
+        'teams',
         'channels',
         'csatScores',
         'integrations',

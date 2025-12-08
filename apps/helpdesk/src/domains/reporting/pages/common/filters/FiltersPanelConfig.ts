@@ -14,6 +14,10 @@ import {
 } from 'domains/reporting/pages/common/filters/AgentsFilter'
 import { AggregationWindowFilterWithState } from 'domains/reporting/pages/common/filters/AggregationWindowFilter'
 import {
+    AssignedTeamFilterWithSavedState,
+    AssignedTeamFilterWithState,
+} from 'domains/reporting/pages/common/filters/AssignedTeamFilter'
+import {
     BrandVoiceFilterWithSavedState,
     BrandVoiceFilterWithState,
 } from 'domains/reporting/pages/common/filters/BrandVoiceFilter'
@@ -117,6 +121,7 @@ export const FilterComponentMap: Record<
     [FilterKey.StoreIntegrations]: StoreFilterFromContext,
     [FilterKey.Stores]: MultiStoreFilterWithState,
     [FilterKey.Tags]: TagsFilterWithState,
+    [FilterKey.AssignedTeam]: AssignedTeamFilterWithState,
     [FilterKey.VoiceQueues]: VoiceQueuesFilterWithState,
 }
 
@@ -148,6 +153,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.SlaPolicies]: () => null,
     [FilterKey.StoreIntegrations]: () => null,
     [FilterKey.Stores]: MultiStoreFilterWithSavedState,
+    [FilterKey.AssignedTeam]: AssignedTeamFilterWithSavedState,
     [FilterKey.VoiceQueues]: VoiceQueuesFilterWithSavedState,
     [FilterComponentKey.BusiestTimesMetricSelectFilter]: () => null,
     [FilterComponentKey.CustomField]: () => null,

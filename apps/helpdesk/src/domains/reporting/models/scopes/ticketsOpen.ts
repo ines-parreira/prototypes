@@ -12,6 +12,7 @@ const ticketsOpenScope = defineScope({
         'periodStart',
         'periodEnd',
         'agents',
+        'teams',
         'channels',
         'score',
         'integrations',

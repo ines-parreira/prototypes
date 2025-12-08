@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 
+import { usePermittedFilters } from 'domains/reporting/hooks/filters/usePermittedFilters'
 import type { FiltersPanelProps } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { FiltersPanel } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import css from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
@@ -25,23 +26,24 @@ export const FiltersPanelWrapper = ({
     pinnedFilter,
 }: FiltersPanelWrapperProps): ReactElement => {
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
+    const permittedFilters = usePermittedFilters(optionalFilters)
 
     return (
         <div className={css.outerWrapper}>
             <div className={css.wrapper}>
                 <FiltersPanel
                     filterSettingsOverrides={filterSettingsOverrides}
-                    optionalFilters={optionalFilters}
+                    optionalFilters={permittedFilters}
                     persistentFilters={persistentFilters}
                     applicableFilters={[
                         ...(persistentFilters || []),
-                        ...optionalFilters,
+                        ...permittedFilters,
                     ]}
                     shouldHideFilters={shouldHideFilters}
                 />
                 {withSavedFilters && (
                     <SavedFiltersActions
-                        optionalFilters={optionalFilters}
+                        optionalFilters={permittedFilters}
                         shouldHideFilters={shouldHideFilters}
                         pinnedFilter={pinnedFilter}
                     />
@@ -50,7 +52,7 @@ export const FiltersPanelWrapper = ({
             {withSavedFilters && (
                 <SavedFiltersPanel
                     persistentFilters={persistentFilters}
-                    optionalFilters={optionalFilters}
+                    optionalFilters={permittedFilters}
                     pinnedFilter={pinnedFilter}
                 />
             )}

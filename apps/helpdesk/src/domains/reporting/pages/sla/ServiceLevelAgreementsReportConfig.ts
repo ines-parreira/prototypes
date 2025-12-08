@@ -45,6 +45,7 @@ export const SERVICE_LEVEL_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Channels,
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.Tags,
     FilterKey.CustomFields,
     FilterKey.Score,

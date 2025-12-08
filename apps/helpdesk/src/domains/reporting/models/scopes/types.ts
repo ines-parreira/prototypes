@@ -91,6 +91,7 @@ export type StringFilterName =
     | 'customFields'
     | 'tags'
     | 'agents'
+    | 'teams'
     | 'channels'
     | 'integrations'
     | 'stores'
@@ -100,6 +101,10 @@ export type StringFilterName =
     | 'internalComplianceScore'
     | 'brandVoiceScore'
 
-export type NumberFilterName = 'agentId' | 'integrationId' | 'storeId'
+export type NumberFilterName =
+    | 'agentId'
+    | 'integrationId'
+    | 'storeId'
+    | 'teamId'
 
 export type FilterName = StringFilterName | NumberFilterName

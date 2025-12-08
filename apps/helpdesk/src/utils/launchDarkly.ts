@@ -7,6 +7,10 @@ import type { Account } from 'state/currentAccount/types'
 let client: LDClient.LDClient
 export let LDContext: LDClient.LDContext = {}
 
+export function _setLDContext(context: LDClient.LDContext) {
+    LDContext = context
+}
+
 export function getLDClient(): LDClient.LDClient {
     return client
 }
@@ -28,7 +32,7 @@ export function initLaunchDarkly(
 
         const developerContext = {
             developer: {
-                key: process.env.DEVELOPER_NAME ?? window.DEVELOPER_NAME ?? '',
+                key: process.env.DEVELOPER_NAME ?? 'anonymous',
             },
         }
 

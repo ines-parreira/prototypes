@@ -29,6 +29,7 @@ export enum FilterKey {
     StoreIntegrations = 'storeIntegrations',
     VoiceQueues = 'voiceQueues',
     Stores = 'stores',
+    AssignedTeam = 'teams',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -69,6 +70,7 @@ export type StaticFilter =
     | FilterKey.ResolutionCompleteness
     | FilterKey.StoreIntegrations
     | FilterKey.Stores
+    | FilterKey.AssignedTeam
     | FilterKey.VoiceQueues
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.CustomField
@@ -126,6 +128,7 @@ export type LegacyStatsFilters = {
     [FilterKey.Tags]?: number[]
     [FilterKey.StoreIntegrations]?: number[]
     [FilterKey.Stores]?: number[]
+    [FilterKey.AssignedTeam]?: number[]
     [FilterKey.VoiceQueues]?: number[]
 }
 
@@ -166,6 +169,7 @@ export type SavedFilterWithLogicalOperator = {
         | FilterKey.ResolutionCompleteness
         | FilterKey.Score
         | FilterKey.SlaPolicies
+        | FilterKey.AssignedTeam
         | FilterKey.VoiceQueues
         | FilterKey.Stores
     operator: LogicalOperatorEnum
@@ -238,6 +242,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.Tags]?: TagFilter[]
     [FilterKey.StoreIntegrations]?: WithLogicalOperator<number>
     [FilterKey.Stores]?: WithLogicalOperator<number>
+    [FilterKey.AssignedTeam]?: WithLogicalOperator<number>
     [FilterKey.VoiceQueues]?: WithLogicalOperator<number>
 }
 

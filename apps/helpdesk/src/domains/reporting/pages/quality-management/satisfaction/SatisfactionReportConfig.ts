@@ -42,6 +42,7 @@ export const SATISFACTION_PERSISTENT_FILTERS: StaticFilter[] = [
 ]
 export const SATISFACTION_OPTIONAL_FILTERS = [
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.Channels,
     FilterKey.Integrations,
     FilterKey.CustomFields,

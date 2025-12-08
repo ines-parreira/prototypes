@@ -12,7 +12,6 @@ export default function AgentsShoutOut({
     useQuery,
     queryOrder,
     metricName,
-    measure,
     formatValue,
     chartId,
     dashboard,
@@ -20,7 +19,7 @@ export default function AgentsShoutOut({
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const queryResult = useQuery(cleanStatsFilters, userTimezone, queryOrder)
 
-    const data = useShoutoutTopResults(queryResult, formatValue, measure)
+    const data = useShoutoutTopResults(queryResult, formatValue)
 
     if (queryResult.isFetching) return <Skeleton height={SHOUTOUT_HEIGHT_PX} />
 

@@ -81,6 +81,7 @@ export function isFilterTypeWithValues(
     | FilterKey.AggregationWindow
     | FilterKey.StoreIntegrations
     | FilterKey.Stores
+    | FilterKey.AssignedTeam
     | FilterComponentKey.CustomField
     | FilterComponentKey.BusiestTimesMetricSelectFilter
     | FilterComponentKey.PhoneIntegrations
@@ -92,6 +93,7 @@ export function isFilterTypeWithValues(
         type !== FilterKey.Period &&
         type !== FilterKey.StoreIntegrations &&
         type !== FilterKey.Stores &&
+        type !== FilterKey.AssignedTeam &&
         type !== FilterComponentKey.CustomField &&
         type !== FilterComponentKey.BusiestTimesMetricSelectFilter &&
         type !== FilterComponentKey.PhoneIntegrations

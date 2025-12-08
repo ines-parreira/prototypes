@@ -75,6 +75,7 @@ describe('transformKnowledgeHubArticlesToKnowledgeItems', () => {
                 lastUpdatedAt: '2024-01-15T10:00:00Z',
                 inUseByAI: KnowledgeVisibility.PUBLIC,
                 source: 'test-source.com',
+                localeCode: 'en-US',
             },
         ])
     })

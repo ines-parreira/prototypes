@@ -9,6 +9,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { EmptyStateWrapper } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
@@ -45,6 +46,9 @@ type KnowledgeHubTableProps = {
     selectedFolder: GroupedKnowledgeItem | null
     selectedTypeFilter?: KnowledgeType | null
     faqHelpCenterId?: number | null
+    shopName?: string
+    shopType: string
+    guidanceHelpCenterId?: number | null
 }
 
 export const KnowledgeHubTable = ({
@@ -57,8 +61,14 @@ export const KnowledgeHubTable = ({
     selectedFolder,
     selectedTypeFilter = null,
     faqHelpCenterId,
+    shopName = '',
+    shopType,
+    guidanceHelpCenterId,
 }: KnowledgeHubTableProps) => {
     const [searchTerm, setSearchTerm] = useState('')
+
+    const { guidanceActions: availableActions } =
+        useGetGuidancesAvailableActions(shopName, shopType)
 
     const isSearchActive = Boolean(searchTerm)
 
@@ -130,8 +140,13 @@ export const KnowledgeHubTable = ({
     )
 
     const columnsWithHighlight = useMemo(() => {
-        return getColumns(searchTerm, handleRowClick)
-    }, [searchTerm, handleRowClick])
+        return getColumns(
+            searchTerm,
+            handleRowClick,
+            availableActions,
+            guidanceHelpCenterId,
+        )
+    }, [searchTerm, handleRowClick, availableActions, guidanceHelpCenterId])
 
     const table = useTable<GroupedKnowledgeItem>({
         data: displayData,

@@ -4,7 +4,6 @@ import _takeWhile from 'lodash/takeWhile'
 
 import type { User } from 'config/types/user'
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
-import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
@@ -16,7 +15,6 @@ interface GetShoutoutTopResultsArgs {
     filteredAgents: User[]
     queryResult: MetricWithDecile
     formatValue: typeof formatMetricValue
-    measure: HelpdeskMessageCubeWithJoins['measures']
     agentIdFields: string[]
 }
 
@@ -29,7 +27,6 @@ export function getShoutoutTopResults({
     filteredAgents,
     queryResult,
     formatValue,
-    measure,
     agentIdFields,
 }: GetShoutoutTopResultsArgs): GetShoutoutTopResultsReturnType {
     const allData = queryResult.data?.allData || []
@@ -38,6 +35,11 @@ export function getShoutoutTopResults({
             isMetricForAgent(metric, agent.id, agentIdFields),
         ),
     )
+
+    const measure = queryResult.data?.measures?.[0]
+    if (!measure) {
+        return { agents: [], metricValue: null }
+    }
 
     if (!filteredData.length) return { agents: [], metricValue: null }
 
@@ -67,7 +69,6 @@ export function getShoutoutTopResults({
 export const useShoutoutTopResults = (
     queryResult: MetricWithDecile,
     formatValue: typeof formatMetricValue,
-    measure: HelpdeskMessageCubeWithJoins['measures'],
 ) => {
     const filteredAgents = useAppSelector(getFilteredAgents)
 
@@ -76,10 +77,9 @@ export const useShoutoutTopResults = (
             getShoutoutTopResults({
                 queryResult,
                 formatValue,
-                measure,
                 filteredAgents,
                 agentIdFields,
             }),
-        [queryResult, formatValue, measure, filteredAgents],
+        [queryResult, formatValue, filteredAgents],
     )
 }

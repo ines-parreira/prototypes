@@ -109,7 +109,7 @@ describe('SmsSettingsFormComponent', () => {
     it('renders the form with default SMS list and shows required label', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
 
-        screen.getByText(/Select one or more SMS phone numbers/i)
+        screen.getByText(/Select phone numbers/i)
         screen.getByText('SMS Integration 1')
         screen.getByText('SMS Integration 2')
         screen.getByText('One or more SMS required.')
@@ -148,7 +148,7 @@ describe('SmsSettingsFormComponent', () => {
         renderWithProvider({ ...defaultProps, isRequired: true })
 
         screen.getByText('One or more SMS required.')
-        screen.getByText(/Select one or more SMS phone numbers/i)
+        screen.getByText(/Select phone numbers/i)
     })
 
     it('does not show error message when isRequired is false', () => {

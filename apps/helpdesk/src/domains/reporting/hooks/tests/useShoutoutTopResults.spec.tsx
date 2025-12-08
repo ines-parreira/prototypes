@@ -35,6 +35,7 @@ describe('useShoutoutTopResults', () => {
                     [measure]: String(metricValue),
                 },
             ],
+            measures: [measure as any],
         },
     })
 
@@ -46,14 +47,13 @@ describe('useShoutoutTopResults', () => {
     } as RootState
 
     it.each(Object.values(AgentsShoutOutsConfig))(
-        'should pick the best result per metric $measure',
-        ({ formatValue, measure }) => {
+        'should pick the best result per metric $metricName',
+        ({ formatValue, metricName }) => {
             const { result } = renderHook(
                 () =>
                     useShoutoutTopResults(
-                        allDataMockedMetric(measure, idField),
+                        allDataMockedMetric(metricName, idField),
                         formatValue,
-                        measure,
                     ),
                 {
                     wrapper: ({ children }) => (

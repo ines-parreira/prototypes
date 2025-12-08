@@ -35,6 +35,11 @@ export const DocumentFilters = ({
                     const selected = filters.find((f) => f.label === type)
                     onFilterChange(selected?.type || null)
                 }}
+                selectedKey={
+                    selectedFilter
+                        ? typeConfig[selectedFilter].label
+                        : 'All content'
+                }
             >
                 {filters.map((filter) => {
                     return (

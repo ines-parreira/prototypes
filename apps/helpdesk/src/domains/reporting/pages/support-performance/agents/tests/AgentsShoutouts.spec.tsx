@@ -146,8 +146,27 @@ describe('<AgentsShoutouts />', () => {
     })
 
     it('should show the name of the user if there is only one to shoutout and {count} agents if there are more with the same value', () => {
-        const mockedMetric: ReturnType<
+        const mockedMetricSatisfaction: ReturnType<
             typeof useCustomerSatisfactionMetricPerAgent
+        > = {
+            isError: false,
+            isFetching: false,
+            data: {
+                value: null,
+                decile: 5,
+                allData: agents.map((agent) => ({
+                    [TicketDimension.AssigneeUserId]: String(agent.id),
+                    /**
+                     * have it the same for all agents
+                     */
+                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '777',
+                })),
+                dimensions: [TicketDimension.AssigneeUserId],
+                measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+            },
+        }
+        const mockedMetricFRT: ReturnType<
+            typeof useMedianFirstResponseTimeMetricPerAgent
         > = {
             isError: false,
             isFetching: false,
@@ -157,10 +176,6 @@ describe('<AgentsShoutouts />', () => {
                 allData: agents.map((agent, idx) => ({
                     [TicketDimension.AssigneeUserId]: String(agent.id),
                     /**
-                     * have it the same for all agents
-                     */
-                    [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '777',
-                    /**
                      * this will be different for every agent
                      */
                     [TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime]:
@@ -168,7 +183,6 @@ describe('<AgentsShoutouts />', () => {
                 })),
                 dimensions: [TicketDimension.AssigneeUserId],
                 measures: [
-                    TicketSatisfactionSurveyMeasure.AvgSurveyScore,
                     TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
                 ],
             },
@@ -182,14 +196,10 @@ describe('<AgentsShoutouts />', () => {
         }
 
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
-            mockedMetric as ReturnType<
-                typeof useCustomerSatisfactionMetricPerAgent
-            >,
+            mockedMetricSatisfaction,
         )
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
-            mockedMetric as ReturnType<
-                typeof useMedianFirstResponseTimeMetricPerAgent
-            >,
+            mockedMetricFRT,
         )
 
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(

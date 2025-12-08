@@ -327,6 +327,18 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
+
+            case 'teams':
+                if (statFilters.teams && hasFilter(statFilters.teams)) {
+                    filters.push(
+                        createStandardFilter(
+                            'teamId',
+                            statFilters.teams.operator,
+                            statFilters.teams.values,
+                        ),
+                    )
+                }
+                break
         }
     })
 

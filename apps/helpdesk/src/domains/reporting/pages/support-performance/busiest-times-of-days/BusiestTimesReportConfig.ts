@@ -18,6 +18,7 @@ export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
     FilterKey.Tags,
     FilterKey.Agents,
+    FilterKey.AssignedTeam,
     FilterKey.CustomFields,
     FilterKey.Score,
     FilterKey.Stores,

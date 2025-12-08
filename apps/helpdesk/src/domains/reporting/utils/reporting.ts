@@ -83,6 +83,7 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
     stores: TicketMessagesMember.Store,
+    teams: TicketMember.AssigneeTeamId,
     ...AutoQAFiltersMembers,
 }
 
@@ -138,6 +139,7 @@ export const HelpdeskMessagesStatsFiltersMembers: StatsFiltersMembers = {
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
+    teams: TicketMember.AssigneeTeamId,
     ...AutoQAFiltersMembers,
 }
 
@@ -152,6 +154,7 @@ export const HelpdeskCustomerMessagesReceivedStatsFiltersMembers: StatsFiltersMe
         periodStart: TicketMember.PeriodStart,
         periodEnd: TicketMember.PeriodEnd,
         agents: TicketMember.AssigneeUserId,
+        teams: TicketMember.AssigneeTeamId,
     }
 
 export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
@@ -223,6 +226,7 @@ export const statsFiltersToReportingFilters = (
         stores,
         channels,
         agents,
+        teams: assignedTeam,
         tags,
         customFields,
         helpCenters,
@@ -292,6 +296,12 @@ export const statsFiltersToReportingFilters = (
     if (hasFilter(agents) && members.agents) {
         filters = addOptionalFilter(filters, agents, {
             member: members.agents,
+            operator: ReportingFilterOperator.Equals,
+        })
+    }
+    if (hasFilter(assignedTeam) && members.teams) {
+        filters = addOptionalFilter(filters, assignedTeam, {
+            member: members.teams,
             operator: ReportingFilterOperator.Equals,
         })
     }

@@ -1,5 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 
 import { EMPTY_HELP_CENTER_ID } from '../../../../automate/common/components/HelpCenterSelect'
 import { useFaqHelpCenter } from '../../EmptyState/useFaqHelpCenter'
@@ -38,8 +41,29 @@ jest.mock('../../EmptyState/utils', () => ({
 
 jest.mock('../../EmptyState/useFaqHelpCenter')
 
+jest.mock(
+    '../../../components/GuidanceEditor/useGetGuidancesAvailableActions',
+    () => ({
+        useGetGuidancesAvailableActions: jest.fn(() => ({
+            guidanceActions: [],
+            isLoading: false,
+        })),
+    }),
+)
+
+jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
+    useGuidanceArticle: jest.fn(() => ({
+        guidanceArticle: null,
+        isLoading: false,
+    })),
+}))
+
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
+>
+
+const mockUseGuidanceArticle = useGuidanceArticle as jest.MockedFunction<
+    typeof useGuidanceArticle
 >
 
 const mockData = [
@@ -76,14 +100,27 @@ const mockData = [
 ]
 
 describe('KnowledgeHubTable', () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+        },
+        logger: {
+            log: console.log,
+            warn: console.warn,
+            error: () => {},
+        },
+    })
+
     const defaultProps = {
         data: mockData,
         isLoading: false,
         onRowClick: jest.fn(),
         selectedFolder: null,
+        shopType: 'shopify',
     }
 
     beforeEach(() => {
+        queryClient.clear()
         mockUseFaqHelpCenter.mockReturnValue({
             faqHelpCenters: [],
             selectedHelpCenter: {
@@ -99,7 +136,11 @@ describe('KnowledgeHubTable', () => {
     })
 
     const renderComponent = (props = {}) => {
-        return render(<KnowledgeHubTable {...defaultProps} {...props} />)
+        return render(
+            <QueryClientProvider client={queryClient}>
+                <KnowledgeHubTable {...defaultProps} {...props} />
+            </QueryClientProvider>,
+        )
     }
 
     describe('rendering', () => {
@@ -551,11 +592,13 @@ describe('KnowledgeHubTable', () => {
                 ).not.toBeInTheDocument()
 
                 rerender(
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        data={[]}
-                        isLoading={false}
-                    />,
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            data={[]}
+                            isLoading={false}
+                        />
+                    </QueryClientProvider>,
                 )
 
                 expect(
@@ -824,6 +867,106 @@ describe('KnowledgeHubTable', () => {
 
             expect(onRowClick).toHaveBeenCalled()
             expect(onFaqRowClick).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Guidance Actions Badge', () => {
+        beforeEach(() => {
+            const {
+                useGetGuidancesAvailableActions,
+            } = require('../../../components/GuidanceEditor/useGetGuidancesAvailableActions')
+
+            useGetGuidancesAvailableActions.mockReturnValue({
+                guidanceActions: [
+                    { name: 'Apply Discount', value: 'apply-discount' },
+                    { name: 'Create Ticket', value: 'create-ticket' },
+                ],
+                isGuidanceArticleLoading: false,
+            })
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: false,
+            })
+        })
+
+        it('renders GuidanceActionsBadge for guidance items with actions', () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    id: 3,
+                    content:
+                        'Use $$$apply-discount$$$ to apply discount and $$$create-ticket$$$ to create ticket',
+                    title: 'Return Policy',
+                } as any,
+                isGuidanceArticleLoading: false,
+            })
+            renderComponent({
+                selectedFolder: {
+                    id: '3',
+                    title: 'Return Policy',
+                    type: KnowledgeType.Guidance,
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    isGrouped: false,
+                },
+                shopName: 'test-shop',
+                guidanceHelpCenterId: 123,
+            })
+
+            expect(screen.getByText('Return Policy')).toBeInTheDocument()
+            expect(screen.getByAltText('action logo')).toBeInTheDocument()
+            expect(screen.getByText('2')).toBeInTheDocument()
+        })
+
+        it('does not render GuidanceActionsBadge for guidance items without actions', () => {
+            renderComponent({
+                selectedFolder: {
+                    id: '3',
+                    title: 'Return Policy',
+                    type: KnowledgeType.Guidance,
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    isGrouped: false,
+                },
+                shopName: 'test-shop',
+                guidanceHelpCenterId: 123,
+            })
+
+            expect(screen.getByText('Return Policy')).toBeInTheDocument()
+            expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
+        })
+
+        it('does not render GuidanceActionsBadge for non-guidance items', () => {
+            renderComponent({
+                selectedFolder: {
+                    id: '1',
+                    title: 'Product Manual',
+                    type: KnowledgeType.Document,
+                    lastUpdatedAt: '2024-01-15T10:00:00Z',
+                    source: 'docs.example.com',
+                    isGrouped: false,
+                },
+                shopName: 'test-shop',
+                guidanceHelpCenterId: 123,
+            })
+
+            expect(screen.getByText('Product Manual')).toBeInTheDocument()
+            expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
+        })
+
+        it('does not render GuidanceActionsBadge when content is not available', () => {
+            renderComponent({
+                selectedFolder: {
+                    id: '3',
+                    title: 'Return Policy',
+                    type: KnowledgeType.Guidance,
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    isGrouped: false,
+                },
+                shopName: 'test-shop',
+                guidanceHelpCenterId: 123,
+            })
+
+            expect(screen.getByText('Return Policy')).toBeInTheDocument()
+            expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
         })
     })
 })

@@ -12,6 +12,7 @@ const messagesSentScope = defineScope({
         'periodStart',
         'periodEnd',
         'agents',
+        'teams',
         'channels',
         'score',
         'integrations',
