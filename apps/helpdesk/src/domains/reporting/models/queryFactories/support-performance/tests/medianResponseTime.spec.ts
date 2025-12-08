@@ -28,7 +28,6 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -310,11 +309,6 @@ describe('medianResponseTime', () => {
                     ...medianResponseTimeQueryFactory(statsFilters, timezone)
                         .dimensions,
                 ],
-                filters: [
-                    ...medianResponseTimeQueryFactory(statsFilters, timezone)
-                        .filters,
-                    TicketDrillDownFilter,
-                ],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
@@ -343,11 +337,6 @@ describe('medianResponseTime', () => {
                     TicketDimension.TicketId,
                     ...medianResponseTimeQueryFactory(statsFilters, timezone)
                         .dimensions,
-                ],
-                filters: [
-                    ...medianResponseTimeQueryFactory(filters, timezone)
-                        .filters,
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [

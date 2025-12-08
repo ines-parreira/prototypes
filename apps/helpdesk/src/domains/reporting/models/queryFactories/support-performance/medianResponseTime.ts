@@ -13,7 +13,6 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketMessagesEnrichedResponseTimesMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -90,7 +89,6 @@ export const medianResponseTimeMetricPerTicketDrillDownQueryFactory = (
             TicketMessagesEnrichedResponseTimesMeasure.MedianResponseTime,
         ],
         dimensions: [TicketDimension.TicketId],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

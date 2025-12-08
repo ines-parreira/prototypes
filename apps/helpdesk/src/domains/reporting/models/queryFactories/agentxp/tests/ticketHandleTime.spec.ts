@@ -24,7 +24,6 @@ import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -192,7 +191,6 @@ describe('ticketHandleTime', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0].values.map(String),
                     },
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [],
@@ -246,7 +244,6 @@ describe('ticketHandleTime', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0].values.map(String),
                     },
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [],
@@ -299,7 +296,6 @@ describe('ticketHandleTime', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0].values.map(String),
                     },
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [HandleTimeMeasure.AverageHandleTime],
@@ -350,7 +346,6 @@ describe('ticketHandleTime', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.[0].values.map(String),
                     },
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [HandleTimeMeasure.AverageHandleTime],

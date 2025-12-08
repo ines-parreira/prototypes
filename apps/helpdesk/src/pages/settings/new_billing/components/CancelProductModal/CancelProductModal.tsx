@@ -1,19 +1,29 @@
-import React, { useReducer, useState } from 'react'
+import type React from 'react'
+import { useReducer, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import _capitalize from 'lodash/capitalize'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type { ProductType } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {
+    getCurrentAutomatePlan,
+    getCurrentHelpdeskPlan,
+} from 'state/billing/selectors'
+import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { trackBillingEvent } from '../../../../../models/billing/resources'
+import { cancelHelpdeskAutoRenewal } from '../../../../../state/currentAccount/actions'
+import { BILLING_SUPPORT_EMAIL, ZAPIER_REMOVE_AAO_HOOK } from '../../constants'
+import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
+import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import CancellationReasons from './CancellationReasons'
 import CancellationReasonsFooter from './CancellationReasons/CancellationReasonsFooter'
 import CancellationSummary from './CancellationSummary'
@@ -22,7 +32,10 @@ import type { SubscriptionProducts } from './CancellationSummary/types'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
 import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
 import { CancellationFlowStep } from './constants'
-import { findCancellationScenarioByProductType } from './helpers'
+import {
+    findCancellationScenarioByProductType,
+    formatCancellationReasonsForZapier,
+} from './helpers'
 import useCancellationFlowStepsStateMachine from './hooks/useCancellationFlowStepsStateMachine'
 import useFindChurnMitigationOfferId from './hooks/useFindChurnMitigationOffer'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
@@ -38,6 +51,11 @@ type CancelProductModelProps = {
     productType: ProductType
     subscriptionProducts: SubscriptionProducts
     periodEnd: string
+    currentUsage?: CurrentProductsUsages
+    selectedPlans: SelectedPlans
+    setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
+    onCancellationConfirmed?: () => void
+    updateSubscription: () => Promise<unknown>
 }
 
 const CancelProductModal = ({
@@ -46,6 +64,11 @@ const CancelProductModal = ({
     productType,
     subscriptionProducts,
     periodEnd,
+    currentUsage,
+    selectedPlans,
+    setSelectedPlans,
+    onCancellationConfirmed,
+    updateSubscription,
 }: CancelProductModelProps) => {
     const dispatch = useAppDispatch()
     const { cancellationStep, switchToNextStep, resetCancellationFlow } =
@@ -60,6 +83,8 @@ const CancelProductModal = ({
 
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const resetAll = () => {
         setIsFirstOpened(false)
         dispatchCancellationReasonsAction({
@@ -90,7 +115,9 @@ const CancelProductModal = ({
             productType: productType.toString(),
             accountDomain: currentAccount.get('domain'),
             userEmail: currentUser.get('email'),
-            primaryReason: cancellationReasonsState.primaryReason!.label,
+            primaryReason:
+                cancellationReasonsState.primaryReason?.label ??
+                'No level 1 reason',
             secondaryReason:
                 cancellationReasonsState.secondaryReason?.label || null,
             otherReason: cancellationReasonsState.otherReason?.label || null,
@@ -139,13 +166,88 @@ const CancelProductModal = ({
 
     const handleSubmitCancellation = async () => {
         setIsSubmitting(true)
-        const isCancelled = await dispatch(
-            productCancellationScenario.cancelProductAction(),
-        )
-        setIsSubmitting(false)
+        let isCancelled = false
+
+        try {
+            if (productType === ProductType.Helpdesk) {
+                isCancelled = await dispatch(
+                    cancelHelpdeskAutoRenewal(selectedPlans),
+                )
+            } else {
+                await updateSubscription()
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: `You have removed ${productCancellationScenario.productDisplayName} from your subscription`,
+                    }),
+                )
+                isCancelled = true
+            }
+        } catch {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Failed to remove ${productCancellationScenario.productDisplayName}. Please try again or contact support.`,
+                }),
+            )
+            isCancelled = false
+        } finally {
+            setIsSubmitting(false)
+        }
 
         if (isCancelled) {
+            onCancellationConfirmed?.()
             handleOnClose()
+        }
+    }
+
+    const handleSendCancellationEvents = async () => {
+        await trackBillingEvent(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: cancellationReasonsState.primaryReason!.label,
+                secondary_reason:
+                    cancellationReasonsState.secondaryReason?.label || null,
+                other_reason:
+                    cancellationReasonsState.otherReason?.label || null,
+                accepted: false,
+            },
+        )
+
+        if (productType === ProductType.Automation && currentUsage) {
+            const domain = currentAccount.get('domain')
+            const from = currentUser.get('email')
+            const subject = `Remove AI Agent - ${domain}`
+            const message = formatCancellationReasonsForZapier(
+                cancellationReasonsState.primaryReason,
+                cancellationReasonsState.secondaryReason,
+                cancellationReasonsState.otherReason,
+            )
+
+            await sendRemoveNotificationZap({
+                zapierHook: ZAPIER_REMOVE_AAO_HOOK,
+                subject,
+                message,
+                from,
+                to: BILLING_SUPPORT_EMAIL,
+                account: domain,
+                freeTrial: currentAccount.get('is_trialing') || false,
+                helpdeskPlan: currentHelpdeskPlan?.name ?? '',
+                automationPlan: currentAutomatePlan?.name ?? '',
+            })
+        }
+
+        // Mark the product as removed in pending changes (except for Helpdesk)
+        if (productType !== ProductType.Helpdesk) {
+            setSelectedPlans((prev) => ({
+                ...prev,
+                [productType]: {
+                    ...prev[productType],
+                    isSelected: false,
+                    plan: undefined,
+                },
+            }))
         }
     }
 
@@ -207,24 +309,8 @@ const CancelProductModal = ({
                             <ChurnMitigationOfferFooter
                                 onAccept={handleAcceptOffer}
                                 onContinue={async () => {
+                                    await handleSendCancellationEvents()
                                     switchToNextStep()
-                                    await trackBillingEvent(
-                                        SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
-                                        {
-                                            product_type: productType,
-                                            primary_reason:
-                                                cancellationReasonsState
-                                                    .primaryReason!.label,
-                                            secondary_reason:
-                                                cancellationReasonsState
-                                                    .secondaryReason?.label ||
-                                                null,
-                                            other_reason:
-                                                cancellationReasonsState
-                                                    .otherReason?.label || null,
-                                            accepted: false,
-                                        },
-                                    )
                                 }}
                                 isLoading={isSubmitting}
                             />

@@ -6,7 +6,7 @@ const ticketsRepliedScope = defineScope({
     scope: MetricScope.TicketsReplied,
     measures: ['ticketCount'],
     dimensions: ['ticketId', 'agentId', 'channel', 'integrationId'],
-    timeDimensions: ['createdDatetime'],
+    timeDimensions: ['sentDatetime'],
     order: ['ticketId', 'createdDatetime', 'ticketCount'],
     filters: [
         'periodStart',
@@ -46,7 +46,7 @@ export const ticketsRepliedTimeseries = ticketsRepliedScope
         measures: ['ticketCount'] as const,
         time_dimensions: [
             {
-                dimension: 'createdDatetime',
+                dimension: 'sentDatetime',
                 granularity: ctx.granularity,
             },
         ],

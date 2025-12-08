@@ -8,6 +8,7 @@ export enum FeatureFlagKey {
     ActionsInternalPlatform = 'actions-internal-platform',
     ActionSteps = 'action-steps',
     AgentActivityTracking = 'agent-activity-tracking',
+    CustomAgentUnavailableStatuses = 'linear.task_SUPXP-4819.custom-agent-unavailable-status',
     /** @deprecated Fully evaluated to `true` */
     AiAgentActivation = 'linear.project_activate-ai-agent-per-skills-and-channels-easily.enable_activation_feature',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
@@ -111,6 +112,7 @@ export enum FeatureFlagKey {
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
+    EnableConsolidatedCancellationModal = 'linear.CRMGROW-1944.enable-consolidated-cancellation-modal',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

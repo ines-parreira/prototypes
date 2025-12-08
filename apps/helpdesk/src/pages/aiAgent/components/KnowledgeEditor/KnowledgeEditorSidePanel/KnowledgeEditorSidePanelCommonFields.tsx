@@ -122,18 +122,23 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
 export const KnowledgeEditorSidePanelFieldSourceDocument = ({
     sourceDocument,
 }: {
-    sourceDocument: string
+    sourceDocument: {
+        label: string
+        downloadUrl: string
+    }
 }) => {
     const id = useId()
 
     return (
         <a
-            href={sourceDocument}
+            href={sourceDocument.downloadUrl}
             className={css.documentField}
             target="_blank"
             rel="noopener noreferrer"
         >
-            <span className={css.documentFieldText}>{sourceDocument}</span>
+            <span className={css.documentFieldText}>
+                {sourceDocument.label}
+            </span>
 
             <span id={`tooltip_${id}`}>
                 <Icon name="download" size={IconSize.Xs} />

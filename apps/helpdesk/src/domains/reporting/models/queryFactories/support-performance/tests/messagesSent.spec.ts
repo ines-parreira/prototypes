@@ -32,7 +32,6 @@ import {
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     PublicAndMessageViaFilter,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -244,10 +243,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
                 TicketDimension.TicketId,
                 ...messagesSentQueryFactory(statsFilters, timezone).dimensions,
             ],
-            filters: [
-                ...messagesSentQueryFactory(statsFilters, timezone).filters,
-                TicketDrillDownFilter,
-            ],
+
             limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
@@ -271,11 +267,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
                 METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN,
             measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [TicketDimension.TicketId],
-            filters: [
-                ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
-                    .filters,
-                TicketDrillDownFilter,
-            ],
+
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
         })

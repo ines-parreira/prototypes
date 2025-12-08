@@ -300,6 +300,7 @@ ForDocumentSnippet.args = {
                 createdDatetime: new Date('2025-06-17'),
                 lastUpdatedDatetime: new Date('2025-06-17'),
                 sourceDocument: 'https://some-doc/doc.pdf',
+                googleStorageUrl: 'https://storage.googleapis.com/doc.pdf',
             }}
             impact={{
                 successRate: 0.28,
@@ -321,6 +322,7 @@ ForNewDocumentSnippet.args = {
                 createdDatetime: new Date('2025-06-17'),
                 lastUpdatedDatetime: new Date('2025-06-17'),
                 sourceDocument: 'https://some-doc/doc.pdf',
+                googleStorageUrl: 'https://storage.googleapis.com/doc.pdf',
             }}
             impact={{}}
             relatedTickets={{}}

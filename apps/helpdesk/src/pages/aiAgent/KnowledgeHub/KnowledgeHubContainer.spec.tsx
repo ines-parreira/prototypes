@@ -21,6 +21,7 @@ import {
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
 import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
+import { useKnowledgeHubSnippetEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
 import {
     KnowledgeType,
@@ -90,11 +91,14 @@ jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
 }))
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/EditorWrappers', () => ({
     GuidanceEditorWrapper: ({ isOpen }: any) =>
         isOpen ? <div data-testid="guidance-editor-wrapper" /> : null,
     FaqEditorWrapper: ({ isOpen }: any) =>
         isOpen ? <div data-testid="faq-editor-wrapper" /> : null,
+    SnippetEditorWrapper: ({ isOpen }: any) =>
+        isOpen ? <div data-testid="snippet-editor-wrapper" /> : null,
 }))
 jest.mock(
     'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal',
@@ -197,6 +201,8 @@ const mockUseGetHelpCenterListMulti = useGetHelpCenterListMulti as jest.Mock
 const mockUseKnowledgeHubGuidanceEditor =
     useKnowledgeHubGuidanceEditor as jest.Mock
 const mockUseKnowledgeHubFaqEditor = useKnowledgeHubFaqEditor as jest.Mock
+const mockUseKnowledgeHubSnippetEditor =
+    useKnowledgeHubSnippetEditor as jest.Mock
 const mockTransformKnowledgeHubArticlesToKnowledgeItems =
     transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
 
@@ -334,6 +340,19 @@ describe('KnowledgeHubContainer', () => {
             handleCreate: jest.fn(),
             handleUpdate: jest.fn(),
             handleDelete: jest.fn(),
+            handleClickPrevious: jest.fn(),
+            handleClickNext: jest.fn(),
+        })
+
+        mockUseKnowledgeHubSnippetEditor.mockReturnValue({
+            isEditorOpen: false,
+            currentArticleId: undefined,
+            currentSnippetType: undefined,
+            openEditorForEdit: jest.fn(),
+            closeEditor: jest.fn(),
+            handleUpdate: jest.fn(),
+            hasPrevious: false,
+            hasNext: false,
             handleClickPrevious: jest.fn(),
             handleClickNext: jest.fn(),
         })

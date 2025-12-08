@@ -19,10 +19,7 @@ import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cube
 import { HelpCenterTrackingEventMember } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketSLAMember } from 'domains/reporting/models/cubes/sla/TicketSLACube'
-import {
-    TicketMeasure,
-    TicketMember,
-} from 'domains/reporting/models/cubes/TicketCube'
+import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketFirstHumanAgentResponseTimeMember } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesEnrichedResponseTimesMember } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
@@ -207,12 +204,6 @@ export const PublicAndMessageViaFilter = [
         values: ['aircall', 'api', 'helpdesk'],
     },
 ]
-
-export const TicketDrillDownFilter = {
-    member: TicketMeasure.TicketCount,
-    operator: ReportingFilterOperator.MeasureFilter,
-    values: [],
-}
 
 export const DRILLDOWN_QUERY_LIMIT = 100
 

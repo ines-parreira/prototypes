@@ -355,6 +355,7 @@ const BillingProcessView = ({
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
                             }
+                            updateSubscription={updateSubscription}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -371,6 +372,7 @@ const BillingProcessView = ({
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
                             }
+                            updateSubscription={updateSubscription}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -385,6 +387,7 @@ const BillingProcessView = ({
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
                             }
+                            updateSubscription={updateSubscription}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -399,6 +402,7 @@ const BillingProcessView = ({
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
                             }
+                            updateSubscription={updateSubscription}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -413,6 +417,7 @@ const BillingProcessView = ({
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
                             }
+                            updateSubscription={updateSubscription}
                         />
                     </div>
                 </Card>

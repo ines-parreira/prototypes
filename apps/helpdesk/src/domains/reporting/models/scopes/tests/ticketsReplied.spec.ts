@@ -55,7 +55,7 @@ describe('ticketsRepliedScope', () => {
                 scope: 'tickets-replied',
                 time_dimensions: [
                     {
-                        dimension: 'createdDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -73,7 +73,7 @@ describe('ticketsRepliedScope', () => {
                 measures: ['ticketCount'],
                 time_dimensions: [
                     {
-                        dimension: 'createdDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -157,7 +157,7 @@ describe('ticketsRepliedScope', () => {
                 scope: 'tickets-replied',
                 time_dimensions: [
                     {
-                        dimension: 'createdDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -193,7 +193,7 @@ describe('ticketsRepliedScope', () => {
                 scope: 'tickets-replied',
                 time_dimensions: [
                     {
-                        dimension: 'createdDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'day',
                     },
                 ],
@@ -233,7 +233,7 @@ describe('ticketsRepliedScope', () => {
 
                 expect(factoryResult.time_dimensions).toEqual([
                     {
-                        dimension: 'createdDatetime',
+                        dimension: 'sentDatetime',
                         granularity: 'week',
                     },
                 ])

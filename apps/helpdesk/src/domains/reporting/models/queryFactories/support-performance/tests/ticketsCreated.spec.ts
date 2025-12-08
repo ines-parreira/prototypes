@@ -23,7 +23,6 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -285,10 +284,6 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
             ],
-            filters: [
-                ...ticketsCreatedQueryFactory(statsFilters, timezone).filters,
-                TicketDrillDownFilter,
-            ],
             limit: DRILLDOWN_QUERY_LIMIT,
         })
     })
@@ -308,10 +303,6 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
             dimensions: [
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
-            ],
-            filters: [
-                ...ticketsCreatedQueryFactory(statsFilters, timezone).filters,
-                TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketDimension.CreatedDatetime, sorting]],

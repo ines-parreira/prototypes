@@ -41,8 +41,10 @@ import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
+import { SnippetEditorWrapper } from './EditorWrappers/SnippetEditorWrapper'
 import { DeleteDocumentModal } from './EmptyState/DeleteDocumentModal'
 import { UploadDocumentModal } from './EmptyState/UploadDocumentModal'
+import { useKnowledgeHubSnippetEditor } from './hooks/useKnowledgeHubSnippetEditor'
 
 import css from './KnowledgeHubContainer.less'
 
@@ -98,6 +100,21 @@ export const KnowledgeHubContainer = () => {
             }))
     }, [tableData])
 
+    const snippetArticles = useMemo(() => {
+        return tableData
+            .filter(
+                (item) =>
+                    item.type === KnowledgeType.Document ||
+                    item.type === KnowledgeType.URL ||
+                    item.type === KnowledgeType.Domain,
+            )
+            .map((item) => ({
+                id: Number(item.id),
+                title: item.title,
+                type: item.type,
+            }))
+    }, [tableData])
+
     const {
         openEditorForCreate: openGuidanceEditorForCreate,
         openEditorForEdit: openGuidanceEditorForEdit,
@@ -111,6 +128,11 @@ export const KnowledgeHubContainer = () => {
     const faqEditor = useKnowledgeHubFaqEditor({
         shopName,
         filteredFaqArticles: faqArticles,
+    })
+
+    const snippetEditor = useKnowledgeHubSnippetEditor({
+        shopName,
+        filteredSnippetArticles: snippetArticles,
     })
 
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
@@ -239,6 +261,7 @@ export const KnowledgeHubContainer = () => {
                 onGuidanceRowClick={openGuidanceEditorForEdit}
                 onFaqRowClick={faqEditor.openEditorForEdit}
                 onFaqEditorOpen={handleFaqEditorOpen}
+                onSnippetRowClick={snippetEditor.openEditorForEdit}
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
                 faqHelpCenterId={faqHelpCenterId}
@@ -299,6 +322,16 @@ export const KnowledgeHubContainer = () => {
                 onDelete={faqEditor.handleDelete}
                 onClickPrevious={faqEditor.handleClickPrevious}
                 onClickNext={faqEditor.handleClickNext}
+            />
+            <SnippetEditorWrapper
+                shopName={shopName}
+                isOpen={snippetEditor.isEditorOpen}
+                onClose={snippetEditor.closeEditor}
+                onUpdate={snippetEditor.handleUpdate}
+                onClickPrevious={snippetEditor.handleClickPrevious}
+                onClickNext={snippetEditor.handleClickNext}
+                currentArticleId={snippetEditor.currentArticleId}
+                snippetType={snippetEditor.currentSnippetType}
             />
         </div>
     )

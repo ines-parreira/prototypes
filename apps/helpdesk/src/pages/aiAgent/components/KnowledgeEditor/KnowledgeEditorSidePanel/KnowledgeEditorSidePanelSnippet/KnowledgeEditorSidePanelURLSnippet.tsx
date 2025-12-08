@@ -8,8 +8,8 @@ import { KnowledgeEditorSidePanelSectionURLSnippetDetails } from './KnowledgeEdi
 
 type Props = {
     details: Omit<URLSnippetDetailsProps, 'sectionId'>
-    impact: Omit<ImpactProps, 'sectionId'>
-    relatedTickets: Omit<RelatedTicketsProps, 'sectionId'>
+    impact?: Omit<ImpactProps, 'sectionId'>
+    relatedTickets?: Omit<RelatedTicketsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSidePanelURLSnippet = ({
@@ -24,10 +24,17 @@ export const KnowledgeEditorSidePanelURLSnippet = ({
             {...details}
             sectionId="details"
         />
-        <KnowledgeEditorSidePanelSectionImpact {...impact} sectionId="impact" />
-        <KnowledgeEditorSidePanelSectionRelatedTickets
-            {...relatedTickets}
-            sectionId="related-tickets"
-        />
+        {impact && (
+            <KnowledgeEditorSidePanelSectionImpact
+                {...impact}
+                sectionId="impact"
+            />
+        )}
+        {relatedTickets && (
+            <KnowledgeEditorSidePanelSectionRelatedTickets
+                {...relatedTickets}
+                sectionId="related-tickets"
+            />
+        )}
     </KnowledgeEditorSidePanel>
 )

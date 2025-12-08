@@ -7,7 +7,7 @@ import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../constants'
 import { dispatchDocumentEvent } from '../EmptyState/utils'
-import type { KnowledgeEditorConfig } from './useKnowledgeHubEditor'
+import type { KnowledgeEditorConfig } from '../types'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 jest.mock('@repo/logging')

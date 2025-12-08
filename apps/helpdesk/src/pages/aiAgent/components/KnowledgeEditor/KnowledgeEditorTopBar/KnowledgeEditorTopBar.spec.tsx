@@ -85,7 +85,9 @@ describe('KnowledgeEditorTopBar', () => {
                 onClose={jest.fn()}
                 isDetailsView={false}
                 onToggleDetailsView={jest.fn()}
-            />,
+            >
+                <div>Test Content</div>
+            </KnowledgeEditorTopBar>,
         )
 
         expect(screen.getByRole('button', { name: 'close' })).toBeDisabled()

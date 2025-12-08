@@ -3,7 +3,6 @@ import moment from 'moment'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -15,10 +14,7 @@ import {
 } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'domains/reporting/models/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -53,11 +49,6 @@ describe('averageScoreQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
-                {
-                    member: TicketSatisfactionSurveyDimension.SurveyScore,
-                    operator: ReportingFilterOperator.Gt,
-                    values: ['0'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
@@ -77,11 +68,6 @@ describe('averageScoreQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
-                {
-                    member: TicketSatisfactionSurveyDimension.SurveyScore,
-                    operator: ReportingFilterOperator.Gt,
-                    values: ['0'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
@@ -116,11 +102,6 @@ describe('averageScoreDrillDownQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
-                {
-                    member: TicketSatisfactionSurveyDimension.SurveyScore,
-                    operator: ReportingFilterOperator.Gt,
-                    values: ['0'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,
@@ -145,11 +126,6 @@ describe('averageScoreDrillDownQueryFactory', () => {
                     TicketStatsFiltersMembers,
                     statsFilters,
                 ),
-                {
-                    member: TicketSatisfactionSurveyDimension.SurveyScore,
-                    operator: ReportingFilterOperator.Gt,
-                    values: ['0'],
-                },
                 ...NotSpamNorTrashedTicketsFilter,
             ],
             timezone,

@@ -14,7 +14,6 @@ import {
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketsFirstAgentResponseTimeMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -98,7 +97,6 @@ export const medianFirstAgentResponseTimePerTicketDrillDownQueryFactory = (
             TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
             ...baseQuery.dimensions,
         ],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

@@ -48,3 +48,66 @@ export const typeConfig: Record<
     [KnowledgeType.URL]: { icon: 'link-horizontal', label: 'URLs' },
     [KnowledgeType.Domain]: { icon: 'nav-globe', label: 'Store website' },
 }
+
+export enum SnippetType {
+    URL = 'url',
+    Document = 'document',
+    Store = 'store',
+}
+
+export const mapKnowledgeTypeToSnippetType = (
+    knowledgeType: KnowledgeType,
+): SnippetType => {
+    switch (knowledgeType) {
+        case KnowledgeType.URL:
+            return SnippetType.URL
+        case KnowledgeType.Document:
+            return SnippetType.Document
+        case KnowledgeType.Domain:
+            return SnippetType.Store
+        default:
+            throw new Error(
+                `Invalid KnowledgeType for snippet: ${knowledgeType}`,
+            )
+    }
+}
+
+export const mapSnippetTypeToKnowledgeType = (
+    snippetType: SnippetType,
+): KnowledgeType => {
+    switch (snippetType) {
+        case SnippetType.URL:
+            return KnowledgeType.URL
+        case SnippetType.Document:
+            return KnowledgeType.Document
+        case SnippetType.Store:
+            return KnowledgeType.Domain
+    }
+}
+
+export type EditorType = 'guidance' | 'faq' | 'snippet'
+export type EditorMode = 'create' | 'read' | 'edit'
+
+export type GuidanceEditorConfig = {
+    type: 'guidance'
+    shopName: string
+    shopType: string
+    filteredArticles: Array<{ id: number; title: string }>
+}
+
+export type FaqEditorConfig = {
+    type: 'faq'
+    shopName: string
+    filteredArticles: Array<{ id: number; title: string }>
+}
+
+export type SnippetEditorConfig = {
+    type: 'snippet'
+    shopName: string
+    filteredArticles: Array<{ id: number; title: string }>
+}
+
+export type KnowledgeEditorConfig =
+    | GuidanceEditorConfig
+    | FaqEditorConfig
+    | SnippetEditorConfig

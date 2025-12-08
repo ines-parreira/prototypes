@@ -13,6 +13,9 @@ describe('KnowledgeEditorSidePanelSectionDocumentSnippetDetails', () => {
                     createdDatetime={new Date('2025-06-17')}
                     lastUpdatedDatetime={new Date('2025-06-17')}
                     sourceDocument={'https://some-doc/doc.pdf'}
+                    googleStorageUrl={
+                        'https://storage.googleapis.com/bucket/doc.pdf'
+                    }
                     sectionId={'details'}
                 />
             </Accordion.Root>,

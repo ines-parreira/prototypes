@@ -6,11 +6,13 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     convertPlan1,
+    currentProductsUsage,
     HELPDESK_PRODUCT_ID,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
@@ -18,6 +20,8 @@ import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
+import { handleConvertProductRemoved } from '../../../utils/handleConvertProductRemoved'
+import CancelAAOModal from '../../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'
 import type { ProductPlanSelectionProps } from '../ProductPlanSelection'
 import ProductPlanSelection from '../ProductPlanSelection'
@@ -41,13 +45,26 @@ const useAutomatedHelpdeskCancellationFlowAvailableMock = assumeMock(
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useLocation: jest.fn(),
+    useLocation: jest.fn(() => ({ hash: '', pathname: '', search: '' })),
 }))
 jest.mock('../../CancelProductModal/CancelProductModal')
 const CancelProductModalMock = assumeMock(CancelProductModal)
 
 jest.mock('@repo/logging')
+jest.mock('../../CancelAAOModal/CancelAAOModal')
+
+const CancelAAOModalMock = assumeMock(CancelAAOModal)
+
+jest.mock('core/flags')
+
+const useFlagMock = assumeMock(useFlag)
+
 const logEventMock = assumeMock(logEvent)
+
+jest.mock('../../../utils/handleConvertProductRemoved')
+const handleConvertProductRemovedMock = assumeMock(handleConvertProductRemoved)
+
+const mockUpdateSubscription = jest.fn()
 
 describe('ProductPlanSelection', () => {
     beforeEach(() => {
@@ -56,10 +73,23 @@ describe('ProductPlanSelection', () => {
             <div data-testid="cancel-product-modal"></div>
         ))
 
+        CancelAAOModalMock.mockReset()
+        CancelAAOModalMock.mockImplementation(() => (
+            <div data-testid="cancel-aao-modal"></div>
+        ))
+
+        mockUpdateSubscription.mockReset()
+        mockUpdateSubscription.mockResolvedValue(undefined)
+
+        useFlagMock.mockReset()
+        useFlagMock.mockReturnValue(false)
+
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockReset()
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => false,
         )
+
+        handleConvertProductRemovedMock.mockReset()
     })
     const mockSetSelectedPlans = jest.fn()
 
@@ -109,6 +139,7 @@ describe('ProductPlanSelection', () => {
         setSelectedPlans: mockSetSelectedPlans,
         periodEnd: 'February 14, 2024',
         editingAvailable: true,
+        updateSubscription: mockUpdateSubscription,
     }
 
     it('does not display the cancel auto-renewal button and a modal if cancellation is not available', () => {
@@ -185,6 +216,11 @@ describe('ProductPlanSelection', () => {
                 [ProductType.Convert]: null,
             },
             periodEnd: props.periodEnd,
+            currentUsage: props.currentUsage,
+            selectedPlans: props.selectedPlans,
+            setSelectedPlans: expect.any(Function),
+            onCancellationConfirmed: expect.any(Function),
+            updateSubscription: expect.any(Function),
         }
 
         const { getByTestId } = render(
@@ -596,4 +632,239 @@ describe('ProductPlanSelection', () => {
             expect(link).toHaveAttribute('href', productInfo.tooltipLink)
         },
     )
+
+    describe('AI Agent cancellation with consolidated modal feature flag turned ON', () => {
+        const automationProps: ProductPlanSelectionProps = {
+            type: ProductType.Automation,
+            cadence: Cadence.Month,
+            currentPlan: basicMonthlyAutomationPlan,
+            availablePlans: [basicMonthlyAutomationPlan],
+            selectedPlans: {
+                ...selectedPlans,
+                [ProductType.Automation]: {
+                    plan: basicMonthlyAutomationPlan,
+                    isSelected: true,
+                },
+            },
+            setSelectedPlans: mockSetSelectedPlans,
+            periodEnd: 'February 14, 2024',
+            currentUsage: currentProductsUsage,
+            editingAvailable: true,
+            updateSubscription: mockUpdateSubscription,
+        }
+
+        it('shows CancelAAOModal when consolidated modal feature flag is OFF', async () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { getByRole, getByTestId } = render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...automationProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            expect(getByTestId('cancel-aao-modal')).toBeInTheDocument()
+            expect(CancelAAOModalMock).toHaveBeenCalledWith(
+                {
+                    isOpen: true,
+                    handleCancelAAO: expect.any(Function),
+                    handleOnClose: expect.any(Function),
+                    periodEnd: automationProps.periodEnd,
+                    currentUsage: automationProps.currentUsage,
+                },
+                {},
+            )
+        })
+
+        it('shows CancelProductModal when consolidated modal feature flag is ON', async () => {
+            useFlagMock.mockReturnValue(true)
+
+            const { getByRole, getByTestId } = render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...automationProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
+            expect(CancelProductModalMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isOpen: true,
+                    productType: ProductType.Automation,
+                    periodEnd: automationProps.periodEnd,
+                    currentUsage: automationProps.currentUsage,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('Convert cancellation with consolidated modal feature flag turned ON', () => {
+        const convertProps: ProductPlanSelectionProps = {
+            type: ProductType.Convert,
+            cadence: Cadence.Month,
+            currentPlan: convertPlan1,
+            availablePlans: [convertPlan1],
+            selectedPlans: {
+                ...selectedPlans,
+                [ProductType.Convert]: {
+                    plan: convertPlan1,
+                    isSelected: true,
+                },
+            },
+            setSelectedPlans: mockSetSelectedPlans,
+            periodEnd: 'February 14, 2024',
+            editingAvailable: true,
+            updateSubscription: mockUpdateSubscription,
+        }
+
+        it('does NOT show modal when feature flag is OFF', async () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { getByRole, queryByTestId } = render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            expect(
+                queryByTestId('cancel-product-modal'),
+            ).not.toBeInTheDocument()
+            expect(queryByTestId('cancel-aao-modal')).not.toBeInTheDocument()
+        })
+
+        it('shows CancelProductModal when consolidated modal feature flag is ON', async () => {
+            useFlagMock.mockReturnValue(true)
+
+            const { getByRole, getByTestId } = render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            expect(getByTestId('cancel-product-modal')).toBeInTheDocument()
+            expect(CancelProductModalMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isOpen: true,
+                    productType: ProductType.Convert,
+                    periodEnd: convertProps.periodEnd,
+                }),
+                {},
+            )
+        })
+
+        it('calls handleConvertProductRemoved when Convert is removed with feature flag OFF', async () => {
+            useFlagMock.mockReturnValue(false)
+
+            const convertStore = mockStore({
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    domain: 'test-account.gorgias.com',
+                    current_subscription: {
+                        products: {},
+                    },
+                }),
+            })
+
+            const { getByRole } = render(
+                <Provider store={convertStore}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            expect(handleConvertProductRemovedMock).toHaveBeenCalledWith(
+                convertPlan1.plan_id,
+                'test-account.gorgias.com',
+            )
+        })
+
+        it('calls handleConvertProductRemoved when Convert is removed after confirmation with feature flag ON', async () => {
+            useFlagMock.mockReturnValue(true)
+
+            const convertStore = mockStore({
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    domain: 'test-account.gorgias.com',
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.price_id,
+                        },
+                    },
+                }),
+            })
+
+            const { getByRole } = render(
+                <Provider store={convertStore}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            const removeButton = getByRole('button', { name: 'Remove product' })
+            expect(removeButton).toBeInTheDocument()
+
+            await act(() => userEvent.click(removeButton))
+
+            const cancelProductModalCalls = CancelProductModalMock.mock.calls
+            const lastCall =
+                cancelProductModalCalls[cancelProductModalCalls.length - 1]
+            const modalProps = lastCall[0]
+
+            expect(modalProps.onCancellationConfirmed).toBeDefined()
+
+            await act(async () => {
+                modalProps.onCancellationConfirmed?.()
+            })
+
+            expect(handleConvertProductRemovedMock).toHaveBeenCalledWith(
+                convertPlan1.plan_id,
+                'test-account.gorgias.com',
+            )
+        })
+    })
+
+    describe('onCancellationConfirmed callback', () => {
+        it('should be defined for Helpdesk cancellation', async () => {
+            useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
+                () => true,
+            )
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...props} />
+                </Provider>,
+            )
+
+            const cancelProductModalCalls = CancelProductModalMock.mock.calls
+            const lastCall =
+                cancelProductModalCalls[cancelProductModalCalls.length - 1]
+            const modalProps = lastCall[0]
+
+            expect(modalProps.onCancellationConfirmed).toBeDefined()
+            expect(typeof modalProps.onCancellationConfirmed).toBe('function')
+        })
+    })
 })

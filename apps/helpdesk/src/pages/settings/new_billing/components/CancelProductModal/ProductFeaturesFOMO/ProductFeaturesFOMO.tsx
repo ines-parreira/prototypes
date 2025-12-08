@@ -23,12 +23,7 @@ const ProductFeaturesFOMO = (props: ProductFOMOProps) => {
             </div>
             <div className={css.features}>
                 {features.map((feature, index) => (
-                    <Feature
-                        key={index}
-                        title={feature.title}
-                        description={feature.description}
-                        icon={feature.icon}
-                    />
+                    <Feature key={index} {...feature} />
                 ))}
             </div>
         </>

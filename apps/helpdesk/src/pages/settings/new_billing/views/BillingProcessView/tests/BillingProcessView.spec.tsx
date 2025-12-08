@@ -12,8 +12,8 @@ import {
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
 import {
+    CancellationPrimaryReasonLabel,
     CommonReasonLabel,
-    HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import type { RootState } from 'state/types'
@@ -233,7 +233,7 @@ describe('UsageAndPlansView', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('option', {
-                    name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                    name: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
                 }),
             ).toBeVisible()
         })
@@ -244,7 +244,7 @@ describe('UsageAndPlansView', () => {
 
         await userEvent.click(
             screen.getByRole('option', {
-                name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                name: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
             }),
         )
 

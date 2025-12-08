@@ -181,7 +181,7 @@ export type AutoQAAgentMetrics = {
     perAgentId: number
 } & CommonMetrics
 
-export type ChannelMetricColumn =
+type ChannelMetricColumn =
     | ChannelsTableColumns.TicketsCreated
     | ChannelsTableColumns.CreatedTicketsPercentage
     | ChannelsTableColumns.ClosedTickets

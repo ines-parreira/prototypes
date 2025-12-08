@@ -16,6 +16,7 @@ import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
 import type { GorgiasApiError } from 'models/api/types'
 import { isGorgiasApiError } from 'models/api/types'
+import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import GorgiasApi from 'services/gorgiasApi'
 import type { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
@@ -349,7 +350,10 @@ export const resendVerificationEmail =
         }
     }
 
-export function cancelHelpdeskAutoRenewal() {
+export function cancelHelpdeskAutoRenewal(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _selectedPlans?: SelectedPlans,
+) {
     return (dispatch: StoreDispatch): Promise<boolean> => {
         return client
             .post<Record<string, string>>(

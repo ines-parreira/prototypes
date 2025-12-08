@@ -30,7 +30,6 @@ import {
     formatReportingQueryDate,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 import { subtractDaysFromDate } from 'utils/date'
@@ -229,11 +228,6 @@ describe('OneTouchTickets', () => {
                     TicketDimension.TicketId,
                     TicketDimension.CreatedDatetime,
                 ],
-                filters: [
-                    ...oneTouchTicketsQueryFactory(statsFilters, timezone)
-                        .filters,
-                    TicketDrillDownFilter,
-                ],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
         })
@@ -259,10 +253,6 @@ describe('OneTouchTickets', () => {
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketDimension.CreatedDatetime,
-                ],
-                filters: [
-                    ...oneTouchTicketsQueryFactory(filters, timezone).filters,
-                    TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [[TicketDimension.CreatedDatetime, sorting]],

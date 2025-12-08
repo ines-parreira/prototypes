@@ -19,7 +19,6 @@ import {
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
@@ -95,7 +94,6 @@ export const messagesReceivedMetricPerTicketDrillDownQueryFactory = (
             HelpdeskCustomerMessagesReceivedEnrichedMeasure.MessageCount,
         ],
         dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

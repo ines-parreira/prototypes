@@ -44,7 +44,6 @@ import {
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -366,7 +365,6 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
                     formatReportingQueryDate(customFieldPeriod.end_datetime),
                 ],
             },
-            TicketDrillDownFilter,
         ].reduce(deduplicateCustomFields, []),
         dimensions: [TicketDimension.TicketId],
         limit: DRILLDOWN_QUERY_LIMIT,
@@ -460,7 +458,6 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     intentFieldId,
                     integrationIds,
                 }),
-                TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [[TicketDimension.TicketId, sorting ?? OrderDirection.Asc]],
@@ -485,14 +482,11 @@ export const coverageRateTicketDrillDownQueryFactory = (
         integrationIds,
     })
 
-    const queryFilters = [
-        ...baseQuery.filters.filter(
-            (filter) =>
-                filter.member !==
-                TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-        ),
-        TicketDrillDownFilter,
-    ]
+    const queryFilters = baseQuery.filters.filter(
+        (filter) =>
+            filter.member !==
+            TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
+    )
 
     return {
         ...baseQuery,
@@ -535,7 +529,6 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
             TicketSatisfactionSurveyDimension.SurveyScore,
             ...baseQuery.dimensions,
         ],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

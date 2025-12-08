@@ -17,7 +17,7 @@ export enum CommonReasonLabel {
     IPreferNotToSay = 'I prefer not to say',
 }
 
-export enum HelpdeskPrimaryReasonLabel {
+export enum CancellationPrimaryReasonLabel {
     Pricing = 'Pricing & Subscription',
     DoesNotFitMyNeeds = 'Product Fit, Features & Roadmap',
     EaseOfUse = 'Ease of Use, Adoption & Value Realization',
@@ -26,7 +26,7 @@ export enum HelpdeskPrimaryReasonLabel {
     SecurityAndCompliance = 'Security, Compliance & Legal',
 }
 
-export enum HelpdeskSecondaryReasonLabel {
+export enum CancellationSecondaryReasonLabel {
     // Pricing & Subscription
     TooExpensive = 'Too expensive for perceived value',
     RenewalNotApproved = 'Renewal increase not approved',
@@ -74,114 +74,122 @@ export enum HelpdeskSecondaryReasonLabel {
     SecurityReviewNotPassed = 'Security review not passed',
     ContractDPAOrLegalTermsMisalignment = 'Contract, DPA, or legal terms misalignment',
 }
-export const HELPDESK_CANCELLATION_REASONS: CancellationReason[] = [
+export const ProductCancellationReasons: CancellationReason[] = [
     {
-        primaryReason: { label: HelpdeskPrimaryReasonLabel.Pricing },
+        primaryReason: { label: CancellationPrimaryReasonLabel.Pricing },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.TooExpensive },
-            { label: HelpdeskSecondaryReasonLabel.RenewalNotApproved },
-            { label: HelpdeskSecondaryReasonLabel.CostForUsage },
-            { label: HelpdeskSecondaryReasonLabel.PricingModel },
-            { label: HelpdeskSecondaryReasonLabel.LackOfSpendControl },
+            { label: CancellationSecondaryReasonLabel.TooExpensive },
+            { label: CancellationSecondaryReasonLabel.RenewalNotApproved },
+            { label: CancellationSecondaryReasonLabel.CostForUsage },
+            { label: CancellationSecondaryReasonLabel.PricingModel },
+            { label: CancellationSecondaryReasonLabel.LackOfSpendControl },
             {
-                label: HelpdeskSecondaryReasonLabel.LackOfPaymentTermsFlexibility,
+                label: CancellationSecondaryReasonLabel.LackOfPaymentTermsFlexibility,
             },
             {
-                label: HelpdeskSecondaryReasonLabel.InvoicingOrPaymentMethodIssues,
-            },
-            { label: HelpdeskSecondaryReasonLabel.TaxesCurrencyOrFXFriction },
-            { label: CommonReasonLabel.Other },
-        ],
-    },
-    {
-        primaryReason: {
-            label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
-        },
-        secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.CriticalFeaturesMissing },
-            { label: HelpdeskSecondaryReasonLabel.IntegrationGap },
-            {
-                label: HelpdeskSecondaryReasonLabel.CustomizationOrPermissionsLimited,
+                label: CancellationSecondaryReasonLabel.InvoicingOrPaymentMethodIssues,
             },
             {
-                label: HelpdeskSecondaryReasonLabel.RoadmapTimingWontMeetNeeds,
-            },
-            {
-                label: HelpdeskSecondaryReasonLabel.UseCaseEvolvedBeyondProduct,
-            },
-            {
-                label: HelpdeskSecondaryReasonLabel.ProductNegativelyImpactedBusiness,
+                label: CancellationSecondaryReasonLabel.TaxesCurrencyOrFXFriction,
             },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
         primaryReason: {
-            label: HelpdeskPrimaryReasonLabel.EaseOfUse,
+            label: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
         },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.HardToLearnOrTooComplex },
-            { label: HelpdeskSecondaryReasonLabel.PoorOnboardingOrTraining },
+            { label: CancellationSecondaryReasonLabel.CriticalFeaturesMissing },
+            { label: CancellationSecondaryReasonLabel.IntegrationGap },
             {
-                label: HelpdeskSecondaryReasonLabel.LowInternalAdoptionOrUtilization,
+                label: CancellationSecondaryReasonLabel.CustomizationOrPermissionsLimited,
             },
-            { label: HelpdeskSecondaryReasonLabel.WorkflowMismatch },
             {
-                label: HelpdeskSecondaryReasonLabel.DontHaveBandwidthOrOtherPriorities,
+                label: CancellationSecondaryReasonLabel.RoadmapTimingWontMeetNeeds,
             },
-            { label: HelpdeskSecondaryReasonLabel.SlowTimeToValue },
             {
-                label: HelpdeskSecondaryReasonLabel.InsufficientROIOrUnclearImpact,
+                label: CancellationSecondaryReasonLabel.UseCaseEvolvedBeyondProduct,
             },
-            { label: HelpdeskSecondaryReasonLabel.NotSolvingCoreNeeds },
+            {
+                label: CancellationSecondaryReasonLabel.ProductNegativelyImpactedBusiness,
+            },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
         primaryReason: {
-            label: HelpdeskPrimaryReasonLabel.PerformanceAndReliability,
+            label: CancellationPrimaryReasonLabel.EaseOfUse,
         },
         secondaryReasons: [
+            { label: CancellationSecondaryReasonLabel.HardToLearnOrTooComplex },
             {
-                label: HelpdeskSecondaryReasonLabel.DowntimeIssuesBugsOutagesOrIncidents,
+                label: CancellationSecondaryReasonLabel.PoorOnboardingOrTraining,
             },
             {
-                label: HelpdeskSecondaryReasonLabel.SlowPerformanceAndLatencyIssues,
+                label: CancellationSecondaryReasonLabel.LowInternalAdoptionOrUtilization,
             },
+            { label: CancellationSecondaryReasonLabel.WorkflowMismatch },
             {
-                label: HelpdeskSecondaryReasonLabel.DataQualityAndAccuracyIssues,
+                label: CancellationSecondaryReasonLabel.DontHaveBandwidthOrOtherPriorities,
             },
-            { label: HelpdeskSecondaryReasonLabel.ScaleLimitations },
+            { label: CancellationSecondaryReasonLabel.SlowTimeToValue },
+            {
+                label: CancellationSecondaryReasonLabel.InsufficientROIOrUnclearImpact,
+            },
+            { label: CancellationSecondaryReasonLabel.NotSolvingCoreNeeds },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
         primaryReason: {
-            label: HelpdeskPrimaryReasonLabel.SupportAndService,
+            label: CancellationPrimaryReasonLabel.PerformanceAndReliability,
         },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.SlowOrIneffectiveSupport },
-            { label: HelpdeskSecondaryReasonLabel.UnresolvedOpenIssues },
-            { label: HelpdeskSecondaryReasonLabel.LackOfSelfServeGuidance },
             {
-                label: HelpdeskSecondaryReasonLabel.LackOfProfessionalServices,
+                label: CancellationSecondaryReasonLabel.DowntimeIssuesBugsOutagesOrIncidents,
             },
-            { label: HelpdeskSecondaryReasonLabel.DocumentationNotSufficient },
+            {
+                label: CancellationSecondaryReasonLabel.SlowPerformanceAndLatencyIssues,
+            },
+            {
+                label: CancellationSecondaryReasonLabel.DataQualityAndAccuracyIssues,
+            },
+            { label: CancellationSecondaryReasonLabel.ScaleLimitations },
             { label: CommonReasonLabel.Other },
         ],
     },
     {
         primaryReason: {
-            label: HelpdeskPrimaryReasonLabel.SecurityAndCompliance,
+            label: CancellationPrimaryReasonLabel.SupportAndService,
         },
         secondaryReasons: [
-            { label: HelpdeskSecondaryReasonLabel.DataPrivacyConcerns },
             {
-                label: HelpdeskSecondaryReasonLabel.MissingComplianceCertifications,
+                label: CancellationSecondaryReasonLabel.SlowOrIneffectiveSupport,
             },
-            { label: HelpdeskSecondaryReasonLabel.SecurityReviewNotPassed },
+            { label: CancellationSecondaryReasonLabel.UnresolvedOpenIssues },
+            { label: CancellationSecondaryReasonLabel.LackOfSelfServeGuidance },
             {
-                label: HelpdeskSecondaryReasonLabel.ContractDPAOrLegalTermsMisalignment,
+                label: CancellationSecondaryReasonLabel.LackOfProfessionalServices,
+            },
+            {
+                label: CancellationSecondaryReasonLabel.DocumentationNotSufficient,
+            },
+            { label: CommonReasonLabel.Other },
+        ],
+    },
+    {
+        primaryReason: {
+            label: CancellationPrimaryReasonLabel.SecurityAndCompliance,
+        },
+        secondaryReasons: [
+            { label: CancellationSecondaryReasonLabel.DataPrivacyConcerns },
+            {
+                label: CancellationSecondaryReasonLabel.MissingComplianceCertifications,
+            },
+            { label: CancellationSecondaryReasonLabel.SecurityReviewNotPassed },
+            {
+                label: CancellationSecondaryReasonLabel.ContractDPAOrLegalTermsMisalignment,
             },
             { label: CommonReasonLabel.Other },
         ],

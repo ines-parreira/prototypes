@@ -42,6 +42,7 @@ type KnowledgeHubTableProps = {
     onRowClick: (data: GroupedKnowledgeItem) => void
     onGuidanceRowClick?: (articleId: number) => void
     onFaqRowClick?: (articleId: number) => void
+    onSnippetRowClick?: (articleId: number, type: KnowledgeType) => void
     onFaqEditorOpen?: () => void
     selectedFolder: GroupedKnowledgeItem | null
     selectedTypeFilter?: KnowledgeType | null
@@ -57,6 +58,7 @@ export const KnowledgeHubTable = ({
     onRowClick,
     onGuidanceRowClick,
     onFaqRowClick,
+    onSnippetRowClick,
     onFaqEditorOpen,
     selectedFolder,
     selectedTypeFilter = null,
@@ -134,9 +136,20 @@ export const KnowledgeHubTable = ({
                 return
             }
 
+            if (
+                (row.type === KnowledgeTypeEnum.Document ||
+                    row.type === KnowledgeTypeEnum.URL ||
+                    row.type === KnowledgeTypeEnum.Domain) &&
+                !row.isGrouped &&
+                onSnippetRowClick
+            ) {
+                onSnippetRowClick(Number(row.id), row.type)
+                return
+            }
+
             onRowClick?.(row)
         },
-        [onRowClick, onGuidanceRowClick, onFaqRowClick],
+        [onRowClick, onGuidanceRowClick, onFaqRowClick, onSnippetRowClick],
     )
 
     const columnsWithHighlight = useMemo(() => {

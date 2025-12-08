@@ -27,7 +27,6 @@ import {
     perDimensionQueryFactory,
     PublicAndMessageViaFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
@@ -122,7 +121,6 @@ export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
             TicketDimension.CreatedDatetime,
             ...baseQuery.dimensions,
         ],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

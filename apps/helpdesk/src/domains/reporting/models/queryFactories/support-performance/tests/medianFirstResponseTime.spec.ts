@@ -279,11 +279,6 @@ describe('medianFirstAgentResponseTime', () => {
                     operator: 'beforeDate',
                     values: ['2025-09-09T23:59:59.000'],
                 },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
-                },
             ],
             limit: 100,
         }

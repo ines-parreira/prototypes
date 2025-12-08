@@ -1,0 +1,193 @@
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
+
+import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
+
+describe('KnowledgeEditorSnippetView', () => {
+    const baseProps = {
+        onClose: jest.fn(),
+        onClickPrevious: jest.fn(),
+        onClickNext: jest.fn(),
+        onToggleFullscreen: jest.fn(),
+        onToggleAIAgentEnabled: jest.fn(),
+        onTest: jest.fn(),
+        isFullscreen: false,
+    }
+
+    const urlSnippet = {
+        id: 1,
+        title: 'Test URL Snippet',
+        content: '<p>URL snippet content</p>',
+        aiAgentEnabled: 'PUBLIC',
+        createdDatetime: new Date('2025-01-01'),
+        lastUpdatedDatetime: new Date('2025-01-02'),
+        type: SnippetType.URL as const,
+        source: 'https://example.com',
+    }
+
+    const documentSnippet = {
+        id: 2,
+        title: 'Test Document Snippet',
+        content: '<p>Document snippet content</p>',
+        aiAgentEnabled: 'PUBLIC',
+        createdDatetime: new Date('2025-01-01'),
+        lastUpdatedDatetime: new Date('2025-01-02'),
+        type: SnippetType.Document as const,
+        source: 'document.pdf',
+        googleStorageUrl: 'https://storage.googleapis.com/bucket/document.pdf',
+    }
+
+    const storeSnippet = {
+        id: 3,
+        title: 'Test Store Snippet',
+        content: '<p>Store snippet content</p>',
+        aiAgentEnabled: 'PUBLIC',
+        createdDatetime: new Date('2025-01-01'),
+        lastUpdatedDatetime: new Date('2025-01-02'),
+        type: SnippetType.Store as const,
+        sources: [
+            'https://store.example.com/product1',
+            'https://store.example.com/product2',
+        ],
+    }
+
+    it('renders URL snippet with correct title and source', () => {
+        const { container } = render(
+            <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
+        )
+
+        expect(screen.getByText('Test URL Snippet')).toBeInTheDocument()
+        expect(screen.getByText('https://example.com')).toBeInTheDocument()
+        expect(
+            container.querySelector('.contentWrapper')?.textContent,
+        ).toContain('URL snippet content')
+    })
+
+    it('renders document snippet with correct title and source', () => {
+        const { container } = render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={documentSnippet}
+            />,
+        )
+
+        expect(screen.getByText('Test Document Snippet')).toBeInTheDocument()
+        expect(screen.getByText('document.pdf')).toBeInTheDocument()
+        expect(
+            container.querySelector('.contentWrapper')?.textContent,
+        ).toContain('Document snippet content')
+    })
+
+    it('renders store snippet with correct title and sources', () => {
+        const { container } = render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={storeSnippet}
+            />,
+        )
+
+        expect(screen.getByText('Test Store Snippet')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'https://store.example.com/product1, https://store.example.com/product2',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            container.querySelector('.contentWrapper')?.textContent,
+        ).toContain('Store snippet content')
+    })
+
+    it('passes AI Agent status to side panel when details view is toggled', async () => {
+        render(
+            <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
+        )
+
+        const detailsButton = screen.getByRole('button', {
+            name: /expand side panel/i,
+        })
+        await act(() => userEvent.click(detailsButton))
+
+        expect(screen.getByText('Test URL Snippet')).toBeInTheDocument()
+    })
+
+    it('hides side panel by default', () => {
+        render(
+            <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
+        )
+
+        const detailsButton = screen.getByRole('button', {
+            name: /expand side panel/i,
+        })
+        expect(detailsButton).toBeInTheDocument()
+    })
+
+    it('calls onToggleFullscreen when fullscreen button is clicked', async () => {
+        const user = userEvent.setup()
+        const onToggleFullscreen = jest.fn()
+
+        render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={urlSnippet}
+                onToggleFullscreen={onToggleFullscreen}
+            />,
+        )
+
+        const fullscreenButton = screen.getByRole('button', {
+            name: /fullscreen/i,
+        })
+        await user.click(fullscreenButton)
+
+        expect(onToggleFullscreen).toHaveBeenCalledTimes(1)
+    })
+
+    it('calls onClose when close button is clicked', async () => {
+        const user = userEvent.setup()
+        const onClose = jest.fn()
+
+        render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={urlSnippet}
+                onClose={onClose}
+            />,
+        )
+
+        const closeButton = screen.getByRole('button', { name: /close/i })
+        await user.click(closeButton)
+
+        expect(onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders read view with snippet content', () => {
+        render(
+            <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
+        )
+
+        expect(screen.getByText('Test URL Snippet')).toBeInTheDocument()
+    })
+
+    it('renders document snippet with google storage URL', () => {
+        render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={documentSnippet}
+            />,
+        )
+
+        expect(screen.getByText('Test Document Snippet')).toBeInTheDocument()
+    })
+
+    it('renders store snippet with multiple sources', () => {
+        render(
+            <KnowledgeEditorSnippetView
+                {...baseProps}
+                snippet={storeSnippet}
+            />,
+        )
+
+        expect(screen.getByText('Test Store Snippet')).toBeInTheDocument()
+    })
+})

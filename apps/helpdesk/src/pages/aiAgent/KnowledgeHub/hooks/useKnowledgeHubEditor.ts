@@ -8,33 +8,11 @@ import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../constants'
 import { dispatchDocumentEvent } from '../EmptyState/utils'
-
-export type EditorType = 'guidance' | 'faq' | 'snippet'
-export type EditorMode = 'create' | 'read' | 'edit'
-
-type GuidanceEditorConfig = {
-    type: 'guidance'
-    shopName: string
-    shopType: string
-    filteredArticles: Array<{ id: number; title: string }>
-}
-
-type FaqEditorConfig = {
-    type: 'faq'
-    shopName: string
-    filteredArticles: Array<{ id: number; title: string }>
-}
-
-type SnippetEditorConfig = {
-    type: 'snippet'
-    shopName: string
-    filteredArticles: Array<{ id: number; title: string }>
-}
-
-export type KnowledgeEditorConfig =
-    | GuidanceEditorConfig
-    | FaqEditorConfig
-    | SnippetEditorConfig
+import type {
+    EditorMode,
+    GuidanceEditorConfig,
+    KnowledgeEditorConfig,
+} from '../types'
 
 type GuidanceEditorState = {
     editorType: 'guidance'
@@ -87,7 +65,7 @@ type KnowledgeEditorStateUnion =
     | FaqEditorState
     | SnippetEditorState
 
-type KnowledgeEditorReturn<T extends KnowledgeEditorConfig> = Extract<
+export type KnowledgeEditorReturn<T extends KnowledgeEditorConfig> = Extract<
     KnowledgeEditorStateUnion,
     { editorType: T['type'] }
 > &

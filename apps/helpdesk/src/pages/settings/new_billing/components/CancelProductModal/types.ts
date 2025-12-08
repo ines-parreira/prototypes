@@ -15,9 +15,7 @@ export type CancellationScenario = {
     productsToCancel: ProductType[]
     features: ProductFeature[]
     reasonsToCanduContents: ReasonsToCanduContent[]
-    cancelProductAction: () => (
-        dispatch: React.Dispatch<any>,
-    ) => Promise<boolean>
+    productDisplayName: string
 }
 
 export enum CancellationReasonsActionType {

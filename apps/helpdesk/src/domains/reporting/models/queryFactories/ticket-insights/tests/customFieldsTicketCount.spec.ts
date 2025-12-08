@@ -6,7 +6,6 @@ import {
 } from 'domains/reporting/hooks/withBreakdown'
 import {
     TicketDimension,
-    TicketMeasure,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -42,7 +41,6 @@ import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -298,14 +296,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
-                filters: [
-                    ...customFieldsTicketCountQueryFactory(
-                        statsFilters,
-                        timezone,
-                        customFieldId,
-                    ).filters,
-                    TicketDrillDownFilter,
-                ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [[TicketDimension.TicketId, OrderDirection.Asc]],
             })
@@ -339,14 +329,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_PER_INTENT_LEVEL_PER_TICKET_DRILL_DOWN,
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
-                filters: [
-                    ...customFieldsTicketCountQueryFactory(
-                        filtersWithDrillDownCustomField,
-                        timezone,
-                        customFieldId,
-                    ).filters,
-                    TicketDrillDownFilter,
-                ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [[TicketDimension.TicketId, OrderDirection.Asc]],
             })
@@ -562,11 +544,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         values: [periodStart, periodEnd],
                     },
                     {
-                        member: TicketMeasure.TicketCount,
-                        operator: ReportingFilterOperator.MeasureFilter,
-                        values: [],
-                    },
-                    {
                         member: TicketMember.CreatedDatetime,
                         operator: ReportingFilterOperator.InDateRange,
                         values: [periodStart, periodEnd],
@@ -762,11 +739,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: ['0'],
                     },
-                    {
-                        member: 'TicketEnriched.ticketCount',
-                        operator: 'measureFilter',
-                        values: [],
-                    },
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 order: [[TicketDimension.TicketId, mockSorting]],
@@ -878,11 +850,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
-                },
             ])
         })
 
@@ -952,11 +919,6 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     member: TicketMessagesMember.IntegrationChannelPair,
                     operator: ReportingFilterOperator.Equals,
                     values: mockIntegrationIds,
-                },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
                 },
             ])
         })

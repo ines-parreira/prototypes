@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
+import IconLink from 'core/ui/components/IconLink'
 import useAppSelector from 'hooks/useAppSelector'
 import useOrderBy from 'hooks/useOrderBy'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
@@ -55,6 +56,12 @@ export default function WhatsAppMessageTemplatesList({ phoneNumberId }: Props) {
                     {`Only templates with an "Active" status from WhatsApp can be
                     sent to customers.`}
                 </p>
+                <IconLink
+                    className="mt-2"
+                    href="https://link.gorgias.com/5ba90d"
+                    icon="menu_book"
+                    content="How To Use WhatsApp Message Templates"
+                />
             </div>
             <TableWrapper className={css.tableWrapper}>
                 <TableHead>

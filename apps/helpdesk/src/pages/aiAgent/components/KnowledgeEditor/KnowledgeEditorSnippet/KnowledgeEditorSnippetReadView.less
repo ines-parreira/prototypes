@@ -1,0 +1,37 @@
+:local {
+    .container {
+        width: 100%;
+        display: flex;
+        padding: var(--spacing-xxl) var(--spacing-xxl) var(--spacing-md)
+            var(--spacing-xxl);
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+    }
+
+    .source {
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--content-neutral-tertiary);
+        margin-bottom: var(--spacing-sm);
+
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+    }
+
+    .sourceLabel {
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .contentWrapper {
+        width: 100%;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: var(--content-neutral-default);
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}

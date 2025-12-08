@@ -20,7 +20,6 @@ import {
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -156,7 +155,6 @@ export const customerSatisfactionMetricDrillDownQueryFactory = (
             TicketSatisfactionSurveyDimension.SurveyScore,
             ...baseQuery.dimensions,
         ],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {

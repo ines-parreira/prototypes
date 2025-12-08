@@ -5,7 +5,7 @@ import { renderWithRouter } from 'utils/testing'
 import { KnowledgeEditorSidePanelDocumentSnippet } from './KnowledgeEditorSidePanelDocumentSnippet'
 
 describe('KnowledgeEditorSidePanelDocumentSnippet', () => {
-    it('renders', () => {
+    it('renders with required props', () => {
         renderWithRouter(
             <KnowledgeEditorSidePanelDocumentSnippet
                 details={{
@@ -13,6 +13,8 @@ describe('KnowledgeEditorSidePanelDocumentSnippet', () => {
                     createdDatetime: new Date('2025-06-17'),
                     lastUpdatedDatetime: new Date('2025-06-17'),
                     sourceDocument: 'https://some-doc/doc.pdf',
+                    googleStorageUrl:
+                        'https://storage.googleapis.com/bucket/doc.pdf',
                 }}
                 impact={{
                     successRate: 0.28,

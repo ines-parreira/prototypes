@@ -17,7 +17,6 @@ import {
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -75,10 +74,6 @@ export const resolutionTimeMetricPerTicketDrillDownQueryFactory = (
     dimensions: [
         TicketDimension.TicketId,
         TicketMessagesDimension.ResolutionTime,
-    ],
-    filters: [
-        ...medianResolutionTimeQueryFactory(filters, timezone).filters,
-        TicketDrillDownFilter,
     ],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting

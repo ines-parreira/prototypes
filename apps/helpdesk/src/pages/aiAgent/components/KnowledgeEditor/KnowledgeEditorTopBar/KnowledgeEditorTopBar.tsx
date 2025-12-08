@@ -89,6 +89,28 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 {props.children && (
                     <>
                         {props.children}
+                        <button
+                            className={classNames(
+                                controlsCss.icon,
+                                controlsCss.ghostButton,
+                            )}
+                            onClick={props.onToggleDetailsView}
+                            aria-label={
+                                props.isDetailsView
+                                    ? 'collapse side panel'
+                                    : 'expand side panel'
+                            }
+                            disabled={props.disabled}
+                        >
+                            <Icon
+                                name={
+                                    props.isDetailsView
+                                        ? 'system-bar-collapse'
+                                        : 'system-bar-expand'
+                                }
+                                size={'lg'}
+                            />
+                        </button>
                         <div className={controlsCss.separator} />
                     </>
                 )}
@@ -122,28 +144,6 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     disabled={props.disabled}
                 >
                     <Icon name="close" />
-                </button>
-
-                <button
-                    className={classNames(
-                        controlsCss.icon,
-                        controlsCss.ghostButton,
-                    )}
-                    onClick={props.onToggleDetailsView}
-                    aria-label={
-                        props.isDetailsView
-                            ? 'collapse side panel'
-                            : 'expand side panel'
-                    }
-                    disabled={props.disabled}
-                >
-                    <Icon
-                        name={
-                            props.isDetailsView
-                                ? 'system-bar-collapse'
-                                : 'system-bar-expand'
-                        }
-                    />
                 </button>
             </div>
         </div>

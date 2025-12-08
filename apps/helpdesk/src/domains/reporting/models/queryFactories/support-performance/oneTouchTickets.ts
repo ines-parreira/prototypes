@@ -25,7 +25,6 @@ import {
     NotSpamNorTrashedTicketsFilter,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -117,10 +116,6 @@ export const oneTouchTicketsPerTicketDrillDownQueryFactory = (
         METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS_PER_TICKET_DRILL_DOWN,
     measures: [],
     dimensions: [TicketDimension.TicketId, TicketDimension.CreatedDatetime],
-    filters: [
-        ...oneTouchTicketsQueryFactory(filters, timezone, sorting).filters,
-        TicketDrillDownFilter,
-    ],
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {

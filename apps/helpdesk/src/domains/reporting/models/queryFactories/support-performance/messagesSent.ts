@@ -26,7 +26,6 @@ import {
     perDimensionQueryFactory,
     PublicAndMessageViaFilter,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
@@ -109,7 +108,6 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
         ...baseQuery,
         measures: [HelpdeskMessageMeasure.MessageCount],
         dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
-        filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         metricName:
             METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_TICKET_DRILL_DOWN,

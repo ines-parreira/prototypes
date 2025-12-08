@@ -2,7 +2,6 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import {
-    TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
@@ -17,7 +16,6 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import {
     DRILLDOWN_QUERY_LIMIT,
@@ -46,11 +44,6 @@ export const averageScoreQueryFactory = (
     segments: [],
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-        {
-            member: TicketSatisfactionSurveyDimension.SurveyScore,
-            operator: ReportingFilterOperator.Gt,
-            values: ['0'],
-        },
         ...NotSpamNorTrashedTicketsFilter,
     ],
     timezone,

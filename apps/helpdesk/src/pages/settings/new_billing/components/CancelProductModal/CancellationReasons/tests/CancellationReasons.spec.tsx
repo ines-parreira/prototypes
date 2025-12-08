@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import {
+    CancellationPrimaryReasonLabel,
     CommonReasonLabel,
-    HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProductModal/reducers'
 import { HELPDESK_CANCELLATION_SCENARIO } from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
@@ -42,7 +40,7 @@ describe('CancellationReasons - Helpdesk', () => {
     it('renders with all reasons selected', () => {
         const state = {
             primaryReason: {
-                label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                label: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
             },
             secondaryReason: { label: CommonReasonLabel.Other },
             otherReason: { label: 'Other reason provided by agent.' },
@@ -219,7 +217,7 @@ describe('CancellationReasons - Helpdesk', () => {
                     reasonsState={{
                         ...DEFAULT_STATE,
                         primaryReason: {
-                            label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
+                            label: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
                         },
                         secondaryReason: { label: CommonReasonLabel.Other },
                     }}

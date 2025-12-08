@@ -24,7 +24,6 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
-    TicketDrillDownFilter,
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
@@ -177,13 +176,6 @@ describe('CustomerSatisfaction', () => {
                         timezone,
                     ).dimensions,
                 ],
-                filters: [
-                    ...customerSatisfactionMetricPerAgentQueryFactory(
-                        statsFilters,
-                        timezone,
-                    ).filters,
-                    TicketDrillDownFilter,
-                ],
                 measures: [],
                 limit: DRILLDOWN_QUERY_LIMIT,
             })
@@ -223,17 +215,6 @@ describe('CustomerSatisfaction', () => {
                         timezone,
                         sorting,
                     ).dimensions,
-                ],
-                filters: [
-                    ...customerSatisfactionMetricPerAgentQueryFactory(
-                        {
-                            ...statsFilters,
-                            agents: withDefaultLogicalOperator(agents),
-                        },
-                        timezone,
-                        sorting,
-                    ).filters,
-                    TicketDrillDownFilter,
                 ],
                 measures: [],
                 limit: DRILLDOWN_QUERY_LIMIT,

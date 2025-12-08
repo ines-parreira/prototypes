@@ -17,6 +17,7 @@ export type Props = {
     createdDatetime: Date
     lastUpdatedDatetime: Date
     sourceDocument: string
+    googleStorageUrl: string
     sectionId: string
 }
 
@@ -62,7 +63,10 @@ export const KnowledgeEditorSidePanelSectionDocumentSnippetDetails = (
                 [
                     'Source document',
                     <KnowledgeEditorSidePanelFieldSourceDocument
-                        sourceDocument={props.sourceDocument}
+                        sourceDocument={{
+                            label: props.sourceDocument,
+                            downloadUrl: props.googleStorageUrl,
+                        }}
                         key="source-document"
                     />,
                 ],

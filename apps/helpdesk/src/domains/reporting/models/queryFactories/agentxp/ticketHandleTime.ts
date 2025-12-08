@@ -15,7 +15,6 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     perDimensionQueryFactory,
     statsFiltersToReportingFilters,
-    TicketDrillDownFilter,
     TicketStatsFiltersMembers,
 } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -49,11 +48,6 @@ export const ticketAverageHandleTimePerAgentQueryFactory = (
     metricName: METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME_PER_AGENT,
     measures: [HandleTimeMeasure.AverageHandleTime],
     dimensions: [TicketDimension.AssigneeUserId],
-    filters: [
-        ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
-            .filters,
-        TicketDrillDownFilter,
-    ],
     limit: DRILLDOWN_QUERY_LIMIT,
 })
 
@@ -77,11 +71,8 @@ export const ticketHandleTimePerTicketDrillDownQueryFactory = (
         TicketDimension.TicketId,
         HandleTimeDimension.TicketHandleTime,
     ],
-    filters: [
-        ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
-            .filters,
-        TicketDrillDownFilter,
-    ],
+    filters: ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
+        .filters,
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {

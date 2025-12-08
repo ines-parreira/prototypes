@@ -604,11 +604,6 @@ describe('tagsTicketCount query factories', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: ['0'],
                 },
-                {
-                    member: 'TicketEnriched.ticketCount',
-                    operator: 'measureFilter',
-                    values: [],
-                },
             ])
         })
     })
