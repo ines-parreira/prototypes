@@ -268,7 +268,6 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                         title: CALLBACK_REQUESTED_CALLS_METRIC_TITLE,
                         hint: CALLBACK_REQUESTED_CALLS_METRIC_HINT,
                         segment: VoiceCallSegment.inboundCallbackRequestedCalls,
-                        hideWithAgentsFilter: true,
                         multiFormat: true,
                     }),
                 label: CALLBACK_REQUESTED_CALLS_METRIC_TITLE,

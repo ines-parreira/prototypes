@@ -32,11 +32,6 @@ const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
 
-jest.mock('AIJourney/queries', () => ({
-    ...jest.requireActual('AIJourney/queries'),
-    useJourneys: jest.fn(),
-}))
-
 jest.mock('domains/reporting/state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithTimezone,
@@ -55,8 +50,6 @@ jest.mock(
     }),
 )
 
-const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
-
 describe('<Campaigns />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
@@ -72,6 +65,14 @@ describe('<Campaigns />', () => {
         jest.clearAllMocks()
 
         mockUseJourneyContext.mockReturnValue({
+            campaigns: [
+                { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
+                {
+                    id: '2',
+                    campaign: { title: 'Campaign 2', state: 'inactive' },
+                },
+            ],
+            isLoadingIntegrations: false,
             currentIntegration: { id: 1, name: 'Test Integration' },
         })
 
@@ -92,18 +93,6 @@ describe('<Campaigns />', () => {
                     recipients: 15567,
                 },
             },
-            isLoading: false,
-        }))
-
-        mockUseJourneys.mockImplementation(() => ({
-            data: [
-                { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
-                {
-                    id: '2',
-                    campaign: { title: 'Campaign 2', state: 'inactive' },
-                },
-            ],
-            isError: false,
             isLoading: false,
         }))
     })
@@ -147,11 +136,10 @@ describe('<Campaigns />', () => {
     })
 
     it('should render empty state when no campaigns', () => {
-        mockUseJourneys.mockImplementation(() => ({
-            data: [],
-            isError: false,
-            isLoading: false,
-        }))
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [],
+            isLoadingIntegrations: false,
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>

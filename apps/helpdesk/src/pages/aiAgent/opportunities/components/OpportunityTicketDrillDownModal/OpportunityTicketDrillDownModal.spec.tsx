@@ -647,5 +647,75 @@ describe('OpportunityTicketDrillDownModal', () => {
                 expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
             })
         })
+
+        it('should render hierarchical intent with delimiter', async () => {
+            const ticketsWithHierarchicalIntent = [
+                {
+                    ...mockTickets[0],
+                    custom_fields: {
+                        123: {
+                            id: 123,
+                            value: 'Close::With message',
+                        },
+                        124: {
+                            id: 124,
+                            value: 'Return::Information::Other',
+                        },
+                    },
+                },
+            ]
+
+            server.use(
+                mockListTicketsHandler(async () =>
+                    HttpResponse.json(
+                        mockListTicketsResponse({
+                            data: ticketsWithHierarchicalIntent,
+                        }),
+                    ),
+                ).handler,
+            )
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Return')).toBeInTheDocument()
+                expect(screen.getByText('Information')).toBeInTheDocument()
+                expect(screen.getByText('Other')).toBeInTheDocument()
+            })
+        })
+
+        it('should render simple intent without delimiter', async () => {
+            const ticketsWithSimpleIntent = [
+                {
+                    ...mockTickets[0],
+                    custom_fields: {
+                        123: {
+                            id: 123,
+                            value: 'Close::With message',
+                        },
+                        124: {
+                            id: 124,
+                            value: 'Simple Intent',
+                        },
+                    },
+                },
+            ]
+
+            server.use(
+                mockListTicketsHandler(async () =>
+                    HttpResponse.json(
+                        mockListTicketsResponse({
+                            data: ticketsWithSimpleIntent,
+                        }),
+                    ),
+                ).handler,
+            )
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Simple Intent')).toBeInTheDocument()
+            })
+        })
     })
 })

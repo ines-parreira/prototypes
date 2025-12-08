@@ -109,3 +109,56 @@ export const CONVERT_CANCELLATION_SCENARIO: CancellationScenario = {
     reasonsToCanduContents: [],
     productDisplayName: 'Convert',
 }
+
+export const SMS_CANCELLATION_SCENARIO: CancellationScenario = {
+    reasons: ProductCancellationReasons,
+    productsToCancel: [ProductType.SMS],
+    features: [
+        {
+            title: '98% open rate — 5x higher than email',
+            icon: 'auto_awesome',
+            description: 'Reach customers instantly on the channel they prefer',
+        },
+        {
+            title: 'Automated replies powered by Shopify data',
+            icon: 'webhook',
+            description:
+                'Pull order updates and tracking info to resolve issues fast',
+        },
+        {
+            title: '73% of shoppers buy after receiving a text',
+            icon: 'shopping_cart',
+            description:
+                'Drive repeat sales with timely product links and discounts',
+        },
+    ],
+    reasonsToCanduContents: [],
+    productDisplayName: 'SMS',
+}
+
+export const VOICE_CANCELLATION_SCENARIO: CancellationScenario = {
+    reasons: ProductCancellationReasons,
+    productsToCancel: [ProductType.Voice],
+    features: [
+        {
+            title: 'Personal connection with customers',
+            icon: 'phone',
+            description:
+                'Build trust and loyalty through direct voice communication',
+        },
+        {
+            title: 'Real-time issue resolution',
+            icon: 'support_agent',
+            description:
+                'Resolve complex issues faster with immediate back-and-forth conversation',
+        },
+        {
+            title: 'Integrated call management',
+            icon: 'call',
+            description:
+                'Manage all customer calls directly within your helpdesk inbox',
+        },
+    ],
+    reasonsToCanduContents: [],
+    productDisplayName: 'Voice',
+}

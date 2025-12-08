@@ -22,6 +22,7 @@ import { useIntegrations } from '../IntegrationsProvider/IntegrationsProvider'
 
 type JourneyContextType = {
     journeys: JourneyApiDTO[] | undefined
+    campaigns: JourneyApiDTO[] | undefined
     journeyData: JourneyDetailApiDTO | undefined
     currentIntegration: Integration | undefined
     shopName: string
@@ -79,16 +80,18 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         return match?.params.journeyId
     }, [match?.params.journeyId])
 
-    const { data: journeys, isLoading: isLoadingJourneys } = useJourneys(
-        integrationId,
-        [
-            JourneyTypeEnum.CartAbandoned,
-            JourneyTypeEnum.SessionAbandoned,
-            JourneyTypeEnum.WinBack,
-        ],
-        {
+    const { data: aggregatedJourneys, isLoading: isLoadingJourneys } =
+        useJourneys(integrationId, [], {
             enabled: !!integrationId,
-        },
+        })
+
+    // TODO: rename it to 'flows' and rename the above declaration from 'aggregatedJourneys' to 'journeys'
+    const journeys = aggregatedJourneys?.filter(
+        (journey) => journey.type !== JourneyTypeEnum.Campaign,
+    )
+
+    const campaigns = aggregatedJourneys?.filter(
+        (journey) => journey.type === JourneyTypeEnum.Campaign,
     )
 
     const { isLoading: isStoreConfigurationLoading, data: storeConfiguration } =
@@ -124,6 +127,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         () => ({
             journeys,
             journeyData,
+            campaigns,
             currentIntegration,
             shopName,
             isLoading,
@@ -136,6 +140,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         [
             journeys,
             journeyData,
+            campaigns,
             currentIntegration,
             shopName,
             isLoading,

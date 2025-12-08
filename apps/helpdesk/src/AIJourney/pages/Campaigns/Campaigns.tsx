@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { Box, Card, Heading } from '@gorgias/axiom'
-import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { DigestCard } from 'AIJourney/components'
 import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
@@ -13,25 +12,21 @@ import {
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useJourneys } from 'AIJourney/queries'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 
 import css from './Campaigns.less'
 
 export const Campaigns = () => {
-    const { currentIntegration, isLoadingIntegrations } = useJourneyContext()
+    const {
+        campaigns,
+        isLoadingJourneys: isLoadingCampaigns,
+        currentIntegration,
+        isLoadingIntegrations,
+    } = useJourneyContext()
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
-
-    const { data: campaigns, isLoading: isLoadingCampaigns } = useJourneys(
-        currentIntegration?.id,
-        [JourneyTypeEnum.Campaign],
-        {
-            enabled: !!currentIntegration?.id,
-        },
-    )
 
     const filters = useFilters()
 

@@ -10,7 +10,6 @@ import type { User } from 'config/types/user'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
-import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
 import TruncateMultilineCellContent from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
@@ -312,14 +311,36 @@ export const OpportunityTicketDrillDownModal = ({
                                             </BodyCell>
                                             <BodyCell
                                                 width={columnWidths.intent}
-                                                className={localCss.boldCell}
                                             >
                                                 {intent ? (
-                                                    <TruncateCellContent
-                                                        content={intent}
+                                                    <TruncateMultilineCellContent
+                                                        className={
+                                                            css.multiLineOutcome
+                                                        }
+                                                        value={intent}
+                                                        maxLines={
+                                                            intent.split(
+                                                                DROPDOWN_NESTING_DELIMITER,
+                                                            ).length
+                                                        }
+                                                        splitDelimiter={
+                                                            DROPDOWN_NESTING_DELIMITER
+                                                        }
+                                                        level1ClassName={
+                                                            localCss.level1Bold
+                                                        }
+                                                        sublevelsClassName={
+                                                            css.sublevels
+                                                        }
                                                     />
                                                 ) : (
-                                                    NOT_AVAILABLE_PLACEHOLDER
+                                                    <span
+                                                        className={css.noData}
+                                                    >
+                                                        {
+                                                            NOT_AVAILABLE_PLACEHOLDER
+                                                        }
+                                                    </span>
                                                 )}
                                             </BodyCell>
                                         </TableBodyRow>

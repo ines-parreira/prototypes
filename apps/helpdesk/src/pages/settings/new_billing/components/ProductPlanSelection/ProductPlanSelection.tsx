@@ -358,6 +358,38 @@ const ProductPlanSelection = ({
                     Remove product
                 </Button>
             )
+        } else if (
+            type === ProductType.SMS &&
+            useConsolidatedCancellationModal
+        ) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    size="small"
+                    onClick={() => {
+                        setIsCancellationFlowOpen(true)
+                    }}
+                >
+                    Remove product
+                </Button>
+            )
+        } else if (
+            type === ProductType.Voice &&
+            useConsolidatedCancellationModal
+        ) {
+            return (
+                <Button
+                    fillStyle="ghost"
+                    intent="secondary"
+                    size="small"
+                    onClick={() => {
+                        setIsCancellationFlowOpen(true)
+                    }}
+                >
+                    Remove product
+                </Button>
+            )
         }
 
         return null
@@ -536,6 +568,54 @@ const ProductPlanSelection = ({
                                         selectedPlan?.plan_id,
                                         currentAccount.get('domain'),
                                     )
+                                    setIsCancellationFlowOpen(false)
+                                }}
+                                updateSubscription={updateSubscription}
+                            />
+                        )}
+                    {useConsolidatedCancellationModal &&
+                        type === ProductType.SMS && (
+                            <CancelProductModal
+                                onClose={() => {
+                                    setIsCancellationFlowOpen(false)
+                                }}
+                                isOpen={
+                                    isCancellationFlowOpen &&
+                                    type === ProductType.SMS
+                                }
+                                productType={ProductType.SMS}
+                                subscriptionProducts={
+                                    currentSubscriptionProducts
+                                }
+                                periodEnd={periodEnd}
+                                currentUsage={currentUsage}
+                                selectedPlans={selectedPlans}
+                                setSelectedPlans={setSelectedPlans}
+                                onCancellationConfirmed={() => {
+                                    setIsCancellationFlowOpen(false)
+                                }}
+                                updateSubscription={updateSubscription}
+                            />
+                        )}
+                    {useConsolidatedCancellationModal &&
+                        type === ProductType.Voice && (
+                            <CancelProductModal
+                                onClose={() => {
+                                    setIsCancellationFlowOpen(false)
+                                }}
+                                isOpen={
+                                    isCancellationFlowOpen &&
+                                    type === ProductType.Voice
+                                }
+                                productType={ProductType.Voice}
+                                subscriptionProducts={
+                                    currentSubscriptionProducts
+                                }
+                                periodEnd={periodEnd}
+                                currentUsage={currentUsage}
+                                selectedPlans={selectedPlans}
+                                setSelectedPlans={setSelectedPlans}
+                                onCancellationConfirmed={() => {
                                     setIsCancellationFlowOpen(false)
                                 }}
                                 updateSubscription={updateSubscription}

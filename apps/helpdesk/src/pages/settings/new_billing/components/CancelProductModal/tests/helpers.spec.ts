@@ -8,6 +8,8 @@ import {
     AI_AGENT_CANCELLATION_SCENARIO,
     CONVERT_CANCELLATION_SCENARIO,
     HELPDESK_CANCELLATION_SCENARIO,
+    SMS_CANCELLATION_SCENARIO,
+    VOICE_CANCELLATION_SCENARIO,
 } from '../scenarios'
 import type { Reason } from '../types'
 
@@ -33,24 +35,14 @@ describe('findCancellationScenarioByProductType', () => {
         expect(result).toEqual(CONVERT_CANCELLATION_SCENARIO)
     })
 
-    it('should throw an error for Voice product', () => {
-        expect(() => {
-            findCancellationScenarioByProductType(ProductType.Voice)
-        }).toThrow(
-            new Error(
-                `Cancellation script not found for ${ProductType.Voice} product.`,
-            ),
-        )
+    it('should return SMS cancellation script for SMS product', () => {
+        const result = findCancellationScenarioByProductType(ProductType.SMS)
+        expect(result).toEqual(SMS_CANCELLATION_SCENARIO)
     })
 
-    it('should throw an error for SMS product', () => {
-        expect(() => {
-            findCancellationScenarioByProductType(ProductType.SMS)
-        }).toThrow(
-            new Error(
-                `Cancellation script not found for ${ProductType.SMS} product.`,
-            ),
-        )
+    it('should return Voice cancellation script for Voice product', () => {
+        const result = findCancellationScenarioByProductType(ProductType.Voice)
+        expect(result).toEqual(VOICE_CANCELLATION_SCENARIO)
     })
 })
 
