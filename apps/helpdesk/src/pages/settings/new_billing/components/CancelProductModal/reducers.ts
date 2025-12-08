@@ -20,10 +20,6 @@ const isReasonsSelectionCompleted = (
     secondaryReason: Reason | null,
     otherReason: Reason | null,
 ): boolean => {
-    if (primaryReason?.label === CommonReasonLabel.IPreferNotToSay) {
-        return true
-    }
-
     if (
         primaryReason?.label === CommonReasonLabel.Other ||
         secondaryReason?.label === CommonReasonLabel.Other

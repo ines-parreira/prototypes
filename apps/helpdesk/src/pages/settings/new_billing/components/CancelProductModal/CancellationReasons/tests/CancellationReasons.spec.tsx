@@ -108,30 +108,6 @@ describe('CancellationReasons - Helpdesk', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders with "I prefer not to say" primary reason', () => {
-        const mockDispatch = jest.fn()
-        const state = {
-            ...DEFAULT_STATE,
-            primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
-        }
-
-        const { container } = render(
-            <div>
-                <CancellationReasons
-                    reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
-                    reasonsState={state}
-                    dispatchCancellationReasonsAction={mockDispatch}
-                />
-            </div>,
-        )
-
-        // No secondary reasons rendered
-        expect(container.querySelector('fieldset')).toBeNull()
-
-        // No other reason rendered
-        expect(container.querySelector('textarea')).toBeNull()
-    })
-
     it('handles the change of primary reason', () => {
         const mockDispatch = jest.fn()
         const { getByText } = render(
@@ -146,12 +122,12 @@ describe('CancellationReasons - Helpdesk', () => {
 
         const selectorElement = getByText('Select reason...')
         fireEvent.focus(selectorElement as Element)
-        fireEvent.click(getByText(CommonReasonLabel.IPreferNotToSay))
+        fireEvent.click(getByText(CommonReasonLabel.Other))
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: CancellationReasonsActionType.PrimaryReasonSelected,
             primaryReason: {
-                label: CommonReasonLabel.IPreferNotToSay,
+                label: CommonReasonLabel.Other,
             },
         })
     })

@@ -341,6 +341,7 @@ describe('metric trends', () => {
             'fetchTicketHandleTimeTrend',
             fetchTicketHandleTimeTrend,
             ticketAverageHandleTimeQueryFactory,
+            ticketAverageHandleTimeQueryV2Factory,
         ],
         [
             'fetchOnlineTimeTrend',

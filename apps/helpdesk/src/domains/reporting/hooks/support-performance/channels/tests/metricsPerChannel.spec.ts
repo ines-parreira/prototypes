@@ -303,6 +303,8 @@ describe('metricsPerChannel', () => {
                 fetch: fetchTicketAverageHandleTimePerChannel,
                 queryFactory:
                     ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+                newQueryFactory:
+                    ticketAverageHandleTimePerAgentPerChannelQueryV2Factory,
             },
         ])(
             'should pass the query to $name hook',

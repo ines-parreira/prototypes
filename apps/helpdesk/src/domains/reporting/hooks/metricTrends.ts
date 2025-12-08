@@ -291,6 +291,7 @@ export const useTicketHandleTimeTrend = getTrendHook(
 
 export const fetchTicketHandleTimeTrend = getTrendFetch(
     ticketAverageHandleTimeQueryFactory,
+    ticketAverageHandleTimeQueryV2Factory,
 )
 
 export const useOnlineTimeTrend = getTrendHook(

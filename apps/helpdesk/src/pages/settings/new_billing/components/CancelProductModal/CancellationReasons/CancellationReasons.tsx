@@ -1,5 +1,4 @@
 import type { Dispatch } from 'react'
-import React from 'react'
 
 import { CommonReasonLabel } from '../constants'
 import type {
@@ -76,10 +75,8 @@ const CancellationReasons = (props: Props) => {
                 />
             </div>
             {reasonsState.primaryReason &&
-                ![
-                    CommonReasonLabel.IPreferNotToSay as string,
-                    CommonReasonLabel.Other as string,
-                ].includes(reasonsState.primaryReason.label) && (
+                CommonReasonLabel.Other.toString() !==
+                    reasonsState.primaryReason.label && (
                     <SecondaryReasons
                         secondaryReasons={findSecondaryReasonsByPrimaryReason(
                             reasonsState.primaryReason,

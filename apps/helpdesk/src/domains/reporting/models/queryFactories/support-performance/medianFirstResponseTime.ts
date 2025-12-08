@@ -23,8 +23,7 @@ export const medianFirstAgentResponseTimeQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
-    metricName:
-        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME,
+    metricName: METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
     measures: [
         TicketsFirstAgentResponseTimeMeasure.MedianFirstAgentResponseTime,
     ],
@@ -62,7 +61,7 @@ export const medianFirstAgentResponseTimePerAgentQueryFactory = (
         TicketsFirstAgentResponseTimeDimension.FirstAgentMessageUserId,
     ],
     metricName:
-        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_AGENT,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_AGENT,
 })
 
 export const medianFirstAgentResponseTimePerChannelQueryFactory = (
@@ -72,7 +71,7 @@ export const medianFirstAgentResponseTimePerChannelQueryFactory = (
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...medianFirstAgentResponseTimeQueryFactory(filters, timezone, sorting),
     metricName:
-        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_AGENT_RESPONSE_TIME_PER_CHANNEL,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME_PER_CHANNEL,
     dimensions: [CHANNEL_DIMENSION],
 })
 

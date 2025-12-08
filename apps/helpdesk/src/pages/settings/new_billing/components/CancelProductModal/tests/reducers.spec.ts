@@ -61,20 +61,6 @@ describe('cancellationReasonsReducer', () => {
         })
     })
 
-    it('should update the primary reason with "I prefer not to say" and return the completed state', () => {
-        expect(
-            cancellationReasonsReducer(DEFAULT_STATE, {
-                type: CancellationReasonsActionType.PrimaryReasonSelected,
-                primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
-            }),
-        ).toEqual({
-            primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
-            secondaryReason: null,
-            otherReason: null,
-            completed: true,
-        })
-    })
-
     it('should update the other reason for existing "Other" primary reason and return a completed state', () => {
         const primaryReason = { label: CommonReasonLabel.Other }
         const otherReason = { label: 'other reason' }

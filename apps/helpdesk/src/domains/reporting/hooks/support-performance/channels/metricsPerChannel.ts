@@ -183,4 +183,5 @@ export const useTicketAverageHandleTimePerChannel =
     )
 export const fetchTicketAverageHandleTimePerChannel = createFetchPerDimension(
     ticketAverageHandleTimePerAgentPerChannelQueryFactory,
+    ticketAverageHandleTimePerAgentPerChannelQueryV2Factory,
 )

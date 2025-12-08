@@ -179,4 +179,5 @@ export const useTicketAverageHandleTimePerAgent = createMetricPerDimensionHook(
 
 export const fetchTicketAverageHandleTimePerAgent = createFetchPerDimension(
     ticketAverageHandleTimePerAgentQueryFactory,
+    ticketAverageHandleTimePerAgentQueryV2Factory,
 )

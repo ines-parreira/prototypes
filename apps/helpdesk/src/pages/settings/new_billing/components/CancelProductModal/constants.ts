@@ -14,7 +14,6 @@ export enum CancellationFlowStep {
 
 export enum CommonReasonLabel {
     Other = 'Other',
-    IPreferNotToSay = 'I prefer not to say',
 }
 
 export enum CancellationPrimaryReasonLabel {
@@ -193,10 +192,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
             },
             { label: CommonReasonLabel.Other },
         ],
-    },
-    {
-        primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
-        secondaryReasons: [],
     },
     {
         primaryReason: { label: CommonReasonLabel.Other },

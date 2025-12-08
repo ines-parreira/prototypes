@@ -264,7 +264,7 @@ describe('metricsPerAgent', () => {
                 'fetchTicketAverageHandleTimePerAgent',
                 fetchTicketAverageHandleTimePerAgent,
                 ticketAverageHandleTimePerAgentQueryFactory,
-                undefined,
+                ticketAverageHandleTimePerAgentQueryV2Factory,
             ],
             [
                 'fetchOneTouchTicketsMetricPerAgent',

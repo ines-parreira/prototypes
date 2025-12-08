@@ -21,7 +21,7 @@ describe('medianFirstAgentResponseTime', () => {
 
     describe('medianFirstAgentResponseTimeQueryFactory', () => {
         const baseQuery = {
-            metricName: 'support-performance-median-first-agent-response-time',
+            metricName: 'support-performance-median-first-response-time',
             measures: [
                 'TicketFirstAgentResponseTime.medianFirstAgentResponseTime',
             ],
@@ -65,7 +65,7 @@ describe('medianFirstAgentResponseTime', () => {
                 timezone,
             )
 
-            const expected = { ...baseQuery }
+            const expected = { ...baseQuery, order: undefined }
 
             expect(actual).toEqual(expected)
         })
@@ -94,7 +94,7 @@ describe('medianFirstAgentResponseTime', () => {
     describe('medianFirstAgentResponseTimePerAgentQueryFactory', () => {
         const baseQuery = {
             metricName:
-                'support-performance-median-first-agent-response-time-per-agent',
+                'support-performance-median-first-response-time-per-agent',
             measures: [
                 'TicketFirstAgentResponseTime.medianFirstAgentResponseTime',
             ],
@@ -140,7 +140,7 @@ describe('medianFirstAgentResponseTime', () => {
                 timezone,
             )
 
-            const expected = { ...baseQuery }
+            const expected = { ...baseQuery, order: undefined }
 
             expect(actual).toEqual(expected)
         })
@@ -169,7 +169,7 @@ describe('medianFirstAgentResponseTime', () => {
     describe('medianFirstAgentResponseTimePerChannelQueryFactory', () => {
         const baseQuery = {
             metricName:
-                'support-performance-median-first-agent-response-time-per-channel',
+                'support-performance-median-first-response-time-per-channel',
             measures: [
                 'TicketFirstAgentResponseTime.medianFirstAgentResponseTime',
             ],
@@ -213,7 +213,7 @@ describe('medianFirstAgentResponseTime', () => {
                 timezone,
             )
 
-            const expected = { ...baseQuery }
+            const expected = { ...baseQuery, order: undefined }
 
             expect(actual).toEqual(expected)
         })
