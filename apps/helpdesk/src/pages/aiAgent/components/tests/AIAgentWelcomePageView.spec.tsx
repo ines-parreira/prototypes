@@ -1,10 +1,11 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import type { History } from 'history'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -273,6 +274,7 @@ describe('<AIAgentWelcomePageView />', () => {
     })
 
     it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', async () => {
+        const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -282,7 +284,7 @@ describe('<AIAgentWelcomePageView />', () => {
             name: /Set Up AI Agent/i,
         })
 
-        await userEvent.setup().click(button)
+        await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
@@ -291,6 +293,7 @@ describe('<AIAgentWelcomePageView />', () => {
     })
 
     it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked with the skillset step skipped', async () => {
+        const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -300,7 +303,7 @@ describe('<AIAgentWelcomePageView />', () => {
             name: /Set Up AI Agent/i,
         })
 
-        await userEvent.setup().click(button)
+        await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
@@ -309,6 +312,7 @@ describe('<AIAgentWelcomePageView />', () => {
     })
 
     it('should redirect to AiAgentOnboardingWizard page with search params when Continue Set Up button is clicked', async () => {
+        const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -324,7 +328,7 @@ describe('<AIAgentWelcomePageView />', () => {
             name: /Continue Setup/i,
         })
 
-        await userEvent.setup().click(button)
+        await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
@@ -333,6 +337,7 @@ describe('<AIAgentWelcomePageView />', () => {
     })
 
     it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked', async () => {
+        const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -342,7 +347,7 @@ describe('<AIAgentWelcomePageView />', () => {
             name: /Set Up AI Agent/i,
         })
 
-        await userEvent.setup().click(button)
+        await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
@@ -351,6 +356,7 @@ describe('<AIAgentWelcomePageView />', () => {
     })
 
     it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked and the skillset step is skipped', async () => {
+        const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -360,7 +366,7 @@ describe('<AIAgentWelcomePageView />', () => {
             name: /Set Up AI Agent/i,
         })
 
-        await userEvent.setup().click(button)
+        await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
             pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,

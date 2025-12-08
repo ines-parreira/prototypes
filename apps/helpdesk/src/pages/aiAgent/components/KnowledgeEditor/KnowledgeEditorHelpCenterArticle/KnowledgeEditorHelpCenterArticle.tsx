@@ -25,6 +25,8 @@ type Props = {
               type: 'existing'
               initialArticleMode: InitialArticleMode
               articleId: number
+              onUpdated?: () => void
+              onDeleted?: () => void
           }
         | {
               type: 'new'
@@ -58,6 +60,8 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                     onClickPrevious={props.onClickPrevious}
                     onClickNext={props.onClickNext}
                     onClose={props.onClose}
+                    onUpdated={props.article.onUpdated}
+                    onDeleted={props.article.onDeleted}
                     initialArticleMode={props.article.initialArticleMode}
                     articleId={props.article.articleId}
                     isFullscreen={isFullscreen}
@@ -68,6 +72,8 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                     helpCenter={props.helpCenter}
                     supportedLocales={props.locales}
                     categories={props.categories}
+                    onClickPrevious={props.onClickPrevious}
+                    onClickNext={props.onClickNext}
                     onClose={props.onClose}
                     template={props.article.template}
                     onCreated={props.article.onCreated}

@@ -531,7 +531,7 @@ describe('EmptyStates', () => {
                 expect(mockOpenSyncUrlModal).toHaveBeenCalled()
             })
 
-            it('does not dispatch event when Documents card is clicked', async () => {
+            it('dispatches OPEN_UPLOAD_DOCUMENT_MODAL when Documents card is clicked', async () => {
                 const user = userEvent.setup()
                 render(<EmptyStates helpCenterId={null} />)
 
@@ -542,7 +542,9 @@ describe('EmptyStates', () => {
 
                 await act(() => user.click(documentsCard!))
 
-                expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+                expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
+                    'open-upload-document-modal',
+                )
             })
         })
 

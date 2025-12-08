@@ -14,7 +14,13 @@ import css from './EmptyState.less'
 
 const SHOW_TEMPLATES_COUNT = 8
 
-export const AddGuidanceTemplateModal = () => {
+type AddGuidanceTemplateModalProps = {
+    onTemplateSelect: (template: GuidanceTemplate | undefined) => void
+}
+
+export const AddGuidanceTemplateModal = ({
+    onTemplateSelect,
+}: AddGuidanceTemplateModalProps) => {
     const { guidanceTemplates } = useGuidanceTemplates()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -32,10 +38,21 @@ export const AddGuidanceTemplateModal = () => {
                 name: template.name,
             })
 
-            // TODO: open knowledge editor
+            onTemplateSelect(template)
+            setIsOpen(false)
         },
-        [],
+        [onTemplateSelect],
     )
+
+    const onCustomGuidanceClick = useCallback(() => {
+        logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {
+            source: 'empty',
+            type: 'custom',
+        })
+
+        onTemplateSelect(undefined)
+        setIsOpen(false)
+    }, [onTemplateSelect])
 
     return (
         <Modal isOpen={isOpen} onOpenChange={toggleModal} size="lg">
@@ -49,7 +66,11 @@ export const AddGuidanceTemplateModal = () => {
                         </Text>
                     </div>
                     <div className={css.templatesList}>
-                        <div key="empty-card" className={css.emptyCard}>
+                        <div
+                            key="empty-card"
+                            className={css.emptyCard}
+                            onClick={onCustomGuidanceClick}
+                        >
                             <div className={css.chip}>
                                 <Icon name="add-plus" />
                             </div>

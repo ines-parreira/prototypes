@@ -1,0 +1,117 @@
+import { useMemo } from 'react'
+
+import {
+    useGetHelpCenter,
+    useGetHelpCenterCategoryTree,
+} from 'models/helpCenter/queries'
+import type {
+    CategoryWithLocalTranslation,
+    Locale,
+} from 'models/helpCenter/types'
+import { KnowledgeEditorHelpCenterArticle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle'
+import type { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
+
+type FaqEditorWrapperProps = {
+    faqHelpCenterId: number
+    isOpen: boolean
+    currentArticleId?: number
+    faqArticleMode: 'new' | 'existing'
+    initialArticleMode: InitialArticleMode
+    onClose: () => void
+    onCreate: () => void
+    onUpdate: () => void
+    onDelete: () => void
+    onClickPrevious: () => void
+    onClickNext: () => void
+}
+
+export const FaqEditorWrapper = ({
+    faqHelpCenterId,
+    isOpen,
+    currentArticleId,
+    faqArticleMode,
+    initialArticleMode,
+    onClose,
+    onCreate,
+    onUpdate,
+    onDelete,
+    onClickPrevious,
+    onClickNext,
+}: FaqEditorWrapperProps) => {
+    const { data: faqHelpCenter } = useGetHelpCenter(
+        faqHelpCenterId,
+        {},
+        { enabled: !!faqHelpCenterId },
+    )
+
+    const { data: faqCategoryTree } = useGetHelpCenterCategoryTree(
+        faqHelpCenter?.id || 0,
+        0,
+        {
+            locale:
+                (faqHelpCenter?.default_locale as Locale['code']) || 'en-US',
+            order_by: 'position',
+            order_dir: 'asc',
+        },
+        { enabled: !!faqHelpCenter?.id },
+    )
+
+    const faqCategories = useMemo(() => {
+        if (!faqCategoryTree?.children) return []
+        return faqCategoryTree.children.map(
+            (cat: CategoryWithLocalTranslation) => ({
+                ...cat,
+                children:
+                    cat.children?.map(
+                        (child: CategoryWithLocalTranslation) => child.id,
+                    ) || [],
+                articleCount: 0,
+            }),
+        )
+    }, [faqCategoryTree])
+
+    const faqLocales: Locale[] = useMemo(() => {
+        if (!faqHelpCenter) return []
+        return [
+            {
+                code: faqHelpCenter.default_locale as Locale['code'],
+                name: faqHelpCenter.default_locale,
+            },
+        ]
+    }, [faqHelpCenter])
+
+    if (!isOpen || !faqHelpCenter) {
+        return null
+    }
+
+    return (
+        <SupportedLocalesProvider>
+            <CurrentHelpCenterContext.Provider value={faqHelpCenter}>
+                <KnowledgeEditorHelpCenterArticle
+                    helpCenter={faqHelpCenter}
+                    locales={faqLocales}
+                    categories={faqCategories}
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
+                    onClose={onClose}
+                    article={
+                        faqArticleMode === 'new'
+                            ? {
+                                  type: 'new',
+                                  onCreated: onCreate,
+                              }
+                            : {
+                                  type: 'existing',
+                                  articleId: currentArticleId!,
+                                  initialArticleMode,
+                                  onUpdated: onUpdate,
+                                  onDeleted: onDelete,
+                              }
+                    }
+                />
+            </CurrentHelpCenterContext.Provider>
+        </SupportedLocalesProvider>
+    )
+}

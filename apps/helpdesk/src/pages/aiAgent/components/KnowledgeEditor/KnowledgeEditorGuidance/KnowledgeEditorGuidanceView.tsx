@@ -175,8 +175,10 @@ export const KnowledgeEditorGuidanceView = ({
     return (
         <div className={css.knowledgeEditorContainer}>
             <KnowledgeEditorTopBar
-                onClickPrevious={onClickPrevious}
-                onClickNext={onClickNext}
+                onClickPrevious={
+                    guidanceMode !== 'edit' ? onClickPrevious : undefined
+                }
+                onClickNext={guidanceMode !== 'edit' ? onClickNext : undefined}
                 title="Guidance"
                 isFullscreen={isFullscreen}
                 onToggleFullscreen={onToggleFullscreen}

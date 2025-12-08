@@ -96,4 +96,44 @@ describe('useIngestionDomainBannerDismissed', () => {
             ),
         ).toBe(null)
     })
+
+    it('resetBanner removes only the specific page dismiss key', () => {
+        const dismissedKey = `scraped-domain-banner-dismissed-${shopName}-${pageName}`
+        localStorage.setItem(dismissedKey, 'true')
+
+        const { result } = renderHook(() =>
+            useIngestionDomainBannerDismissed({ shopName, pageName }),
+        )
+
+        expect(result.current.isDismissed).toBe(true)
+
+        act(() => {
+            result.current.resetBanner()
+        })
+
+        expect(localStorage.getItem(dismissedKey)).toBe(null)
+        expect(result.current.isDismissed).toBe(false)
+    })
+
+    it('resetBanner only affects the current page, not other pages', () => {
+        const storeWebsiteKey = `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.STORE_WEBSITE}`
+        const sourceKey = `scraped-domain-banner-dismissed-${shopName}-${PAGE_NAME.SOURCE}`
+
+        localStorage.setItem(storeWebsiteKey, 'true')
+        localStorage.setItem(sourceKey, 'true')
+
+        const { result } = renderHook(() =>
+            useIngestionDomainBannerDismissed({
+                shopName,
+                pageName: PAGE_NAME.STORE_WEBSITE,
+            }),
+        )
+
+        act(() => {
+            result.current.resetBanner()
+        })
+
+        expect(localStorage.getItem(storeWebsiteKey)).toBe(null)
+        expect(localStorage.getItem(sourceKey)).toBe('true')
+    })
 })

@@ -35,6 +35,8 @@ type Props = {
     helpCenter: HelpCenter
     supportedLocales: Locale[]
     categories: Category[]
+    onClickPrevious: () => void
+    onClickNext: () => void
     onClose: () => void
     template?: {
         title: string
@@ -208,6 +210,8 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
                 />
             )}
             <KnowledgeEditorTopBar
+                onClickPrevious={props.onClickPrevious}
+                onClickNext={props.onClickNext}
                 title={title}
                 onChangeTitle={setTitle}
                 isFullscreen={props.isFullscreen}

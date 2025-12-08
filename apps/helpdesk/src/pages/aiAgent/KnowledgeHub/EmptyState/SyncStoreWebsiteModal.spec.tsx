@@ -19,7 +19,7 @@ jest.mock(
     '../../AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed',
     () => ({
         useIngestionDomainBannerDismissed: jest.fn(() => ({
-            resetAllBanner: jest.fn(),
+            resetBanner: jest.fn(),
             dismissBanner: jest.fn(),
         })),
     }),
@@ -350,7 +350,7 @@ describe('SyncStoreWebsiteModal', () => {
             )
 
             const handleOnSync = jest.fn().mockResolvedValue(undefined)
-            const resetAllBanner = jest.fn()
+            const resetBanner = jest.fn()
 
             useSyncStoreDomain.mockReturnValue({
                 handleTriggerSync: jest.fn(),
@@ -358,7 +358,7 @@ describe('SyncStoreWebsiteModal', () => {
                 handleOnCancel: jest.fn(),
             })
             useIngestionDomainBannerDismissed.mockReturnValue({
-                resetAllBanner,
+                resetBanner,
                 dismissBanner: jest.fn(),
             })
 
@@ -379,7 +379,7 @@ describe('SyncStoreWebsiteModal', () => {
             await act(() => userEvent.click(syncButton))
 
             await waitFor(() => {
-                expect(resetAllBanner).toHaveBeenCalled()
+                expect(resetBanner).toHaveBeenCalled()
             })
         })
     })

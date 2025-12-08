@@ -1,4 +1,5 @@
 import { useDomainSyncStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useDomainSyncStatus'
+import { useFileIngestionStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useFileIngestionStatus'
 import { useKnowledgeHubArticles } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubArticles'
 import { useShopContext } from 'pages/aiAgent/KnowledgeHub/hooks/useShopContext'
 import { useUrlSyncStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useUrlSyncStatus'
@@ -42,11 +43,26 @@ export const useKnowledgeHub = () => {
         syncStatus: urlSyncStatus,
         syncingUrls,
         urlIngestionLogs,
+        totalCount: urlTotalCount,
+        completedCount: urlCompletedCount,
+        successCount: urlSuccessCount,
+        pendingCount: urlPendingCount,
     } = useUrlSyncStatus({
         helpCenterId: snippetHelpCenterId || 0,
         existingUrls,
         helpCenterCustomDomains: helpCenterCustomDomains || [],
         storeUrl,
+    })
+
+    const {
+        fileIngestionStatus,
+        fileIngestionLogs,
+        totalCount: fileTotalCount,
+        completedCount: fileCompletedCount,
+        successCount: fileSuccessCount,
+        pendingCount: filePendingCount,
+    } = useFileIngestionStatus({
+        helpCenterId: snippetHelpCenterId || 0,
     })
 
     return {
@@ -64,5 +80,15 @@ export const useKnowledgeHub = () => {
         syncingUrls,
         urlIngestionLogs,
         existingUrls,
+        urlTotalCount,
+        urlCompletedCount,
+        urlSuccessCount,
+        urlPendingCount,
+        fileIngestionStatus,
+        fileIngestionLogs,
+        fileTotalCount,
+        fileCompletedCount,
+        fileSuccessCount,
+        filePendingCount,
     }
 }

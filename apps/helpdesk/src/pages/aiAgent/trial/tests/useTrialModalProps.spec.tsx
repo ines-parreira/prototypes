@@ -3,7 +3,7 @@ import * as React from 'react'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { MemoryRouter, Route } from 'react-router-dom'
@@ -861,19 +861,21 @@ describe('useTrialModalProps', () => {
             })
         })
 
-        it('should call onConfirmTrial when primary action is clicked', () => {
+        it('should call onConfirmTrial when primary action is clicked', async () => {
             const mockOnConfirmTrial = jest.fn()
 
             const { result } = renderHookWithRouter(() =>
                 useTrialModalProps({ onConfirmTrial: mockOnConfirmTrial }),
             )
 
-            result.current.trialAlertBanner.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialAlertBanner.primaryAction?.onClick(),
+            )
 
             expect(mockOnConfirmTrial).toHaveBeenCalled()
         })
 
-        it('should open demo link when "Book a demo" is clicked', () => {
+        it('should open demo link when "Book a demo" is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
@@ -885,7 +887,9 @@ describe('useTrialModalProps', () => {
                 useTrialModalProps({}),
             )
 
-            result.current.trialAlertBanner.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialAlertBanner.primaryAction?.onClick(),
+            )
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
@@ -893,7 +897,7 @@ describe('useTrialModalProps', () => {
             )
         })
 
-        it('should open shopping assistant page when growth link is clicked', () => {
+        it('should open shopping assistant page when growth link is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
@@ -901,7 +905,9 @@ describe('useTrialModalProps', () => {
                 useTrialModalProps({}),
             )
 
-            result.current.trialAlertBanner.secondaryAction?.onClick()
+            await act(() =>
+                result.current.trialAlertBanner.secondaryAction?.onClick(),
+            )
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://www.gorgias.com/ai-agent/shopping-assistant',
@@ -915,8 +921,10 @@ describe('useTrialModalProps', () => {
             )
 
             // Should not throw when called
-            expect(() => {
-                result.current.trialAlertBanner.primaryAction?.onClick()
+            expect(async () => {
+                await act(() =>
+                    result.current.trialAlertBanner.primaryAction?.onClick(),
+                )
             }).not.toThrow()
         })
     })
@@ -1191,7 +1199,7 @@ describe('useTrialModalProps', () => {
             } as any)
         })
 
-        it('should call openUpgradePlanModal and log event when hasOptedOut is true', () => {
+        it('should call openUpgradePlanModal and log event when hasOptedOut is true', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
@@ -1211,12 +1219,14 @@ describe('useTrialModalProps', () => {
             )
 
             // Call the handleUpgradePlan function
-            result.current.trialStartedBanner.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialStartedBanner.primaryAction?.onClick(),
+            )
 
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
 
-        it('should call openUpgradePlanModal and log event when hasActiveTrial is false', () => {
+        it('should call openUpgradePlanModal and log event when hasActiveTrial is false', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue({
@@ -1229,12 +1239,14 @@ describe('useTrialModalProps', () => {
             )
 
             // Call the handleUpgradePlan function
-            result.current.trialStartedBanner.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialStartedBanner.primaryAction?.onClick(),
+            )
 
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
 
-        it('should call upgradePlan when hasActiveTrial is true and hasOptedOut is false', () => {
+        it('should call upgradePlan when hasActiveTrial is true and hasOptedOut is false', async () => {
             const mockUpgradePlanAsync = jest.fn()
 
             mockUseUpgradePlan.mockReturnValue({
@@ -1263,7 +1275,9 @@ describe('useTrialModalProps', () => {
             )
 
             // Call the handleUpgradePlan function
-            result.current.trialStartedBanner.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialStartedBanner.primaryAction?.onClick(),
+            )
 
             expect(mockUpgradePlanAsync).toHaveBeenCalled()
         })
@@ -2061,7 +2075,9 @@ describe('useTrialModalProps', () => {
                 useTrialModalProps({ storeName: mockStoreName }),
             )
 
-            await result.current.trialManageModal.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialManageModal.primaryAction?.onClick(),
+            )
 
             expect(mockUpgradePlanAsync).toHaveBeenCalledTimes(1)
             expect(mockCloseAllTrialModals).toHaveBeenCalledTimes(1)
@@ -2084,7 +2100,9 @@ describe('useTrialModalProps', () => {
                 useTrialModalProps({ storeName: mockStoreName }),
             )
 
-            await result.current.trialManageModal.primaryAction?.onClick()
+            await act(() =>
+                result.current.trialManageModal.primaryAction?.onClick(),
+            )
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Track Segment',
@@ -2098,7 +2116,7 @@ describe('useTrialModalProps', () => {
             consoleSpy.mockRestore()
         })
 
-        it('should close manage modal and open opt out modal when secondary action is clicked', () => {
+        it('should close manage modal and open opt out modal when secondary action is clicked', async () => {
             const mockCloseManageTrialModal = jest.fn()
             const mockOpenTrialOptOutModal = jest.fn()
 
@@ -2112,7 +2130,9 @@ describe('useTrialModalProps', () => {
                 useTrialModalProps({ storeName: mockStoreName }),
             )
 
-            result.current.trialManageModal.secondaryAction?.onClick()
+            await act(() =>
+                result.current.trialManageModal.secondaryAction?.onClick(),
+            )
 
             expect(mockCloseManageTrialModal).toHaveBeenCalledTimes(1)
             expect(mockOpenTrialOptOutModal).toHaveBeenCalledTimes(1)
@@ -2297,7 +2317,7 @@ describe('useTrialModalProps', () => {
                 )
             })
 
-            it('should call startTrial when primary action is clicked', () => {
+            it('should call startTrial when primary action is clicked', async () => {
                 const mockStartTrial = jest.fn()
 
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
@@ -2308,13 +2328,15 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
+                )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
 
-            it('should call startTrial with optedInForUpgrade parameter when provided', () => {
+            it('should call startTrial with optedInForUpgrade parameter when provided', async () => {
                 const mockStartTrial = jest.fn()
 
                 mockUseShoppingAssistantTrialFlow.mockReturnValue({
@@ -2325,8 +2347,10 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
-                    true,
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                        true,
+                    ),
                 )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
@@ -2334,8 +2358,10 @@ describe('useTrialModalProps', () => {
 
                 mockStartTrial.mockClear()
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
-                    false,
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                        false,
+                    ),
                 )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
@@ -2433,7 +2459,7 @@ describe('useTrialModalProps', () => {
                 )
             })
 
-            it('should call startTrial when primary action is clicked for AI Agent', () => {
+            it('should call startTrial when primary action is clicked for AI Agent', async () => {
                 const mockStartTrial = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -2450,13 +2476,15 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
+                )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
 
-            it('should call startTrial with optedInForUpgrade parameter when provided for AI Agent', () => {
+            it('should call startTrial with optedInForUpgrade parameter when provided for AI Agent', async () => {
                 const mockStartTrial = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -2473,8 +2501,10 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
-                    true,
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                        true,
+                    ),
                 )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
@@ -2482,15 +2512,17 @@ describe('useTrialModalProps', () => {
 
                 mockStartTrial.mockClear()
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
-                    false,
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(
+                        false,
+                    ),
                 )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(false)
             })
 
-            it('should call onDismissTrialUpgradeModal when secondary action is clicked for AI Agent', () => {
+            it('should call onDismissTrialUpgradeModal when secondary action is clicked for AI Agent', async () => {
                 const mockOnDismissTrialUpgradeModal = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -2507,7 +2539,9 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
+                )
 
                 expect(mockOnDismissTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
@@ -2659,7 +2693,7 @@ describe('useTrialModalProps', () => {
                     )
                 })
 
-                it('should call onClose when link is clicked', () => {
+                it('should call onClose when link is clicked', async () => {
                     const mockOnClose = jest.fn()
 
                     mockUseTrialAccess.mockReturnValue(
@@ -2717,7 +2751,7 @@ describe('useTrialModalProps', () => {
 
                     // Test the onClick handler
                     expect(linkElement?.props?.onClick).toBeDefined()
-                    linkElement?.props?.onClick()
+                    await act(() => linkElement?.props?.onClick())
 
                     expect(mockOnClose).toHaveBeenCalledTimes(1)
                 })
@@ -3200,7 +3234,7 @@ describe('useTrialModalProps', () => {
                 )
             })
 
-            it('should call startTrial when primary action is clicked for onboarded users', () => {
+            it('should call startTrial when primary action is clicked for onboarded users', async () => {
                 const mockStartTrial = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -3218,13 +3252,15 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
+                )
 
                 expect(mockStartTrial).toHaveBeenCalledTimes(1)
                 expect(mockStartTrial).toHaveBeenCalledWith(undefined)
             })
 
-            it('should call onDismissTrialUpgradeModal when secondary action is clicked for onboarded users', () => {
+            it('should call onDismissTrialUpgradeModal when secondary action is clicked for onboarded users', async () => {
                 const mockOnDismissTrialUpgradeModal = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -3242,7 +3278,9 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
+                )
 
                 expect(mockOnDismissTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
@@ -3323,7 +3361,7 @@ describe('useTrialModalProps', () => {
                 ])
             })
 
-            it('should call setShoppingAssistantTrialOptin and openTrialFinishSetupModal when primary action is clicked for non-onboarded users', () => {
+            it('should call setShoppingAssistantTrialOptin and openTrialFinishSetupModal when primary action is clicked for non-onboarded users', async () => {
                 const mockOpenTrialFinishSetupModal = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -3341,12 +3379,14 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.primaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
+                )
 
                 expect(mockOpenTrialFinishSetupModal).toHaveBeenCalledTimes(1)
             })
 
-            it('should call setShoppingAssistantTrialOptin and startOnboardingWizzard when secondary action is clicked for non-onboarded users', () => {
+            it('should call setShoppingAssistantTrialOptin and startOnboardingWizzard when secondary action is clicked for non-onboarded users', async () => {
                 const mockStartOnboardingWizzard = jest.fn()
 
                 mockUseTrialAccess.mockReturnValue(
@@ -3364,7 +3404,9 @@ describe('useTrialModalProps', () => {
                     useTrialModalProps({ storeName: mockStoreName }),
                 )
 
-                result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick()
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
+                )
 
                 expect(mockStartOnboardingWizzard).toHaveBeenCalledTimes(1)
             })

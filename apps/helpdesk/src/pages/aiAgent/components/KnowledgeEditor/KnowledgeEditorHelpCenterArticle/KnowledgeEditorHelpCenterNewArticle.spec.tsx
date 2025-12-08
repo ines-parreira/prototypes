@@ -77,6 +77,10 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('KnowledgeEditorHelpCenterNewArticle', () => {
     const mutateAsyncMock = jest.fn()
     const notifyMock = jest.fn()
+    const onClose = jest.fn()
+    const onCreated = jest.fn()
+    const onClickPrevious = jest.fn()
+    const onClickNext = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -88,16 +92,19 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
     })
-    it('renders the editor', async () => {
-        const onClose = jest.fn()
-        const onCreated = jest.fn()
 
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+    it('renders the editor', async () => {
         render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterNewArticle
                     helpCenter={helpCenter}
                     supportedLocales={getLocalesResponseFixture}
                     categories={categories}
+                    onClickNext={onClickNext}
+                    onClickPrevious={onClickPrevious}
                     onClose={onClose}
                     onCreated={onCreated}
                     template={{
@@ -180,14 +187,13 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
     })
 
     it('cancels changes', async () => {
-        const onClose = jest.fn()
-        const onCreated = jest.fn()
-
         render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterNewArticle
                     helpCenter={helpCenter}
                     supportedLocales={getLocalesResponseFixture}
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
                     categories={categories}
                     onClose={onClose}
                     onCreated={onCreated}
@@ -207,15 +213,14 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
     })
 
     it('saves as draft', async () => {
-        const onClose = jest.fn()
-        const onCreated = jest.fn()
-
         render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterNewArticle
                     helpCenter={helpCenter}
                     supportedLocales={getLocalesResponseFixture}
                     categories={categories}
+                    onClickNext={onClickNext}
+                    onClickPrevious={onClickPrevious}
                     onClose={onClose}
                     onCreated={onCreated}
                     template={{

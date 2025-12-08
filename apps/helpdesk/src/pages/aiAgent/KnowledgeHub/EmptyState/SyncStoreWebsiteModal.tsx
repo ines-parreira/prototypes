@@ -56,12 +56,10 @@ export const SyncStoreWebsiteModal = ({
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
         storeDomainIngestionLog,
     )
-    const { resetAllBanner, dismissBanner } = useIngestionDomainBannerDismissed(
-        {
-            shopName,
-            pageName: PAGE_NAME.SOURCE,
-        },
-    )
+    const { dismissBanner, resetBanner } = useIngestionDomainBannerDismissed({
+        shopName,
+        pageName: PAGE_NAME.SOURCE,
+    })
 
     const closeModal = useCallback(() => {
         handleOnCancel()
@@ -80,7 +78,7 @@ export const SyncStoreWebsiteModal = ({
     const handleSync = useCallback(async () => {
         try {
             await handleOnSync()
-            resetAllBanner()
+            resetBanner()
             closeModal()
         } catch (error) {
             console.error('Failed to sync store website:', error)
@@ -88,7 +86,7 @@ export const SyncStoreWebsiteModal = ({
             dispatchDocumentEvent(SYNC_WEBSITE_ERROR)
             closeModal()
         }
-    }, [handleOnSync, resetAllBanner, dismissBanner, closeModal])
+    }, [handleOnSync, resetBanner, dismissBanner, closeModal])
 
     return (
         <Modal

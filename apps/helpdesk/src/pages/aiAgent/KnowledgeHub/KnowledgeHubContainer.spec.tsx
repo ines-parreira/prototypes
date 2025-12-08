@@ -19,6 +19,8 @@ import {
     REFETCH_KNOWLEDGE_HUB_TABLE,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
+import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
 import {
     KnowledgeType,
@@ -40,6 +42,7 @@ jest.mock('models/helpCenter/queries', () => ({
     useGetKnowledgeHubArticles: jest.fn(),
     useGetHelpCenterList: jest.fn(),
     useGetHelpCenterListMulti: jest.fn(),
+    useGetHelpCenterCategoryTree: jest.fn(),
     useStartIngestion: jest.fn(() => ({
         mutateAsync: jest.fn(),
         isPending: false,
@@ -66,11 +69,15 @@ jest.mock('models/helpCenter/queries', () => ({
         error: null,
         isLoading: false,
     })),
+    useCreateFileIngestion: jest.fn(() => ({
+        mutateAsync: jest.fn(),
+    })),
     helpCenterKeys: {
         ingestionLogs: jest.fn(),
         articleIngestionLogs: jest.fn(),
         articleIngestionLogsListRoot: jest.fn(),
         fileIngestions: jest.fn(),
+        knowledgeStatus: jest.fn(),
     },
 }))
 jest.mock('pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles')
@@ -81,6 +88,33 @@ jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
         isGetIngestionLogsLoading: false,
     })),
 }))
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
+jest.mock('pages/aiAgent/KnowledgeHub/EditorWrappers', () => ({
+    GuidanceEditorWrapper: ({ isOpen }: any) =>
+        isOpen ? <div data-testid="guidance-editor-wrapper" /> : null,
+    FaqEditorWrapper: ({ isOpen }: any) =>
+        isOpen ? <div data-testid="faq-editor-wrapper" /> : null,
+}))
+jest.mock(
+    'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal',
+    () => ({
+        AddGuidanceTemplateModal: ({ onTemplateSelect }: any) => (
+            <div data-testid="add-guidance-modal">
+                <button
+                    onClick={() =>
+                        onTemplateSelect({ id: 1, name: 'Test Template' })
+                    }
+                >
+                    Select Template
+                </button>
+                <button onClick={() => onTemplateSelect(undefined)}>
+                    Custom Guidance
+                </button>
+            </div>
+        ),
+    }),
+)
 jest.mock('@gorgias/knowledge-service-queries', () => ({
     useStartIngestion: jest.fn(() => ({
         mutateAsync: jest.fn(),
@@ -160,6 +194,9 @@ const mockUseAiAgentStoreConfigurationContext =
 const mockUseGetKnowledgeHubArticles = useGetKnowledgeHubArticles as jest.Mock
 const mockUseGetHelpCenterList = useGetHelpCenterList as jest.Mock
 const mockUseGetHelpCenterListMulti = useGetHelpCenterListMulti as jest.Mock
+const mockUseKnowledgeHubGuidanceEditor =
+    useKnowledgeHubGuidanceEditor as jest.Mock
+const mockUseKnowledgeHubFaqEditor = useKnowledgeHubFaqEditor as jest.Mock
 const mockTransformKnowledgeHubArticlesToKnowledgeItems =
     transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
 
@@ -195,6 +232,8 @@ describe('KnowledgeHubContainer', () => {
             href: 'http://localhost/app',
             pathname: '/app',
         } as Location
+
+        mockExtractShopNameFromUrl.mockReturnValue(undefined)
 
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentAccountId) return 123
@@ -260,6 +299,44 @@ describe('KnowledgeHubContainer', () => {
                 }))
             },
         )
+
+        mockUseKnowledgeHubGuidanceEditor.mockReturnValue({
+            isEditorOpen: false,
+            currentGuidanceArticleId: undefined,
+            guidanceMode: 'create',
+            openEditorForCreate: jest.fn(),
+            openEditorForEdit: jest.fn(),
+            closeEditor: jest.fn(),
+            knowledgeEditorProps: {
+                shopName: 'store-alpha',
+                shopType: 'shopify',
+                guidanceArticleId: undefined,
+                guidanceTemplate: undefined,
+                guidanceMode: 'create',
+                isOpen: false,
+                onClose: jest.fn(),
+                onCreate: jest.fn(),
+                onUpdate: jest.fn(),
+                onDelete: jest.fn(),
+                onClickPrevious: undefined,
+                onClickNext: undefined,
+            },
+        })
+
+        mockUseKnowledgeHubFaqEditor.mockReturnValue({
+            isEditorOpen: false,
+            currentArticleId: undefined,
+            faqArticleMode: 'new',
+            initialArticleMode: 'READ',
+            openEditorForCreate: jest.fn(),
+            openEditorForEdit: jest.fn(),
+            closeEditor: jest.fn(),
+            handleCreate: jest.fn(),
+            handleUpdate: jest.fn(),
+            handleDelete: jest.fn(),
+            handleClickPrevious: jest.fn(),
+            handleClickNext: jest.fn(),
+        })
     })
 
     afterEach(() => {

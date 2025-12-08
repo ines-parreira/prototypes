@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { EMPTY_HELP_CENTER_ID } from '../../../../automate/common/components/HelpCenterSelect'
 import { useFaqHelpCenter } from '../../EmptyState/useFaqHelpCenter'
@@ -561,6 +562,268 @@ describe('KnowledgeHubTable', () => {
                     screen.getByRole('heading', { name: 'Create new content' }),
                 ).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('row click handling', () => {
+        const ungroupedGuidanceData = [
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Return Policy',
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '123',
+            },
+        ]
+
+        const ungroupedFaqData = [
+            {
+                type: KnowledgeType.FAQ,
+                title: 'Shipping FAQ',
+                lastUpdatedAt: '2024-01-10T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                source: 'docs.example.com',
+                id: '456',
+            },
+        ]
+
+        const ungroupedDocumentData = [
+            {
+                type: KnowledgeType.Document,
+                title: 'Product Manual',
+                lastUpdatedAt: '2024-01-15T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                source: 'docs.example.com',
+                id: '789',
+            },
+        ]
+
+        it('calls onGuidanceRowClick with correct ID when clicking ungrouped Guidance row', async () => {
+            const user = userEvent.setup()
+            const onGuidanceRowClick = jest.fn()
+            const onRowClick = jest.fn()
+
+            renderComponent({
+                data: ungroupedGuidanceData,
+                selectedFolder: ungroupedGuidanceData[0],
+                onGuidanceRowClick,
+                onRowClick,
+            })
+
+            const guidanceRow = screen.getByText('Return Policy')
+
+            await user.click(guidanceRow)
+
+            expect(onGuidanceRowClick).toHaveBeenCalledWith(123)
+            expect(onRowClick).not.toHaveBeenCalled()
+        })
+
+        it('calls onFaqRowClick with correct ID when clicking ungrouped FAQ row', async () => {
+            const user = userEvent.setup()
+            const onFaqRowClick = jest.fn()
+            const onRowClick = jest.fn()
+
+            renderComponent({
+                data: ungroupedFaqData,
+                selectedFolder: ungroupedFaqData[0],
+                onFaqRowClick,
+                onRowClick,
+            })
+
+            const faqRow = screen.getByText('Shipping FAQ')
+
+            await user.click(faqRow)
+
+            expect(onFaqRowClick).toHaveBeenCalledWith(456)
+            expect(onRowClick).not.toHaveBeenCalled()
+        })
+
+        it('calls onRowClick when clicking grouped rows', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+            const onGuidanceRowClick = jest.fn()
+            const onFaqRowClick = jest.fn()
+
+            renderComponent({
+                data: mockData,
+                onRowClick,
+                onGuidanceRowClick,
+                onFaqRowClick,
+            })
+
+            const groupedRow = screen.getByText('docs.example.com')
+
+            await user.click(groupedRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+            expect(onGuidanceRowClick).not.toHaveBeenCalled()
+            expect(onFaqRowClick).not.toHaveBeenCalled()
+        })
+
+        it('calls onRowClick when clicking Document rows', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+            const onGuidanceRowClick = jest.fn()
+            const onFaqRowClick = jest.fn()
+
+            renderComponent({
+                data: ungroupedDocumentData,
+                selectedFolder: ungroupedDocumentData[0],
+                onRowClick,
+                onGuidanceRowClick,
+                onFaqRowClick,
+            })
+
+            const documentRow = screen.getByText('Product Manual')
+
+            await user.click(documentRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+            expect(onGuidanceRowClick).not.toHaveBeenCalled()
+            expect(onFaqRowClick).not.toHaveBeenCalled()
+        })
+
+        it('calls onRowClick when clicking URL rows', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+            const onGuidanceRowClick = jest.fn()
+            const onFaqRowClick = jest.fn()
+
+            const urlData = [
+                {
+                    type: KnowledgeType.URL,
+                    title: 'Help Center',
+                    lastUpdatedAt: '2024-01-05T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    id: '999',
+                },
+            ]
+
+            renderComponent({
+                data: urlData,
+                selectedFolder: urlData[0],
+                onRowClick,
+                onGuidanceRowClick,
+                onFaqRowClick,
+            })
+
+            const urlRow = screen.getByText('Help Center')
+
+            await user.click(urlRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+            expect(onGuidanceRowClick).not.toHaveBeenCalled()
+            expect(onFaqRowClick).not.toHaveBeenCalled()
+        })
+
+        it('falls back to onRowClick when onGuidanceRowClick is not provided for Guidance row', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+
+            renderComponent({
+                data: ungroupedGuidanceData,
+                selectedFolder: ungroupedGuidanceData[0],
+                onRowClick,
+            })
+
+            const guidanceRow = screen.getByText('Return Policy')
+
+            await user.click(guidanceRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+        })
+
+        it('falls back to onRowClick when onFaqRowClick is not provided for FAQ row', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+
+            renderComponent({
+                data: ungroupedFaqData,
+                selectedFolder: ungroupedFaqData[0],
+                onRowClick,
+            })
+
+            const faqRow = screen.getByText('Shipping FAQ')
+
+            await user.click(faqRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+        })
+
+        it('does not call any handler for grouped Guidance rows', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+            const onGuidanceRowClick = jest.fn()
+
+            const guidanceWithSourceData = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Guidance 1',
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'guidance.example.com',
+                    id: '111',
+                },
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Guidance 2',
+                    lastUpdatedAt: '2024-01-21T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'guidance.example.com',
+                    id: '222',
+                },
+            ]
+
+            renderComponent({
+                data: guidanceWithSourceData,
+                onRowClick,
+                onGuidanceRowClick,
+            })
+
+            const groupedRow = screen.getByText('guidance.example.com')
+
+            await user.click(groupedRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+            expect(onGuidanceRowClick).not.toHaveBeenCalled()
+        })
+
+        it('does not call any handler for grouped FAQ rows', async () => {
+            const user = userEvent.setup()
+            const onRowClick = jest.fn()
+            const onFaqRowClick = jest.fn()
+
+            const faqsWithSameSource = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'FAQ 1',
+                    lastUpdatedAt: '2024-01-10T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    source: 'faq.example.com',
+                    id: '333',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'FAQ 2',
+                    lastUpdatedAt: '2024-01-11T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'faq.example.com',
+                    id: '444',
+                },
+            ]
+
+            renderComponent({
+                data: faqsWithSameSource,
+                onRowClick,
+                onFaqRowClick,
+            })
+
+            const groupedRow = screen.getByText('faq.example.com')
+
+            await user.click(groupedRow)
+
+            expect(onRowClick).toHaveBeenCalled()
+            expect(onFaqRowClick).not.toHaveBeenCalled()
         })
     })
 })

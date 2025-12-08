@@ -87,6 +87,7 @@ const createMockTrial = (overrides = {}) => ({
 
 const defaultExpectedValues = {
     ...createMockTrialAccess(),
+    isAdminUser: true,
     currentAutomatePlan: {
         generation: 5,
     },
@@ -150,6 +151,26 @@ describe('useTrialAccess', () => {
         }),
     }
 
+    type Selector = Parameters<typeof useAppSelector>[0]
+    const defaulUseAppSelectorMockImplementation = (selector: Selector) => {
+        if (selector === getCurrentUser) {
+            return mockUser
+        }
+        if (selector === getCurrentAutomatePlan) {
+            return { generation: 5 }
+        }
+        if (selector === getCurrentHelpdeskPlan) {
+            return { tier: HelpdeskPlanTier.STARTER }
+        }
+        if (selector === getCurrentAccountState) {
+            return mockAccount
+        }
+        if (selector === isTrialing) {
+            return false
+        }
+        return undefined
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -159,24 +180,9 @@ describe('useTrialAccess', () => {
                 false,
         )
 
-        mockUseAppSelector.mockImplementation((selector) => {
-            if (selector === getCurrentUser) {
-                return mockUser
-            }
-            if (selector === getCurrentAutomatePlan) {
-                return { generation: 5 }
-            }
-            if (selector === getCurrentHelpdeskPlan) {
-                return { tier: HelpdeskPlanTier.STARTER }
-            }
-            if (selector === getCurrentAccountState) {
-                return mockAccount
-            }
-            if (selector === isTrialing) {
-                return false
-            }
-            return undefined
-        })
+        mockUseAppSelector.mockImplementation(
+            defaulUseAppSelectorMockImplementation,
+        )
 
         mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue({
@@ -221,28 +227,16 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true, // Has AI Agent on chat + all other conditions
                 canSeeTrialCTA: true,
-                isAdminUser: true,
             })
         })
 
         it('should return correct access values for admin user on basic plan', () => {
+            mockUseAppSelector.mockClear() // Clear the default
             mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 }
-                }
                 if (selector === getCurrentHelpdeskPlan) {
                     return { tier: HelpdeskPlanTier.BASIC }
                 }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                if (selector === isTrialing) {
-                    return false
-                }
-                return undefined
+                return defaulUseAppSelectorMockImplementation(selector)
             })
 
             const { result } = renderUseTrialAccess()
@@ -251,31 +245,11 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                isAdminUser: true,
                 isTrialingSubscription: false,
             })
         })
-        it('should not show trial CTA while data is loading', () => {
-            // Set up admin user on starter plan
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 }
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                if (selector === isTrialing) {
-                    return false
-                }
-                return undefined
-            })
 
+        it('should not show trial CTA while data is loading', () => {
             // Enable feature flags
             mockUseFlag.mockImplementation(
                 (key) =>
@@ -317,11 +291,11 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: false,
-                isAdminUser: true,
                 isLoading: true,
                 isTrialingSubscription: false,
             })
         })
+
         it('should return correct access values for team lead user', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(true)
@@ -333,29 +307,19 @@ describe('useTrialAccess', () => {
                 canNotifyAdmin: true, // Team lead can notify admin
                 canSeeSystemBanner: true, // Both admins and team leads can see system banner
                 canSeeTrialCTA: false, // Only admins can see trial CTA
+                isAdminUser: false,
             })
         })
     })
 
     describe('when user is on Pro+ plan', () => {
         beforeEach(() => {
+            mockUseAppSelector.mockClear() // Clear the default
             mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 }
-                }
                 if (selector === getCurrentHelpdeskPlan) {
                     return { tier: HelpdeskPlanTier.PRO }
                 }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                if (selector === isTrialing) {
-                    return false
-                }
-                return undefined
+                return defaulUseAppSelectorMockImplementation(selector)
             })
         })
 
@@ -366,7 +330,6 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true, // System banner for everyone
                 canSeeTrialCTA: true, // Pro+ with feature flag can see trial CTA
-                isAdminUser: true,
                 isTrialingSubscription: false,
             })
         })
@@ -382,6 +345,7 @@ describe('useTrialAccess', () => {
                 canNotifyAdmin: true, // Team lead can notify for Pro+ with feature flag
                 canSeeSystemBanner: true, // Both admins and team leads can see system banner
                 isTrialingSubscription: false,
+                isAdminUser: false,
             })
         })
     })
@@ -421,7 +385,6 @@ describe('useTrialAccess', () => {
                 hasAnyTrialOptedIn: true,
                 hasCurrentStoreTrialExpired: true,
                 hasCurrentStoreTrialStarted: true,
-                isAdminUser: true,
             })
         })
 
@@ -436,7 +399,6 @@ describe('useTrialAccess', () => {
                 ...defaultExpectedValues,
                 canSeeSystemBanner: true,
                 canSeeTrialCTA: true,
-                isAdminUser: true,
             })
         })
     })
@@ -448,7 +410,10 @@ describe('useTrialAccess', () => {
 
             const { result } = renderUseTrialAccess()
 
-            expect(result.current).toEqual(defaultExpectedValues)
+            expect(result.current).toEqual({
+                ...defaultExpectedValues,
+                isAdminUser: false,
+            })
         })
     })
 
@@ -457,25 +422,6 @@ describe('useTrialAccess', () => {
             // Reset to default admin user on starter plan for these tests
             mockIsAdmin.mockReturnValue(true)
             mockIsTeamLead.mockReturnValue(false)
-
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 }
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                if (selector === isTrialing) {
-                    return false
-                }
-                return undefined
-            })
         })
 
         describe('when user has opted out of trial', () => {
@@ -510,7 +456,6 @@ describe('useTrialAccess', () => {
                     canSeeSystemBanner: true,
                     canSeeTrialCTA: true,
                     hasAnyTrialOptedOut: true,
-                    isAdminUser: true,
                 })
             })
 
@@ -702,20 +647,12 @@ describe('useTrialAccess', () => {
                     false,
             )
 
+            mockUseAppSelector.mockClear() // Clear the default
             mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
                 if (selector === getCurrentAutomatePlan) {
                     return undefined // No automate plan (USD-4)
                 }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                return undefined
+                return defaulUseAppSelectorMockImplementation(selector)
             })
 
             const { result } = renderUseTrialAccess()
@@ -729,22 +666,6 @@ describe('useTrialAccess', () => {
                     key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
                     false,
             )
-
-            mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 } // USD-5 plan
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
-                return undefined
-            })
 
             const { result } = renderUseTrialAccess()
 
@@ -791,23 +712,12 @@ describe('useTrialAccess', () => {
             mockIsTeamLead.mockReturnValue(false)
 
             // Set up trialing subscription
+            mockUseAppSelector.mockClear() // Clear the default
             mockUseAppSelector.mockImplementation((selector) => {
-                if (selector === getCurrentUser) {
-                    return mockUser
-                }
-                if (selector === getCurrentAutomatePlan) {
-                    return { generation: 5 }
-                }
-                if (selector === getCurrentHelpdeskPlan) {
-                    return { tier: HelpdeskPlanTier.STARTER }
-                }
-                if (selector === getCurrentAccountState) {
-                    return mockAccount
-                }
                 if (selector === isTrialing) {
                     return true
                 }
-                return undefined
+                return defaulUseAppSelectorMockImplementation(selector)
             })
         })
 

@@ -32,7 +32,6 @@ export const useUrlSyncStatus = ({
 
     const syncStatus = latestUrlIngestionLog?.status
 
-    // Get all URLs that are currently syncing
     const syncingUrls = useMemo(() => {
         return (
             urlIngestionLogs
@@ -42,14 +41,62 @@ export const useUrlSyncStatus = ({
         )
     }, [urlIngestionLogs])
 
-    // Track previous URL sync status to detect when ingestion completes
+    const recentUrlIngestionLogs = useMemo(() => {
+        if (!urlIngestionLogs) return []
+
+        const pendingLogs = urlIngestionLogs.filter(
+            (log) => log.status === IngestionLogStatus.Pending,
+        )
+
+        if (pendingLogs.length === 0) return []
+
+        const timestamps = pendingLogs
+            .filter((log) => log.latest_sync)
+            .map((log) => new Date(log.latest_sync!).getTime())
+        const syncRoundStartTime = Math.min(...timestamps)
+
+        if (!Number.isFinite(syncRoundStartTime)) {
+            return urlIngestionLogs
+        }
+
+        return urlIngestionLogs.filter((log) => {
+            if (!log.latest_sync) return false
+            const createdTime = new Date(log.latest_sync).getTime()
+            return createdTime >= syncRoundStartTime
+        })
+    }, [urlIngestionLogs])
+
+    const { totalCount, completedCount, successCount, pendingCount } =
+        useMemo(() => {
+            if (recentUrlIngestionLogs.length === 0) {
+                return { totalCount: 0, completedCount: 0, successCount: 0 }
+            }
+
+            const successful = recentUrlIngestionLogs.filter(
+                (log) => log.status === IngestionLogStatus.Successful,
+            )
+            const failed = recentUrlIngestionLogs.filter(
+                (log) => log.status === IngestionLogStatus.Failed,
+            )
+
+            const pending = recentUrlIngestionLogs.filter(
+                (log) => log.status === IngestionLogStatus.Pending,
+            )
+
+            return {
+                totalCount: recentUrlIngestionLogs.length,
+                completedCount: successful.length + failed.length,
+                successCount: successful.length,
+                pendingCount: pending.length,
+            }
+        }, [recentUrlIngestionLogs])
+
     const prevSyncStatusRef = useRef<string | undefined>()
 
     useEffect(() => {
         const prevStatus = prevSyncStatusRef.current
         const currentStatus = syncStatus
 
-        // Dispatch event when URL sync completes successfully
         if (
             prevStatus === IngestionLogStatus.Pending &&
             currentStatus === IngestionLogStatus.Successful
@@ -65,5 +112,9 @@ export const useUrlSyncStatus = ({
         latestUrlIngestionLog,
         syncingUrls,
         urlIngestionLogs,
+        totalCount,
+        completedCount,
+        successCount,
+        pendingCount,
     }
 }

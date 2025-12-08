@@ -51,13 +51,20 @@ export const getColumns = (
                 const itemCount = info.row.original.itemCount
                 const source = info.row.original.source
 
+                const shouldMakeClickable =
+                    columnOnClick &&
+                    (info.row.original.isGrouped ||
+                        !info.row.original.isGrouped)
+
                 return (
                     <div
                         onClick={() =>
-                            columnOnClick &&
-                            info.row.original.isGrouped &&
+                            shouldMakeClickable &&
                             columnOnClick(info.row.original)
                         }
+                        style={{
+                            cursor: shouldMakeClickable ? 'pointer' : 'default',
+                        }}
                     >
                         <Box
                             gap="xs"

@@ -67,6 +67,8 @@ type Props = {
     onClickPrevious: () => void
     onClickNext: () => void
     onClose: () => void
+    onUpdated?: () => void
+    onDeleted?: () => void
     initialArticleMode: InitialArticleMode
     isFullscreen: boolean
     onToggleFullscreen: () => void
@@ -219,13 +221,9 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
             ])
 
             setArticle(mergeResponseSettingsInArticle(response))
+            props.onUpdated?.()
         },
-        [
-            props.helpCenter.id,
-            props.article.id,
-            locale,
-            updateArticleTranslation,
-        ],
+        [props, locale, updateArticleTranslation],
     )
 
     const details = useKnowledgeEditorHelpCenterArticleDetails({
@@ -272,6 +270,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                 onSaveChanges: async () => {
                     const response = await upsertArticleContentAndTitle(false)
                     if (response) {
+                        props.onUpdated?.()
                         props.onClose()
                     }
                 },
@@ -309,6 +308,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                         const response =
                             await upsertArticleContentAndTitle(false)
                         if (response) {
+                            props.onUpdated?.()
                             setModeType(ArticleModes.READ)
                         }
                     },
@@ -328,12 +328,14 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         onSaveAndPublish: async () => {
             const response = await upsertArticleContentAndTitle(true)
             if (response) {
+                props.onUpdated?.()
                 setModeType(ArticleModes.READ)
             }
         },
         onSaveDraft: async () => {
             const response = await upsertArticleContentAndTitle(false)
             if (response) {
+                props.onUpdated?.()
                 setModeType(ArticleModes.READ)
             }
         },
@@ -349,6 +351,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                                 id: props.article.id,
                             },
                         ])
+                        props.onDeleted?.()
                         props.onClose()
                     } catch {
                         notifyError(

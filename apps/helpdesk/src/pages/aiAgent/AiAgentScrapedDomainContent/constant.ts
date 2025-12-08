@@ -25,6 +25,7 @@ export const PAGE_NAME = {
     SOURCE: 'knowledge-source',
     STORE_WEBSITE: 'store-website-content',
     URL: 'url-content',
+    FILE: 'file-content',
 }
 
 export const PAGINATED_ITEMS_PER_PAGE = 15

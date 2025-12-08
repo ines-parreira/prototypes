@@ -28,9 +28,15 @@ export const useIngestionDomainBannerDismissed = ({
         localStorage.removeItem(getDismissedKey(shopName, PAGE_NAME.URL))
     }, [shopName, setIsDismissed])
 
+    const resetBanner = useCallback(() => {
+        setIsDismissed(false)
+        localStorage.removeItem(dismissedKey)
+    }, [dismissedKey, setIsDismissed])
+
     return {
         isDismissed,
         dismissBanner: () => setIsDismissed(true),
         resetAllBanner,
+        resetBanner,
     }
 }

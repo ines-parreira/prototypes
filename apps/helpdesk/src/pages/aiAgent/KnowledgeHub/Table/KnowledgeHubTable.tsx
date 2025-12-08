@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import {
     HeaderRowGroup,
@@ -26,6 +26,8 @@ import type {
     KnowledgeType,
 } from 'pages/aiAgent/KnowledgeHub/types'
 
+import { KnowledgeType as KnowledgeTypeEnum } from '../types'
+
 import css from './KnowledgeHubTable.less'
 
 const FILTER_OPTIONS: FilterOption[] = [
@@ -37,6 +39,9 @@ type KnowledgeHubTableProps = {
     data: KnowledgeItem[]
     isLoading?: boolean
     onRowClick: (data: GroupedKnowledgeItem) => void
+    onGuidanceRowClick?: (articleId: number) => void
+    onFaqRowClick?: (articleId: number) => void
+    onFaqEditorOpen?: () => void
     selectedFolder: GroupedKnowledgeItem | null
     selectedTypeFilter?: KnowledgeType | null
     faqHelpCenterId?: number | null
@@ -46,6 +51,9 @@ export const KnowledgeHubTable = ({
     data,
     isLoading = false,
     onRowClick,
+    onGuidanceRowClick,
+    onFaqRowClick,
+    onFaqEditorOpen,
     selectedFolder,
     selectedTypeFilter = null,
     faqHelpCenterId,
@@ -96,9 +104,35 @@ export const KnowledgeHubTable = ({
         return filteredBySearchTerm
     }, [filteredData, isSearchActive, selectedFolder, searchTerm])
 
+    const handleRowClick = useCallback(
+        (row: GroupedKnowledgeItem) => {
+            if (
+                row.type === KnowledgeTypeEnum.Guidance &&
+                !row.isGrouped &&
+                onGuidanceRowClick
+            ) {
+                onGuidanceRowClick(Number(row.id))
+                return
+            }
+
+            if (
+                row.type === KnowledgeTypeEnum.FAQ &&
+                !row.isGrouped &&
+                onFaqRowClick
+            ) {
+                onFaqRowClick(Number(row.id))
+                return
+            }
+
+            onRowClick?.(row)
+        },
+        [onRowClick, onGuidanceRowClick, onFaqRowClick],
+    )
+
     const columnsWithHighlight = useMemo(() => {
-        return getColumns(searchTerm, onRowClick)
-    }, [searchTerm, onRowClick])
+        return getColumns(searchTerm, handleRowClick)
+    }, [searchTerm, handleRowClick])
+
     const table = useTable<GroupedKnowledgeItem>({
         data: displayData,
         columns: columnsWithHighlight,
@@ -127,6 +161,7 @@ export const KnowledgeHubTable = ({
                     documentFilter={selectedTypeFilter}
                     articles={displayData}
                     helpCenterId={faqHelpCenterId}
+                    onFaqEditorOpen={onFaqEditorOpen}
                 />
             </div>
         )

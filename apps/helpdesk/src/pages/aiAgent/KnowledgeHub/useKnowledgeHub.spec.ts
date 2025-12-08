@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { useDomainSyncStatus } from './hooks/useDomainSyncStatus'
+import { useFileIngestionStatus } from './hooks/useFileIngestionStatus'
 import { useKnowledgeHubArticles } from './hooks/useKnowledgeHubArticles'
 import { useShopContext } from './hooks/useShopContext'
 import { useUrlSyncStatus } from './hooks/useUrlSyncStatus'
@@ -10,6 +11,7 @@ jest.mock('./hooks/useShopContext')
 jest.mock('./hooks/useKnowledgeHubArticles')
 jest.mock('./hooks/useDomainSyncStatus')
 jest.mock('./hooks/useUrlSyncStatus')
+jest.mock('./hooks/useFileIngestionStatus')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames')
 jest.mock('./hooks/useShopContext')
 jest.mock('./hooks/useKnowledgeHubArticles')
@@ -19,6 +21,7 @@ const mockUseShopContext = useShopContext as jest.Mock
 const mockUseKnowledgeHubArticles = useKnowledgeHubArticles as jest.Mock
 const mockUseDomainSyncStatus = useDomainSyncStatus as jest.Mock
 const mockUseUrlSyncStatus = useUrlSyncStatus as jest.Mock
+const mockUseFileIngestionStatus = useFileIngestionStatus as jest.Mock
 
 describe('useKnowledgeHub', () => {
     const mockRefetch = jest.fn()
@@ -52,6 +55,11 @@ describe('useKnowledgeHub', () => {
             urlIngestionLogs: [],
         })
 
+        mockUseFileIngestionStatus.mockReturnValue({
+            fileIngestionStatus: undefined,
+            fileIngestionLogs: [],
+        })
+
         jest.mocked(
             require('pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames')
                 .default,
@@ -78,6 +86,8 @@ describe('useKnowledgeHub', () => {
             syncingUrls: [],
             urlIngestionLogs: [],
             existingUrls: [],
+            fileIngestionStatus: undefined,
+            fileIngestionLogs: [],
         })
     })
 

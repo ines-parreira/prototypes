@@ -58,7 +58,7 @@ export const SyncUrlModal = ({
         storeUrl,
     })
 
-    const { resetAllBanner } = useIngestionDomainBannerDismissed({
+    const { resetBanner } = useIngestionDomainBannerDismissed({
         shopName,
         pageName: PAGE_NAME.URL,
     })
@@ -137,7 +137,7 @@ export const SyncUrlModal = ({
 
         try {
             await syncUrl(url)
-            resetAllBanner()
+            resetBanner()
 
             // Invalidate queries to immediately show loading banner
             await queryClient.invalidateQueries({
@@ -168,7 +168,7 @@ export const SyncUrlModal = ({
         url,
         validateUrl,
         syncUrl,
-        resetAllBanner,
+        resetBanner,
         dispatch,
         closeModal,
         queryClient,

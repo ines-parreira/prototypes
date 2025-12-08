@@ -1,35 +1,54 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useParams } from 'react-router-dom'
+
 import { Modal, OverlayHeader } from '@gorgias/axiom'
 
 import {
+    HELP_CENTER_SELECT_MODAL_OPEN,
+    OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
     OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
+    OPEN_UPLOAD_DOCUMENT_MODAL,
     REFETCH_KNOWLEDGE_HUB_TABLE,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { DocumentFilters } from 'pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters'
+import {
+    FaqEditorWrapper,
+    GuidanceEditorWrapper,
+} from 'pages/aiAgent/KnowledgeHub/EditorWrappers'
+import { AddGuidanceTemplateModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal'
 import { DeleteUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/DeleteUrlModal'
 import { EmptyStates } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
 import { HelpCenterSelectModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/HelpCenterSelectModal'
 import { SyncStoreWebsiteModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal'
 import { SyncUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal'
 import {
+    openDeleteDocumentModal,
     openDeleteUrlModal,
     openSyncStoreWebsiteModal,
     openUrlModal,
     useListenToDocumentEvent,
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
+import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
+import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
 import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
 import { SyncStoreDomainBanner } from 'pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner'
 import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
+import type { GuidanceTemplate } from 'pages/aiAgent/types'
+
+import { DeleteDocumentModal } from './EmptyState/DeleteDocumentModal'
+import { UploadDocumentModal } from './EmptyState/UploadDocumentModal'
 
 import css from './KnowledgeHubContainer.less'
 
 export const KnowledgeHubContainer = () => {
+    const { shopType } = useParams<{ shopType: string }>()
+
     const [selectedFolder, setSelectedFolder] =
         useState<GroupedKnowledgeItem | null>(null)
     const [selectedFilter, setSelectedFilter] = useState<KnowledgeType | null>(
@@ -53,7 +72,45 @@ export const KnowledgeHubContainer = () => {
         urlIngestionLogs,
         storeUrl,
         existingUrls,
+        urlTotalCount,
+        urlPendingCount,
+        fileIngestionStatus,
+        fileIngestionLogs,
+        filePendingCount,
     } = useKnowledgeHub()
+
+    const guidanceArticles = useMemo(() => {
+        return tableData
+            .filter((item) => item.type === KnowledgeType.Guidance)
+            .map((item) => ({
+                id: Number(item.id),
+                title: item.title,
+            }))
+    }, [tableData])
+
+    const faqArticles = useMemo(() => {
+        return tableData
+            .filter((item) => item.type === KnowledgeType.FAQ)
+            .map((item) => ({
+                id: Number(item.id),
+                title: item.title,
+            }))
+    }, [tableData])
+
+    const {
+        openEditorForCreate: openGuidanceEditorForCreate,
+        openEditorForEdit: openGuidanceEditorForEdit,
+        knowledgeEditorProps,
+    } = useKnowledgeHubGuidanceEditor({
+        shopName,
+        shopType: shopType || '',
+        filteredGuidanceArticles: guidanceArticles,
+    })
+
+    const faqEditor = useKnowledgeHubFaqEditor({
+        shopName,
+        filteredFaqArticles: faqArticles,
+    })
 
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
         storeDomainIngestionLog,
@@ -73,6 +130,15 @@ export const KnowledgeHubContainer = () => {
     useListenToDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE, handleRefetchTable)
     useListenToDocumentEvent(OPEN_SYNC_WEBSITE_MODAL, handleCloseSyncModals)
     useListenToDocumentEvent(OPEN_SYNC_URL_MODAL, handleCloseSyncModals)
+    useListenToDocumentEvent(OPEN_UPLOAD_DOCUMENT_MODAL, handleCloseSyncModals)
+    useListenToDocumentEvent(
+        OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
+        handleCloseSyncModals,
+    )
+    useListenToDocumentEvent(
+        HELP_CENTER_SELECT_MODAL_OPEN,
+        handleCloseSyncModals,
+    )
 
     const onClick = (data: GroupedKnowledgeItem) => {
         setSelectedFolder(data)
@@ -102,9 +168,12 @@ export const KnowledgeHubContainer = () => {
         if (selectedFolder?.type === KnowledgeType.URL) {
             openDeleteUrlModal(selectedFolder)
         }
+
+        if (selectedFolder?.type === KnowledgeType.Document) {
+            openDeleteDocumentModal(selectedFolder)
+        }
     }
 
-    // Show loading state for URL folder that is currently syncing
     const isUrlFolderSyncing = useMemo(() => {
         if (!selectedFolder || selectedFolder.type !== KnowledgeType.URL) {
             return false
@@ -114,6 +183,19 @@ export const KnowledgeHubContainer = () => {
         }
         return syncingUrls.includes(selectedFolder.source)
     }, [selectedFolder, syncingUrls])
+
+    const handleTemplateSelect = useCallback(
+        (template?: GuidanceTemplate) => {
+            setIsAddKnowledgeModalOpen(false)
+            openGuidanceEditorForCreate(template)
+        },
+        [openGuidanceEditorForCreate],
+    )
+
+    const handleFaqEditorOpen = useCallback(() => {
+        setIsAddKnowledgeModalOpen(false)
+        faqEditor.openEditorForCreate()
+    }, [faqEditor])
 
     return (
         <div className={css.container}>
@@ -136,6 +218,14 @@ export const KnowledgeHubContainer = () => {
                 syncStatus={urlSyncStatus}
                 shopName={shopName}
                 type="url"
+                completedCount={urlPendingCount}
+                totalCount={urlTotalCount}
+            />
+            <SyncStoreDomainBanner
+                syncStatus={fileIngestionStatus}
+                shopName={shopName}
+                type="file"
+                completedCount={filePendingCount}
             />
             <DocumentFilters
                 selectedFilter={selectedFilter}
@@ -145,6 +235,9 @@ export const KnowledgeHubContainer = () => {
                 data={tableData}
                 isLoading={isInitialLoading || isUrlFolderSyncing}
                 onRowClick={onClick}
+                onGuidanceRowClick={openGuidanceEditorForEdit}
+                onFaqRowClick={faqEditor.openEditorForEdit}
+                onFaqEditorOpen={handleFaqEditorOpen}
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
                 faqHelpCenterId={faqHelpCenterId}
@@ -157,8 +250,11 @@ export const KnowledgeHubContainer = () => {
                 <EmptyStates
                     hasWebsiteSync={hasWebsiteSync}
                     titleAlignment="flex-start"
+                    helpCenterId={faqHelpCenterId}
+                    onFaqEditorOpen={handleFaqEditorOpen}
                 />
             </Modal>
+            <AddGuidanceTemplateModal onTemplateSelect={handleTemplateSelect} />
             <HelpCenterSelectModal />
             <SyncStoreWebsiteModal
                 hasWebsiteSync={hasWebsiteSync}
@@ -174,6 +270,31 @@ export const KnowledgeHubContainer = () => {
                 urlIngestionLogs={urlIngestionLogs}
                 onRefetch={refetchKnowledgeHubArticles}
                 onFolderChange={setSelectedFolder}
+            />
+            <DeleteDocumentModal
+                helpCenterId={snippetHelpCenterId || 0}
+                fileIngestionLogs={fileIngestionLogs}
+                onRefetch={refetchKnowledgeHubArticles}
+                onFolderChange={setSelectedFolder}
+            />
+            <UploadDocumentModal
+                helpCenterId={snippetHelpCenterId || 0}
+                shopName={shopName}
+                aria-label="Upload Document Modal"
+            />
+            <GuidanceEditorWrapper {...knowledgeEditorProps} />
+            <FaqEditorWrapper
+                faqHelpCenterId={faqHelpCenterId || 0}
+                isOpen={faqEditor.isEditorOpen}
+                currentArticleId={faqEditor.currentArticleId}
+                faqArticleMode={faqEditor.faqArticleMode}
+                initialArticleMode={faqEditor.initialArticleMode}
+                onClose={faqEditor.closeEditor}
+                onCreate={faqEditor.handleCreate}
+                onUpdate={faqEditor.handleUpdate}
+                onDelete={faqEditor.handleDelete}
+                onClickPrevious={faqEditor.handleClickPrevious}
+                onClickNext={faqEditor.handleClickNext}
             />
         </div>
     )

@@ -128,6 +128,8 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
     onCreate: onCreateFn,
     isGuidanceArticleUpdating,
     onClose,
+    onClickPrevious,
+    onClickNext,
     guidanceMode,
     isFullscreen,
     onToggleFullscreen,
@@ -162,6 +164,8 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
     return (
         <KnowledgeEditorGuidanceView
             onClose={onClose}
+            onClickPrevious={onClickPrevious}
+            onClickNext={onClickNext}
             availableActions={availableActions}
             availableVariables={guidanceVariables}
             onSave={_noop}
@@ -306,6 +310,8 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     guidanceHelpCenterId,
     locale,
     onClose,
+    onClickPrevious,
+    onClickNext,
     onArticleCreated,
     onCreateFn,
     guidanceMode,
@@ -372,6 +378,8 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
             onCreate={onCreate}
             isGuidanceArticleUpdating={isGuidanceArticleUpdating}
             onClose={onClose}
+            onClickPrevious={onClickPrevious}
+            onClickNext={onClickNext}
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}

@@ -1,11 +1,10 @@
-import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
+import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
 } from 'pages/aiAgent/KnowledgeHub/constants'
-import { AddGuidanceTemplateModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/AddGuidanceTemplateModal'
 import { openSyncUrlModal } from 'pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal'
 import {
     dispatchDocumentEvent,
@@ -14,16 +13,20 @@ import {
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 
+import { openUploadDocumentModal } from './UploadDocumentModal'
+
 import css from './EmptyState.less'
 
 export const EmptyStates = ({
     hasWebsiteSync = false,
     titleAlignment = 'center',
     helpCenterId,
+    onFaqEditorOpen,
 }: {
     hasWebsiteSync?: boolean
     titleAlignment?: string
     helpCenterId?: number | null
+    onFaqEditorOpen?: () => void
 }) => {
     return (
         <Box flexDirection="column" gap="xxl">
@@ -63,7 +66,6 @@ export const EmptyStates = ({
                                 </Text>
                             </div>
                         </Box>
-                        <AddGuidanceTemplateModal />
                     </div>
                     <div
                         className={css.card}
@@ -73,7 +75,7 @@ export const EmptyStates = ({
                                     HELP_CENTER_SELECT_MODAL_OPEN,
                                 )
                             } else {
-                                //         TODO open editor
+                                onFaqEditorOpen?.()
                             }
                         }}
                     >
@@ -146,7 +148,12 @@ export const EmptyStates = ({
                             <Text size={'sm'}>Sync single-page URLs</Text>
                         </Box>
                     </div>
-                    <Card>
+                    <div
+                        className={css.smallCard}
+                        onClick={() => {
+                            openUploadDocumentModal()
+                        }}
+                    >
                         <Box flexDirection={'column'} gap="xs">
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
@@ -161,7 +168,7 @@ export const EmptyStates = ({
                             </Text>
                             <Text size={'sm'}>Upload external files</Text>
                         </Box>
-                    </Card>
+                    </div>
                 </Box>
             </Box>
         </Box>
@@ -192,7 +199,6 @@ export const EmptyStateGuidance = () => {
                     Create Guidance
                 </Button>
             </Box>
-            <AddGuidanceTemplateModal />
         </Box>
     )
 }
@@ -200,16 +206,18 @@ export const EmptyStateGuidance = () => {
 export const EmptyStateFAQ = ({
     helpCenterId,
     articles,
+    onFaqEditorOpen,
 }: {
     helpCenterId?: number | null
     articles: GroupedKnowledgeItem[]
+    onFaqEditorOpen?: () => void
 }) => {
     const openSelectModal = () => {
         dispatchDocumentEvent(HELP_CENTER_SELECT_MODAL_OPEN)
     }
 
     const openEditor = () => {
-        //     TODO Open editor
+        onFaqEditorOpen?.()
     }
     const EMPTY_STATE_CONTENT = {
         noHelpCenter: {
@@ -341,7 +349,14 @@ export const EmptyStateDocument = () => {
                     Upload external documents such as policies or product
                     manuals to help your AI Agent provide more accurate answers.
                 </Text>
-                <Button variant="primary">Upload Document</Button>
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        openUploadDocumentModal()
+                    }}
+                >
+                    Upload Document
+                </Button>
             </Box>
         </Box>
     )
@@ -351,10 +366,12 @@ export const EmptyStateWrapper = ({
     documentFilter,
     helpCenterId,
     articles,
+    onFaqEditorOpen,
 }: {
     documentFilter: KnowledgeType | null
     helpCenterId?: number | null
     articles: GroupedKnowledgeItem[]
+    onFaqEditorOpen?: () => void
 }) => {
     switch (documentFilter) {
         case KnowledgeType.Document:
@@ -366,6 +383,7 @@ export const EmptyStateWrapper = ({
                 <EmptyStateFAQ
                     helpCenterId={helpCenterId}
                     articles={articles}
+                    onFaqEditorOpen={onFaqEditorOpen}
                 />
             )
         case KnowledgeType.Guidance:

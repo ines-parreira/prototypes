@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import {
+    OPEN_DELETE_DOCUMENT_MODAL,
     OPEN_DELETE_URL_MODAL,
     OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
@@ -52,4 +53,8 @@ export const openSyncStoreWebsiteModal = () => {
 
 export const openDeleteUrlModal = (data: GroupedKnowledgeItem) => {
     dispatchDocumentEvent(OPEN_DELETE_URL_MODAL, data)
+}
+
+export const openDeleteDocumentModal = (data: GroupedKnowledgeItem) => {
+    dispatchDocumentEvent(OPEN_DELETE_DOCUMENT_MODAL, data)
 }

@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import {
+    OPEN_DELETE_DOCUMENT_MODAL,
     OPEN_DELETE_URL_MODAL,
     OPEN_SYNC_URL_MODAL,
     OPEN_SYNC_WEBSITE_MODAL,
@@ -9,6 +10,7 @@ import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import {
     dispatchDocumentEvent,
+    openDeleteDocumentModal,
     openDeleteUrlModal,
     openSyncStoreWebsiteModal,
     openUrlModal,
@@ -328,6 +330,99 @@ describe('utils', () => {
             expect(event.detail.type).toBe(KnowledgeType.URL)
 
             window.removeEventListener(OPEN_DELETE_URL_MODAL, listener)
+        })
+    })
+
+    describe('openDeleteDocumentModal', () => {
+        it('dispatches OPEN_DELETE_DOCUMENT_MODAL event with document data', () => {
+            const documentData = {
+                id: 'document-123',
+                title: 'Document to Delete',
+                type: KnowledgeType.Document,
+                source: 'report.pdf',
+                itemCount: 1,
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+            openDeleteDocumentModal(documentData)
+
+            expect(listener).toHaveBeenCalledTimes(1)
+            expect(listener).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: OPEN_DELETE_DOCUMENT_MODAL,
+                    detail: documentData,
+                }),
+            )
+
+            window.removeEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+        })
+
+        it('passes correct data structure to event listener', () => {
+            const documentData = {
+                id: 'document-456',
+                title: 'Another Document',
+                type: KnowledgeType.Document,
+                source: 'presentation.pptx',
+                itemCount: 1,
+                lastUpdatedAt: '2024-01-21T11:30:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+            openDeleteDocumentModal(documentData)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail).toEqual(documentData)
+            expect(event.detail.id).toBe('document-456')
+            expect(event.detail.title).toBe('Another Document')
+            expect(event.detail.source).toBe('presentation.pptx')
+
+            window.removeEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+        })
+
+        it('includes all document properties in the dispatched event', () => {
+            const documentData = {
+                id: 'document-789',
+                title: 'Spreadsheet Document',
+                type: KnowledgeType.Document,
+                source: 'data.xlsx',
+                itemCount: 1,
+                lastUpdatedAt: '2024-01-22T15:45:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+            openDeleteDocumentModal(documentData)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail).toEqual(documentData)
+            expect(event.detail.type).toBe(KnowledgeType.Document)
+            expect(event.detail.itemCount).toBe(1)
+            expect(event.detail.lastUpdatedAt).toBe('2024-01-22T15:45:00Z')
+
+            window.removeEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+        })
+
+        it('handles document type correctly', () => {
+            const documentFolder = {
+                id: 'doc-001',
+                title: 'PDF Document',
+                type: KnowledgeType.Document,
+                source: 'manual.pdf',
+                itemCount: 1,
+                lastUpdatedAt: '2024-01-23T09:00:00Z',
+            }
+            const listener = jest.fn()
+
+            window.addEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
+            openDeleteDocumentModal(documentFolder)
+
+            const event = listener.mock.calls[0][0] as CustomEvent
+            expect(event.detail.type).toBe(KnowledgeType.Document)
+
+            window.removeEventListener(OPEN_DELETE_DOCUMENT_MODAL, listener)
         })
     })
 })
