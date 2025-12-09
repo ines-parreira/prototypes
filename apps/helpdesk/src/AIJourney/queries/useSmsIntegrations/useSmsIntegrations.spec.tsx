@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getSmsIntegrations } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useSmsIntegrations } from './useSmsIntegrations'
@@ -12,16 +11,11 @@ jest.mock('@gorgias/convert-client', () => ({
     getSmsIntegrations: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockGetSmsIntegrations = getSmsIntegrations as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -57,7 +51,6 @@ describe('useSmsIntegrations', () => {
             { sms_integration_id: 'sms-2', name: 'Integration 2' },
         ]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetSmsIntegrations.mockResolvedValue({ data: mockIntegrations })
 
         const { result } = renderHook(() => useSmsIntegrations(), {
@@ -69,7 +62,6 @@ describe('useSmsIntegrations', () => {
         expect(mockGetSmsIntegrations).toHaveBeenCalledTimes(1)
         expect(mockGetSmsIntegrations).toHaveBeenCalledWith({
             baseURL: 'http://mocked-base-url',
-            headers: { Authorization: 'mock-access-token' },
         })
         expect(result.current.data).toEqual(mockIntegrations)
     })
@@ -77,7 +69,6 @@ describe('useSmsIntegrations', () => {
     it('should handle errors when fetching SMS integrations', async () => {
         const mockError = new Error('Failed to fetch SMS integrations')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetSmsIntegrations.mockRejectedValue(mockError)
 
         const { result } = renderHook(() => useSmsIntegrations(), {
@@ -90,24 +81,7 @@ describe('useSmsIntegrations', () => {
         expect(result.current.error).toEqual(mockError)
     })
 
-    it('should not fetch SMS integrations if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(() => useSmsIntegrations(), {
-            wrapper: createWrapper(),
-        })
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetSmsIntegrations).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
     it('should respect the enabled option when set to false', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () => useSmsIntegrations({ enabled: false }),
             { wrapper: createWrapper() },

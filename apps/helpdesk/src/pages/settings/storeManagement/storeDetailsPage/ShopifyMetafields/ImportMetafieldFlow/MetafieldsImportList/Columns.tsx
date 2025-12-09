@@ -32,7 +32,7 @@ export const columns: ColumnDef<Field>[] = [
                             </Text>
                         </span>
 
-                        <Tooltip>
+                        <Tooltip placement="top right">
                             <TooltipTrigger>
                                 <span role="button" tabIndex={0}>
                                     <Icon
@@ -42,10 +42,7 @@ export const columns: ColumnDef<Field>[] = [
                                 </span>
                             </TooltipTrigger>
 
-                            <TooltipContent
-                                title="Unsuppported Type"
-                                caption="Gorgias does not support this metafield type."
-                            />
+                            <TooltipContent title="Gorgias does not support this metafield type." />
                         </Tooltip>
                     </Box>
                 )}

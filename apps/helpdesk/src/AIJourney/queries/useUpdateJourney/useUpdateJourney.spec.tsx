@@ -5,7 +5,6 @@ import { waitFor } from '@testing-library/react'
 import type { JourneyStatusEnum } from '@gorgias/convert-client'
 import { patchJourney } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useUpdateJourney } from './useUpdateJourney'
@@ -14,16 +13,11 @@ jest.mock('@gorgias/convert-client', () => ({
     patchJourney: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockPatchJourney = patchJourney as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -63,7 +57,6 @@ describe('useUpdateJourney', () => {
             type: 'cart_abandoned',
         }
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
 
         const { result } = renderHook(() => useUpdateJourney(), {
@@ -99,7 +92,6 @@ describe('useUpdateJourney', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
     })
@@ -107,7 +99,6 @@ describe('useUpdateJourney', () => {
     it('should handle errors when updating journey', async () => {
         const mockError = new Error('Failed to update journey')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockRejectedValue(mockError)
 
         const { result } = renderHook(() => useUpdateJourney(), {
@@ -147,7 +138,6 @@ describe('useUpdateJourney', () => {
             type: 'cart_abandoned',
         }
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
 
         const { result } = renderHook(() => useUpdateJourney(), {
@@ -179,44 +169,11 @@ describe('useUpdateJourney', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
-    })
-
-    it('should handle update with null access token', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        mockPatchJourney.mockRejectedValue(
-            new Error('Unauthorized: Access token is required'),
-        )
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
-
-        const mutationData = {
-            journeyId: 'journey-123',
-            params: {
-                state: 'draft' as JourneyStatusEnum,
-            },
-            journeyConfigs: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '(415)-111-111',
-            },
-        }
-
-        await expect(result.current.mutateAsync(mutationData)).rejects.toThrow(
-            'Unauthorized: Access token is required',
-        )
-
-        expect(mockPatchJourney).not.toHaveBeenCalled()
     })
 
     it('should track mutation state correctly', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockImplementation(
             () =>
                 new Promise((resolve) =>
@@ -252,7 +209,6 @@ describe('useUpdateJourney', () => {
             type: 'cart_abandoned',
         }
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
 
         const { result } = renderHook(() => useUpdateJourney(), {
@@ -287,7 +243,6 @@ describe('useUpdateJourney', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
     })
@@ -296,7 +251,6 @@ describe('useUpdateJourney', () => {
         const networkError = new Error('Network error')
         networkError.name = 'NetworkError'
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockPatchJourney.mockRejectedValue(networkError)
 
         const { result } = renderHook(() => useUpdateJourney(), {

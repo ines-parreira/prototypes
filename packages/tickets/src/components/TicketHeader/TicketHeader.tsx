@@ -2,13 +2,15 @@ import { Link } from 'react-router-dom'
 
 import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
 
-import { getCustomerName } from '../helpers/getCustomerName'
-import { useTicket } from '../hooks/useTicket'
-import { TicketActions } from './TicketActions/TicketActions'
-import { TeamAssignee, UserAssignee } from './TicketAssignee'
-import { TicketPriority } from './TicketPriority'
-import { TicketViewNavigator } from './TicketViewNavigator/TicketViewNavigator'
-import { TrashedTicket } from './TrashedTicket'
+import { getCustomerName } from '../../helpers/getCustomerName'
+import { useTicket } from '../../hooks/useTicket'
+import { EditableBreadcrumb } from '../EditableBreadcrumb'
+import { TicketActions } from '../TicketActions/TicketActions'
+import { TeamAssignee, UserAssignee } from '../TicketAssignee'
+import { TicketPriority } from '../TicketPriority'
+import { TicketViewNavigator } from '../TicketViewNavigator/TicketViewNavigator'
+import { TrashedTicket } from '../TrashedTicket'
+import { useUpdateSubject } from './useUpdateSubject'
 
 import css from './TicketHeader.less'
 
@@ -18,6 +20,8 @@ type Props = {
 
 export function TicketHeader({ ticketId }: Props) {
     const { data } = useTicket(ticketId)
+    const { updateSubject } = useUpdateSubject(ticketId)
+
     const ticket = data?.data
 
     if (!ticket) return <div className={css.container} />
@@ -38,7 +42,12 @@ export function TicketHeader({ ticketId }: Props) {
                             {getCustomerName(ticket.customer)}
                         </Link>
                     </Breadcrumb>
-                    <Breadcrumb>{ticket.subject}</Breadcrumb>
+                    <Breadcrumb asSlot>
+                        <EditableBreadcrumb
+                            value={ticket.subject}
+                            onChange={(value) => updateSubject(ticketId, value)}
+                        />
+                    </Breadcrumb>
                 </Breadcrumbs>
             </div>
             <div className={css.right}>

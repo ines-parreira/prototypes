@@ -10,10 +10,12 @@ import { mockImportableFields } from './MetafieldsImportList/data'
 jest.mock('./hooks/useImportWizard')
 jest.mock('./hooks/useFieldSelection')
 jest.mock('./hooks/useImportMetafields')
+jest.mock('hooks/useNotify')
 
 const { useImportWizard } = jest.requireMock('./hooks/useImportWizard')
 const { useFieldSelection } = jest.requireMock('./hooks/useFieldSelection')
 const { useImportMetafields } = jest.requireMock('./hooks/useImportMetafields')
+const { useNotify } = jest.requireMock('hooks/useNotify')
 
 describe('ImportMetafieldFlow', () => {
     const queryClient = new QueryClient({
@@ -33,6 +35,8 @@ describe('ImportMetafieldFlow', () => {
     const mockClearAllSelections = jest.fn()
     const mockImportMetafields = jest.fn()
     const mockOnClose = jest.fn()
+    const mockSuccess = jest.fn()
+    const mockError = jest.fn()
 
     const defaultWizardState = {
         step: 'categories' as const,
@@ -69,6 +73,10 @@ describe('ImportMetafieldFlow', () => {
         useFieldSelection.mockReturnValue(defaultFieldSelectionState)
         useImportMetafields.mockReturnValue({
             mutateAsync: mockImportMetafields,
+        })
+        useNotify.mockReturnValue({
+            success: mockSuccess,
+            error: mockError,
         })
 
         mockGetSelectionCount.mockReturnValue(0)
@@ -400,6 +408,80 @@ describe('ImportMetafieldFlow', () => {
             expect(mockImportMetafields).not.toHaveBeenCalled()
             expect(mockClearAllSelections).not.toHaveBeenCalled()
             expect(mockReset).not.toHaveBeenCalled()
+            expect(mockOnClose).not.toHaveBeenCalled()
+        })
+
+        it('should dispatch success notification with count when import succeeds', async () => {
+            const user = userEvent.setup()
+            const selectedFields = [
+                mockImportableFields[0],
+                mockImportableFields[1],
+                mockImportableFields[2],
+            ]
+
+            mockGetSelectionCount.mockImplementation((category) => {
+                if (category === 'order') return 2
+                if (category === 'customer') return 1
+                return 0
+            })
+
+            useFieldSelection.mockReturnValue({
+                ...defaultFieldSelectionState,
+                allSelectedFields: selectedFields,
+            })
+
+            mockImportMetafields.mockResolvedValue({})
+
+            renderComponent({ isOpen: true, onClose: mockOnClose })
+
+            const importButton = screen.getByRole('button', {
+                name: /^import$/i,
+            })
+
+            await act(() => user.click(importButton))
+
+            await waitFor(() => {
+                expect(mockSuccess).toHaveBeenCalledTimes(1)
+            })
+
+            expect(mockSuccess).toHaveBeenCalledWith(
+                'Success! 3 metafields added',
+            )
+            expect(mockError).not.toHaveBeenCalled()
+        })
+
+        it('should dispatch error notification when import fails', async () => {
+            const user = userEvent.setup()
+            const selectedFields = [mockImportableFields[0]]
+
+            mockGetSelectionCount.mockImplementation((category) => {
+                if (category === 'customer') return 1
+                return 0
+            })
+
+            useFieldSelection.mockReturnValue({
+                ...defaultFieldSelectionState,
+                allSelectedFields: selectedFields,
+            })
+
+            mockImportMetafields.mockRejectedValue(new Error('API Error'))
+
+            renderComponent({ isOpen: true, onClose: mockOnClose })
+
+            const importButton = screen.getByRole('button', {
+                name: /^import$/i,
+            })
+
+            await act(() => user.click(importButton))
+
+            await waitFor(() => {
+                expect(mockError).toHaveBeenCalledTimes(1)
+            })
+
+            expect(mockError).toHaveBeenCalledWith(
+                'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
+            )
+            expect(mockSuccess).not.toHaveBeenCalled()
             expect(mockOnClose).not.toHaveBeenCalled()
         })
     })

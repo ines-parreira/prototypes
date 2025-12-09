@@ -199,7 +199,7 @@ describe('CampaignsTable', () => {
         }
 
         await waitFor(() => {
-            expect(mockGetJourneyData).toHaveBeenCalledWith('1', null)
+            expect(mockGetJourneyData).toHaveBeenCalledWith('1')
             expect(mockMutateAsync).toHaveBeenCalledWith({
                 params: {
                     store_integration_id: 2,

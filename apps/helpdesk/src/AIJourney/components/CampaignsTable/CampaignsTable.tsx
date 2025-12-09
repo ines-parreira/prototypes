@@ -19,7 +19,7 @@ import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
-import { useAccessToken, useJourneyContext } from 'AIJourney/providers'
+import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import { getJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
@@ -55,7 +55,6 @@ export default function CampaignsTable<TData, TValue>({
 
     const history = useHistory()
     const { shopName } = useJourneyContext()
-    const accessToken = useAccessToken()
 
     const createNewJourney = useCreateNewJourney()
 
@@ -146,7 +145,7 @@ export default function CampaignsTable<TData, TValue>({
 
     const handleDuplicate = useCallback(
         async (journey: JourneyApiDTO) => {
-            const journeyData = await getJourneyData(journey.id, accessToken!)
+            const journeyData = await getJourneyData(journey.id)
 
             const createdJourney = await createNewJourney.mutateAsync({
                 params: {
@@ -184,7 +183,7 @@ export default function CampaignsTable<TData, TValue>({
                 `/app/ai-journey/${shopName}/${createdJourney.type}/setup/${createdJourney.id}`,
             )
         },
-        [history, createNewJourney, accessToken, shopName],
+        [history, createNewJourney, shopName],
     )
 
     const table = useTable({

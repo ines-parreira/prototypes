@@ -1995,6 +1995,9 @@ importers:
 
   packages/tickets:
     dependencies:
+      classnames:
+        specifier: catalog:styles
+        version: 2.2.6
       emoji-mart:
         specifier: catalog:emoji-mart
         version: 1.0.1(react@18.2.0)
@@ -2050,6 +2053,9 @@ importers:
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      '@types/classnames':
+        specifier: catalog:styles
+        version: 2.2.10
       '@types/emoji-mart':
         specifier: catalog:emoji-mart
         version: 3.0.3

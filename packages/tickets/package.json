@@ -22,13 +22,14 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/logging": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
+        "classnames": "catalog:styles",
+        "emoji-mart": "catalog:emoji-mart",
         "lodash": "catalog:lodash",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
-        "emoji-mart": "catalog:emoji-mart",
         "zod": "catalog:zod"
     },
     "devDependencies": {
@@ -48,6 +49,7 @@
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
+        "@types/classnames": "catalog:styles",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/emoji-mart": "catalog:emoji-mart",
         "@types/lodash": "catalog:lodash",

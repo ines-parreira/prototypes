@@ -48,22 +48,29 @@ export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
         email: activeCustomer.get('email'),
         phone: getPhoneNumberFromActiveCustomer(activeCustomer),
     })
+    const [loadedStore, setLoadedStore] = useState<number | null>(null)
 
     useEffect(() => {
-        if (activeCustomer && formState.store) {
+        if (
+            activeCustomer &&
+            formState.store &&
+            loadedStore !== formState.store
+        ) {
             const defaultAddressInfo = getDefaultAddressInfoFromActiveCustomer(
                 activeCustomer,
                 formState.store,
             )
-            setFormState((formState) => ({
-                ...formState,
+            setFormState((prevState) => ({
+                ...prevState,
                 ...defaultAddressInfo,
             }))
+            setLoadedStore(formState.store)
         }
-    }, [activeCustomer, formState.store])
+    }, [activeCustomer, formState.store, loadedStore])
 
-    const onChange = (changes: Partial<FormState>) =>
-        setFormState({ ...formState, ...changes })
+    const onChange = useCallback((changes: Partial<FormState>) => {
+        setFormState((prevState) => ({ ...prevState, ...changes }))
+    }, [])
 
     const resetFormState = useCallback(() => {
         setFormState({
@@ -72,6 +79,7 @@ export const useCustomerSyncForm = (activeCustomer: Map<string, any>) => {
             email: activeCustomer.get('email'),
             phone: getPhoneNumberFromActiveCustomer(activeCustomer),
         })
+        setLoadedStore(null)
     }, [activeCustomer])
 
     const resetEmailState = useCallback(() => {

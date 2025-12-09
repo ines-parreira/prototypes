@@ -3,20 +3,13 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { testJourney } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
-
 import { useTestSms } from './useTestSms'
 
 jest.mock('@gorgias/convert-client', () => ({
     testJourney: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 const mockTestJourney = testJourney as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 
 describe('useTestSms', () => {
     let queryClient: QueryClient
@@ -43,7 +36,6 @@ describe('useTestSms', () => {
 
     it('should send test SMS successfully', async () => {
         const mockResponse = { success: true }
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockTestJourney.mockResolvedValue(mockResponse)
 
         const { result } = renderHook(() => useTestSms(), {
@@ -79,14 +71,12 @@ describe('useTestSms', () => {
             },
             {
                 baseURL: expect.any(String),
-                headers: { Authorization: 'mock-access-token' },
             },
         )
     })
 
     it('should handle errors when sending test SMS', async () => {
         const mockError = new Error('Failed to send test SMS')
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockTestJourney.mockRejectedValue(mockError) //
 
         const { result } = renderHook(() => useTestSms(), {
@@ -110,27 +100,5 @@ describe('useTestSms', () => {
         })
 
         expect(mockTestJourney).toHaveBeenCalledTimes(1)
-    })
-
-    it('should throw an error if access token is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(() => useTestSms(), {
-            wrapper: createWrapper(),
-        })
-
-        await expect(
-            result.current.mutateAsync({
-                journeyId: 'journey-123',
-                phoneNumber: '+1415111111',
-                product: {
-                    product_id: 'product-123',
-                    variant_id: 'variant-123',
-                    price: 50.0,
-                },
-            }),
-        ).rejects.toThrow('Access token is required to create a journey')
-
-        expect(mockTestJourney).not.toHaveBeenCalled()
     })
 })

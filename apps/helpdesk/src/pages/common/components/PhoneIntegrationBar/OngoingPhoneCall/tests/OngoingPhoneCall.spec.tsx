@@ -1,4 +1,6 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -11,6 +13,7 @@ import thunk from 'redux-thunk'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
+import { useFlag } from 'core/flags'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
@@ -103,6 +106,9 @@ jest.mock(
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+const useFlagMock = assumeMock(useFlag)
+
 describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
     const mockedServer = new MockAdapter(client)
@@ -152,6 +158,13 @@ describe('<OngoingPhoneCall/>', () => {
         mockUsePutCallParticipantOnHold.mockReturnValue({
             mutate: jest.fn(),
         })
+
+        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
+            if (flagKey === FeatureFlagKey.CallWhispering) {
+                return true
+            }
+            return false
+        })
     })
 
     const renderComponent = (store: Store, call: Call) => {
@@ -186,6 +199,40 @@ describe('<OngoingPhoneCall/>', () => {
                 id: '8fa8cf4781de72d0e14a34f0fce1b953d8d59bf41e5b7fec05de8088b54de687',
             },
         })
+    })
+
+    it('should render dynamic sound wave around microphone button', () => {
+        const call = mockIncomingCall(integrationId) as Call
+
+        const { container } = renderComponent(store, call)
+
+        const micButton = screen.getByLabelText('Mute phone call')
+        expect(micButton).toBeInTheDocument()
+
+        const soundWaveBars = container.querySelectorAll('.soundWaveBar')
+        expect(soundWaveBars).toHaveLength(5)
+
+        const soundWaveIcon = container.querySelector('.soundWaveIcon')
+        expect(soundWaveIcon).toBeInTheDocument()
+    })
+
+    it('should not render dynamic sound wave around microphone button when whispering FF is off', () => {
+        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
+            if (flagKey === FeatureFlagKey.CallWhispering) {
+                return false
+            }
+            return false
+        })
+
+        const call = mockIncomingCall(integrationId) as Call
+
+        const { container } = renderComponent(store, call)
+
+        const micButton = screen.getByLabelText('Mute phone call')
+        expect(micButton).toBeInTheDocument()
+
+        const soundWaveIcon = container.querySelector('.soundWaveIcon')
+        expect(soundWaveIcon).not.toBeInTheDocument()
     })
 
     it('should end call', () => {
@@ -260,15 +307,19 @@ describe('<OngoingPhoneCall/>', () => {
                 CallSid: 'fake-call-sid',
             },
         } as any)
-        ;(
-            mockUsePutCallParticipantOnHold as jest.MockedFunction<
-                typeof usePutCallParticipantOnHold
-            >
-        ).mock.calls[0][0]?.mutation?.onSuccess!(
-            '' as any,
-            { data: { hold_state: true } } as any,
-            '' as any,
-        )
+
+        act(() => {
+            ;(
+                mockUsePutCallParticipantOnHold as jest.MockedFunction<
+                    typeof usePutCallParticipantOnHold
+                >
+            ).mock.calls[0][0]?.mutation?.onSuccess!(
+                '' as any,
+                { data: { hold_state: true } } as any,
+                '' as any,
+            )
+        })
+
         await waitFor(() => {
             expect(screen.getByText('pause_circle_outline')).toBeInTheDocument()
         })
@@ -280,15 +331,18 @@ describe('<OngoingPhoneCall/>', () => {
                 participant_call_sid: 'fake-call-sid',
             },
         })
-        ;(
-            mockUsePutCallParticipantOnHold as jest.MockedFunction<
-                typeof usePutCallParticipantOnHold
-            >
-        ).mock.calls[0][0]?.mutation?.onSuccess!(
-            '' as any,
-            { data: { hold_state: false } } as any,
-            '' as any,
-        )
+
+        act(() => {
+            ;(
+                mockUsePutCallParticipantOnHold as jest.MockedFunction<
+                    typeof usePutCallParticipantOnHold
+                >
+            ).mock.calls[0][0]?.mutation?.onSuccess!(
+                '' as any,
+                { data: { hold_state: false } } as any,
+                '' as any,
+            )
+        })
         await waitFor(() => {
             expect(screen.getByText('pause')).toBeInTheDocument()
         })
@@ -456,16 +510,18 @@ describe('<OngoingPhoneCall/>', () => {
         expect(screen.getByLabelText('Transfer phone call')).toBeAriaDisabled()
 
         // send failure message from the backend
-        socketManager.onServerMessage({
-            event: {
-                type: SocketEventType.VoiceCallTransferFailed,
-                data: {
-                    error: {
-                        message: 'The customer is still on the line.',
+        act(() => {
+            socketManager.onServerMessage({
+                event: {
+                    type: SocketEventType.VoiceCallTransferFailed,
+                    data: {
+                        error: {
+                            message: 'The customer is still on the line.',
+                        },
                     },
                 },
-            },
-        } as VoiceCallTransferFailedEvent)
+            } as VoiceCallTransferFailedEvent)
+        })
 
         const actions = store.getActions() as {
             type: string

@@ -1,0 +1,25 @@
+:local {
+    .wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .soundWaveIcon {
+        height: 18px;
+        width: 18px;
+        position: absolute;
+        top: -5px;
+        right: -7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .soundWaveBar {
+        background-color: var(--content-error-primary);
+        width: 2px;
+        border-radius: 1px;
+        transition: height 0.1s ease-out;
+    }
+}

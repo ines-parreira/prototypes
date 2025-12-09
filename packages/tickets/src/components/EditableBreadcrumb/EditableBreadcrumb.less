@@ -1,0 +1,55 @@
+:local {
+    .container {
+        max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xxxs);
+        border-radius: var(--spacing-xxs);
+        height: 24px;
+
+        padding: var(--spacing-xxs) var(--spacing-xs) var(--spacing-xxs)
+            var(--spacing-xs);
+
+        &:not(:hover),
+        &:has(.content:focus) {
+            .editPencil {
+                display: none;
+            }
+        }
+
+        &:has(.content:active),
+        &:has(.content:active:focus) {
+            background: var(--pressed-default) !important;
+        }
+
+        &:has(.content:focus) {
+            background: transparent !important;
+            box-shadow: inset 0 0 0 1px var(--border-neutral-secondary);
+        }
+
+        &:has(.content[data-focus-method='keyboard']:focus) {
+            outline: 2px solid var(--focus) !important;
+            outline-offset: 2px !important;
+        }
+
+        &:hover,
+        &:has(.content:hover) {
+            background: var(--hover-default);
+        }
+    }
+
+    .content {
+        text-wrap-mode: nowrap;
+        min-width: 20px;
+        overflow: hidden;
+        color: var(--content-neutral-default);
+        outline: none !important;
+    }
+
+    .editPencil {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+}

@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useJourneys } from './useJourneys'
@@ -13,16 +12,11 @@ jest.mock('@gorgias/convert-client', () => ({
     getAllJourneysPublic: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockGetAllJourneysPublic = getAllJourneysPublic as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -58,7 +52,6 @@ describe('useJourneys', () => {
             { id: 2, type: 'welcome_email', state: 'draft' },
         ]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
 
         const { result } = renderHook(
@@ -85,7 +78,6 @@ describe('useJourneys', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockJourneys)
@@ -94,7 +86,6 @@ describe('useJourneys', () => {
     it('should handle errors when fetching journeys', async () => {
         const mockError = new Error('Failed to fetch journeys')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic.mockRejectedValue(mockError)
 
         const { result } = renderHook(
@@ -114,31 +105,7 @@ describe('useJourneys', () => {
         expect(result.current.error).toEqual(mockError)
     })
 
-    it('should not fetch journeys if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(
-            () =>
-                useJourneys(123, [
-                    JourneyTypeEnum.CartAbandoned,
-                    JourneyTypeEnum.SessionAbandoned,
-                ]),
-            {
-                wrapper: createWrapper(),
-            },
-        )
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetAllJourneysPublic).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
     it('should not fetch journeys if integrationId is undefined', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () =>
                 useJourneys(undefined, [
@@ -159,8 +126,6 @@ describe('useJourneys', () => {
     })
 
     it('should respect the enabled option when set to false', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () =>
                 useJourneys(
@@ -188,7 +153,6 @@ describe('useJourneys', () => {
         ]
         const mockJourneys2 = [{ id: 2, type: 'welcome_email', state: 'draft' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic
             .mockResolvedValueOnce({ data: mockJourneys1 })
             .mockResolvedValueOnce({ data: mockJourneys2 })
@@ -242,7 +206,6 @@ describe('useJourneys', () => {
             { id: 1, type: 'cart_abandoned', state: 'active' },
         ]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
 
         const customTypes = [JourneyTypeEnum.CartAbandoned]
@@ -259,7 +222,6 @@ describe('useJourneys', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockJourneys)

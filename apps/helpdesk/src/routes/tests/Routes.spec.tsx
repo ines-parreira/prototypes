@@ -16,7 +16,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { IntegrationsProvider, TokenProvider } from 'AIJourney/providers'
+import { IntegrationsProvider } from 'AIJourney/providers'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -254,10 +254,6 @@ window.loadGorgiasChat = jest.fn()
 jest.mock('AIJourney/providers', () => {
     return {
         ...jest.requireActual('AIJourney/providers'),
-        TokenProvider: ({ children }: { children: React.ReactNode }) => (
-            <>{children}</>
-        ),
-        useAccessToken: () => 'test-token',
         useIntegrations: jest.fn(),
     }
 })
@@ -1359,13 +1355,11 @@ describe('<Routes/>', () => {
                 <Provider store={mockStore}>
                     <QueryClientProvider client={queryClient}>
                         <IntegrationsProvider>
-                            <TokenProvider>
-                                <Router history={history}>
-                                    <SplitTicketViewProvider>
-                                        <Routes />
-                                    </SplitTicketViewProvider>
-                                </Router>
-                            </TokenProvider>
+                            <Router history={history}>
+                                <SplitTicketViewProvider>
+                                    <Routes />
+                                </SplitTicketViewProvider>
+                            </Router>
                         </IntegrationsProvider>
                     </QueryClientProvider>
                 </Provider>,

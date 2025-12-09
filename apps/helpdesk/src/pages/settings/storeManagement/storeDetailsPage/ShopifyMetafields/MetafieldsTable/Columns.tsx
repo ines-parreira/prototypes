@@ -4,7 +4,8 @@ import {
     Button,
     createSortableColumn,
     Text,
-    LegacyTooltip as Tooltip,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 
 import CategoryChip from '../CategoryChip/CategoryChip'
@@ -45,26 +46,28 @@ export const columns: ColumnDef<Field>[] = [
             const isVisible = info.row.original.isVisible ?? true
             return (
                 <Box gap="xs">
-                    <Button
-                        id={`control-visibility${metafieldId}`}
-                        variant="tertiary"
-                        icon={isVisible ? 'show' : 'hide'}
-                        onClick={() =>
-                            onVisibilityToggle(metafieldId, isVisible)
-                        }
-                    />
-                    <Tooltip
-                        target={`control-visibility${metafieldId}`}
-                        placement="left"
-                    >
-                        Remove metafield from Gorgias. <br />
-                        This action won&apos;t delete it from Shopify.
+                    <Tooltip placement="top left">
+                        <Button
+                            id="metafield-visibility-toggle"
+                            variant="tertiary"
+                            icon={isVisible ? 'show' : 'hide'}
+                            onClick={() =>
+                                onVisibilityToggle(metafieldId, isVisible)
+                            }
+                        />
+
+                        <TooltipContent title="Show metafield data when viewing a customer profile and ticket." />
                     </Tooltip>
-                    <Button
-                        variant="tertiary"
-                        icon="remove-minus-circle"
-                        onClick={() => onRemoveClick(metafieldId)}
-                    />
+
+                    <Tooltip placement="top left">
+                        <Button
+                            variant="tertiary"
+                            id={metafieldId}
+                            icon="remove-minus-circle"
+                            onClick={() => onRemoveClick(metafieldId)}
+                        />
+                        <TooltipContent title="Remove metafield from Gorgias. This action won't delete it from Shopify." />
+                    </Tooltip>
                 </Box>
             )
         },

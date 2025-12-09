@@ -1,15 +1,40 @@
 :local {
+    [data-name='breadcrumbs'] {
+        padding: 4px;
+        margin: -4px;
+        overflow: hidden;
+    }
+
+    [data-name='breadcrumb'] {
+        padding: 4px;
+        margin: -4px;
+
+        &:first-child {
+            flex-shrink: 0;
+        }
+        &:last-child {
+            overflow: hidden;
+        }
+    }
+
     .container {
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-grow: 0;
         flex-shrink: 0;
+        gap: var(--layout-spacing-xs);
         height: 52px;
         padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm)
             var(--spacing-md);
         border-bottom: 1px solid var(--border-neutral-default);
         color: var(--content-neutral-default);
+    }
+
+    .left {
+        overflow: hidden;
+        padding: 5px;
+        margin: -5px;
     }
 
     .left,
@@ -26,9 +51,5 @@
 
     .separator {
         margin: var(--spacing-xxxs);
-    }
-
-    .subject {
-        display: block;
     }
 }

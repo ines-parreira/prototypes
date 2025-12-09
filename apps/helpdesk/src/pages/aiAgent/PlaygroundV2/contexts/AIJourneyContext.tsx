@@ -15,7 +15,6 @@ import type {
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAIJourneyProductList } from 'AIJourney/hooks'
-import { TokenProvider } from 'AIJourney/providers'
 import {
     useJourneyData,
     useJourneys,
@@ -314,10 +313,8 @@ export const AIJourneyProvider = ({
     ...props
 }: AIJourneyProviderProps) => {
     return (
-        <TokenProvider>
-            <WrappedAIJourneyProvider {...props}>
-                {children}
-            </WrappedAIJourneyProvider>
-        </TokenProvider>
+        <WrappedAIJourneyProvider {...props}>
+            {children}
+        </WrappedAIJourneyProvider>
     )
 }

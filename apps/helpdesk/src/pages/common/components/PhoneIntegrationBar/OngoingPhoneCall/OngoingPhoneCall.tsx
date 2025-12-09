@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Call } from '@twilio/voice-sdk'
 import type { AxiosError } from 'axios'
 import classNames from 'classnames'
@@ -10,6 +11,7 @@ import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
+import { useFlag } from 'core/flags'
 import {
     gatherCallContext,
     getCallSid,
@@ -21,7 +23,11 @@ import {
     CallRecordingStatus,
     TWILIO_CURRENT_ITEM,
 } from 'pages/common/components/PhoneIntegrationBar/constants'
-import { useConnectionParameters } from 'pages/common/components/PhoneIntegrationBar/hooks'
+import { DynamicSoundWaveIcon } from 'pages/common/components/PhoneIntegrationBar/DynamicSoundWaveIcon/DynamicSoundWaveIcon'
+import {
+    useAudioLevel,
+    useConnectionParameters,
+} from 'pages/common/components/PhoneIntegrationBar/hooks'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
@@ -61,6 +67,8 @@ export function OngoingPhoneCall({
     routingViaIntegration,
     notify,
 }: Props): JSX.Element {
+    const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
+
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
     const { isMuted, onToggleMute } = useMute(call)
     const { integrationId, customerName, customerPhoneNumber } =
@@ -178,6 +186,19 @@ export function OngoingPhoneCall({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const audioLevel = useAudioLevel(call)
+
+    const microphoneButton = (
+        <IconButtonTooltip
+            intent="secondary"
+            aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
+            onClick={onToggleMute}
+            icon={isMuted ? 'mic_off' : 'mic'}
+        >
+            {isMuted ? 'Unmute' : 'Mute'}
+        </IconButtonTooltip>
+    )
+
     return (
         <PhoneBarContainer>
             <PhoneBarInnerContent>
@@ -222,14 +243,13 @@ export function OngoingPhoneCall({
                             | undefined
                     }
                 />
-                <IconButtonTooltip
-                    intent="secondary"
-                    aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
-                    onClick={onToggleMute}
-                    icon={isMuted ? 'mic_off' : 'mic'}
-                >
-                    {isMuted ? 'Unmute' : 'Mute'}
-                </IconButtonTooltip>
+                {isCallWhisperingEnabled ? (
+                    <DynamicSoundWaveIcon audioLevel={audioLevel}>
+                        {microphoneButton}
+                    </DynamicSoundWaveIcon>
+                ) : (
+                    microphoneButton
+                )}
                 <IconButtonTooltip
                     intent="secondary"
                     aria-label={`${

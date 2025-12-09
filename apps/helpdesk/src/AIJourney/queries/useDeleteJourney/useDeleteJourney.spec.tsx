@@ -4,20 +4,13 @@ import { act, waitFor } from '@testing-library/react'
 
 import { deleteJourney } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
-
 import { useDeleteJourney } from './useDeleteJourney'
 
 jest.mock('@gorgias/convert-client', () => ({
     deleteJourney: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 const mockDeleteJourney = deleteJourney as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 
 describe('useDeleteJourney', () => {
     let queryClient: QueryClient
@@ -36,7 +29,6 @@ describe('useDeleteJourney', () => {
             },
         })
         jest.clearAllMocks()
-        mockUseAccessToken.mockReturnValue('mock-access-token')
     })
 
     it('should successfully delete a journey', async () => {
@@ -54,7 +46,6 @@ describe('useDeleteJourney', () => {
             expect(mockDeleteJourney).toHaveBeenCalledTimes(1)
             expect(mockDeleteJourney).toHaveBeenCalledWith('journey-123', {
                 baseURL: expect.any(String),
-                headers: { Authorization: 'mock-access-token' },
             })
         })
     })
@@ -75,24 +66,7 @@ describe('useDeleteJourney', () => {
             expect(mockDeleteJourney).toHaveBeenCalledTimes(1)
             expect(mockDeleteJourney).toHaveBeenCalledWith('journey-456', {
                 baseURL: expect.any(String),
-                headers: { Authorization: 'mock-access-token' },
             })
-        })
-    })
-
-    it('should not call deleteJourney if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(() => useDeleteJourney(), { wrapper })
-
-        await act(async () => {
-            await expect(
-                result.current.mutateAsync({
-                    id: 'journey-789',
-                }),
-            ).rejects.toThrow('Access token is required to delete a journey')
-
-            expect(mockDeleteJourney).not.toHaveBeenCalled()
         })
     })
 

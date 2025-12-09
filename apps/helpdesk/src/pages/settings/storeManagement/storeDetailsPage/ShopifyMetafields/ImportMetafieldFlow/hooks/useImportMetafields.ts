@@ -30,5 +30,10 @@ export function useImportMetafields() {
 
             return { previousData }
         },
+        onSettled: () => {
+            queryClient.invalidateQueries({
+                queryKey: METAFIELDS_QUERY_KEY,
+            })
+        },
     })
 }

@@ -113,4 +113,27 @@ describe('useImportMetafields', () => {
             cancelQueriesSpy.mockRestore()
         })
     })
+
+    describe('query invalidation', () => {
+        it('should invalidate queries after mutation settles', async () => {
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            const { result } = renderHook(() => useImportMetafields(), {
+                wrapper,
+            })
+
+            await act(async () => {
+                await result.current.mutateAsync({ fields: [mockField1] })
+            })
+
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: METAFIELDS_QUERY_KEY,
+            })
+
+            invalidateQueriesSpy.mockRestore()
+        })
+    })
 })

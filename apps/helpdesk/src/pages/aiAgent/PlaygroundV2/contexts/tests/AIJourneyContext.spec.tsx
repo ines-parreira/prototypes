@@ -34,10 +34,6 @@ jest.mock('AIJourney/hooks', () => ({
     })),
 }))
 
-jest.mock('AIJourney/providers', () => ({
-    TokenProvider: ({ children }: any) => <div>{children}</div>,
-}))
-
 jest.mock('hooks/useAppSelector')
 
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({

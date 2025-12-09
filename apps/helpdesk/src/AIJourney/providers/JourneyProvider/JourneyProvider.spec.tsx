@@ -28,10 +28,6 @@ jest.mock('@gorgias/convert-client', () => ({
     getJourneyDetails: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
-    useAccessToken: jest.fn(() => 'mock-token'),
-}))
-
 jest.mock('AIJourney/queries/useJourneyData/useJourneyData', () => ({
     useJourneyData: jest.fn(),
 }))

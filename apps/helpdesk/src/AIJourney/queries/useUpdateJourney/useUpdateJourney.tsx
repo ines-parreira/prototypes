@@ -6,14 +6,12 @@ import type {
 } from '@gorgias/convert-client'
 import { patchJourney } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 const updateJourney = async (
     journeyId: string,
     params: UpdateJourneyApiDTO,
-    accessToken: string,
     journeyConfigs?: JourneyConfigurationApiDTO,
 ) => {
     const requestBody = {
@@ -23,12 +21,10 @@ const updateJourney = async (
 
     return patchJourney(journeyId, requestBody, {
         baseURL: getGorgiasRevenueAddonApiBaseUrl(),
-        headers: { Authorization: accessToken },
     })
 }
 
 export const useUpdateJourney = () => {
-    const accessToken = useAccessToken()
     const queryClient = useQueryClient()
 
     return useMutation({
@@ -49,11 +45,7 @@ export const useUpdateJourney = () => {
             >
             journeyConfigs?: JourneyConfigurationApiDTO
         }) => {
-            if (!accessToken) {
-                throw new Error('Unauthorized: Access token is required')
-            }
-
-            return updateJourney(journeyId, params, accessToken, journeyConfigs)
+            return updateJourney(journeyId, params, journeyConfigs)
         },
     })
 }

@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getJourneyDetails } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useJourneyData } from './useJourneyData'
@@ -12,16 +11,11 @@ jest.mock('@gorgias/convert-client', () => ({
     getJourneyDetails: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockGetJourneyDetails = getJourneyDetails as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -59,7 +53,6 @@ describe('useJourneyData', () => {
             sms_sender_number: '(415)-111-111',
         }
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails.mockResolvedValue({
             data: {
                 configuration: { ...mockConfiguration },
@@ -77,7 +70,6 @@ describe('useJourneyData', () => {
         expect(mockGetJourneyDetails).toHaveBeenCalledTimes(1)
         expect(mockGetJourneyDetails).toHaveBeenCalledWith('journey-id', {
             baseURL: 'http://mocked-base-url',
-            headers: { Authorization: 'mock-access-token' },
         })
         expect(result.current.data).toEqual({
             configuration: { ...mockConfiguration },
@@ -88,7 +80,6 @@ describe('useJourneyData', () => {
     it('should handle errors when fetching journey configuration', async () => {
         const mockError = new Error('Failed to fetch journey configuration')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails.mockRejectedValue(mockError)
 
         const { result } = renderHook(
@@ -102,25 +93,7 @@ describe('useJourneyData', () => {
         expect(result.current.error).toEqual(mockError)
     })
 
-    it('should not fetch journey configuration if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(
-            () => useJourneyData('journey-id', { enabled: true }),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetJourneyDetails).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
     it('should not fetch journey configuration if journeyId is undefined', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () => useJourneyData(undefined, { enabled: true }),
             { wrapper: createWrapper() },
@@ -135,8 +108,6 @@ describe('useJourneyData', () => {
     })
 
     it('should respect the enabled option when set to false', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () => useJourneyData('journey-id', { enabled: false }),
             { wrapper: createWrapper() },
@@ -164,7 +135,6 @@ describe('useJourneyData', () => {
             sms_sender_number: '(415)-222-222',
         }
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails
             .mockResolvedValueOnce({
                 data: { configuration: { ...mockConfiguration1 } },
@@ -208,7 +178,6 @@ describe('useJourneyData', () => {
     })
 
     it('should handle empty configuration data', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetJourneyDetails.mockResolvedValue({
             data: { configuration: {} },
         })

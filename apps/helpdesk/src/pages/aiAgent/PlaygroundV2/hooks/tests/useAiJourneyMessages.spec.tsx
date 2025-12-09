@@ -34,10 +34,6 @@ jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext')
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/CoreContext')
 
-jest.mock('AIJourney/providers', () => ({
-    TokenProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
-}))
-
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
     useEvents: jest.fn(() => ({
         on: jest.fn(),

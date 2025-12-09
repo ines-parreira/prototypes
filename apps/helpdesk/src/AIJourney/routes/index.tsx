@@ -15,7 +15,6 @@ import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import {
     IntegrationsProvider,
     JourneyProvider,
-    TokenProvider,
     useIntegrations,
 } from 'AIJourney/providers'
 import App from 'pages/App'
@@ -112,9 +111,7 @@ function AiJourneyBaseRoutes() {
 export function AiJourneyRoutes() {
     return (
         <IntegrationsProvider>
-            <TokenProvider>
-                <AiJourneyBaseRoutes />
-            </TokenProvider>
+            <AiJourneyBaseRoutes />
         </IntegrationsProvider>
     )
 }

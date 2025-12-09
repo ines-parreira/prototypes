@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 
+import pluralize from 'pluralize'
+
+import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -35,6 +38,7 @@ export default function ImportMetafieldFlow({
     } = useFieldSelection()
 
     const { mutateAsync: importMetafields } = useImportMetafields()
+    const { success, error } = useNotify()
 
     const categoriesWithCount = useMemo(
         () =>
@@ -54,14 +58,25 @@ export default function ImportMetafieldFlow({
 
     const handleImport = useCallback(async () => {
         if (allSelectedFields?.length > 0) {
-            await importMetafields({ fields: allSelectedFields })
-            clearAllSelections()
-            reset()
-            onClose()
+            try {
+                await importMetafields({ fields: allSelectedFields })
+                success(
+                    `Success! ${allSelectedFields.length} ${pluralize('metafield', allSelectedFields.length)} added`,
+                )
+                clearAllSelections()
+                reset()
+                onClose()
+            } catch {
+                error(
+                    'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
+                )
+            }
         }
     }, [
         allSelectedFields,
         importMetafields,
+        success,
+        error,
         clearAllSelections,
         onClose,
         reset,

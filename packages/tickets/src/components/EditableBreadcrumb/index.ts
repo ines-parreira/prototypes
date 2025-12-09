@@ -1,0 +1,1 @@
+export { EditableBreadcrumb } from './EditableBreadcrumb'

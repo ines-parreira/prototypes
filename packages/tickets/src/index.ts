@@ -2,6 +2,6 @@ export { InfobarTicketDetails } from './components/InfobarTicketDetails/InfobarT
 export { InfobarTicketCustomer } from './components/InfobarTicketCustomer/InfobarTicketCustomer'
 export { MultiLevelSelect } from './components/MultiLevelSelect'
 export { TeamAssignee } from './components/TicketAssignee'
-export { TicketHeader } from './components/TicketHeader'
+export { TicketHeader } from './components/TicketHeader/TicketHeader'
 export { TicketInfobarNavigation } from './components/TicketInfobarNavigation'
 export { TicketsLegacyBridgeProvider } from './utils/LegacyBridge'

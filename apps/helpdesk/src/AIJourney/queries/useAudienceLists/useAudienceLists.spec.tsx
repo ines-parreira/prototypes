@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getAudiencesLists } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useAudienceLists } from './useAudienceLists'
@@ -13,16 +12,11 @@ jest.mock('@gorgias/convert-client', () => ({
     getAudiencesLists: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockGetAudiencesLists = getAudiencesLists as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -58,7 +52,6 @@ describe('useAudienceLists', () => {
             { id: '2', name: 'Newsletter Subscribers' },
         ]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
 
         const { result } = renderHook(() => useAudienceLists(123), {
@@ -75,7 +68,6 @@ describe('useAudienceLists', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockAudienceLists)
@@ -84,7 +76,6 @@ describe('useAudienceLists', () => {
     it('should fetch audience lists with search parameter', async () => {
         const mockAudienceLists = [{ id: '1', name: 'VIP Customers' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
 
         const { result } = renderHook(() => useAudienceLists(123, 'VIP'), {
@@ -101,7 +92,6 @@ describe('useAudienceLists', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockAudienceLists)
@@ -110,7 +100,6 @@ describe('useAudienceLists', () => {
     it('should handle errors when fetching audience lists', async () => {
         const mockError = new Error('Failed to fetch audience lists')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists.mockRejectedValue(mockError)
 
         const { result } = renderHook(() => useAudienceLists(123), {
@@ -123,24 +112,7 @@ describe('useAudienceLists', () => {
         expect(result.current.error).toEqual(mockError)
     })
 
-    it('should not fetch audience lists if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(() => useAudienceLists(123), {
-            wrapper: createWrapper(),
-        })
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetAudiencesLists).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
     it('should not fetch audience lists if integrationId is undefined', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(() => useAudienceLists(undefined), {
             wrapper: createWrapper(),
         })
@@ -154,8 +126,6 @@ describe('useAudienceLists', () => {
     })
 
     it('should respect the enabled option when set to false', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () => useAudienceLists(123, undefined, { enabled: false }),
             { wrapper: createWrapper() },
@@ -173,7 +143,6 @@ describe('useAudienceLists', () => {
         const mockAudienceLists1 = [{ id: '1', name: 'List 1' }]
         const mockAudienceLists2 = [{ id: '2', name: 'List 2' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists
             .mockResolvedValueOnce({ data: mockAudienceLists1 })
             .mockResolvedValueOnce({ data: mockAudienceLists2 })
@@ -221,7 +190,6 @@ describe('useAudienceLists', () => {
         ]
         const mockAudienceLists2 = [{ id: '3', name: 'Newsletter Subscribers' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists
             .mockResolvedValueOnce({ data: mockAudienceLists1 })
             .mockResolvedValueOnce({ data: mockAudienceLists2 })
@@ -266,7 +234,6 @@ describe('useAudienceLists', () => {
         const mockAudienceLists = [{ id: '1', name: 'Test List' }]
         const mockSelect = jest.fn((data) => data.map((list: any) => list.id))
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
 
         const { result } = renderHook(

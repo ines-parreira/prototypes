@@ -3,7 +3,6 @@ import { renderHook, waitFor } from '@testing-library/react'
 
 import { getAudiencesSegments } from '@gorgias/convert-client'
 
-import { useAccessToken } from 'AIJourney/providers/TokenProvider/TokenProvider'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useAudienceSegments } from './useAudienceSegments'
@@ -13,16 +12,11 @@ jest.mock('@gorgias/convert-client', () => ({
     getAudiencesSegments: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/TokenProvider/TokenProvider', () => ({
-    useAccessToken: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
 const mockGetAudiencesSegments = getAudiencesSegments as jest.Mock
-const mockUseAccessToken = useAccessToken as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
 
@@ -58,7 +52,6 @@ describe('useAudienceSegments', () => {
             { id: '2', name: 'Frequent Buyers' },
         ]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments.mockResolvedValue({
             data: mockAudienceSegments,
         })
@@ -77,7 +70,6 @@ describe('useAudienceSegments', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockAudienceSegments)
@@ -86,7 +78,6 @@ describe('useAudienceSegments', () => {
     it('should fetch audience segments with search parameter', async () => {
         const mockAudienceSegments = [{ id: '1', name: 'High Value Customers' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments.mockResolvedValue({
             data: mockAudienceSegments,
         })
@@ -105,7 +96,6 @@ describe('useAudienceSegments', () => {
             },
             {
                 baseURL: 'http://mocked-base-url',
-                headers: { Authorization: 'mock-access-token' },
             },
         )
         expect(result.current.data).toEqual(mockAudienceSegments)
@@ -114,7 +104,6 @@ describe('useAudienceSegments', () => {
     it('should handle errors when fetching audience segments', async () => {
         const mockError = new Error('Failed to fetch audience segments')
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments.mockRejectedValue(mockError)
 
         const { result } = renderHook(() => useAudienceSegments(123), {
@@ -127,24 +116,7 @@ describe('useAudienceSegments', () => {
         expect(result.current.error).toEqual(mockError)
     })
 
-    it('should not fetch audience segments if accessToken is missing', async () => {
-        mockUseAccessToken.mockReturnValue(null)
-
-        const { result } = renderHook(() => useAudienceSegments(123), {
-            wrapper: createWrapper(),
-        })
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetAudiencesSegments).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
     it('should not fetch audience segments if integrationId is undefined', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(() => useAudienceSegments(undefined), {
             wrapper: createWrapper(),
         })
@@ -158,8 +130,6 @@ describe('useAudienceSegments', () => {
     })
 
     it('should respect the enabled option when set to false', async () => {
-        mockUseAccessToken.mockReturnValue('mock-access-token')
-
         const { result } = renderHook(
             () => useAudienceSegments(123, undefined, { enabled: false }),
             { wrapper: createWrapper() },
@@ -177,7 +147,6 @@ describe('useAudienceSegments', () => {
         const mockAudienceSegments1 = [{ id: '1', name: 'Segment 1' }]
         const mockAudienceSegments2 = [{ id: '2', name: 'Segment 2' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments
             .mockResolvedValueOnce({ data: mockAudienceSegments1 })
             .mockResolvedValueOnce({ data: mockAudienceSegments2 })
@@ -225,7 +194,6 @@ describe('useAudienceSegments', () => {
         ]
         const mockAudienceSegments2 = [{ id: '3', name: 'Low Value Customers' }]
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments
             .mockResolvedValueOnce({ data: mockAudienceSegments1 })
             .mockResolvedValueOnce({ data: mockAudienceSegments2 })
@@ -272,7 +240,6 @@ describe('useAudienceSegments', () => {
             data.map((segment: any) => segment.id),
         )
 
-        mockUseAccessToken.mockReturnValue('mock-access-token')
         mockGetAudiencesSegments.mockResolvedValue({
             data: mockAudienceSegments,
         })

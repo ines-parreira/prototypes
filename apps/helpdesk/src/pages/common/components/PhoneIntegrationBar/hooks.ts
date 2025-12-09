@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { Call } from '@twilio/voice-sdk'
 
 type ConnectionParameters = {
@@ -45,4 +47,22 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
         transferFromAgentId,
         isTransferring,
     }
+}
+
+export function useAudioLevel(call: Call): number {
+    const [audioLevel, setAudioLevel] = useState(0)
+
+    useEffect(() => {
+        const handleVolume = (inputVolume: number) => {
+            setAudioLevel(inputVolume)
+        }
+
+        call.on('volume', handleVolume)
+
+        return () => {
+            call.off('volume', handleVolume)
+        }
+    }, [call])
+
+    return audioLevel
 }

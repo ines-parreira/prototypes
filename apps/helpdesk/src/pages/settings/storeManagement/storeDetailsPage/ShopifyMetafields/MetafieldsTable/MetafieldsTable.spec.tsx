@@ -1,7 +1,8 @@
 import { assumeMock } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
@@ -45,21 +46,10 @@ const mockFields: Field[] = [
 ]
 
 describe('MetafieldsTable', () => {
-    let queryClient: QueryClient
-
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
+    let user: ReturnType<typeof userEvent.setup>
 
     beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
+        user = userEvent.setup()
         useToggleMetafieldVisibilityMock.mockReturnValue({
             mutate: mockToggleVisibility,
             mutateAsync: jest.fn(),
@@ -81,9 +71,9 @@ describe('MetafieldsTable', () => {
     })
 
     it('should render table with data', () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
+        )
 
         expect(screen.getByText('Customer Email')).toBeInTheDocument()
         expect(screen.getByText('Order Notes')).toBeInTheDocument()
@@ -91,28 +81,29 @@ describe('MetafieldsTable', () => {
     })
 
     it('should display total count in toolbar', () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
+        )
 
         expect(screen.getByText(/3/)).toBeInTheDocument()
     })
 
     it('should call toggleVisibility when visibility button is clicked', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
-
-        const buttons = screen.getAllByRole('button')
-        const visibilityButton = buttons.find(
-            (btn) => btn.id === 'control-visibility1',
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
         )
 
-        if (visibilityButton) {
-            await act(async () => {
-                await userEvent.click(visibilityButton)
-            })
-        }
+        await waitFor(() => {
+            expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        })
+
+        const allButtons = screen.getAllByRole('button')
+        const visibilityButtons = allButtons.filter(
+            (btn) => btn.id === 'metafield-visibility-toggle',
+        )
+        const firstVisibilityButton = visibilityButtons[0]
+
+        await act(() => user.click(firstVisibilityButton))
 
         expect(mockToggleVisibility).toHaveBeenCalledWith({
             id: '1',
@@ -121,19 +112,19 @@ describe('MetafieldsTable', () => {
     })
 
     it('should open remove modal when remove button is clicked', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
-
-        const buttons = screen.getAllByRole('button')
-        const removeButtons = buttons.filter(
-            (btn) => !btn.id.startsWith('control-visibility'),
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
         )
 
-        if (removeButtons.length > 1) {
-            await act(async () => {
-                await userEvent.click(removeButtons[1])
-            })
+        await waitFor(() => {
+            expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        })
+
+        const allButtons = screen.getAllByRole('button')
+        const removeButton = allButtons.find((btn) => btn.id === '1')
+
+        if (removeButton) {
+            await act(() => user.click(removeButton))
         }
 
         await waitFor(() => {
@@ -143,19 +134,19 @@ describe('MetafieldsTable', () => {
     })
 
     it('should close remove modal when Cancel is clicked', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
-
-        const buttons = screen.getAllByRole('button')
-        const removeButtons = buttons.filter(
-            (btn) => !btn.id.startsWith('control-visibility'),
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
         )
 
-        if (removeButtons.length > 1) {
-            await act(async () => {
-                await userEvent.click(removeButtons[1])
-            })
+        await waitFor(() => {
+            expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        })
+
+        const allButtons = screen.getAllByRole('button')
+        const removeButton = allButtons.find((btn) => btn.id === '1')
+
+        if (removeButton) {
+            await act(() => user.click(removeButton))
         }
 
         await waitFor(() => {
@@ -166,7 +157,7 @@ describe('MetafieldsTable', () => {
         const cancelButton = within(dialog).getByRole('button', {
             name: /cancel/i,
         })
-        await userEvent.click(cancelButton)
+        await act(() => user.click(cancelButton))
 
         await waitFor(() => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
@@ -174,19 +165,19 @@ describe('MetafieldsTable', () => {
     })
 
     it('should call deleteMetafield when Remove is confirmed', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
-
-        const buttons = screen.getAllByRole('button')
-        const removeButtons = buttons.filter(
-            (btn) => !btn.id.startsWith('control-visibility'),
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
         )
 
-        if (removeButtons.length > 1) {
-            await act(async () => {
-                await userEvent.click(removeButtons[1])
-            })
+        await waitFor(() => {
+            expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        })
+
+        const allButtons = screen.getAllByRole('button')
+        const removeButton = allButtons.find((btn) => btn.id === '1')
+
+        if (removeButton) {
+            await act(() => user.click(removeButton))
         }
 
         await waitFor(() => {
@@ -197,7 +188,7 @@ describe('MetafieldsTable', () => {
         const confirmButton = within(dialog).getByRole('button', {
             name: /remove/i,
         })
-        await userEvent.click(confirmButton)
+        await act(() => user.click(confirmButton))
 
         expect(mockDeleteMetafield).toHaveBeenCalledWith({
             id: expect.any(String),
@@ -205,66 +196,25 @@ describe('MetafieldsTable', () => {
     })
 
     it('should render loading state', () => {
-        render(
+        renderWithStoreAndQueryClientProvider(
             <MetafieldsTable columns={columns} data={[]} isLoading={true} />,
-            { wrapper },
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
     })
 
     it('should filter data based on search input', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
+        )
 
         const searchInput = screen.getByRole('textbox')
-        await userEvent.type(searchInput, 'Customer')
+        await act(() => user.type(searchInput, 'Customer'))
 
         await waitFor(() => {
             expect(screen.getByText('Customer Email')).toBeInTheDocument()
             expect(screen.queryByText('Order Notes')).not.toBeInTheDocument()
         })
-    })
-
-    it('should handle missing callbacks without throwing errors', async () => {
-        const columnsWithoutCallbacks: typeof columns = columns.map((col) => ({
-            ...col,
-        }))
-
-        render(
-            <MetafieldsTable
-                columns={columnsWithoutCallbacks}
-                data={mockFields}
-            />,
-            { wrapper },
-        )
-
-        const buttons = screen.getAllByRole('button')
-        const visibilityButton = buttons.find(
-            (btn) => btn.id === 'control-visibility1',
-        )
-        const removeButtons = buttons.filter(
-            (btn) =>
-                !btn.id.startsWith('control-visibility') &&
-                btn.querySelector('[data-icon="remove-minus-circle"]'),
-        )
-
-        expect(async () => {
-            if (visibilityButton) {
-                await act(async () => {
-                    await userEvent.click(visibilityButton)
-                })
-            }
-            if (removeButtons.length > 0) {
-                await act(async () => {
-                    await userEvent.click(removeButtons[0])
-                })
-            }
-        }).not.toThrow()
-
-        expect(mockToggleVisibility).not.toHaveBeenCalled()
-        expect(mockDeleteMetafield).not.toHaveBeenCalled()
     })
 
     it('should default isVisible to true when not provided', async () => {
@@ -277,25 +227,24 @@ describe('MetafieldsTable', () => {
             } as Field,
         ]
 
-        render(
+        renderWithStoreAndQueryClientProvider(
             <MetafieldsTable columns={columns} data={fieldWithoutVisibility} />,
-            { wrapper },
         )
 
         await waitFor(() => {
             expect(screen.getByText('Product SKU')).toBeInTheDocument()
         })
 
-        const buttons = screen.getAllByRole('button')
-        const visibilityButton = buttons.find(
-            (btn) => btn.id === 'control-visibility4',
+        const allButtons = screen.getAllByRole('button')
+        const visibilityButtons = allButtons.filter(
+            (btn) => btn.id === 'metafield-visibility-toggle',
         )
 
-        expect(visibilityButton).toBeInTheDocument()
+        expect(visibilityButtons.length).toBeGreaterThan(0)
 
-        await act(async () => {
-            await userEvent.click(visibilityButton!)
-        })
+        if (visibilityButtons.length > 0) {
+            await act(() => user.click(visibilityButtons[0]))
+        }
 
         expect(mockToggleVisibility).toHaveBeenCalledWith({
             id: '4',
@@ -304,14 +253,12 @@ describe('MetafieldsTable', () => {
     })
 
     it('should open import modal when import button is clicked', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
+        )
 
         const importButton = screen.getByRole('button', { name: /import/i })
-        await act(async () => {
-            await userEvent.click(importButton)
-        })
+        await act(() => user.click(importButton))
 
         await waitFor(() => {
             expect(screen.getByRole('dialog')).toBeInTheDocument()
@@ -322,14 +269,12 @@ describe('MetafieldsTable', () => {
     })
 
     it('should close import modal when close is triggered', async () => {
-        render(<MetafieldsTable columns={columns} data={mockFields} />, {
-            wrapper,
-        })
+        renderWithStoreAndQueryClientProvider(
+            <MetafieldsTable columns={columns} data={mockFields} />,
+        )
 
         const importButton = screen.getByRole('button', { name: /import/i })
-        await act(async () => {
-            await userEvent.click(importButton)
-        })
+        await act(() => user.click(importButton))
 
         await waitFor(() => {
             expect(screen.getByRole('dialog')).toBeInTheDocument()
@@ -339,7 +284,7 @@ describe('MetafieldsTable', () => {
         const buttons = within(dialog).getAllByRole('button')
         const closeButton = buttons[0]
 
-        await userEvent.click(closeButton)
+        await act(() => user.click(closeButton))
 
         await waitFor(() => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

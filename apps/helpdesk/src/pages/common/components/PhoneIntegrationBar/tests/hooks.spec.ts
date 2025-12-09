@@ -1,10 +1,11 @@
+import { act, renderHook, waitFor } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
 
 import {
     mockIncomingCall,
     mockOutgoingCall,
 } from '../../../../../tests/twilioMocks'
-import { useConnectionParameters } from '../hooks'
+import { useAudioLevel, useConnectionParameters } from '../hooks'
 
 describe('useConnectionParameters()', () => {
     it('should return parameters for an incoming call', () => {
@@ -58,4 +59,40 @@ describe('useConnectionParameters()', () => {
             expect(parameters.isTransferring).toEqual(isTransferring)
         },
     )
+})
+
+describe('useAudioLevel', () => {
+    it('should update audio level when volume event is emitted', async () => {
+        const call = mockIncomingCall() as Call
+        const { result } = renderHook(() => useAudioLevel(call))
+
+        expect(result.current).toBe(0)
+
+        act(() => {
+            call.emit('volume', 0.5)
+        })
+
+        await waitFor(() => {
+            expect(result.current).toBe(0.5)
+        })
+    })
+
+    it('should clean up event listener on unmount', async () => {
+        const call = mockIncomingCall() as Call
+        const { result, unmount } = renderHook(() => useAudioLevel(call))
+
+        act(() => {
+            call.emit('volume', 0.5)
+        })
+        await waitFor(() => {
+            expect(result.current).toBe(0.5)
+        })
+
+        unmount()
+
+        act(() => {
+            call.emit('volume', 0.9)
+        })
+        expect(result.current).toBe(0.5)
+    })
 })
