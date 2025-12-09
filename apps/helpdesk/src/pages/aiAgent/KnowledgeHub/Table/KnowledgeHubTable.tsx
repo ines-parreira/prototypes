@@ -19,6 +19,7 @@ import {
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/EmptyStates'
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
+import { BulkActions } from 'pages/aiAgent/KnowledgeHub/Table/BulkActions/BulkActions'
 import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
 import { InUseByAIFilter } from 'pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter'
 import { ItemCount } from 'pages/aiAgent/KnowledgeHub/Table/ItemCount'
@@ -69,6 +70,7 @@ type KnowledgeHubTableProps = {
     shopName?: string
     shopType: string
     guidanceHelpCenterId?: number | null
+    snippetHelpCenterId?: number | null
 }
 
 export const KnowledgeHubTable = ({
@@ -91,8 +93,9 @@ export const KnowledgeHubTable = ({
     shopName = '',
     shopType,
     guidanceHelpCenterId,
+    snippetHelpCenterId,
 }: KnowledgeHubTableProps) => {
-    // Initialize activeFilterTypes from URL params - if filters have values, show their UI
+    // Initialize activeFilterTypes from URL params
     const [activeFilterTypes, setActiveFilterTypes] = useState<Set<string>>(
         () => {
             const active = new Set<string>()
@@ -254,6 +257,9 @@ export const KnowledgeHubTable = ({
             },
             enableMultiRowSelection: true,
         },
+        additionalOptions: {
+            getRowId: (row) => row.id,
+        },
     })
 
     const isSearchEmptyPage =
@@ -385,9 +391,26 @@ export const KnowledgeHubTable = ({
                                 />
                             ),
                         },
+                        {
+                            key: 'bulkActions',
+                            content: (
+                                <BulkActions
+                                    table={table}
+                                    helpCenterIds={{
+                                        guidanceHelpCenterId,
+                                        faqHelpCenterId,
+                                        snippetHelpCenterId,
+                                    }}
+                                    isSearchActive={isSearchActive}
+                                    onClearSearch={clearSearch}
+                                    activeContentType={selectedTypeFilter}
+                                />
+                            ),
+                        },
                     ],
                 }}
             />
+
             <TableRoot withBorder={false}>
                 {!isSearchEmptyPage && (
                     <TableHeader>

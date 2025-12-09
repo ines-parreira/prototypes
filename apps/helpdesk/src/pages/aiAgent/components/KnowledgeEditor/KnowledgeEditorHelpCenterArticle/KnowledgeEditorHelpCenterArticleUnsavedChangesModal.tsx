@@ -21,21 +21,29 @@ export const KnowledgeEditorHelpCenterArticleUnsavedChangesModal = (
     <Modal isOpen={props.isOpen} onOpenChange={props.onCancel}>
         <OverlayHeader title="Save changes?" />
         <OverlayContent>
-            <Box h="200px">
+            <Box paddingBottom="md">
                 <Text>
-                    Your changes to this page will be lost if you don’t save
-                    them.
+                    Your changes will be lost if you don&apos;t save them.
                 </Text>
             </Box>
         </OverlayContent>
-        <OverlayFooter>
-            <Box gap="xs">
-                <Button variant="secondary" onClick={props.onDiscard}>
-                    Discard Changes
+        <OverlayFooter hideCancelButton>
+            <Box display="flex" justifyContent="space-between" w="100%">
+                <Button
+                    variant="tertiary"
+                    intent="destructive"
+                    onClick={props.onDiscard}
+                >
+                    Discard changes
                 </Button>
-                <Button variant="primary" onClick={props.onSave}>
-                    Save Changes
-                </Button>
+                <Box display="flex" gap="xs">
+                    <Button variant="secondary" onClick={props.onCancel}>
+                        Back to editing
+                    </Button>
+                    <Button variant="primary" onClick={props.onSave}>
+                        Save Changes
+                    </Button>
+                </Box>
             </Box>
         </OverlayFooter>
     </Modal>

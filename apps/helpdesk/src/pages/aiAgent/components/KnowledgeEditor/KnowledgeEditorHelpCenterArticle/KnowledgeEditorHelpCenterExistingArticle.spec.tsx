@@ -145,6 +145,9 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
     const invalidateQueriesMock = jest.fn()
     const onClose = jest.fn()
     const notifyMock = jest.fn()
+    const closeHandlerRef = { current: null } as React.MutableRefObject<
+        (() => void) | null
+    >
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -203,6 +206,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -249,6 +253,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -277,6 +282,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -357,6 +363,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -385,6 +392,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -455,6 +463,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -502,7 +511,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         })
     })
 
-    it('discards changes if clicking cancel and confirming', () => {
+    it('discards changes if clicking cancel and confirming', async () => {
         const { rerender } = render(
             <Wrapper>
                 <KnowledgeEditorHelpCenterExistingArticle
@@ -517,6 +526,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -537,6 +547,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -547,12 +558,14 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             fireEvent.click(screen.getByRole('button', { name: 'cancel' })),
         )
 
-        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Discard changes')).toBeInTheDocument()
+            expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        })
 
         act(() =>
             fireEvent.click(
-                screen.getByRole('button', { name: 'Discard Changes' }),
+                screen.getByRole('button', { name: 'Discard changes' }),
             ),
         )
 
@@ -578,6 +591,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -598,6 +612,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -608,8 +623,10 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             fireEvent.click(screen.getByRole('button', { name: 'cancel' })),
         )
 
-        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Discard changes')).toBeInTheDocument()
+            expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        })
 
         updateArticleTranslationMock.mockResolvedValue({
             data: {
@@ -645,6 +662,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -671,6 +689,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -770,6 +789,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -867,6 +887,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -931,6 +952,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -953,6 +975,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -1000,6 +1023,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -1020,6 +1044,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -1030,8 +1055,10 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             fireEvent.click(screen.getByRole('button', { name: 'close' })),
         )
 
-        expect(screen.getByText('Discard Changes')).toBeInTheDocument()
-        expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Discard changes')).toBeInTheDocument()
+            expect(screen.getByText('Save Changes')).toBeInTheDocument()
+        })
 
         act(() =>
             fireEvent.click(
@@ -1074,6 +1101,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -1100,6 +1128,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type {
     ArticleTranslationResponseDto,
@@ -54,6 +54,7 @@ type Props = BaseProps & {
     isGuidanceArticleUpdating: boolean
     isFullscreen: boolean
     onToggleFullscreen: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }
 
 export const KnowledgeEditorGuidanceView = ({
@@ -64,15 +65,13 @@ export const KnowledgeEditorGuidanceView = ({
     onCreate,
     onDelete,
     onDuplicate,
-    title,
-    content,
+    title: titleProp,
+    content: contentProp,
     aiAgentEnabled,
     onToggleAIAgentEnabled,
     shopName,
     createdDatetime,
     lastUpdatedDatetime,
-    onChangeTitle,
-    onChangeContent,
     isGuidanceArticleUpdating,
     guidanceMode: initialGuidanceMode,
     availableActions,
@@ -80,32 +79,83 @@ export const KnowledgeEditorGuidanceView = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: Props) => {
-    const [initialTitle] = useState(title)
-    const [initialContent] = useState(content)
+    // Local state ONLY for editing
+    const [editTitle, setEditTitle] = useState(titleProp)
+    const [editContent, setEditContent] = useState(contentProp)
     const [isDetailsView, setIsDetailsView] = useState(false)
     const [guidanceMode, setGuidanceMode] =
         useState<GuidanceMode['mode']>(initialGuidanceMode)
     const { modal, openUnsavedChangesModal } = useKnowledgeEditorGuidanceModal()
 
-    const hasContentChanged = useMemo(
-        () => title !== initialTitle || content !== initialContent,
-        [title, initialTitle, content, initialContent],
-    )
+    // Baseline: always the prop values (server truth)
+    const initialValuesRef = useRef({ title: titleProp, content: contentProp })
+
+    // Track previous props to detect navigation
+    const prevPropsRef = useRef({ title: titleProp, content: contentProp })
+
+    // Update baseline during render in read mode (no timing gap)
+    if (guidanceMode === 'read') {
+        // If props changed (navigation occurred), update baseline immediately
+        if (
+            prevPropsRef.current.title !== titleProp ||
+            prevPropsRef.current.content !== contentProp
+        ) {
+            initialValuesRef.current = {
+                title: titleProp,
+                content: contentProp,
+            }
+        }
+    }
+
+    // Always track previous props
+    prevPropsRef.current = { title: titleProp, content: contentProp }
+
+    // Reset edit state when props change (via useEffect to avoid render phase setState)
+    useEffect(() => {
+        if (guidanceMode === 'read') {
+            setEditTitle(titleProp)
+            setEditContent(contentProp)
+        }
+    }, [titleProp, contentProp, guidanceMode])
+
+    // Use edit state in edit and create modes, props in read mode
+    const currentTitle = guidanceMode === 'read' ? titleProp : editTitle
+    const currentContent = guidanceMode === 'read' ? contentProp : editContent
+
+    // Compare current editing state against baseline
+    // Only check for changes when actively editing to avoid false positives during navigation
+    const hasContentChanged = useMemo(() => {
+        // Only check for changes in edit and create modes
+        if (guidanceMode === 'read') {
+            return false
+        }
+        return (
+            currentTitle !== initialValuesRef.current.title ||
+            currentContent !== initialValuesRef.current.content
+        )
+    }, [currentTitle, currentContent, guidanceMode])
 
     const isFormValid = useMemo(
-        () => title.trim() !== '' && content.trim() !== '',
-        [title, content],
+        () => currentTitle.trim() !== '' && currentContent.trim() !== '',
+        [currentTitle, currentContent],
     )
 
     const onClickEdit = useCallback(() => {
+        setEditTitle(titleProp)
+        setEditContent(contentProp)
         setGuidanceMode('edit')
-    }, [])
+    }, [titleProp, contentProp])
 
     const onClickSave = useCallback(async () => {
-        await onSave({ name: title, content, isVisible: aiAgentEnabled })
+        await onSave({
+            name: currentTitle,
+            content: currentContent,
+            isVisible: aiAgentEnabled,
+        })
         setGuidanceMode('read')
-    }, [onSave, title, content, aiAgentEnabled])
+    }, [onSave, currentTitle, currentContent, aiAgentEnabled])
 
     const onClickCancel = useCallback(() => {
         if (hasContentChanged) {
@@ -122,16 +172,21 @@ export const KnowledgeEditorGuidanceView = ({
         }
     }, [hasContentChanged, onClose, openUnsavedChangesModal, onClickSave])
 
+    // Set the close handler ref so parent can use it for SidePanel dismissal
+    useEffect(() => {
+        closeHandlerRef.current = onClickCancel
+    }, [closeHandlerRef, onClickCancel])
+
     const onClickCreate = useCallback(async () => {
         const response = await onCreate({
-            name: title,
-            content,
+            name: currentTitle,
+            content: currentContent,
             isVisible: aiAgentEnabled,
         })
         if (response) {
             setGuidanceMode('read')
         }
-    }, [onCreate, title, content, aiAgentEnabled])
+    }, [onCreate, currentTitle, currentContent, aiAgentEnabled])
 
     const onClickCopy = useCallback(async () => {
         await onDuplicate()
@@ -189,7 +244,7 @@ export const KnowledgeEditorGuidanceView = ({
                 title="Guidance"
                 isFullscreen={isFullscreen}
                 onToggleFullscreen={onToggleFullscreen}
-                onClose={onClose}
+                onClose={onClickCancel}
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
                 disabled={isGuidanceArticleUpdating}
@@ -203,8 +258,8 @@ export const KnowledgeEditorGuidanceView = ({
                 <div className={css.knowledgeEditor}>
                     {guidanceMode === 'read' && (
                         <KnowledgeEditorGuidanceReadView
-                            content={content}
-                            title={title}
+                            content={contentProp}
+                            title={titleProp}
                             availableActions={availableActions}
                             availableVariables={availableVariables}
                         />
@@ -212,10 +267,10 @@ export const KnowledgeEditorGuidanceView = ({
 
                     {guidanceMode === 'edit' && (
                         <KnowledgeEditorGuidanceEditView
-                            content={content}
-                            title={title}
-                            onChangeContent={onChangeContent}
-                            onChangeTitle={onChangeTitle}
+                            content={editContent}
+                            title={editTitle}
+                            onChangeContent={setEditContent}
+                            onChangeTitle={setEditTitle}
                             shopName={shopName}
                             availableActions={availableActions}
                             availableVariables={availableVariables}
@@ -224,10 +279,10 @@ export const KnowledgeEditorGuidanceView = ({
 
                     {guidanceMode === 'create' && (
                         <KnowledgeEditorGuidanceCreateView
-                            content={content}
-                            title={title}
-                            onChangeContent={onChangeContent}
-                            onChangeTitle={onChangeTitle}
+                            content={editContent}
+                            title={editTitle}
+                            onChangeContent={setEditContent}
+                            onChangeTitle={setEditTitle}
                             shopName={shopName}
                             availableActions={availableActions}
                             availableVariables={availableVariables}
@@ -249,7 +304,7 @@ export const KnowledgeEditorGuidanceView = ({
                     )}
                 </div>
             </div>
-            {modal.type === ModalState.UnsavedChanges && (
+            {modal.type === ModalState.UnsavedChanges && hasContentChanged && (
                 <KnowledgeEditorGuidanceUnsavedChangesModal
                     isOpen={true}
                     onBackToEditing={modal.onBackToEditing}

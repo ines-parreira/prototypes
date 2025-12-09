@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { SidePanel } from '@gorgias/axiom'
 
@@ -50,6 +50,9 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         setIsFullscreen(!isFullscreen)
     }, [isFullscreen])
 
+    // Ref to store the close handler from child that checks for unsaved changes
+    const closeHandlerRef = useRef<(() => void) | null>(null)
+
     const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
         usePlaygroundPanelInKnowledgeEditor(isFullscreen)
 
@@ -58,7 +61,13 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
             isOpen={true}
             onOpenChange={(open) => {
                 if (!open) {
-                    props.onClose()
+                    // Call the close handler from child that checks for unsaved changes
+                    // Falls back to onClose if ref not set yet
+                    if (closeHandlerRef.current) {
+                        closeHandlerRef.current()
+                    } else {
+                        props.onClose()
+                    }
                 }
             }}
             isDismissable
@@ -84,6 +93,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                             isFullscreen={isFullscreen}
                             onToggleFullscreen={onToggleFullscreen}
                             onTest={onTest}
+                            closeHandlerRef={closeHandlerRef}
                         />
                     ) : (
                         <KnowledgeEditorHelpCenterNewArticle
@@ -98,6 +108,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                             isFullscreen={isFullscreen}
                             onToggleFullscreen={onToggleFullscreen}
                             onTest={onTest}
+                            closeHandlerRef={closeHandlerRef}
                         />
                     )}
                 </div>

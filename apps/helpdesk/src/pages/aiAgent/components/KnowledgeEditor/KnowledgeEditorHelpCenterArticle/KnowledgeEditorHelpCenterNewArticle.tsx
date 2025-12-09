@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useCreateArticle } from 'models/helpCenter/queries'
@@ -47,6 +47,7 @@ type Props = {
     isFullscreen: boolean
     onToggleFullscreen: () => void
     onTest: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }
 
 const createArticlePayload = (
@@ -154,6 +155,11 @@ export const KnowledgeEditorHelpCenterNewArticle = (props: Props) => {
             props.onClose()
         }
     }, [content, props, title, createArticle, openUnsavedChangesModal])
+
+    // Set the close handler ref so parent can use it for SidePanel dismissal
+    useEffect(() => {
+        props.closeHandlerRef.current = onCancel
+    }, [props.closeHandlerRef, onCancel])
 
     const [modeType, setModeType] = useState<ArticleModes>(
         ArticleModes.EDIT_DRAFT,

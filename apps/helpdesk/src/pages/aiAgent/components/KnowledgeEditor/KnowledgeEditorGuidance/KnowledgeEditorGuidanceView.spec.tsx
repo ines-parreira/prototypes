@@ -40,6 +40,9 @@ describe('KnowledgeEditorGuidanceView', () => {
         isFullscreen: false,
         onToggleFullscreen: jest.fn(),
         onTest: jest.fn(),
+        closeHandlerRef: { current: null } as React.MutableRefObject<
+            (() => void) | null
+        >,
     }
 
     beforeEach(() => {
@@ -237,29 +240,22 @@ describe('KnowledgeEditorGuidanceView', () => {
     describe('unsaved changes modal', () => {
         it('opens unsaved changes modal when Cancel is clicked with changes in edit mode', async () => {
             const user = userEvent.setup()
-            const onChangeTitle = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         title="Original Title"
-                        onChangeTitle={onChangeTitle}
                         guidanceMode="edit"
                     />
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        title="Modified Title"
-                        onChangeTitle={onChangeTitle}
-                        guidanceMode="edit"
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -274,15 +270,13 @@ describe('KnowledgeEditorGuidanceView', () => {
 
         it('opens unsaved changes modal when Cancel is clicked with changes in create mode', async () => {
             const user = userEvent.setup()
-            const onChangeContent = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         title=""
                         content=""
-                        onChangeContent={onChangeContent}
                         guidanceMode="create"
                         createdDatetime={undefined}
                         lastUpdatedDatetime={undefined}
@@ -290,19 +284,10 @@ describe('KnowledgeEditorGuidanceView', () => {
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        title="New Title"
-                        content="New Content"
-                        onChangeContent={onChangeContent}
-                        guidanceMode="create"
-                        createdDatetime={undefined}
-                        lastUpdatedDatetime={undefined}
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.type(titleInput, 'New Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -318,31 +303,23 @@ describe('KnowledgeEditorGuidanceView', () => {
         it('calls onClose when Discard changes button is clicked', async () => {
             const user = userEvent.setup()
             const onClose = jest.fn()
-            const onChangeTitle = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         onClose={onClose}
                         title="Original Title"
-                        onChangeTitle={onChangeTitle}
                         guidanceMode="edit"
                     />
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        onClose={onClose}
-                        title="Modified Title"
-                        onChangeTitle={onChangeTitle}
-                        guidanceMode="edit"
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -366,31 +343,23 @@ describe('KnowledgeEditorGuidanceView', () => {
         it('calls onSave when Save Changes button is clicked', async () => {
             const user = userEvent.setup()
             const onSave = jest.fn().mockResolvedValue(undefined)
-            const onChangeTitle = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         onSave={onSave}
                         title="Original Title"
-                        onChangeTitle={onChangeTitle}
                         guidanceMode="edit"
                     />
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        onSave={onSave}
-                        title="Modified Title"
-                        onChangeTitle={onChangeTitle}
-                        guidanceMode="edit"
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -417,29 +386,22 @@ describe('KnowledgeEditorGuidanceView', () => {
 
         it('closes modal when Back to editing button is clicked', async () => {
             const user = userEvent.setup()
-            const onChangeTitle = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         title="Original Title"
-                        onChangeTitle={onChangeTitle}
                         guidanceMode="edit"
                     />
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        title="Modified Title"
-                        onChangeTitle={onChangeTitle}
-                        guidanceMode="edit"
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -467,36 +429,24 @@ describe('KnowledgeEditorGuidanceView', () => {
         it('does not reset title and content when discarding changes', async () => {
             const user = userEvent.setup()
             const onClose = jest.fn()
-            const onChangeTitle = jest.fn()
-            const onChangeContent = jest.fn()
 
-            const { rerender } = render(
+            render(
                 <Provider store={mockStore({})}>
                     <KnowledgeEditorGuidanceView
                         {...defaultProps}
                         onClose={onClose}
                         title="Original Title"
                         content="Original Content"
-                        onChangeTitle={onChangeTitle}
-                        onChangeContent={onChangeContent}
                         guidanceMode="edit"
                     />
                 </Provider>,
             )
 
-            rerender(
-                <Provider store={mockStore({})}>
-                    <KnowledgeEditorGuidanceView
-                        {...defaultProps}
-                        onClose={onClose}
-                        title="Modified Title"
-                        content="Modified Content"
-                        onChangeTitle={onChangeTitle}
-                        onChangeContent={onChangeContent}
-                        guidanceMode="edit"
-                    />
-                </Provider>,
-            )
+            const titleInput = screen.getByRole('textbox', {
+                name: /guidance name/i,
+            })
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
 
             await act(() =>
                 user.click(screen.getByRole('button', { name: 'cancel' })),
@@ -514,9 +464,227 @@ describe('KnowledgeEditorGuidanceView', () => {
                 ),
             )
 
-            expect(onChangeTitle).not.toHaveBeenCalled()
-            expect(onChangeContent).not.toHaveBeenCalled()
             expect(onClose).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('closeHandlerRef', () => {
+        it('sets closeHandlerRef.current to the cancel handler on mount', () => {
+            const closeHandlerRef = { current: null }
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        guidanceMode="read"
+                    />
+                </Provider>,
+            )
+
+            expect(closeHandlerRef.current).not.toBeNull()
+            expect(typeof closeHandlerRef.current).toBe('function')
+        })
+
+        it('updates closeHandlerRef.current when onClickCancel changes', () => {
+            const closeHandlerRef = { current: null }
+            const onClose = jest.fn()
+
+            const { rerender } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            const firstHandler = closeHandlerRef.current
+
+            // Force a re-render that would change the callback
+            rerender(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            // The ref should be updated with a new function
+            expect(closeHandlerRef.current).not.toBe(firstHandler)
+        })
+
+        it('closeHandlerRef points to handler that calls onClose when no changes', () => {
+            const closeHandlerRef = { current: null } as React.MutableRefObject<
+                (() => void) | null
+            >
+            const onClose = jest.fn()
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            // Call the ref handler
+            act(() => {
+                closeHandlerRef.current?.()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('closeHandlerRef points to handler that opens modal when there are changes', async () => {
+            const user = userEvent.setup()
+            const closeHandlerRef = { current: null } as React.MutableRefObject<
+                (() => void) | null
+            >
+            const onClose = jest.fn()
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={onClose}
+                        title="Original Title"
+                        content="Original Content"
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            // Simulate user making changes by typing in the title field
+            const titleInput = screen.getByLabelText(/Guidance name/i)
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
+
+            // Call the ref handler (simulating X button or outside click)
+            await act(() => closeHandlerRef.current?.())
+
+            // Modal should appear instead of calling onClose directly
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            expect(onClose).not.toHaveBeenCalled()
+        })
+
+        it('closeHandlerRef handler respects hasContentChanged state in read vs edit mode', async () => {
+            const user = userEvent.setup()
+            const closeHandlerRef = { current: null } as React.MutableRefObject<
+                (() => void) | null
+            >
+            const onClose = jest.fn()
+
+            // Test in read mode first
+            const { unmount } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={onClose}
+                        title="Original Title"
+                        content="Original Content"
+                        guidanceMode="read"
+                    />
+                </Provider>,
+            )
+
+            // Call in read mode - should close directly
+            act(() => {
+                closeHandlerRef.current?.()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+
+            // Clean up first render
+            unmount()
+            onClose.mockClear()
+
+            // Test in edit mode with changes
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRef}
+                        onClose={onClose}
+                        title="Original Title"
+                        content="Original Content"
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            // Make changes by typing in the title field
+            const titleInput = screen.getByLabelText(/Guidance name/i)
+            await act(() => user.clear(titleInput))
+            await act(() => user.type(titleInput, 'Modified Title'))
+
+            // Call in edit mode with changes - should show modal
+            await act(() => closeHandlerRef.current?.())
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Save changes?' }),
+                ).toBeInTheDocument()
+            })
+
+            expect(onClose).not.toHaveBeenCalled()
+        })
+
+        it('closeHandlerRef is never null after mount in any mode', () => {
+            const closeHandlerRefRead = { current: null }
+            const closeHandlerRefEdit = { current: null }
+            const closeHandlerRefCreate = { current: null }
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRefRead}
+                        guidanceMode="read"
+                    />
+                </Provider>,
+            )
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRefEdit}
+                        guidanceMode="edit"
+                    />
+                </Provider>,
+            )
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidanceView
+                        {...defaultProps}
+                        closeHandlerRef={closeHandlerRefCreate}
+                        guidanceMode="create"
+                        createdDatetime={undefined}
+                        lastUpdatedDatetime={undefined}
+                    />
+                </Provider>,
+            )
+
+            expect(closeHandlerRefRead.current).not.toBeNull()
+            expect(closeHandlerRefEdit.current).not.toBeNull()
+            expect(closeHandlerRefCreate.current).not.toBeNull()
         })
     })
 })

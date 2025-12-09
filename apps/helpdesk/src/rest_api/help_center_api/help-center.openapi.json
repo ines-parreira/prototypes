@@ -600,6 +600,49 @@
                 "tags": ["articles"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/bulk": {
+            "delete": {
+                "operationId": "bulkDeleteArticles",
+                "summary": "Bulk delete articles",
+                "description": "Deletes multiple articles and their translations in a single transaction. This operation is supported only for Help Center type GUIDANCE and FAQ",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchDeleteArticlesRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "deleted_count": {
+                                            "type": "number",
+                                            "description": "Number of articles successfully deleted"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/{id}": {
             "get": {
                 "operationId": "getArticle",
@@ -944,6 +987,58 @@
                     }
                 ],
                 "responses": { "200": { "description": "" } },
+                "tags": ["article-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/translations/bulk/visibility": {
+            "put": {
+                "operationId": "bulkUpdateArticleTranslationsVisibility",
+                "summary": "Bulk update article translations visibility status",
+                "description": "Updates visibility status for all translations of multiple articles. Creates new versions for all translations and updates visibility status across all locales.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchUpdateArticleTranslationsVisibilityRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "articles": {
+                                            "type": "array",
+                                            "description": "List of articles that were updated",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "description": "Article ID"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["article-translations"]
             }
         },
@@ -5640,6 +5735,63 @@
                     "is_current",
                     "rating"
                 ]
+            },
+            "BatchDeleteArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to delete",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    }
+                },
+                "required": ["article_ids"]
+            },
+            "BatchUpdateArticleTranslationsVisibilityRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to update translations for",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "locale_code": {
+                        "type": "string",
+                        "description": "Locale code for translations to update (all articles must have translation in this locale)",
+                        "enum": [
+                            "cs-CZ",
+                            "da-DK",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
+                            "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
+                            "ja-JP",
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
+                        ],
+                        "example": "en-US"
+                    },
+                    "visibility_status": {
+                        "enum": ["GORGIAS_INTERNAL", "PUBLIC", "UNLISTED"],
+                        "type": "string",
+                        "description": "New visibility status for all translations",
+                        "example": "PUBLIC"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "description": "Publish immediately (true) or save as draft (false)",
+                        "default": true
+                    }
+                },
+                "required": ["article_ids", "locale_code", "visibility_status"]
             },
             "ArticleTranslationsListPageDto": {
                 "type": "object",

@@ -1,5 +1,4 @@
 import { TrendCard } from '@repo/reporting'
-import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -7,11 +6,8 @@ import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActio
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
+import { DATE_FORMAT } from '../constants'
 import { useAutomatedInteractionsMetric } from '../hooks/useAutomatedInteractionsMetric'
-
-const DATE_FORMAT = DateTimeFormatMapper[
-    DateTimeFormatType.SHORT_DATE_EN_US
-] as string
 
 export const AnalyticsOverviewAutomatedInteractionsCard = ({
     chartId,

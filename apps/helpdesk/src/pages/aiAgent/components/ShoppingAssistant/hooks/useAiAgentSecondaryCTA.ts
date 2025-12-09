@@ -37,6 +37,8 @@ export const useAiAgentSecondaryCTA = (
             variant === PromoCardVariant.LeadTrialProgress
         const isOptedOut = trialAccess.hasCurrentStoreTrialOptedOut
         const canShowDemo = trialAccess.canBookDemo
+        const canSeeTrialCTA = trialAccess.canSeeTrialCTA
+        const canNotifyAdmin = trialAccess.canNotifyAdmin
 
         // ===== Button factories =====
         const manageTrialButton = (): ButtonConfig => ({
@@ -73,13 +75,16 @@ export const useAiAgentSecondaryCTA = (
 
         if (isLeadTrialProgress) return undefined
 
-        if (canShowDemo) return bookDemoButton()
+        if (canShowDemo && (canSeeTrialCTA || canNotifyAdmin))
+            return bookDemoButton()
 
         return learnMoreButton()
     }, [
         variant,
         trialAccess.hasCurrentStoreTrialOptedOut,
         trialAccess.canBookDemo,
+        trialAccess.canSeeTrialCTA,
+        trialAccess.canNotifyAdmin,
         trialFlow,
     ])
 }

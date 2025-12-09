@@ -3,6 +3,8 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import configureStore from 'redux-mock-store'
 
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 
@@ -10,6 +12,8 @@ import { EMPTY_HELP_CENTER_ID } from '../../../../automate/common/components/Hel
 import { useFaqHelpCenter } from '../../EmptyState/useFaqHelpCenter'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import { KnowledgeHubTable } from '../KnowledgeHubTable'
+
+const mockStore = configureStore([])
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -113,6 +117,8 @@ describe('KnowledgeHubTable', () => {
         },
     })
 
+    const store = mockStore({})
+
     const defaultProps = {
         data: mockData,
         isLoading: false,
@@ -172,9 +178,11 @@ describe('KnowledgeHubTable', () => {
 
     const renderComponent = (props = {}) => {
         return render(
-            <QueryClientProvider client={queryClient}>
-                <KnowledgeHubTableWithState {...props} />
-            </QueryClientProvider>,
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTableWithState {...props} />
+                </QueryClientProvider>
+            </Provider>,
         )
     }
 
@@ -740,13 +748,15 @@ describe('KnowledgeHubTable', () => {
                 ).not.toBeInTheDocument()
 
                 rerender(
-                    <QueryClientProvider client={queryClient}>
-                        <KnowledgeHubTable
-                            {...defaultProps}
-                            data={[]}
-                            isLoading={false}
-                        />
-                    </QueryClientProvider>,
+                    <Provider store={store}>
+                        <QueryClientProvider client={queryClient}>
+                            <KnowledgeHubTable
+                                {...defaultProps}
+                                data={[]}
+                                isLoading={false}
+                            />
+                        </QueryClientProvider>
+                    </Provider>,
                 )
 
                 expect(
@@ -1123,16 +1133,18 @@ describe('KnowledgeHubTable', () => {
             const mockOnDateRangeChange = jest.fn()
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        dateRange={{
-                            startDate: '2024-01-01T00:00:00.000Z',
-                            endDate: '2024-01-07T23:59:59.999Z',
-                        }}
-                        onDateRangeChange={mockOnDateRangeChange}
-                    />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            dateRange={{
+                                startDate: '2024-01-01T00:00:00.000Z',
+                                endDate: '2024-01-07T23:59:59.999Z',
+                            }}
+                            onDateRangeChange={mockOnDateRangeChange}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify the filter is rendered
@@ -1143,13 +1155,15 @@ describe('KnowledgeHubTable', () => {
             const mockOnInUseByAIChange = jest.fn()
 
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        inUseByAIFilter={true}
-                        onInUseByAIChange={mockOnInUseByAIChange}
-                    />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            inUseByAIFilter={true}
+                            onInUseByAIChange={mockOnInUseByAIChange}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify the filter is rendered
@@ -1158,16 +1172,18 @@ describe('KnowledgeHubTable', () => {
 
         it('renders both filters when both are active', () => {
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        dateRange={{
-                            startDate: '2024-01-01T00:00:00.000Z',
-                            endDate: '2024-01-07T23:59:59.999Z',
-                        }}
-                        inUseByAIFilter={true}
-                    />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            dateRange={{
+                                startDate: '2024-01-01T00:00:00.000Z',
+                                endDate: '2024-01-07T23:59:59.999Z',
+                            }}
+                            inUseByAIFilter={true}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify both filters are rendered
@@ -1177,12 +1193,14 @@ describe('KnowledgeHubTable', () => {
 
         it('does not render date filter when no dates are set', () => {
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        dateRange={{ startDate: null, endDate: null }}
-                    />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            dateRange={{ startDate: null, endDate: null }}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify date filter is not rendered
@@ -1193,12 +1211,14 @@ describe('KnowledgeHubTable', () => {
 
         it('does not render AI filter when value is null', () => {
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable
-                        {...defaultProps}
-                        inUseByAIFilter={null}
-                    />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable
+                            {...defaultProps}
+                            inUseByAIFilter={null}
+                        />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify AI filter is not rendered
@@ -1209,9 +1229,11 @@ describe('KnowledgeHubTable', () => {
 
         it('shows Add Filter button when filters are available', () => {
             render(
-                <QueryClientProvider client={queryClient}>
-                    <KnowledgeHubTable {...defaultProps} />
-                </QueryClientProvider>,
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <KnowledgeHubTable {...defaultProps} />
+                    </QueryClientProvider>
+                </Provider>,
             )
 
             // Verify Add Filter button is present

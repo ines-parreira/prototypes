@@ -428,6 +428,7 @@ export const KnowledgeHubContainer = () => {
                 shopName={shopName}
                 shopType={shopType}
                 guidanceHelpCenterId={guidanceHelpCenterId}
+                snippetHelpCenterId={snippetHelpCenterId}
             />
             <Modal
                 isOpen={isAddKnowledgeModalOpen}

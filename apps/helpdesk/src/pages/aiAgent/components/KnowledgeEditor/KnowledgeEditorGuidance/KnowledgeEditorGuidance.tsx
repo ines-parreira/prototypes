@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import _noop from 'lodash/noop'
@@ -49,6 +49,7 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: BaseProps & {
     guidanceArticle: GuidanceArticle
     availableActions: GuidanceAction[]
@@ -58,30 +59,11 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
     onDelete: () => Promise<void>
     onDuplicate: () => Promise<void>
     isGuidanceArticleUpdating: boolean
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }) => {
-    const [title, setTitle] = useState(guidanceArticle.title)
-    const [content, setContent] = useState(guidanceArticle.content)
-    const [guidanceArticleId, setGuidanceArticleId] = useState(
-        guidanceArticle.id,
-    )
-
-    useEffect(() => {
-        if (guidanceArticleId !== guidanceArticle.id) {
-            setTitle(guidanceArticle.title)
-            setContent(guidanceArticle.content)
-            setGuidanceArticleId(guidanceArticle.id)
-        }
-    }, [guidanceArticle, guidanceArticleId])
-
     const onSave = useCallback(
         async (guidanceFormFields: GuidanceFormFields) => {
             const response = await onSaveFn(guidanceFormFields)
-
-            if (response) {
-                setTitle(response.title)
-                setContent(response.content)
-            }
-
             return response
         },
         [onSaveFn],
@@ -90,16 +72,22 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
     const onToggleAIAgentEnabled = useCallback(
         async () =>
             onSaveFn({
-                name: title,
-                content,
+                name: guidanceArticle.title,
+                content: guidanceArticle.content,
                 isVisible:
                     guidanceArticle.visibility === 'PUBLIC' ? false : true,
             }),
-        [onSaveFn, title, content, guidanceArticle.visibility],
+        [
+            onSaveFn,
+            guidanceArticle.title,
+            guidanceArticle.content,
+            guidanceArticle.visibility,
+        ],
     )
 
     return (
         <KnowledgeEditorGuidanceView
+            key={`${guidanceArticle.id}-${guidanceArticle.lastUpdated}`}
             onClose={onClose}
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
@@ -109,20 +97,21 @@ const KnowledgeEditorGuidanceStatefulEdit = ({
             onCreate={_noop}
             onDelete={onDelete}
             onDuplicate={onDuplicate}
-            title={title}
-            content={content}
+            title={guidanceArticle.title}
+            content={guidanceArticle.content}
             aiAgentEnabled={guidanceArticle.visibility === 'PUBLIC'}
             onToggleAIAgentEnabled={onToggleAIAgentEnabled}
             shopName={shopName}
             createdDatetime={new Date(guidanceArticle.createdDatetime)}
             lastUpdatedDatetime={new Date(guidanceArticle.lastUpdated)}
-            onChangeTitle={setTitle}
-            onChangeContent={setContent}
+            onChangeTitle={_noop}
+            onChangeContent={_noop}
             isGuidanceArticleUpdating={isGuidanceArticleUpdating}
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
+            closeHandlerRef={closeHandlerRef}
         />
     )
 }
@@ -140,6 +129,7 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: BaseProps & {
     guidanceTemplate?: GuidanceTemplate
     availableActions: GuidanceAction[]
@@ -147,6 +137,7 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
         guidanceArticle: GuidanceFormFields,
     ) => Promise<ArticleWithLocalTranslation | undefined>
     isGuidanceArticleUpdating: boolean
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }) => {
     const [title, setTitle] = useState(guidanceTemplate?.name || '')
     const [content, setContent] = useState(guidanceTemplate?.content || '')
@@ -190,6 +181,7 @@ const KnowledgeEditorGuidanceStatefulCreate = ({
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
+            closeHandlerRef={closeHandlerRef}
         />
     )
 }
@@ -210,6 +202,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: BaseProps & {
     shopType: string
     guidanceArticleId: number
@@ -218,6 +211,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
     onDeleteFn?: () => void
     onUpdateFn?: () => void
     onCopyFn?: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }) => {
     const { error: notifyError } = useNotify()
 
@@ -294,6 +288,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
 
     return (
         <KnowledgeEditorGuidanceStatefulEdit
+            key={guidanceArticle.id}
             shopName={shopName}
             availableActions={guidanceActions}
             guidanceArticle={guidanceArticle}
@@ -308,6 +303,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
+            closeHandlerRef={closeHandlerRef}
         />
     )
 }
@@ -327,6 +323,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: BaseProps & {
     shopType: string
     guidanceTemplate?: GuidanceTemplate
@@ -334,6 +331,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
     locale: LocaleCode
     onArticleCreated: (articleId: number) => void
     onCreateFn?: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }) => {
     const { error: notifyError } = useNotify()
 
@@ -394,6 +392,7 @@ const KnowledgeEditorGuidanceLoaderForCreate = ({
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
+            closeHandlerRef={closeHandlerRef}
         />
     )
 }
@@ -416,6 +415,7 @@ const KnowledgeEditorGuidanceRouter = ({
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    closeHandlerRef,
 }: BaseProps & {
     shopType: string
     guidanceArticleId?: number
@@ -426,22 +426,14 @@ const KnowledgeEditorGuidanceRouter = ({
     onCreateFn?: () => void
     onUpdateFn?: () => void
     onCopyFn?: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }) => {
-    const [currentGuidanceArticleId, setCurrentGuidanceArticleId] =
-        useState(guidanceArticleId)
-    const [currentGuidanceMode, setCurrentGuidanceMode] = useState(guidanceMode)
-
-    const handleArticleCreated = useCallback((articleId: number) => {
-        setCurrentGuidanceArticleId(articleId)
-        setCurrentGuidanceMode('read')
-    }, [])
-
-    if (currentGuidanceArticleId && currentGuidanceMode !== 'create') {
+    if (guidanceArticleId && guidanceMode !== 'create') {
         return (
             <KnowledgeEditorGuidanceLoaderForEdit
                 shopName={shopName}
                 shopType={shopType}
-                guidanceArticleId={currentGuidanceArticleId}
+                guidanceArticleId={guidanceArticleId}
                 guidanceHelpCenterId={guidanceHelpCenterId}
                 locale={locale}
                 onClose={onClose}
@@ -450,10 +442,11 @@ const KnowledgeEditorGuidanceRouter = ({
                 onDeleteFn={onDeleteFn}
                 onUpdateFn={onUpdateFn}
                 onCopyFn={onCopyFn}
-                guidanceMode={currentGuidanceMode}
+                guidanceMode={guidanceMode}
                 isFullscreen={isFullscreen}
                 onToggleFullscreen={onToggleFullscreen}
                 onTest={onTest}
+                closeHandlerRef={closeHandlerRef}
             />
         )
     }
@@ -468,12 +461,13 @@ const KnowledgeEditorGuidanceRouter = ({
             onClose={onClose}
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
-            onArticleCreated={handleArticleCreated}
+            onArticleCreated={() => {}}
             onCreateFn={onCreateFn}
             guidanceMode={guidanceMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
+            closeHandlerRef={closeHandlerRef}
         />
     )
 }
@@ -514,6 +508,9 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
         setIsFullscreen(!isFullscreen)
     }, [isFullscreen])
 
+    // Ref to store the close handler from child that checks for unsaved changes
+    const closeHandlerRef = useRef<(() => void) | null>(null)
+
     const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
         usePlaygroundPanelInKnowledgeEditor(isFullscreen)
 
@@ -522,7 +519,13 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
             isOpen={isOpen}
             onOpenChange={(open) => {
                 if (!open) {
-                    onClose()
+                    // Call the close handler from child that checks for unsaved changes
+                    // Falls back to onClose if ref not set yet
+                    if (closeHandlerRef.current) {
+                        closeHandlerRef.current()
+                    } else {
+                        onClose()
+                    }
                 }
             }}
             isDismissable
@@ -554,6 +557,7 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
                             isFullscreen={isFullscreen}
                             onToggleFullscreen={onToggleFullscreen}
                             onTest={onTest}
+                            closeHandlerRef={closeHandlerRef}
                         />
                     ) : (
                         <LoadingSpinner size="big" />

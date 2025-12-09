@@ -1,11 +1,15 @@
 import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import { useGetKnowledgeHubArticles } from './queries'
+import {
+    useBulkDeleteArticles,
+    useBulkUpdateArticleTranslationVisibility,
+    useGetKnowledgeHubArticles,
+} from './queries'
 import * as resources from './resources'
 import type {
     KnowledgeHubArticlesQueryParams,
@@ -187,6 +191,424 @@ describe('useGetKnowledgeHubArticles', () => {
         expect(mockGetKnowledgeHubArticles).toHaveBeenCalledWith(
             mockClient,
             customParams,
+        )
+    })
+})
+
+describe('useBulkDeleteArticles', () => {
+    let queryClient: QueryClient
+    const mockBulkDeleteArticles = jest.spyOn(resources, 'bulkDeleteArticles')
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should successfully delete articles', async () => {
+        const mockResponse = { deleted_count: 3 }
+        mockBulkDeleteArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkDeleteArticles(), {
+            wrapper,
+        })
+
+        let response
+        await act(async () => {
+            response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                { article_ids: [1, 2, 3] },
+            ])
+        })
+        expect(response).toEqual(mockResponse)
+
+        expect(mockBulkDeleteArticles).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            { article_ids: [1, 2, 3] },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should handle error when deletion fails', async () => {
+        const mockError = new Error('Failed to delete articles')
+        mockBulkDeleteArticles.mockRejectedValue(mockError)
+
+        const { result } = renderHook(() => useBulkDeleteArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    { article_ids: [1, 2, 3] },
+                ])
+            } catch (error) {
+                expect(error).toEqual(mockError)
+            }
+        })
+
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
+    })
+
+    it('should call onSuccess callback after successful deletion', async () => {
+        const mockResponse = { deleted_count: 2 }
+        mockBulkDeleteArticles.mockResolvedValue(mockResponse)
+        const onSuccess = jest.fn()
+
+        const { result } = renderHook(
+            () => useBulkDeleteArticles({ onSuccess }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                { article_ids: [1, 2] },
+            ])
+        })
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                mockResponse,
+                [undefined, { help_center_id: 1 }, { article_ids: [1, 2] }],
+                undefined,
+            )
+        })
+    })
+
+    it('should call onError callback when deletion fails', async () => {
+        const mockError = new Error('Deletion failed')
+        mockBulkDeleteArticles.mockRejectedValue(mockError)
+        const onError = jest.fn()
+
+        const { result } = renderHook(
+            () => useBulkDeleteArticles({ onError }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    { article_ids: [1] },
+                ])
+            } catch {
+                // Expected to throw
+            }
+        })
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                mockError,
+                [undefined, { help_center_id: 1 }, { article_ids: [1] }],
+                undefined,
+            )
+        })
+    })
+
+    it('should handle empty article_ids array', async () => {
+        const mockResponse = { deleted_count: 0 }
+        mockBulkDeleteArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkDeleteArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                { article_ids: [] },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+    })
+})
+
+describe('useBulkUpdateArticleTranslationVisibility', () => {
+    let queryClient: QueryClient
+    const mockBulkUpdateArticleTranslationVisibility = jest.spyOn(
+        resources,
+        'bulkUpdateArticleTranslationVisibility',
+    )
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should successfully update visibility status to PUBLIC', async () => {
+        const mockResponse = { articles: [{ id: 1 }, { id: 2 }] }
+        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
+            mockResponse,
+        )
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1, 2],
+                    locale_code: 'en-US',
+                    visibility_status: 'PUBLIC',
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+
+        expect(mockBulkUpdateArticleTranslationVisibility).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                article_ids: [1, 2],
+                locale_code: 'en-US',
+                visibility_status: 'PUBLIC',
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should successfully update visibility status to UNLISTED', async () => {
+        const mockResponse = { articles: [{ id: 1 }] }
+        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
+            mockResponse,
+        )
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 2 },
+                {
+                    article_ids: [1],
+                    locale_code: 'en-US',
+                    visibility_status: 'UNLISTED',
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should handle error when visibility update fails', async () => {
+        const mockError = new Error('Failed to update visibility')
+        mockBulkUpdateArticleTranslationVisibility.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        locale_code: 'en-US',
+                        visibility_status: 'PUBLIC',
+                    },
+                ])
+            } catch (error) {
+                expect(error).toEqual(mockError)
+            }
+        })
+
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
+    })
+
+    it('should call onSuccess callback after successful update', async () => {
+        const mockResponse = { articles: [{ id: 1 }] }
+        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
+            mockResponse,
+        )
+        const onSuccess = jest.fn()
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility({ onSuccess }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1],
+                    locale_code: 'en-US',
+                    visibility_status: 'PUBLIC',
+                },
+            ])
+        })
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                mockResponse,
+                [
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        locale_code: 'en-US',
+                        visibility_status: 'PUBLIC',
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should call onError callback when update fails', async () => {
+        const mockError = new Error('Update failed')
+        mockBulkUpdateArticleTranslationVisibility.mockRejectedValue(mockError)
+        const onError = jest.fn()
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility({ onError }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        locale_code: 'en-US',
+                        visibility_status: 'PUBLIC',
+                    },
+                ])
+            } catch {
+                // Expected to throw
+            }
+        })
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                mockError,
+                [
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        locale_code: 'en-US',
+                        visibility_status: 'PUBLIC',
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should handle GORGIAS_INTERNAL visibility status', async () => {
+        const mockResponse = { articles: [{ id: 1 }] }
+        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
+            mockResponse,
+        )
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1],
+                    locale_code: 'en-US',
+                    visibility_status: 'GORGIAS_INTERNAL',
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should handle different locale codes', async () => {
+        const mockResponse = { articles: [{ id: 1 }] }
+        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
+            mockResponse,
+        )
+
+        const { result } = renderHook(
+            () => useBulkUpdateArticleTranslationVisibility(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1],
+                    locale_code: 'fr-FR',
+                    visibility_status: 'PUBLIC',
+                },
+            ])
+        })
+
+        expect(mockBulkUpdateArticleTranslationVisibility).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                article_ids: [1],
+                locale_code: 'fr-FR',
+                visibility_status: 'PUBLIC',
+            },
         )
     })
 })

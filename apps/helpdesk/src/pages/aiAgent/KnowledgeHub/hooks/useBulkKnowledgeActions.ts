@@ -1,0 +1,162 @@
+import { useQueryClient } from '@tanstack/react-query'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import { isGorgiasApiError } from 'models/api/types'
+import {
+    helpCenterKeys,
+    useBulkDeleteArticles,
+    useBulkUpdateArticleTranslationVisibility,
+} from 'models/helpCenter/queries'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import type { GroupedKnowledgeItem } from '../types'
+import { KnowledgeType } from '../types'
+
+type HelpCenterIds = {
+    guidanceHelpCenterId?: number | null
+    faqHelpCenterId?: number | null
+    snippetHelpCenterId?: number | null
+}
+
+export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
+    const queryClient = useQueryClient()
+    const dispatch = useAppDispatch()
+    const accountId = useAppSelector(getCurrentAccountId)
+
+    const deleteMutation = useBulkDeleteArticles({
+        onSettled: () => {
+            void queryClient.invalidateQueries({
+                queryKey: helpCenterKeys.knowledgeHubArticles({
+                    account_id: accountId,
+                    guidance_help_center_id: helpCenterIds.guidanceHelpCenterId,
+                    snippet_help_center_id: helpCenterIds.snippetHelpCenterId,
+                    faq_help_center_id: helpCenterIds.faqHelpCenterId,
+                }),
+            })
+        },
+    })
+
+    const visibilityMutation = useBulkUpdateArticleTranslationVisibility({
+        onSettled: () => {
+            void queryClient.invalidateQueries({
+                queryKey: helpCenterKeys.knowledgeHubArticles({
+                    account_id: accountId,
+                    guidance_help_center_id: helpCenterIds.guidanceHelpCenterId,
+                    snippet_help_center_id: helpCenterIds.snippetHelpCenterId,
+                    faq_help_center_id: helpCenterIds.faqHelpCenterId,
+                }),
+            })
+        },
+    })
+
+    const groupItemsByHelpCenter = (items: GroupedKnowledgeItem[]) => {
+        const groups = new Map<number, number[]>()
+
+        items.forEach((item) => {
+            let helpCenterId: number | null | undefined
+
+            switch (item.type) {
+                case KnowledgeType.Guidance:
+                    helpCenterId = helpCenterIds.guidanceHelpCenterId
+                    break
+                case KnowledgeType.FAQ:
+                    helpCenterId = helpCenterIds.faqHelpCenterId
+                    break
+                default:
+                    helpCenterId = helpCenterIds.snippetHelpCenterId
+                    break
+            }
+
+            if (helpCenterId !== null && helpCenterId) {
+                const ids = groups.get(helpCenterId) || []
+                ids.push(Number(item.id))
+                groups.set(helpCenterId, ids)
+            }
+        })
+
+        return groups
+    }
+
+    const handleBulkDelete = async (items: GroupedKnowledgeItem[]) => {
+        const groups = groupItemsByHelpCenter(items)
+        try {
+            await Promise.all(
+                Array.from(groups.entries()).map(([helpCenterId, articleIds]) =>
+                    deleteMutation.mutateAsync([
+                        undefined,
+                        { help_center_id: helpCenterId },
+                        { article_ids: articleIds },
+                    ]),
+                ),
+            )
+            void dispatch(
+                notify({
+                    message: 'Successfully deleted items',
+                    status: NotificationStatus.Success,
+                }),
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: isGorgiasApiError(error)
+                        ? error.response?.data.error.msg
+                        : 'Failed to delete items',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
+    }
+
+    const handleBulkVisibilityUpdate = async (
+        items: GroupedKnowledgeItem[],
+        visibilityStatus: 'PUBLIC' | 'UNLISTED',
+    ) => {
+        const groups = groupItemsByHelpCenter(items)
+
+        try {
+            await Promise.all(
+                Array.from(groups.entries()).map(([helpCenterId, articleIds]) =>
+                    visibilityMutation.mutateAsync([
+                        undefined,
+                        { help_center_id: helpCenterId },
+                        {
+                            article_ids: articleIds,
+                            locale_code: 'en-US',
+                            visibility_status: visibilityStatus,
+                        },
+                    ]),
+                ),
+            )
+
+            const action =
+                visibilityStatus === 'PUBLIC' ? 'enabled' : 'disabled'
+            void dispatch(
+                notify({
+                    message: `Successfully ${action} items for AI Agent`,
+                    status: NotificationStatus.Success,
+                }),
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    message: isGorgiasApiError(error)
+                        ? error.response?.data.error.msg
+                        : 'Failed to update items',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
+    }
+
+    return {
+        handleBulkDelete,
+        handleBulkEnable: (items: GroupedKnowledgeItem[]) =>
+            handleBulkVisibilityUpdate(items, 'PUBLIC'),
+        handleBulkDisable: (items: GroupedKnowledgeItem[]) =>
+            handleBulkVisibilityUpdate(items, 'UNLISTED'),
+        isLoading: deleteMutation.isLoading || visibilityMutation.isLoading,
+    }
+}

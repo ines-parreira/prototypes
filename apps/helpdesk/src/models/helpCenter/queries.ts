@@ -10,6 +10,8 @@ import type { MutationOverrides } from 'types/query'
 import { useHelpCenterApi } from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Paths } from '../../rest_api/help_center_api/client.generated'
 import {
+    bulkDeleteArticles,
+    bulkUpdateArticleTranslationVisibility,
     checkHelpCenterWithSubdomainExists,
     copyArticle,
     createArticle,
@@ -1158,5 +1160,35 @@ export const useGetArticleTranslations = (
             articleId !== undefined &&
             (overrides === undefined || overrides.enabled),
         refetchOnWindowFocus: false,
+    })
+}
+
+export const useBulkDeleteArticles = (
+    overrides?: MutationOverrides<typeof bulkDeleteArticles>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, body]: [
+            client: HelpCenterClient | undefined,
+            pathParams: { help_center_id: number },
+            body: { article_ids: number[] },
+        ]) => bulkDeleteArticles(client, pathParams, body),
+        ...overrides,
+    })
+}
+
+export const useBulkUpdateArticleTranslationVisibility = (
+    overrides?: MutationOverrides<
+        typeof bulkUpdateArticleTranslationVisibility
+    >,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, body]: [
+            client: HelpCenterClient | undefined,
+            pathParams: Paths.BulkUpdateArticleTranslationsVisibility.PathParameters,
+            body: Paths.BulkUpdateArticleTranslationsVisibility.RequestBody,
+        ]) => bulkUpdateArticleTranslationVisibility(client, pathParams, body),
+        ...overrides,
     })
 }

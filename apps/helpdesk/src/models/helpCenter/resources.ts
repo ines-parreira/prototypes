@@ -140,6 +140,29 @@ export const deleteArticle = async (
     return response
 }
 
+export const bulkDeleteArticles = async (
+    client: HelpCenterClient | undefined,
+    pathParams: { help_center_id: number },
+    body: { article_ids: number[] },
+) => {
+    if (!client) return null
+    const response = await client.bulkDeleteArticles(pathParams, body)
+    return response.data
+}
+
+export const bulkUpdateArticleTranslationVisibility = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.BulkUpdateArticleTranslationsVisibility.PathParameters,
+    body: Paths.BulkUpdateArticleTranslationsVisibility.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.bulkUpdateArticleTranslationsVisibility(
+        pathParams,
+        body,
+    )
+    return response.data
+}
+
 export const updateArticleTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.UpdateArticleTranslation.PathParameters,

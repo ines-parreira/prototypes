@@ -486,6 +486,65 @@ declare namespace Components {
                 enabled: boolean
             }
         }
+        export interface BatchDeleteArticlesRequestDto {
+            /**
+             * Array of article IDs to delete
+             * example:
+             * [
+             *   1,
+             *   2,
+             *   3,
+             *   100,
+             *   250
+             * ]
+             */
+            article_ids: number[]
+        }
+        export interface BatchUpdateArticleTranslationsVisibilityRequestDto {
+            /**
+             * Array of article IDs to update translations for
+             * example:
+             * [
+             *   1,
+             *   2,
+             *   3,
+             *   100,
+             *   250
+             * ]
+             */
+            article_ids: number[]
+            /**
+             * Locale code for translations to update (all articles must have translation in this locale)
+             * example:
+             * en-US
+             */
+            locale_code:
+                | 'cs-CZ'
+                | 'da-DK'
+                | 'nl-NL'
+                | 'en-GB'
+                | 'en-US'
+                | 'fi-FI'
+                | 'fr-CA'
+                | 'fr-FR'
+                | 'de-DE'
+                | 'it-IT'
+                | 'ja-JP'
+                | 'no-NO'
+                | 'pt-BR'
+                | 'es-ES'
+                | 'sv-SE'
+            /**
+             * New visibility status for all translations
+             * example:
+             * PUBLIC
+             */
+            visibility_status: 'GORGIAS_INTERNAL' | 'PUBLIC' | 'UNLISTED'
+            /**
+             * Publish immediately (true) or save as draft (false)
+             */
+            is_current?: boolean
+        }
         export interface CategoriesListPageDto {
             meta: PageMetaDto
             object: 'list'
@@ -3275,6 +3334,47 @@ declare namespace Paths {
             export type $200 = Components.Schemas.AnalyseCsvResponseDto
         }
     }
+    namespace BulkDeleteArticles {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody =
+            Components.Schemas.BatchDeleteArticlesRequestDto
+        namespace Responses {
+            export interface $200 {
+                /**
+                 * Number of articles successfully deleted
+                 */
+                deleted_count?: number
+            }
+        }
+    }
+    namespace BulkUpdateArticleTranslationsVisibility {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody =
+            Components.Schemas.BatchUpdateArticleTranslationsVisibilityRequestDto
+        namespace Responses {
+            export interface $200 {
+                /**
+                 * List of articles that were updated
+                 */
+                articles?: {
+                    /**
+                     * Article ID
+                     */
+                    id?: number
+                }[]
+            }
+        }
+    }
     namespace CheckContactFormNameExists {
         namespace Parameters {
             export type InputName = string
@@ -5341,6 +5441,16 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
     /**
+     * bulkDeleteArticles - Bulk delete articles
+     *
+     * Deletes multiple articles and their translations in a single transaction. This operation is supported only for Help Center type GUIDANCE and FAQ
+     */
+    'bulkDeleteArticles'(
+        parameters: Parameters<Paths.BulkDeleteArticles.PathParameters>,
+        data?: Paths.BulkDeleteArticles.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.BulkDeleteArticles.Responses.$200>
+    /**
      * getArticle - Retrieve an article
      */
     'getArticle'(
@@ -5415,6 +5525,16 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    /**
+     * bulkUpdateArticleTranslationsVisibility - Bulk update article translations visibility status
+     *
+     * Updates visibility status for all translations of multiple articles. Creates new versions for all translations and updates visibility status across all locales.
+     */
+    'bulkUpdateArticleTranslationsVisibility'(
+        parameters: Parameters<Paths.BulkUpdateArticleTranslationsVisibility.PathParameters>,
+        data?: Paths.BulkUpdateArticleTranslationsVisibility.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.BulkUpdateArticleTranslationsVisibility.Responses.$200>
     /**
      * createArticleTranslationRating - Create an article translation rating
      */
@@ -6544,6 +6664,18 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.SetUncategorizedArticlesPositions.Responses.$200>
     }
+    ['/api/help-center/help-centers/{help_center_id}/articles/bulk']: {
+        /**
+         * bulkDeleteArticles - Bulk delete articles
+         *
+         * Deletes multiple articles and their translations in a single transaction. This operation is supported only for Help Center type GUIDANCE and FAQ
+         */
+        'delete'(
+            parameters: Parameters<Paths.BulkDeleteArticles.PathParameters>,
+            data?: Paths.BulkDeleteArticles.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.BulkDeleteArticles.Responses.$200>
+    }
     ['/api/help-center/help-centers/{help_center_id}/articles/{id}']: {
         /**
          * getArticle - Retrieve an article
@@ -6627,6 +6759,18 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/translations/bulk/visibility']: {
+        /**
+         * bulkUpdateArticleTranslationsVisibility - Bulk update article translations visibility status
+         *
+         * Updates visibility status for all translations of multiple articles. Creates new versions for all translations and updates visibility status across all locales.
+         */
+        'put'(
+            parameters: Parameters<Paths.BulkUpdateArticleTranslationsVisibility.PathParameters>,
+            data?: Paths.BulkUpdateArticleTranslationsVisibility.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.BulkUpdateArticleTranslationsVisibility.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/ratings']: {
         /**

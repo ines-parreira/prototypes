@@ -108,9 +108,7 @@ export const LastUpdatedDateFilter = ({
     }
 
     return (
-        <div
-        // data-name="date-range-picker"
-        >
+        <div>
             <DateRangePicker
                 value={datePickerValue}
                 onChange={handleDateRangeChange}

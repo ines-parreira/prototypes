@@ -19,7 +19,11 @@ export const KnowledgeEditorGuidanceUnsavedChangesModal = (props: Props) => (
     <Modal isOpen={props.isOpen} onOpenChange={props.onBackToEditing}>
         <OverlayHeader title="Save changes?" />
         <OverlayContent>
-            <Text>Your changes will be lost if you don&apos;t save them.</Text>
+            <Box paddingBottom="md">
+                <Text>
+                    Your changes will be lost if you don&apos;t save them.
+                </Text>
+            </Box>
         </OverlayContent>
         <OverlayFooter hideCancelButton>
             <Box display="flex" justifyContent="space-between" w="100%">

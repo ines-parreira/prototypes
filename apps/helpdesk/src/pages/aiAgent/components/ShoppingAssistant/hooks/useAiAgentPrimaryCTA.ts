@@ -5,6 +5,7 @@ import type { ShopifyIntegration } from '@gorgias/helpdesk-types'
 import type { UseShoppingAssistantTrialFlowReturn } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import type { TrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
+import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 
 import { AI_AGENT_TRIAL_AUTOMATION_RATE_THRESHOLD } from '../constants/shoppingAssistant'
@@ -86,6 +87,10 @@ export const useAiAgentPrimaryCTA = ({
         }
     }
 
+    const handleBookDemo = () => {
+        window.open(EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT, '_blank')
+    }
+
     const upgradeNowButton = (): ButtonConfig => ({
         label: 'Upgrade now',
         onClick: async () => {
@@ -142,10 +147,7 @@ export const useAiAgentPrimaryCTA = ({
     }
 
     // ===== PRE-TRIAL (Admin-visible CTAs) =====
-    const adminSeesTrialCTA =
-        trialAccess.canSeeTrialCTA || (isAdmin && trialAccess.canBookDemo)
-
-    if (adminSeesTrialCTA) {
+    if (trialAccess.canSeeTrialCTA) {
         const startTrialButton: ButtonConfig = {
             label: 'Try for free',
             onClick: handleStartTrial,
@@ -155,6 +157,19 @@ export const useAiAgentPrimaryCTA = ({
         return {
             variant: PromoCardVariant.AdminTrial,
             button: startTrialButton,
+        }
+    }
+
+    if (isAdmin && trialAccess.canBookDemo) {
+        const bookADemoButton: ButtonConfig = {
+            label: 'Book a demo',
+            onClick: handleBookDemo,
+            disabled: false,
+        }
+
+        return {
+            variant: PromoCardVariant.AdminDemo,
+            button: bookADemoButton,
         }
     }
 

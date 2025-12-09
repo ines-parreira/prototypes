@@ -1,3 +1,8 @@
+import { useCallback } from 'react'
+
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { updateArticleIdInUrl } from './navigationUtils'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 type UseKnowledgeHubGuidanceEditorParams = {
@@ -11,12 +16,55 @@ export const useKnowledgeHubGuidanceEditor = ({
     shopType,
     filteredGuidanceArticles,
 }: UseKnowledgeHubGuidanceEditorParams) => {
+    const history = useHistory()
+    const location = useLocation()
+
     const editor = useKnowledgeHubEditor({
         type: 'guidance',
         shopName,
         shopType,
         filteredArticles: filteredGuidanceArticles,
     })
+
+    const handleClickPrevious = useCallback(() => {
+        if (editor.hasPrevious && filteredGuidanceArticles.length > 0) {
+            const currentIndex = filteredGuidanceArticles.findIndex(
+                (article) => article.id === editor.currentArticleId,
+            )
+            if (currentIndex > 0) {
+                const previousArticle =
+                    filteredGuidanceArticles[currentIndex - 1]
+                updateArticleIdInUrl(
+                    location,
+                    history,
+                    'guidance',
+                    previousArticle.id,
+                )
+            }
+        }
+        editor.handleClickPrevious()
+    }, [editor, filteredGuidanceArticles, history, location])
+
+    const handleClickNext = useCallback(() => {
+        if (editor.hasNext && filteredGuidanceArticles.length > 0) {
+            const currentIndex = filteredGuidanceArticles.findIndex(
+                (article) => article.id === editor.currentArticleId,
+            )
+            if (
+                currentIndex >= 0 &&
+                currentIndex < filteredGuidanceArticles.length - 1
+            ) {
+                const nextArticle = filteredGuidanceArticles[currentIndex + 1]
+                updateArticleIdInUrl(
+                    location,
+                    history,
+                    'guidance',
+                    nextArticle.id,
+                )
+            }
+        }
+        editor.handleClickNext()
+    }, [editor, filteredGuidanceArticles, history, location])
 
     const knowledgeEditorProps = {
         shopName: editor.shopName,
@@ -29,8 +77,8 @@ export const useKnowledgeHubGuidanceEditor = ({
         onCreate: editor.handleCreate,
         onUpdate: editor.handleUpdate,
         onDelete: editor.handleDelete,
-        onClickPrevious: editor.handleClickPrevious,
-        onClickNext: editor.handleClickNext,
+        onClickPrevious: handleClickPrevious,
+        onClickNext: handleClickNext,
     }
 
     return {

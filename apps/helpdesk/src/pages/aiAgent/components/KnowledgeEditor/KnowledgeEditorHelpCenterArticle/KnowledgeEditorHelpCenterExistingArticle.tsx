@@ -76,6 +76,7 @@ type Props = {
     isFullscreen: boolean
     onToggleFullscreen: () => void
     onTest: () => void
+    closeHandlerRef: React.MutableRefObject<(() => void) | null>
 }
 
 const KnowledgeEditorHelpCenterExistingArticleLoaded = (
@@ -298,6 +299,11 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         openUnsavedChangesModal,
         upsertArticleContentAndTitle,
     ])
+
+    // Set the close handler ref so parent can use it for SidePanel dismissal
+    useEffect(() => {
+        props.closeHandlerRef.current = onClose
+    }, [props.closeHandlerRef, onClose])
 
     const mode = useKnowledgeEditorHelpCenterArticleMode({
         mode: modeType,
@@ -669,6 +675,7 @@ export const KnowledgeEditorHelpCenterExistingArticle = ({
 
     return (
         <KnowledgeEditorHelpCenterExistingArticleLoaded
+            key={articleId}
             {...props}
             article={getArticle.data}
         />

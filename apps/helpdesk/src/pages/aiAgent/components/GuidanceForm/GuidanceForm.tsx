@@ -83,6 +83,11 @@ export const GuidanceForm = ({
         FeatureFlagKey.MakePlaygroundAvailableEverywhere,
         false,
     )
+
+    const isKnowledgeHubEnabled = useFlag<boolean>(
+        FeatureFlagKey.KnowledgeHubEnabled,
+        false,
+    )
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
@@ -263,12 +268,14 @@ export const GuidanceForm = ({
 
     return (
         <>
-            <UnsavedChangesPrompt
-                onSave={onSave}
-                when={isFormDirty && !isLoading}
-                onDiscard={resetForm}
-                shouldRedirectAfterSave={true}
-            />
+            {!isKnowledgeHubEnabled && (
+                <UnsavedChangesPrompt
+                    onSave={onSave}
+                    when={isFormDirty && !isLoading}
+                    onDiscard={resetForm}
+                    shouldRedirectAfterSave={true}
+                />
+            )}
 
             <div>
                 <div className={css.content}>

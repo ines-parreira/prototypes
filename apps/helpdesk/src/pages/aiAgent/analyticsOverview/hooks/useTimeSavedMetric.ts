@@ -1,16 +1,23 @@
 import type { MetricTrend } from '@repo/reporting'
 
+import { useTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+
 export const useTimeSavedMetric = (): MetricTrend => {
-    const valueInSeconds = 19800
-    const prevValueInSeconds = 19400
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+
+    const { isFetching, isError, data } = useTimeSavedByAgentsTrend(
+        cleanStatsFilters,
+        userTimezone,
+    )
 
     return {
-        isFetching: false,
-        isError: false,
+        isFetching: isFetching,
+        isError: isError,
         data: {
             label: 'Time saved by agents',
-            value: valueInSeconds,
-            prevValue: prevValueInSeconds,
+            value: data.value,
+            prevValue: data.prevValue,
         },
     }
 }

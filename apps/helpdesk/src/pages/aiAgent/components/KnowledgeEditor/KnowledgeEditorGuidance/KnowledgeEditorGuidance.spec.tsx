@@ -201,13 +201,17 @@ describe('KnowledgeEditorGuidance', () => {
         )
 
         expect(screen.getByText(guidanceArticle2.content)).toBeInTheDocument()
-        expect(screen.getByText(guidanceArticle2.title)).toBeInTheDocument()
+        // In edit mode, title is in an input field
+        expect(
+            screen.getByRole('textbox', { name: /guidance name/i }),
+        ).toHaveValue(guidanceArticle2.title)
         expect(
             screen.queryByText(guidanceArticle.content),
         ).not.toBeInTheDocument()
+        // Old title should not be in the input field
         expect(
-            screen.queryByText(guidanceArticle.title),
-        ).not.toBeInTheDocument()
+            screen.getByRole('textbox', { name: /guidance name/i }),
+        ).not.toHaveValue(guidanceArticle.title)
     })
 
     it('renders in create mode when no guidanceArticleId provided', () => {

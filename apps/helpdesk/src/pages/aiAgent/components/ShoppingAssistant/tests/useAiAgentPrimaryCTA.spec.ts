@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
@@ -383,5 +383,47 @@ describe('useAiAgentPrimaryCTA', () => {
                 disabled: true,
             },
         })
+    })
+
+    it('returns BookADemo for admins who can book a demo', async () => {
+        const mockWindowOpen = jest.fn()
+        global.window.open = mockWindowOpen
+
+        const props = {
+            trialAccess: createMockTrialAccess({
+                isAdminUser: true,
+                canBookDemo: true,
+            }),
+            trialFlow: createMockTrialFlow(),
+            isDisabled: false,
+            trialMetrics: createMockTrialMetrics({
+                automationRate: {
+                    value: 0.03,
+                    prevValue: 0.02,
+                    isLoading: false,
+                },
+                isLoading: false,
+            }),
+            routeShopName: undefined,
+            firstShopifyIntegration: shopifyIntegration,
+        }
+
+        const { result } = renderHook(() => useAiAgentPrimaryCTA(props))
+
+        expect(result.current).toEqual({
+            variant: PromoCardVariant.AdminDemo,
+            button: {
+                label: 'Book a demo',
+                onClick: expect.any(Function),
+                disabled: false,
+            },
+        })
+
+        await act(() => result.current.button.onClick?.())
+
+        expect(mockWindowOpen).toHaveBeenCalledWith(
+            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+            '_blank',
+        )
     })
 })

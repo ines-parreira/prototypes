@@ -1,16 +1,23 @@
 import type { MetricTrend } from '@repo/reporting'
 
+import { useAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+
 export const useCostSavedMetric = (): MetricTrend => {
-    const currentValue = 2400
-    const previousValue = 2353
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+
+    const { isFetching, isError, data } = useAutomationCostSavedTrend(
+        cleanStatsFilters,
+        userTimezone,
+    )
 
     return {
-        isFetching: false,
-        isError: false,
+        isFetching: isFetching,
+        isError: isError,
         data: {
             label: 'Cost saved',
-            value: currentValue,
-            prevValue: previousValue,
+            value: data.value,
+            prevValue: data.prevValue,
         },
     }
 }

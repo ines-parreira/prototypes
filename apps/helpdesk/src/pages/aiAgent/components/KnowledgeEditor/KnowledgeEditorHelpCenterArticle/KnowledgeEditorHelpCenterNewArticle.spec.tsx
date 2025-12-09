@@ -81,6 +81,9 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
     const onCreated = jest.fn()
     const onClickPrevious = jest.fn()
     const onClickNext = jest.fn()
+    const closeHandlerRef = { current: null } as React.MutableRefObject<
+        (() => void) | null
+    >
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -115,6 +118,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -201,6 +205,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
@@ -233,6 +238,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
                     isFullscreen={false}
                     onToggleFullscreen={() => {}}
                     onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
                 />
             </Wrapper>,
         )
