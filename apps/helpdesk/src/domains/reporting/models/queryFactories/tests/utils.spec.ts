@@ -547,9 +547,6 @@ describe('utils', () => {
         expect(isAggregationWindowFilter(ReportingGranularity.Week)).toEqual(
             true,
         )
-        expect(isAggregationWindowFilter(ReportingGranularity.Second)).toEqual(
-            false,
-        )
     })
 
     describe('addFieldIdToCustomFieldValues', () => {

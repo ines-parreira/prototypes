@@ -16,8 +16,8 @@
         justify-content: space-between;
         margin-top: 12px;
         padding: 12px;
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
     .title {
         margin: 0;
@@ -26,5 +26,12 @@
         padding: 0 4px;
         font-size: 1.3rem;
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .card {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
     }
 }

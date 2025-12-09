@@ -10,7 +10,6 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
-import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { notUndefined } from 'utils/types'
 
@@ -19,30 +18,6 @@ export const BREAKDOWN_FIELD =
     TicketCustomFieldsDimension.TicketCustomFieldsValue
 export const VALUE_FIELD =
     TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-
-export const withBreakdown = <
-    TData extends UsePostReportingQueryData<
-        TicketCustomFieldsTicketCountData[]
-    >,
->(
-    res: TData,
-    breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
-    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-): UsePostReportingQueryData<
-    WithChildren<TicketCustomFieldsTicketCountData>[]
-> => {
-    return {
-        ...res,
-        data: {
-            ...res.data,
-            data: selectWithBreakdown(
-                res.data.data,
-                breakdownField,
-                valueField,
-            ),
-        },
-    }
-}
 
 export type TicketCustomFieldsTicketCountData = {
     [BREAKDOWN_FIELD]: string | null

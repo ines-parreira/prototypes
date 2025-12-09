@@ -1,15 +1,15 @@
 :local {
     .sourceWidgetCard {
         margin-top: 12px;
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
 
         .sourceWidgetCard {
             margin: 12px;
             padding-bottom: 1px;
             border: none;
-            border-left: 1px dashed var(--neutral-grey-3);
+            border-left: 1px dashed var(--neutral-grey-3); // legacy
             border-radius: 0;
 
             &:hover {
@@ -23,7 +23,7 @@
         }
 
         &:hover {
-            box-shadow: 0 0 5px var(--neutral-grey-3);
+            box-shadow: 0 0 5px var(--neutral-grey-3); // legacy
         }
     }
 
@@ -34,5 +34,20 @@
     .sourceWidgetCardHeader {
         margin: 12px;
         font-weight: 600;
+    }
+}
+
+.axiom :local {
+    .sourceWidgetCard {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+
+        .sourceWidgetCard {
+            border-left: 1px dashed var(--border-neutral-default);
+        }
+
+        &:hover {
+            box-shadow: 0 0 5px var(--border-neutral-default);
+        }
     }
 }

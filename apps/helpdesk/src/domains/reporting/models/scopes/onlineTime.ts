@@ -6,7 +6,7 @@ const onlineTimeScope = defineScope({
     scope: MetricScope.OnlineTime,
     measures: ['onlineTime'],
     dimensions: ['agentId'],
-    filters: ['periodStart', 'periodEnd', 'agents'],
+    filters: ['periodStart', 'periodEnd', 'agentId'],
     order: ['onlineTime'],
 })
 

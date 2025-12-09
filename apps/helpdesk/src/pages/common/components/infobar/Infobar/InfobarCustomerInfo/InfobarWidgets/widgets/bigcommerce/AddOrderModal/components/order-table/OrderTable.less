@@ -7,9 +7,9 @@
                 font-size: 11px;
                 line-height: 13px;
                 letter-spacing: 0.05em;
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 border-bottom: 0;
-                box-shadow: inset 0px -1px 0px var(--neutral-grey-2);
+                box-shadow: inset 0px -1px 0px var(--neutral-grey-2); // legacy
 
                 &:first-of-type {
                     padding-left: 0;
@@ -26,7 +26,7 @@
                 td {
                     font-weight: 500;
                     font-size: 14px;
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     padding-top: 5px;
                     padding-bottom: 5px;
                     vertical-align: middle;
@@ -43,13 +43,34 @@
                     }
                 }
 
-                border-bottom: 1px solid var(--neutral-grey-3);
+                border-bottom: 1px solid var(--neutral-grey-3); // legacy
             }
         }
 
         th,
         td {
             font-family: 'Inter', sans-serif;
+        }
+    }
+}
+
+.axiom :local {
+    .table {
+        thead {
+            th {
+                color: var(--content-neutral-secondary);
+                box-shadow: inset 0px -1px 0px var(--border-neutral-default);
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    color: var(--content-neutral-default);
+                }
+
+                border-bottom: 1px solid var(--border-neutral-default);
+            }
         }
     }
 }

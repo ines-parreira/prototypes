@@ -57,14 +57,10 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
 }
 export const ReportingGranularityLabels: Record<ReportingGranularity, string> =
     {
-        [ReportingGranularity.Year]: 'Year',
-        [ReportingGranularity.Quarter]: 'Quarter',
         [ReportingGranularity.Month]: 'Month',
         [ReportingGranularity.Week]: 'Week',
         [ReportingGranularity.Day]: 'Day',
         [ReportingGranularity.Hour]: 'Hour',
-        [ReportingGranularity.Minute]: 'Minute',
-        [ReportingGranularity.Second]: 'Second',
     }
 
 export const tagsFilterLogicalOperators = [

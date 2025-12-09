@@ -115,7 +115,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
 
     scopeFilters.forEach((filterKey) => {
         switch (filterKey) {
-            case 'agents':
+            case 'agentId':
                 if (statFilters.agents && hasFilter(statFilters.agents)) {
                     filters.push(
                         createStandardFilter(
@@ -127,7 +127,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
-            case 'channels':
+            case 'channel':
                 if (statFilters.channels && hasFilter(statFilters.channels)) {
                     filters.push(
                         createStandardFilter(
@@ -139,7 +139,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
-            case 'integrations':
+            case 'integrationId':
                 if (
                     statFilters.integrations &&
                     hasFilter(statFilters.integrations)
@@ -154,7 +154,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
-            case 'stores':
+            case 'storeId':
                 if (statFilters.stores && hasFilter(statFilters.stores)) {
                     filters.push(
                         createStandardFilter(
@@ -215,120 +215,26 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
 
             case 'score':
-                if (statFilters.score && hasFilter(statFilters.score)) {
-                    filters.push(
-                        createStandardFilter(
-                            'score',
-                            statFilters.score.operator,
-                            statFilters.score.values,
-                        ),
-                    )
-                }
-                break
-
             case 'communicationSkills':
-                if (
-                    statFilters.communicationSkills &&
-                    hasFilter(statFilters.communicationSkills)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'communicationSkills',
-                            statFilters.communicationSkills.operator,
-                            statFilters.communicationSkills.values,
-                        ),
-                    )
-                }
-                break
-
             case 'languageProficiency':
-                if (
-                    statFilters.languageProficiency &&
-                    hasFilter(statFilters.languageProficiency)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'languageProficiency',
-                            statFilters.languageProficiency.operator,
-                            statFilters.languageProficiency.values,
-                        ),
-                    )
-                }
-                break
-
             case 'resolutionCompleteness':
-                if (
-                    statFilters.resolutionCompleteness &&
-                    hasFilter(statFilters.resolutionCompleteness)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'resolutionCompleteness',
-                            statFilters.resolutionCompleteness.operator,
-                            statFilters.resolutionCompleteness.values,
-                        ),
-                    )
-                }
-                break
-
             case 'accuracy':
-                if (statFilters.accuracy && hasFilter(statFilters.accuracy)) {
-                    filters.push(
-                        createStandardFilter(
-                            'accuracy',
-                            statFilters.accuracy.operator,
-                            statFilters.accuracy.values,
-                        ),
-                    )
-                }
-                break
-
             case 'efficiency':
-                if (
-                    statFilters.efficiency &&
-                    hasFilter(statFilters.efficiency)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'efficiency',
-                            statFilters.efficiency.operator,
-                            statFilters.efficiency.values,
-                        ),
-                    )
-                }
-                break
-
             case 'internalCompliance':
-                if (
-                    statFilters.internalCompliance &&
-                    hasFilter(statFilters.internalCompliance)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'internalCompliance',
-                            statFilters.internalCompliance.operator,
-                            statFilters.internalCompliance.values,
-                        ),
-                    )
-                }
-                break
-
             case 'brandVoice':
-                if (
-                    statFilters.brandVoice &&
-                    hasFilter(statFilters.brandVoice)
-                ) {
+                const filter = statFilters[filterKey]
+                if (filter && hasFilter(filter)) {
                     filters.push(
                         createStandardFilter(
-                            'brandVoice',
-                            statFilters.brandVoice.operator,
-                            statFilters.brandVoice.values,
+                            filterKey,
+                            filter.operator,
+                            filter.values,
                         ),
                     )
                 }
                 break
 
-            case 'teams':
+            case 'teamId':
                 if (statFilters.teams && hasFilter(statFilters.teams)) {
                     filters.push(
                         createStandardFilter(

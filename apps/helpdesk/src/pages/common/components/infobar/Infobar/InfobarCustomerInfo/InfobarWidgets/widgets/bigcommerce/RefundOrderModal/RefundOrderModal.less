@@ -30,12 +30,12 @@
 
     .caption {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin: 0.25rem 0 1rem;
         min-height: 16px;
 
         &.hasError {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -78,5 +78,15 @@
 
     .smallSpacingMarginTop {
         margin-top: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .caption {
+        color: var(--content-neutral-secondary);
+
+        &.hasError {
+            color: var(--content-error-primary);
+        }
     }
 }

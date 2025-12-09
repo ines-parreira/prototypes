@@ -19,7 +19,7 @@
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
-            background-color: var(--neutral-grey-0) !important;
+            background-color: var(--neutral-grey-0) !important; // legacy
         }
 
         &:hover {
@@ -28,6 +28,14 @@
                     display: inline;
                 }
             }
+        }
+    }
+}
+
+.axiom :local {
+    .editRow {
+        button {
+            background-color: var(--elevation-neutral-default) !important;
         }
     }
 }

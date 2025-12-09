@@ -5,12 +5,8 @@ import { TicketChannel } from 'business/types/ticket'
 import {
     useCustomFieldsForProductTicketCount,
     useCustomFieldsTicketCount,
-    useCustomTicketFieldWithBreakdown,
 } from 'domains/reporting/hooks/metricsPerCustomField'
-import {
-    useMetricPerDimension,
-    useMetricPerDimensionWithBreakdown,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
@@ -29,9 +25,6 @@ jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const useCustomTicketFieldWithBreakdownMock = assumeMock(
-    useMetricPerDimensionWithBreakdown,
-)
 
 describe('metricsPerCustomField', () => {
     const periodStart = moment()
@@ -144,30 +137,6 @@ describe('metricsPerCustomField', () => {
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 customFieldsTicketCountOnCreatedDatetimeQueryFactory(
-                    statsFilters,
-                    timezone,
-                    customFieldId,
-                    sorting,
-                ),
-            )
-        })
-    })
-
-    describe('useCustomFieldsTicketCountWithBreakdown', () => {
-        it('should pass the query to useCustomTicketFieldWithBreakdown hook', () => {
-            renderHook(
-                () =>
-                    useCustomTicketFieldWithBreakdown(
-                        statsFilters,
-                        timezone,
-                        customFieldId,
-                        sorting,
-                    ),
-                {},
-            )
-
-            expect(useCustomTicketFieldWithBreakdownMock).toHaveBeenCalledWith(
-                customFieldsTicketCountQueryFactory(
                     statsFilters,
                     timezone,
                     customFieldId,

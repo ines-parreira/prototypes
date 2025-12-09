@@ -4,6 +4,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 
 const EMAIL_CHANNEL = 'email'
 const CHAT_CHANNEL = 'chat'
+const SMS_CHANNEL = 'sms'
 export const useGetAiAgentIntegrations = () => {
     const aiAgentConfig = useAiAgentStoreConfigurationContext()
 
@@ -18,7 +19,7 @@ export const useGetAiAgentIntegrations = () => {
                 },
             ) || []
         const chatIntegrations =
-            aiAgentConfig.storeConfiguration?.monitoredChatIntegrations.map(
+            aiAgentConfig.storeConfiguration?.monitoredChatIntegrations?.map(
                 (id) => {
                     return {
                         id: id,
@@ -27,6 +28,16 @@ export const useGetAiAgentIntegrations = () => {
                 },
             ) || []
 
-        return [...emailIntegrations, ...chatIntegrations]
+        const smsIntegrations =
+            aiAgentConfig.storeConfiguration?.monitoredSmsIntegrations?.map(
+                (id) => {
+                    return {
+                        id: id,
+                        channel: SMS_CHANNEL,
+                    }
+                },
+            ) || []
+
+        return [...emailIntegrations, ...chatIntegrations, ...smsIntegrations]
     }, [aiAgentConfig])
 }

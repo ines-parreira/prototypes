@@ -1,16 +1,11 @@
-import type {
-    TicketCustomFieldsTicketCountData,
-    TicketCustomFieldsTicketCountTimeSeriesData,
-} from 'domains/reporting/hooks/withBreakdown'
+import type { TicketCustomFieldsTicketCountTimeSeriesData } from 'domains/reporting/hooks/withBreakdown'
 import {
     BREAKDOWN_FIELD,
     selectTimeSeriesWithBreakdown,
     selectWithBreakdown,
     TAG_SEPARATOR,
     VALUE_FIELD,
-    withBreakdown,
 } from 'domains/reporting/hooks/withBreakdown'
-import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { OrderDirection } from 'models/api/types'
 
@@ -37,25 +32,6 @@ describe('withBreakdown', () => {
         [BREAKDOWN_FIELD]: tag,
         [VALUE_FIELD]: '1',
     }))
-    const response = {
-        data: {
-            data: results,
-        },
-    } as UsePostReportingQueryData<TicketCustomFieldsTicketCountData[]>
-
-    describe('withBreakdown', () => {
-        it('should replace the response data with data with data breakdown', () => {
-            const responseWithDeciles = withBreakdown(
-                response,
-                BREAKDOWN_FIELD,
-                VALUE_FIELD,
-            )
-
-            expect(responseWithDeciles.data.data).toEqual(
-                selectWithBreakdown(results, BREAKDOWN_FIELD, VALUE_FIELD),
-            )
-        })
-    })
 
     describe('selectWithBreakdown', () => {
         it('should create a hierarchy', () => {

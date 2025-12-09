@@ -16,15 +16,8 @@ import {
     selectMeasurePerDimension,
     useMetricPerDimension,
     useMetricPerDimensionV2,
-    useMetricPerDimensionWithBreakdown,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    BREAKDOWN_FIELD,
-    TAG_SEPARATOR,
-    VALUE_FIELD,
-    withBreakdown,
-} from 'domains/reporting/hooks/withBreakdown'
 import { withEnrichment } from 'domains/reporting/hooks/withEnrichment'
 import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
@@ -32,6 +25,10 @@ import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import {
+    TicketsFirstAgentResponseTimeDimension,
+    TicketsFirstAgentResponseTimeMeasure,
+} from 'domains/reporting/models/cubes/TicketsFirstAgentResponseTimeCube'
 import {
     fetchPostReporting,
     fetchPostReportingV2,
@@ -41,12 +38,7 @@ import {
 } from 'domains/reporting/models/queries'
 import { medianFirstAgentResponseTimePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
-import type { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import { customFieldsTicketCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import {
-    postEnrichedReporting,
-    postReportingV1,
-} from 'domains/reporting/models/resources'
+import { postEnrichedReporting } from 'domains/reporting/models/resources'
 import type {
     BuiltQuery,
     ScopeMeta,
@@ -56,11 +48,6 @@ import { EnrichmentFields } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
-import {
-    TicketsFirstAgentResponseTimeDimension,
-    TicketsFirstAgentResponseTimeMeasure,
-} from '../../models/cubes/TicketsFirstAgentResponseTimeCube'
-
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
 const usePostReportingMockV2 = assumeMock(usePostReportingV2)
@@ -69,10 +56,6 @@ const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 jest.mock('domains/reporting/models/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
-const postReportingV1Mock = assumeMock(postReportingV1)
-
-jest.mock('domains/reporting/hooks/withBreakdown')
-const withBreakdownMock = assumeMock(withBreakdown)
 
 jest.mock('domains/reporting/hooks/withEnrichment')
 const withEnrichmentMock = assumeMock(withEnrichment)
@@ -820,106 +803,6 @@ describe('MetricPerDimension', () => {
             )
 
             expect(result?.data).toEqual(null)
-        })
-    })
-})
-
-describe('useMetricPerDimensionWithBreakdown', () => {
-    const customFieldId = 1
-    const ticketField = 'customTag'
-    const ticketFieldL2_1 = 'subTag'
-    const ticketFieldL2_2 = 'subTag2'
-    const query: CustomFieldsReportingQuery =
-        customFieldsTicketCountQueryFactory(
-            {
-                period: {
-                    start_datetime: '2020-01-16T03:04:56.789-10:00',
-                    end_datetime: '2020-01-02T03:04:56.789-10:00',
-                },
-            },
-            'timezone',
-            customFieldId,
-        )
-    const metricValue = 5
-    const data = [
-        {
-            [BREAKDOWN_FIELD]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`,
-            [VALUE_FIELD]: String(metricValue),
-        },
-        {
-            [BREAKDOWN_FIELD]: `${ticketField}${TAG_SEPARATOR}${ticketFieldL2_2}`,
-            [VALUE_FIELD]: String(metricValue),
-        },
-    ]
-
-    const mockedResponse = {
-        isFetching: false,
-        isError: false,
-        data: data,
-    }
-
-    it('should usePostReporting with query and select', async () => {
-        const rawApiResponse = {
-            data: { data: data },
-        }
-        const processedData = {
-            data: [
-                {
-                    [BREAKDOWN_FIELD]: ticketField,
-                    [VALUE_FIELD]: String(10),
-                    children: [
-                        {
-                            ...data[0],
-                            [BREAKDOWN_FIELD]: ticketFieldL2_1,
-                            children: [],
-                        },
-                        {
-                            ...data[1],
-                            [BREAKDOWN_FIELD]: ticketFieldL2_2,
-                            children: [],
-                        },
-                    ],
-                },
-            ],
-        }
-
-        postReportingV1Mock.mockResolvedValue(rawApiResponse as any)
-        withBreakdownMock.mockReturnValue(processedData as any)
-
-        let capturedQueryFn: (() => Promise<any>) | undefined
-        usePostReportingMock.mockImplementation(
-            jest.fn().mockImplementation((query, options) => {
-                capturedQueryFn = options.queryFn
-                return {
-                    isFetching: false,
-                    isError: false,
-                    data: processedData.data,
-                }
-            }),
-        )
-
-        const { result } = renderHook(() =>
-            useMetricPerDimensionWithBreakdown(query),
-        )
-
-        if (capturedQueryFn) {
-            await capturedQueryFn()
-        }
-
-        await waitFor(() => {
-            expect(postReportingV1Mock).toHaveBeenCalledWith([query])
-            expect(withBreakdownMock).toHaveBeenCalledWith(
-                rawApiResponse,
-                query['dimensions'][0],
-                query['measures'][0],
-            )
-            expect(result.current).toEqual({
-                isFetching: mockedResponse.isFetching,
-                isError: mockedResponse.isError,
-                data: {
-                    allData: processedData.data,
-                },
-            })
         })
     })
 })

@@ -66,7 +66,7 @@ describe('utils', () => {
         it('should add agents filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['agents'],
+                filters: ['agentId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -89,7 +89,7 @@ describe('utils', () => {
         it('should add channels filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['channels'],
+                filters: ['channel'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -112,7 +112,7 @@ describe('utils', () => {
         it('should add integrations filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['integrations'],
+                filters: ['integrationId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -135,7 +135,7 @@ describe('utils', () => {
         it('should add stores filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['stores'],
+                filters: ['storeId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -158,7 +158,7 @@ describe('utils', () => {
         it('should add teams filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['teams'],
+                filters: ['teamId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -181,7 +181,7 @@ describe('utils', () => {
         it('should add teams filter with NOT_ONE_OF operator', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['teams'],
+                filters: ['teamId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -204,7 +204,7 @@ describe('utils', () => {
         it('should not add teams filter when values array is empty', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['teams'],
+                filters: ['teamId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -226,7 +226,7 @@ describe('utils', () => {
         it('should not add teams filter when teams is undefined', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['teams'],
+                filters: ['teamId'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -723,7 +723,7 @@ describe('utils', () => {
         it('should handle multiple filters together', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['agents', 'channels', 'tags', 'score'],
+                filters: ['agentId', 'channel', 'tags', 'score'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -781,7 +781,7 @@ describe('utils', () => {
         it('should skip filters not defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['agents'], // Only agents filter is allowed
+                filters: ['agentId'], // Only agents filter is allowed
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -812,7 +812,7 @@ describe('utils', () => {
         it('should skip filters not present in stat filters even if defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
                 scope: MetricScope.TicketsOpen,
-                filters: ['agents', 'channels'],
+                filters: ['agentId', 'channel'],
             }
 
             const statFilters: StatsFiltersWithLogicalOperator = {
@@ -841,7 +841,7 @@ describe('utils', () => {
             it('should keep agent values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
-                    filters: ['agents'],
+                    filters: ['agentId'],
                 }
 
                 const statFilters: StatsFiltersWithLogicalOperator = {
@@ -864,7 +864,7 @@ describe('utils', () => {
             it('should keep integration values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
-                    filters: ['integrations'],
+                    filters: ['integrationId'],
                 }
 
                 const statFilters: StatsFiltersWithLogicalOperator = {
@@ -887,7 +887,7 @@ describe('utils', () => {
             it('should keep store values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
-                    filters: ['stores'],
+                    filters: ['storeId'],
                 }
 
                 const statFilters: StatsFiltersWithLogicalOperator = {

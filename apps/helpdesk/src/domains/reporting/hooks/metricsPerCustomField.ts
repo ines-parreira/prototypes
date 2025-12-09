@@ -1,12 +1,8 @@
 import type {
-    MetricWithBreakdown,
     MetricWithDecile,
     StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    useMetricPerDimension,
-    useMetricPerDimensionWithBreakdown,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
@@ -50,18 +46,3 @@ export const useCustomFieldsForProductTicketCount = (
         ),
     )
 }
-
-export const useCustomTicketFieldWithBreakdown = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    customFieldId: number,
-    sorting?: OrderDirection,
-): MetricWithBreakdown =>
-    useMetricPerDimensionWithBreakdown(
-        customFieldsTicketCountQueryFactory(
-            statsFilters,
-            timezone,
-            customFieldId,
-            sorting,
-        ),
-    )

@@ -8,7 +8,7 @@
 
     .amountPrefix {
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .discountContainer {
@@ -17,6 +17,16 @@
 
     .errorMessage {
         .caption-regular();
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .amountPrefix {
+        color: var(--content-neutral-secondary);
+    }
+
+    .errorMessage {
+        color: var(--content-error-primary);
     }
 }

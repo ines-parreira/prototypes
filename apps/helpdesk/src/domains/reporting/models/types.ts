@@ -37,14 +37,10 @@ export type ReportingFilter = {
 }
 
 export enum ReportingGranularity {
-    Year = 'year',
-    Quarter = 'quarter',
     Month = 'month',
     Week = 'week',
     Day = 'day',
     Hour = 'hour',
-    Minute = 'minute',
-    Second = 'second',
 }
 
 export type ReportingOrder<OrderingField> = [OrderingField, OrderDirection]

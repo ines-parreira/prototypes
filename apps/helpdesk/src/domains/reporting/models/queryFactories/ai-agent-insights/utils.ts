@@ -10,4 +10,5 @@ export const AI_AGENT_TICKETS_CHANNELS = [
     'chat',
     'contact_form',
     'help-center',
+    'sms',
 ]

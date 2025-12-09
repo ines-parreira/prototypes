@@ -58,7 +58,7 @@
     }
 
     .errorRow {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         width: 450px;
         font-weight: normal;
     }
@@ -68,7 +68,7 @@
         text-align: right;
 
         & .striked {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             text-decoration: line-through;
         }
     }
@@ -98,11 +98,11 @@
     .refundedQuantityDescription {
         .caption-regular();
         font-size: 10px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .times {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 14px;
         line-height: 133%;
         align-self: center;
@@ -130,17 +130,17 @@
 
         li {
             .body-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
 
         .isDisabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .modifierButton {
         .body-medium();
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         cursor: pointer;
         text-align: left;
 
@@ -154,6 +154,44 @@
     }
 
     .isDisabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .errorRow {
+        color: var(--content-error-primary);
+    }
+
+    .numberCol {
+        & .striked {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .refundedQuantityDescription {
+        color: var(--content-neutral-secondary);
+    }
+
+    .times {
+        color: var(--content-neutral-secondary);
+    }
+
+    .modifiersList {
+        li {
+            color: var(--content-neutral-secondary);
+        }
+
+        .isDisabled {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .modifierButton {
+        color: var(--content-accent-default);
+    }
+
+    .isDisabled {
+        color: var(--content-neutral-secondary);
     }
 }

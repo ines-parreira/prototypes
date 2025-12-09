@@ -88,7 +88,7 @@ describe('scope', () => {
                 measures: ['ticketCount'] as unknown as readonly MeasureName[],
                 dimensions: ['agentId', 'channel'] as const,
                 timeDimensions: ['createdDatetime' as const],
-                filters: ['periodStart', 'periodEnd', 'agents'] as const,
+                filters: ['periodStart', 'periodEnd', 'agentId'] as const,
                 order: ['ticketId' as const],
             }
 
@@ -247,7 +247,7 @@ describe('scope', () => {
                 scope: MetricScope.OnlineTime,
                 measures: ['onlineTime'],
                 dimensions: ['agentId'],
-                filters: ['periodStart', 'periodEnd', 'agents'] as const,
+                filters: ['periodStart', 'periodEnd', 'agentId'] as const,
                 order: ['onlineTime'],
             })
 
@@ -281,7 +281,7 @@ describe('scope', () => {
                 scope: MetricScope.TicketsReplied,
                 measures: ['ticketCount'],
                 dimensions: ['agentId'],
-                filters: ['periodStart', 'periodEnd', 'agents'] as const,
+                filters: ['periodStart', 'periodEnd', 'agentId'] as const,
                 order: ['ticketId'],
             })
 
@@ -387,8 +387,8 @@ describe('scope', () => {
                 filters: [
                     'periodStart',
                     'periodEnd',
-                    'agents',
-                    'channels',
+                    'agentId',
+                    'channel',
                 ] as const,
             })
 

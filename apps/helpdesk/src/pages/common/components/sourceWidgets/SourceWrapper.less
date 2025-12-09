@@ -20,7 +20,7 @@
 
     .woocommerce {
         & > .dataHeader {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             background-color: var(--woocommercePurple);
             border-color: var(--woocommercePurple);
         }
@@ -36,7 +36,7 @@
 
     .recharge {
         & > .dataHeader {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             background-color: hsl(
                 var(--rechargeBlue-h),
                 var(--rechargeBlue-s),
@@ -45,7 +45,7 @@
             border-color: var(--rechargeBlue);
 
             a {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
             }
         }
     }
@@ -60,7 +60,7 @@
 
     .yotpo {
         & > .dataHeader {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             background-color: hsl(
                 var(--yotpoBlue-h),
                 var(--yotpoBlue-s),
@@ -69,7 +69,7 @@
             border-color: var(--yotpoBlue);
 
             a {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
             }
         }
     }
@@ -84,7 +84,7 @@
 
     .customer_external_data {
         & > .dataHeader {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             background-color: var(--customerExternalDataGray);
             border-color: var(--customerExternalDataGray);
         }
@@ -92,9 +92,51 @@
 
     .standalone {
         & > .dataHeader {
-            color: var(--neutral-grey-6);
-            background-color: var(--main-secondary-0);
-            border-color: var(--main-secondary-1);
+            color: var(--neutral-grey-6); // legacy
+            background-color: var(--main-secondary-0); // legacy
+            border-color: var(--main-secondary-1); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .woocommerce {
+        & > .dataHeader {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .recharge {
+        & > .dataHeader {
+            color: var(--content-neutral-default);
+
+            a {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .yotpo {
+        & > .dataHeader {
+            color: var(--content-neutral-default);
+
+            a {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .customer_external_data {
+        & > .dataHeader {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .standalone {
+        & > .dataHeader {
+            color: var(--content-neutral-default);
+            background-color: var(--surface-neutral-tertiary);
+            border-color: var(--surface-neutral-secondary);
         }
     }
 }

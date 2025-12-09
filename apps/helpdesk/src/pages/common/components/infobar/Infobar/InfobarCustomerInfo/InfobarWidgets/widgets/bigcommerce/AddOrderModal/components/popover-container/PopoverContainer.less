@@ -10,8 +10,8 @@
     }
 
     .footer {
-        background-color: var(--neutral-grey-2);
-        border-top: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border-top: 1px solid var(--neutral-grey-3); // legacy
 
         display: flex;
         justify-content: space-between;
@@ -19,5 +19,12 @@
 
         width: 100%;
         padding: 12px 16px;
+    }
+}
+
+.axiom :local {
+    .footer {
+        background-color: var(--elevation-neutral-mid);
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

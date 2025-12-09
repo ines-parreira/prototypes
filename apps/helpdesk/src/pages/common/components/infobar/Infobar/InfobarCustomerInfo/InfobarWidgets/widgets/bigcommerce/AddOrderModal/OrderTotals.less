@@ -3,7 +3,7 @@
 :local {
     .actionButton {
         .body-medium();
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         cursor: pointer;
 
         border: 0;
@@ -11,12 +11,12 @@
         padding: 0;
 
         &.isDisabled {
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
             cursor: default;
         }
 
         &.hasError {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -33,11 +33,11 @@
 
     .radioLabelCaption {
         .body-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .selectShippingAddress {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-align: center;
         font-weight: 500;
     }
@@ -60,14 +60,14 @@
     }
 
     .descriptionExtraInfo {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: 0;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
 
         &.isDisabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -79,11 +79,11 @@
         align-items: center;
 
         &.descriptionValueDisabled {
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
         }
 
         &.descriptionValueZero {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -95,10 +95,54 @@
         padding-top: 0.5rem;
         margin-bottom: 0.5rem;
 
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .totalPriceContainer {
         display: flex;
+    }
+}
+
+.axiom :local {
+    .actionButton {
+        color: var(--content-accent-default);
+
+        &.isDisabled {
+            color: var(--content-neutral-tertiary);
+        }
+
+        &.hasError {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .radioLabelCaption {
+        color: var(--content-neutral-default);
+    }
+
+    .selectShippingAddress {
+        color: var(--content-neutral-secondary);
+    }
+
+    .descriptionExtraInfo {
+        color: var(--content-neutral-secondary);
+
+        &.isDisabled {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .descriptionValue {
+        &.descriptionValueDisabled {
+            color: var(--content-neutral-tertiary);
+        }
+
+        &.descriptionValueZero {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .totalLineContainer {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

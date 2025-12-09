@@ -7,9 +7,9 @@
                 font-size: 11px;
                 line-height: 13px;
                 letter-spacing: 0.05em;
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 border-bottom: 0;
-                box-shadow: inset 0px -1px 0px var(--neutral-grey-2);
+                box-shadow: inset 0px -1px 0px var(--neutral-grey-2); // legacy
                 padding-top: 0;
 
                 &:first-of-type {
@@ -27,7 +27,7 @@
                 td {
                     font-weight: 500;
                     font-size: 14px;
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     padding-top: 5px;
                     padding-bottom: 5px;
                     vertical-align: middle;
@@ -44,14 +44,14 @@
                     }
                 }
 
-                border-top: 1px dashed var(--neutral-grey-3);
+                border-top: 1px dashed var(--neutral-grey-3); // legacy
 
                 &.isGrouped {
                     border-top: none;
                 }
 
                 &:last-of-type {
-                    border-bottom: 1px solid var(--neutral-grey-3);
+                    border-bottom: 1px solid var(--neutral-grey-3); // legacy
                 }
             }
         }
@@ -70,9 +70,9 @@
                 font-size: 11px;
                 line-height: 13px;
                 letter-spacing: 0.05em;
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 border-bottom: 0;
-                box-shadow: inset 0px -1px 0px var(--neutral-grey-2);
+                box-shadow: inset 0px -1px 0px var(--neutral-grey-2); // legacy
 
                 &:first-of-type {
                     padding-left: 0;
@@ -89,7 +89,7 @@
                 td {
                     font-weight: 500;
                     font-size: 14px;
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     padding-top: 5px;
                     padding-bottom: 5px;
                     vertical-align: middle;
@@ -107,7 +107,7 @@
                 }
 
                 &:last-of-type {
-                    border-bottom: 1px solid var(--neutral-grey-3);
+                    border-bottom: 1px solid var(--neutral-grey-3); // legacy
                 }
 
                 &.noBorder {
@@ -128,5 +128,51 @@
 
     .spinner {
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .productsTable {
+        thead {
+            th {
+                color: var(--content-neutral-secondary);
+                box-shadow: inset 0px -1px 0px var(--border-neutral-default);
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    color: var(--content-neutral-default);
+                }
+
+                border-top: 1px dashed var(--border-neutral-default);
+
+                &:last-of-type {
+                    border-bottom: 1px solid var(--border-neutral-default);
+                }
+            }
+        }
+    }
+
+    .totalsTable {
+        thead {
+            th {
+                color: var(--content-neutral-secondary);
+                box-shadow: inset 0px -1px 0px var(--border-neutral-default);
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    color: var(--content-neutral-default);
+                }
+
+                &:last-of-type {
+                    border-bottom: 1px solid var(--border-neutral-default);
+                }
+            }
+        }
     }
 }

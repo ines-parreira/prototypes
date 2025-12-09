@@ -10,7 +10,7 @@
 
     .widgetFieldLabel {
         padding-right: 8px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .widgetFieldValue {
@@ -34,7 +34,7 @@
 
     .disabled {
         cursor: not-allowed;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .noBold {
@@ -59,10 +59,28 @@
         }
         &.widgetField {
             &:hover {
-                border: 1px dashed var(--neutral-grey-4);
+                border: 1px dashed var(--neutral-grey-4); // legacy
                 .widgetFieldTools {
                     display: flex;
                 }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .widgetFieldLabel {
+        color: var(--content-neutral-secondary);
+    }
+
+    .disabled {
+        color: var(--content-neutral-secondary);
+    }
+
+    .widgetFieldEditing {
+        &.widgetField {
+            &:hover {
+                border: 1px dashed var(--border-neutral-secondary);
             }
         }
     }

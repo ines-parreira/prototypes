@@ -8,7 +8,7 @@
     }
 
     .formFooter {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .formBody {
@@ -22,11 +22,11 @@
 
     .caption {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin: 0.25rem 0 1rem;
 
         &.hasError {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -34,7 +34,7 @@
         margin-bottom: 0.5rem;
 
         &.hasError {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -49,12 +49,12 @@
     }
 
     .searchbarInfo {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         margin-top: 5px;
 
         &.hasError {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -73,7 +73,7 @@
         width: 100%;
         top: 0;
         left: 0;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         opacity: 0.5;
     }
 
@@ -113,5 +113,37 @@
     .modalSection {
         .heading-section-semibold();
         margin-top: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .formFooter {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .caption {
+        color: var(--content-neutral-secondary);
+
+        &.hasError {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .tip {
+        &.hasError {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .searchbarInfo {
+        color: var(--content-neutral-secondary);
+
+        &.hasError {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .loader {
+        background: var(--elevation-neutral-default);
     }
 }

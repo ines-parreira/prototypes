@@ -3,8 +3,6 @@ import type {
     ScopeMeta,
 } from 'domains/reporting//models/scopes/scope'
 import type { RequestedData } from 'domains/reporting/hooks/types'
-import type { TicketCustomFieldsTicketCountData } from 'domains/reporting/hooks/withBreakdown'
-import { withBreakdown } from 'domains/reporting/hooks/withBreakdown'
 import { withDeciles } from 'domains/reporting/hooks/withDeciles'
 import type {
     IDRecord,
@@ -20,11 +18,11 @@ import {
     usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
-import type { CustomFieldsReportingQuery } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import {
-    postEnrichedReporting,
-    postReportingV1,
-} from 'domains/reporting/models/resources'
+import { postEnrichedReporting } from 'domains/reporting/models/resources'
+import type {
+    DimensionName,
+    MeasureName,
+} from 'domains/reporting/models/scopes/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type {
     EnrichmentFields,
@@ -35,9 +33,6 @@ import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionH
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import type { OrderDirection } from 'models/api/types'
 import type { DrillDownReportingQuery } from 'models/job/types'
-import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
-
-import type { DimensionName, MeasureName } from '../models/scopes/types'
 
 export type ReportingMetricItemValue = string | number | null
 
@@ -89,12 +84,6 @@ export type MetricPerDimensionTrend<
         value: QueryReturnType<TValue, TCube>
         prevValue: QueryReturnType<TValue, TCube>
     }
-}
-
-export type MetricWithBreakdown = RequestedData & {
-    data: {
-        allData: WithChildren<TicketCustomFieldsTicketCountData>[]
-    } | null
 }
 
 export type MetricWithEnrichment<
@@ -354,41 +343,6 @@ export const fetchMetricPerDimensionV2 = async <
             isFetching: false,
             isError: true,
         }))
-}
-
-export function useMetricPerDimensionWithBreakdown(
-    query: CustomFieldsReportingQuery,
-): MetricWithBreakdown {
-    const metricData = usePostReporting<
-        WithChildren<TicketCustomFieldsTicketCountData>[],
-        WithChildren<TicketCustomFieldsTicketCountData>[]
-    >([query], {
-        select: (data) => {
-            return data.data.data
-        },
-        queryFn: () =>
-            postReportingV1<WithChildren<TicketCustomFieldsTicketCountData[]>>([
-                query,
-            ]).then((data) =>
-                withBreakdown(
-                    data,
-                    query['dimensions'][0],
-                    query['measures'][0],
-                ),
-            ),
-        queryKey: ['reporting', 'post-reporting-breakdown', query],
-    })
-
-    return {
-        isFetching: metricData.isFetching,
-        isError: metricData.isError,
-        data:
-            metricData.data !== undefined
-                ? {
-                      allData: metricData?.data,
-                  }
-                : null,
-    }
 }
 
 export function useMetricPerDimensionWithEnrichment(
