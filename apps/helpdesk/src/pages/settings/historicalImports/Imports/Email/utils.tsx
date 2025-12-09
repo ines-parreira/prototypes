@@ -8,7 +8,7 @@ import { ImportProvider } from '@gorgias/helpdesk-types'
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import officeIcon from 'assets/img/integrations/office.svg'
 
-import css from '../ImportEmail.less'
+import css from './ImportEmail.less'
 
 const formatDate = (date: string) =>
     new Date(date).toLocaleDateString('en-US', {

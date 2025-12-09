@@ -29,12 +29,11 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
             </Box>
         )
     }),
-    createSortableColumn<JourneyApiDTO>('campaign.state', 'Status', (info) => {
+    createSortableColumn<JourneyApiDTO>('stateLabel', 'Status', (info) => {
+        const state = info.row.original.campaign?.state
         return (
             <Box gap="xs">
-                <CampaignStateBadge
-                    state={info.getValue() as JourneyCampaignStateEnum}
-                />
+                <CampaignStateBadge state={state as JourneyCampaignStateEnum} />
             </Box>
         )
     }),

@@ -2,8 +2,16 @@ import { useMemo } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
-import { Icon, LegacyIconButton as IconButton } from '@gorgias/axiom'
+import {
+    Icon,
+    LegacyIconButton as IconButton,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
+
+import { useTicketInfobarNavigationShortcuts } from '../hooks/useTicketInfobarNavigationShortcuts'
 
 import css from './TicketInfobarNavigation.less'
 
@@ -11,6 +19,10 @@ type TicketInfobarNavigationItem = {
     name: string
     icon: IconName
     onClick: () => void
+    tooltip?: {
+        title: string
+        shortcut: string
+    }
 }
 
 type Props = {
@@ -20,6 +32,7 @@ type Props = {
 export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
     const { activeTab, isExpanded, onChangeTab, onToggle } =
         useTicketInfobarNavigation()
+    useTicketInfobarNavigationShortcuts()
 
     const items = useMemo(
         (): TicketInfobarNavigationItem[] => [
@@ -27,6 +40,10 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                 name: 'toggle',
                 icon: isExpanded ? 'system-bar-collapse' : 'system-bar-expand',
                 onClick: () => onToggle(),
+                tooltip: {
+                    title: isExpanded ? 'Collapse' : 'Expand',
+                    shortcut: ']',
+                },
             },
             {
                 name: TicketInfobarTab.Customer,
@@ -60,18 +77,30 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
     return (
         <div className={css.container}>
             {items.map((item) => (
-                <IconButton
+                <Tooltip
                     key={item.name}
-                    className={
-                        isExpanded && activeTab === item.name
-                            ? css.isActive
-                            : undefined
-                    }
-                    fillStyle="ghost"
-                    icon={<Icon name={item.icon} size="md" />}
-                    intent="secondary"
-                    onClick={item.onClick}
-                />
+                    isDisabled={!item.tooltip}
+                    placement="left"
+                >
+                    <TooltipTrigger>
+                        <IconButton
+                            key={item.name}
+                            className={
+                                isExpanded && activeTab === item.name
+                                    ? css.isActive
+                                    : undefined
+                            }
+                            fillStyle="ghost"
+                            icon={<Icon name={item.icon} size="md" />}
+                            intent="secondary"
+                            onClick={item.onClick}
+                        />
+                    </TooltipTrigger>
+                    <TooltipContent
+                        title={item.tooltip?.title ?? ''}
+                        shortcut={item.tooltip?.shortcut}
+                    />
+                </Tooltip>
             ))}
         </div>
     )

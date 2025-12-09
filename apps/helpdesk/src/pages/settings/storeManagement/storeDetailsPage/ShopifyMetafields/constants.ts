@@ -19,3 +19,5 @@ export const METAFIELD_CATEGORIES: CategoryDefinition[] = [
         value: 'draft_order',
     },
 ]
+
+export const MAX_FIELDS_PER_CATEGORY = 10

@@ -17,7 +17,7 @@ import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibil
 import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
 import ImportAction from './ImportAction'
-import type { MetafieldsTableMeta } from './types'
+import type { Field, MetafieldsTableMeta } from './types'
 
 import styles from './MetafieldsTable.less'
 
@@ -147,6 +147,7 @@ export default function MetafieldsTable<TData, TValue>({
             <ImportMetafieldFlow
                 isOpen={isCategoriesModalOpen}
                 onClose={handleCloseCategoriesModal}
+                importedFields={data as Field[]}
             />
         </>
     )

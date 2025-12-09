@@ -100,7 +100,6 @@ afterAll(() => {
 describe('InstagramSection', () => {
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
-        window.open = jest.fn()
     })
 
     it('should return null when customer handle is not present', () => {
@@ -229,11 +228,16 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 const igLink = screen.getByRole('link', { name: /@test_user/ })
                 expect(igLink).toBeInTheDocument()
-                expect(igLink).toHaveAttribute('href', '/#')
+                expect(igLink).toHaveAttribute(
+                    'href',
+                    'https://www.instagram.com/test_user',
+                )
+                expect(igLink).toHaveAttribute('target', '_blank')
+                expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
             })
         })
 
-        it('should log segment event and open Instagram profile when clicking handle', async () => {
+        it('should log segment event when clicking handle', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -241,15 +245,17 @@ describe('InstagramSection', () => {
                 name: /@test_user/,
             })
 
+            expect(igLink).toHaveAttribute(
+                'href',
+                'https://www.instagram.com/test_user',
+            )
+            expect(igLink).toHaveAttribute('target', '_blank')
+            expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
+
             await act(() => user.click(igLink))
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.InstagramHandleClicked,
-            )
-            expect(window.open).toHaveBeenCalledWith(
-                'https://www.instagram.com/test_user',
-                '_blank',
-                'noopener noreferrer',
             )
         })
 
@@ -303,11 +309,16 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 const igLink = screen.getByRole('link', { name: /@test_user/ })
                 expect(igLink).toBeInTheDocument()
-                expect(igLink).toHaveAttribute('href', '/#')
+                expect(igLink).toHaveAttribute(
+                    'href',
+                    'https://www.instagram.com/test_user',
+                )
+                expect(igLink).toHaveAttribute('target', '_blank')
+                expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
             })
         })
 
-        it('should log segment event and open Instagram profile when clicking handle', async () => {
+        it('should log segment event when clicking handle', async () => {
             const user = userEvent.setup()
             const mockListInstagramProfiles = mockListInstagramProfilesHandler(
                 async () =>
@@ -335,15 +346,17 @@ describe('InstagramSection', () => {
                 name: /@test_user/,
             })
 
+            expect(igLink).toHaveAttribute(
+                'href',
+                'https://www.instagram.com/test_user',
+            )
+            expect(igLink).toHaveAttribute('target', '_blank')
+            expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
+
             await act(() => user.click(igLink))
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.InstagramHandleClicked,
-            )
-            expect(window.open).toHaveBeenCalledWith(
-                'https://www.instagram.com/test_user',
-                '_blank',
-                'noopener noreferrer',
             )
         })
 
@@ -554,7 +567,7 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        'Customer follows your business on Instagram',
+                        'Your business follows this customer on Instagram',
                     ),
                 ).toBeInTheDocument()
             })
@@ -607,7 +620,7 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        "Customer doesn't follow your business on Instagram",
+                        "Your business doesn't follow this customer on Instagram",
                     ),
                 ).toBeInTheDocument()
             })
@@ -660,7 +673,7 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        'Your business follows this customer on Instagram',
+                        'Customer follows your business on Instagram',
                     ),
                 ).toBeInTheDocument()
             })
@@ -713,7 +726,7 @@ describe('InstagramSection', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        "Your business doesn't follow this customer on Instagram",
+                        "Customer doesn't follow your business on Instagram",
                     ),
                 ).toBeInTheDocument()
             })

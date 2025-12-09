@@ -8,6 +8,8 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import { METAFIELD_CATEGORIES } from '../constants'
+import type { Field } from '../MetafieldsTable/types'
+import { isAtMaxFields } from '../utils/isAtMaxFields'
 import { useFieldSelection } from './hooks/useFieldSelection'
 import { useImportMetafields } from './hooks/useImportMetafields'
 import { useImportWizard } from './hooks/useImportWizard'
@@ -19,11 +21,13 @@ import styles from './ImportMetafieldFlow.less'
 interface ImportMetafieldFlowProps {
     onClose: () => void
     isOpen: boolean
+    importedFields?: Field[]
 }
 
 export default function ImportMetafieldFlow({
     onClose,
     isOpen,
+    importedFields,
 }: ImportMetafieldFlowProps) {
     const { step, selectedCategory, selectCategory, backToCategories, reset } =
         useImportWizard()
@@ -117,6 +121,11 @@ export default function ImportMetafieldFlow({
                         }
                         onBack={handleBack}
                         onContinue={backToCategories}
+                        importedFields={importedFields}
+                        isAtMaxFields={isAtMaxFields(
+                            importedFields,
+                            selectedCategory,
+                        )}
                     />
                 ) : null}
             </ModalBody>

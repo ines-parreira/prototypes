@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { shortcutManager, shortcuts, useShortcuts } from '@repo/utils'
+import { FeatureFlagKey } from '@repo/feature-flags'
+import {
+    shortcuts as allShortcuts,
+    shortcutManager,
+    useShortcuts,
+} from '@repo/utils'
 import classnames from 'classnames'
+import { omit } from 'lodash'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -13,6 +20,11 @@ import css from './KeyboardHelp.less'
 
 export default function KeyboardHelp() {
     const [isOpen, setisOpen] = useState(false)
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+
+    const shortcuts = useMemo(() => {
+        return hasUIVisionMS1 ? allShortcuts : omit(allShortcuts, 'Infobar')
+    }, [hasUIVisionMS1])
 
     useShortcuts('KeyboardHelp', {
         SHOW_HELP: {

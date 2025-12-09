@@ -138,7 +138,7 @@ export enum FeatureFlagKey {
     HelpCenterMigrationConfig = 'migration-config',
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterSubjectLines = 'help-center-subject-lines',
-    HistoricalImports = 'linear.project_historical-imports',
+    HistoricalImports = 'linear.project_historical-imports-zendesk',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     InstagramUserSection = 'linear.task_CRMCHN-3181.adds-ig-user-section',
     LiquidTemplateStep = 'liquid-template-step',

@@ -216,7 +216,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 journeyConfigs: {
                     max_follow_up_messages: numberOfMessageValue - 1,
                     offer_discount: isDiscountEnabled,
-                    max_discount_percent: Number(discountValue),
+                    max_discount_percent: isDiscountEnabled
+                        ? Number(discountValue)
+                        : undefined,
                     sms_sender_integration_id:
                         phoneNumberValue?.integrations.find(
                             (integration) => integration.type === 'sms',
@@ -453,7 +455,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={`/app/ai-journey/${shopName}`}
+                    redirectLink={
+                        journeyType === JOURNEY_TYPES.CAMPAIGN
+                            ? `/app/ai-journey/${shopName}/campaigns`
+                            : `/app/ai-journey/${shopName}`
+                    }
                     label="Cancel"
                 />
                 <Button

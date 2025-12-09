@@ -1,13 +1,16 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
-import ImportEmail from '../ImportEmail'
+import ImportEmail from './Import'
+
+// Mock feature flags
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
 
 // Mock all child components
-jest.mock('../HeaderImportEmail', () => {
+jest.mock('./Imports/Email/HeaderImportEmail', () => {
     return function MockHeaderImportEmail({
         onOpenCreateImportModal,
         showCta,
@@ -23,7 +26,7 @@ jest.mock('../HeaderImportEmail', () => {
     }
 })
 
-jest.mock('../Modal/CreateImportModal', () => {
+jest.mock('./Modal/CreateImportModal', () => {
     return function MockCreateImportModal({
         selectedEmail,
         isOpen,
@@ -41,8 +44,8 @@ jest.mock('../Modal/CreateImportModal', () => {
     }
 })
 
-jest.mock('../Table/TableImportEmail', () => {
-    return function MockTableImportEmail({
+jest.mock('./Imports/Email/ImportEmailTable', () => ({
+    ImportEmailTable: function MockImportEmailTable({
         onOpenCreateImportModal,
         ...tableProps
     }: any) {
@@ -56,16 +59,24 @@ jest.mock('../Table/TableImportEmail', () => {
                 </div>
             </div>
         )
-    }
-})
+    },
+}))
 
-jest.mock('../Table/useTableImport', () => ({
+jest.mock('./Imports/Zendesk/ZendeskImportTable', () => ({
+    ZendeskImportTable: function MockZendeskImportTable() {
+        return <div data-testid="zendesk-import-table" />
+    },
+}))
+
+jest.mock('./Imports/Email/useTableImport', () => ({
     useTableImport: jest.fn(),
 }))
 
 const mockUseTableImport = jest.mocked(
-    require('../Table/useTableImport').useTableImport,
+    require('./Imports/Email/useTableImport').useTableImport,
 )
+
+const mockUseFlag = jest.mocked(require('core/flags').useFlag)
 
 describe('ImportEmail', () => {
     const defaultTableProps = {
@@ -78,6 +89,7 @@ describe('ImportEmail', () => {
         mockUseTableImport.mockReturnValue({
             tableProps: defaultTableProps,
         })
+        mockUseFlag.mockReturnValue(true)
     })
 
     afterEach(() => {
@@ -370,6 +382,64 @@ describe('ImportEmail', () => {
             expect(tablePropsElement).toHaveTextContent(
                 JSON.stringify(mockTableProps),
             )
+        })
+    })
+
+    describe('Feature flag behavior', () => {
+        it('should show Zendesk Import tab when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide Zendesk Import tab when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('tab', { name: 'Zendesk Import' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render Zendesk Import tab when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render Zendesk Import tab or table when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { container } = renderComponent()
+
+            expect(
+                screen.queryByRole('tab', { name: 'Zendesk Import' }),
+            ).not.toBeInTheDocument()
+
+            const zendeskTable = container.querySelector(
+                '[data-testid="zendesk-import-table"]',
+            )
+            expect(zendeskTable).not.toBeInTheDocument()
+        })
+
+        it('should always show Email Import tab regardless of feature flag', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('tab', { name: 'Email Import' }),
+            ).toBeInTheDocument()
+            expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
         })
     })
 })

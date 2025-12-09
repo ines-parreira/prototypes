@@ -4,8 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import IconLink from 'core/ui/components/IconLink'
 import PageHeader from 'pages/common/components/PageHeader'
-
-import css from '../settings.less'
+import css from 'pages/settings/settings.less'
 
 type HeaderImportEmailProps = {
     onOpenCreateImportModal: () => void

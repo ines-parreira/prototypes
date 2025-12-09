@@ -31,7 +31,7 @@ export const PercentageInput = ({
         const input = e.target
         const newValue = input.value
 
-        if (newValue.length > 3) return
+        if (newValue.length > 5) return
 
         onChange(newValue)
 
@@ -60,9 +60,10 @@ export const PercentageInput = ({
             <input
                 className={inputClass}
                 type="number"
-                maxLength={3}
+                maxLength={5}
                 max={100}
                 min={1}
+                step={0.01}
                 value={value}
                 onChange={handleChange}
                 onBlur={handleOnBlur}

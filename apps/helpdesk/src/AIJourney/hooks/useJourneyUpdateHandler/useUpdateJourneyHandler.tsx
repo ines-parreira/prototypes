@@ -79,9 +79,10 @@ export const useJourneyUpdateHandler = ({
                     {
                         max_follow_up_messages: followUpValue,
                         offer_discount: isDiscountEnabled,
-                        max_discount_percent: discountValue
-                            ? Number(discountValue)
-                            : undefined,
+                        max_discount_percent:
+                            isDiscountEnabled && discountValue
+                                ? Number(discountValue)
+                                : 0,
                         sms_sender_integration_id: smsIntegrationId,
                         sms_sender_number: phoneNumberValue?.phone_number,
                         discount_code_message_threshold:

@@ -50,6 +50,14 @@ describe('CampaignStateBadge', () => {
                 state: JourneyCampaignStateEnum.Sent,
                 expectedLabel: 'Delivered',
             },
+            {
+                state: JourneyCampaignStateEnum.Paused,
+                expectedLabel: 'Paused',
+            },
+            {
+                state: 'something-else' as JourneyCampaignStateEnum,
+                expectedLabel: 'Unknown',
+            },
         ]
 
         labelMappings.forEach(({ state, expectedLabel }) => {

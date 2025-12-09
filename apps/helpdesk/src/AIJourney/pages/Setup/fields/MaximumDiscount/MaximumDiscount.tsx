@@ -64,7 +64,7 @@ export const MaximumDiscountField = ({
             />
             {shouldShowError && (
                 <div className={css.errorMessage}>
-                    Discount code value is required.
+                    Please enter a valid discount percentage (1-100%)
                 </div>
             )}
         </div>

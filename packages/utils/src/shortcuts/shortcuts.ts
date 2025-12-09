@@ -292,4 +292,13 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    Infobar: {
+        description: 'Infobar',
+        actions: {
+            TOGGLE_INFOBAR: {
+                key: ']',
+                description: 'Toggle the infobar.',
+            },
+        },
+    },
 }

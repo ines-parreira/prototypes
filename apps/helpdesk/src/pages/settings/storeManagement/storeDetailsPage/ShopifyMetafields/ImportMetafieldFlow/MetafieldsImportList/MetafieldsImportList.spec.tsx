@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { type MetafieldCategory } from '../../types'
 import { mockImportableFields } from './data'
 import MetafieldsImportList from './MetafieldsImportList'
 
@@ -42,7 +43,7 @@ describe('MetafieldsImportList', () => {
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
                 onContinue={mockOnContinue}
-                maxFieldsImported={false}
+                isAtMaxFields={false}
             />,
         )
 
@@ -59,7 +60,7 @@ describe('MetafieldsImportList', () => {
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
                 onContinue={mockOnContinue}
-                maxFieldsImported={true}
+                isAtMaxFields
             />,
         )
 
@@ -275,6 +276,144 @@ describe('MetafieldsImportList', () => {
 
         const callArgs = mockOnSelectionChange.mock.calls[0][0]
         expect(callArgs.length).toBe(0)
+    })
+
+    it('should limit selection to 10 items when select all is clicked', async () => {
+        const user = userEvent.setup()
+        const importedFields = mockImportableFields
+            .filter((field) => field.category === 'draft_order')
+            .slice(0, 5)
+
+        render(
+            <MetafieldsImportList
+                category="draft_order"
+                selectedMetafields={[]}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+                importedFields={importedFields}
+            />,
+        )
+
+        const checkboxes = screen.getAllByRole('checkbox')
+        const selectAllCheckbox = checkboxes[0]
+
+        await act(() => user.click(selectAllCheckbox))
+
+        await waitFor(() => {
+            expect(mockOnSelectionChange).toHaveBeenCalled()
+        })
+
+        const callArgs = mockOnSelectionChange.mock.calls[0][0]
+        expect(callArgs.length).toBe(5)
+    })
+
+    it('should select maximum of 10 items when select all is clicked with no imported fields', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <MetafieldsImportList
+                category="draft_order"
+                selectedMetafields={[]}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+                importedFields={[]}
+            />,
+        )
+
+        const checkboxes = screen.getAllByRole('checkbox')
+        const selectAllCheckbox = checkboxes[0]
+
+        await act(() => user.click(selectAllCheckbox))
+
+        await waitFor(() => {
+            expect(mockOnSelectionChange).toHaveBeenCalled()
+        })
+
+        const callArgs = mockOnSelectionChange.mock.calls[0][0]
+        expect(callArgs.length).toBe(10)
+    })
+
+    it('should disable checkbox when limit is reached for unselected field', () => {
+        const importedFields = mockImportableFields
+            .filter((field) => field.category === 'draft_order')
+            .slice(0, 10)
+
+        render(
+            <MetafieldsImportList
+                category="draft_order"
+                selectedMetafields={[]}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+                importedFields={importedFields}
+            />,
+        )
+
+        const checkboxes = screen.getAllByRole('checkbox')
+        const dataCheckboxes = checkboxes.filter(
+            (cb) => !cb.getAttribute('aria-label')?.includes('Select all'),
+        )
+
+        expect(dataCheckboxes.length).toBeGreaterThan(0)
+        dataCheckboxes.forEach((checkbox) => {
+            expect(checkbox).toBeDisabled()
+        })
+    })
+
+    it('should not disable checkbox for already selected field when limit is reached', () => {
+        const selectedFields = mockImportableFields
+            .filter((field) => field.category === 'draft_order')
+            .slice(0, 1)
+
+        const importedFields = mockImportableFields
+            .filter((field) => field.category === 'draft_order')
+            .slice(1, 10)
+
+        render(
+            <MetafieldsImportList
+                category="draft_order"
+                selectedMetafields={selectedFields}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+                importedFields={importedFields}
+            />,
+        )
+
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[]
+        const selectedCheckbox = checkboxes.find((cb) => cb.checked)
+
+        expect(selectedCheckbox).toBeDefined()
+        expect(selectedCheckbox).toBeChecked()
+        expect(selectedCheckbox).not.toBeDisabled()
+    })
+
+    it('should disable unsupported field type checkbox regardless of limit', () => {
+        const unsupportedField = mockImportableFields.find(
+            (field) => field.type === 'page',
+        )!
+
+        render(
+            <MetafieldsImportList
+                category={unsupportedField.category as MetafieldCategory}
+                selectedMetafields={[]}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+                importedFields={[]}
+            />,
+        )
+
+        expect(screen.getByText(unsupportedField.name)).toBeInTheDocument()
+
+        const checkboxes = screen.getAllByRole('checkbox') as HTMLInputElement[]
+        const dataCheckboxes = checkboxes.filter((cb) => cb.id !== 'checkbox-0')
+        const unsupportedCheckbox = dataCheckboxes.find((cb) => cb.disabled)
+
+        expect(unsupportedCheckbox).toBeDefined()
+        expect(unsupportedCheckbox).toBeDisabled()
     })
 
     describe('Filters', () => {

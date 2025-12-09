@@ -7,12 +7,12 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
+import { EmptyState } from '../EmptyState'
 import type { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'
-import EmptyState from './EmptyState'
-import { TableRow } from './TableRow'
+import { ImportRow } from './ImportRow'
 
-import css from '../ImportEmail.less'
+import css from './ImportEmail.less'
 
 type TableImportEmailProps = {
     onOpenCreateImportModal: () => void
@@ -26,7 +26,7 @@ type TableImportEmailProps = {
     sortOrder: OrderDirection
 }
 
-const TableImportEmail = ({
+export const ImportEmailTable = ({
     onOpenCreateImportModal,
     isLoading,
     importList,
@@ -46,7 +46,14 @@ const TableImportEmail = ({
     }
 
     if (!isLoading && importList.length === 0) {
-        return <EmptyState onOpenCreateImportModal={onOpenCreateImportModal} />
+        return (
+            <EmptyState
+                title="No emails imported"
+                description="Select an email to get started."
+                ctaButtonCallback={onOpenCreateImportModal}
+                ctaButtonLabel="Import Email"
+            />
+        )
     }
 
     return (
@@ -75,7 +82,10 @@ const TableImportEmail = ({
                 </TableHead>
                 <TableBody>
                     {importList.map((importItem) => (
-                        <TableRow key={importItem.id} importItem={importItem} />
+                        <ImportRow
+                            key={importItem.id}
+                            importItem={importItem}
+                        />
                     ))}
                 </TableBody>
             </TableWrapper>
@@ -89,5 +99,3 @@ const TableImportEmail = ({
         </>
     )
 }
-
-export default TableImportEmail

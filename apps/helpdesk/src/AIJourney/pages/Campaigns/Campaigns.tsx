@@ -22,6 +22,8 @@ import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsK
 import { useJourneyContext } from 'AIJourney/providers'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 
+import { getCampaignStateLabelAndColor } from '../../utils'
+
 import css from './Campaigns.less'
 
 export const Campaigns = () => {
@@ -79,8 +81,13 @@ export const Campaigns = () => {
         return campaigns?.map((campaign) => {
             const campaignMetric =
                 tableMetrics[campaign.id] || DEFAULT_TABLE_METRICS
+
+            const { label: stateLabel } = getCampaignStateLabelAndColor(
+                campaign.campaign?.state,
+            )
             return {
                 ...campaign,
+                stateLabel: stateLabel,
                 metrics: campaignMetric,
             }
         })

@@ -13,7 +13,6 @@ import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import { getDisplayName } from 'state/customers/helpers'
 import { getIntegrations } from 'state/integrations/selectors'
 import { getMessages } from 'state/ticket/selectors'
 import { getFormattedDate } from 'utils/date'
@@ -93,20 +92,12 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
         },
     )
 
-    const handleIgHandleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault()
-
-        logEvent(SegmentEvent.InstagramHandleClicked)
-
-        const igProfileUrl = encodeURI(
-            `https://www.instagram.com/${getDisplayName(customer as any)}`,
-        )
-
-        window.open(igProfileUrl, '_blank', 'noopener noreferrer')
-    }
-
     if (!customerHandle) {
         return null
+    }
+
+    const handleIgHandleClick = () => {
+        logEvent(SegmentEvent.InstagramHandleClicked)
     }
 
     if (!isIgSectionEnabled || !userInstaData) {
@@ -117,7 +108,12 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
                         type={TicketMessageSourceType.Instagram}
                         className={css.igIcon}
                     />
-                    <a href="/#" onClick={handleIgHandleClick}>
+                    <a
+                        href={`https://www.instagram.com/${customerHandle}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={handleIgHandleClick}
+                    >
                         @{customerHandle}
                     </a>
                 </Box>
@@ -133,7 +129,12 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
                             type={TicketMessageSourceType.Instagram}
                             className={css.igIcon}
                         />
-                        <a href="/#" onClick={handleIgHandleClick}>
+                        <a
+                            href={`https://www.instagram.com/${userInstaData.username}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleIgHandleClick}
+                        >
                             @{userInstaData.username}
                         </a>
                         {userInstaData?.is_verified && (
@@ -183,13 +184,13 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
                                 </Text>
                                 {userInstaData.business_follows_customer ? (
                                     <Tooltip target="tooltip_following">
-                                        Customer follows your business on
+                                        Your business follows this customer on
                                         Instagram
                                     </Tooltip>
                                 ) : (
                                     <Tooltip target="tooltip_following">
-                                        Customer doesn&apos;t follow your
-                                        business on Instagram
+                                        Your business doesn&apos;t follow this
+                                        customer on Instagram
                                     </Tooltip>
                                 )}
                             </Box>
@@ -209,13 +210,13 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
                                 </Text>
                                 {userInstaData.customer_follows_business ? (
                                     <Tooltip target="tooltip_follower">
-                                        Your business follows this customer on
+                                        Customer follows your business on
                                         Instagram
                                     </Tooltip>
                                 ) : (
                                     <Tooltip target="tooltip_follower">
-                                        Your business doesn&apos;t follow this
-                                        customer on Instagram
+                                        Customer doesn&apos;t follow your
+                                        business on Instagram
                                     </Tooltip>
                                 )}
                             </Box>

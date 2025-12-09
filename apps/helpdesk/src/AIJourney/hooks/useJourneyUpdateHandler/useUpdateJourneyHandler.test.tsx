@@ -218,6 +218,9 @@ describe('useJourneyUpdateHandler', () => {
 
             expect(mockMutateAsync).toHaveBeenCalledWith({
                 journeyId: 'journey-123',
+                journeyConfigs: {
+                    max_discount_percent: 0,
+                },
                 params: {
                     state: JourneyStatusEnum.Active,
                     message_instructions: undefined,
@@ -391,7 +394,7 @@ describe('useJourneyUpdateHandler', () => {
             expect(mockMutateAsync).toHaveBeenCalledWith(
                 expect.objectContaining({
                     journeyConfigs: expect.objectContaining({
-                        max_discount_percent: undefined,
+                        max_discount_percent: 0,
                     }),
                 }),
             )
@@ -529,7 +532,7 @@ describe('useJourneyUpdateHandler', () => {
                 journeyConfigs: {
                     max_follow_up_messages: 1,
                     offer_discount: false,
-                    max_discount_percent: undefined,
+                    max_discount_percent: 0,
                     sms_sender_integration_id: undefined,
                     sms_sender_number: undefined,
                     discount_code_message_threshold: undefined,

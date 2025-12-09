@@ -973,7 +973,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     discount_code_message_threshold: undefined,
                     max_follow_up_messages: 0,
                     offer_discount: false,
-                    max_discount_percent: 0,
+                    max_discount_percent: undefined,
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
                 },

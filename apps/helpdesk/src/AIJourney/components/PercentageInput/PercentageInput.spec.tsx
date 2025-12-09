@@ -50,18 +50,18 @@ describe('<PercentageInput />', () => {
         expect(handleChange).toHaveBeenCalledTimes(3)
     })
 
-    it('should not allow input with more than 3 characters', async () => {
+    it('should not allow input with more than 5 characters', async () => {
         const handleChange = jest.fn()
         renderPercentageInput(handleChange)
 
         const input = screen.getByRole('spinbutton')
 
-        await userEvent.type(input, '4200')
+        await userEvent.type(input, '45.456')
         input.blur()
 
-        expect(input).toHaveValue(420)
+        expect(input).toHaveValue(45.45)
         expect(input).toHaveClass('percentageInput')
-        expect(handleChange).toHaveBeenCalledTimes(3)
+        expect(handleChange).toHaveBeenCalledTimes(4)
     })
 
     it('should prevent numbers starting with zero', async () => {

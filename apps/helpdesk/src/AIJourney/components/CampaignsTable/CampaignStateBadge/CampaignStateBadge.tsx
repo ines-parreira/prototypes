@@ -2,7 +2,9 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+import type { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+
+import { getCampaignStateLabelAndColor } from 'AIJourney/utils'
 
 import css from './CampaignStateBadge.less'
 
@@ -11,37 +13,7 @@ export default function CampaignStateBadge({
 }: {
     state: JourneyCampaignStateEnum
 }) {
-    let color: string
-    let label: string
-    switch (state) {
-        case JourneyCampaignStateEnum.Draft:
-            color = 'yellow'
-            label = 'Draft'
-            break
-        case JourneyCampaignStateEnum.Scheduled:
-            color = 'yellow'
-            label = 'Scheduled'
-            break
-        case JourneyCampaignStateEnum.Paused:
-            color = 'yellow'
-            label = 'Paused'
-            break
-        case JourneyCampaignStateEnum.Active:
-            color = 'blue'
-            label = 'Sending'
-            break
-        case JourneyCampaignStateEnum.Canceled:
-            color = 'red'
-            label = 'Canceled'
-            break
-        case JourneyCampaignStateEnum.Sent:
-            color = 'green'
-            label = 'Delivered'
-            break
-        default:
-            color = 'grey'
-            label = 'Unknown'
-    }
+    const { color, label } = getCampaignStateLabelAndColor(state)
 
     return <span className={classNames(css.badge, css[color])}>{label}</span>
 }

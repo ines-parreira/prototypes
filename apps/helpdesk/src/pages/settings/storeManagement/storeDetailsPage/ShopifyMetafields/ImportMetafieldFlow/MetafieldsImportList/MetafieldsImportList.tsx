@@ -19,6 +19,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
 import type { Field } from '../../MetafieldsTable/types'
 import { MetafieldEnum } from '../../MetafieldTypeItem/MetafieldTypeItem'
 import type { MetafieldCategory } from '../../types'
@@ -28,7 +29,7 @@ import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
 import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
-import { columns } from './Columns'
+import { getColumns } from './Columns'
 import { mockImportableFields } from './data'
 
 import styles from './MetafieldsImportList.less'
@@ -39,7 +40,8 @@ type MetafieldsImportListProps = {
     onSelectionChange: (selectedFields: Field[]) => void
     onBack: () => void
     onContinue: () => void
-    maxFieldsImported?: boolean
+    isAtMaxFields?: boolean
+    importedFields?: Field[]
 }
 
 const metafieldTypeOptions = Object.values(MetafieldEnum).map((type) => ({
@@ -54,12 +56,28 @@ export default function MetafieldsImportList({
     onSelectionChange,
     onBack,
     onContinue,
-    maxFieldsImported,
+    isAtMaxFields,
+    importedFields = [],
 }: MetafieldsImportListProps) {
     const filteredData = useFilteredMetafields({
         data: mockImportableFields,
         category,
     })
+
+    const importedFieldsForCategory = useMemo(
+        () => importedFields.filter((field) => field.category === category),
+        [importedFields, category],
+    )
+
+    const totalSelectedCount = useMemo(
+        () => importedFieldsForCategory.length + selectedMetafields.length,
+        [importedFieldsForCategory, selectedMetafields],
+    )
+
+    const hasReachedLimit = useMemo(
+        () => totalSelectedCount >= MAX_FIELDS_PER_CATEGORY,
+        [totalSelectedCount],
+    )
 
     const initialRowSelection = useMemo(() => {
         return selectedMetafields.reduce((acc, field) => {
@@ -72,11 +90,25 @@ export default function MetafieldsImportList({
         const selectedIds = Object.keys(newSelection).filter(
             (id) => newSelection[id],
         )
-        const selectedFields = filteredData.filter((field) =>
+
+        // Get selected fields in the order they appear in the table
+        const selectedFieldsInOrder = filteredData.filter((field) =>
             selectedIds.includes(field.id),
         )
-        onSelectionChange(selectedFields)
+
+        // Enforce limit: if selecting more than available, take only first N
+        const limitedSelectedFields = selectedFieldsInOrder.slice(
+            0,
+            MAX_FIELDS_PER_CATEGORY - importedFieldsForCategory.length,
+        )
+
+        onSelectionChange(limitedSelectedFields)
     }
+
+    const columns = useMemo(
+        () => getColumns(selectedMetafields, totalSelectedCount),
+        [selectedMetafields, totalSelectedCount],
+    )
 
     const table = useTable({
         data: filteredData,
@@ -91,7 +123,19 @@ export default function MetafieldsImportList({
         },
         selectionConfig: {
             enableRowSelection: (row) => {
-                return isSupportedMetafieldType(row.original.type)
+                if (!isSupportedMetafieldType(row.original.type)) {
+                    return false
+                }
+
+                const isCurrentlySelected = selectedMetafields.some(
+                    (field) => field.id === row.original.id,
+                )
+
+                if (isCurrentlySelected) {
+                    return true
+                }
+
+                return !hasReachedLimit
             },
             initialRowSelection,
             onRowSelectionChange: handleRowSelectionChange,
@@ -114,11 +158,11 @@ export default function MetafieldsImportList({
             >
                 <Text>Choose up to 10 metafields to import to Gorgias.</Text>
 
-                {maxFieldsImported ? <MaxFieldsImportedBanner /> : null}
+                {isAtMaxFields ? <MaxFieldsImportedBanner /> : null}
             </Box>
             <div
                 className={cn(styles.toolbarContainer, {
-                    [styles.maxFieldsImported]: !!maxFieldsImported,
+                    [styles.maxFieldsImported]: !!isAtMaxFields,
                 })}
             >
                 <TableToolbar

@@ -4,13 +4,13 @@ import { render, screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import { mockImportItems } from '../../fixture'
 import type { ImportItem } from '../../types'
-import { TableRow } from '../TableRow'
+import { ImportRow } from '../ImportRow'
+import { mockImportItems } from './fixture'
 
-type TableRowProps = ComponentProps<typeof TableRow>
+type ImportRowProps = ComponentProps<typeof ImportRow>
 
-describe('TableRow', () => {
+describe('ImportRow', () => {
     const createMockImportItem = (
         overrides: Partial<ImportItem> = {},
     ): ImportItem => ({
@@ -18,13 +18,13 @@ describe('TableRow', () => {
         ...overrides,
     })
 
-    const renderTableRow = (importItem: ImportItem) => {
+    const renderImportRow = (importItem: ImportItem) => {
         return render(
             <table>
                 <tbody>
-                    <TableRow
+                    <ImportRow
                         importItem={
-                            importItem as unknown as TableRowProps['importItem']
+                            importItem as unknown as ImportRowProps['importItem']
                         }
                     />
                 </tbody>
@@ -39,7 +39,7 @@ describe('TableRow', () => {
                 provider_identifier: 'gmail@example.com',
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByAltText('gmail logo')).toBeInTheDocument()
             expect(screen.getByText('gmail@example.com')).toBeInTheDocument()
@@ -51,7 +51,7 @@ describe('TableRow', () => {
                 provider_identifier: 'outlook@example.com',
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByAltText('outlook logo')).toBeInTheDocument()
             expect(screen.getByText('outlook@example.com')).toBeInTheDocument()
@@ -63,7 +63,7 @@ describe('TableRow', () => {
                 provider_identifier: 'unsupported@example.com',
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('email')).toBeInTheDocument()
             expect(
@@ -83,7 +83,7 @@ describe('TableRow', () => {
                 import_window_end: '2025-01-15T00:00:00Z',
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('5,000 emails')).toBeInTheDocument()
             expect(
@@ -98,7 +98,7 @@ describe('TableRow', () => {
                 },
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('5,432 emails')).toBeInTheDocument()
         })
@@ -111,7 +111,7 @@ describe('TableRow', () => {
                 },
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('1 emails')).toBeInTheDocument()
         })
@@ -123,7 +123,7 @@ describe('TableRow', () => {
                 },
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('0 emails')).toBeInTheDocument()
         })
@@ -135,7 +135,7 @@ describe('TableRow', () => {
                 },
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('0 emails')).toBeInTheDocument()
         })
@@ -147,7 +147,7 @@ describe('TableRow', () => {
                 },
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByText('1,234,567,890 emails')).toBeInTheDocument()
         })
@@ -161,7 +161,7 @@ describe('TableRow', () => {
                     progress_percentage: 100,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(
                     screen.getByText('check_circle_outline'),
@@ -175,7 +175,7 @@ describe('TableRow', () => {
                     progress_percentage: 50,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('COMPLETED')).toBeInTheDocument()
                 expect(screen.queryByText('50%')).not.toBeInTheDocument()
@@ -189,7 +189,7 @@ describe('TableRow', () => {
                     progress_percentage: 0,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('error_outline')).toBeInTheDocument()
                 expect(screen.getByText('FAILED')).toBeInTheDocument()
@@ -201,7 +201,7 @@ describe('TableRow', () => {
                     progress_percentage: 75,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('FAILED')).toBeInTheDocument()
                 expect(screen.queryByText('75%')).not.toBeInTheDocument()
@@ -215,7 +215,7 @@ describe('TableRow', () => {
                     progress_percentage: 65,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('65% COMPLETED')).toBeInTheDocument()
             })
@@ -226,7 +226,7 @@ describe('TableRow', () => {
                     progress_percentage: 0,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('0% COMPLETED')).toBeInTheDocument()
             })
@@ -237,7 +237,7 @@ describe('TableRow', () => {
                     progress_percentage: 100,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('100% COMPLETED')).toBeInTheDocument()
             })
@@ -250,7 +250,7 @@ describe('TableRow', () => {
                     progress_percentage: 50,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('UNKNOWN')).toBeInTheDocument()
             })
@@ -261,7 +261,7 @@ describe('TableRow', () => {
                     progress_percentage: 25,
                 })
 
-                renderTableRow(importItem)
+                renderImportRow(importItem)
 
                 expect(screen.getByText('UNKNOWN')).toBeInTheDocument()
             })
@@ -283,7 +283,7 @@ describe('TableRow', () => {
                 provider: IntegrationType.Outlook,
             })
 
-            renderTableRow(importItem)
+            renderImportRow(importItem)
 
             expect(screen.getByAltText('outlook logo')).toBeInTheDocument()
             expect(screen.getByText('complete@test.com')).toBeInTheDocument()

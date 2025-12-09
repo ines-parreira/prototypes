@@ -1,21 +1,17 @@
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {
-    getDateRange,
-    getProviderIcon,
-    getStatusBadge,
-} from 'pages/settings/importEmails/Table/utils'
 
 import type { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'
+import { getDateRange, getProviderIcon, getStatusBadge } from './utils'
 
-import css from '../ImportEmail.less'
+import css from './ImportEmail.less'
 
 type TableRowProps = {
     importItem: ImportItem
 }
 
-export const TableRow = ({ importItem }: TableRowProps) => {
+export const ImportRow = ({ importItem }: TableRowProps) => {
     return (
         <TableBodyRow key={importItem.id}>
             <BodyCell

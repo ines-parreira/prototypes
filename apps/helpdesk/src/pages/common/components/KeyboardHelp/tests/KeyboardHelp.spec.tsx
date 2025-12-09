@@ -1,9 +1,15 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { shortcuts } from '@repo/utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 const badgeContentMock = 'badgeContentMock'
 
@@ -76,5 +82,41 @@ describe('<KeyboardHelp />', () => {
                 screen.queryByText(/Keyboard shortcuts/),
             ).not.toBeInTheDocument(),
         )
+    })
+
+    it('should render Infobar shortcuts when UIVisionMilestone1 flag is true', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.UIVisionMilestone1) {
+                return true
+            }
+        })
+
+        render(<KeyboardHelp />)
+
+        makeExecuteKeyboardAction(
+            shortcutManagerMock,
+            shortcutEventMock,
+            'KeyboardHelp',
+        )('SHOW_HELP')
+
+        expect(screen.getByText('Infobar')).toBeInTheDocument()
+    })
+
+    it('should not render Infobar shortcuts when UIVisionMilestone1 flag is false', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.UIVisionMilestone1) {
+                return false
+            }
+        })
+
+        render(<KeyboardHelp />)
+
+        makeExecuteKeyboardAction(
+            shortcutManagerMock,
+            shortcutEventMock,
+            'KeyboardHelp',
+        )('SHOW_HELP')
+
+        expect(screen.queryByText('Infobar')).not.toBeInTheDocument()
     })
 })
