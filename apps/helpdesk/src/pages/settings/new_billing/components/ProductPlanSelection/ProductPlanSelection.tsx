@@ -52,7 +52,7 @@ export type ProductPlanSelectionProps = {
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isTrialing?: boolean
     initialIndex?: number
-    periodEnd?: string
+    periodEnd: string
     currentUsage?: CurrentProductsUsages
     editingAvailable: boolean
     customer?: CustomerSummary | null
@@ -204,15 +204,20 @@ const ProductPlanSelection = ({
     ])
 
     const currentProducts = useAppSelector(getCurrentPlansByProduct)
-    const currentSubscriptionProducts = currentProducts
-        ? {
-              [ProductType.Helpdesk]: currentProducts.helpdesk,
-              [ProductType.Automation]: currentProducts.automation || null,
-              [ProductType.Voice]: currentProducts.voice || null,
-              [ProductType.SMS]: currentProducts.sms || null,
-              [ProductType.Convert]: currentProducts.convert || null,
-          }
-        : null
+    const currentSubscriptionProducts = useMemo(
+        () =>
+            currentProducts
+                ? {
+                      [ProductType.Helpdesk]: currentProducts.helpdesk,
+                      [ProductType.Automation]:
+                          currentProducts.automation || null,
+                      [ProductType.Voice]: currentProducts.voice || null,
+                      [ProductType.SMS]: currentProducts.sms || null,
+                      [ProductType.Convert]: currentProducts.convert || null,
+                  }
+                : null,
+        [currentProducts],
+    )
 
     const isCancellationAvailable = useIsCancellationAvailable({
         helpdeskPlan: currentSubscriptionProducts?.helpdesk || null,
@@ -220,6 +225,13 @@ const ProductPlanSelection = ({
         isTrialing,
         customer,
     })
+
+    const showCancelProductModal = useMemo(
+        () =>
+            (type === ProductType.Helpdesk && isCancellationAvailable) ||
+            (type !== ProductType.Helpdesk && useConsolidatedCancellationModal),
+        [type, isCancellationAvailable, useConsolidatedCancellationModal],
+    )
 
     const handleOpen = useCallback(() => {
         const initialPlan =
@@ -487,141 +499,38 @@ const ProductPlanSelection = ({
                         availablePlans={availablePlans}
                     />
                 )}
-            {!!periodEnd &&
-                !!currentUsage &&
-                !useConsolidatedCancellationModal && (
-                    <CancelAAOModal
-                        isOpen={isCancelAAOModalOpen}
-                        handleCancelAAO={handleClose}
-                        handleOnClose={() => setIsCancelAAOModalOpen(false)}
-                        periodEnd={periodEnd}
-                        currentUsage={currentUsage}
-                    />
-                )}
-            {currentSubscriptionProducts && periodEnd && (
-                <>
-                    {isCancellationAvailable && (
-                        <CancelProductModal
-                            onClose={() => {
-                                setIsCancellationFlowOpen(false)
-                            }}
-                            isOpen={
-                                isCancellationFlowOpen &&
-                                type === ProductType.Helpdesk
-                            }
-                            productType={ProductType.Helpdesk}
-                            subscriptionProducts={currentSubscriptionProducts}
-                            periodEnd={periodEnd}
-                            currentUsage={currentUsage}
-                            selectedPlans={selectedPlans}
-                            setSelectedPlans={setSelectedPlans}
-                            onCancellationConfirmed={() => {
-                                setIsCancellationFlowOpen(false)
-                            }}
-                            updateSubscription={updateSubscription}
-                        />
-                    )}
-                    {useConsolidatedCancellationModal &&
-                        type === ProductType.Automation && (
-                            <CancelProductModal
-                                onClose={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                isOpen={
-                                    isCancellationFlowOpen &&
-                                    type === ProductType.Automation
-                                }
-                                productType={ProductType.Automation}
-                                subscriptionProducts={
-                                    currentSubscriptionProducts
-                                }
-                                periodEnd={periodEnd}
-                                currentUsage={currentUsage}
-                                selectedPlans={selectedPlans}
-                                setSelectedPlans={setSelectedPlans}
-                                onCancellationConfirmed={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                updateSubscription={updateSubscription}
-                            />
-                        )}
-                    {useConsolidatedCancellationModal &&
-                        type === ProductType.Convert && (
-                            <CancelProductModal
-                                onClose={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                isOpen={
-                                    isCancellationFlowOpen &&
-                                    type === ProductType.Convert
-                                }
-                                productType={ProductType.Convert}
-                                subscriptionProducts={
-                                    currentSubscriptionProducts
-                                }
-                                periodEnd={periodEnd}
-                                currentUsage={currentUsage}
-                                selectedPlans={selectedPlans}
-                                setSelectedPlans={setSelectedPlans}
-                                onCancellationConfirmed={() => {
-                                    handleConvertProductRemoved(
-                                        selectedPlan?.plan_id,
-                                        currentAccount.get('domain'),
-                                    )
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                updateSubscription={updateSubscription}
-                            />
-                        )}
-                    {useConsolidatedCancellationModal &&
-                        type === ProductType.SMS && (
-                            <CancelProductModal
-                                onClose={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                isOpen={
-                                    isCancellationFlowOpen &&
-                                    type === ProductType.SMS
-                                }
-                                productType={ProductType.SMS}
-                                subscriptionProducts={
-                                    currentSubscriptionProducts
-                                }
-                                periodEnd={periodEnd}
-                                currentUsage={currentUsage}
-                                selectedPlans={selectedPlans}
-                                setSelectedPlans={setSelectedPlans}
-                                onCancellationConfirmed={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                updateSubscription={updateSubscription}
-                            />
-                        )}
-                    {useConsolidatedCancellationModal &&
-                        type === ProductType.Voice && (
-                            <CancelProductModal
-                                onClose={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                isOpen={
-                                    isCancellationFlowOpen &&
-                                    type === ProductType.Voice
-                                }
-                                productType={ProductType.Voice}
-                                subscriptionProducts={
-                                    currentSubscriptionProducts
-                                }
-                                periodEnd={periodEnd}
-                                currentUsage={currentUsage}
-                                selectedPlans={selectedPlans}
-                                setSelectedPlans={setSelectedPlans}
-                                onCancellationConfirmed={() => {
-                                    setIsCancellationFlowOpen(false)
-                                }}
-                                updateSubscription={updateSubscription}
-                            />
-                        )}
-                </>
+            {!!currentUsage && !useConsolidatedCancellationModal && (
+                <CancelAAOModal
+                    isOpen={isCancelAAOModalOpen}
+                    handleCancelAAO={handleClose}
+                    handleOnClose={() => setIsCancelAAOModalOpen(false)}
+                    periodEnd={periodEnd}
+                    currentUsage={currentUsage}
+                />
+            )}
+            {showCancelProductModal && currentSubscriptionProducts && (
+                <CancelProductModal
+                    onClose={() => {
+                        setIsCancellationFlowOpen(false)
+                    }}
+                    isOpen={isCancellationFlowOpen}
+                    productType={type}
+                    subscriptionProducts={currentSubscriptionProducts}
+                    periodEnd={periodEnd}
+                    currentUsage={currentUsage}
+                    selectedPlans={selectedPlans}
+                    setSelectedPlans={setSelectedPlans}
+                    onCancellationConfirmed={() => {
+                        if (type === ProductType.Convert) {
+                            handleConvertProductRemoved(
+                                selectedPlan?.plan_id,
+                                currentAccount.get('domain'),
+                            )
+                        }
+                        setIsCancellationFlowOpen(false)
+                    }}
+                    updateSubscription={updateSubscription}
+                />
             )}
         </div>
     )

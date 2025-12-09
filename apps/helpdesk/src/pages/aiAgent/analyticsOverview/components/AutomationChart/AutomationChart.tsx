@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { BarChart, ChartCard, DonutChart } from '@repo/reporting'
 import type { ChartDataItem, ChartType } from '@repo/reporting'
 
-import { Box, ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
+import { ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
 
 type MetricOption = {
     id: string
@@ -48,14 +48,10 @@ export const AutomationChart = ({
                 }
             >
                 <ButtonGroupItem id="donut" aria-label="Show donut chart">
-                    <Box pl="xxs" pr="xxs">
-                        <Icon name="chart-pie" />
-                    </Box>
+                    <Icon name="chart-pie" />
                 </ButtonGroupItem>
                 <ButtonGroupItem id="bar" aria-label="Show bar chart">
-                    <Box pl="xxs" pr="xxs">
-                        <Icon name="chart-bar-vertical" />
-                    </Box>
+                    <Icon name="chart-bar-vertical" />
                 </ButtonGroupItem>
             </ButtonGroup>
         ),

@@ -29,6 +29,7 @@ export type TrendDirection = 'more-is-better' | 'less-is-better' | 'neutral'
 
 export type TooltipData = {
     title: string
+    caption?: string
     link?: string
     linkText?: string
 }

@@ -383,6 +383,7 @@ const BillingProcessView = ({
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
+                            periodEnd={periodEnd}
                             initialIndex={voiceInitialIndex}
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
@@ -398,6 +399,7 @@ const BillingProcessView = ({
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
+                            periodEnd={periodEnd}
                             initialIndex={smsInitialIndex}
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel
@@ -413,6 +415,7 @@ const BillingProcessView = ({
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
+                            periodEnd={periodEnd}
                             initialIndex={convertInitialIndex}
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel

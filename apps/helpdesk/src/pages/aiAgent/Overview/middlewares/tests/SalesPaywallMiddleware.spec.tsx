@@ -1,7 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Route, Switch } from 'react-router-dom'
 
@@ -743,7 +744,7 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('opens the revamp modal when trial button is clicked and revamp is enabled', () => {
+        it('opens the revamp modal when trial button is clicked and revamp is enabled', async () => {
             // Mock the milestone to 'milestone-0' (equivalent to true)
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
             mockUseTrialAccess.mockReturnValue({
@@ -778,13 +779,13 @@ describe('SalesPaywallMiddleware', () => {
             const trialButton = screen.getByText(
                 `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
-            fireEvent.click(trialButton)
+            await act(() => userEvent.click(trialButton))
 
             // Verify that the openTrialUpgradeModal function was called
             expect(mockOpenTrialUpgradeModal).toHaveBeenCalled()
         })
 
-        it('calls startTrialOriginal when revamp is disabled and trial button is clicked', () => {
+        it('calls startTrialOriginal when revamp is disabled and trial button is clicked', async () => {
             mockUseFlag.mockImplementation(() => false) // revamp disabled
             mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: false,
@@ -814,7 +815,7 @@ describe('SalesPaywallMiddleware', () => {
             const trialButton = screen.getByText(
                 `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
-            fireEvent.click(trialButton)
+            await act(() => userEvent.click(trialButton))
 
             expect(startTrialOriginal).toHaveBeenCalled()
         })
@@ -870,7 +871,7 @@ describe('SalesPaywallMiddleware', () => {
             ).toBeInTheDocument()
         })
 
-        it('calls startRevampTrial when trial upgrade modal confirm is clicked', () => {
+        it('calls startRevampTrial when trial upgrade modal confirm is clicked', async () => {
             const mockStartRevampTrial = jest.fn()
 
             mockUseShoppingAssistantTrialFlow.mockReturnValue(
@@ -886,7 +887,7 @@ describe('SalesPaywallMiddleware', () => {
             const confirmButton = screen.getByRole('button', {
                 name: /confirm/i,
             })
-            fireEvent.click(confirmButton)
+            await act(() => userEvent.click(confirmButton))
 
             expect(mockStartRevampTrial).toHaveBeenCalled()
         })
@@ -958,13 +959,13 @@ describe('SalesPaywallMiddleware', () => {
             )
         })
 
-        it('logs AiAgentShoppingAssistantStartTrialClicked event when start trial button is clicked', () => {
+        it('logs AiAgentShoppingAssistantStartTrialClicked event when start trial button is clicked', async () => {
             renderMiddleware()
 
             const trialButton = screen.getByText(
                 `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
-            fireEvent.click(trialButton)
+            await act(() => userEvent.click(trialButton))
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent-shopping-assistant-start-trial-clicked',
@@ -978,7 +979,7 @@ describe('SalesPaywallMiddleware', () => {
             )
         })
 
-        it('calls openTrialUpgradeModal when trial button is clicked with hasOptedOut and no active trial', () => {
+        it('calls openTrialUpgradeModal when trial button is clicked with hasOptedOut and no active trial', async () => {
             const mockOpenTrialUpgradeModal = jest.fn()
 
             mockUseTrialAccess.mockReturnValue({
@@ -999,12 +1000,12 @@ describe('SalesPaywallMiddleware', () => {
             const trialButton = screen.getByText(
                 `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
-            fireEvent.click(trialButton)
+            await act(() => userEvent.click(trialButton))
 
             expect(mockOpenTrialUpgradeModal).toHaveBeenCalled()
         })
 
-        it('calls openUpgradePlanModal when upgrade button is clicked with hasOptedOut and no active trial', () => {
+        it('calls openUpgradePlanModal when upgrade button is clicked with hasOptedOut and no active trial', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseTrialAccess.mockReturnValue({
@@ -1037,7 +1038,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            fireEvent.click(upgradeButton)
+            await act(() => userEvent.click(upgradeButton))
 
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })
@@ -1072,7 +1073,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            fireEvent.click(upgradeButton)
+            await act(() => userEvent.click(upgradeButton))
 
             // Wait for async call to complete
             await new Promise((resolve) => setTimeout(resolve, 0))
@@ -1080,7 +1081,7 @@ describe('SalesPaywallMiddleware', () => {
             expect(mockUpgradePlan).toHaveBeenCalled()
         })
 
-        it('calls showEarlyAccessModal when upgrade button is clicked and revamp is disabled', () => {
+        it('calls showEarlyAccessModal when upgrade button is clicked and revamp is disabled', async () => {
             const mockShowEarlyAccessModal = jest.fn()
 
             // Override the default mock for this test
@@ -1109,7 +1110,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            fireEvent.click(upgradeButton)
+            await act(() => userEvent.click(upgradeButton))
 
             expect(mockShowEarlyAccessModal).toHaveBeenCalled()
         })
@@ -1176,7 +1177,51 @@ describe('SalesPaywallMiddleware', () => {
             expect(screen.getByText('Book a demo')).toBeInTheDocument()
         })
 
-        it('should open external URL when "Book a demo" button is clicked', () => {
+        it('should open external URL when "Book a demo" primary button is clicked', async () => {
+            const mockWindowOpen = jest.fn()
+            global.window.open = mockWindowOpen
+
+            mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
+            mockUseTrialAccess.mockReturnValue({
+                canSeeTrialCTA: true,
+                canStartTrial: false,
+                hasTrialExpired: false,
+                hasCurrentStoreTrialStarted: false,
+                hasCurrentStoreTrialExpired: false,
+                hasAnyTrialOptedIn: false,
+                canBookDemo: true,
+            })
+
+            setupUseAppSelectorMock({
+                hasAutomate: true,
+                currentAutomatePlan: { generation: 5 },
+            })
+
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+                const flags = {
+                    [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
+                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
+                }
+
+                if (key in flags) {
+                    return flags[key as keyof typeof flags]
+                }
+
+                return false
+            })
+
+            renderMiddleware()
+
+            const bookDemoButton = screen.getByText('Book a demo')
+            await act(() => userEvent.click(bookDemoButton))
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                expect.stringContaining('https://'),
+                '_blank',
+            )
+        })
+
+        it('should open external URL when "Book a demo" secondary button is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
@@ -1204,7 +1249,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const bookDemoButton = screen.getByText('Book a demo')
-            fireEvent.click(bookDemoButton)
+            await act(() => userEvent.click(bookDemoButton))
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 expect.stringContaining('https://'),
@@ -1247,7 +1292,7 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should open shopping assistant info URL when "How shopping Assistants boosts sales" button is clicked', () => {
+        it('should open shopping assistant info URL when "How shopping Assistants boosts sales" button is clicked', async () => {
             const mockWindowOpen = jest.fn()
             global.window.open = mockWindowOpen
 
@@ -1278,7 +1323,7 @@ describe('SalesPaywallMiddleware', () => {
             const infoButton = screen.getByText(
                 'How shopping Assistants boosts sales',
             )
-            fireEvent.click(infoButton)
+            await act(() => userEvent.click(infoButton))
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 expect.stringContaining('https://'),
@@ -1418,7 +1463,7 @@ describe('SalesPaywallMiddleware', () => {
             ).toBeInTheDocument()
         })
 
-        it('should call history.push when AIAgentTrialSuccessModal onClick is triggered', () => {
+        it('should call history.push when AIAgentTrialSuccessModal onClick is triggered', async () => {
             mockUseModalManager.mockReturnValue({
                 isOpen: jest.fn().mockReturnValue(true), // Modal is open
                 openModal: jest.fn(),
@@ -1447,12 +1492,12 @@ describe('SalesPaywallMiddleware', () => {
 
             // Find the navigate button in the AIAgentTrialSuccessModal
             const navigateButton = screen.getByText('Navigate')
-            fireEvent.click(navigateButton)
+            await act(() => userEvent.click(navigateButton))
 
             expect(history.location.pathname).toBe('/customer-engagement')
         })
 
-        it('should call closeModal when AIAgentTrialSuccessModal onClose is triggered', () => {
+        it('should call closeModal when AIAgentTrialSuccessModal onClose is triggered', async () => {
             const mockCloseModal = jest.fn()
 
             mockUseModalManager.mockReturnValue({
@@ -1470,12 +1515,12 @@ describe('SalesPaywallMiddleware', () => {
 
             // Find the close button in the AIAgentTrialSuccessModal
             const closeButton = screen.getByText('Close')
-            fireEvent.click(closeButton)
+            await act(() => userEvent.click(closeButton))
 
             expect(mockCloseModal).toHaveBeenCalled()
         })
 
-        it('should handle onUpgradePlanClicked when revamp is enabled and has any trial opted in', () => {
+        it('should handle onUpgradePlanClicked when revamp is enabled and has any trial opted in', async () => {
             const mockUpgradePlan = jest.fn()
             const mockCloseManageTrialModal = jest.fn()
             const mockCloseUpgradePlanModal = jest.fn()
@@ -1523,7 +1568,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            fireEvent.click(upgradeButton)
+            await act(() => userEvent.click(upgradeButton))
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 'ai-agent/pricing-modal-clicked',
@@ -1531,7 +1576,7 @@ describe('SalesPaywallMiddleware', () => {
             )
         })
 
-        it('should handle start trial with hasAnyTrialOptedIn true', () => {
+        it('should handle start trial with hasAnyTrialOptedIn true', async () => {
             const mockStartRevampTrial = jest.fn()
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
@@ -1563,7 +1608,7 @@ describe('SalesPaywallMiddleware', () => {
             const trialButton = screen.getByText(
                 `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
             )
-            fireEvent.click(trialButton)
+            await act(() => userEvent.click(trialButton))
 
             expect(mockStartRevampTrial).toHaveBeenCalled()
         })
@@ -1626,7 +1671,7 @@ describe('SalesPaywallMiddleware', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should handle upgrade plan modal when no trial opted in', () => {
+        it('should handle upgrade plan modal when no trial opted in', async () => {
             const mockOpenUpgradePlanModal = jest.fn()
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
@@ -1664,7 +1709,7 @@ describe('SalesPaywallMiddleware', () => {
             renderMiddleware()
 
             const upgradeButton = screen.getByText('Upgrade Now')
-            fireEvent.click(upgradeButton)
+            await act(() => userEvent.click(upgradeButton))
 
             expect(mockOpenUpgradePlanModal).toHaveBeenCalled()
         })

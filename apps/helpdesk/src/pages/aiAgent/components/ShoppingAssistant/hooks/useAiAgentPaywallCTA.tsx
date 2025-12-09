@@ -73,7 +73,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     } = props
 
     const openDemoPage = useCallback(() => {
-        window.open(EXTERNAL_URLS.BOOK_DEMO_PAYWALL, '_blank')
+        window.open(EXTERNAL_URLS.BOOK_DEMO_AIAGENT, '_blank')
     }, [])
 
     const UpgradeNowSecondary = useMemo(

@@ -1,3 +1,4 @@
+import { fetchFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
@@ -18,11 +19,6 @@ import { AnalyticsOverviewTimeSavedCard } from './charts/AnalyticsOverviewTimeSa
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchAutomationRateTrend = async () =>
     ({ value: 0.32, trend: -0.02 }) as any
-const fetchAutomatedInteractionsTrend = async () =>
-    ({
-        value: 4800,
-        trend: -0.02,
-    }) as any
 const fetchTimeSavedTrend = async () => ({ value: 19800, trend: 0.02 }) as any
 const fetchCostSavedTrend = async () => ({ value: 2400, trend: -0.02 }) as any
 const fetchAutomationBreakdown = async () =>
@@ -80,7 +76,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchAutomatedInteractionsTrend,
+                        fetch: fetchFilteredAutomatedInteractions,
                         metricFormat: 'integer',
                     },
                 ],

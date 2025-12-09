@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
@@ -188,7 +188,7 @@ describe('useAiAgentCtas', () => {
         expect(result.current.afterCtas).toBeUndefined()
     })
 
-    it('calls onOpenWizard when SetupAIAgentButton is clicked', () => {
+    it('calls onOpenWizard when SetupAIAgentButton is clicked', async () => {
         const onOpenWizard = jest.fn()
         const props = createDefaultProps({
             canStartOnboarding: true,
@@ -199,12 +199,12 @@ describe('useAiAgentCtas', () => {
         const ctas = result.current.ctas as any
         const button = ctas.props.children[0]
 
-        button.props.onClick()
+        await act(() => button.props.onClick())
 
         expect(onOpenWizard).toHaveBeenCalled()
     })
 
-    it('calls onOpenSubscribeModal when SubscribeNowPrimary is clicked', () => {
+    it('calls onOpenSubscribeModal when SubscribeNowPrimary is clicked', async () => {
         const onOpenSubscribeModal = jest.fn()
         const props = createDefaultProps({
             isDuringOrAfterTrial: true,
@@ -215,12 +215,12 @@ describe('useAiAgentCtas', () => {
         const ctas = result.current.ctas as any
         const button = ctas.props.children[0]
 
-        button.props.onClick()
+        await act(() => button.props.onClick())
 
         expect(onOpenSubscribeModal).toHaveBeenCalled()
     })
 
-    it('calls onOpenTrialUpgradeModal when TryForFree is clicked', () => {
+    it('calls onOpenTrialUpgradeModal when TryForFree is clicked', async () => {
         const onOpenTrialUpgradeModal = jest.fn()
         const props = createDefaultProps({
             canSeeTrial: true,
@@ -232,12 +232,33 @@ describe('useAiAgentCtas', () => {
         const ctas = result.current.ctas as any
         const button = ctas.props.children[0]
 
-        button.props.onClick()
+        await act(() => button.props.onClick())
 
         expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
     })
 
-    it('calls onOpenTrialRequestModal when NotifyAdmin is clicked', () => {
+    it('calls openDemoPage when BookADemo is clicked', async () => {
+        const mockWindowOpen = jest.fn()
+        global.window.open = mockWindowOpen
+
+        const props = createDefaultProps({
+            canBookDemo: true,
+            isAdmin: true,
+        })
+
+        const { result } = renderHook(() => useAiAgentCtas(props))
+        const afterCtas = result.current.afterCtas as any
+
+        const button = afterCtas.props.children
+        await act(() => button.props.onBookDemo())
+
+        expect(mockWindowOpen).toHaveBeenCalledWith(
+            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+            '_blank',
+        )
+    })
+
+    it('calls onOpenTrialRequestModal when NotifyAdmin is clicked', async () => {
         const onOpenTrialRequestModal = jest.fn()
         const props = createDefaultProps({
             canNotifyAdmin: true,
@@ -248,7 +269,7 @@ describe('useAiAgentCtas', () => {
         const ctas = result.current.ctas as any
         const button = ctas.props.children[0]
 
-        button.props.onClick()
+        await act(() => button.props.onClick())
 
         expect(onOpenTrialRequestModal).toHaveBeenCalled()
     })
@@ -335,7 +356,7 @@ describe('useAiAgentCtas', () => {
         expect(trialFinishSetupModalComponent.props.someModalProp).toBe('test')
     })
 
-    it('returns TryTrial and Upgrade Now for Has Automate plan Admin (Case 7)', () => {
+    it('returns TryTrial and Upgrade Now for Has Automate plan Admin (Case 7)', async () => {
         const onOpenTrialUpgradeModal = jest.fn()
         const onOpenUpgradePlanModal = jest.fn()
         const props = createDefaultProps({
@@ -358,7 +379,7 @@ describe('useAiAgentCtas', () => {
         expect(result.current.afterCtas).toBeUndefined()
 
         // click try trial button to test events on primary CTA
-        tryTrialButton.props.onClick()
+        await act(() => tryTrialButton.props.onClick())
 
         expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
         expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
@@ -366,7 +387,7 @@ describe('useAiAgentCtas', () => {
             TrialType.ShoppingAssistant,
         )
 
-        upgradeNowButton.props.onClick()
+        await act(() => upgradeNowButton.props.onClick())
 
         expect(onOpenUpgradePlanModal).toHaveBeenCalledWith(false)
         expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
@@ -375,7 +396,7 @@ describe('useAiAgentCtas', () => {
         )
     })
 
-    it('returns NotifyAdmin and StartAIAgentOnly for Has Automate plan Lead (Case 8)', () => {
+    it('returns NotifyAdmin and StartAIAgentOnly for Has Automate plan Lead (Case 8)', async () => {
         const onOpenWizard = jest.fn()
         const onOpenTrialRequestModal = jest.fn()
         const props = createDefaultProps({
@@ -396,7 +417,7 @@ describe('useAiAgentCtas', () => {
         expect(result.current.afterCtas).toBeUndefined()
 
         // click notify admin button to test events on primary CTA
-        notifyAdminButton.props.onClick()
+        await act(() => notifyAdminButton.props.onClick())
 
         expect(onOpenTrialRequestModal).toHaveBeenCalled()
         expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
@@ -405,7 +426,7 @@ describe('useAiAgentCtas', () => {
         )
 
         // click start AI Agent button to test events on secondary CTA
-        startAiAgentButton.props.onClick()
+        await act(() => startAiAgentButton.props.onClick())
 
         expect(onOpenWizard).toHaveBeenCalled()
     })

@@ -18,6 +18,7 @@ import {
 } from '../../utils/helpers'
 import { MetricCard } from '../MetricCard/MetricCard'
 import { MetricCardHeader } from '../MetricCardHeader/MetricCardHeader'
+import type { TrendBadgeProps } from '../TrendBadge/TrendBadge'
 import { TrendBadge } from '../TrendBadge/TrendBadge'
 import { TrendChart } from '../TrendChart/TrendChart'
 
@@ -35,6 +36,7 @@ export type TrendCardProps = {
     trendColor?: TrendColor
     withBorder?: boolean
     withFixedWidth?: boolean
+    trendBadgeTooltipData?: TrendBadgeProps['tooltipData']
 }
 
 export const TrendCard = memo<TrendCardProps>(
@@ -50,6 +52,7 @@ export const TrendCard = memo<TrendCardProps>(
         trendColor,
         withBorder,
         withFixedWidth,
+        trendBadgeTooltipData,
     }) => {
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
@@ -115,6 +118,7 @@ export const TrendCard = memo<TrendCardProps>(
                                     metricFormat={metricFormat}
                                     interpretAs={interpretAs}
                                     currency={currency}
+                                    tooltipData={trendBadgeTooltipData}
                                 />
                             )}
                         </div>

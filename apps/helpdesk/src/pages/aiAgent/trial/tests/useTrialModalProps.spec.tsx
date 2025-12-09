@@ -794,7 +794,10 @@ describe('useTrialModalProps', () => {
                 )
             })
 
-            it('should return Book a demo when canBookDemo is true regardless of earlyAccessPlan', () => {
+            it('should return Book a demo when canBookDemo is true regardless of earlyAccessPlan', async () => {
+                const mockWindowOpen = jest.fn()
+                global.window.open = mockWindowOpen
+
                 mockUseAiAgentUpgradePlan.mockReturnValue({
                     data: null,
                 } as any)
@@ -811,6 +814,15 @@ describe('useTrialModalProps', () => {
                         label: 'Book a demo',
                         onClick: expect.any(Function),
                     },
+                )
+
+                await act(() =>
+                    result.current.trialStartedBanner.primaryAction?.onClick(),
+                )
+
+                expect(mockWindowOpen).toHaveBeenCalledWith(
+                    'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                    '_blank',
                 )
             })
         })

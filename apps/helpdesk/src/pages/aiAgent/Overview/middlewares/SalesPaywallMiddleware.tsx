@@ -433,7 +433,10 @@ const PaywallWrapperComponent = ({
                 <Button
                     fillStyle="ghost"
                     onClick={() => {
-                        window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                        window.open(
+                            EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT,
+                            '_blank',
+                        )
                     }}
                     className={css.trialButton}
                 >
@@ -492,7 +495,7 @@ const PaywallWrapperComponent = ({
 
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
         const handleBookDemo = () => {
-            window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+            window.open(EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT, '_blank')
         }
 
         return (

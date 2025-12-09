@@ -34,12 +34,6 @@ export function MetricCardHeader({
         </div>
     )
 
-    const hintTooltipTitle = hint
-        ? hint.linkText
-            ? `${hint.title}\n${hint.linkText}`
-            : hint.title
-        : ''
-
     return (
         <div className={css.wrapper}>
             <div className={css.title}>
@@ -52,12 +46,14 @@ export function MetricCardHeader({
                     titleElement
                 )}
                 {hint && (
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Icon name="info" />
-                        </TooltipTrigger>
-                        <TooltipContent title={hintTooltipTitle} />
-                    </Tooltip>
+                    <span className={css.infoIcon}>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" />
+                            </TooltipTrigger>
+                            <TooltipContent {...hint} />
+                        </Tooltip>
+                    </span>
                 )}
             </div>
             <div className={css.actionMenu}>

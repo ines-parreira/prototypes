@@ -1,7 +1,12 @@
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Icon, Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    Icon,
+    Skeleton,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
 import type { MetricValueFormat, TrendDirection } from '../../types'
@@ -15,7 +20,7 @@ import {
 
 import styles from './TrendBadge.less'
 
-type Props = {
+export type TrendBadgeProps = {
     className?: string
     isLoading?: boolean
     interpretAs?: TrendDirection
@@ -39,10 +44,7 @@ export function TrendBadge({
     metricFormat,
     currency,
     size = 'sm',
-}: Props) {
-    const id = useId()
-    const badgeId = `badge-${id}`
-
+}: TrendBadgeProps) {
     const { formattedTrend, sign = 0 } = formatMetricTrend(
         value,
         prevValue,
@@ -63,27 +65,30 @@ export function TrendBadge({
         return <Skeleton height={18} width={50} />
     }
 
+    const badgeElement = (
+        <div
+            className={classnames(
+                styles.trend,
+                styles[`color-${trendColor}`],
+                styles[`size-${size}`],
+                className,
+            )}
+        >
+            {trendIcon && <Icon name={trendIcon} color={trendIconColor} />}
+            {formattedTrend}
+        </div>
+    )
+
+    if (!tooltipData || formattedPrevValue === null) {
+        return badgeElement
+    }
+
+    const tooltipTitle = `Compared to ${formattedPrevValue} on ${tooltipData.period}`
+
     return (
-        <>
-            <div
-                className={classnames(
-                    styles.trend,
-                    styles[`color-${trendColor}`],
-                    styles[`size-${size}`],
-                    className,
-                )}
-                id={badgeId}
-            >
-                {trendIcon && <Icon name={trendIcon} color={trendIconColor} />}
-                {formattedTrend}
-            </div>
-            <Tooltip
-                target={badgeId}
-                disabled={!tooltipData || formattedPrevValue === null}
-            >
-                Vs. <strong>{formattedPrevValue}</strong> on{' '}
-                {tooltipData?.period}
-            </Tooltip>
-        </>
+        <Tooltip>
+            <TooltipTrigger>{badgeElement}</TooltipTrigger>
+            <TooltipContent title={tooltipTitle} />
+        </Tooltip>
     )
 }

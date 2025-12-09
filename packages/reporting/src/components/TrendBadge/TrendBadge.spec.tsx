@@ -11,8 +11,14 @@ import { TrendBadge } from './TrendBadge'
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
     ...(await importOriginal()),
     Skeleton: () => <div role="progressbar" />,
-    LegacyTooltip: ({ children }: { children: React.ReactNode }) => (
-        <div role="tooltip">{children}</div>
+    Tooltip: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+    TooltipContent: ({ title }: { title: string }) => (
+        <div role="tooltip">{title}</div>
     ),
 }))
 
@@ -43,9 +49,7 @@ describe('<TrendBadge />', () => {
         const value = 5
         const prevValue = 10
         const tooltipData = { period: 'random text' }
-        const tooltipResultingText = `Vs. ${formatMetricValue(prevValue)} on ${
-            tooltipData.period
-        }`
+        const tooltipResultingText = `Compared to ${formatMetricValue(prevValue)} on ${tooltipData.period}`
 
         render(
             <TrendBadge

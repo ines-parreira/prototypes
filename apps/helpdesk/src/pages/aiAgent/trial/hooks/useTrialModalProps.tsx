@@ -55,7 +55,7 @@ import { useTrialEndingModal } from './useTrialEndingModal/useTrialEndingModal'
 import { useTrialFinishSetupModal } from './useTrialFinishSetupModal'
 
 export const EXTERNAL_URLS = {
-    BOOK_DEMO:
+    BOOK_DEMO_SHOPPING_ASSISTANT:
         'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
     SHOPPING_ASSISTANT_INFO:
         'https://www.gorgias.com/ai-agent/shopping-assistant',
@@ -72,7 +72,7 @@ export const EXTERNAL_URLS = {
         'https://www.gorgias.com/ai-agent/shopping-assistant?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
     AI_AGENT_TRIAL_LEARN_MORE_PAYWALL:
         'https://www.gorgias.com/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
-    BOOK_DEMO_PAYWALL:
+    BOOK_DEMO_AIAGENT:
         'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
 } as const
 
@@ -693,7 +693,10 @@ const useTrialStartedBanner = (
             return {
                 label: 'Book a demo',
                 onClick: () => {
-                    window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                    window.open(
+                        EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT,
+                        '_blank',
+                    )
                 },
             }
         }
@@ -757,7 +760,10 @@ const useTrialAlertBanner = ({
             return {
                 label: 'Book a demo',
                 onClick: () => {
-                    window.open(EXTERNAL_URLS.BOOK_DEMO, '_blank')
+                    window.open(
+                        EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT,
+                        '_blank',
+                    )
                     logTrialBannerEvent(TrialEventType.Demo, trialType)
                 },
             }
