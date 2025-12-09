@@ -3,7 +3,7 @@
 :local {
     .content {
         align-items: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: flex;
         flex-direction: row;
         width: max-content;
@@ -40,7 +40,7 @@
         }
     }
     .title {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .caption-allcaps();
     }
 
@@ -57,7 +57,7 @@
 
     .directionIcon {
         display: none;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: 4px;
 
         &.isVisible {
@@ -71,5 +71,19 @@
         & > i {
             margin: 0;
         }
+    }
+}
+
+.axiom :local {
+    .content {
+        color: var(--content-neutral-secondary);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .directionIcon {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -2,20 +2,20 @@ import { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Icon, IconSize } from '@gorgias/axiom'
+import { Icon, IconSize, Tag } from '@gorgias/axiom'
 
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 import RelativeTime from 'pages/common/components/RelativeTime'
-
-import { KnowledgeEditorSidePanelFieldDescription } from './KnowledgeEditorSidePanelCommonFields'
 
 import css from './KnowledgeEditorSidePanelSectionRelatedTickets.less'
 
 type Ticket = {
     title: string
-    content: string
     lastUpdatedDatetime: Date
     url: string
+    messageCount: number
+    aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS
 }
 
 export type Props = {
@@ -43,16 +43,22 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
 
     return (
         <KnowledgeEditorSidePanelSection
-            header={{ title: <Title tickets={tickets} /> }}
-            sectionId={sectionId}
-            bottomLink={{
-                text: 'View all',
-                url: relatedTicketsUrl,
+            header={{
+                title: <Title tickets={tickets} />,
+                subtitle: 'Last 28 days',
             }}
+            sectionId={sectionId}
+            bottomLink={
+                tickets && tickets.length > 3
+                    ? {
+                          text: 'View all',
+                          url: relatedTicketsUrl,
+                      }
+                    : undefined
+            }
         >
             {latest3Tickets.length > 0 ? (
                 <div className={css.container}>
-                    <KnowledgeEditorSidePanelFieldDescription description="Tickets where AI Agent used this knowledge" />
                     <div className={css.ticketsList}>
                         {latest3Tickets.map((ticket, index) => (
                             <TicketCard key={index} ticket={ticket} />
@@ -70,28 +76,47 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
 
 const Title = ({ tickets }: Pick<Props, 'tickets'>) => (
     <span className={css.title}>
-        Related tickets{' '}
-        <span className={css.ticketsCount}>{tickets?.length ?? 0}</span>
+        Recent tickets <Tag color="grey">{tickets?.length ?? 0}</Tag>
     </span>
 )
 
 const TicketCard = ({ ticket }: { ticket: Ticket }) => (
-    <Link to={ticket.url} target="_blank" rel="noopener noreferrer">
-        <div className={css.ticketCard}>
-            <div className={css.ticketCardHeader}>
-                <div className={css.ticketCardTitle}>
-                    <span className={css.ticketCardIcon}>
-                        <Icon name="comm-mail" size={IconSize.Sm} />
-                    </span>
-                    {ticket.title}
-                </div>
-                <div className={css.ticketCardLastUpdatedDatetime}>
-                    <RelativeTime
-                        datetime={ticket.lastUpdatedDatetime.toISOString()}
-                    />
-                </div>
+    <Link
+        to={ticket.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={css.ticketCard}
+    >
+        <div className={css.ticketCardHeader}>
+            <div className={css.ticketCardTitle}>
+                <span className={css.ticketCardIcon}>
+                    <Icon name="comm-mail" size={IconSize.Sm} />
+                </span>
+                {ticket.title}
             </div>
-            <div className={css.ticketCardContent}>{ticket.content}</div>
+            <div className={css.ticketCardLastUpdatedDatetime}>
+                <RelativeTime
+                    datetime={ticket.lastUpdatedDatetime.toISOString()}
+                />
+            </div>
+        </div>
+        <div className={css.ticketCardContent}>
+            <div>
+                {ticket.aiAgentOutcome ===
+                AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover ? (
+                    <Tag color="orange">
+                        {AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}
+                    </Tag>
+                ) : (
+                    <Tag color="green">
+                        {AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}
+                    </Tag>
+                )}
+            </div>
+            <div>
+                {ticket.messageCount}
+                {ticket.messageCount > 1 ? ' messages' : ' message'}
+            </div>
         </div>
     </Link>
 )

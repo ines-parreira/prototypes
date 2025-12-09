@@ -11,7 +11,7 @@ import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import CampaignsTable from './CampaignsTable'
-import { columns } from './Columns'
+import { actionColumns, columns, metricColumns } from './Columns'
 
 const useParamsMock = jest.mocked(useParams)
 const useLocationMock = jest.mocked(useLocation)
@@ -89,6 +89,7 @@ const mockFields: JourneyApiDTO[] = [
 
 describe('CampaignsTable', () => {
     let queryClient: QueryClient
+    const allColumns = [...columns, ...metricColumns, ...actionColumns]
 
     const wrapper = (children: React.ReactNode) => (
         <QueryClientProvider client={queryClient}>
@@ -182,7 +183,7 @@ describe('CampaignsTable', () => {
         mockMutateAsync.mockResolvedValue(mockCreatedJourney)
 
         renderWithRouter(
-            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
+            wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
         )
 
         const user = userEvent.setup()
@@ -248,7 +249,7 @@ describe('CampaignsTable', () => {
         renderWithRouter(
             wrapper(
                 <CampaignsTable
-                    columns={columns}
+                    columns={allColumns}
                     data={mockCampaignWithActiveState}
                 />,
             ),

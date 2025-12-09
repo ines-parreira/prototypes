@@ -25,7 +25,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
         (): TicketInfobarNavigationItem[] => [
             {
                 name: 'toggle',
-                icon: 'system-bar-right',
+                icon: isExpanded ? 'system-bar-collapse' : 'system-bar-expand',
                 onClick: () => onToggle(),
             },
             {
@@ -54,7 +54,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                 },
             },
         ],
-        [hasAIFeedback, onChangeTab, onToggle],
+        [hasAIFeedback, onChangeTab, onToggle, isExpanded],
     )
 
     return (

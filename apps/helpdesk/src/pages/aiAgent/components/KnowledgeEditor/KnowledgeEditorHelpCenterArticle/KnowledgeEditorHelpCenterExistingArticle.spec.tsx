@@ -10,6 +10,7 @@ import {
 } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
 import useFlag from 'core/flags/hooks/useFlag'
 import { useNotify } from 'hooks/useNotify'
@@ -98,40 +99,42 @@ const article = {
 }
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider
-        store={mockStore({
-            entities: {
-                helpCenter: {
-                    helpCenters: {
-                        helpCentersById: {
-                            [helpCenter.id]: helpCenter,
+    <MemoryRouter>
+        <Provider
+            store={mockStore({
+                entities: {
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                [helpCenter.id]: helpCenter,
+                            },
+                        },
+                        articles: {
+                            articlesById: {},
+                        },
+                        categories: {
+                            categoriesById: Object.fromEntries(
+                                categories.map((category) => [
+                                    category.id,
+                                    category,
+                                ]),
+                            ),
                         },
                     },
-                    articles: {
-                        articlesById: {},
-                    },
-                    categories: {
-                        categoriesById: Object.fromEntries(
-                            categories.map((category) => [
-                                category.id,
-                                category,
-                            ]),
-                        ),
+                },
+                ui: {
+                    helpCenter: {
+                        currentId: helpCenter.id,
+                        currentLanguage: 'en-US',
                     },
                 },
-            },
-            ui: {
-                helpCenter: {
-                    currentId: helpCenter.id,
-                    currentLanguage: 'en-US',
-                },
-            },
-        })}
-    >
-        <CurrentHelpCenterContext.Provider value={helpCenter}>
-            {children}
-        </CurrentHelpCenterContext.Provider>
-    </Provider>
+            })}
+        >
+            <CurrentHelpCenterContext.Provider value={helpCenter}>
+                {children}
+            </CurrentHelpCenterContext.Provider>
+        </Provider>
+    </MemoryRouter>
 )
 
 describe('KnowledgeEditorHelpCenterExistingArticle', () => {

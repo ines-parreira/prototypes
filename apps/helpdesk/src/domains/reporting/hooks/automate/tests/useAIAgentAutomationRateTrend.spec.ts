@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 
 import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
@@ -6,10 +6,6 @@ import {
     fetchAllAutomatedInteractionsByAutoResponders,
     fetchBillableTicketsExcludingAIAgent,
     fetchTrendFromMultipleMetricsTrend,
-    useAllAutomatedInteractions,
-    useAllAutomatedInteractionsByAutoResponders,
-    useBillableTicketsExcludingAIAgent,
-    useTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import {
     fetchAIAgentAutomationRateTrend,
@@ -45,17 +41,17 @@ describe('useAIAgentAutomationRateTrend', () => {
         isError: false,
     }
 
-    it('should call hooks with correct parameters', () => {
-        ;(useTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue(
+    it('should call hooks with correct parameters', async () => {
+        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
-            useAllAutomatedInteractionsByAutoResponders as jest.Mock
-        ).mockReturnValue(mockTrendData)
-        ;(useAllAutomatedInteractions as jest.Mock).mockReturnValue(
+            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
+        ).mockResolvedValue(mockTrendData)
+        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
-        ;(useBillableTicketsExcludingAIAgent as jest.Mock).mockReturnValue(
+        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -70,37 +66,41 @@ describe('useAIAgentAutomationRateTrend', () => {
             useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
         )
 
-        expect(useTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
+        await waitFor(() => {
+            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
+        })
+
+        expect(fetchTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
             mockFilters,
             mockTimezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
         )
         expect(
-            useAllAutomatedInteractionsByAutoResponders,
+            fetchAllAutomatedInteractionsByAutoResponders,
         ).toHaveBeenCalledWith(mockFilters, mockTimezone)
-        expect(useAllAutomatedInteractions).toHaveBeenCalledWith(
+        expect(fetchAllAutomatedInteractions).toHaveBeenCalledWith(
             mockFilters,
             mockTimezone,
         )
-        expect(useBillableTicketsExcludingAIAgent).toHaveBeenCalledWith(
+        expect(fetchBillableTicketsExcludingAIAgent).toHaveBeenCalledWith(
             mockFilters,
             mockTimezone,
             12345,
         )
     })
 
-    it('should use unfiltered denominator calculation', () => {
-        ;(useTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue(
+    it('should use unfiltered denominator calculation', async () => {
+        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
-            useAllAutomatedInteractionsByAutoResponders as jest.Mock
-        ).mockReturnValue(mockTrendData)
-        ;(useAllAutomatedInteractions as jest.Mock).mockReturnValue(
+            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
+        ).mockResolvedValue(mockTrendData)
+        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
-        ;(useBillableTicketsExcludingAIAgent as jest.Mock).mockReturnValue(
+        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -115,6 +115,10 @@ describe('useAIAgentAutomationRateTrend', () => {
             useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
         )
 
+        await waitFor(() => {
+            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
+        })
+
         expect(
             getAIAgentAutomationRateUnfilteredDenominatorTrend,
         ).toHaveBeenCalledWith({
@@ -127,18 +131,18 @@ describe('useAIAgentAutomationRateTrend', () => {
         })
     })
 
-    it('should handle loading state correctly', () => {
-        ;(useTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue({
+    it('should handle loading state correctly', async () => {
+        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue({
             ...mockTrendData,
             isFetching: true,
         })
         ;(
-            useAllAutomatedInteractionsByAutoResponders as jest.Mock
-        ).mockReturnValue(mockTrendData)
-        ;(useAllAutomatedInteractions as jest.Mock).mockReturnValue(
+            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
+        ).mockResolvedValue(mockTrendData)
+        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
-        ;(useBillableTicketsExcludingAIAgent as jest.Mock).mockReturnValue(
+        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -153,21 +157,25 @@ describe('useAIAgentAutomationRateTrend', () => {
             useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
         )
 
+        await waitFor(() => {
+            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
+        })
+
         expect(result.current.isFetching).toBe(true)
     })
 
-    it('should handle error state correctly', () => {
-        ;(useTrendFromMultipleMetricsTrend as jest.Mock).mockReturnValue(
+    it('should handle error state correctly', async () => {
+        ;(fetchTrendFromMultipleMetricsTrend as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
-            useAllAutomatedInteractionsByAutoResponders as jest.Mock
-        ).mockReturnValue(mockTrendData)
-        ;(useAllAutomatedInteractions as jest.Mock).mockReturnValue({
+            fetchAllAutomatedInteractionsByAutoResponders as jest.Mock
+        ).mockResolvedValue(mockTrendData)
+        ;(fetchAllAutomatedInteractions as jest.Mock).mockResolvedValue({
             ...mockTrendData,
             isError: true,
         })
-        ;(useBillableTicketsExcludingAIAgent as jest.Mock).mockReturnValue(
+        ;(fetchBillableTicketsExcludingAIAgent as jest.Mock).mockResolvedValue(
             mockTrendData,
         )
         ;(
@@ -181,6 +189,10 @@ describe('useAIAgentAutomationRateTrend', () => {
         const { result } = renderHook(() =>
             useAIAgentAutomationRateTrend(mockFilters, mockTimezone),
         )
+
+        await waitFor(() => {
+            expect(fetchAllAutomatedInteractions).toHaveBeenCalled()
+        })
 
         expect(result.current.isError).toBe(true)
     })

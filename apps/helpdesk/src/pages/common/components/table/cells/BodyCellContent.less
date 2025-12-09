@@ -7,7 +7,7 @@
         flex-direction: row;
         position: relative;
         width: 100%;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         line-height: 20px;
         justify-content: flex-start;
         padding: 16px 12px;
@@ -20,5 +20,11 @@
         &.center {
             justify-content: center;
         }
+    }
+}
+
+.axiom :local {
+    .cellContent {
+        color: var(--content-neutral-default);
     }
 }

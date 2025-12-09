@@ -3,9 +3,14 @@ import React from 'react'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import moment from 'moment'
 
 import {
+    fetchAllAutomatedInteractions,
+    fetchAllAutomatedInteractionsByAutoResponders,
+    fetchBillableTicketsExcludingAIAgent,
+    fetchFilteredAutomatedInteractions,
     useAllAutomatedInteractions,
     useAllAutomatedInteractionsByAutoResponders,
     useBillableTicketsExcludingAIAgent,
@@ -132,6 +137,18 @@ const useFirstResponseTimeIncludingAIAgentMock = assumeMock(
 )
 const useResolutionTimeExcludingAIAgentMock = assumeMock(
     useResolutionTimeExcludingAIAgent,
+)
+const fetchFilteredAutomatedInteractionsMock = assumeMock(
+    fetchFilteredAutomatedInteractions,
+)
+const fetchAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
+    fetchAllAutomatedInteractionsByAutoResponders,
+)
+const fetchAllAutomatedInteractionsMock = assumeMock(
+    fetchAllAutomatedInteractions,
+)
+const fetchBillableTicketsExcludingAIAgentMock = assumeMock(
+    fetchBillableTicketsExcludingAIAgent,
 )
 
 describe('useAutomationDatasetV2', () => {
@@ -296,7 +313,7 @@ describe('useAutomationDatasetV2', () => {
     }
 
     describe('useAutomateMetricsTrendV2', () => {
-        it('should calculate automation rate correctly', () => {
+        it('should calculate automation rate correctly', async () => {
             useFilteredAutomatedInteractionsMock.mockReturnValue({
                 data: filteredAutomatedInteractions,
                 isFetching: false,
@@ -353,6 +370,27 @@ describe('useAutomationDatasetV2', () => {
                 Record<string, TimeSeriesDataItem[][]>
             >)
 
+            fetchFilteredAutomatedInteractionsMock.mockReturnValue({
+                data: filteredAutomatedInteractions,
+                isFetching: false,
+                isFetched: true,
+            } as any)
+            fetchAllAutomatedInteractionsByAutoRespondersMock.mockReturnValue({
+                data: allAutomatedInteractionsByAutoRespondersData,
+                isFetched: true,
+                isFetching: false,
+            } as any)
+            fetchAllAutomatedInteractionsMock.mockReturnValue({
+                data: allAutomatedInteractionsData,
+                isFetched: true,
+                isFetching: false,
+            } as any)
+            fetchBillableTicketsExcludingAIAgentMock.mockReturnValue({
+                data: BillableTicketsExcludingAIAgent,
+                isFetched: true,
+                isFetching: false,
+            } as any)
+
             jest.spyOn(queryClient, 'invalidateQueries')
             const { result } = renderHook(
                 () => useAutomateMetricsTrend(statsFilters, timezone),
@@ -364,6 +402,12 @@ describe('useAutomationDatasetV2', () => {
                     ),
                 },
             )
+
+            await waitFor(() => {
+                expect(
+                    result.current.automationRateTrend.isFetching,
+                ).toBeFalsy()
+            })
 
             expect(result.current.automatedInteractionTrend.data).toEqual({
                 prevValue: 0,

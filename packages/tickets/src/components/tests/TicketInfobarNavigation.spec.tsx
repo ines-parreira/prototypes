@@ -1,8 +1,8 @@
 import * as repoNavigation from '@repo/navigation'
-import { render, screen } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import { act, screen } from '@testing-library/react'
 import type { Mock, MockInstance } from 'vitest'
 
+import { render } from '../../tests/render.utils'
 import { TicketInfobarNavigation } from '../TicketInfobarNavigation'
 
 const { TicketInfobarTab } = repoNavigation
@@ -31,7 +31,7 @@ describe('TicketInfobarNavigation', () => {
     it('should render the infobar navigation', () => {
         render(<TicketInfobarNavigation />)
 
-        const button = screen.getByLabelText('system-bar-right')
+        const button = screen.getByLabelText('system-bar-collapse')
         expect(button).toBeInTheDocument()
     })
 
@@ -42,42 +42,65 @@ describe('TicketInfobarNavigation', () => {
         expect(button).toBeInTheDocument()
     })
 
-    it('should call onToggle when the toggle button is pressed', async () => {
+    it('should display the expand button when the infobar is collapsed', () => {
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Customer,
+            isExpanded: false,
+            onChangeTab,
+            onToggle,
+        })
         render(<TicketInfobarNavigation />)
 
-        const button = screen
-            .getByLabelText('system-bar-right')
-            .closest('button')
-        await userEvent.click(button!)
+        const button = screen.getByLabelText('system-bar-expand')
+        expect(button).toBeInTheDocument()
+    })
 
-        expect(onToggle).toHaveBeenCalledWith()
+    it('should call onToggle when the toggle button is pressed', async () => {
+        const { user } = render(<TicketInfobarNavigation />)
+
+        const button = screen
+            .getByLabelText('system-bar-collapse')
+            .closest('button')
+
+        await act(() => user.click(button!))
+
+        expect(onToggle).toHaveBeenCalled()
+    })
+
+    it('should display the collapse button when the infobar is expanded', () => {
+        render(<TicketInfobarNavigation />)
+
+        const button = screen.getByLabelText('system-bar-collapse')
+        expect(button).toBeInTheDocument()
     })
 
     it('should change to the "Customer" tab when that icon is clicked', async () => {
-        render(<TicketInfobarNavigation />)
+        const { user } = render(<TicketInfobarNavigation />)
 
         const button = screen.getByLabelText('customer-info').closest('button')
-        await userEvent.click(button!)
+
+        await act(() => user.click(button!))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
     })
 
     it('should change to the "AI Feedback" tab when that icon is clicked', async () => {
-        render(<TicketInfobarNavigation hasAIFeedback />)
+        const { user } = render(<TicketInfobarNavigation hasAIFeedback />)
 
         const button = screen
             .getByLabelText('ai-agent-feedback')
             .closest('button')
-        await userEvent.click(button!)
+
+        await act(() => user.click(button!))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
 
     it('should change to the "Customer" tab when that icon is clicked', async () => {
-        render(<TicketInfobarNavigation />)
+        const { user } = render(<TicketInfobarNavigation />)
 
         const button = screen.getByLabelText('star').closest('button')
-        await userEvent.click(button!)
+        await act(() => user.click(button!))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
     })

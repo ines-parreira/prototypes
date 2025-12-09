@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorSidePanelHelpCenterArticle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelHelpCenterArticle'
 import { KnowledgeEditorSidePanelURLSnippet } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
@@ -67,31 +68,31 @@ const relatedTickets = {
     tickets: [
         {
             title: 'Still waiting on my order?',
-            content:
-                'I have a problem with my order, it arrived broken and doesn’t turn on.',
             lastUpdatedDatetime: oneHourAgo,
             url: 'https://gorgias.gorgias.com/app/views/123/456',
+            messageCount: 2,
+            aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
         },
         {
             title: 'Still waiting on my order?',
-            content:
-                'I have a problem with my order, it arrived broken and doesn’t turn on.',
             lastUpdatedDatetime: oneHourAgo,
             url: 'https://gorgias.gorgias.com/app/views/123/456',
+            messageCount: 3,
+            aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
         },
         {
             title: 'Still waiting on my order?',
-            content:
-                'I have a problem with my order, it arrived broken and doesn’t turn on.',
             lastUpdatedDatetime: oneHourAgo,
             url: 'https://gorgias.gorgias.com/app/views/123/456',
+            messageCount: 1,
+            aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
         },
         {
             title: 'Still waiting on my order?',
-            content:
-                'I have a problem with my order, it arrived broken and doesn’t turn on.',
             lastUpdatedDatetime: oneHourAgo,
             url: 'https://gorgias.gorgias.com/app/views/123/456',
+            messageCount: 5,
+            aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
         },
     ],
     relatedTicketsUrl: 'https://gorgias.gorgias.com/app/views',

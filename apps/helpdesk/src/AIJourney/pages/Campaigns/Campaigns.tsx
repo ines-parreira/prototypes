@@ -1,10 +1,18 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
-import { Box, Card, Heading } from '@gorgias/axiom'
+import { useLocalStorage } from '@repo/hooks'
+import { ConfigureMetricsModal, type MetricConfigItem } from '@repo/reporting'
+
+import { Box, Card, type ColumnDef, Heading } from '@gorgias/axiom'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import { DigestCard } from 'AIJourney/components'
 import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
-import { columns } from 'AIJourney/components/CampaignsTable/Columns'
+import {
+    actionColumns,
+    columns,
+    metricColumns,
+} from 'AIJourney/components/CampaignsTable/Columns'
 import { useFilters } from 'AIJourney/hooks'
 import {
     DEFAULT_TABLE_METRICS,
@@ -27,6 +35,29 @@ export const Campaigns = () => {
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+    const customizableMetrics: MetricConfigItem[] = [
+        { id: 'recipients', label: 'Recipients', visibility: true },
+        { id: 'revenue', label: 'Revenue', visibility: true },
+        { id: 'totalOrders', label: 'Orders', visibility: false },
+        {
+            id: 'revenuePerRecipient',
+            label: 'Revenue per Recipient',
+            visibility: false,
+        },
+        { id: 'averageOrderValue', label: 'AOV', visibility: false },
+        { id: 'messagesSent', label: 'Messages Sent', visibility: false },
+        { id: 'ctr', label: 'CTR', visibility: true },
+        { id: 'replyRate', label: 'Reply rate', visibility: true },
+        { id: 'optOutRate', label: 'Opt Out rate', visibility: false },
+        { id: 'conversionRate', label: 'Conversion rate', visibility: false },
+    ]
+
+    const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
+        MetricConfigItem[]
+    >('ai-journey-campaign-columns', customizableMetrics)
 
     const filters = useFilters()
 
@@ -55,6 +86,24 @@ export const Campaigns = () => {
         })
     }, [campaigns, tableMetrics])
 
+    const visibleColumns: ColumnDef<JourneyApiDTO>[] = useMemo(() => {
+        const orderedMetricColumns = keyKpisConfig
+            .filter((item) => item.visibility)
+            .map((item) => {
+                return metricColumns.find((column) => {
+                    //@ts-ignore
+                    const columnId = column.id || column.accessorKey || ''
+                    return item.id === columnId.replace('metrics.', '')
+                })
+            })
+            .filter(
+                (option): option is ColumnDef<JourneyApiDTO> =>
+                    option !== undefined,
+            )
+
+        return [...columns, ...orderedMetricColumns, ...actionColumns]
+    }, [keyKpisConfig])
+
     return (
         <Box m="md" flexDirection="column" className={css.container}>
             <DigestCard
@@ -65,8 +114,9 @@ export const Campaigns = () => {
             <Card gap="md">
                 <Heading size="md">Campaigns</Heading>
                 <CampaignsTable
-                    columns={columns}
+                    columns={visibleColumns}
                     data={campaignRows || []}
+                    onEditColumns={() => setIsEditModalOpen(true)}
                     isLoading={
                         isLoadingIntegrations ||
                         isLoadingCampaigns ||
@@ -75,6 +125,13 @@ export const Campaigns = () => {
                 />
             </Card>
             <DrillDownModal />
+            <ConfigureMetricsModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                metrics={keyKpisConfig}
+                onSave={setKeyKpisConfig}
+                maxVisibleMetric={6}
+            />
         </Box>
     )
 }

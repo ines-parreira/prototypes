@@ -32,7 +32,15 @@
         }
 
         &.highlight {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        &.highlight {
+            background-color: var(--elevation-neutral-mid);
         }
     }
 }

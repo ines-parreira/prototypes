@@ -36,12 +36,14 @@ import styles from './CampaignsTable.less'
 type CampaignsTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    onEditColumns?: () => void
     isLoading?: boolean
 }
 
 export default function CampaignsTable<TData, TValue>({
     columns,
     data,
+    onEditColumns,
     isLoading = false,
 }: CampaignsTableProps<TData, TValue>) {
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
@@ -223,6 +225,18 @@ export default function CampaignsTable<TData, TValue>({
                         left: ['search'],
                         right: [
                             'totalCount',
+                            {
+                                key: 'edit',
+                                content: (
+                                    <Button
+                                        onClick={onEditColumns}
+                                        intent="regular"
+                                        icon="columns"
+                                        size="md"
+                                        variant="tertiary"
+                                    />
+                                ),
+                            },
                             {
                                 key: 'create',
                                 content: (

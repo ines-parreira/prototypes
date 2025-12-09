@@ -1,4 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 
 import {
@@ -10,14 +11,6 @@ import {
     fetchFirstResponseTimeExcludingAIAgent,
     fetchFirstResponseTimeIncludingAIAgent,
     fetchResolutionTimeExcludingAIAgent,
-    useAllAutomatedInteractions,
-    useAllAutomatedInteractionsByAutoResponders,
-    useBillableTicketsExcludingAIAgent,
-    useFilteredAutomatedInteractions,
-    useFilteredAutomatedInteractionsByAutoResponders,
-    useFirstResponseTimeExcludingAIAgent,
-    useFirstResponseTimeIncludingAIAgent,
-    useResolutionTimeExcludingAIAgent,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import {
@@ -30,48 +23,26 @@ jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
-const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions,
-)
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
     fetchFilteredAutomatedInteractions,
-)
-const useAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useAllAutomatedInteractionsByAutoResponders,
 )
 const fetchAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
     fetchAllAutomatedInteractionsByAutoResponders,
 )
-const useAllAutomatedInteractionsMock = assumeMock(useAllAutomatedInteractions)
 const fetchAllAutomatedInteractionsMock = assumeMock(
     fetchAllAutomatedInteractions,
-)
-const useBillableTicketsExcludingAIAgentMock = assumeMock(
-    useBillableTicketsExcludingAIAgent,
 )
 const fetchBillableTicketsExcludingAIAgentMock = assumeMock(
     fetchBillableTicketsExcludingAIAgent,
 )
-const useFilteredAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useFilteredAutomatedInteractionsByAutoResponders,
-)
 const fetchFilteredAutomatedInteractionsByAutoRespondersMock = assumeMock(
     fetchFilteredAutomatedInteractionsByAutoResponders,
-)
-const useFirstResponseTimeExcludingAIAgentMock = assumeMock(
-    useFirstResponseTimeExcludingAIAgent,
 )
 const fetchFirstResponseTimeExcludingAIAgentMock = assumeMock(
     fetchFirstResponseTimeExcludingAIAgent,
 )
-const useFirstResponseTimeIncludingAIAgentMock = assumeMock(
-    useFirstResponseTimeIncludingAIAgent,
-)
 const fetchFirstResponseTimeIncludingAIAgentMock = assumeMock(
     fetchFirstResponseTimeIncludingAIAgent,
-)
-const useResolutionTimeExcludingAIAgentMock = assumeMock(
-    useResolutionTimeExcludingAIAgent,
 )
 const fetchResolutionTimeExcludingAIAgentMock = assumeMock(
     fetchResolutionTimeExcludingAIAgent,
@@ -127,31 +98,33 @@ describe('AutomationRateTrend', () => {
     describe('useAutomationRateTrend', () => {
         beforeEach(() => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            useFilteredAutomatedInteractionsMock.mockReturnValue({
+            fetchFilteredAutomatedInteractionsMock.mockResolvedValue({
                 data: filteredAutomatedInteractions,
                 isFetching: false,
                 isFetched: true,
                 isError: false,
             } as any)
-            useAllAutomatedInteractionsByAutoRespondersMock.mockReturnValue({
-                data: allAutomatedInteractionsByAutoRespondersData,
-                isFetched: true,
-                isFetching: false,
-                isError: false,
-            } as any)
-            useAllAutomatedInteractionsMock.mockReturnValue({
+            fetchAllAutomatedInteractionsByAutoRespondersMock.mockResolvedValue(
+                {
+                    data: allAutomatedInteractionsByAutoRespondersData,
+                    isFetched: true,
+                    isFetching: false,
+                    isError: false,
+                } as any,
+            )
+            fetchAllAutomatedInteractionsMock.mockResolvedValue({
                 data: allAutomatedInteractionsData,
                 isFetched: true,
                 isFetching: false,
                 isError: false,
             } as any)
-            useBillableTicketsExcludingAIAgentMock.mockReturnValue({
+            fetchBillableTicketsExcludingAIAgentMock.mockResolvedValue({
                 data: BillableTicketsExcludingAIAgent,
                 isFetched: true,
                 isFetching: false,
                 isError: false,
             } as any)
-            useFilteredAutomatedInteractionsByAutoRespondersMock.mockReturnValue(
+            fetchFilteredAutomatedInteractionsByAutoRespondersMock.mockResolvedValue(
                 {
                     data: filteredAutomatedInteractionsDataByAutoResponders,
                     isFetching: false,
@@ -159,19 +132,19 @@ describe('AutomationRateTrend', () => {
                     isError: false,
                 } as any,
             )
-            useFirstResponseTimeExcludingAIAgentMock.mockReturnValue({
+            fetchFirstResponseTimeExcludingAIAgentMock.mockResolvedValue({
                 data: ticketDatasetExcludingAIAgent,
                 isFetched: true,
                 isFetching: false,
                 isError: false,
             } as any)
-            useFirstResponseTimeIncludingAIAgentMock.mockReturnValue({
+            fetchFirstResponseTimeIncludingAIAgentMock.mockResolvedValue({
                 data: ticketDatasetIncludingAIAgent,
                 isFetched: true,
                 isFetching: false,
                 isError: false,
             } as any)
-            useResolutionTimeExcludingAIAgentMock.mockReturnValue({
+            fetchResolutionTimeExcludingAIAgentMock.mockResolvedValue({
                 data: resolutionTimeExcludingAIAgent,
                 isFetched: true,
                 isFetching: false,
@@ -179,10 +152,14 @@ describe('AutomationRateTrend', () => {
             } as any)
         })
 
-        it('should fetch and format data with a hook', () => {
+        it('should fetch and format data with a hook', async () => {
             const { result } = renderHook(() =>
                 useAutomationRateTrend(statsFilters, timezone),
             )
+
+            await waitFor(() => {
+                expect(result.current.isFetching).toBeFalsy()
+            })
 
             expect(result.current).toEqual({
                 data: {

@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
 
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { KnowledgeEditorSidePanelDocumentSnippet } from './KnowledgeEditorSidePanelDocumentSnippet'
@@ -27,13 +28,17 @@ describe('KnowledgeEditorSidePanelDocumentSnippet', () => {
                             lastUpdatedDatetime: new Date('2025-06-17'),
                             url: 'https://www.google.com',
                             title: 'Ticket 1',
-                            content: 'Ticket 1 content',
+                            messageCount: 2,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                         {
                             lastUpdatedDatetime: new Date('2025-06-17'),
                             url: 'https://www.google.com',
                             title: 'Ticket 2',
-                            content: 'Ticket 2 content',
+                            messageCount: 4,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
                         },
                     ],
                 }}
@@ -42,6 +47,6 @@ describe('KnowledgeEditorSidePanelDocumentSnippet', () => {
 
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Impact')).toBeInTheDocument()
-        expect(screen.getByText('Related tickets')).toBeInTheDocument()
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
     })
 })

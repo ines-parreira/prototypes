@@ -1,4 +1,6 @@
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
+import type { Props as HelpCenterArticleRelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import type { Props as HelpCenterArticleDetailsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import type { Props as HelpCenterArticleImpactProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
@@ -9,17 +11,22 @@ import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './Know
 type Props = {
     details: Omit<HelpCenterArticleDetailsProps, 'sectionId'>
     impact?: Omit<HelpCenterArticleImpactProps, 'sectionId'>
+    relatedTickets?: Omit<HelpCenterArticleRelatedTicketsProps, 'sectionId'>
     settings: Omit<HelpCenterArticleSettingsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSidePanelHelpCenterArticle = ({
     details,
     impact,
+    relatedTickets,
     settings,
 }: Props) => {
-    const initialExpandedSections = impact
-        ? ['details', 'impact', 'settings']
-        : ['details', 'settings']
+    const initialExpandedSections =
+        impact && relatedTickets
+            ? ['details', 'impact', 'relatedTickets', 'settings']
+            : impact
+              ? ['details', 'impact', 'settings']
+              : ['details', 'settings']
 
     return (
         <KnowledgeEditorSidePanel
@@ -34,6 +41,13 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = ({
                 <KnowledgeEditorSidePanelSectionHelpCenterArticleImpact
                     {...impact}
                     sectionId="impact"
+                />
+            )}
+
+            {relatedTickets && (
+                <KnowledgeEditorSidePanelSectionRelatedTickets
+                    {...relatedTickets}
+                    sectionId="relatedTickets"
                 />
             )}
 

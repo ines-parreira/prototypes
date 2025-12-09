@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import useFlag from 'core/flags/hooks/useFlag'
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { useNotify } from 'hooks/useNotify'
 import {
     helpCenterArticleKeys,
@@ -485,6 +486,41 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         ],
     )
 
+    const mockedOneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+    const mockedRelatedTicketsData = {
+        tickets: [
+            {
+                title: 'Still waiting on my order?',
+                lastUpdatedDatetime: mockedOneHourAgo,
+                url: 'https://gorgias.gorgias.com/app/views/123/456',
+                messageCount: 2,
+                aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+            {
+                title: 'How to cancel my order?',
+                lastUpdatedDatetime: mockedOneHourAgo,
+                url: 'https://gorgias.gorgias.com/app/views/123/456',
+                messageCount: 1,
+                aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
+            },
+            {
+                title: 'How to track my order?',
+                lastUpdatedDatetime: mockedOneHourAgo,
+                url: 'https://gorgias.gorgias.com/app/views/123/456',
+                messageCount: 5,
+                aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+            {
+                title: 'Issue with my order',
+                lastUpdatedDatetime: mockedOneHourAgo,
+                url: 'https://gorgias.gorgias.com/app/views/123/456',
+                messageCount: 5,
+                aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+        ],
+        relatedTicketsUrl: 'https://gorgias.gorgias.com/app/views',
+    }
+
     return (
         <div className={css.container}>
             {modal.type === 'unsaved-changes' && (
@@ -585,6 +621,11 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                                               'Product/Issues',
                                           ],
                                       }
+                                    : undefined
+                            }
+                            relatedTickets={
+                                isPerformanceStatsEnabled
+                                    ? mockedRelatedTicketsData
                                     : undefined
                             }
                             settings={settings}

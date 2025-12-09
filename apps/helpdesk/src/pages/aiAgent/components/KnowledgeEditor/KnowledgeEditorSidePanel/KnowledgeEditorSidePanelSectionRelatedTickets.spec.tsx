@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
 
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
@@ -17,22 +18,35 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
                     tickets={[
                         {
                             title: 'Still waiting on my order?',
-                            content:
-                                'I have a problem with my order, it arrived broken and doesn’t turn on.',
                             lastUpdatedDatetime: oneHourAgo,
                             url: 'https://gorgias.gorgias.com/app/views/123/456',
+                            messageCount: 2,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                         {
                             title: 'How to cancel my order?',
-                            content: 'I want to cancel my order.',
                             lastUpdatedDatetime: oneHourAgo,
                             url: 'https://gorgias.gorgias.com/app/views/123/456',
+                            messageCount: 1,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
                         },
                         {
                             title: 'How to track my order?',
-                            content: 'I want to track my order.',
                             lastUpdatedDatetime: oneHourAgo,
                             url: 'https://gorgias.gorgias.com/app/views/123/456',
+                            messageCount: 5,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+                        },
+                        {
+                            title: 'Issue with my order',
+                            lastUpdatedDatetime: oneHourAgo,
+                            url: 'https://gorgias.gorgias.com/app/views/123/456',
+                            messageCount: 5,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                     ]}
                     relatedTicketsUrl="https://gorgias.gorgias.com/app/views"
@@ -41,8 +55,8 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             </KnowledgeEditorSidePanel>,
         )
 
-        expect(screen.getByText('Related tickets')).toBeInTheDocument()
-        expect(screen.getByText('3')).toBeInTheDocument()
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+        expect(screen.getByText('4')).toBeInTheDocument()
         expect(screen.getByText('View all')).toBeInTheDocument()
         expect(
             screen.getByText('Still waiting on my order?'),

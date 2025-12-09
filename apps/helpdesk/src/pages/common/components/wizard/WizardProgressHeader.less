@@ -10,20 +10,20 @@
         border-radius: 50px;
         padding: 6px var(--layout-spacing-s);
         font-weight: 500;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         line-height: 20px;
         letter-spacing: -0.01em;
 
         &.activeStep {
-            color: var(--main-primary-3);
-            background: var(--main-primary-0);
+            color: var(--main-primary-3); // legacy
+            background: var(--main-primary-0); // legacy
         }
 
         &.previousStep {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
 
             .index {
-                color: var(--main-primary-3);
+                color: var(--main-primary-3); // legacy
             }
         }
     }
@@ -35,10 +35,37 @@
     .line {
         flex-grow: 1;
         height: 1px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
     }
 
     .checkIcon {
-        color: var(--main-primary-3);
+        color: var(--main-primary-3); // legacy
+    }
+}
+
+.axiom :local {
+    .step {
+        color: var(--content-neutral-secondary);
+
+        &.activeStep {
+            color: var(--content-accent-default);
+            background: var(--surface-accent-default);
+        }
+
+        &.previousStep {
+            color: var(--content-neutral-default);
+
+            .index {
+                color: var(--content-accent-default);
+            }
+        }
+    }
+
+    .line {
+        background: var(--border-neutral-default);
+    }
+
+    .checkIcon {
+        color: var(--content-accent-default);
     }
 }

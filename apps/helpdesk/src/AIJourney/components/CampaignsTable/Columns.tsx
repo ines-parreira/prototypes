@@ -38,6 +38,9 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
             </Box>
         )
     }),
+]
+
+export const metricColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
     createSortableColumn<JourneyApiDTO>(
         'metrics.recipients',
         'Recipients',
@@ -157,6 +160,9 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
             </Box>
         ),
     ),
+]
+
+export const actionColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
     {
         id: 'actions',
         cell: (info) => {

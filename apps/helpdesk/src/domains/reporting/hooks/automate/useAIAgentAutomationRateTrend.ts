@@ -1,15 +1,16 @@
+import { useState } from 'react'
+
+import { useDeepEffect } from '@repo/hooks'
+
 import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
     fetchBillableTicketsExcludingAIAgent,
     fetchTrendFromMultipleMetricsTrend,
-    useAllAutomatedInteractions,
-    useAllAutomatedInteractionsByAutoResponders,
-    useBillableTicketsExcludingAIAgent,
-    useTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
+import { type MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -19,47 +20,18 @@ export const useAIAgentAutomationRateTrend = (
     timezone: string,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
-
-    const aiAgentAutomatedInteractions = useTrendFromMultipleMetricsTrend(
-        filters,
-        timezone,
-        aiAgentAutomatedInteractionsQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractions,
-    )
-
-    const allAutomatedInteractionsByAutoResponders =
-        useAllAutomatedInteractionsByAutoResponders(filters, timezone)
-
-    const allAutomatedInteractions = useAllAutomatedInteractions(
-        filters,
-        timezone,
-    )
-
-    const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
-        filters,
-        timezone,
-        aiAgentUserId,
-    )
-
-    const isFetching =
-        aiAgentAutomatedInteractions.isFetching ||
-        allAutomatedInteractions.isFetching ||
-        billableTicketsExcludingAIAgent.isFetching
-
-    const isError =
-        aiAgentAutomatedInteractions.isError ||
-        allAutomatedInteractions.isError ||
-        billableTicketsExcludingAIAgent.isError
-
-    return getAIAgentAutomationRateUnfilteredDenominatorTrend({
-        isFetching,
-        isError,
-        aiAgentAutomatedInteractions: aiAgentAutomatedInteractions.data,
-        allAutomatedInteractions: allAutomatedInteractions.data,
-        allAutomatedInteractionsByAutoResponders:
-            allAutomatedInteractionsByAutoResponders.data,
-        billableTicketsCount: billableTicketsExcludingAIAgent.data,
+    const [data, setData] = useState<MetricTrend>({
+        isFetching: true,
+        isError: false,
     })
+
+    useDeepEffect(() => {
+        fetchAIAgentAutomationRateTrend(filters, timezone, aiAgentUserId).then(
+            setData,
+        )
+    }, [filters, timezone, aiAgentUserId])
+
+    return data
 }
 
 export const fetchAIAgentAutomationRateTrend = async (
@@ -86,7 +58,11 @@ export const fetchAIAgentAutomationRateTrend = async (
         ]) => {
             return getAIAgentAutomationRateUnfilteredDenominatorTrend({
                 isFetching: false,
-                isError: false,
+                isError:
+                    aiAgentAutomatedInteractions.isError ||
+                    allAutomatedInteractionsByAutoResponders.isError ||
+                    allAutomatedInteractions.isError ||
+                    billableTicketsExcludingAIAgent.isError,
                 aiAgentAutomatedInteractions: aiAgentAutomatedInteractions.data,
                 allAutomatedInteractions: allAutomatedInteractions.data,
                 allAutomatedInteractionsByAutoResponders:
