@@ -19,6 +19,8 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/routing": "workspace:*",
         "lodash": "catalog:lodash",
+        "moment": "catalog:moment",
+        "moment-timezone": "catalog:moment",
         "mousetrap": "catalog:mousetrap",
         "react": "catalog:react",
         "react-dom": "catalog:react",

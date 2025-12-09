@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node'
 import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
-import { InfobarTicketCustomer } from '../InfobarTicketCustomer'
+import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader'
 
 const ticketId = '123'
 
@@ -59,10 +59,10 @@ const waitUntilLoaded = async () => {
     })
 }
 
-describe('InfobarTicketCustomer', () => {
+describe('InfobarTicketCustomerHeader', () => {
     it('should render null when ticketId is missing', () => {
         const { container } = render(
-            <InfobarTicketCustomer {...defaultProps} />,
+            <InfobarTicketCustomerHeader {...defaultProps} />,
             {
                 path: '/ticket/:ticketId',
                 initialEntries: ['/ticket/'],
@@ -85,7 +85,7 @@ describe('InfobarTicketCustomer', () => {
         )
 
         const { container } = render(
-            <InfobarTicketCustomer {...defaultProps} />,
+            <InfobarTicketCustomerHeader {...defaultProps} />,
             {
                 path: '/ticket/:ticketId',
                 initialEntries: [`/ticket/${ticketId}`],
@@ -98,7 +98,7 @@ describe('InfobarTicketCustomer', () => {
     })
 
     it('should render customer name with link to customer profile', async () => {
-        render(<InfobarTicketCustomer {...defaultProps} />, {
+        render(<InfobarTicketCustomerHeader {...defaultProps} />, {
             path: '/ticket/:ticketId',
             initialEntries: [`/ticket/${ticketId}`],
         })
@@ -111,10 +111,13 @@ describe('InfobarTicketCustomer', () => {
     })
 
     it('should show edit customer option in dropdown', async () => {
-        const { user } = render(<InfobarTicketCustomer {...defaultProps} />, {
-            path: '/ticket/:ticketId',
-            initialEntries: [`/ticket/${ticketId}`],
-        })
+        const { user } = render(
+            <InfobarTicketCustomerHeader {...defaultProps} />,
+            {
+                path: '/ticket/:ticketId',
+                initialEntries: [`/ticket/${ticketId}`],
+            },
+        )
 
         await waitUntilLoaded()
 
@@ -126,7 +129,7 @@ describe('InfobarTicketCustomer', () => {
 
     it('should not show Shopify sync option when hasShopifyIntegration is false', async () => {
         const { user } = render(
-            <InfobarTicketCustomer
+            <InfobarTicketCustomerHeader
                 {...defaultProps}
                 hasShopifyIntegration={false}
             />,
@@ -148,7 +151,7 @@ describe('InfobarTicketCustomer', () => {
 
     it('should show Shopify sync option when hasShopifyIntegration is true', async () => {
         const { user } = render(
-            <InfobarTicketCustomer
+            <InfobarTicketCustomerHeader
                 {...defaultProps}
                 hasShopifyIntegration={true}
             />,
@@ -170,7 +173,7 @@ describe('InfobarTicketCustomer', () => {
         const onEditCustomer = vi.fn()
         const onSyncToShopify = vi.fn()
         const { user } = render(
-            <InfobarTicketCustomer
+            <InfobarTicketCustomerHeader
                 {...defaultProps}
                 onEditCustomer={onEditCustomer}
                 onSyncToShopify={onSyncToShopify}
@@ -214,7 +217,10 @@ describe('InfobarTicketCustomer', () => {
 
     it('should show merge button when showMergeButton is true', async () => {
         render(
-            <InfobarTicketCustomer {...defaultProps} showMergeButton={true} />,
+            <InfobarTicketCustomerHeader
+                {...defaultProps}
+                showMergeButton={true}
+            />,
             {
                 path: '/ticket/:ticketId',
                 initialEntries: [`/ticket/${ticketId}`],
@@ -231,7 +237,10 @@ describe('InfobarTicketCustomer', () => {
 
     it('should not show merge button when showMergeButton is false', async () => {
         render(
-            <InfobarTicketCustomer {...defaultProps} showMergeButton={false} />,
+            <InfobarTicketCustomerHeader
+                {...defaultProps}
+                showMergeButton={false}
+            />,
             {
                 path: '/ticket/:ticketId',
                 initialEntries: [`/ticket/${ticketId}`],
@@ -249,7 +258,7 @@ describe('InfobarTicketCustomer', () => {
     it('should call onMergeClick when merge button is clicked', async () => {
         const onMergeClick = vi.fn()
         const { user } = render(
-            <InfobarTicketCustomer
+            <InfobarTicketCustomerHeader
                 {...defaultProps}
                 showMergeButton={true}
                 onMergeClick={onMergeClick}

@@ -17,9 +17,9 @@ import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketDetailsTags/hooks/useGetTicketData'
 
-import css from './InfobarTicketCustomer.less'
+import css from './InfobarTicketCustomerHeader.less'
 
-export interface InfobarTicketCustomerProps {
+export interface InfobarTicketCustomerHeaderProps {
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
     hasShopifyIntegration?: boolean
@@ -27,13 +27,13 @@ export interface InfobarTicketCustomerProps {
     onMergeClick?: () => void
 }
 
-export function InfobarTicketCustomer({
+export function InfobarTicketCustomerHeader({
     onEditCustomer,
     onSyncToShopify,
     hasShopifyIntegration = false,
     showMergeButton = false,
     onMergeClick,
-}: InfobarTicketCustomerProps) {
+}: InfobarTicketCustomerHeaderProps) {
     const { ticketId } = useParams<{ ticketId: string }>()
 
     const { data: ticket } = useGetTicketData(ticketId)
@@ -60,6 +60,8 @@ export function InfobarTicketCustomer({
         return null
     }
 
+    const customerDisplayName = customer.name || `Customer #${customer.id}`
+
     return (
         <div className={css.container}>
             <Box justifyContent="space-between">
@@ -68,7 +70,7 @@ export function InfobarTicketCustomer({
                         variant={TextVariant.Bold}
                         className={css.customerName}
                     >
-                        {customer.name}
+                        {customerDisplayName}
                     </Text>
                 </Link>
                 <Box>

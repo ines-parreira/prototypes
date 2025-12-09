@@ -5,7 +5,10 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { InfobarTicketCustomer, InfobarTicketDetails } from '@repo/tickets'
+import {
+    InfobarTicketCustomerDetails,
+    InfobarTicketDetails,
+} from '@repo/tickets'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -290,7 +293,7 @@ export const Infobar = ({
                     />
                 )}
                 {hasUIVisionMS1 && (
-                    <InfobarTicketCustomer
+                    <InfobarTicketCustomerDetails
                         onEditCustomer={handleEditCustomer}
                         onSyncToShopify={handleSyncToShopify}
                         hasShopifyIntegration={hasShopifyIntegration}

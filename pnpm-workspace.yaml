@@ -137,3 +137,5 @@ catalogs:
   react-dnd:
     'react-dnd': '16.0.1'
     'react-dnd-html5-backend': '16.0.1'
+  libphonenumber:
+    'libphonenumber-js': '1.12.25'

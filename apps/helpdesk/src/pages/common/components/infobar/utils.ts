@@ -526,6 +526,10 @@ export function jsonToWidgets(
 }
 
 /**
+ * @deprecated
+ * @date 2025-12-03
+ * @type migration to @repo/utils
+ *
  * Return the local time in string format, based on the UTC offset value
  */
 export function getLocalTime(

@@ -34,6 +34,8 @@ export function EditableBreadcrumb({ value, onChange }: Props) {
                 onPaste={handlePaste}
                 onKeyDown={handleKeyDown}
                 onInput={handleInput}
+                suppressContentEditableWarning={true}
+                role="textbox"
             >
                 {value || ''}
             </span>

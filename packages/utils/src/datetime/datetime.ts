@@ -1,19 +1,26 @@
-import type { DateTimeResultFormatType } from 'constants/datetime'
+/**
+ * Datetime formatting utilities
+ *
+ * Migrated from: apps/helpdesk/src/utils/datetime.ts
+ *
+ * Note: The original file in the helpdesk app is still in use.
+ * In a future PR, all usages in the helpdesk app will be updated to import from @repo/utils.
+ */
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
+import { isMoment } from 'moment/moment'
+
+import type { DateTimeResultFormatType } from './constants'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     DateTimeFormatMapper,
     DateTimeFormatType,
     TimeFormatType,
-} from 'constants/datetime'
+} from './constants'
 
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- *
- * Returns the date and time format based on the date and time settings and the format type.
- * */
+export type Datetime = Date | Moment | number | string
+
 export function getDateAndTimeFormat(
     dateSetting: DateFormatType,
     timeSetting: TimeFormatType,
@@ -290,4 +297,55 @@ export function getDateAndTimeFormat(
                     }
             }
     }
+}
+
+/**
+ * Migrated from: apps/helpdesk/src/utils.ts
+ *
+ * Note: The original file in the helpdesk app is still in use.
+ * In a future PR, all usages in the helpdesk app will be updated to import from @repo/utils.
+ */
+export function formatDatetime(
+    datetime: Datetime,
+    format: DateTimeResultFormatType,
+    timezone?: string | null,
+): string {
+    try {
+        let momentDate = isMoment(datetime) ? datetime : moment.utc(datetime)
+
+        if (!isMoment(datetime)) {
+            // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
+            const unix = moment.unix(datetime as any)
+            if (unix.isValid()) {
+                momentDate = unix
+            }
+        }
+
+        if (timezone) {
+            momentDate = momentDate.tz(timezone)
+        }
+
+        if (typeof format !== 'string') {
+            return momentDate.calendar(null, format)
+        }
+        return momentDate.format(format)
+    } catch (e) {
+        console.error('Failed to format datetime', e, datetime, timezone)
+        return String(datetime)
+    }
+}
+
+/**
+ * Calculate and format the current local time for a given timezone offset
+ *
+ * Migrated from: apps/helpdesk/src/pages/common/components/infobar/utils.ts
+ */
+export function getLocalTime(
+    timezoneOffset: string,
+    format: DateTimeResultFormatType,
+): string {
+    const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
+    const localTime = moment.utc().utcOffset(timezoneDifference)
+
+    return formatDatetime(localTime, format)
 }

@@ -64,6 +64,11 @@ type Property = {
 }
 export type SystemMessage = [NotificationStatus, string]
 
+/**
+ * @deprecated
+ * @date 2025-12-03
+ * @type migration to @repo/utils
+ */
 export type Datetime = Date | Moment | number | string
 
 // monitor if tab is active or not
@@ -116,6 +121,10 @@ export function isDomain(string: string): string is string {
 }
 
 /**
+ * @deprecated
+ * @date 2025-12-03
+ * @type migration to @repo/utils
+ *
  * Guess if a passed string is an email
  */
 export function isEmail(string: string): string is string {
@@ -145,6 +154,11 @@ export function isEmailList(string?: string | null, delimiter = ','): boolean {
     return addresses.every((address) => isEmail(address.trim()))
 }
 
+/**
+ * @deprecated
+ * @date 2025-12-03
+ * @type migration to @repo/utils
+ */
 export function formatDatetime(
     datetime: Datetime,
     format: DateTimeResultFormatType,

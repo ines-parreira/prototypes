@@ -1,5 +1,6 @@
 export * from './shortcuts'
 export * from './environment'
+export * from './datetime'
 export {
     UserRole,
     USER_ROLES,

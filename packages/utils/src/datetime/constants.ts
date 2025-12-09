@@ -1,28 +1,22 @@
 /**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
+ * Datetime formatting constants
+ *
+ * Migrated from: apps/helpdesk/src/constants/datetime.ts
+ *
+ * Note: The original file in the helpdesk app is still in use.
+ * In a future PR, all usages in the helpdesk app will be updated to import from @repo/utils.
  */
+
 export enum DateFormatType {
     en_GB = 'en_GB',
     en_US = 'en_US',
 }
 
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
 export enum TimeFormatType {
     TwentyFourHour = '24-hour',
     AmPm = 'AM/PM',
 }
 
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
 export enum DateAndTimeFormatting {
     Time,
     TimeDoubleDigitHour,
@@ -45,11 +39,6 @@ export enum DateAndTimeFormatting {
     RelativeDateAndTime,
 }
 
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
 export enum DateTimeFormatType {
     TIME_24HOUR,
     TIME_AM_PM,
@@ -96,11 +85,7 @@ export enum DateTimeFormatType {
     SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_US,
     SHORT_MONTH_DAY_WITH_TIME_AM_PM_EN_GB,
 }
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
+
 export type DateTimeResultFormatType =
     | string
     | {
@@ -116,11 +101,6 @@ type EnumDictionary<T extends DateTimeFormatType, U> = {
     [K in T]: U
 }
 
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
 export const DateTimeFormatMapper: EnumDictionary<
     DateTimeFormatType,
     DateTimeResultFormatType

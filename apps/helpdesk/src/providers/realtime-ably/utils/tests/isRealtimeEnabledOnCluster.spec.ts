@@ -1,5 +1,6 @@
 describe('isRealtimeEnabledOnCluster', () => {
     const US_EAST1_CLUSTER = 'us-east1-635c'
+    const STAGING_CLUSTER = 'us-east1-86cc'
     const OTHER_CLUSTER = 'europe-west1-c511'
 
     beforeEach(() => {
@@ -11,6 +12,11 @@ describe('isRealtimeEnabledOnCluster', () => {
             cluster: US_EAST1_CLUSTER,
             expected: true,
             description: 'cluster is us-east1-635c ',
+        },
+        {
+            cluster: STAGING_CLUSTER,
+            expected: true,
+            description: 'cluster is us-east1-86cc',
         },
         {
             cluster: OTHER_CLUSTER,

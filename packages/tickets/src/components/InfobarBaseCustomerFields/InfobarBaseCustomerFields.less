@@ -1,0 +1,38 @@
+:local {
+    .overflowList {
+        width: 100%;
+    }
+
+    .overflowListItem {
+        width: 100%;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: minmax(122px, auto) minmax(166px, 1fr);
+        width: 100%;
+    }
+
+    .label {
+        color: var(--content-neutral-secondary);
+        align-self: center;
+        line-height: var(--spacing-lg);
+    }
+
+    .emailLink {
+        color: var(--content-neutral-default);
+        text-decoration: underline !important;
+
+        &:hover {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .fieldValue {
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+    }
+
+    .isEditable {
+        cursor: pointer;
+    }
+}

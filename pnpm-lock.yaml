@@ -38,6 +38,10 @@ catalogs:
     launchdarkly-react-client-sdk:
       specifier: ^3.3.2
       version: 3.3.2
+  libphonenumber:
+    libphonenumber-js:
+      specifier: 1.12.25
+      version: 1.12.25
   lodash:
     '@types/lodash':
       specifier: 4.14.158
@@ -1995,12 +1999,21 @@ importers:
 
   packages/tickets:
     dependencies:
+      '@gorgias/helpdesk-validators':
+        specifier: catalog:rest-api-sdk
+        version: 0.7.131
       classnames:
         specifier: catalog:styles
         version: 2.2.6
       emoji-mart:
         specifier: catalog:emoji-mart
         version: 1.0.1(react@18.2.0)
+      libphonenumber-js:
+        specifier: catalog:libphonenumber
+        version: 1.12.25
+      moment:
+        specifier: catalog:moment
+        version: 2.29.4
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
@@ -2134,6 +2147,12 @@ importers:
 
   packages/utils:
     dependencies:
+      moment:
+        specifier: catalog:moment
+        version: 2.29.4
+      moment-timezone:
+        specifier: catalog:moment
+        version: 0.5.39
       mousetrap:
         specifier: catalog:mousetrap
         version: 1.6.5

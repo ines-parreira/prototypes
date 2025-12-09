@@ -186,6 +186,11 @@ export function isWhatsAppConnection(
     return connection.type === PhoneConnectionType.WhatsApp
 }
 
+/**
+ * @deprecated
+ * @date 2025-12-03
+ * @type migration to @repo/utils
+ */
 export function formatPhoneNumberInternational(number?: string): string {
     if (!number) return ''
 
